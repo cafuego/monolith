@@ -997,9 +997,9 @@ sysopuser_menu()
 	    which_room("\1f\1wAdmin cmd: \1rUser cmd: \1a");
 	}
 
-	cmd = get_single_quiet("EkKLv\r\b ?");
+	cmd = get_single_quiet("EkKLnv\r\b ?");
 
-	if (strchr("BEKLv", cmd))
+	if (strchr("BEKLvn", cmd))
 	    nox = 1;
 
 	switch (cmd) {
@@ -1008,10 +1008,17 @@ sysopuser_menu()
 		useradmin();
 		break;
 
+	    case 'n': 
+		namechange();
+		cprintf("\nPress a key.. \n");
+		inkey();
+		break;
+
 	    case 'k':
 		cprintf("\1f\1rKICK a user off the BBS\1a\n");
 		kickout_user();
 		break;
+
 
 	    case 'K':
 		cprintf("\1f\1rSee the KnownQuadsList for a user.\1a\n");

@@ -21,6 +21,7 @@
 #include "monolith.h"
 #include "libmono.h"
 #include "ext.h"
+#include "sql_user.h"
 
 #define extern
 #include "uadmin.h"
@@ -34,6 +35,7 @@
 
 static void edit_field(user_t * userdata, int fieldnum);
 static int mode_string(char *, user_t *);
+
 
 static int uadmin_need_rewrite;
 
@@ -144,7 +146,7 @@ useradmin()
 	    edit_field(user, command);
 
     }
-    if (uadmin_need_rewrite == FALSE) {	/* NO CHANGES */
+    if (uadmin_need_rewrite == FALSE) {		/* NO CHANGES */
 	cprintf("\1gNo changes made.\n");
 	return;
     } else if (command == ' ') {	/* ABORT */
@@ -315,19 +317,6 @@ edit_field(user_t * user, int fieldnum)
 	    switch (n) {
 		case 'N':
 		    break;
-		    cprintf("\1a\1f\1gEnter new user name: \1a\1f\1g");
-		    strcpy(ny, get_name(2));
-		    if (check_user(ny) == TRUE)
-			cprintf("\1a\1f\1rThat name is already in use!\n\1a");
-		    else {
-			cprintf("\1a\1f\1gAre you really sure you want to change %s's name to %s??? \1a", user->username, ny);
-			if (yesno() == YES) {
-			    strcpy(user->username, ny);
-			    uadmin_need_rewrite = TRUE;
-			} else
-			    cprintf("Okay.\n");
-		    }
-		    break;
 
 		case 'T':
 		    {
@@ -476,4 +465,105 @@ mode_string(char *string, user_t * user)
     return 0;
 }
 
+void
+namechange(void)
+{
+    char newname[L_USERNAME + 1], oldname[L_USERNAME + 1];
+    char command[200];
+    int num, i;
+    user_t *new_userfile = NULL, *old_userfile = NULL;
+    btmp_t *btmp_ptr;
+    pid_t kick_pid;
+
+    cprintf("\1f\1rRename a user.\n\nEnter user to rename: ");
+    strcpy(oldname, get_name(2));
+
+    cprintf("\1f\1r\n\1gEnter new name\1w[\1y%s\1w] \1c", oldname);
+    strcpy(newname, get_name(2));
+    if (!strlen(newname))
+	return;
+    if (check_user(newname) == TRUE) {
+	cprintf("\1f\1rName already exists.\n\1a");
+	return;
+    }
+    cprintf("\1f\1gChange \1w[\1y%s\1w]\1g to \1w[\1g%s\1w]\1g? ",
+	    oldname, newname);
+    if (yesno() == NO)
+	return;
+
+    if (mono_sql_u_name2id(oldname, &num) == -1) {
+	cprintf("\n\1f\1rCouldn't get sql usernumber, aborting\n");
+	return;
+    } else if ((old_userfile = readuser(oldname)) == NULL) {
+	cprintf("\n\1f\1rCouldn't read old userfile, aborting\n");
+	return;
+    }
+
+    if (old_userfile->priv >= PRIV_SYSOP) {
+	cprintf("\n\1f\1rSysops have to be renamed by hand.\n");
+	xfree(old_userfile);
+	return;
+    }
+
+    if ((kick_pid = mono_return_pid(oldname)) != -1) {
+	kill(kick_pid, SIGTERM);
+	cprintf("\n\1f\1r%s is online.  Kicking..", oldname);
+	while ((kick_pid = mono_return_pid(oldname)) != -1) {
+	    sleep(1);
+	    cprintf(".");
+	}
+	cprintf("  Done.");
+    }
+
+    strcpy(command, "");
+    sprintf(command, "cp -a %s ",
+	    getuserdir(oldname));
+    strcat(command,  getuserdir(newname));
+    system(command);
+
+    if ((new_userfile = readuser(newname)) == NULL) {
+	xfree(old_userfile);
+	cprintf("\n\1f\1rCouldn't read new userfile, aborting\n");
+	return;
+    }
+
+    strcpy(new_userfile->username, newname);
+    if (writeuser(new_userfile, 999) == -1) {
+	cprintf("\n\1f\1rCouldn't write new userfile, this will need a fix.");
+	xfree(old_userfile);
+	xfree(new_userfile);
+	return;
+    }
+
+    old_userfile->priv |= PRIV_DELETED;
+    if (writeuser(old_userfile, 999) == -1) 
+	cprintf("\n\1f\1rCouldn't write old userfile, flag it as deleted.");
+    xfree(new_userfile);
+    xfree(old_userfile);
+
+    if (mono_sql_rename_user(num, newname) == -1) {
+	cprintf("\n\1f\1rSQL update failed AFTER namechange!");
+	return;
+    }
+
+    cprintf("\n\1r\1fSignalling all users to reload cache\1w.");
+    for (i = shm->first; i != -1; i = btmp_ptr->next) {
+	btmp_ptr = &(shm->wholist[i]);
+	kill(btmp_ptr->pid, SIGUSR2);
+	usleep(200000);
+	cprintf(".");
+	}
+
+    strcpy(command, "");
+    sprintf(command, "rm -r %s",
+	    getuserdir(oldname));
+    cprintf("\n\n\1f\1rRemove old user dir with command:\n\n\1y%s\1r",
+	command); 
+    cprintf("\n\n(y/n) :");
+    if (yesno() == YES)
+        system(command);
+    else
+	cprintf("\nOk..  leaving it.  Delete by hand.");
+    cprintf("\1f\1g\n\nNamechange completed.\n");
+}
 /* eof */
