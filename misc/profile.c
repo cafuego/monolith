@@ -112,26 +112,27 @@ read_all_users()
 
 	strcpy(name, tmpdirent->d_name);
 
-	if (i > usercount) {
-	    fprintf(stderr, "%s", "Error, not enough memory allocated\n ");
-	    closedir(userdir);
-	    exit(3);
-	}
 	user = readuser(name);
 	if (user == NULL)
 	    continue;
 	if (EQ(user->username, "Sysop"))
 	    continue;
 
+        fprintf(stdout, "Processing %s... ", user->username);
+        fflush(stdout);
+
         sprintf(work, "%s/profile", getuserdir(user->username) );
         if( (profile = map_file( work )) == NULL) {
-            fprintf(stdout, "Error processing %s!\n", user->username);
+            fprintf(stdout, "Error: map_file(%s)\n", work);
+            fflush(stdout);
             xfree(profile);
 	    xfree(user);
             continue;
         }
-        if( (mono_sql_write_profile(user->usernum, profile)) == -1)
-            fprintf(stdout, "Error processing %s!\n", user->username);
+        if( (mono_sql_write_profile(user->usernum, profile)) == -1) {
+            fprintf(stdout, "Error: write_profile(%u, %X)\n", user->usernum, profile);
+            fflush(stdout);
+        }
         xfree(profile);
 	xfree(user);
 
