@@ -12,25 +12,27 @@ Michel Oosterhof <m.oosterhof@thn.tn.utwente.nl>
    - new handling of shared memory
    - cleaning up in general
    - interbbs support
-   - shared library use
-   - daemonization for front
+   - daemonization for front (evil)
    - made the client server an inetd daemon
    - added fingerdaemon, and www utilities
    - new room system
    - new friends/enemy lists
    - new voting booth
    - autoconf/automake support
+   - sql subsystem
 
-Peter Lieverdink <p.lieverdink@monolith.yawc.net>
+Peter Lieverdink <peter@creativecontingencies.com>
   Responsible for:
-   - new room system
-   - `fun' additions
-   - chatmode
+   - `fun' additions *whee!*
    - user interface
-   - new help system
    - making coffee
-   - new mash system
-   - new known rooms list
-   - new web interface
-   - BBS configurations
+   - shix system
+   - bbs config system
+   - sql message system
 
+Russell Crandall <russ@monolith.yawc.net>
+  Responsible for:
+   - quadcont system
+   - dynamic menu system
+   - online help system
+   - new account creation system
