@@ -1519,6 +1519,7 @@ userlists()
 static void
 lock_terminal()
 {
+    cmdflags ^= C_LOCK;
     mono_change_online(usersupp->username, " ", 17);
     cprintf("c");
     fflush(stdout);
@@ -1526,6 +1527,7 @@ lock_terminal()
     fflush(stdout);
     inkey();
     unlock_terminal();
+    cmdflags ^= C_LOCK;
     mono_change_online(usersupp->username, " ", 17);
     return;
 }
