@@ -167,7 +167,7 @@ segfault(int sig)
 {
     sig++;
     sleep(1);
-    cprintf("OH NO!!!!!!! A SEGFAULT!!!!!\n ");
+    cprintf( _("OH NO!!!!!!! A SEGFAULT!!!!!\n "));
     /*
      * Well, it _might_ work... if not, I'll fiddle with ye
      * code for cleaning up a previous login.
@@ -215,7 +215,7 @@ enter_passwd(user_t * user)
     if ( mono_sql_u_check_passwd(user->usernum, pwtest ) == TRUE )
         return TRUE;
 
-    cprintf("Incorrect login.\n");
+    cprintf( _("Incorrect login.\n"));
     log_it("badpw", "%s from %s", username, hname);
 
     if (++failures >= 4) {
@@ -232,7 +232,7 @@ do_changepw()
 
     char pwtest[20];
 
-    cprintf("\r\1f\1gPlease enter your \1rcurrent\1g password: ");
+    cprintf( _("\1f\1gPlease enter your \1rcurrent\1g password: "));
     getline(pwtest, -19, 1);
 
     if (strlen(pwtest) == 0)
@@ -241,9 +241,9 @@ do_changepw()
     if ( mono_sql_u_check_passwd( usersupp->usernum, pwtest ) == TRUE ) {
 	change_passwd(usersupp);
 	(void) writeuser(usersupp, 0);
-	(void) cprintf("Password changed.\n");
+	(void) cprintf(_("Password changed.\n"));
     } else
-	(void) cprintf("Password unchanged.\n");
+	(void) cprintf(_("Password unchanged.\n"));
 
     return;
 }
@@ -263,18 +263,18 @@ change_passwd(user_t * user)
 	more(CHANGEPW, 0);
 
     while (!done) {
-	cprintf("Please enter a password: ");
+	cprintf(_("Please enter a password: "));
 	getline(pwread, -19, 1);
 
 	if ((!strlen(pwread)) && (user->timescalled > 0))
 	    return;
 
 	if (strlen(pwread)) {
-	    cprintf("Please enter it again: ");
+	    cprintf(_("Please enter it again: "));
 	    getline(pwtest, -19, 1);
 
 	    if (strcmp(pwtest, pwread) != 0)
-		cprintf("The passwords you typed didn't match.  Please try again.\n");
+		cprintf(_("The passwords you typed didn't match.  Please try again.\n"));
 	    else
 		done = TRUE;
 	}
@@ -300,11 +300,11 @@ enter_name(char *usernm)
     char pwordshit[20];
 
     for (;;) {			/* loop until we get a real username */
-	cprintf("\nUsername: ");
+	cprintf(_("\nUsername: "));
 	strcpy(usernm, get_name(1));
 
 	if (!strlen(usernm)) {
-	    cprintf("Enter \"Off\" to quit or \"New\" to enter as a new user.\n");
+	    cprintf(_("Enter \"Off\" to quit or \"New\" to enter as a new user.\n"));
 	    continue;
 	} else if (EQ(usernm, "new"))
 	    return;
@@ -317,9 +317,9 @@ enter_name(char *usernm)
 	} else {
 	    /* if this user does not exist, fake a password-entry */
 	    if (mono_sql_u_check_user(usernm) == FALSE) {
-		cprintf("%s's Password: ", usernm);
+		cprintf(_("%s's Password: "), usernm);
 		(void) getline(pwordshit, -19, 1);
-		cprintf("Incorrect login.\n");
+		cprintf(_("Incorrect login.\n"));
 		continue;
 	    } else
 		return;
@@ -472,6 +472,17 @@ main(int argc, char *argv[])
     mono_setuid(my_name);
     connecting_flag = 0;
 
+#ifdef ENABLE_NLS
+{      char env[L_LANG];
+       sprintf( env, "LANG=%s", usersupp->lang );
+       putenv( env );
+}
+        {
+              extern int  _nl_msg_cat_cntr;
+              ++_nl_msg_cat_cntr;
+            }
+#endif
+
 #ifdef OLD
     getwindowsize(0);
 #endif
@@ -537,11 +548,11 @@ main(int argc, char *argv[])
     IFDEGRADED
     {
 	usersupp->flags |= US_XOFF;
-	cprintf("\n*** Registration is requested. ***\n\n");
+	cprintf(_("\n*** Registration is required. ***\n\n"));
 	(void) more(REGISTER, 0);
 	change_info(usersupp, FALSE);
 	writeuser(usersupp, 0);
-	cprintf("\1f\1yNow \1w<\1ry\1w>\1yell to the admin to be granted full access.\n\n");
+	cprintf(_("\1f\1yNow \1w<\1ry\1w>\1yell to the admin to be granted full access.\n\n"));
     }
 
     /* this resets the rooms for guests */
@@ -638,27 +649,27 @@ user_terminate()
 
     /* add stuff here to check if someone is x-ing you */
     if (mono_find_x_ing(who_am_i(NULL), xer) == 0) {
-	cprintf("\n\n\1g\1f%s \1yis still sending you an %s %s.\n\1a", xer, config.express, config.x_message);
-        cprintf("\1f\1gHit any key to continue...\1a");
+	cprintf(_("\n\n\1g\1f%s \1yis still sending you an %s %s.\n\1a"), xer, config.express, config.x_message);
+        cprintf(_("\1f\1gHit any key to continue...\1a"));
         inkey();
     }
     while (cmd != 'n' || cmd != 'y' || cmd != 'm') {
 
-	cprintf("\n\1f\1gAre you sure you want to leave the bbs? \1w(\1gy\1w/\1gn\1w/\1gm\1w/\1g?\1w)\1g ");
+	cprintf(_("\n\1f\1gAre you sure you want to leave the bbs? \1w(\1gy\1w/\1gn\1w/\1gm\1w/\1g?\1w)\1g "));
 	cmd = get_single_quiet("ynm?");
 
 	switch (cmd) {
 	    case '?':
-		cprintf("\1f\1gHelp.\1a\n");
+		cprintf(_("\1f\1gHelp.\1a\n"));
 		(void) more(MENUDIR "/menu_logout_help_argh_roulette", 1);
 		break;
 
 	    case 'y':
-		cprintf("\1f\1gYes.\n");
+		cprintf(_("\1f\1gYes.\n"));
 		return 1;
 
 	    case 'n':
-		cprintf("\1f\1gNo.\n");
+		cprintf(_("\1f\1gNo.\n"));
 		return -1;
 
 	    case 'm':
@@ -760,11 +771,11 @@ print_login_banner(time_t laston)
 
     char filename[50];
 
-    (void) cprintf("\n\1a\1f\1gWelcome to Monolith BBS, \1g%s! \1gThis is your \1w#%d \1glogin.\n"
+    (void) cprintf( _("\n\1a\1f\1gWelcome to Monolith BBS, \1g%s! \1gThis is your \1w#%d \1glogin.\n")
 		   ,usersupp->username, usersupp->timescalled);
 
     if ((strncmp(previous_host, "none", 4)) != 0)
-	(void) cprintf("\1f\1gLast login: %s \1g\1ffrom \1r%-16.16s\n",
+	(void) cprintf(_("\1f\1gLast login: %s \1g\1ffrom \1r%-16.16s\n"),
 		       printdate(laston, 0), previous_host);
 
     /* motd */
@@ -784,7 +795,7 @@ print_login_banner(time_t laston)
 	(void) more(filename, TRUE);
     }
     if (usersupp->config_flags & CO_SHOWFRIENDS) {
-	cprintf("\1f\1gYour friends online\1w:\1a\n");
+	cprintf(_("\1f\1gYour friends online\1w:\1a\n"));
 	(void) fflush(stdout);
 	friends_online();
     }
@@ -822,11 +833,11 @@ mailcheck()
     cprintf("\n");
 
     if (b == 1)
-	cprintf("\1f\1gYou have a new private %s in \1pMail>\n", config.message);
+	cprintf(_("\1f\1gYou have a new private %s in \1pMail>\n"), config.message);
     else if (b > 1)
-	cprintf("\1f\1gYou have \1r%d \1gnew private %s in \1pMail>\n", b, config.message_pl);
+	cprintf(_("\1f\1gYou have \1r%d \1gnew private %s in \1pMail>\n"), b, config.message_pl);
     else
-	cprintf("\1f\1gYou have \1rno\1g new Mail %s.\1a\n", config.message_pl);
+	cprintf(_("\1f\1gYou have \1rno\1g new Mail %s.\1a\n"), config.message_pl);
 }
 
 /*************************************************
@@ -895,3 +906,5 @@ check_profile_updated()
 
     return;
 }
+
+/* eof */

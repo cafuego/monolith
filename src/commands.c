@@ -655,7 +655,7 @@ misc_menu()
 	    cprintf("\1gMisc: \1w");
 	}
 
-	cmd = get_single_quiet("lLmMrsxz\r\b ?/");
+	cmd = get_single_quiet("lLmMkrsxz\r\b ?/");
 
 	switch (cmd) {
             case 'l':
@@ -663,6 +663,24 @@ misc_menu()
                 nox = 1;
                 cprintf("\1f\1gLock Terminal.\n");
                 lock_terminal();
+                break;
+
+            case 'k':
+		nox = 1;
+		cprintf("\1f\1gChange Locale.\n");
+#ifdef ENABLE_NLS
+		cprintf("Current locale: %s\n", usersupp->lang );
+		cprintf("\1f\1gChoose Language\1w: \1c" );
+ 		getline( usersupp->lang, L_LANG, 1 );
+               { char env[L_LANG];
+              extern int  _nl_msg_cat_cntr;
+                sprintf( env, "LANGUAGE=%s", usersupp->lang );
+              putenv( env );
+              ++_nl_msg_cat_cntr;
+            }
+#else
+		cprintf("Language not supported.\n");
+#endif
                 break;
 
 	    case 'm':

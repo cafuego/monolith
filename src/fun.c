@@ -57,7 +57,7 @@ random_goto()
         if(strlen(thegoto))
             cprintf("\1f\1g%s\1a", thegoto);
 	else
-            cprintf("\1f\1gNo unread %s.\1a", config.message_pl );
+            cprintf(_("\1f\1gNo unread %s.\1a"), config.message_pl );
 	xfree(thegoto);
 
     } else if ((rand() % 1000) == 666 && usersupp->timescalled > 99) { 
@@ -73,7 +73,7 @@ random_goto()
             cprintf("\n\1g*pout*  ):\n");
 
     } else
-        cprintf("\1f\1gNo unread %s.\1a", config.message_pl );
+        cprintf(_("\1f\1gNo unread %s.\1a"), config.message_pl );
 
     return;
 }

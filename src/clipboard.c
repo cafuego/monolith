@@ -56,7 +56,7 @@ clip_board()
     while (cmd != 'Q' && cmd != ' ' && cmd != '\r') {
 	display_short_prompt();
 
-	cprintf("\01f\01gClipboard: \01a");
+	cprintf( _("\01f\01gClipboard: \01a"));
 	IFNEXPERT
 	{
 	    more(MENUDIR "/menu_clipboard", 1);
@@ -69,18 +69,18 @@ clip_board()
 	switch (cmd) {
 
 	    case 'D':
-		cprintf("\01f\01gDelete ClipBoard.\n");
-		cprintf("\01f\01yAre you sure you want to delete your clipboard? (y/N) ");
+		cprintf(_("\01f\01gDelete ClipBoard.\n"));
+		cprintf(_("\01f\01yAre you sure you want to delete your clipboard? (y/N) "));
 		if (yesno_default(NO) == NO) {
-		    cprintf("\1f\1gClipboard not deleted.\n");
+		    cprintf(_("\1f\1gClipboard not deleted.\n"));
 		} else {
 		    close(creat(CLIPFILE, 0600));
-		    cprintf("\1f\1gClipboard deleted.\n");
+		    cprintf(_("\1f\1gClipboard deleted.\n"));
 		}
 		break;
 
 	    case 'E':
-		cprintf("\01f\01gEdit ClipBoard.\n");
+		cprintf(_("\01f\01gEdit ClipBoard.\n"));
 		editor_edit(CLIPFILE);
 		break;
 
@@ -89,7 +89,7 @@ clip_board()
 		accepted = strspn(usersupp->RGemail, ACCEPTED);
 
 		if (accepted < strlen(usersupp->RGemail)) {
-		    cprintf("\01r\01fInvalid email address, can't send message!\01a\n");
+		    cprintf(_("\01r\01fInvalid email address, can't send message!\01a\n"));
 		} else {
 		    IFSYSOP {
 			cprintf("\01f\01g\nDo you wish to send it to yourself? ");

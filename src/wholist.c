@@ -93,17 +93,17 @@ wholist(int level, const user_t * user)
 
     if (level == 3) {
 	if (shm->user_count == 1) {
-	    (void) sprintf(p, "\n\1g\1fYou are all alone online at \1y%02d:%02d\1g local time.\n", tp->tm_hour, tp->tm_min);
+	    (void) sprintf(p, _("\n\1g\1fYou are all alone online at \1y%02d:%02d\1g local time.\n"), tp->tm_hour, tp->tm_min);
 	} else if (shm->user_count == 0) {
-	    (void) sprintf(p, "\1f\1gHey! What do you think you are doing here?\1a\n");
+	    (void) sprintf(p, _("\1f\1gHey! What do you think you are doing here?\1a\n"));
 	    return p;
 	} else if (shm->queue_count <= 0) {
-	    (void) sprintf(p, "\n\1g\1fThere are \1y%u\1g %s online"
-			   " at \1y%02d:%02d\1g local time.\n",
+	    (void) sprintf(p, _("\n\1g\1fThere are \1y%u\1g %s online"
+			   " at \1y%02d:%02d\1g local time.\n"),
 		  shm->user_count, config.user_pl, tp->tm_hour, tp->tm_min);
 	} else {
-	    (void) sprintf(p, "\n\1g\1fThere are \1y%ud\1g %s online"
-	     " \1c( \1y%ud \1cqueued ) \1gat \1y%02d:%02d\1g local time.\n",
+	    (void) sprintf(p, _("\n\1g\1fThere are \1y%ud\1g %s online"
+	     " \1c( \1y%ud \1cqueued ) \1gat \1y%02d:%02d\1g local time.\n"),
 			   shm->user_count, config.user_pl, shm->queue_count, tp->tm_hour, tp->tm_min);
 	}
     }
