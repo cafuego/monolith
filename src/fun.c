@@ -44,7 +44,7 @@ void
 random_goto()
 {
 
-    char *thegoto, april_fools[10];
+    char *thegoto, april_fools[65];
   
     if((rand() % 10) == 1) {
 	thegoto = mono_sql_random_goto();
@@ -56,11 +56,14 @@ random_goto()
 
     } else if ((rand() % 1000) == 666 && usersupp->timescalled > 99) { 
         strcpy(april_fools, "");
-        while (strcasecmp(april_fools, "cookie") != 0) {
+        while ( strstr(april_fools, "cookie") != NULL) {
             cprintf("\n\1w666.\1yCthulhu\1w> \1rGimme a cookie! \1w");
-            getline(april_fools, 9, 1);
+            getline(april_fools, 64, 1);
         }
-        cprintf("\n\1g*burRp*  (:\n");
+        if( strstr(april_fools, " no") == NULL) {
+            cprintf("\n\1g*buurrRp*  (:\n");
+        else
+            cprintf("\n\1g*pout*  ):\n");
 
     } else
         cprintf("\1f\1gNo unread %s.\1a", config.message_pl );
