@@ -35,9 +35,7 @@ static MYSQL mp;
 static int connected = FALSE;
 static int logqueries = FALSE;
 
-#ifdef Q_BUG_FIXED
-static unsigned int query_length(const char *format, va_list arg);
-#endif
+static unsigned long _mono_sql_u_query_length(const char *format, va_list arg);
 
 int
 mono_sql_connect()
@@ -67,9 +65,7 @@ mono_sql_query(MYSQL_RES ** result, const char *format,...)
 {
     va_list ptr;
     int ret;
-#ifdef Q_BUG_FIXED
-    unsigned int length = 0;
-#endif
+    unsigned long length = 0;
     char *query = NULL;
     sigset_t set;
 
@@ -91,19 +87,19 @@ mono_sql_query(MYSQL_RES ** result, const char *format,...)
     if (sigprocmask(SIG_BLOCK, &set, NULL) < 0)
 	perror("sigprocmask");
 
-#ifdef Q_BUG_FIXED
     /* determine length, including varargs */
     va_start(ptr, format);
-    length = query_length(format, ptr);
+    length = _mono_sql_u_query_length(format, ptr);
     va_end(ptr);
 
     query = (char *) xmalloc( length * sizeof(char) );
 
     /* create query string */
     va_start(ptr, format);
-    ret = vsnprintf(query, length, format, ptr);
+    ret = vsnprintf(query, length - 1, format, ptr);
     va_end(ptr);
-#else
+
+#ifdef Q_BUG_FIXED
     query = (char *) xmalloc( SQLQUERY_BUFFER_SIZE * sizeof(char) );
 
     /* create query string */
@@ -289,11 +285,11 @@ time_to_date(time_t time, char *datetime)
 }
 #endif
 
-#ifdef Q_BUG_FIXED
-static unsigned int
-query_length(const char *format, va_list arg)
+static unsigned long
+_mono_sql_u_query_length(const char *format, va_list arg)
 {
-    int d, length = 0;
+    int d = 0;
+    unsigned long length = 0;
     char c, *s, tmp[20];
 
     length = strlen(format);
@@ -327,9 +323,9 @@ query_length(const char *format, va_list arg)
         }
         format++;
     }
-    length += 100;
+    /* Add 100 coz it seems to have issues with the exact length */
+    length+=100;
     return length;
 }
-#endif
 
 /* eof */
