@@ -362,18 +362,23 @@ cached_name_to_x(const char *bobs_name)
 
 /*  debugging dump of cache to screen */
 
-void
+char *
 show_user_cache(void)
 {
     user_cache_t *p;
     int i;
+    char string[100];
+    char *argh;
 
     p = user_cache;
+    argh = (char *) xmalloc(2 * sizeof(char));
+    strcpy(argh, "");
     for (i = 1; p; i++) {
-	cprintf("\n%d> name: %15s  id: %4d", i, p->name, p->user_number);
-	if (p->friend)
-	    cprintf("  (%s)  quickx(%d)", (p->friend == 1) ?
-		    "friend" : "enemy ", p->quickx);
+	strcpy(string, "");
+	snprintf(string, 99, "\n\1f%s%2d> \1g%18s  \1wid:\1g %4d  %s  %s%2d", (p->friend) ? "\1w" : "\1r", i, p->name, p->user_number, (p->friend) ? ((p->friend == 1) ? "(friend)" : "\1r(enemy)\1g ") : "", (p->friend == 1) ? ((p->quickx > -1) ? "\1cquickx: " : "\1bquickx: ") : "\1a\1cquickx n.a. ", (p->friend) ? p->quickx : -1);
+	argh = (char *) realloc(argh, strlen(string) + strlen(argh) + 1);
+	strcat(argh, string);
 	p = p->next;
     }
+    return argh;
 }
