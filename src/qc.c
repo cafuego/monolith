@@ -430,7 +430,7 @@ _sql_qc_fetch_all_quads_qc(qc_record *** qc_list)
     }
     ret = mono_sql_query(&res,
 			 "SELECT f_id, newbie_r, flags, cat_id, \
-				cat_name, cat_quot
+				cat_name, cat_quot \
 				FROM %s ORDER BY f_id", QC_TABLE);
     if (ret == -1) {
 	printf("\nSome sort of sql error at fetch_all.\n");
