@@ -470,8 +470,11 @@ qc_user_menu(int newbie)
 #endif
 	more(QC_NEWUSER_HELP, 0);
 
-    } else
-	more(QC_USERDOC, 0);
+    cprintf("\1f\1gPress a key..\n");
+    inkey();
+    }
+    more(QC_USERDOC, 0);
+
     cprintf("\n\1f\1w -- \1gPress a key \1w -- \1a");
     inkey();
     for (i = 0; i < NO_OF_CATEGORIES; i++)
@@ -484,19 +487,19 @@ qc_user_menu(int newbie)
     for (i = 0; i < NO_OF_CATEGORIES; i++) {
 	if (strcmp(user_input->category_name[i], "<unused>") == 0)
 	    continue;
-	cprintf("\n\n\1g\1fThere are \1w%d\1g categories left for you to rate your interest in."
-		,items_left);
-	cprintf("\nAt the following prompt, you can either:");
-	cprintf("\n -> Rate your interest in the displayed category,");
-	cprintf("\n -> Press \1w<\1rb\1w>\1g to go back one category,");
-	cprintf("\n -> Press \1w<\1rh\1w>\1g to see the helpscreen again,");
-	cprintf("\n -> Press \1w<\1rq\1w>\1g to quit.");
-	cprintf("\n\n    Rate your interest in the category\1w:\n   \1y'%s'\1g on"
+	cprintf("\n\n\1f\1w[ \1gCategory \1w%d\1g of \1w%d ]\1g"
+		,i + 1, items_left + i);
+	cprintf("\n");
+	cprintf("\n -> Press a number from \1w0\1g to \1w%d\1g", CONTENT_SCALE);
+	cprintf("\n ->   or  \1w<\1rb\1w>\1g to go back to last category,");
+	cprintf("\n ->   or  \1w<\1r?\1w>\1g to see the helpscreen again,");
+	cprintf("\n ->   or  \1w<\1rq\1w>\1g to quit.");
+	cprintf("\n\n    Rate your interest in \1w:\n   \1y'%s'\1g on"
 		,user_input->category_name[i]);
 	cprintf(" a scale of \1w0\1g to \1w%d: [\1r%d\1w] \1a"
 		,CONTENT_SCALE, user_input->content_quotient[i]);
 	foo = '\0';		/* reset foo */
-	foo = get_single_quiet("0987654321bhHq\r\n");
+	foo = get_single_quiet("0987654321b\?q\r\n");
 	switch (foo) {
 	    case 'b':
 		if (i == 0) {
@@ -514,8 +517,7 @@ qc_user_menu(int newbie)
 		user_input->content_quotient[i] = user_input->content_quotient[i];
 		items_left--;
 		break;
-	    case 'h':
-	    case 'H':
+	    case '\?':
 		more(QC_USERDOC, 0);
 		cprintf("\1f\1w-- \1gpress a key \1w-- ");
 		inkey();

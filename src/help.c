@@ -493,7 +493,7 @@ online_help(const char context)
 	    break;
 	}
 	MENU_DESTROY;
-	if (!strlen(filename)) {
+	if (strlen(filename)) {
     	    cprintf("\nPress a key when done..");
 	    inkey();
 	}
