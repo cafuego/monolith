@@ -153,7 +153,7 @@ wu_t *
 mono_sql_convert_row_to_wu(MYSQL_ROW row)
 {
     wu_t *u = NULL;
-    char *c = NULL;
+    int hour = 0, min = 0, sec = 0;
 
     u = (wu_t *) xmalloc(sizeof(wu_t));
 
@@ -171,8 +171,8 @@ mono_sql_convert_row_to_wu(MYSQL_ROW row)
     /*
      * Chop seconds :)
      */
-    c = strrchr(u->online, ':');
-    c = NULL;
+    sscanf(u->online, "%d:%d:%d", &hour, &min, &sec);
+    sprintf(u->online, "%02d:%02d", hour, min);
 
     return u;
 }

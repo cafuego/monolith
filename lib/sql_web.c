@@ -158,7 +158,7 @@ mono_sql_web_wholist()
     } else {
         (void) sprintf(p, "\n\1f\1gThere %s \1y%d\1g user%s online via the web.\n"
             , (count == 1) ? "is" : "are", count, (count == 1) ? "" : "s" );
-	strcat(p, "-------------------------------------------------------------------------------\1a\n");
+	strcat(p, "\1f\1w-------------------------------------------------------------------------------\1a\n");
 
         /*
          * Start printing users.
