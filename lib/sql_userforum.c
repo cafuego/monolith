@@ -675,7 +675,7 @@ mono_sql_uf_whoknows(unsigned int forum_id, char **result)
     MYSQL_RES *res;
     MYSQL_ROW row;
     int i = 0, rows = 0, ret = 0;
-    char line[100];
+    char line[100], username[26];
 
     ret = mono_sql_query(&res, "SELECT u.username FROM %s AS u LEFT JOIN %s "
     " AS uf ON u.id=uf.user_id WHERE uf.forum_id=%u AND uf.status='invited'"
@@ -697,11 +697,14 @@ mono_sql_uf_whoknows(unsigned int forum_id, char **result)
 	row = mysql_fetch_row(res);
 	if (row == NULL)
 	    break;
-	sprintf(line, "%-24s", row[0]);
+        strcpy(username,"");
+	sprintf(username, "%-24s", row[0]);
+        strcat(line, username);
 	if ((i % 3) == 0) {
 	    strcat(line, "\n");
 	    *result = (char *) xrealloc(*result, strlen(*result) + strlen(line));
 	    strcat(*result, line);
+            strcpy(line,"");
 	}
     }
     *result = (char *) xrealloc(*result, strlen(*result) + strlen("\n"));
