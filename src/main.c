@@ -198,13 +198,16 @@ kickoutmyself(int sig)
 *************************************************/
 
 int
-enter_passwd(user_t * user)
+enter_passwd(user_t * user, const char *username)
 {
 
     char pwtest[20];
     static int failures;
 
-    cprintf("\r%s's Password: ", user->username);
+    if(usersupp != NULL)
+        cprintf("\r%s's Password: ", user->username);
+    else
+        cprintf("\r%s's Password: ", username);
     (void) getline(pwtest, -19, 1);
 
     if (strlen(pwtest) == 0) {
@@ -214,6 +217,9 @@ enter_passwd(user_t * user)
 
     if ( mono_sql_u_check_passwd(user->usernum, pwtest ) == TRUE )
         return TRUE;
+
+    if( ! (check_user( username ))) {
+        log_it("badpw", "Login as %s from %s, but user does not exist", username, hname);
 
     cprintf( _("Incorrect login.\n"));
     log_it("badpw", "%s from %s", username, hname);
@@ -452,7 +458,7 @@ main(int argc, char *argv[])
 		xfree(usersupp);
 		usersupp = readuser(username);
 		if (strcasecmp(username, "Guest") != 0) {
-		    done = enter_passwd(usersupp);
+		    done = enter_passwd(usersupp, username);
 		} else {	/* is guest */
 		    done = TRUE;
 		    if (usersupp == NULL) {
