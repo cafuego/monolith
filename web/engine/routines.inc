@@ -300,6 +300,7 @@ list_x_messages($username, $location)
 	    $message = mysql_result($result, $i, "message");
 	    $date = mysql_result($result, $i, "date");
 	    $reply = rawurlencode($user);
+            $message = strtr($message, "\\", "'");
 
 	    $bing = MYSQL_QUERY("UPDATE webx SET status='read' WHERE id=$id");
 	    $bing = MYSQL_QUERY("UPDATE webx SET stamp=NOW() WHERE id=$id");
@@ -381,6 +382,7 @@ x_log($username, $location)
 	    $date = mysql_result($result, $i, "date");
 	    $stamp = mysql_result($result, $i, "stamp");
 	    $reply = rawurlencode($sender);
+            $message = strtr($message, "\\", "'");
 
 	    print "<tr>\n";
 	    print "  <td align=\"left\" bgcolor=\"#333333\">\n";
