@@ -92,7 +92,7 @@ class user_t {
         if( ! (strstr( $this->hiddeninfo, "email" )))
             echo "<br>\nEmail: <a href=\"mailto:$this->email\">$this->email</a>";
         if( (!(strstr( $this->hiddeninfo, "url" ))) && (strlen($this->url)))
-            echo "<br>\nURL: <a href=\"http://$this->url\">$this->url</a>";
+            echo "<br>\nWebpage: <a href=\"$this->url\">$this->url</a>";
         return;
     }
 
