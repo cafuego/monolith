@@ -168,7 +168,7 @@ mono_sql_web_wholist()
             strcat(line, "\1p[    ] ");
             strcat(line, "\1gMonolith Website ");
             q = line + strlen(line);
-            (void) sprintf(q, "\1f\1p%s ", list->user->online);
+            (void) sprintf(q, "\1f\1p%4s ", list->user->online);
             q = line + strlen(line);
             (void) sprintf(q, "\1f\1ySurfing the web in style!\1a\n");
             strcat(p, line);

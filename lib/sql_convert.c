@@ -172,7 +172,7 @@ mono_sql_convert_row_to_wu(MYSQL_ROW row)
      * Chop seconds :)
      */
     sscanf(u->online, "%d:%d:%d", &hour, &min, &sec);
-    sprintf(u->online, "%02d:%02d", hour, min);
+    sprintf(u->online, "%2d:%02d", hour, min);
 
     return u;
 }
