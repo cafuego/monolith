@@ -1028,7 +1028,7 @@ quoted_Xmsgs()
     int channel, i, matches = 0, flag = 0;
     FILE *fp;
 
-    cprintf("\1f\1c\n\%s%s%s%s",
+    cprintf("\1f\1c\n%s%s%s%s",
 	"This function quotes all of the express messages in your xlog ",
 	"sent to and from a\ncertain harassing user, and sends them to the ",
 	"Sysops so that they can take\nproper actions, and serve as the ",
