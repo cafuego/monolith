@@ -40,10 +40,12 @@
     $username = getenv("REMOTE_USER");
     require ("engine/routines.inc");
 
-    $u_id = getusernum($username);
+    $u_id = get_usernum($username);
     $recipient = rawurldecode($recipient);
-    $r_id = getusernum($recipient);
+    $r_id = get_usernum($recipient);
     $message = rawurldecode($message);
+    $message = htmlspecialchars($message);
+    $message = nl2br($message);
 
     list_x_messages($username);
 
