@@ -309,7 +309,7 @@ mono_sql_u_update_email( unsigned int user_id,
     MYSQL_RES *res;
 
     i = mono_sql_query(&res, "UPDATE " U_TABLE 
-        " set email='%s', "
+        " set email='%s' "
 	" WHERE id=%u", email, user_id );
 
     if (i == -1) {
@@ -332,7 +332,7 @@ mono_sql_u_update_url( unsigned int user_id,
     MYSQL_RES *res;
 
     i = mono_sql_query(&res, "UPDATE " U_TABLE 
-        " set url='%s', "
+        " set url='%s' "
 	" WHERE id=%u", url, user_id );
 
     if (i == -1) {
@@ -342,6 +342,27 @@ mono_sql_u_update_url( unsigned int user_id,
 
     mono_sql_u_free_result(res);
     return 0;
+}
+
+int
+mono_sql_u_update_hidden( unsigned int user_id, int hiddeninfo )
+{
+
+    int i;
+    MYSQL_RES *res;
+
+    i = mono_sql_query(&res, "UPDATE " U_TABLE 
+        " set hidden=MAKE_SET('%d','name','address','city','country','phone','email','url','birthday','zip','state') "
+	" WHERE id=%u", hiddeninfo, user_id );
+
+    if (i == -1) {
+	fprintf(stderr, "No results from query.\n");
+        return -1;
+    }   
+
+    mono_sql_u_free_result(res);
+    return 0;
+
 }
 
 /* eof */
