@@ -296,6 +296,8 @@ function colorize($doing) {
     $doing = ereg_replace("%01f", "", $doing);	// Bold.
     $doing = ereg_replace("%01d", "", $doing);	// Dark.
     $doing = ereg_replace("%01D", "", $doing);	// Dark bg.
+    $doing = ereg_replace("%01n", "", $doing);	// Start user.
+    $doing = ereg_replace("%01N", "", $doing);	// End user.
 
     // Remove bg colours.
     //
