@@ -294,7 +294,7 @@ function x_log($username,$location) {
 
     connect_db();
 
-    $result = MYSQL_QUERY("SELECT w.id AS id,u.username AS user,w.sender AS sender,w.i_sender AS i_sender,w.recipient AS recipient,w.message AS message,DATE_FORMAT(w.date, '%H:%i') AS date,DATE_FORMAT(w.stamp, '%H:%i') AS stamp FROM webx AS w LEFT JOIN user AS u ON u.id=w.sender WHERE ((w.recipient=$user_id AND w.i_recipient='web') OR (w.sender=$user_id AND w.i_sender='web')) AND w.status='read' ORDER BY w.date DESC");
+    $result = MYSQL_QUERY("SELECT id,sender,i_sender,recipient,i_recipient,message,DATE_FORMAT(date, '%H:%i') AS date,DATE_FORMAT(stamp, '%H:%i') AS stamp FROM webx AS w WHERE ((recipient=$user_id AND i_recipient='web') OR (sender=$user_id AND i_sender='web')) AND status='read' ORDER BY date DESC");
     $number = MYSQL_NUMROWS($result);
     if ($number) {
         if($number == 1) {
@@ -313,18 +313,20 @@ function x_log($username,$location) {
         while ($i < $number) {
 
             $id = mysql_result($result,$i,"id");
-            $user = mysql_result($result,$i,"user");
             $sender = mysql_result($result,$i,"sender");
+            $sender = get_username($sender);
             $i_sender = mysql_result($result,$i,"i_sender");
             $recipient = mysql_result($result,$i,"recipient");
+            $recipient = get_username($recipient);
+            $i_recipient = mysql_result($result,$i,"i_recipient");
             $message = mysql_result($result,$i,"message");
             $date = mysql_result($result,$i,"date");
             $stamp = mysql_result($result,$i,"stamp");
-            $reply = rawurlencode($user);
+            $reply = rawurlencode($sender);
 
             print "<tr>\n";
             print "  <td align=\"left\" bgcolor=\"#333333\">\n";
-            print "    <p align=\"left\"><font color=\"#00cc00\">eXpress Message from <a href=\"/bbs/index.phtml/x/$reply/$i_sender/$location\">$user@$i_sender</a> to <font color=\"#ffff00\">$username@web</font> at </font>(<font color=\"#00cc00\">$date</font>) <font color=\"#00cc00\">(read at $stamp)</font>\n";
+            print "    <p align=\"left\"><font color=\"#00cc00\">eXpress Message from <a href=\"/bbs/index.phtml/x/$reply/$i_sender/$location\">$user@$i_sender</a> to <font color=\"#ffff00\">$recipient@i_recipient</font> at </font>(<font color=\"#00cc00\">$date</font>) <font color=\"#00cc00\">(read at $stamp)</font>\n";
             print "    <font color=\"#00cccc\"><pre>$message</pre></font>\n";
             print "  </td>\n";
             print "</tr>\n";
