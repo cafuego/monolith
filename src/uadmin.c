@@ -275,7 +275,7 @@ edit_field(user_t * user, int fieldnum)
 
 	case 'p':
 	    cprintf("Enter new profileflag (current is %s): ", user->xtrapflag);
-	    getline(user->xtrapflag, 39, 0);
+	    getline(user->xtrapflag, 69, 0);
 	    uadmin_need_rewrite = TRUE;
 	    log_sysop_action("changed %s's profileflag to %s."
 			     ,user->username, user->xtrapflag);
