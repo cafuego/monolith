@@ -63,7 +63,7 @@ function list_quads($username, $listunread) {
             PRINT "  </td>\n";
             PRINT "  <td align=\"left\">\n";
             if($listunread)
-                echo "    <p align=\"left\"><a href=\"/bbs/index.phtml/n/$id\" ". mouseover("List $unread unread messages in $js_name") ."><font color=\"#ffff00\">$name</font></a>\n";
+                echo "    <p align=\"left\"><a href=\"/bbs/index.phtml/n/$id\" ". mouseover("List unread messages in $js_name") ."><font color=\"#ffff00\">$name</font></a>\n";
             else
                 echo "    <p align=\"left\"><a href=\"/bbs/index.phtml/m/$id\" ". mouseover("List all messages in $js_name") ."><font color=\"#ffff00\">$name</font></a>\n";
             PRINT "  </td>\n";
@@ -73,7 +73,7 @@ function list_quads($username, $listunread) {
             else {
                 if($unread > $total)
                     $unread = $total;
-                PRINT "    <p align=\"left\">(<font color=\"#00cc00\">$total messages,</font> <a href=\"/bbs/index.phtml/n/$id\" ". mouseover("List $unread unread message in $js_name") .">$unread unread</a>)<br>\n";
+                PRINT "    <p align=\"left\">(<font color=\"#00cc00\">$total messages,</font> <a href=\"/bbs/index.phtml/n/$id\" ". mouseover("List unread messages in $js_name") .">$unread unread</a>)<br>\n";
             }
             PRINT "  </td>\n";
             PRINT "</tr>\n";
