@@ -38,8 +38,6 @@ mono_sql_ll_add_mlist_to_list(mlist_t entry, mlist_t ** list)
     if (p == NULL)
 	return -1;
 
-    memset(&p, 0, sizeof(mlist_t));
-
     *p = entry;
     p->next = NULL;
     p->prev = NULL;
