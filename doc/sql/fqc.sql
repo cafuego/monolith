@@ -1,7 +1,7 @@
 # sql f_quadcont
 
 # Do not drop, contains live data!
-DROP TABLE fqc;
+#DROP TABLE fqc;
 
 CREATE TABLE fqc (
 
