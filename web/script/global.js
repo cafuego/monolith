@@ -10,7 +10,7 @@ function logout( url ) {
     // If not to a link on the BBS pages, then we go and
     // visit our logout page.
     //
-    if( url.indexOf("/bbs/") != 0 )
+    if( url.indexOf("/bbs/") == -1 )
         open("/bbs/index.phtml/q");
 
 }
