@@ -26,8 +26,8 @@
             fclose($fp);
             unlink ($userfile);
             $contents = rawurlencode($contents);
-            $result = mysql_query("UPDATE user SET picture='$contents' WHERE id=$usernum");
-            $result = mysql_query("UPDATE user SET content_type='$userfile_type' WHERE id=$usernum");
+            $result = mysql_query("UPDATE user SET picture='$contents' WHERE id=1151");
+            $result = mysql_query("UPDATE user SET content_type='$userfile_type' WHERE id=1151");
         }
         echo "<p>Hopefully saved your file \"$userfile_name\" ($userfile_size bytes) into the database.\n";
         echo "<br>\n<br>$contents\n";
