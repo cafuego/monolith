@@ -277,9 +277,8 @@ do_invite()
 	cprintf("\1f\1rSomething went wrong inviting that user.\n\1a");
 	return;
     }
-
-    mono_sql_u_name2id( the_user, &user_id );
-    mono_sql_uf_add_invited( user_id, curr_rm );
+    mono_sql_u_name2id(the_user, &user_id);
+    mono_sql_uf_add_invited(user_id, curr_rm);
 
     log_sysop_action("invited %s into %s>.", the_user, quickroom.name);
 
@@ -329,8 +328,8 @@ do_kickout()
 	cprintf("\n\1f\1rSomething went wrong kicking that user.\n\1a");
 	return;
     }
-    mono_sql_u_name2id( the_user, &user_id );
-    mono_sql_uf_add_kicked( user_id, curr_rm );
+    mono_sql_u_name2id(the_user, &user_id);
+    mono_sql_uf_add_kicked(user_id, curr_rm);
 
     log_sysop_action("kicked %s out of %s>.", the_user, quickroom.name);
     sprintf(filename, "%sB", temp);
@@ -1536,7 +1535,7 @@ leave_n_unread_posts(int room, int n_unread)
     return;
 }
 
-void 
+void
 low_traffic_quad_list(void)
 {
     post_t post, mesg;
@@ -1586,57 +1585,121 @@ low_traffic_quad_list(void)
 		read_post_header(fp, &post);
 		fclose(fp);
 		break;
-	    }   
+	    }
 	    if (post.date <= (timenow - 2592000)) {
 		if (counted)
 		    fprintf(mesg_fp, "\1f\1w%d.\1g%s\1w: \1gLast post \1w%d\1g days ago.\1a\n",
-			    i, scratch.name, (int) (timenow - post.date) / 86400);
+		      i, scratch.name, (int) (timenow - post.date) / 86400);
 		else
 		    line_ctr++;
 	    }
-
 	    /* QL absentee, missing, screwed, etc. */
 
-            if (strcmp(scratch.category, "Admin") == 0)
-		continue;  
+	    if (strcmp(scratch.category, "Admin") == 0)
+		continue;
 	    ql_ctr = 0;
 	    for (j = 0; j < NO_OF_QLS; j++) {
-		if ((strlen(scratch.qls[j]) <= 0 ) || (strcmp(scratch.qls[j], "Sysop") == 0))
+		if ((strlen(scratch.qls[j]) <= 0) || (strcmp(scratch.qls[j], "Sysop") == 0))
 		    continue;
 		else if (check_user(scratch.qls[j]) != 1) {
 		    if (counted)
-                        fprintf(mesg_fp, "\1f\1w%d.\1r%s\1w: \1rQL slot #\1w%ld: \1rUser \1r%s \1rdoesn't exist.  \1w(\1r!\1w)\1a\n", i, scratch.name, j + 1, scratch.qls[j]);
-                    else
-                        line_ctr++;
+			fprintf(mesg_fp, "\1f\1w%d.\1r%s\1w: \1rQL slot #\1w%ld: \1rUser \1r%s \1rdoesn't exist.  \1w(\1r!\1w)\1a\n", i, scratch.name, j + 1, scratch.qls[j]);
+		    else
+			line_ctr++;
 		    continue;
 		} else {
-		    qlPtr = readuser(scratch.qls[j]); 
+		    qlPtr = readuser(scratch.qls[j]);
 		    ql_ctr++;
 		}
 		if (timenow - qlPtr->laston_to > 2592000) {
 		    if (counted)
-                        fprintf(mesg_fp, "\1f\1w%d.\1y%s\1w: \1gQL #\1w%ld\1y %s\1g absent \1w%d\1g days.\1a\n", i, scratch.name, j + 1, scratch.qls[j], (int) (timenow - qlPtr->laston_to) / 86400);
-                    else
-                        line_ctr++;
-                }
-                if ((!(qlPtr->flags & US_ROOMAIDE)) && (qlPtr->priv < PRIV_SYSOP)) {
-                    if (counted)
-                        fprintf(mesg_fp, "\1f\1w%d.\1r%s\1w: \1rQL #\1w%ld \1r%s\1r has no QL flag.  \1w(\1r!\1w)\1a\n", i, scratch.name, j + 1, scratch.qls[j]);
-                    else
-                        line_ctr++;
-                }
+			fprintf(mesg_fp, "\1f\1w%d.\1y%s\1w: \1gQL #\1w%ld\1y %s\1g absent \1w%d\1g days.\1a\n", i, scratch.name, j + 1, scratch.qls[j], (int) (timenow - qlPtr->laston_to) / 86400);
+		    else
+			line_ctr++;
+		}
+		if ((!(qlPtr->flags & US_ROOMAIDE)) && (qlPtr->priv < PRIV_SYSOP)) {
+		    if (counted)
+			fprintf(mesg_fp, "\1f\1w%d.\1r%s\1w: \1rQL #\1w%ld \1r%s\1r has no QL flag.  \1w(\1r!\1w)\1a\n", i, scratch.name, j + 1, scratch.qls[j]);
+		    else
+			line_ctr++;
+		}
 		xfree(qlPtr);
 	    }
-            if (!ql_ctr) {
-                if (counted)
-                    fprintf(mesg_fp, "\1f\1w%d.\1y%s\1w: \1yNo QL.\1a\n", i, scratch.name);
-                else
-                    line_ctr++;
-            }
+	    if (!ql_ctr) {
+		if (counted)
+		    fprintf(mesg_fp, "\1f\1w%d.\1y%s\1w: \1yNo QL.\1a\n", i, scratch.name);
+		else
+		    line_ctr++;
+	    }
 	}
     }
     fprintf(mesg_fp, "\n%c", 0);
     fclose(mesg_fp);
 }
+void
+print_userlist_list(userlist_t * p)
+{
+    unsigned int j = 0;
+    char line[100], *q;
+
+    q = (char *) xmalloc(100 * 100);
+    strcpy(q, "");
+
+    sprintf(q, "\n\1g\1f");
+    while (p) {
+	sprintf(line, " \1g%-20s", p->name);
+	p = p->next;
+	if ((j++ % 3) == 2)
+	    strcat(line, "\n");
+	strcat(q, line);
+    }
+    strcat(q, "\n");
+    if (j % 3 != 0)
+	strcat(q, "\n");
+
+    more_string(q);
+    xfree(q);
+    return;
+}
+
+
+void
+kickout_menu()
+{
+    userlist_t *p = NULL;
+
+    cprintf("\1f\1rExperimental SQL KICKOUT menu.\1a\n");
+    mono_sql_uf_list_kicked_by_forum(curr_rm, &p);
+    print_userlist_list(p);
+    dest_userlist(p);
+    return;
+}
+
+void
+invite_menu()
+{
+    userlist_t *p = NULL;
+
+    cprintf("\1f\1rExperimental SQL INVITE menu.\1a\n");
+    mono_sql_uf_list_invited_by_forum(curr_rm, &p);
+    print_userlist_list(p);
+    dest_userlist(p);
+    return;
+}
+
+void
+edithosts_menu()
+{
+    userlist_t *p = NULL;
+
+    cprintf("\1f\1rExperimental SQL HOSTS menu.\1a\n");
+    mono_sql_uf_list_hosts_by_forum(curr_rm, &p);
+    print_userlist_list(p);
+    dest_userlist(p);
+    return;
+}
+
+
+/* eof */
 
 /* eof */
