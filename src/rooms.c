@@ -34,6 +34,7 @@
 #include "messages.h"
 #include "uadmin.h"
 #include "libquad.h"
+#include "menu.h"
 #include "routines.h"
 #include "commands.h"
 #include "routines2.h"
@@ -41,6 +42,11 @@
 #include "quadcont.h"
 
 int need_rewrite;
+
+void menu_hostedit_add(void);
+void menu_hostedit_remove(void);
+void menu_hostedit_list(void);
+void menu_hostedit_kill(void);
 
 static char *fish[] =
 {
@@ -1690,16 +1696,108 @@ invite_menu()
 void
 edithosts_menu()
 {
+    MENU_DECLARE;
+
+    MENU_INIT;
+    sprintf(the_menu_format.menu_title, "\n\n\1f\1w[\1gEdit hosts for Forum #%d\1w]\n\n", curr_rm);
+
+    MENU_ADDITEM(menu_hostedit_add, 1, 0, "", "ti", "Add host", "a", "test");
+    MENU_ADDITEM(menu_hostedit_remove, 1, 0, "", "ti", "Remove host", "r", "test");
+    MENU_ADDITEM(menu_hostedit_list, 1, 0, "", "ti", "List hosts", "l", "test");
+    MENU_ADDITEM(menu_hostedit_kill, 1, 0, "", "ti", "Remove all hosts", "k", "test");
+
+        MENU_PROCESS_INTERNALS;
+
+    for (;;) {
+	MENU_DISPLAY(2);
+
+	if (!MENU_EXEC_COMMAND)
+	    break;
+
+    }
+	MENU_DESTROY;
+    return;
+}
+
+void
+menu_hostedit_add(void)
+{
+    char *name;
+    unsigned int id2;
+
+    nox = 1;
+    cprintf("\1f\1gEnter username\1w: \1c");
+
+    name = get_name(1);
+
+    if (strlen(name) == 0)
+        return; 
+
+    if (mono_sql_u_name2id(name, &id2) == -1) {
+        cprintf("\1f\1rNo such user.\n");
+        return; 
+    }
+
+    if (mono_sql_uf_is_host( id2, curr_rm ) == TRUE) {
+        cprintf("\1f\1y%s \1gis already a host in #%d.\n", name, curr_rm );
+        return; 
+    }
+
+    mono_sql_uf_add_host( id2, curr_rm );
+
+    cprintf("\1f\1y%s \1ghas been added as a host to #%d.\n", name, curr_rm );
+
+    return;
+}
+
+void
+menu_hostedit_remove(void)
+{
+    char *name;
+    unsigned int id2;
+    int flag;
+
+    nox = 1;
+
+    cprintf("\1f\1gEnter username\1w: \1c");
+    name = get_name(5);
+
+    if (strlen(name) == 0)
+        return;
+
+    mono_sql_u_name2id(name, &id2);
+
+    if (mono_sql_uf_is_host( id2, curr_rm ) == FALSE) {
+        cprintf("\1f\1y%s \1gis not a host in forum #%d.\n", name, curr_rm );
+        return;
+    }
+    mono_sql_uf_remove_host( id2, curr_rm );
+    cprintf("\1f\1y%s \1ghas been removed as a host from forum #%d.\n", name, curr_rm );
+    return;
+
+    return;
+}
+
+void
+menu_hostedit_kill(void)
+{
+    printf("Removing all hosts!\n");
+    printf("Not implemented yet!\n");
+
+/*    mono_sql_hosts_add( username,  */
+    return;
+}
+
+void
+menu_hostedit_list(void)
+{
     userlist_t *p = NULL;
 
-    cprintf("\1f\1rExperimental SQL HOSTS menu.\1a\n");
     mono_sql_uf_list_hosts_by_forum(curr_rm, &p);
     print_userlist_list(p);
     dest_userlist(p);
     return;
+    return;
 }
-
-
-/* eof */
 
 /* eof */
