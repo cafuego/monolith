@@ -115,7 +115,7 @@ wholist(int level, const user_t * user)
 	    (void) sprintf(p, _("\1f\1gHey! What do you think you are doing here?\1a\n"));
 	    return p;
 	} else if (shm->queue_count <= 0) {
-#ifdef USE_SQL
+#ifdef USE_MYSQL
 	    (void) sprintf(p, _("\n\1g\1fThere are \1y%u\1g %s online"
 			   " at \1y%02d:%02d\1g local time.\n"),
 		  (shm->user_count+web_count), config.user_pl, tp->tm_hour, tp->tm_min);
@@ -175,22 +175,38 @@ wholist(int level, const user_t * user)
         /*
          * If the SQL user has been online longer, add them here.
          */
-        if(level == 1) {
-            while((list != NULL) && (list->user->login < r->logintime)) {
-                tdif = time(0) - (list->user->login);
-                tdif /= 60;
-    	        min = tdif % 60;
-    	        hour = tdif / 60;
-                sprintf(line, "\1a\1f\1g%-20s ", list->user->username);
-                strcat(line, "\1p[\1ywww \1p] ");
-                strcat(line, "\1gMonolith Website ");
-                q = line + strlen(line);
-                (void) sprintf(q, "\1f\1p%2d:%02d ", hour, min);
-                q = line + strlen(line);
-                (void) sprintf(q, "\1f\1ySurfing the web in style!\1a\n");
-                strcat(p, line);
-                list = list->next;
-            }
+        switch( level ) {
+            case 1:	/* normal long wholist */
+                while((list != NULL) && (list->user->login < r->logintime)) {
+                    tdif = time(0) - (list->user->login);
+                    tdif /= 60;
+        	    min = tdif % 60;
+        	    hour = tdif / 60;
+                    sprintf(line, "\1a\1f\1g%-20s ", list->user->username);
+                    strcat(line, "\1p[\1ywww \1p] ");
+                    strcat(line, "\1gMonolith Website ");
+                    q = line + strlen(line);
+                    (void) sprintf(q, "\1f\1p%2d:%02d ", hour, min);
+                    q = line + strlen(line);
+                    (void) sprintf(q, "\1f\1ySurfing the web in style!\1a\n");
+                    strcat(p, line);
+                    list = list->next;
+                }
+                break;
+
+            case 3:	/*** Short Wholist ***/
+                j++;
+                while((list != NULL) && (list->user->login < r->logintime)) {
+                    (void) sprintf(line, "\1p[\1wwww\1p] ");
+                    q = line + strlen(line);
+                    (void) sprintf(q, "\1f%s%-18s ", col, list->user->username);
+                    q = line + strlen(line);
+                    if ((j % 3) == 0)
+                        strcat(line, "\n");
+                    strcat(p, line);
+                    list = list->next;
+                }
+                break;
         }
 #endif
 
@@ -338,25 +354,41 @@ wholist(int level, const user_t * user)
     /*
      * Add any left over SQL users.
      */
-    if(level == 1) {
-        while(list != NULL) {
-            tdif = time(0) - (list->user->login);
-            tdif /= 60;
-            min = tdif % 60;
-            hour = tdif / 60;
-            sprintf(line, "\1a\1f\1g%-20s ", list->user->username);
-            strcat(line, "\1p[\1ywww \1p] ");
-            strcat(line, "\1gMonolith Website ");
-            q = line + strlen(line);
-            (void) sprintf(q, "\1f\1p%2d:%02d ", hour, min);
-            q = line + strlen(line);
-            (void) sprintf(q, "\1f\1ySurfing the web in style!\1a\n");
-            strcat(p, line);
-            list = list->next;
-        }
-        (void) mono_sql_ll_free_wulist(list);
-    }
+    switch( level 1) {
+        case 1:
+            while(list != NULL) {
+                tdif = time(0) - (list->user->login);
+                tdif /= 60;
+                min = tdif % 60;
+                hour = tdif / 60;
+                sprintf(line, "\1a\1f\1g%-20s ", list->user->username);
+                strcat(line, "\1p[\1ywww \1p] ");
+                strcat(line, "\1gMonolith Website ");
+                q = line + strlen(line);
+                (void) sprintf(q, "\1f\1p%2d:%02d ", hour, min);
+                q = line + strlen(line);
+                (void) sprintf(q, "\1f\1ySurfing the web in style!\1a\n");
+                strcat(p, line);
+                list = list->next;
+            }
+            break;
 
+        case 3: 
+            j++;
+            while((list != NULL) && (list->user->login < r->logintime)) {
+                (void) sprintf(line, "\1p[\1www\1p] ");
+                q = line + strlen(line);
+                (void) sprintf(q, "\1f%s%-18s ", col, list->user->username);
+                q = line + strlen(line);
+                if ((j % 3) == 0)
+                    strcat(line, "\n");
+                strcat(p, line);
+                list = list->next;
+            }
+            break;
+    }
+    /* Free SQL userlist. */
+    (void) mono_sql_ll_free_wulist(list);
 
     if ((j % 3) != 0 && (level == 3 || level == 6))
 	strcat(p, "\n");
