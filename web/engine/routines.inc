@@ -342,7 +342,7 @@ function addbutton( $text ) {
     $colour = "yellow";
     $text = rawurlencode($text);
 
-    return "<img src=\"/bbs/image.phtml/Arial_I,18,$colour/$text/\" alt=\"[ button: $text ]\">\n";
+    return "<img src=\"/bbs/image.phtml/Arial_I,18,$colour/$text/\" alt=\"[ button: $text ]\" border=\"0\">\n";
 
 }
 
