@@ -43,7 +43,7 @@ dnl Checks for header files.
 AC_HEADER_DIRENT
 AC_HEADER_STDC
 AC_HEADER_SYS_WAIT
-AC_CHECK_HEADERS(crypt.h fcntl.h sgtty.h sys/file.h sys/ioctl.h sys/time.h termio.h termbits.h asm/termbits.h unistd.h sys/mman.h mysql.h)
+AC_CHECK_HEADERS(crypt.h fcntl.h sgtty.h sys/file.h sys/ioctl.h sys/time.h termio.h termbits.h asm/termbits.h unistd.h mysql.h)
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
@@ -116,6 +116,8 @@ if test "x$with_mysql" = "xyes" ; then
   AC_DEFINE(USE_MYSQL)
   echo
 fi
+
+AC_CHECK_DEFINE
 
 dnl Use superhero generator?
 echo -n "Probing superhero powers..."
