@@ -382,12 +382,14 @@ function addimage( $text ) {
     // To change all images in one go.
     // Image parser only knows basics tho!
     //
+    $font = "Myriad_B";
+    $size = "18";
     $colour = "white";
     $imgtext = strtr($text, "/", "\\");
     $imgtext = rawurlencode($imgtext);
 
     echo "<div align=\"center\">\n";
-    echo "<img align=\"center\" src=\"/bbs/image.phtml/Tahoma_B,18,$colour/$imgtext/\" alt=\"[ image: $text ]\">\n";
+    echo "<img align=\"center\" src=\"/bbs/image.phtml/$font,$size,$colour/$imgtext/\" alt=\"[ image: $text ]\">\n";
     echo "</div>\n";
 
 }
@@ -411,11 +413,14 @@ function addbutton( $text, $url ) {
 
 function errorimage( $text ) {
 
+    $font = "Myriad_B";
+    $size = "18";
+
     $imgtext = strtr($text, "/", "\\");
     $imgtext = rawurlencode($imgtext);
 
     echo "<div align=\"center\">\n";
-    echo "<img align=\"center\" src=\"/bbs/image.phtml/Tahoma_B,18,red/$imgtext/\" alt=\"[ image: $text ]\">\n";
+    echo "<img align=\"center\" src=\"/bbs/image.phtml/$font,$size,red/$imgtext/\" alt=\"[ image: $text ]\">\n";
     echo "</div>\n";
 
 }
