@@ -20,12 +20,6 @@
     require ('engine/html.inc');
 
     $handler = rawurldecode($handler);
-    echo "<!-- handler: '$handler' -->\n";
-    echo "<p><b>DEBUG</b> handler: '$handler'\n";
-    echo "<p><b>DEBUG</b> username: '$username'\n";
-
-    // Get username and print off proper title.
-    //
     switch($handler) {
 
         // Store picture in profile.
@@ -77,7 +71,7 @@
         // Save profile image.
         case "p":
 
-            if($userfile == null || $userfile == "" || (valid($userfile_type) == 0)) {
+            if($userfile == null || $userfile == "" || (valid_image($userfile_type) == 0)) {
                 if ($userfile != null && $userfile != "") {
                     // Remove tempfile.
                     unlink($userfile);
