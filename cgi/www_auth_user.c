@@ -45,7 +45,7 @@ main(int argc, char *argv[])
     if (user == NULL)
 	return -1;
 
-    if (check_password(user, pass) == FALSE)
+    if (mono_sql_u_check_passwd(user->usernum, pass) == FALSE)
 	return -1;
 
     exit( 0 );

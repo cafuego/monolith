@@ -47,7 +47,7 @@ user_t *newuser_makesupp(void);
 void fill_out_fields(user_t * user);
 void format_fields(user_t * user);
 void generate_new_key(user_t * user);
-int main(int, char **);
+int main(int, char **, char **);
 int send_it(const user_t *user, char *command);
 
 /* global vars */
@@ -66,6 +66,7 @@ char country[RGstateLEN + 1];
 char phone[RGphoneLEN + 1];
 entry entries[100];
 char *referer;
+char **environ;
 int hiddeninfo = 0, showemail = 0, showurl = 0;
 
 /* defines */
@@ -212,10 +213,12 @@ print_results(user_t * user)
 }
 
 int
-main(int argc, char **argv)
+main(int argc, char **argv, char **env)
 {
 
     user_t *user = NULL;
+
+    environ = env;
 
     printf("Content-type: text/html%c%c", 10, 10);
 
@@ -524,6 +527,9 @@ fill_out_fields(user_t * user)
 
     strcpy(user->username, username);
     set_password( user, password );
+/*    mono_sql_u_set_passwd( user->usernum, password ); 
+michel: not sure if thiss will work. no user# assigned yet
+*/
     strcpy(user->RGname, name);
     strcpy(user->RGaddr, street);
     strcpy(user->RGcity, city);
