@@ -446,7 +446,7 @@ search_via_sql( unsigned int forum )
     needle[strlen(needle)] = '\0';
 
     if( needle[0] == '*' || needle[0] == '?' ) {
-	cprintf("\1f\1rIllegal character in search string.\1a\n");
+	cprintf("\1f\1rIllegal character '%c' at start of search string.\1a\n", needle[0]);
 	return;
     }
 
