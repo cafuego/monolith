@@ -10,10 +10,10 @@ yawc_client_SOURCES = clipboard.c friends.c chat.c fun.c help.c menu.c \
   vote.c wholist.c uadmin.c rooms.c bbsconfig.c
 
 yawc_port_LDADD = p_commands.o p_express.o p_main.o p_messages.o cprintf.o \
-  routines2.o p_statusbar.o p_usertools.o -L../lib -L../shix -lyawc -lm -lshix -L/usr/local/mysql/lib -lmysqlclient
+  routines2.o p_statusbar.o p_usertools.o -L../lib -L../shix -lyawc -lm -lshix -L/usr/local/mysql/lib
 
 yawc_client_LDADD =  c_commands.o c_express.o c_main.o c_messages.o \
-  c_routines2.o c_statusbar.o c_usertools.o -L../lib -L../shix -lyawc -lm -lshix -L/usr/local/mysql/lib -lmysqlclient
+  c_routines2.o c_statusbar.o c_usertools.o -L../lib -L../shix -lyawc -lm -lshix -L/usr/local/mysql/lib
 
 c_commands.o: commands.c
 	$(COMPILE) -DCLIENTSRC -c commands.c -o c_commands.o
