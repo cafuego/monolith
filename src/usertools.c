@@ -243,6 +243,8 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
     time_t timecall, curtime;
     unsigned int a;
     btmp_t *record;
+    forumlist_t *p = NULL;
+
 
     if ((EQ(user->username, "Guest")) && (usersupp->priv < PRIV_SYSOP)) {
 	cprintf("\n\1f\1gThe Guest User.\n\1a");
@@ -254,6 +256,8 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
     if (EQ(viewing_user->username, user->username))
 	control = 1;
 
+    mono_sql_uf_list_hosts_by_user( user->usernum, &p);
+
     cprintf("\n\1y\1f%s\1g ", user->username);
 
     if (user->priv & PRIV_WIZARD)
@@ -262,7 +266,10 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
 	cprintf("\1w(** %s%s \1w**) ", SYSOPCOL, config.sysop);
     else if (user->priv & PRIV_TECHNICIAN)
 	cprintf("\1w(* %s%s \1w*) ", PROGRAMMERCOL, config.programmer);
+    else if ( p != NULL )
+#ifdef OLD
     else if (user->flags & US_ROOMAIDE)
+#endif
 	cprintf("\1w(* %s%s \1w*) ", ROOMAIDECOL, config.roomaide);
     if (user->flags & US_GUIDE)
 	cprintf("\1w( %s%s \1w) ", GUIDECOL, config.guide);
@@ -304,6 +311,7 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
 	if (user->configuration >= 0 && user->configuration < MAXCONFIGS)
 	    cprintf("\1f\1gConfiguration\1w: \1y%s\n", shm->config[user->configuration].bbsname);
     }
+#ifdef OLD
     if (user->flags & US_ROOMAIDE){
 	for (a = 0; a < 5; a++)
 	    if (user->RA_rooms[a] >= 0) {
@@ -313,9 +321,19 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
 		}
 		cprintf("%d ", user->RA_rooms[a]);
 	    }
-    cprintf("\1a\1f\1c\n");
-//    IFSYSOP mono_sql_uf_list_hosts_by_user( user->usernum );
-}
+        cprintf("\1a\1f\1c\n");
+    }
+#endif
+    {
+
+    if ( p != NULL ) {
+    cprintf("\1c\1f%s in: \1g\n", config.roomaide );
+    print_forumlist_list(p);
+    dest_forumlist(p);
+    }
+    }
+
+/*    IFSYSOP mono_sql_uf_list_hosts_by_user( user->usernum ); */
 
 
     /* IS ONLINE */
