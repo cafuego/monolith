@@ -1113,7 +1113,7 @@ print_user_stats (user_t * structure)
 	}
       else
 	{
-	  printf ("<td align=left><a href=\"%s\"><b>%s</b></a></td>\n", structure->RGurl, structure->RGurl);
+	  printf ("<td align=left><a target=\"new\" href=\"%s\"><b>%s</b></a></td>\n", structure->RGurl, structure->RGurl);
 	}
       printf ("</tr>\n");
     }
