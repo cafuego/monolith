@@ -1077,30 +1077,30 @@ q_menu(void)
     switch (cmd) {
 
 	case 'h':
-	    cprintf("\1f\1gHelpfiles.\1a\n");
+	    cprintf(_("\1f\1gHelpfiles.\1a\n"));
 	    nox = 1;
 	    help_topics();
 	    break;
 
 	case 'c':
-	    cprintf("\1f\1gCommand Helpfiles.\1a\n");
+	    cprintf(_("\1f\1gCommand Helpfiles.\1a\n"));
 	    nox = 1;
 	    help_commands();
 	    break;
 
 	case ' ':
 	case 'q':
-	    cprintf("\1f\1gQuit.\1a\n");
+	    cprintf(_("\1f\1gQuit.\1a\n"));
 	    break;
 
 	case 'Q':
-	    cprintf("\1f\1gAsk a Question.\1a\n");
+	    cprintf(_("\1f\1gAsk a Question.\1a\n"));
 	    nox = 1;
 	    express(1);
 	    break;
 
 	case '?':
-	    cprintf("\1f\1gHelp!\1a\n");
+	    cprintf(_("\1f\1gHelp!\1a\n"));
 	    more(MENUDIR "/menu_main", 1);
 	    break;
     }
@@ -1215,7 +1215,7 @@ toggle_interbbs(void)
 void
 _key_menu_wrapper(const unsigned int a, const long b, void *c)
 {
-    cprintf("\1f\1gKey Menu.\n");
+    cprintf(_("\1f\1gKey Menu.\n"));
     key_menu();
 }
 
@@ -1279,34 +1279,34 @@ _change_alias(const unsigned int a, const long b, void *c)
     char aliasstr[L_USERNAME + 1];
 
     if (strlen(usersupp->alias)) {
-	cprintf("\1f\1gYour current alias is \1y`%s'\1g. Do you want to change it? \1w(\1gy\1w/\1gn\1w) \1c", usersupp->alias);
+	cprintf(_("\1f\1gYour current alias is \1y`%s'\1g. Do you want to change it? \1w(\1gy\1w/\1gn\1w) \1c"), usersupp->alias);
 	if (yesno() == NO) {
-	    cprintf("\1f\1gAlias unchanged.\1a\n");
+	    cprintf(_("\1f\1gAlias unchanged.\1a\n"));
 	    return;
 	}
     }
-    cprintf("\1f\1gEnter the new alias\1w: \1c");
+    cprintf(_("\1f\1gEnter the new alias\1w: \1c"));
 
     getline(aliasstr, L_USERNAME, 0);
 
     if (aliasstr[0] == '\0') {
-	cprintf("\1f\1gAlias \1rnot\1g set.\1a\n");
+	cprintf(_("\1f\1gAlias \1rnot\1g set.\1a\n"));
 	strcpy(usersupp->alias, "");
 	return;
     } else {
 	if (mono_sql_u_check_user(aliasstr) == TRUE) {
 	    if (EQ(usersupp->username, aliasstr)) {
 		strcpy(usersupp->alias, aliasstr);
-		cprintf("\1f\1gYour alias is set to \1y`%s'\1g.\n", usersupp->alias);
+		cprintf(_("\1f\1gYour alias is set to \1y`%s'\1g.\n"), usersupp->alias);
 		return;
 	    } else {
-		cprintf("\1f\1rThat is an existing user!\1a\n");
+		cprintf(_("\1f\1rThat is an existing user!\1a\n"));
 		return;
 	    }
 	}
     }
     strcpy(usersupp->alias, aliasstr);
-    cprintf("\1f\1gYour alias is set to \1y`%s'\1g.\n", usersupp->alias);
+    cprintf(_("\1f\1gYour alias is set to \1y`%s'\1g.\n"), usersupp->alias);
 }
 
 
@@ -1339,7 +1339,7 @@ set_usersupp_flag(const unsigned int mask, const long reverse, void *flagname)
 void
 _hidden_info_menu(const unsigned int a, const long b, void *c)
 {
-    cprintf("\1f\1cToggle hidden info.\1a\n");
+    cprintf(_("\1f\1cToggle hidden info.\1a\n"));
     toggle_hidden_info(usersupp);
     mono_sql_u_update_hidden(usersupp->usernum, usersupp->hidden_info);
 }
@@ -1350,7 +1350,7 @@ _set_screenlength(const unsigned int x, const long y, void *z)
     char tempstr[10];
     int a;
 
-    cprintf("\1f\1gEnter your screen length \1w[\1r%d\1w]:\1c ", usersupp->screenlength);
+    cprintf(_("\1f\1gEnter your screen length \1w[\1r%d\1w]:\1c "), usersupp->screenlength);
     getline(tempstr, 3, 1);
     if (tempstr[0] != 0) {
 	a = atoi(tempstr);
@@ -1381,10 +1381,10 @@ void
 _tgl_use_alias(const unsigned int x, const long y, void *z)
 {
     if (strlen(usersupp->alias)) {
-	cprintf("\1f\1cToggle usage of default alias %s\1c.\1a\n", (usersupp->config_flags & CO_USEALIAS) ? "\1roff" : "\1gon");
+	cprintf(_("\1f\1cToggle usage of default alias %s\1c.\1a\n"), (usersupp->config_flags & CO_USEALIAS) ? "\1roff" : "\1gon");
 	usersupp->config_flags ^= CO_USEALIAS;
     } else {
-	cprintf("\1f\1rYou have not set an alias yet!\1a\n");
+	cprintf(_("\1f\1rYou have not set an alias yet!\1a\n"));
 	usersupp->config_flags &= ~CO_USEALIAS;
     }
 }
@@ -1418,7 +1418,7 @@ static void
 _set_locale(const unsigned int frog, const long kiss, void *prince)
 {
     usersupp->config_flags ^= CO_EUROPEANDATE;
-    cprintf("\n\1f\1cUsing %s date format.", _locale[_get_locale(usersupp->config_flags)]);
+    cprintf(_("\n\1f\1cUsing %s date format."), _locale[_get_locale(usersupp->config_flags)]);
     return;
 }
 
@@ -1429,7 +1429,7 @@ static void
 _set_date_display(const unsigned int bongo, const long bouncing, void *horse)
 {
     usersupp->config_flags ^= CO_LONGDATE;
-    cprintf("\n\1f\1cDate display set to %s\1c.", (usersupp->config_flags & CO_LONGDATE) ? "\1wlong" : "\1wshort");
+    cprintf(_("\n\1f\1cDate display set to %s\1c."), (usersupp->config_flags & CO_LONGDATE) ? "\1wlong" : "\1wshort");
     return;
 }
 
@@ -1599,9 +1599,9 @@ _timezone_menu(const unsigned int a, const long b, void *c)
 	char str[40];
 	strcpy(str, usersupp->timezone);
 	set_timezone(str);
-	cprintf("\n\1f\1gTimezone set to \1w[\1y%s\1w]\1g\1c\n", usersupp->timezone);
+	cprintf(_("\n\1f\1gTimezone set to \1w[\1y%s\1w]\1g\1c\n"), usersupp->timezone);
     } else
-	cprintf("\1f\1gTimezone not set, using %s timezone.", BBSNAME);
+	cprintf(_("\1f\1gTimezone not set, using %s timezone."), BBSNAME);
 }
 
 static void _tz2str(const unsigned int, const long, void *);
