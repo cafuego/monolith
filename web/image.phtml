@@ -4,7 +4,7 @@
 
     $url_array=explode("/",$REQUEST_URI);
 
-    sprintf( $font, "/usr/bbs/www/bbs/font/%s.ttf", url_array[2] );
+    $font = "/usr/bbs/www/bbs/font/Arial_BI.ttf";
     $text = rawurldecode($url_array[3]);
 
     $im = imagecreate( 500, 30 );
