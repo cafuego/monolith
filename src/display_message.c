@@ -701,7 +701,7 @@ void
 show_long_prompt(const unsigned int forum, const unsigned int num, const int direction)
 {
     char promptstring[200];
-    char col;
+    char col = 'y';
     room_t quad;
     int high, low;
 
@@ -709,10 +709,11 @@ show_long_prompt(const unsigned int forum, const unsigned int num, const int dir
     high = (forum == MAIL_FORUM) ? usersupp->mailnum : quad.highest;
     low = (forum == MAIL_FORUM) ? 1 : quad.lowest;
 
+    
     if (quad.flags & (QR_ANONONLY | QR_ANON2 | QR_ALIASNAME))
 	col = 'p';
-    else
-	col = (quad.flags & QR_PRIVATE) ? 'r' : 'y';
+    if (quad.flags & QR_PRIVATE) 
+	col =  'r';
 
     if (usersupp->config_flags & CO_EXPANDHEADER &&
 	!(usersupp->config_flags & CO_MONOHEADER))
