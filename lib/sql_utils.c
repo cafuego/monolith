@@ -302,6 +302,7 @@ query_length(const char *format, va_list arg)
         }
         format++;
     }
+    length += 100;
     return length;
 }
 
