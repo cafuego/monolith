@@ -169,7 +169,7 @@ known_rooms_list(const user_t * user, int long_k_list)
 	    if (!(scratch.flags & QR_INUSE))
 		continue;
 	    if (!long_k_list)
-		if (is_zapped(quad_num))
+		if (is_zapped(quad_num, &scratch))
 		    continue;
 
 	    if (EQ(scratch.category, fish[i])) {
@@ -235,7 +235,7 @@ unread_rooms_list(const user_t * user)
 	    continue;
 	if (!(scratch.flags & QR_INUSE))
 	    continue;
-	if (is_zapped(i))
+	if (is_zapped(i, &scratch))
 	    continue;
 	if (user->lastseen[i] == scratch.highest)
 	    continue;
@@ -1509,10 +1509,9 @@ check_messages(room_t room, int which)
 }
 
 int
-is_zapped(int room)
+is_zapped(int room, const room_t *strukt )
 {
-    room_t scratch = readquad(room);
-    return (usersupp->forget[room] == scratch.generation);
+    return (usersupp->forget[room] == strukt->generation);
 }
 
 /*

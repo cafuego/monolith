@@ -1292,7 +1292,7 @@ unread_room()
         /* and they didn't skip it */
             && (skipping[i] == 0)
         /* and they didn't zap it */
-            && (!is_zapped(i))) {
+            && (!is_zapped(i, &scratch ))) {
             /* see if there are new messages to read */
             if (check_messages(scratch, i) > 0) {
                 return i;
