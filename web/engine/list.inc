@@ -24,11 +24,9 @@ function list_quads($username, $listunread) {
     // Query.
     //
     if($listunread)
-        // $result = MYSQL_QUERY("SELECT ut.forum_id AS id,f.name AS name,COUNT(m.message_id) AS total,(MAX(m.message_id)-ut.lastread) AS unread,uf.status AS status FROM usertopic as ut LEFT JOIN message as m ON (m.forum_id=ut.forum_id) LEFT JOIN forum as f ON ut.forum_id=f.id LEFT JOIN userforum AS uf ON (uf.forum_id=ut.forum_id AND uf.user_id=ut.user_id) WHERE ut.user_id=$usernum AND status='invited' AND unread>0 GROUP BY ut.forum_id;");
-        $result = MYSQL_QUERY("SELECT ut.forum_id AS id,f.name AS name,COUNT(m.message_id) AS total,(t.highest-ut.lastread) AS unread,uf.status AS status FROM usertopic as ut LEFT JOIN topics AS t ON ut.forum_id=t.forum_id LEFT JOIN message as m ON (m.forum_id=ut.forum_id) LEFT JOIN forum as f ON ut.forum_id=f.id LEFT JOIN userforum AS uf ON (uf.forum_id=ut.forum_id AND uf.user_id=ut.user_id) WHERE ut.user_id=$usernum AND status='invited' AND ut.lastread < t.highest GROUP BY ut.forum_id;");
-
+        $result = MYSQL_QUERY("SELECT ut.forum_id AS id,f.name AS name,COUNT(m.message_id) AS total,(t.highest-ut.lastread) AS unread,uf.status AS status FROM usertopic as ut LEFT JOIN topics AS t ON ut.forum_id=t.forum_id LEFT JOIN message as m ON (m.forum_id=ut.forum_id) LEFT JOIN forum as f ON ut.forum_id=f.id LEFT JOIN userforum AS uf ON (uf.forum_id=ut.forum_id AND uf.user_id=ut.user_id) WHERE ut.user_id=$usernum AND uf.status='invited' AND ut.lastread < t.highest GROUP BY ut.forum_id;");
     else
-        $result = MYSQL_QUERY("SELECT ut.forum_id AS id,f.name AS name,COUNT(m.message_id) AS total,(t.highest-ut.lastread) AS unread,uf.status AS status FROM usertopic as ut LEFT JOIN topics AS t ON ut.forum_id=t.forum_id LEFT JOIN message as m ON (m.forum_id=ut.forum_id) LEFT JOIN forum as f ON ut.forum_id=f.id LEFT JOIN userforum AS uf ON (uf.forum_id=ut.forum_id AND uf.user_id=ut.user_id) WHERE ut.user_id=$usernum AND status='invited' GROUP BY ut.forum_id;");
+        $result = MYSQL_QUERY("SELECT ut.forum_id AS id,f.name AS name,COUNT(m.message_id) AS total,(t.highest-ut.lastread) AS unread,uf.status AS status FROM usertopic as ut LEFT JOIN topics AS t ON ut.forum_id=t.forum_id LEFT JOIN message as m ON (m.forum_id=ut.forum_id) LEFT JOIN forum as f ON ut.forum_id=f.id LEFT JOIN userforum AS uf ON (uf.forum_id=ut.forum_id AND uf.user_id=ut.user_id) WHERE ut.user_id=$usernum AND uf.status='invited' GROUP BY ut.forum_id;");
 
     $number = MYSQL_NUMROWS($result);
     if($number) {
