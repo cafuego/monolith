@@ -239,7 +239,7 @@ getline(char *string, int lim, int nocol)
 
     for (;;) {
 	a = inkey();
-        a &= 127; 
+        /* a &= 127; */
 
 	/* ^U or BS at beginning of line */
 	if ((a == CTRL_U || a == CTRL_X || a == BS) && strlen(string) == 0)
@@ -400,7 +400,7 @@ get_string_wr(int lim, char *result, int line, int flag)
 	if (!isprint(c)) {
 	    continue;
 	}
-#endif
+#endif /* NO_8BIT */
 	/* print normal character */
 	if (strlen(result) < length) {
 	    *p++ = c;
@@ -914,7 +914,7 @@ inkey()
     while (i > DEL || i == 0 || (j == CR && i == LF));
 #else
     while (/*i > DEL ||*/ i == 0 || (j == CR && i == LF));
-#endif
+#endif /* NO_8BIT */
 
     j = i;
 
