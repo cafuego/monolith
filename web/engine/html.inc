@@ -61,7 +61,7 @@ function html_print_title($username, $location)
 	    print "<title>$username@Monolith BBS: Listing old eXpress messages</title>\n";
 	    break;
 	case "p":
-	    print "<title>$username@Monolith BBS: Profiling $victim</title>\n";
+	    print "<title>$username@Monolith BBS: Profiling ". urldecode($victim) ."</title>\n";
 	    break;
 	case "q":
 	    print "<title>$username@Monolith BBS: Logging out</title>\n";

@@ -14,7 +14,7 @@
     echo "<meta http-equiv=\"Cache-Control\" content=\"no-cache, must-revalidate\">\n";
     echo "<meta http-equiv=\"Pragma\" content=\"no-cache\">\n";
 
-    echo "<meta http-equiv=\"Refresh\" content=\"0; url=http://monolith.student.utwente.nl/bbs/index.phtml/p/$victim/\">\n";
+    echo "<meta http-equiv=\"Refresh\" content=\"0; url=http://monolith.student.utwente.nl/bbs/index.phtml/p/". urlencode($victim) ."/\">\n";
 
     $username = getenv("REMOTE_USER");
     echo "<title>$username@Monolith BBS: Profiling " .urldecode($victim) ."</title>\n";

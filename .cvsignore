@@ -3,3 +3,5 @@
 config.cache
 config.log
 aclocal.m4
+config.h
+build-defs.h

@@ -19,6 +19,8 @@ function profile_user($username, $victim) {
 
     connect_db();
 
+    $victim = urldecode($victim);
+
     $usernum = get_usernum($username);
     $victim_id= get_usernum($victim);
 
