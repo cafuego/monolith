@@ -106,14 +106,14 @@ function read_message($username, $quad, $current, $direction) {
                         $forum_unread = mysql_result($result,0,"forum_unread");
                         if($number != 1) {
                             if($forum_unread != 1)
-                                addbutton("Next quadrant with unread messages", "/bbs/index.phtml/n/$id", "Read next quadrant with unread messages: $forum_name, $forum_unread unread messages ($number forums left)");
+                                addbutton("Next quadrant with unread messages", "/bbs/index.phtml/n/$forum_id", "Read next quadrant with unread messages: $forum_name, $forum_unread unread messages ($number forums left)");
                             else
-                                addbutton("Next quadrant with unread messages", "/bbs/index.phtml/n/$id", "Read next quadrant with unread messages: $forum_name, 1 unread message ($number forums left)");
+                                addbutton("Next quadrant with unread messages", "/bbs/index.phtml/n/$forum_id", "Read next quadrant with unread messages: $forum_name, 1 unread message ($number forums left)");
                         } else {
                             if($forum_unread != 1)
-                                addbutton("Next quadrant with unread messages", "/bbs/index.phtml/n/$id", "Read next quadrant with unread messages: $forum_name, unread $forum_unread messages (last forum)");
+                                addbutton("Next quadrant with unread messages", "/bbs/index.phtml/n/$forum_id", "Read next quadrant with unread messages: $forum_name, unread $forum_unread messages (last forum)");
                             else
-                                addbutton("Next quadrant with unread messages", "/bbs/index.phtml/n/$id", "Read next quadrant with unread messages: $forum_name, unread 1 message (last forum)");
+                                addbutton("Next quadrant with unread messages", "/bbs/index.phtml/n/$forum_id", "Read next quadrant with unread messages: $forum_name, unread 1 message (last forum)");
                         }
                     } else {
                         addbutton("No unread messages left on the BBS", "", "");
