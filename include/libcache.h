@@ -6,7 +6,7 @@ typedef struct user_cache_type {
     struct user_cache_type *next;
     } user_cache_t;
 
-extern void show_user_cache(void);
+extern char * show_user_cache(void);
 extern void flush_user_cache(void);
 extern int is_cached_username(const char *);
 extern int is_cached_usernumber(const unsigned int );

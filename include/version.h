@@ -1,1 +1,1 @@
-#define VERSION	"Mono 2.010 Beta for Sinclair ZX81"
+#define VERSION	"Mono 2.010 Alpha for Tonka Truck (TM)"
