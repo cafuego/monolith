@@ -217,6 +217,8 @@ function list_x_messages($username) {
             $message = mysql_result($result,$i,"message");
             $date = mysql_result($result,$i,"date");
 
+            $bing = MYSQL_QUERY("UPDATE webx SET status='read' WHERE id=$id");
+
             print "<tr>\n";
             print "  <td align=\"left\">\n";
             print "    <p align=\"left\"><font color=\"#00cc00\">eXpress Message from <a href=\"/bbs/index.phtml/x/$user/\">$user</a> at </font>(<font color=\"#00cc00\">$date</font>)\n";
