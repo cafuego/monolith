@@ -52,7 +52,7 @@
 
     connect_db();
 
-    $result = MYSQL_QUERY("INSERT INTO webx (sender,recipient,message,date,status,i_sender,i_recipient) VALUES ($u_id,$r_id,'$message',NOW(),'unread'),'web','$interface'");
+    $result = MYSQL_QUERY("INSERT INTO webx (sender,recipient,message,date,status,i_sender,i_recipient) VALUES ($u_id,$r_id,'$message',NOW(),'unread','web','$interface')");
     if ($result == true )
         print "<h3 align=\"center\">eXpress message to $recipient@$interface was sucessfully saved</h3>\n";
     else {
