@@ -100,9 +100,13 @@ mono_sql_query(MYSQL_RES ** result, const char *format,...)
 #ifdef SQL_ERROR_SHIT_THAT_MAKES_USERS_WHINE
 	fprintf(stderr, "errno: %d error: %s\n", mysql_errno(&mp), mysql_error(&mp));
 #endif
+        log_it( "sqlerr", "%s", query);
+	log_it( "sqlerr", "errno: %d error: %s\n", mysql_errno(&mp), mysql_error(&mp));
 	return -1;		/* no results */
     }
-    log_it("queries", query);
+#ifdef SQL_DEBUG
+    log_it("queries", "%s", query);
+#endif
 
     *result = mysql_store_result(&mp);
 

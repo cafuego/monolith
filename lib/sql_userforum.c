@@ -16,7 +16,6 @@
 #include "monosql.h"
 #include "sql_utils.h"
 #include "sql_userforum.h"
-#include "btmp.h"
 
 #define UF_TABLE "userforum"
 

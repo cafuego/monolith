@@ -317,11 +317,11 @@ may_write_room(user_t user, room_t room, int a)
 
     /* only sysops and ql's in readonly rooms */
     if ((room.flags & QR_READONLY) && (user.priv < PRIV_SYSOP) &&
-	!is_ql(user.username, room))
+	!is_ql(user.username, room)) {
 	return 0;
-
-    else
+    } else {
 	return may_read_room(user, room, a);
+    }
 }				/* eof */
 
 /* this function returns the quickroom structure of room 'num' */

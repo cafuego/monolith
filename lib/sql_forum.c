@@ -89,10 +89,7 @@ mono_sql_f_add_old_forum(unsigned int forum_id, room_t * const q)
     xfree(esc_name);
     mysql_free_result(res);
 
-    if (ret != 0) {
-	return -1;
-    }
-    return 0;
+    return ret;
 
 }
 
@@ -108,7 +105,7 @@ mono_sql_f_rename_forum( unsigned int forum_id, char *newname )
         return -1;
     }
 
-    ret = mono_sql_query(&res, "UPDATE " F_TABLE " SET name=%s WHERE id=%u" ,
+    ret = mono_sql_query(&res, "UPDATE " F_TABLE " SET name='%s' WHERE id=%u" ,
            esc_name, forum_id );
 
     xfree(esc_name);
