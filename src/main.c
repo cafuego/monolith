@@ -103,14 +103,14 @@ sleeping(int sig)
 	    cprintf("\n\007\1pIs there life behind this terminal?\n\1rYou will be docked out in 1 minute unless you start looking more alive!\n");
 	}
 	fflush(stdout);
-    } else if (((idletime == TIMEOUT + 1) && (usersupp->priv < PRIV_SYSOP)) ||
+    } else if (((idletime == TIMEOUT + 1) && (usersupp->priv < PRIV_TECHNICIAN)) ||
 	       (idletime >= 5 && connecting_flag == 1))
 #else
     if (idletime == TIMEOUTCLIENT) {
 	cprintf("%c%c%c", IAC, WILL, TELOPT_LOGOUT);
 /*      cprintf("\n\007\1pIs there life behind this terminal?\n\1rYou will be docked out in 1 minute unless you start looking more alive!\n"); */
 	fflush(stdout);
-    } else if ((idletime == (TIMEOUTCLIENT + 1) && usersupp->priv < PRIV_SYSOP) ||
+    } else if ((idletime == (TIMEOUTCLIENT + 1) && usersupp->priv < PRIV_TECHNICIAN) ||
 	       (idletime >= 5 && connecting_flag == 1))
 #endif
     {
