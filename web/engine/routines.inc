@@ -293,9 +293,9 @@ function colorize($doing) {
     //
     $doing = ereg_replace("%01w", "</font><font color=\"#ffffff\">", $doing);	// White.
     echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "%01y", "</font><font color=\\\"#ffff00\\\">");	// Yellow.
+    $doing = ereg_replace("%01y", "</font><font color=\"#ffff00\">", $doing);	// Yellow.
     echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "%01g", "</font><font color=\\\"#00ff00\\\">");	// Green.
+    $doing = ereg_replace("%01g", "</font><font color=\"#00ff00\">", $doing);	// Green.
     echo "<!-- $doing -->\n";
     $doing = strtr($doing, "%01c", "</font><font color=\\\"#00ffff\\\">");	// Cyan.
     echo "<!-- $doing -->\n";
