@@ -86,21 +86,7 @@ _mono_sql_mes_make_file(unsigned int forum, unsigned int number)
 static void
 _mono_sql_mes_save(const char *tmpfile, const char *filename)
 {
-    int fd = 0;
-    struct stat buf;
-    char *buffer = NULL;
-    
-    old = open(tmpfile, O_RDONLY);
-    buffer = (char *) xmalloc(buf.st_size);
-    (void) read(old, buffer, buf.st_size);
-    (void) close(old);
-
-    new = open(filename, O_RDWR | O_CREAT);
-    (void) write(new, &buffer, strlen(buffer));
-    (void) close(new);
-    xfree(buffer);
-
-    (void) unlink(tmpfile);
+    (void)copy(tmpfile, filename);
     return;
 }
 

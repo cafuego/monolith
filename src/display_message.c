@@ -82,9 +82,7 @@ display_message(unsigned int num, unsigned int forum)
             return;
 
     }
-
     string = format_message( &message, forum );
-    xfree(message.content);
 
 #ifdef CLIENTSRC
     putchar(IAC);
@@ -388,6 +386,20 @@ format_content(message_t *message, char **string )
     int fd = -1;
     struct stat buf;
 
+    /*
+     * Empty lines around content?
+     */
+    if( usersupp->config_flags & CO_NEATMESSAGES ) {
+        *string = (char *)xrealloc( *string, strlen(*string)+strlen("\n") );
+        strcat( *string, "\n" );
+    }
+
+    /*
+     * Set content colour.
+     */
+    *string = (char *)xrealloc( *string, strlen(*string)+strlen("\1a\1c") );
+    strcat( *string, "\1a\1c" );
+
      /*
       * Open temp file.
       */
@@ -413,19 +425,6 @@ format_content(message_t *message, char **string )
          return -1;
      }
 
-    /*
-     * Empty lines around content?
-     */
-    if( usersupp->config_flags & CO_NEATMESSAGES ) {
-        *string = (char *)xrealloc( *string, strlen(*string)+strlen("\n") );
-        strcat( *string, "\n" );
-    }
-
-    /*
-     * Set content colour.
-     */
-    *string = (char *)xrealloc( *string, strlen(*string)+strlen("\1a\1c") );
-    strcat( *string, "\1a\1c" );
 
     /*
      * Append actual message content.
