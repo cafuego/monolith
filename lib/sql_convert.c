@@ -176,4 +176,29 @@ mono_sql_convert_row_to_wu(MYSQL_ROW row)
 
     return u;
 }
+
+/*
+ * Convert MYSQL_ROW to wx_t.
+ */
+wx_t *
+mono_sql_convert_row_to_wx(MYSQL_ROW row)
+{
+    wx_t *x = NULL;
+
+    x = (wx_t *) xmalloc(sizeof(wx_t));
+
+    if(x == NULL)
+        return NULL;
+
+    memset(x, 0, sizeof(wx_t));
+
+    sscanf(row[0], "%u", &x->id);
+    snprintf(x->sender, L_USERNAME, "%s", row[1]);
+    x->message = (char *) xmalloc( strlen(row[2]) + 1 );
+    snprintf(x->message, strlen(row[7]), "%s", row[2]);
+    sscanf(row[3], "%lu", &x->date);
+
+    return x;
+}
+
 /* eof */

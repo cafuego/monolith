@@ -95,6 +95,7 @@ extern int user_not_allowed_to_send_x(const int);
 extern char check_x_permissions(const char *, const int, char);
 extern void display_express_prompt(const int);
 extern void feeling(void);
+extern void are_there_held_web_xs(void);
 
 /* eof */
 

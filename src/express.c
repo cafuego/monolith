@@ -43,6 +43,7 @@
 #include "statusbar.h"
 #include "usertools.h"
 
+#include "sql_llist.h"
 #include "sql_online.h"
 #include "sql_web.h"
 
@@ -1013,6 +1014,7 @@ change_express(int how)
 void
 are_there_held_xs()
 {
+
     nox = 0;			/* are_there_held_xs() */
 
     if (!shm)
@@ -1038,6 +1040,9 @@ are_there_held_xs()
 	flush_input();		/* let's hope this helps */
 	fflush(stdout);
     }
+
+    are_there_held_web_xs();
+
     return;
 }
 
@@ -1636,6 +1641,24 @@ feeling()
 		return;
 	}
     }
+}
+
+void
+are_there_held_web_xs()
+{
+    wx_list_t *list = NULL;
+    int count = 0;
+
+    count = mono_sql_web_get_xes(usersupp->usernum, &list);
+
+    if(count == -1)
+       cprintf("\1f\1rAn error occurrect trying to retrieve \1pweb \1rx-es.\n");
+    if(count > 0)
+       cprintf("\1f\1gYou have \1y%d \1gnew \1pweb \1gx-es:\n\1rBut I can't show them yet.\n");
+
+    mono_sql_ll_free_wxlist(list);
+
+    return;
 }
 
 /* eof */

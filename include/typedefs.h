@@ -144,6 +144,25 @@ struct wu_list {
     wu_t *user;
 };
 
+/*
+ * Web x entry.
+ */
+typedef struct wx {
+    unsigned int id;
+    char sender[L_USERNAME];
+    char *message;
+    time_t date;
+} wx_t;
+
+/*
+ * A linked list with web users.
+ */
+typedef struct wx_list wx_list_t;
+struct wx_list {
+    wx_list_t *next;
+    wx_t *x;
+};
+
 typedef struct xfriend friend_t;
 struct xfriend {
     char name[L_USERNAME + L_BBSNAME + 1];

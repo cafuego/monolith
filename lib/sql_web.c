@@ -178,4 +178,41 @@ mono_sql_web_wholist()
     mono_sql_ll_free_wulist(list);
     return p;
 }
+
+int
+mono_sql_web_get_xes(unsigned int user_id, wx_list_t ** list)
+{
+
+    int ret, rows, i;
+    MYSQL_RES *res;
+    MYSQL_ROW row;
+    wx_list_t entry;
+
+    ret = mono_sql_query(&res, "SELECT w.id AS id,u.username AS user,w.message AS message,w.date AS date FROM webx AS w LEFT JOIN user AS u ON u.id=w.sender WHERE w.recipient=%u AND w.status='unread' AND (w.i_recipient='telnet' OR w.i_recipient='client') ORDER BY w.date ASC", user_id);
+
+    if (ret == -1) {
+	(void) mono_sql_u_free_result(res);
+	return -1;
+    }
+    if ((rows = mysql_num_rows(res)) == 0) {
+	(void) mono_sql_u_free_result(res);
+	return 0;
+    }
+    for (i = 0; i < rows; i++) {
+	row = mysql_fetch_row(res);
+	if (row == NULL)
+	    break;
+	/*
+	 * Get result and add to list.
+	 */
+	if ((entry.x = mono_sql_convert_row_to_wx(row)) == NULL) {
+	    continue;
+	}
+	if (mono_sql_ll_add_wxlist_to_list(entry, list) == -1) {
+	    continue;
+	}
+    }
+    (void) mono_sql_u_free_result(res);
+    return rows;
+}
 /* eof */
