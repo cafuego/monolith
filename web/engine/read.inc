@@ -84,6 +84,7 @@ function read_message($username, $quad, $current, $direction) {
                     addbutton("Reply to this message", "/bbs/index.phtml/f/$quad/$m_id");
                     addbutton("Post new message", "/bbs/index.phtml/e/$quad/$m_id");
                 }
+                echo "</div>\n";
 
                 // Update lastseen!
                 //
