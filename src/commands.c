@@ -72,17 +72,12 @@ sysop_menu()
 	    cprintf("\1f\1wAdmin cmd: \1a");
 	}
 
-	cmd = get_single_quiet("ABCEFgGKMNOPRQTU\r\b ?");
+	cmd = get_single_quiet("BCEFgGKMNOPRQTU\r\b ?");
 
-	if (strchr("ABCERFgOP", cmd))
+	if (strchr("BCERFgOP", cmd))
 	    nox = 1;		/* is busy, wants no x's */
 
 	switch (cmd) {
-
-            case 'A':
-                cprintf("\1f\1rMySQL Benchmark...\1a\n");
-                mysql_benchmark();
-                break;
 
 	    case 'B':
 		cprintf("\1f\1rMake a broadcast.\1a\n");
