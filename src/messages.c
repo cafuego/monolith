@@ -10,6 +10,7 @@
 #include <string.h>		/* too */
 #include <sys/file.h>		/* for flock */
 #include <sys/signal.h>
+#include <sys/time.h>
 #include <sys/types.h>
 #include <unistd.h>		/* added by kirth */
 #include <time.h>
@@ -416,3 +417,87 @@ rate_message(message_t *message)
     return;
 }
 #endif
+
+void
+search_via_sql()
+{
+    int count = 0, forum = 0;
+    sr_list_t *list = NULL;
+    room_t quad;
+    char needle[21];
+    struct timeval tv_start;
+    struct timeval tv_end;
+    struct timezone tz;
+    long working = 0;
+
+    IFNSYSOP {
+        cprintf("\1f\1rBug off!\1a\n");
+        return;
+    }
+
+    tz.tz_minuteswest = 0;
+    tz.tz_dsttime = 0;
+
+    cprintf("\1f\1gPlease enter a %s to search or hit return for the current %s.\n", config.forum, config.forum );
+    cprintf("Or enter \1y-1\1g to search all %s\1w: \1c", config.forum_pl );
+ 
+    strcpy(needle, "");
+    getline(needle, 4, FALSE);
+    needle[strlen(needle)] = '\0';
+    sscanf(needle, "%d", &forum);
+
+    if(forum == 0)
+        forum = curr_rm;
+
+    cprintf("\1f\1gNow, enter a string \1w(\1gmax 20 characters\1w)\1g to search for in the\n");
+
+    if(forum >= 2 && forum < 150) {
+        quad = read_quad(forum);
+        cprintf("content and subject lines of %s.\n", quad.name );
+    } else {
+        forum = -1;
+        cprintf("content and subject lines and all %s.\n", config.forum_pl);
+    }
+    cprintf("\nFind\1w: \1c");
+    strcpy(needle, "");
+    getline(needle, 20, FALSE);
+    needle[strlen(needle)] = '\0';
+
+    if( !(strlen(needle))) {
+        cprintf("\1f\1rError:\1w: \1rCan't search for nothing...\1a\n");
+        return;
+    }
+
+    cprintf("\1f\1wSearching...");
+    fflush(stdout);
+
+    (void) gettimeofday(&tv_start, &tz);
+    count = mono_sql_mes_search_forum(forum, needle, &list);
+    (void) gettimeofday(&tv_end, &tz);
+
+    working = ((1000000*tv_end.tv_sec) + tv_end.tv_usec) - ((1000000*tv_start.tv_sec) + tv_start.tv_usec);
+
+    cprintf(" done, %d record%s found.\n", count, (count!=1) ? "s" : "");
+    fflush(stdout);
+
+    cprintf("\1f\1rListing matches\1w:\n\n");
+    cprintf("  \1g   Id     \1y%-20s \1g%-18s \1y%-20s \1rScore\n\1w--------------------------------------------------------------------------------\n",
+       config.forum, config.user, "Subject" );
+    if(count > 0) {
+        while(list != NULL) {
+            cprintf("  \1f\1g%5d \1w%3d.\1y%-20s \1g%-18s \1y%-20s \1r",
+                list->result->m_id, list->result->f_id, list->result->forum,
+                list->result->author, ((list->result->subject == NULL) || (EQ(list->result->subject,"(null)"))) ? "[no subject]" : list->result->subject );
+            printf("%.3f\n\r", list->result->score );
+            list = list->next;
+        }  
+        cprintf("\1f\1w--------------------------------------------------------------------------------\n" );
+        cprintf("\1f\1g%d result%s, listed by %s and %s number; time working\1w: \1g",
+            count, (count != 1) ? "s" : "" , config.message, config.forum );
+        printf("%.5f seconds\n\r", (float)working/1000000);
+    } else {
+        cprintf("\1f\1rNo results.\1a\n");
+    }
+    mono_sql_ll_free_sr_list(list);
+    return;
+}
