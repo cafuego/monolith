@@ -22,8 +22,8 @@
     // going to create will have 2 pixels border on each side.
     //
     $bounds = ImageTTFBBox( $size, 0, $font, $text );
-    $width = $bounds[4] + 10;
-    $height = (-1 * $bounds[3]) + 10;
+    $width = abs( $bounds[4] ) + 10;
+    $height = abs( $bounds[3] ) + 10;
 
     echo "<p>0: $bounds[0]\n";
     echo "<p>1: $bounds[1]\n";
