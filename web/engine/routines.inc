@@ -212,7 +212,7 @@ function main_screen($username) {
 
 }
 
-function list_x_messages($username) {
+function list_x_messages($username,$location) {
 
     $user_id = get_usernum($username);
 
@@ -240,7 +240,7 @@ function list_x_messages($username) {
 
             print "<tr>\n";
             print "  <td align=\"left\" bgcolor=\"#333333\">\n";
-            print "    <p align=\"left\"><font color=\"#00cc00\">eXpress Message from <a href=\"/bbs/index.phtml/x/$user/$i_sender\">$user@$i_sender</a> to <font color=\"#ffff00\">$username@web</font> at </font>(<font color=\"#00cc00\">$date</font>)\n";
+            print "    <p align=\"left\"><font color=\"#00cc00\">eXpress Message from <a href=\"/bbs/index.phtml/x/$user/$i_sender/$location\">$user@$i_sender</a> to <font color=\"#ffff00\">$username@web</font> at </font>(<font color=\"#00cc00\">$date</font>)\n";
             print "    <font color=\"#00cccc\"><pre>$message</pre></font>\n";
             print "  </td>\n";
             print "</tr>\n";
@@ -268,7 +268,7 @@ function list_x_messages($username) {
 
             print "<tr>\n";
             print "  <td align=\"left\">\n";
-            print "    <p align=\"left\"><li><font color=\"#00cc00\">eXpress Message to <a href=\"/bbs/index.phtml/x/$user/$interface\">$user@$interface</a> was read at $date CET</font>.\n";
+            print "    <p align=\"left\"><li><font color=\"#00cc00\">eXpress Message to <a href=\"/bbs/index.phtml/x/$user/$interface/$location\">$user@$interface</a> was read at $date CET</font>.\n";
             print "  </td>\n";
             print "</tr>\n";
 

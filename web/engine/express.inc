@@ -4,7 +4,7 @@
   * $Id$
   */
 
-function express_message($username, $recipient, $interface) {
+function express_message($username, $recipient, $interface, $location) {
 
     // Turn recipient name into a normal string.
     //
@@ -57,6 +57,7 @@ function express_message($username, $recipient, $interface) {
     PRINT "<input type=\"hidden\" name=\"recipient\" value=\"$recipient\">\n";
     PRINT "<input type=\"hidden\" name=\"sender\" value=\"$username\">\n";
     PRINT "<input type=\"hidden\" name=\"interface\" value=\"$interface\">\n";
+    PRINT "<input type=\"hidden\" name=\"location\" value=\"$location\">\n";
 
     // Show formatted header.
     //
