@@ -174,10 +174,10 @@
 #define CO_EXPANDHEADER 16			/* expanded (long) headers */
 #define CO_LONGDATE	32			/* long date format */
 #define CO_EUROPEANDATE	64			/* european (as opposed to US) date format */
+#define CO_DELETEDINFO	128			/* Notify user when encountyering deleted msg */
 /*
  * rest is unused sofar
  */
-#define CO_UNUSED7	128
 #define CO_UNUSED8      256
 #define CO_UNUSED9	512
 #define CO_UNUSED10	1024

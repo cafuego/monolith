@@ -155,12 +155,17 @@ menu_message(void)
 	     "tiv", tempstr, "2", (usersupp->config_flags & CO_EXPANDHEADER) ? "1" : "0");
 
 	strcpy(tempstr, "");
+	sprintf(tempstr, "Notify on deleted %s", config.message_pl);
+	MENU_ADDITEM(set_usersupp_config_flag, CO_DELETEDINFO, 0, tempstr,
+	     "tiv", tempstr, "3", (usersupp->config_flags & CO_DELETEDINFO) ? "1" : "0");
+
+	strcpy(tempstr, "");
 	sprintf(tempstr, "Display %s date", (usersupp->config_flags & CO_LONGDATE) ? "long" : "short");
-	MENU_ADDITEM(_set_date_display, 0, 0, "", "ti", tempstr, "3");
+	MENU_ADDITEM(_set_date_display, 0, 0, "", "ti", tempstr, "4");
 
 	strcpy(tempstr, "");
 	sprintf(tempstr, "%s date format", _locale[_get_locale(usersupp->config_flags)]);
-	MENU_ADDITEM(_set_locale, 0, 0, "", "ti", tempstr, "4");
+	MENU_ADDITEM(_set_locale, 0, 0, "", "ti", tempstr, "5");
 
 	MENU_PROCESS_INTERNALS;
 	MENU_DISPLAY(2);

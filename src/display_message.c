@@ -58,6 +58,20 @@ display_message(message_t *message)
 {
     char *string = NULL;
 
+    /*
+     * Don't show deleted messages.
+     */
+    if( message->deleted == 'y') {
+        if(usersupp->priv < PRIV_SYSOP ) {
+            if(usersupp->config_flags & CO_DELETEDINFO)
+                cprintf("\1f\1rDeleted %s.\1a\n", config.message);
+            return;
+        } else {
+            if(usersupp->config_flags & CO_DELETEDINFO)
+                cprintf("\1f\1rDeleted %s.\1a\n", config.message);
+        }
+    }
+
     cprintf("\n\1f\1wDEBUG: Rating: ");
     if(message->score < 0)
         cprintf("\1r");
@@ -94,12 +108,6 @@ static char *
 format_message( message_t *message)
 {
     char *string = NULL;
-
-    /*
-     * Don't show deleted messages.
-     */
-    if( message->deleted = 'y'  && usersupp->priv < PRIV_SYSOP )
-        return;
 
     /*
      * malloc() here and realloc in all following functions.
@@ -361,7 +369,7 @@ format_admininfo(message_t *message, char **string)
 
     strcpy(fmt_admin, "");
 
-    if(message->deleted = 'y')
+    if(message->deleted == 'y')
         sprintf(fmt_admin, " \1f\1w(\1rDeleted %s\1w)", config.message);
 
     fmt_admin[strlen(fmt_admin)] = '\0';
