@@ -15,8 +15,6 @@
 #include "sql_forum.h"
 #include "sql_utils.h"
 
-#define F_TABLE "forum"
-
 /* nasty comaptible stuff */
 int
 mono_sql_f_write_quad(unsigned int num, room_t * const q)
@@ -39,7 +37,7 @@ mono_sql_f_read_quad(unsigned int num, room_t * room)
 		       "FROM " F_TABLE " WHERE id=%u", num);
 
     if (i == -1) {
-	fprintf(stderr, "Error: ano results from query\n");
+	fprintf(stderr, "Error: no results from query\n");
 	mysql_free_result(res);
 	return -1;
     }

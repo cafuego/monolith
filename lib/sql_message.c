@@ -15,14 +15,39 @@
 #include "routines.h"
 #include "monosql.h"
 #include "sql_utils.h"
+#include "sql_forum.h"
+#include "sql_userforum.h"
 
-#ifdef extern
 #include "sql_message.h"
-#endif
-
-#define M_TABLE "message"
 
 static int _mono_sql_mes_add_num_to_list(mlist_t entry, mlist_t ** list);
+
+/*
+ * Returns forum id of first forum with unread messages or Lobby (0)
+ * if there aren't any.
+ */
+int
+mono_sql_mes_unread_room(unsigned int usernum)
+{
+    MYSQL_RES *res;
+    MYSQL_ROW row;
+    int ret = 0;
+
+    ret = mono_sql_query(&res, "SELECT forum_id FROM %s,%s WHERE %s.user_id=%d AND %s.id=%s.forum_id AND %s.lastseen < %s.highest",
+        F_TABLE, UF_TABLE, UF_TABLE, F_TABLE, UF_TABLE, UF_TABLE, F_TABLE, usernum );
+    
+    /*
+     * No unread messages...
+     */
+    if (mysql_num_rows(res) == 0)
+        return -1;
+
+    row = mysql_fetch_row(res);
+    sscanf(row[0],"%d", &ret);
+    (void) mysql_free_result(res);
+
+    return ret;
+}
 
 int
 mono_sql_mes_get_unread(unsigned int forum, unsigned int lastseen)
@@ -32,16 +57,13 @@ mono_sql_mes_get_unread(unsigned int forum, unsigned int lastseen)
     int ret = 0;
 
     ret = mono_sql_query(&res, "SELECT COUNT(*) FROM " M_TABLE " WHERE message_id>%d AND forum_id=%d", lastseen, forum);
-
     if (ret == -1) {
         (void) mysql_free_result(res);
         return -1;
     }
 
     row = mysql_fetch_row(res);
-
     sscanf(row[0],"%d", &ret);
-
     (void) mysql_free_result(res);
 
     return ret;

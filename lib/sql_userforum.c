@@ -17,8 +17,6 @@
 #include "sql_utils.h"
 #include "sql_userforum.h"
 
-#define UF_TABLE "userforum"
-
 int
 add_to_userlist(userlist_t element, userlist_t ** list)
 {
