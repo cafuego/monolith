@@ -380,7 +380,7 @@ function colorize($doing) {
 function errorsound() {
 
     echo "\n    <!-- error sound -->\n";
-    echo "    <embed src=\"/bbs/sound/error.au\" height=\"0\" width=\"0\" autoplay=\"true\" autostart=\"true\" hidden=\"false\" loop=\"false\" bgcolor=\"#000\">\n";
+    echo "    <embed src=\"/bbs/sound/error.aiff\" type=\"audio/x-aiff\" height=\"0\" width=\"0\" autoplay=\"true\" autostart=\"true\" hidden=\"false\" loop=\"false\" bgcolor=\"#000\">\n";
     echo "    </embed>\n\n";
 
 }
