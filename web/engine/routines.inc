@@ -471,7 +471,7 @@ function addbutton( $text, $url, $js_text ) {
     $imgtext = rawurlencode($imgtext);
 
     if($url != "")
-        echo "<a href=\"$url\"". mouseover($js_text) ."><img src=\"/bbs/image.phtml/$font,$size,$colour/$imgtext/\" alt=\"[ button: $text ]\" border=\"0\"></a>\n";
+        echo "<a href=\"$url\" ". mouseover($js_text) ."><img src=\"/bbs/image.phtml/$font,$size,$colour/$imgtext/\" alt=\"[ button: $text ]\" border=\"0\"></a>\n";
     else
         echo "<img src=\"/bbs/image.phtml/$font,$size,$colour/$imgtext/\" alt=\"[ image: $text ]\">\n";
 
