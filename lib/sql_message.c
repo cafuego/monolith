@@ -132,7 +132,7 @@ mono_sql_mes_retrieve(unsigned int id, unsigned int forum, message_t *data)
 
     ret = mono_sql_query(&res, "SELECT m.message_id,m.forum_id,m.topic_id," \
         "m.author,u.username,m.alias,m.subject,m.content,UNIX_TIMESTAMP(m.date)," \
-        "AVG(r.score),m.flag,f.name,t.name,m.r_message_id,m.r_forum_id,m.r_topic_id," \
+        "m.flag,f.name,t.name,m.r_message_id,m.r_forum_id,m.r_topic_id," \
         "m.r_author,ur.username,m.r_alias,fr.name,tr.name,m.m_message_id," \
         "m.m_forum_id,m.m_topic_id,m.m_author,um.username,UNIX_TIMESTAMP(m.m_date)," \
         "fm.name,tm.name,m.m_reason FROM " M_TABLE " AS m " \
@@ -144,10 +144,8 @@ mono_sql_mes_retrieve(unsigned int id, unsigned int forum, message_t *data)
         "LEFT JOIN " F_TABLE " AS fm ON f.id=m.m_forum_id " \
         "LEFT JOIN " T_TABLE " AS t ON t.topic_id=m.topic_id " \
         "LEFT JOIN " T_TABLE " AS tr ON tr.topic_id=m.r_topic_id " \
-        "LEFT JOIN " T_TABLE " AS tm ON tm.topic_id=m.m_topic_id" \
-        "," R_TABLE " AS r WHERE m.message_id IN(r.message_id) " \
-        "AND m.forum_id IN (r.forum_id) " \
-        "AND m.forum_id=%u AND m.message_id=%u", forum, id );
+        "LEFT JOIN " T_TABLE " AS tm ON tm.topic_id=m.m_topic_id " \
+        "WHERE m.forum_id=%u AND m.message_id=%u", forum, id );
 
 #ifdef OLD_SHIT
     ret = mono_sql_query(&res, "SELECT message_id,topic_id,m.forum_id,author,alias,subject,UNIX_TIMESTAMP(date),type,priv,deleted FROM " M_TABLE " WHERE m.message_id=%u AND m.forum_id=%u", id, forum);
@@ -193,7 +191,7 @@ mono_sql_mes_list_forum(unsigned int forum, unsigned int start, mlist_t ** list)
      */
     ret = mono_sql_query(&res, "SELECT m.message_id,m.forum_id,m.topic_id," \
         "m.author,u.username,m.alias,m.subject,m.content,UNIX_TIMESTAMP(m.date)," \
-        "AVG(r.score),m.flag,f.name,t.name,m.r_message_id,m.r_forum_id,m.r_topic_id," \
+        "m.flag,f.name,t.name,m.r_message_id,m.r_forum_id,m.r_topic_id," \
         "m.r_author,ur.username,m.r_alias,fr.name,tr.name,m.m_message_id," \
         "m.m_forum_id,m.m_topic_id,m.m_author,um.username,UNIX_TIMESTAMP(m.m_date)," \
         "fm.name,tm.name,m.m_reason FROM " M_TABLE " AS m " \
@@ -205,10 +203,8 @@ mono_sql_mes_list_forum(unsigned int forum, unsigned int start, mlist_t ** list)
         "LEFT JOIN " F_TABLE " AS fm ON f.id=m.m_forum_id " \
         "LEFT JOIN " T_TABLE " AS t ON t.topic_id=m.topic_id " \
         "LEFT JOIN " T_TABLE " AS tr ON tr.topic_id=m.r_topic_id " \
-        "LEFT JOIN " T_TABLE " AS tm ON tm.topic_id=m.m_topic_id" \
-        "," R_TABLE " AS r WHERE m.message_id IN(r.message_id) " \
-        "AND m.forum_id IN (r.forum_id) AND m.forum_id=%u AND " \
-        "m.message_id>%u GROUP BY m.message_id", forum, start );
+        "LEFT JOIN " T_TABLE " AS tm ON tm.topic_id=m.m_topic_id " \
+        "WHERE m.forum_id=%u AND m.message_id>%u ", forum, start );
 
 #ifdef OLD_SHIT
     ret = mono_sql_query(&res, "SELECT message_id,topic_id,forum_id,author,alias,subject,UNIX_TIMESTAMP(date) AS date,type,priv,deleted FROM " M_TABLE " WHERE message_id>%u AND forum_id=%u ORDER BY message_id", start, forum);
@@ -261,7 +257,7 @@ mono_sql_mes_list_topic(unsigned int topic, unsigned int start, mlist_t ** list)
      */
     ret = mono_sql_query(&res, "SELECT m.message_id,m.forum_id,m.topic_id," \
         "m.author,u.username,m.alias,m.subject,m.content,UNIX_TIMESTAMP(m.date)," \
-        "AVG(r.score),m.flag,f.name,t.name,m.r_message_id,m.r_forum_id,m.r_topic_id," \
+        "m.flag,f.name,t.name,m.r_message_id,m.r_forum_id,m.r_topic_id," \
         "m.r_author,ur.username,m.r_alias,fr.name,tr.name,m.m_message_id," \
         "m.m_forum_id,m.m_topic_id,m.m_author,um.username,UNIX_TIMESTAMP(m.m_date)," \
         "fm.name,tm.name,m.m_reason FROM " M_TABLE " AS m " \
@@ -273,10 +269,8 @@ mono_sql_mes_list_topic(unsigned int topic, unsigned int start, mlist_t ** list)
         "LEFT JOIN " F_TABLE " AS fm ON f.id=m.m_forum_id " \
         "LEFT JOIN " T_TABLE " AS t ON t.topic_id=m.topic_id " \
         "LEFT JOIN " T_TABLE " AS tr ON tr.topic_id=m.r_topic_id " \
-        "LEFT JOIN " T_TABLE " AS tm ON tm.topic_id=m.m_topic_id" \
-        "," R_TABLE " AS r WHERE m.message_id IN(r.message_id) " \
-        "AND m.forum_id IN (r.forum_id) AND m.topic_id=%u AND " \
-        "m.message_id>%u GROUP BY m.message_id", topic, start );
+        "LEFT JOIN " T_TABLE " AS tm ON tm.topic_id=m.m_topic_id " \
+        "WHERE m.topic_id=%u AND m.message_id>%u", topic, start );
 
 #ifdef OLD_SHIT
     ret = mono_sql_query(&res, "SELECT message_id,topic_id,forum_id,author,alias,subject,UNIX_TIMESTAMP(date) AS date,type,priv,deleted FROM " M_TABLE " WHERE message_id>%u AND topic_id=%u ORDER BY message_id", start, topic);
@@ -323,36 +317,31 @@ mono_sql_mes_search_forum(int forum, const char *string, sr_list_t **list)
         ret = mono_sql_query( &res,
             "SELECT " \
                 "m.message_id,m.forum_id,m.topic_id,f.name,t.name," \
-                "u.username,m.alias,m.subject,m.flag,AVG(r.score) " \
+                "u.username,m.alias,m.subject,m.flag " \
             "FROM %s AS m " \
                 "LEFT JOIN %s AS u ON u.id=m.author " \
                 "LEFT JOIN %s AS f ON f.id=m.forum_id " \
-                "LEFT JOIN %s AS t ON m.topic_id=t.topic_id" \
-            ",%s AS r " \
+                "LEFT JOIN %s AS t ON m.topic_id=t.topic_id " \
             "WHERE " \
-                "(((m.message_id IN(r.message_id) AND m.forum_id IN (r.forum_id)) " \
-                "AND (m.content REGEXP '%s' OR m.subject REGEXP '%s') " \
-                "AND (m.forum_id=%u))) " \
+                "(m.content REGEXP '%s' OR m.subject REGEXP '%s') " \
+                "AND m.forum_id=%u " \
                 "GROUP BY m.message_id " \
             "ORDER BY m.forum_id, m.message_id",
-                M_TABLE, U_TABLE, F_TABLE, T_TABLE, R_TABLE,
+                M_TABLE, U_TABLE, F_TABLE, T_TABLE, 
                 needle, needle, forum );
     else
         ret = mono_sql_query( &res,
             "SELECT " \
                 "m.message_id,m.forum_id,m.topic_id,f.name,t.name," \
-                "u.username,m.alias,m.subject,m.flag,AVG(r.score) " \
+                "u.username,m.alias,m.subject,m.flag " \
             "FROM %s AS m " \
                 "LEFT JOIN %s AS u ON u.id=m.author " \
                 "LEFT JOIN %s AS f ON f.id=m.forum_id " \
-                "LEFT JOIN %s AS t ON m.topic_id=t.topic_id" \
-            ",%s AS r " \
+                "LEFT JOIN %s AS t ON m.topic_id=t.topic_id " \
             "WHERE " \
-                "(((m.message_id IN(r.message_id) AND m.forum_id IN (r.forum_id)) " \
-                "AND (m.content REGEXP '%s' OR m.subject REGEXP '%s'))) " \
-                "GROUP BY m.message_id " \
+                "m.content REGEXP '%s' OR m.subject REGEXP '%s' " \
             "ORDER BY m.forum_id, m.message_id",
-                M_TABLE, U_TABLE, F_TABLE, T_TABLE, R_TABLE,
+                M_TABLE, U_TABLE, F_TABLE, T_TABLE,
                 needle, needle );
 
     xfree(needle);

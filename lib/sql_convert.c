@@ -61,35 +61,34 @@ mono_sql_convert_row_to_mes(MYSQL_ROW row)
     snprintf(message->content, strlen(row[7]), "%s", row[7]);
 
     sscanf(row[8], "%lu", &message->date);
-    sscanf(row[9], "%f", &message->score);
-    snprintf(message->flag, L_FLAGNAME, "%s",  row[10]);
-    snprintf(message->forum_name, L_QUADNAME, "%s", row[11]);
-    snprintf(message->topic_name, L_TOPICNAME, "%s", row[12]);
+    snprintf(message->flag, L_FLAGNAME, "%s",  row[9]);
+    snprintf(message->forum_name, L_QUADNAME, "%s", row[10]);
+    snprintf(message->topic_name, L_TOPICNAME, "%s", row[11]);
 
     /*
      * Reply info.
      */
-    sscanf(row[13], "%u", &message->reply_m_id);
-    sscanf(row[14], "%u", &message->reply_f_id);
-    sscanf(row[15], "%u", &message->reply_t_id);
-    sscanf(row[16], "%u", &message->reply_a_id);
-    snprintf(message->reply_author, L_USERNAME, "%s", row[17]);
-    snprintf(message->reply_alias, L_USERNAME, "%s", row[18]);
-    snprintf(message->reply_forum_name, L_QUADNAME, "%s", row[19]);
-    snprintf(message->reply_topic_name, L_TOPICNAME, "%s", row[20]);
+    sscanf(row[12], "%u", &message->reply_m_id);
+    sscanf(row[13], "%u", &message->reply_f_id);
+    sscanf(row[14], "%u", &message->reply_t_id);
+    sscanf(row[15], "%u", &message->reply_a_id);
+    snprintf(message->reply_author, L_USERNAME, "%s", row[16]);
+    snprintf(message->reply_alias, L_USERNAME, "%s", row[17]);
+    snprintf(message->reply_forum_name, L_QUADNAME, "%s", row[18]);
+    snprintf(message->reply_topic_name, L_TOPICNAME, "%s", row[19]);
 
     /*
      * Modify info.
      */
-    sscanf(row[21], "%u", &message->orig_m_id);
-    sscanf(row[22], "%u", &message->orig_f_id);
-    sscanf(row[23], "%u", &message->orig_t_id);
-    sscanf(row[24], "%u", &message->orig_a_id);
-    snprintf(message->orig_author, L_USERNAME, "%s", row[25]);
-    sscanf(row[26], "%lu", &message->orig_date);
-    snprintf(message->orig_forum, L_QUADNAME, "%s", row[27]);
-    snprintf(message->orig_topic, L_TOPICNAME, "%s", row[28]);
-    snprintf(message->mod_reason, L_REASON, "%s", row[29]);
+    sscanf(row[20], "%u", &message->orig_m_id);
+    sscanf(row[21], "%u", &message->orig_f_id);
+    sscanf(row[22], "%u", &message->orig_t_id);
+    sscanf(row[23], "%u", &message->orig_a_id);
+    snprintf(message->orig_author, L_USERNAME, "%s", row[24]);
+    sscanf(row[25], "%lu", &message->orig_date);
+    snprintf(message->orig_forum, L_QUADNAME, "%s", row[26]);
+    snprintf(message->orig_topic, L_TOPICNAME, "%s", row[27]);
+    snprintf(message->mod_reason, L_REASON, "%s", row[28]);
 
     return message;
 }
@@ -118,7 +117,6 @@ mono_sql_convert_row_to_sr(MYSQL_ROW row)
     snprintf(result->alias, L_USERNAME, "%s", row[6]);
     snprintf(result->subject, L_SUBJECT, "%s", row[7]);
     snprintf(result->flag, L_FLAGNAME, "%s", row[8]);
-    sscanf(row[9], "%f", &result->score);
 
     return result;
 }
