@@ -206,7 +206,7 @@ print_results(user_t * user)
     printf("</center>\n");
     printf("<p>\n<hr size=\"1\">\n");
     printf("<p align=\"center\">\n");
-    printf("<font size=\"-1\">&copy; <a href=\"/\">The Monolith Community</a> 1997 -- For questions/remarks email: <a href=\"mailto:webmaster@cal044202.student.utwente.nl\">webmaster@cal044202.student.utwente.nl</a><br>\n");
+    printf("<font size=\"-1\">&copy; <a href=\"/\">The Monolith Community</a> 1999 -- For questions/remarks email: <a href=\"mailto:webmaster@cal044202.student.utwente.nl\">webmaster@cal044202.student.utwente.nl</a><br>\n");
     printf("</font>\n</body>\n</html>\n");
 
     return;
@@ -407,7 +407,7 @@ error(int i)
     printf("If you encounter any strange errors, please <a href=\"mailto:webmaster@monolith.student.utwente.nl\">let us know</a>.\n");
     printf("<p>\n<hr size=\"1\">\n");
     printf("<p align=\"center\">\n");
-    printf("<font size=\"-1\">&copy; <a href=\"/\">The Monolith Community</a> 1997 -- For questions/remarks email: <a href=\"mailto:webmaster@cal044202.student.utwente.nl\">webmaster@cal044202.student.utwente.nl</a><br>\n");
+    printf("<font size=\"-1\">&copy; <a href=\"/\">The Monolith Community</a> 1999 -- For questions/remarks email: <a href=\"mailto:webmaster@cal044202.student.utwente.nl\">webmaster@cal044202.student.utwente.nl</a><br>\n");
     printf("</font>\n</body>\n</html>\n");
     return -1;
 }
