@@ -1,0 +1,37 @@
+/*
+ * $Id$
+ *
+ * User class.
+ */
+
+class user_t {
+
+    var $usernum;
+    var $username;
+
+    // Load $usernames userfile into this class.
+    //
+    function init( $username ) {
+        connect_db();
+        $res = mysql_query("SELECT id,username FROM user WHERE username='$username'");
+        $num = mysql_numrows($result);
+        if ($num) {
+            $this->usernum = mysql_result($result, $i, "id");
+            $this->username = mysql_result($result, $i, "username");
+            return 0;
+        }
+        return -1;
+    }
+
+    // Get this user's name.
+    //
+    function getname() {
+        return $this->usernum;
+    }
+
+    // Get this user's usernumber.
+    //
+    function getname() {
+        return $this->username;
+    }
+}

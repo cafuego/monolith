@@ -5,7 +5,7 @@
   */
 
 $check = true;
-$persistent_connections = true;
+$persistent_connections = false;
 
 function
 connect_db()
@@ -15,8 +15,14 @@ connect_db()
     $username = "root";
     $password = "";
     $db = "bbs";
-    MYSQL_CONNECT($hostname, $username, $password) OR DIE("Unable to connect to sql server.");
+    @mysql_connect($hostname, $username, $password) OR DIE("Unable to connect to sql server.");
     @mysql_select_db("$db") or die("Unable to select database");
+}
+
+function close_db()
+{
+    mysql_disconnect();
+    return 0;
 }
 
 function

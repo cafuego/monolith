@@ -2,7 +2,7 @@
 
 #ifdef USE_WEB
 
-SUBDIRS = engine pix style script
+SUBDIRS = classes engine pix style script
 
 webdir = $(prefix)/www/bbs
 web_DATA = index.phtml image.phtml handler.phtml

@@ -1,0 +1,103 @@
+/*
+ * $Id$
+ *
+ * User class, is basically a message_t with associated functions.
+
+    var $message_id;
+    var $forum_id;
+    var $topic_id;
+    var $author_id;
+    var $author;
+    var $alias;
+    var $subject;
+    var $content;
+    var $date;
+    var $message_flag;
+    var $forum_name;
+    var $topic_name;
+    var $reply_m_id;
+    var $reply_f_id;
+    var $reply_t_id;
+    var $reply_a_id;
+    var $reply_author;
+    var $reply_alias;
+    var $reply_forum_name;
+    var $reply_topic_name;
+    var $orig_m_id;
+    var $orig_f_id;
+    var $orig_t_id;
+    var $orig_a_id;
+    var $orig_author;
+    var $orig_date;
+    var $orig_forum;
+    var $orig_topic;
+    var $mod_reason;
+
+    // Load message $message_id from forum $forum_id from the database.
+    //
+    function init( $forum_id, $message_id ) {
+
+        connect_db();
+
+        $query = "SELECT m.message_id,m.forum_id,m.topic_id,m.author,u.username";
+        $query .= "  ,m.alias,m.subject,m.content,UNIX_TIMESTAMP(m.date),m.flag";
+        $query .= "  ,f.name,t.name,m.r_message_id,m.r_forum_id,m.r_topic_id";
+        $query .= "  ,m.r_author,ur.username,m.r_alias,fr.name,tr.name,m.m_message_id";
+        $query .= "  ,m.m_forum_id,m.m_topic_id,m.m_author,um.username";
+        $query .= "  ,UNIX_TIMESTAMP(m.m_date),fm.name,tm.name,m.m_reason ";
+        $query .= "FROM M_TABLE AS m";
+        $query .= "  LEFT JOIN " U_TABLE " AS u ON u.id=m.author";
+        $query .= "  LEFT JOIN " U_TABLE " AS ur ON ur.id=m.r_author";
+        $query .= "  LEFT JOIN " U_TABLE " AS um ON um.id=m.m_author";
+        $query .= "  LEFT JOIN " F_TABLE " AS f ON f.id=m.forum_id ";
+        $query .= "  LEFT JOIN " F_TABLE " AS fr ON fr.id=m.r_forum_id ";
+        $query .= "  LEFT JOIN " F_TABLE " AS fm ON f.id=m.m_forum_id ";
+        $query .= "  LEFT JOIN " T_TABLE " AS t ON t.topic_id=m.topic_id ";
+        $query .= "  LEFT JOIN " T_TABLE " AS tr ON tr.topic_id=m.r_topic_id ";
+        $query .= "  LEFT JOIN " T_TABLE " AS tm ON tm.topic_id=m.m_topic_id ";
+        $query .= "WHERE m.forum_id=$forum_id AND m.message_id=$message_id";
+
+        $res = mysql_query( $query );
+
+        if( $row = mysql_fetch_row( $res )) {
+            $this->message_id = row[0];
+            $this->forum_id = row[1];
+            $this->topic_id = row[2];
+            $this->author_id = row[3];
+            $this->author = row[4];
+            $this->alias = htmlentities( row[5] );
+            $this->subject = htmlentities( row[6] );
+            $this->content = htmlentities( row[7] );
+            $this->date = row[8];
+            $this->message_flag = row[9];
+            $this->forum_name = row[10];
+            $this->topic_name = row[11];
+            $this->reply_m_id = row[12];
+            $this->reply_f_id = row[13];
+            $this->reply_t_id = row[14];
+            $this->reply_a_id = row[15];
+            $this->reply_author = row[16];
+            $this->reply_alias = htmlentities( row[17] );
+            $this->reply_forum_name = row[18];
+            $this->reply_topic_name = row[19];
+            $this->orig_m_id = row[20];
+            $this->orig_f_id = row[21];
+            $this->orig_t_id = row[22];
+            $this->orig_a_id = row[23];
+            $this->orig_author = row[24];
+            $this->orig_date = row[25];
+            $this->orig_forum = row[26];
+            $this->orig_topic = row[27];
+            $this->mod_reason = row[28];
+
+            return 0;
+        }
+        return -1;
+    }
+
+    // Displays the currently loaded message in proper format.
+    //
+    function display() {
+    
+    }
+}
