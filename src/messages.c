@@ -1930,7 +1930,7 @@ rate_message(unsigned int forum, unsigned int message)
     cprintf("\1f\1gYour rating for this %s \1w(\1g-9 thru 9\1w): \1c", config.message);
 
     strcpy(buf_str, "");
-    getline(&buf_str, 2, TRUE);
+    getline(&buf_str, 3, TRUE);
 
     if( (sscanf(buf_str, "%d", &score)) != 1) {
         cprintf("\1f\1rSorry, but `\1y%s\1r' is not a valid entry.\1a\n", buf_str);
