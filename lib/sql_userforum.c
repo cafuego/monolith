@@ -90,7 +90,7 @@ mono_sql_uf_get_unread(unsigned int forum, unsigned int lastseen)
 	return -1;
     }
     row = mysql_fetch_row(res);
-    sscanf(row[0], "%u", &ret);
+    sscanf(row[0], "%d", &ret);
     (void) mono_sql_u_free_result(res);
 
     return ret;

@@ -62,7 +62,7 @@ void
 flush_user_cache(void)
 {
     if (user_cache != NULL)
-	destroy_user_cache();
+	(void)destroy_user_cache();
     user_cache = NULL;
 }
 
@@ -77,7 +77,7 @@ update_user_cache(const unsigned int num)
 
     update_ctr++;
     if (!(update_ctr % 10))
-	remove_stale_cache_entries();
+	(void)remove_stale_cache_entries();
 
     if (mono_sql_u_id2name(num, the_user.name) == -1)
 	return;
@@ -86,7 +86,7 @@ update_user_cache(const unsigned int num)
     the_user.friend = 0;
     the_user.quickx = -1;
     the_user.next = NULL;
-    add_to_user_cache(the_user);
+    (void)add_to_user_cache(the_user);
 }
 
 void
@@ -107,10 +107,10 @@ start_user_cache(const unsigned int the_number)
 	    the_user.quickx = frPtr->quickx;
 	    strcpy(the_user.name, frPtr->name);
 	    the_user.next = NULL;
-	    add_to_user_cache(the_user);
+	    (void)add_to_user_cache(the_user);
 	    frPtr = frPtr->next;
 	}
-	dest_friends_list(tmp_flist);
+	(void)dest_friends_list(tmp_flist);
     }
     tmp_flist = NULL;
 
@@ -122,10 +122,10 @@ start_user_cache(const unsigned int the_number)
 	    the_user.friend = the_user.quickx = -1;
 	    strcpy(the_user.name, frPtr->name);
 	    the_user.next = NULL;
-	    add_to_user_cache(the_user);
+	    (void)add_to_user_cache(the_user);
 	    frPtr = frPtr->next;
 	}
-	dest_friends_list(tmp_flist);
+	(void)dest_friends_list(tmp_flist);
     }
 }
 

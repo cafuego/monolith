@@ -65,16 +65,16 @@ mono_return_pid(const char *name)
 	mono_errno = E_NOSHM;
 	return -1;
     }
-    mono_lock_shm(WHO_LOCK);
+    (void)mono_lock_shm(WHO_LOCK);
     p = shm->first;
     while (p != -1) {
 	if (EQ(name, shm->wholist[p].username)) {
-	    mono_lock_shm(WHO_UNLOCK);
+	    (void)mono_lock_shm(WHO_UNLOCK);
 	    return shm->wholist[p].pid;
 	}
 	p = shm->wholist[p].next;
     }
-    mono_lock_shm(WHO_UNLOCK);
+    (void)mono_lock_shm(WHO_UNLOCK);
     return -1;
 }
 
@@ -84,14 +84,14 @@ mono_fix_usercount()
 
     int p = 0, users = 0;
 
-    mono_lock_shm(WHO_LOCK);
+    (void) mono_lock_shm(WHO_LOCK);
     p = shm->first;
     while (p != -1) {
         users++;
         p = shm->wholist[p].next;
     }
     shm->user_count = users;
-    mono_lock_shm(WHO_UNLOCK);
+    (void) mono_lock_shm(WHO_UNLOCK);
 
     return users;
 }
@@ -219,7 +219,7 @@ mono_change_online(const char *user, const char *tmp_string, int ch)
 
 	if (EQ(user, p->username)) {
 
-	    mono_lock_shm(WHO_LOCK);
+	    (void) mono_lock_shm(WHO_LOCK);
 
 	    switch (ch) {
 
@@ -335,7 +335,7 @@ mono_change_online(const char *user, const char *tmp_string, int ch)
 		    break;
 
 	    }			/* switch */
-	    mono_lock_shm(WHO_UNLOCK);
+	    (void) mono_lock_shm(WHO_UNLOCK);
 	    return 0;
 	}			/* if */
 	q = shm->wholist[q].next;
@@ -410,7 +410,7 @@ mono_read_btmp(const char *name)
 	mono_errno = E_NOSHM;
 	return NULL;
     }
-    mono_lock_shm(WHO_LOCK);
+    (void) mono_lock_shm(WHO_LOCK);
 
     i = shm->first;
     while (i != -1) {
@@ -421,7 +421,7 @@ mono_read_btmp(const char *name)
 	}
 	i = shm->wholist[i].next;
     }
-    mono_lock_shm(WHO_UNLOCK);
+    (void) mono_lock_shm(WHO_UNLOCK);
     return record;
 }
 
@@ -616,7 +616,7 @@ _mono_add_to_linked_list(btmp_t user)
     int i, p, q;
     char *my_name;
 
-    mono_lock_shm(WHO_LOCK);
+    (void) mono_lock_shm(WHO_LOCK);
 
     /* first find an empty slot. */
     for (i = 0, p = -1; i < MAXUSERS; i++)
@@ -625,7 +625,7 @@ _mono_add_to_linked_list(btmp_t user)
 	    break;
 	}
     if (p == -1) {
-	mono_lock_shm(WHO_UNLOCK);
+	(void) mono_lock_shm(WHO_UNLOCK);
 	return -1;		/* couldn't find empty slot */
     }
     /* copy into slot */
@@ -645,7 +645,7 @@ _mono_add_to_linked_list(btmp_t user)
     }
     /* done */
     shm->user_count++;
-    mono_lock_shm(WHO_UNLOCK);
+    (void) mono_lock_shm(WHO_UNLOCK);
 
     my_name = (char *) xmalloc(sizeof(char) * (L_USERNAME + 1));
     strcpy(my_name, user.username);
@@ -674,7 +674,7 @@ _mono_remove_from_linked_list(const char *user)
 {
     int p, q;
 
-    mono_lock_shm(WHO_LOCK);
+    (void) mono_lock_shm(WHO_LOCK);
 
     p = q = shm->first;
     while (p != -1) {
@@ -685,13 +685,13 @@ _mono_remove_from_linked_list(const char *user)
 		shm->first = shm->wholist[p].next;
 	    else
 		shm->wholist[q].next = shm->wholist[p].next;
-	    mono_lock_shm(WHO_UNLOCK);
+	    (void) mono_lock_shm(WHO_UNLOCK);
 	    return 0;
 	}
 	q = p;
 	p = shm->wholist[p].next;
     }
-    mono_lock_shm(WHO_UNLOCK);
+    (void) mono_lock_shm(WHO_UNLOCK);
     return -1;
 }
 
@@ -760,7 +760,7 @@ mono_find_x_ing(const char *name, char *xer)
 	mono_errno = E_NOSHM;
 	return -1;
     }
-    mono_lock_shm(WHO_LOCK);
+    (void) mono_lock_shm(WHO_LOCK);
 
     strcpy(xer, "");
 
@@ -772,7 +772,7 @@ mono_find_x_ing(const char *name, char *xer)
 	}
 	i = shm->wholist[i].next;
     }
-    mono_lock_shm(WHO_UNLOCK);
+    (void) mono_lock_shm(WHO_UNLOCK);
     if (*xer)
 	return 0;
     else

@@ -560,7 +560,7 @@ mono_sql_u_update_x_count(unsigned int user_id, int x_count)
     MYSQL_RES *res;
 
     i = mono_sql_query(&res, "UPDATE " U_TABLE
-		       " set x_count='%ud' "
+		       " set x_count='%u' "
 		       " WHERE id=%u", x_count, user_id);
 
     if (i == -1) {
@@ -591,7 +591,7 @@ mono_sql_u_get_x_count(unsigned int user_id, int *x_count)
     }
     row = mysql_fetch_row(res);
 
-    ret = sscanf(row[0], "%ud", x_count);
+    ret = sscanf(row[0], "%u", x_count);
     mono_sql_u_free_result(res);
 
     return 0;
@@ -624,7 +624,7 @@ mono_sql_u_update_post_count(unsigned int user_id, int post_count)
     MYSQL_RES *res;
 
     i = mono_sql_query(&res, "UPDATE " U_TABLE
-		       " set post_count='%ud' "
+		       " set post_count='%u' "
 		       " WHERE id=%u", post_count, user_id);
 
     if (i == -1) {
@@ -655,7 +655,7 @@ mono_sql_u_get_post_count(unsigned int user_id, int *post_count)
     }
     row = mysql_fetch_row(res);
 
-    ret = sscanf(row[0], "%ud", post_count);
+    ret = sscanf(row[0], "%u", post_count);
     mono_sql_u_free_result(res);
 
     return 0;
@@ -688,7 +688,7 @@ mono_sql_u_update_login_count(unsigned int user_id, int login_count)
     MYSQL_RES *res;
 
     i = mono_sql_query(&res, "UPDATE " U_TABLE
-		       " set login_count='%ud' "
+		       " set login_count='%u' "
 		       " WHERE id=%u", login_count, user_id);
 
     if (i == -1) {
@@ -719,7 +719,7 @@ mono_sql_u_get_login_count(unsigned int user_id, int *login_count)
     }
     row = mysql_fetch_row(res);
 
-    ret = sscanf(row[0], "%ud", login_count);
+    ret = sscanf(row[0], "%u", login_count);
     mono_sql_u_free_result(res);
 
     return 0;
