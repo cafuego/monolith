@@ -397,3 +397,22 @@ wholist(int level, const user_t * user)
 
     return p;
 }
+
+int
+new_guest_id()
+{
+    int i = 0, guests = 0;
+    btmp_t *r = NULL;
+
+    i = shm->first;
+    while (i != -1) {
+
+        r = &(shm->wholist[i]);
+        if( strstr(r->username, "Guest") != NULL )
+           guests++;
+
+        i = r->next;
+    }    /* while */
+
+    return ++guests;
+}

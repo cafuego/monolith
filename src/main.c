@@ -19,7 +19,7 @@
 #include <unistd.h>
 
 #ifdef USE_MYSQL
-  #include MYSQL_HEADER
+#include MYSQL_HEADER
 #endif
 
 #ifdef ENABLE_NLS
@@ -58,6 +58,7 @@
 #include "registration.h"
 #include "rooms.h"
 #include "routines2.h"
+#include "wholist.h"
 
 int connecting_flag;
 int first_login = FALSE;
@@ -193,38 +194,43 @@ kickoutmyself(int sig)
 * enter_passwd()
 *************************************************/
 
+#define MAX_PASS_LEN	20
+
 int
 enter_passwd(const char *username)
 {
 
-    char pwtest[20];
     static int failures;
+    char *pwtest = NULL;
     user_t *user = NULL;
 
-    if (!(mono_sql_u_check_user(username))) {
-        cprintf(_("No such user.\n"));
-	log_it("badpw", "Login as %s from %s, but user does not exist", username, hname);
-        return FALSE;
-    }
+    pwtest = (char *) xmalloc(MAX_PASS_LEN * sizeof(char));
+    strcpy(pwtest, "");
 
+    if (!(mono_sql_u_check_user(username))) {
+	cprintf(_("No such user.\n"));
+	log_it("badpw", "Login as %s from %s, but user does not exist", username, hname);
+	return FALSE;
+    }
     user = readuser(username);
     cprintf("\r%s's Password: ", user->username);
     (void) getline(pwtest, -19, 1);
 
     if (strlen(pwtest) == 0) {
+	xfree(pwtest);
 	failures++;
 	return FALSE;
     }
-
     if (mono_sql_u_check_passwd(user->usernum, pwtest) == TRUE) {
-	xfree( user );
+	xfree(pwtest);
+	xfree(user);
 	return TRUE;
     }
-
     cprintf(_("Incorrect login.\n"));
     log_it("badpw", "%s from %s", user->username, hname);
 
-    xfree( user );
+    xfree(pwtest);
+    xfree(user);
 
     if (++failures >= 4) {
 	cprintf("Too many failures.\n");
@@ -437,10 +443,11 @@ main(int argc, char *argv[])
 	usersupp = readuser(argv[2]);
     } else {
 	while (!done) {
-            username = (char *) xmalloc( sizeof(char) * (L_USERNAME+1));
+	    username = (char *) xmalloc(sizeof(char) * (L_USERNAME + 1));
+	    strcpy(username, "");
 	    enter_name(&username);	/* find out who the user is     */
-	    xfree(usersupp);		/* free and re-allocate this before */
-            usersupp = (user_t *) xcalloc(1, sizeof(user_t));
+	    xfree(usersupp);	/* free and re-allocate this before */
+	    usersupp = (user_t *) xcalloc(1, sizeof(user_t));
 	    if (EQ(username, "new")) {	/* a new user?                  */
 		new_user(hname);
 		first_login = TRUE;
@@ -448,8 +455,9 @@ main(int argc, char *argv[])
 		done = TRUE;
 	    } else {
 		if (strcasecmp(username, "Guest") != 0) {
-		    if( (done = enter_passwd(username)) == TRUE )
-		        usersupp = readuser(username);
+		    if ((done = enter_passwd(username)) == TRUE) {
+			usersupp = readuser(username);
+                    }
 		} else {	/* is guest */
 		    if (check_user("Guest")) {
 			usersupp = readuser("Guest");
@@ -457,13 +465,13 @@ main(int argc, char *argv[])
 		    } else {
 			log_it("errors", "Create a guest account!\n");
 			cprintf("\1f\1rGuest account is not enabled, sorry\n");
-                        xfree(username);
+			xfree(username);
 			logoff(ULOG_PROBLEM);
 		    }
 		}
 	    }
 	}
-        xfree(username);
+	xfree(username);
     }
 
     my_name = (char *) xmalloc(sizeof(char) * (L_USERNAME + 1));
@@ -475,16 +483,16 @@ main(int argc, char *argv[])
 
 #ifdef ENABLE_NLS
     {
-	char env[L_LANG+10];
+	char env[L_LANG + 10];
 	int ret;
 	extern int _nl_msg_cat_cntr;
 
 	sprintf(env, "LANGUAGE=%s", usersupp->lang);
 	ret = putenv(env);
-	IFSYSOP cprintf("Locale: %s\n",env);
-        if ( ret == -1 ) {
-           cprintf( "Could not set locale.\n" );
-        }
+	IFSYSOP cprintf("Locale: %s\n", env);
+	if (ret == -1) {
+	    cprintf("Could not set locale.\n");
+	}
 	++_nl_msg_cat_cntr;
     }
 #endif
@@ -504,7 +512,10 @@ main(int argc, char *argv[])
 	more(DELETEDDENY, 1);
 	logoff(ULOG_DENIED);
     }
-    strcpy(username, usersupp->username);
+
+    // username = (char *) xmalloc(sizeof(char) * (L_USERNAME + 1));
+    // strcpy(username, "");
+    // strcpy(username, usersupp->username);
 
     mono_connect_shm();
 
@@ -530,7 +541,7 @@ main(int argc, char *argv[])
     }
     laston = usersupp->laston_from;
     usersupp->laston_from = time(&login_time);
-    mono_sql_u_increase_login_count( usersupp->usernum );
+    mono_sql_u_increase_login_count(usersupp->usernum);
     strcpy(previous_host, usersupp->lasthost);
     strncpy(usersupp->lasthost, hname, L_HOSTNAME);
     usersupp->lasthost[L_HOSTNAME] = '\0';
@@ -541,7 +552,7 @@ main(int argc, char *argv[])
     }
 
     /* ask for the key, if they are not validated yet */
-    if ((!(usersupp->priv & PRIV_VALIDATED)) && first_login == FALSE )
+    if ((!(usersupp->priv & PRIV_VALIDATED)) && first_login == FALSE)
 	enter_key();
 
     if (usersupp->priv & PRIV_VALIDATED)
@@ -627,7 +638,7 @@ main(int argc, char *argv[])
     for (a = 0; a < MAXQUADS; a++)
 	skipping[a] = 0;
 
-    if ( first_login == TRUE ) {
+    if (first_login == TRUE) {
 #ifdef QC_ENABLE
 	if (qc_user_menu(1) == -1)	/* qc is horked, or locked out */
 #endif
@@ -663,7 +674,7 @@ user_terminate()
     }
     while (cmd != 'n' || cmd != 'y' || cmd != 'm') {
 
-	cprintf(_("\n\1f\1gAre you sure you want to leave %s? \1w(\1gy\1w/\1gn\1w/\1gm\1w/\1g?\1w)\1g ") , BBSNAME);
+	cprintf(_("\n\1f\1gAre you sure you want to leave %s? \1w(\1gy\1w/\1gn\1w/\1gm\1w/\1g?\1w)\1g "), BBSNAME);
 	cmd = get_single_quiet("ynm?");
 
 	switch (cmd) {
@@ -778,10 +789,10 @@ print_login_banner(time_t laston)
     int timescalled = 0;
     int ret;
 
-    ret = mono_sql_u_get_login_count( usersupp->usernum, &timescalled );
+    ret = mono_sql_u_get_login_count(usersupp->usernum, &timescalled);
 
     (void) cprintf(_("\n\1a\1f\1gWelcome to %s, \1g%s! \1gThis is your \1w#%d \1glogin.\n")
-		   , BBSNAME, usersupp->username, timescalled);
+		   ,BBSNAME, usersupp->username, timescalled);
 
     if ((strncmp(previous_host, "none", 4)) != 0)
 	(void) cprintf(_("\1f\1gLast login: %s \1g\1ffrom \1r%-16.16s\n"),
