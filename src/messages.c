@@ -485,6 +485,8 @@ search_via_sql()
        config.forum, config.user, "Subject" );
     if(count > 0) {
         while(list != NULL) {
+            list->result->forum[20] = '\0';
+            list->result->subject[20] = '\0';
             cprintf("  \1f\1g%5d \1w%3d.\1y%-20s \1g%-18s \1y%-20s \1r",
                 list->result->m_id, list->result->f_id, list->result->forum,
                 list->result->author, ((list->result->subject == NULL) || (EQ(list->result->subject,"(null)"))) ? "[no subject]" : list->result->subject );
