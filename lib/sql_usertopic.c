@@ -94,7 +94,7 @@ mono_sql_ut_add_entry(unsigned int user_id, unsigned int forum_id,  unsigned int
 
     /* make this into an sql query that also checks if room & user exist */
     ret = mono_sql_query(&res,
- 		 "SELECT user_id,username FROM " UT_TABLE
+ 		 "SELECT user_id,username FROM " UT_TABLE " "
       	         "WHERE topic_id=%u AND user_id=%u AND forum_id=%u"
        	, topic_id, user_id, forum_id );
     mono_sql_u_free_result(res);
