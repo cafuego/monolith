@@ -84,15 +84,17 @@
         // Update account details.
         //
         case "i":
-            if($name) echo "Name: $name<br>\n";
-            echo "Address: $address<br>\n";
-            echo "City: $city<br>\n";
-            echo "State: $state<br>\n";
-            echo "Zip: $zip<br>\n";
-            echo "Country: $country<br>\n";
-            if($phone) echo "Phone: $phone<br>\n";
-            echo "Email: $email<br>\n";
-            echo "Url: $url<br>\n";
+            $hiddenarg = "";
+            if($name) hiddenarg .= ",name";
+            if($address) hiddenarg .= ",address";
+            if($city) hiddenarg .= ",city";
+            if($state) hiddenarg .= ",state";
+            if($zip) hiddenarg .= ",zip";
+            if($country) hiddenarg .= ",country";
+            if($phone) hiddenarg .= ",phone";
+            if($email) hiddenarg .= ",email";
+            if($url) hiddenarg .= ",url";
+            echo "String sofar: $hiddenarg<br>\n";
             if($website) echo "Website: $website<br>\n";
 
             
