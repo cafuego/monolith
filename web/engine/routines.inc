@@ -297,13 +297,13 @@ function colorize($doing) {
     echo "<!-- $doing -->\n";
     $doing = ereg_replace("%01g", "</font><font color=\"#00ff00\">", $doing);	// Green.
     echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "%01c", "</font><font color=\\\"#00ffff\\\">");	// Cyan.
+    $doing = ereg_replace("%01c", "</font><font color=\"#00ffff\">", $doing);	// Cyan.
     echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "%01b", "</font><font color=\\\"#0000ff\\\">");	// Blue.
+    $doing = ereg_replace("%01b", "</font><font color=\"#0000ff\">", $doing);	// Blue.
     echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "%01p", "</font><font color=\\\"#ff00ff\\\">");	// Purple.
+    $doing = ereg_replace("%01p", "</font><font color=\"#ff00ff\">", $doing);	// Purple.
     echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "%01r", "</font><font color=\\\"#ff0000\\\">");	// Red.
+    $doing = ereg_replace("%01r", "</font><font color=\"#ff0000\">", $doing);	// Red.
     echo "<!-- $doing -->\n";
 
     return rawurldecode($doing);
