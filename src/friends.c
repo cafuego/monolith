@@ -250,7 +250,10 @@ void
 menu_friend_add(int param)
 {
 
-    char *name, user[L_USERNAME + 1], bbs[L_BBSNAME + 1];
+    char *name;
+#ifdef FRIENDS_ENEMIES_LISTS_WORK_WITH_SQL
+    char user[L_USERNAME + 1], bbs[L_BBSNAME + 1];
+#endif
     unsigned int flag, flag2;
     unsigned int id2;
 
@@ -265,6 +268,9 @@ menu_friend_add(int param)
 	return;
 
     if (strchr(name, '@') != NULL) {
+	cprintf("\1f\1rInterBBS names aren't supported on friends-enemieslists.\n");
+	return;
+#ifdef FRIENDS_ENEMIES_LISTS_WORK_WITH_SQL
 	parse_inter_address(name, user, bbs);
 	if (check_remote_user(user, bbs) == 'X') {
 	    cprintf("\1f\1rUser \1y%s\1r does not exist at \1y%s\1r.\n", user, bbs);
@@ -273,6 +279,7 @@ menu_friend_add(int param)
 	    /* reformat name, so we get the full bbs name if they used an abbrev. */
 	    sprintf(name, "%s@%s", user, bbs);
 	}
+#endif
     } else if (mono_sql_u_name2id(name, &id2) == -1) {
 	cprintf("\1f\1rNo such user.\n");
 	return;
