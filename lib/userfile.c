@@ -723,6 +723,7 @@ get_new_usernum(const char *usernm, unsigned int *num)
     /* michel does it the simple sql way */
     mono_sql_u_add_user(usernm);
     mono_sql_u_name2id(usernm, num);
+    mono_sql_uf_new_user( *num );
 
     return *num;
 

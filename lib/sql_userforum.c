@@ -126,11 +126,9 @@ mono_sql_uf_list_hosts_by_forum(unsigned int forumnumber, userlist_t ** p)
     MYSQL_ROW row;
 
     ret = mono_sql_query(&res,
-			 "SELECT u.id,u.username "
-			 "FROM user u,userforum uf "
+			 "SELECT u.id,u.username FROM user u,userforum uf "
 		       "WHERE forum_id=%u AND uf.user_id=u.id AND host='y' "
-			 "ORDER BY u.username"
-			 ,forumnumber);
+			 "ORDER BY u.username", forumnumber);
 
     if (ret == -1) {
 	return -1;
@@ -182,8 +180,8 @@ mono_sql_uf_list_hosts_by_user(unsigned int usernumber, forumlist_t ** p)
 	    continue;
 
 	e.forum_id = forum_id;
-        if ( shm )
-	strcpy( e.name, shm->rooms[forum_id].name ); 
+	if (shm)
+	    strcpy(e.name, shm->rooms[forum_id].name);
 	add_to_forumlist(e, p);
     }
     mysql_free_result(res);
@@ -574,6 +572,24 @@ mono_sql_uf_remove_kicked(unsigned int usernumber, unsigned int forumnumber)
     }
     mysql_free_result(res);
     return 0;
+}
+
+int
+mono_sql_uf_new_user(unsigned int user_id)
+{
+    unsigned int forum_id;
+    int ret;
+    MYSQL_RES *res;
+
+    for (forum_id = 0; forum_id < MAXQUADS; forum_id++) {
+	ret = mono_sql_query(&res,
+		   "INSERT INTO userforum (user_id,forum_id) VALUES (%u,%u)"
+			     ,user_id, forum_id);
+	if (ret == -1)
+	    printf("\nInsert error");
+    }
+    mysql_free_result(res);
+    return;
 }
 
 
