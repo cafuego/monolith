@@ -171,17 +171,22 @@ int
 escape_string(const char *old_string, char **new_string)
 {
     int i, j;
+    size_t sl;
     char *ns;
 
-    if (!old_string || strlen(old_string) < 1)
+    if (!old_string )
 	return -1;
 
-    ns = (char *) xmalloc(strlen(old_string) * 2);
+    sl = strlen( old_string );
+
+    if ( sl < 1 ) return -1;
+
+    ns = (char *) xmalloc( sl * 2);
 
     if (ns == NULL)
 	return -1;
 
-    for (i = 0, j = 0; i < strlen(old_string); i++) {
+    for (i = 0, j = 0; i < sl; i++) {
 	switch (old_string[i]) {
 	    case '"':
 	    case '\\':
