@@ -803,6 +803,8 @@ msgid ""
 "\n"
 "\001f\001gAre you sure you want to leave %s? \001w(\001gy\001w/\001gn\001w/\001gm\001w/\001g?\001w)\001g "
 msgstr ""
+"\n"
+"\001f\001gWeet je zeker dat je %s wil verlaten? \001w(\001gy\001w/\001gn\001w/\001gm\001w/\001g?\001w)\001g "
 
 #: src/main.c:667
 msgid "\001f\001gHelp.\001a\n"
