@@ -239,7 +239,9 @@ getline(char *string, int lim, int nocol)
 
     for (;;) {
 	a = inkey();
-        /* a &= 127; */
+#ifdef NO_8BIT
+        a &= 127;
+#endif /* NO_8BIT */
 
 	/* ^U or BS at beginning of line */
 	if ((a == CTRL_U || a == CTRL_X || a == BS) && strlen(string) == 0)
@@ -263,7 +265,7 @@ getline(char *string, int lim, int nocol)
 	    (void) putchar(10);
 	    return 0;
 	}
-	if (a == 8) {
+	if (a == BS ) {
 	    *(--p) = '\0';
 	    /* color-hack: if the character before the one that you're going
 	     * to backspace-erase is ^A, delete them both.  */
@@ -296,7 +298,7 @@ getline(char *string, int lim, int nocol)
 	    cprintf(" \b");
 	    continue;
 	}
-	if ((a < 32) && (a != 8))
+	if ((a < 32) && (a !=  BS ))
 	    a = 32;
 
 	*p++ = a;
