@@ -96,7 +96,36 @@
                     $hiddenarg .= ",city";
                 else
                     $hiddenarg .= "city";
-
+            if( (!$state))
+                if(strlen($hiddenarg))
+                    $hiddenarg .= ",state";
+                else
+                    $hiddenarg .= "state";
+            if( (!$zip))
+                if(strlen($hiddenarg))
+                    $hiddenarg .= ",zip";
+                else
+                    $hiddenarg .= "zip";
+            if( (!$country))
+                if(strlen($hiddenarg))
+                    $hiddenarg .= ",country";
+                else
+                    $hiddenarg .= "country";
+            if( (!$phone))
+                if(strlen($hiddenarg))
+                    $hiddenarg .= ",phone";
+                else
+                    $hiddenarg .= "phone";
+            if( (!$email))
+                if(strlen($hiddenarg))
+                    $hiddenarg .= ",email";
+                else
+                    $hiddenarg .= "email";
+            if( (!$url))
+                if(strlen($hiddenarg))
+                    $hiddenarg .= ",url";
+                else
+                    $hiddenarg .= "url";
 
             echo "String sofar: $hiddenarg<br>\n";
             if($website) echo "Website: $website<br>\n";
