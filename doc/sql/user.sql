@@ -21,6 +21,7 @@ CREATE TABLE user (
    country	VARCHAR(80),
    phone	VARCHAR(20),
    email	VARCHAR(80),
+   url		VARCHAR(100),
 
    hiddeninfo   SET( 'name','address','zip','city','state','country','phone','email','url'),
 
