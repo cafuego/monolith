@@ -49,8 +49,6 @@ function express_message($username, $recipient) {
     if($username != "Cafuego")
     return;
 
-    $recp_id = get_usernum($recipient);
-
     // Show message.
     //
     PRINT "<div style=\"margin-left: 150;\">\n";
@@ -61,7 +59,8 @@ function express_message($username, $recipient) {
 
     // Hidden but required info for reply.
     //
-    PRINT "<input type=\"hidden\" name=\"recipient\" value=\"$recp_id\">\n";
+    PRINT "<input type=\"hidden\" name=\"recipient\" value=\"$recipient\">\n";
+    PRINT "<input type=\"hidden\" name=\"sender\" value=\"$username\">\n";
 
     // Show formatted header.
     //

@@ -8,7 +8,7 @@
     // Get username and print off proper title.
     //
     require('engine/html.inc');
-    html_print_title( getenv("REMOTE_USER"), $REQUEST_URI );
+    html_print_title( $sender, $REQUEST_URI );
 
 ?>
 
@@ -34,13 +34,12 @@
 
     $starttime = microtime();
 
-    $username = getenv("REMOTE_USER");
     require ("engine/routines.inc");
 
-    $u_id = get_usernum($username);
+    $username = rawurldecode($sender);
     $recipient = rawurldecode($recipient);
-    $r_id = $recipient;
-    $recipient = get_username($r_id);
+    $u_id = get_usernum($username);
+    $r_id = get_usernum($recipient);
     $message = rawurldecode($message);
     $message = htmlspecialchars($message);
     $message = nl2br($message);
