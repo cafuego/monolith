@@ -286,17 +286,29 @@ function colorize($doing) {
     // Convert to HTML colour codes.
     // 
     $doing = strtr($doing, "\1f", "");
+    echo "<!-- $doing -->\n";
     $doing = strtr($doing, "\1a", "");
+    echo "<!-- $doing -->\n";
     $doing = strtr($doing, "\1d", "");
+    echo "<!-- $doing -->\n";
     $doing = strtr($doing, "\1D", "");
-
     echo "<!-- $doing -->\n";
 
     // Remove bg colours.
     //
-    $doing = strtr($doing, "\1D", "");
-    $doing = strtr($doing, "\1D", "");
-
+    $doing = strtr($doing, "\1W", "");
+    echo "<!-- $doing -->\n";
+    $doing = strtr($doing, "\1Y", "");
+    echo "<!-- $doing -->\n";
+    $doing = strtr($doing, "\1G", "");
+    echo "<!-- $doing -->\n";
+    $doing = strtr($doing, "\1C", "");
+    echo "<!-- $doing -->\n";
+    $doing = strtr($doing, "\1B", "");
+    echo "<!-- $doing -->\n";
+    $doing = strtr($doing, "\1P", "");
+    echo "<!-- $doing -->\n";
+    $doing = strtr($doing, "\1R", "");
     echo "<!-- $doing -->\n";
 
     // Fix fg colours.
