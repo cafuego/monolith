@@ -56,7 +56,7 @@ random_goto()
 
     } else if ((rand() % 1000) == 666 && usersupp->timescalled > 99) { 
         strcpy(april_fools, "");
-        while ( strstr(april_fools, "cookie") != NULL) {
+        while ( strstr(april_fools, "cookie") == NULL) {
             cprintf("\n\1w666.\1yCthulhu\1w> \1rGimme a cookie! \1w");
             getline(april_fools, 64, 1);
         }
