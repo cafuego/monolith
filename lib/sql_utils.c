@@ -205,41 +205,6 @@ escape_string(const char *old_string, char **new_string)
     return 0;
 }
 
-int
-escape_search_string(const char *old_string, char **new_string)
-{
-    int i, j;
-    size_t old_string_len;
-    char *ns;
-
-    if (!old_string)
-	return -1;
-
-    old_string_len = strlen(old_string);
-    if (old_string_len < 1)
-	return -1;
-
-    ns = (char *) xmalloc(old_string_len * 2);
-
-    if (ns == NULL)
-	return -1;
-
-    for (i = 0, j = 0; i < old_string_len; i++) {
-	switch (old_string[i]) {
-	    case '\'':
-		ns[j] = '\\';
-		j++;
-	}
-	ns[j] = old_string[i];
-	j++;
-    }
-    ns[j] = 0;
-
-    *new_string = ns;
-
-    return 0;
-}
-
 #ifdef MICHELS_TIME_FUNCS
 /* convert MySQL date format to UNIX time_t */
 /* YYYY-MM-DD -> long : */
