@@ -1,3 +1,4 @@
+/* $Id$ */
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -193,15 +194,21 @@ main_menu()
 	  	  friends_online();
 	  	  break;
 
-	    case 006:
+	    case 006: {
+		 char *argh;
+
 		 if (1 /* usersupp->priv >= PRIV_TECHNICIAN */) {
+
 		     cprintf("\1f\1gCache debug: \n");
-		     show_user_cache();
+		     argh = show_user_cache();
+		    more_string(argh);
+		    xfree(argh);
 		 } else {
 		     cprintf("\1f\1gYour friends online.\1a\n");
 		     friends_online();
 		 }
 		 break;
+	    }
 
 	    case 'G':
 		cmdflags &= ~C_ROOMLOCK;
