@@ -17,7 +17,7 @@
 #endif
 #endif
 
-#ifdef 0
+#ifdef NOTDEFINED
 
 #include "monolith.h"
 #include "libmono.h"
@@ -31,7 +31,7 @@
 int
 main( int argc, char *argv[])
 {
-#ifdef 0
+#ifdef NOTDEFINED
     FILE *fp;
     MYSQL_RES *res;
     char buffer[BUFSIZE];
