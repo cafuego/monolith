@@ -518,7 +518,7 @@ killroom()
     if (quickroom.flags & QR_INUSE)
 	quickroom.flags ^= QR_INUSE;
 
-    cprintf("\1f\1rErase all %s in this %d? \1w(\1rrecommended\1w) (\1rY\1w/\1rn\1w) \1c", config.message_pl, config.forum);
+    cprintf("\1f\1rErase all %s in this %s? \1w(\1rrecommended\1w) (\1rY\1w/\1rn\1w) \1c", config.message_pl, config.forum);
     if (yesno_default(YES) == YES) {
 	erase_all_messages(quickroom.highest);
 	quickroom.highest = quickroom.lowest = 0;
