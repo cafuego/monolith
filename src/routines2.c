@@ -194,6 +194,11 @@ print_system_config()
 #ifdef LINUX
     struct sysinfo *info;
 #endif
+
+#ifdef USE_MYSQL
+    MYSQL mysql;
+    (void) mysql_get_server_info(&mysql);
+#endif
   
     cprintf("\n\1f");
 
@@ -208,13 +213,26 @@ print_system_config()
 
     (void) fflush(stdout);
     (void) system("/bin/echo `/bin/uname` `/bin/arch`");
+
 #ifndef CLIENTSRC
     cprintf("\r");
 #endif
+
     cprintf("\1wOS version                    :\1g ");
     (void) fflush(stdout);
     (void) system("/bin/cat /proc/sys/kernel/name");
-    cprintf("\n\1wLast compiled                 : %s\n\r\1f", printdate(buf.st_mtime, 0));
+
+#ifndef CLIENTSRC
+    cprintf("\r");
+#endif
+
+#ifdef USE_MYSQL
+    cprintf("\1wMySQL Server (%-14s) :\1g %s\n",
+        mono_mysql_server_info(), mono_mysql_host_info() );
+    (void) fflush(stdout);
+#endif
+
+    cprintf("\n\1wLast compiled                 : %s\n\1f", printdate(buf.st_mtime, 0));
     (void) fflush(stdout);
 
     /* Get system info via the proper channels */
