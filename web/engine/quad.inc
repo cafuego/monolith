@@ -1,25 +1,26 @@
-<?
+< ?
 
  /*
   * $Id$
   */
 
-function list_messages($username, $quad, $listunread) {
+function list_messages($username, $quad, $listunread)
+{
 
     // Check user priv.
     //
-    switch(check_priv($username,$quad)) {
+    switch (check_priv($username, $quad)) {
 
-        case -1:
-            errorsound();
-            errorimage( "You are not currently logged in. Log in first!" );
-            return;
-        case 0:
-            sorrysound();
-            errorimage( "You do not have the privileges to view this quadrant!" );
-            return;
-        default:
-            break;
+	    case -1 :
+		errorsound();
+	    errorimage("You are not currently logged in. Log in first!");
+	    return;
+	case 0:
+	    sorrysound();
+	    errorimage("You do not have the privileges to view this quadrant!");
+	    return;
+	default:
+	    break;
     }
 
     connect_db();
@@ -28,83 +29,82 @@ function list_messages($username, $quad, $listunread) {
     //
     $usernum = get_usernum($username);
     $result = MYSQL_QUERY("SELECT lastread FROM usertopic WHERE forum_id=$quad AND user_id=$usernum");
-    $lastseen = mysql_result($result,0,"lastread");
+    $lastseen = mysql_result($result, 0, "lastread");
 
     // Get quad name.
     //
     $result = MYSQL_QUERY("SELECT name FROM forum WHERE id=$quad");
-    $forum = mysql_result($result,0,"name");
+    $forum = mysql_result($result, 0, "name");
 
     // List messages.
     //
-    if($listunread)
-        $result = MYSQL_QUERY("SELECT m.message_id AS m_id,u.username AS username,m.flag AS flag,m.alias AS alias,m.subject AS subject,DATE_FORMAT(m.date,'%a, %e %b %Y %H:%i') as date FROM message AS m LEFT JOIN user AS u ON u.id=m.author WHERE m.forum_id=$quad AND m.message_id>=$lastseen ORDER BY message_id,subject");
+    if ($listunread)
+	$result = MYSQL_QUERY("SELECT m.message_id AS m_id,u.username AS username,m.flag AS flag,m.alias AS alias,m.subject AS subject,DATE_FORMAT(m.date,'%a, %e %b %Y %H:%i') as date FROM message AS m LEFT JOIN user AS u ON u.id=m.author WHERE m.forum_id=$quad AND m.message_id>=$lastseen ORDER BY message_id,subject");
     else
-        $result = MYSQL_QUERY("SELECT m.message_id AS m_id,u.username AS username,m.flag AS flag,m.alias AS alias,m.subject AS subject,DATE_FORMAT(m.date,'%a, %e %b %Y %H:%i') as date FROM message AS m LEFT JOIN user AS u ON u.id=m.author WHERE m.forum_id=$quad ORDER BY message_id,subject");
+	$result = MYSQL_QUERY("SELECT m.message_id AS m_id,u.username AS username,m.flag AS flag,m.alias AS alias,m.subject AS subject,DATE_FORMAT(m.date,'%a, %e %b %Y %H:%i') as date FROM message AS m LEFT JOIN user AS u ON u.id=m.author WHERE m.forum_id=$quad ORDER BY message_id,subject");
 
     $number = MYSQL_NUMROWS($result);
     if ($number) {
-        if($listunread)
-            if($number != 1) {
-                $actual = $number -1;
-                if($actual == 1)
-                    addimage( "Listing 1 unread message in $forum" );
-                else
-                    addimage( "Listing $actual unread messages in $forum" );
-            } else
-                errorimage( "No unread messages, listing 1 old message!" );
-        else
-            if($number != 1)
-                addimage( "Listing $number messages in $forum" );
-            else
-                addimage( "Listing 1 message in $forum" );
+	if ($listunread)
+	    if ($number != 1) {
+		$actual = $number - 1;
+		if ($actual == 1)
+		    addimage("Listing 1 unread message in $forum");
+		else
+		    addimage("Listing $actual unread messages in $forum");
+	    } else
+		errorimage("No unread messages, listing 1 old message!");
+	else if ($number != 1)
+	    addimage("Listing $number messages in $forum");
+	else
+	    addimage("Listing 1 message in $forum");
 
-        echo "<table border=\"0\" cellpadding=\"0\" cellspacing=\"4\" align=\"center\">\n";
-        $i = 0;
-        while ($i < $number) {
-            $m_id = mysql_result($result,$i,"m_id");
-            $user = mysql_result($result,$i,"username");
-            $flag = mysql_result($result,$i,"flag");
-            $alias = mysql_result($result,$i,"alias");
-            $subject = mysql_result($result,$i,"subject");
-            $date = mysql_result($result,$i,"date");
-            $subject = htmlspecialchars($subject);
-            $js_user = format_js_username($user,$alias,$flag);
-            $user = format_username($username,$user,$alias,$flag);
-            $subject = format_subject($subject);
+	echo "<table border=\"0\" cellpadding=\"0\" cellspacing=\"4\" align=\"center\">\n";
+	$i = 0;
+	while ($i < $number) {
+	    $m_id = mysql_result($result, $i, "m_id");
+	    $user = mysql_result($result, $i, "username");
+	    $flag = mysql_result($result, $i, "flag");
+	    $alias = mysql_result($result, $i, "alias");
+	    $subject = mysql_result($result, $i, "subject");
+	    $date = mysql_result($result, $i, "date");
+	    $subject = htmlspecialchars($subject);
+	    $js_user = format_js_username($user, $alias, $flag);
+	    $user = format_username($username, $user, $alias, $flag);
+	    $subject = format_subject($subject);
 
-            echo "<tr>\n";
-            echo "  <td align=\"right\" valign=\"top\">\n";
-            if($m_id <= $lastseen)
-                echo "    <p align=\"right\" class=\"green\">$m_id\n";
-            else
-                echo "    <p align=\"right\" class=\"green\"><font color=\"#ff0000\">New:</font> $m_id\n";
-            echo "  </td>\n";
-            echo "  <td align=\"left\" valign=\"top\">\n";
- 
-            // Don't show date if anon post *sigh*
-            //
-            echo "     <a href=\"/bbs/index.phtml/r/$quad/$m_id\" ". mouseover("Read message $m_id by $js_user in $forum") .">$subject</a> <font color=\"#00cc00\">by</font> $user";
-            if( $flag != "anon"  )
-                echo " <font color=\"#00cc00\">on $date CET</font><br>\n";
-            else
-                echo "\n";
+	    echo "<tr>\n";
+	    echo "  <td align=\"right\" valign=\"top\">\n";
+	    if ($m_id <= $lastseen)
+		echo "    <p align=\"right\" class=\"green\">$m_id\n";
+	    else
+		echo "    <p align=\"right\" class=\"green\"><font color=\"#ff0000\">New:</font> $m_id\n";
+	    echo "  </td>\n";
+	    echo "  <td align=\"left\" valign=\"top\">\n";
 
-            echo "  </td>\n";
-            echo "</tr>\n";
+	    // Don't show date if anon post *sigh*
+	    //
+	    echo "     <a href=\"/bbs/index.phtml/r/$quad/$m_id\" ".mouseover("Read message $m_id by $js_user in $forum").">$subject</a> <font color=\"#00cc00\">by</font> $user";
+	    if ($flag != "anon")
+		echo " <font color=\"#00cc00\">on $date CET</font><br>\n";
+	    else
+		echo "\n";
 
-            $i++;
-        }
-        echo "</table>\n";
+	    echo "  </td>\n";
+	    echo "</tr>\n";
+
+	    $i++;
+	}
+	echo "</table>\n";
     } else {
-        if($listunread) {
-            sorrysound();
-            errorimage( "No unread messages found!" );
-        } else {
-            sorrysound();
-            errorimage( "No messages found!" );
-        }
+	if ($listunread) {
+	    sorrysound();
+	    errorimage("No unread messages found!");
+	} else {
+	    sorrysound();
+	    errorimage("No messages found!");
+	}
     }
 }
 
-?>
+? >

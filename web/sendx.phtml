@@ -54,7 +54,7 @@
 
     $result = MYSQL_QUERY("INSERT INTO webx (sender,recipient,message,date,status,i_sender,i_recipient) VALUES ($u_id,$r_id,'$message',NOW(),'unread','web','$interface')");
     if ($result == true )
-        addimage( "eXpress message to $recipient@$interface was sucessfully saved" );
+        addimage( "eXpress message to $recipient@$interface was successfully saved" );
     else {
         errorimage( "eXpress message to $recipient@$interface could not be saved due to an error!" );
         echo "<h2 align=\"center\">". mysql_error() ."</h2>\n";

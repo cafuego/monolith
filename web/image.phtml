@@ -2,16 +2,16 @@
 
     // Print content type first.
     //
-    Header( "Content-type: image/gif" );
+    Header("Content-type: image/gif");
 
     // Image, font and string data passed through.
     //
-    $url_array=explode("/",$REQUEST_URI);
+    $url_array = explode("/", $REQUEST_URI);
 
     // First, get the font info.
     //
     $font_info = explode(",", $url_array[3]);
-    $font = "/usr/bbs/www/bbs/font/". $font_info[0] .".ttf";
+    $font = "/usr/bbs/www/bbs/font/".$font_info[0].".ttf";
     $size = $font_info[1];
     $colour = $font_info[2];
 
@@ -23,53 +23,53 @@
     // Now, determine the image size we need. The image we are
     // going to create will have 2 pixels border on each side.
     //
-    $bounds = ImageTTFBBox( $size, 0, $font, $text );
-    $width = abs( $bounds[4] ) + 10;
-    $height = abs( $bounds[5] ) + 10;
+    $bounds = ImageTTFBBox($size, 0, $font, $text);
+    $width = abs($bounds[4]) + 10;
+    $height = abs($bounds[5]) + 10;
 
     // Create the image and set fore and background colours.
     //
-    $im = imagecreate( $width, $height );
-    $background = ImageColorAllocate( $im, 0, 0, 0 );
+    $im = imagecreate($width, $height);
+    $background = ImageColorAllocate($im, 0, 0, 0);
 
-    switch($colour) {
+    switch ($colour) {
         case "yellow":
-            $foreground = ImageColorAllocate( $im, 255, 255, 0 );
+            $foreground = ImageColorAllocate($im, 255, 255, 0);
             break;
         case "green":
-            $foreground = ImageColorAllocate( $im, 0, 255, 0 );
+            $foreground = ImageColorAllocate($im, 0, 255, 0);
             break;
         case "cyan":
-            $foreground = ImageColorAllocate( $im, 0, 255, 255 );
+            $foreground = ImageColorAllocate($im, 0, 255, 255);
             break;
         case "blue":
-            $foreground = ImageColorAllocate( $im, 0, 0, 255 );
+            $foreground = ImageColorAllocate($im, 0, 0, 255);
             break;
         case "purple":
-            $foreground = ImageColorAllocate( $im, 255, 0, 255 );
+            $foreground = ImageColorAllocate($im, 255, 0, 255);
             break;
         case "red":
-            $foreground = ImageColorAllocate( $im, 255, 0, 0 );
+            $foreground = ImageColorAllocate($im, 255, 0, 0);
             break;
         case "grey":
-            $foreground = ImageColorAllocate( $im, 128, 128, 128 );
+            $foreground = ImageColorAllocate($im, 128, 128, 128);
             break;
         case "white":
         default:
-            $foreground = ImageColorAllocate( $im, 255, 255, 255 );
+            $foreground = ImageColorAllocate($im, 255, 255, 255);
             break;
     }
 
     // Draw the string onto the image.
     //
-    ImageTTFText( $im, $size, 0, 5, $height-10, $foreground, $font, $text );
+    ImageTTFText($im, $size, 0, 5, $height - 10, $foreground, $font, $text);
 
     // Dump output :)
     //
-    ImageGif( $im );
+    ImageGif($im);
 
     // Destroy image.
     //
-    ImageDestroy( $im );
+    ImageDestroy($im);
 
 ?>

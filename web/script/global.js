@@ -22,7 +22,11 @@ function setStatus( text ) {
 
     // Set status window content to `text'.
     //
-    status = text;
+    if (navigator.appName.indexOf('Microsoft') != -1) {
+   	Document.status = text;
+    } else {
+        window.status = text;
+    }
     return true;
 
 }

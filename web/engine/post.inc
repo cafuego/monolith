@@ -1,38 +1,41 @@
-<?
+< ?
 
  /*
   * $Id$
   */
 
-function enter_message($username, $quad, $current, $action) {
+function enter_message($username, $quad, $current, $action)
+{
 
     // Check user priv.
     //
-    switch(check_priv($username,$quad)) {
+    switch (check_priv($username, $quad)) {
 
-        case -1:
-            errorsound();
-            errorimage( "You are not currently logged in. Log in first!" );
-            return;
-        case 0:
-            sorrysound();
-            errorimage( "You do not have the privileges to view this message" );
-            return;
-        default:
-            break;
+	    case -1 :
+		errorsound();
+	    errorimage("You are not currently logged in. Log in first!");
+	    return;
+	case 0:
+	    sorrysound();
+	    errorimage("You do not have the privileges to view this message");
+	    return;
+	default:
+	    break;
     }
 
-    errorimage( "Sorry, but this isn't working quite yet" );
+    errorimage("Sorry, but this isn't working quite yet");
     return;
 
-    if( $action == "f" )
-        post_reply( $username, $quad, $current );
+    if ($action == "f")
+	post_reply($username, $quad, $current);
     else
-        post_new( $username, $quad );
+	post_new($username, $quad);
 
 }
 
-function post_reply($username,$quad,$current) {
+function 
+post_reply($username, $quad, $current)
+{
 
     connect_db();
 
@@ -41,36 +44,35 @@ function post_reply($username,$quad,$current) {
     $result = MYSQL_QUERY("SELECT m.message_id AS m_id,m.forum_id AS f_id,m.topic_id,m.author AS a_id,u.username AS username,m.flag AS flag,m.alias AS alias,m.subject AS subject,m.content AS content,DATE_FORMAT(m.date,'%W, %e %M %Y %H:%i:%S') AS date,DATE_FORMAT(NOW(),'%W, %e %M %Y %H:%i:%S') AS now,f.name AS forum FROM message AS m LEFT JOIN user AS u ON u.id=m.author LEFT JOIN forum AS f ON f.id=m.forum_id WHERE forum_id=$quad AND m.message_id=$current");
     $number = MYSQL_NUMROWS($result);
 
-    if( !($number)) {
-        errorimage( "Error: Unable to fetch original message from database!" );
-        exit;
+    if (!($number)) {
+	errorimage("Error: Unable to fetch original message from database!");
+	exit;
     }
-
     // Fetch data and format.
     //
-    $m_id = mysql_result($result,0,"m_id");
-    $f_id = mysql_result($result,0,"f_id");
-    $a_id = mysql_result($result,0,"a_id");
-    $user = mysql_result($result,0,"username");
-    $flag = mysql_result($result,0,"flag");
-    $alias = mysql_result($result,0,"alias");
-    $subject = mysql_result($result,0,"subject");
-    $content = mysql_result($result,0,"content");
-    $date = mysql_result($result,0,"date");
-    $now = mysql_result($result,0,"now");
-    $forum = mysql_result($result,0,"forum");
+    $m_id = mysql_result($result, 0, "m_id");
+    $f_id = mysql_result($result, 0, "f_id");
+    $a_id = mysql_result($result, 0, "a_id");
+    $user = mysql_result($result, 0, "username");
+    $flag = mysql_result($result, 0, "flag");
+    $alias = mysql_result($result, 0, "alias");
+    $subject = mysql_result($result, 0, "subject");
+    $content = mysql_result($result, 0, "content");
+    $date = mysql_result($result, 0, "date");
+    $now = mysql_result($result, 0, "now");
+    $forum = mysql_result($result, 0, "forum");
     $user = htmlspecialchars($user);
     $alias = htmlspecialchars($alias);
     $subject = htmlspecialchars($subject);
     $content = htmlspecialchars($content);
     $content = colorize($content);
     $forum = htmlspecialchars($forum);
-    $user = format_username($username,$user,$alias,$flag);
+    $user = format_username($username, $user, $alias, $flag);
     $subject = format_subject($subject);
 
     // Show message.
     //
-    addimage( "Replying to message $m_id in $forum" );
+    addimage("Replying to message $m_id in $forum");
     PRINT "<p align=\"left\"><font color=\"#00CC00\">Original from</font> $user <font color=\"#00CC00\">on</font> <font color=\"#00CC00\">$date CET</font></p>\n";
     PRINT "<pre><font color=\"#00ffff\">$content</font></pre>\n";
     PRINT "<hr size=\"1\" width=\"400\">\n<br>\n";
@@ -104,24 +106,25 @@ function post_reply($username,$quad,$current) {
 
 }
 
-function post_new($username,$quad) {
+function 
+post_new($username, $quad)
+{
 
     connect_db();
 
     $result = MYSQL_QUERY("SELECT name,DATE_FORMAT(NOW(),'%W, %e %M %Y %H:%i:%S') AS now FROM forum WHERE id=$quad");
     $number = MYSQL_NUMROWS($result);
 
-    if( !($number)) {
-        errorimage( "Error: Unable to get quadrant details!" );
-        exit;
+    if (!($number)) {
+	errorimage("Error: Unable to get quadrant details!");
+	exit;
     }
-
     // Fetch data and format.
     //
-    $forum = mysql_result($result,0,"name");
-    $now = mysql_result($result,0,"now");
+    $forum = mysql_result($result, 0, "name");
+    $now = mysql_result($result, 0, "now");
 
-    addimage( "Entering new message in $forum" );
+    addimage("Entering new message in $forum");
 
     // Reply form.
     //
@@ -149,4 +152,4 @@ function post_new($username,$quad) {
 
 }
 
-?>
+? >

@@ -1,10 +1,11 @@
-<?
+< ?
 
  /*
   * $Id$
   */
 
-function express_message($username, $recipient, $interface, $location) {
+function express_message($username, $recipient, $interface, $location)
+{
 
     // Turn recipient name into a normal string.
     //
@@ -12,46 +13,45 @@ function express_message($username, $recipient, $interface, $location) {
 
     // Guests aren't allowed to X.
     //
-    if( $username == "Guest" ) {
-        sorrysound();
-        errorimage( "Guests are not allowed to send eXpress messages!" );
-        return;
+    if ($username == "Guest") {
+	sorrysound();
+	errorimage("Guests are not allowed to send eXpress messages!");
+	return;
     }
-    if ($recipient == "Guest" ) {
-        sorrysound();
-        errorimage( "You cannot send eXpress messages to guests!" );
-        return;
+    if ($recipient == "Guest") {
+	sorrysound();
+	errorimage("You cannot send eXpress messages to guests!");
+	return;
     }
-
     // Check user priv.
     //
-    switch(check_friend($username,$recipient)) {
+    switch (check_friend($username, $recipient)) {
 
-        case -4:
-            sorrysound();
-            errorimage( "$recipient has web express messages disabled!" );
-            return;
-        case -3:
-            sorrysound();
-            errorimage( "$recipient is not currently online!" );
-            return;
-        case -2:
-            errorsound();
-            errorimage( "$recipient is not an exisiting user!" );
-            return;
-        case -1:
-            errorsound();
-            errorimage( "You are not currently logged in. Log in first!" );
-            return;
-        case 0:
-            sorrysound();
-            errorimage( "You are not allowed to send $recipient messages" );
-            return;
-        default:
-            break;
+	case -4:
+	    sorrysound();
+	    errorimage("$recipient has web express messages disabled!");
+	    return;
+	case -3:
+	    sorrysound();
+	    errorimage("$recipient is not currently online!");
+	    return;
+	case -2:
+	    errorsound();
+	    errorimage("$recipient is not an exisiting user!");
+	    return;
+	case -1:
+	    errorsound();
+	    errorimage("You are not currently logged in. Log in first!");
+	    return;
+	case 0:
+	    sorrysound();
+	    errorimage("You are not allowed to send $recipient messages");
+	    return;
+	default:
+	    break;
     }
 
-    addimage( "Sending an eXpress message to $recipient@$interface" );
+    addimage("Sending an eXpress message to $recipient@$interface");
 
     // Reply form.
     //
@@ -79,4 +79,4 @@ function express_message($username, $recipient, $interface, $location) {
 
 }
 
-?>
+? >

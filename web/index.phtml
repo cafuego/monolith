@@ -9,12 +9,12 @@
     echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n";
     echo "<html lang=\"en\">\n";
     echo "<head>\n\n";
-    echo "<meta name=\"Generator\" content=\"PHP ". phpversion() ."\">\n";
-    echo "<meta name=\"Process-id\" content=\"". getmypid() ."\">\n";
+    echo "<meta name=\"Generator\" content=\"PHP ".phpversion()."\">\n";
+    echo "<meta name=\"Process-id\" content=\"".getmypid()."\">\n";
     echo "<meta name=\"Location\" content=\"$REQUEST_URI\">\n";
     echo "<meta name=\"Rcsid\" content=\"\$Id$\">\n\n";
-    echo "<meta http-equiv=\"Expires\" content=\"" . gmdate("l, d F Y H:i:s") ." GMT\">\n";
-    echo "<meta http-equiv=\"Last-Modified\" content=\"" . gmdate("l, d F Y H:i:s") ." GMT\">\n";
+    echo "<meta http-equiv=\"Expires\" content=\"".gmdate("l, d F Y H:i:s")." GMT\">\n";
+    echo "<meta http-equiv=\"Last-Modified\" content=\"".gmdate("l, d F Y H:i:s")." GMT\">\n";
     echo "<meta http-equiv=\"Cache-Control\" content=\"no-cache, must-revalidate\">\n";
     echo "<meta http-equiv=\"Pragma\" content=\"no-cache\">\n";
 
@@ -24,22 +24,30 @@
 
     require('engine/html.inc');
 
-    if( html_print_title( $username, $REQUEST_URI ) )
-        html_do_login( $username );
+    if (html_print_title($username, $REQUEST_URI))
+        html_do_login($username);
     else
-        html_do_logout( $username, getenv("REMOTE_HOST") );
+        html_do_logout($username, getenv("REMOTE_HOST"));
 
     // Pick url open into commands and assign values.
     //
-    require ("engine/routines.inc");
-    $url_array=explode("/",$REQUEST_URI);
-    $action=$url_array[3];		// What action?
-
+    require("engine/routines.inc");
+    $url_array = explode("/", $REQUEST_URI);
+    $action = $url_array[3];	// What action?
+    
     // Include StyleSheet and JavaScript.
     //
     echo "<link rev=\"made\" href=\"mailto:webmaster@monolith.student.utwente.nl\">\n";
     echo "<link rel=\"StyleSheet\" href=\"/bbs/style/global.css\" type=\"text/css\">\n";
-    echo "<script src=\"/bbs/script/global.js\" type=\"application/x-javascript\"></script>\n";
+    // echo "<script src=\"/bbs/script/global.js\" type=\"application/x-javascript\"></script>\n";
+    echo "<script language="JavaScript">\n";
+    echo "<!--\n";
+    echo "function setStatus( text ) {"\n";
+    echo "    window.status = text;\n";
+    echo "    return true;\n";
+    echo "}\n";
+    echo "// -->"\n;
+    echo "</script>\n";
 
     // Header end and body start.
     //
@@ -60,7 +68,7 @@
 
     // Main code switch block
     //
-    main_menu($username, $REQUEST_URI );
+    main_menu($username, $REQUEST_URI);
 
     echo "    </td>\n";
     echo "  </tr>\n";
@@ -70,5 +78,5 @@
     // Footer (where available)
     //
     html_print_foot($username, $starttime, $REQUEST_URI);
-    
+
 ?>
