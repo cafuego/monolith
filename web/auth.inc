@@ -17,11 +17,6 @@
 
     $sql_pass = mysql_result($res, 0, "password");
 
-    echo "<!-- $password -->\n";
-    echo "<!-- $sql_pass -->\n";
-    echo "<!-- ". substr($sql_pass,0,2) ." -->\n";
-    echo "<!-- ". crypt($password, substr($sql_pass, 0, 2)) ." -->\n";
-
     if( (crypt($password, substr($sql_pass, 0, 2))) == $sql_pass)
       return true;
 
@@ -85,8 +80,8 @@
     echo "</body>\n";
     echo "</html>\n";
 
-    unset $PHP_AUTH_USER;
-    unset $PHP_AUTH_PW;
+    unset($PHP_AUTH_USER);
+    unset($PHP_AUTH_PW);
 
     return;
   }
