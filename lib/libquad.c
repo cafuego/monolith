@@ -534,7 +534,7 @@ invite(const char *name, int room)
     }
     user->generation[room] = scratch.generation;
     user->forget[room] = -1;
-    mono_sql_uf_add_invited( room, userP->usernum );
+    mono_sql_uf_add_invited( room, user->usernum );
 
     (void) writeuser(user, 0);
 
