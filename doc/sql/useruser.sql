@@ -23,6 +23,8 @@ CREATE TABLE useruser (
   
    stamp        TIMESTAMP,
 
-   PRIMARY KEY( user_id, friend_id, iface )
+   PRIMARY KEY( user_id, friend_id, iface ),
+   INDEX( user_id ),
+   INDEX( iface )
 
 )

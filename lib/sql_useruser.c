@@ -45,7 +45,7 @@ mono_sql_uu_read_list(unsigned int user_id, friend_t ** first, int flag)
     if (flag & L_ENEMY) {
 	strcpy(status, "enemy");
     }
-    i = mono_sql_query(&res, "SELECT friend_id,quickx,username FROM useruser,user  WHERE user_id=%u AND status='%s' AND friend_id=id ORDER BY username", user_id, status);
+    i = mono_sql_query(&res, "SELECT friend_id,quickx,username FROM useruser,user  WHERE user_id=%u AND status='%s' AND friend_id=id AND iface='bbs' ORDER BY username", user_id, status);
 
     if (i == -1) {
 	fprintf(stderr, "No results from query.\n");
@@ -108,7 +108,7 @@ mono_sql_uu_is_on_list(unsigned int user_id, unsigned int friend_id, int flags)
     }
     ret = mono_sql_query(&res, "SELECT user_id FROM " UU_TABLE
 		  " WHERE (user_id='%u' AND friend_id='%u' AND status='%s')"
-			 ,user_id, friend_id, status);
+                  " and iface='bbs'", user_id, friend_id, status);
 
     if (ret == -1) {
 	return FALSE;
@@ -136,7 +136,7 @@ mono_sql_uu_add_entry(unsigned int user_id, unsigned int friend_id, unsigned int
     if (flag & L_ENEMY) {
 	strcpy(status, "enemy");
     }
-    ret = mono_sql_query(&res, "INSERT INTO " UU_TABLE " (user_id,friend_id,status) VALUES (%u, %u, '%s')\n", user_id, friend_id, status);
+    ret = mono_sql_query(&res, "INSERT INTO " UU_TABLE " (user_id,friend_id,status,iface) VALUES (%u, %u, '%s', 'bbs')\n", user_id, friend_id, status);
     return ret;
 }
 
@@ -147,7 +147,7 @@ mono_sql_uu_remove_entry(unsigned int user_id, unsigned int friend_id)
     MYSQL_RES *res;
     int ret;
 
-    ret = mono_sql_query(&res, "DELETE FROM " UU_TABLE " WHERE (user_id='%u' AND friend_id='%u')", user_id, friend_id);
+    ret = mono_sql_query(&res, "DELETE FROM " UU_TABLE " WHERE (user_id='%u' AND friend_id='%u' AND iface='bbs')", user_id, friend_id);
     return ret;
 }
 
@@ -175,7 +175,7 @@ mono_sql_uu_clear_list_by_type(unsigned int user_id, int flag)
     if (flag & L_ENEMY) {
 	strcpy(status, "enemy");
     }
-    ret = mono_sql_query(&res, "DELETE FROM " UU_TABLE " WHERE (user_id='%u' AND status='%s')", user_id, status);
+    ret = mono_sql_query(&res, "DELETE FROM " UU_TABLE " WHERE (user_id='%u' AND status='%s' AND iface='bbs')", user_id, status);
     return ret;
 }
 
@@ -206,7 +206,7 @@ mono_sql_uu_remove_quickx(unsigned int user_id, unsigned int friend_id)
     MYSQL_RES *res;
     int ret;
 
-    ret = mono_sql_query(&res, "UPDATE " UU_TABLE " SET quickx='-1' WHERE (user_id='%u' AND friend_id='%u')", user_id, friend_id);
+    ret = mono_sql_query(&res, "UPDATE " UU_TABLE " SET quickx='-1' WHERE (user_id='%u' AND friend_id='%u' AND iface='bbs')", user_id, friend_id);
     return ret;
 }
 
@@ -219,7 +219,7 @@ mono_sql_uu_quickx2user(unsigned int user_id, int quickx, unsigned int *friend_i
     MYSQL_RES *res;
     MYSQL_ROW row;
 
-    ret = mono_sql_query(&res, "SELECT friend_id FROM " UU_TABLE " WHERE (user_id='%u' AND quickx='%u')", user_id, quickx);
+    ret = mono_sql_query(&res, "SELECT friend_id FROM " UU_TABLE " WHERE (user_id='%u' AND quickx='%u' AND iface='bbs')", user_id, quickx);
 
     if (ret == -1) {
 	mono_sql_u_free_result(res);
@@ -243,7 +243,7 @@ mono_sql_uu_user2quickx(unsigned int user_id, unsigned int friend_id, int *quick
     MYSQL_RES *res;
     MYSQL_ROW row;
 
-    ret = mono_sql_query(&res, "SELECT quickx FROM " UU_TABLE " WHERE (user_id='%u' AND friend_id='%u')", user_id, friend_id);
+    ret = mono_sql_query(&res, "SELECT quickx FROM " UU_TABLE " WHERE (user_id='%u' AND friend_id='%u' AND iface='bbs')", user_id, friend_id);
 
     if (ret == -1) {
 	return -1;
