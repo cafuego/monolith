@@ -71,6 +71,22 @@ msgstr ""
 msgid "\001r\001fInvalid email address, can't send message!\001a\n"
 msgstr ""
 
+#: src/commands.c:664
+msgid "\001f\001gLock Terminal.\n"
+msgstr ""
+
+#: src/commands.c:682
+msgid "Language not supported.\n"
+msgstr ""
+
+#: src/commands.c:698
+msgid "\001f\001cMark messages as read.\n"
+msgstr ""
+
+#: src/commands.c:732
+msgid "\001f\001w(\001gMisc. Options\001w)\n"
+msgstr ""
+
 #: src/fun.c:60 src/fun.c:76
 msgid "\001f\001gNo unread %s.\001a"
 msgstr "\001f\001gGeen ongelezen %s.\001a"
@@ -83,50 +99,57 @@ msgstr ""
 "OH NEE!!!!!!! EEN SEGMENTATIEFOUT!!!!!\n"
 " "
 
-#: src/main.c:218 src/main.c:322
+#.
+#. * First check if user exists. If not, just say so.
+#.
+#: src/main.c:212
+msgid "No such user.\n"
+msgstr ""
+
+#: src/main.c:229 src/main.c:332
 msgid "Incorrect login.\n"
 msgstr "Foute login.\n"
 
-#: src/main.c:235
+#: src/main.c:245
 msgid "\001f\001gPlease enter your \001rcurrent\001g password: "
 msgstr "\001f\001gType je \001rhuidige\001g wachtwoord: "
 
-#: src/main.c:244
+#: src/main.c:254
 msgid "Password changed.\n"
 msgstr "Wachtwoord gewijzigd.\n"
 
-#: src/main.c:246
+#: src/main.c:256
 msgid "Password unchanged.\n"
 msgstr "Wachtwoord niet gewijzigd.\n"
 
-#: src/main.c:266
+#: src/main.c:276
 msgid "Please enter a password: "
 msgstr "Type je wachtwoord: "
 
-#: src/main.c:273
+#: src/main.c:283
 msgid "Please enter it again: "
 msgstr "Type het nogmaals: "
 
-#: src/main.c:277
+#: src/main.c:287
 msgid "The passwords you typed didn't match.  Please try again.\n"
 msgstr "De wachtwoorden waren niet gelijk. Probeer het nogmaals.\n"
 
-#. loop until we get a real username
-#: src/main.c:303
+#: src/main.c:313
 msgid ""
 "\n"
 "Username: "
 msgstr ""
 
-#: src/main.c:307
+#: src/main.c:317
 msgid "Enter \"Off\" to quit or \"New\" to enter as a new user.\n"
 msgstr "Type \"Off\" om te stoppen of \"New\" om een nieuwe gebruiker te creeren\n"
 
-#: src/main.c:320
+#. if this user does not exist, fake a password-entry
+#: src/main.c:330
 msgid "%s's Password: "
 msgstr "%s's wachtwoord: "
 
-#: src/main.c:551
+#: src/main.c:564
 msgid ""
 "\n"
 "*** Registration is required. ***\n"
@@ -136,13 +159,13 @@ msgstr ""
 "*** Registratie is vereist. ***\n"
 "\n"
 
-#: src/main.c:555
+#: src/main.c:568
 msgid ""
 "\001f\001yNow \001w<\001ry\001w>\001yell to the admin to be granted full access.\n"
 "\n"
 msgstr ""
 
-#: src/main.c:652
+#: src/main.c:664
 msgid ""
 "\n"
 "\n"
@@ -154,31 +177,29 @@ msgstr ""
 "\001g\001f%s \001yis is nog bezig je een %s %s te sturen.\n"
 "\001a"
 
-#: src/main.c:653
+#: src/main.c:665
 msgid "\001f\001gHit any key to continue...\001a"
 msgstr "\001f\001gDruk om een toets om door te gaan...\001a"
 
-#: src/main.c:658
+#: src/main.c:670
 msgid ""
 "\n"
-"\001f\001gAre you sure you want to leave the bbs? \001w(\001gy\001w/\001gn\001w/\001gm\001w/\001g?\001w)\001g "
+"\001f\001gAre you sure you want to leave Monolith? \001w(\001gy\001w/\001gn\001w/\001gm\001w/\001g?\001w)\001g "
 msgstr ""
-"\n"
-"\001f\001gWeet je zeker dat je het BBS wil verlaten? \001w(\001gy\001w/\001gn\001w/\001gm\001w/\001g?\001w)\001g "
 
-#: src/main.c:663
+#: src/main.c:675
 msgid "\001f\001gHelp.\001a\n"
 msgstr ""
 
-#: src/main.c:668
+#: src/main.c:680
 msgid "\001f\001gYes.\n"
 msgstr "\001f\001gJa.\n"
 
-#: src/main.c:672
+#: src/main.c:684
 msgid "\001f\001gNo.\n"
 msgstr "\001f\001gNee.\n"
 
-#: src/main.c:774
+#: src/main.c:785
 msgid ""
 "\n"
 "\001a\001f\001gWelcome to Monolith BBS, \001g%s! \001gThis is your \001w#%d \001glogin.\n"
@@ -186,23 +207,23 @@ msgstr ""
 "\n"
 "\001a\001f\001gWelkom op Monoliet BBS, \001g%s! \001gDit is je \001w#%d \001gverbinding.\n"
 
-#: src/main.c:778
+#: src/main.c:789
 msgid "\001f\001gLast login: %s \001g\001ffrom \001r%-16.16s\n"
 msgstr "\001f\001gLaatste login: %s \001g\001fvanaf \001r%-16.16s\n"
 
-#: src/main.c:798
+#: src/main.c:809
 msgid "\001f\001gYour friends online\001w:\001a\n"
 msgstr "\001f\001gJe aanwezige vrienden\001w:\001a\n"
 
-#: src/main.c:836
+#: src/main.c:848
 msgid "\001f\001gYou have a new private %s in \001pMail>\n"
 msgstr ""
 
-#: src/main.c:838
+#: src/main.c:850
 msgid "\001f\001gYou have \001r%d \001gnew private %s in \001pMail>\n"
 msgstr "\001f\001gJe hebt \001r%d \001gnieuwe poststukken in \001pMail>\n"
 
-#: src/main.c:840
+#: src/main.c:852
 msgid "\001f\001gYou have \001rno\001g new Mail %s.\001a\n"
 msgstr "\001f\001gJe hebt \001rgeen\001g nieuwe post.\001a\n"
 
@@ -250,45 +271,127 @@ msgstr "\001g\001fBekijk gebruiker\001w: \001c"
 msgid "\001r\001fNot a valid InterBBS name.\n"
 msgstr ""
 
-#: src/usertools.c:125
+#: src/usertools.c:137
 msgid "\001f\001rNo such user.\001a\n"
 msgstr ""
 
-#: src/usertools.c:701
+#: src/usertools.c:540
+msgid "\001f\001pSubscribe to channel: \001a"
+msgstr ""
+
+#: src/usertools.c:713
 msgid "Birthday: \001g"
 msgstr "Verjaardag: \001g"
 
-#: src/usertools.c:863
+#: src/usertools.c:720
+msgid "\001f\001cConfiguration\001w: \001g%s \001cMonoholic Rating\001w: \001g"
+msgstr ""
+
+#: src/usertools.c:739
+msgid "\001g*** is available to help others ***\n"
+msgstr ""
+
+#: src/usertools.c:758
+msgid ""
+"\n"
+"\001a\001f\001gPress \001w<\001rSPACE\001w>\001g to continue or \001w<\001rs\001w>\001g to skip... \001a"
+msgstr ""
+
+#: src/usertools.c:793
+msgid "\001gYou're not a %s!"
+msgstr ""
+
+#: src/usertools.c:873
 msgid "Are you sure you want to edit your profile? (y/n) "
 msgstr "Weet je zeker dat je je profile wil editen? (y/n) "
 
-#: src/usertools.c:883
+#: src/usertools.c:893
 msgid "Are you sure you want to change your profile? (y/n) "
 msgstr "Weet je zeker dat je je profile wil wijzigen? (y/n) "
 
-#: src/usertools.c:888
+#: src/usertools.c:898
 msgid ""
 "\001yYou now have seven lines to create a nice profile of yourself.\001g\n"
 "\n"
 msgstr ""
 
-#: src/usertools.c:940
+#: src/usertools.c:926
+msgid "\001f\001gChange birthday/date.\n"
+msgstr ""
+
+#: src/usertools.c:934
+msgid "\001gYour current %s is: \001y`%s\001a'\n"
+msgstr ""
+
+#: src/usertools.c:935
+msgid "\001f\001gDo you want to change this? \001w(\001gy\001w/\001gn\001w)\001c "
+msgstr ""
+
+#: src/usertools.c:950
 msgid "\001f\001gChange address.\n"
 msgstr ""
 
-#: src/usertools.c:1089
-msgid "\001f\001wYou are now marked as \001gAWAY\001w.\n"
+#: src/usertools.c:965
+msgid "\001gYour current url is: \001y`%s'\n"
 msgstr ""
 
-#: src/usertools.c:1091
-msgid "\001gDefault away message: \001y%s\001a\n"
+#: src/usertools.c:966
+msgid "\001gDo you want to change this? \001w(\001gy\001w/\001gn\001w)\001c "
 msgstr ""
 
-#: src/usertools.c:1092
-msgid "\001f\001gNew Away message: \001c"
+#: src/usertools.c:968
+msgid "\001f\001gEnter the new url\001w: \001chttp://"
+msgstr ""
+
+#: src/usertools.c:972
+msgid "\001f\001gURL not set.\n"
+msgstr ""
+
+#: src/usertools.c:998
+msgid ""
+"\n"
+"\001f\001gPress \001w<\001rh\001w>\001g to access the helpfiles.\n"
+msgstr ""
+
+#: src/usertools.c:999
+msgid ""
+"\n"
+"\001gPress \001w<\001rc\001w>\001g for help on commands.\n"
+msgstr ""
+
+#: src/usertools.c:1000
+msgid "\001gPress \001w<\001r?\001w>\001g to get a list of commands.\n"
+msgstr ""
+
+#: src/usertools.c:1001
+msgid ""
+"\001gPress \001w<\001rshift-Q\001w>\001g to ask a Question.\n"
+"\n"
+msgstr ""
+
+#: src/usertools.c:1002
+msgid ""
+"\001gPress \001w<\001rq\001w>\001g to exit this menu.\n"
+"\n"
+msgstr ""
+
+#: src/usertools.c:1003
+msgid "\001gChoice\001w:\001g "
 msgstr ""
 
 #: src/usertools.c:1099
+msgid "\001f\001wYou are now marked as \001gAWAY\001w.\n"
+msgstr ""
+
+#: src/usertools.c:1101
+msgid "\001gDefault away message: \001y%s\001a\n"
+msgstr ""
+
+#: src/usertools.c:1102
+msgid "\001f\001gNew Away message: \001c"
+msgstr ""
+
+#: src/usertools.c:1109
 msgid "\001f\001wYou are \001rno longer\001w marked as \001gAWAY\001w.\001a"
 msgstr ""
 
@@ -315,3 +418,10 @@ msgid ""
 "\n"
 "\001g\001fThere are \001y%ud\001g %s online \001c( \001y%ud \001cqueued ) \001gat \001y%02d:%02d\001g local time.\n"
 msgstr ""
+# msgid ""
+# "\n"
+# "\001f\001gAre you sure you want to leave the bbs? \001w(\001gy\001w/\001gn\001w/\001gm\001w/\001g?\001w)\001g "
+# msgstr ""
+# "\n"
+# "\001f\001gWeet je zeker dat je het BBS wil verlaten? \001w(\001gy\001w/\001gn\001w/\001gm\001w/\001g?\001w)\001g "
+# 
