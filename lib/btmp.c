@@ -49,7 +49,6 @@ static int _mono_initialize_shm(void);
 static int _mono_remove_from_linked_list(const char *user);
 static int _mono_add_to_linked_list(btmp_t user);
 static int _mono_initialize_holodeck(void);
-static int _mono_init_config(void);
 
 /* -------------------------------------------------------------------- */
 /* return_pid() */
@@ -536,9 +535,6 @@ _mono_initialize_shm()
     }
     close(fd);
 
-    /* read the several bbs configs from file */
-    _mono_init_config();
-
     return 0;
 }
 
@@ -725,70 +721,6 @@ _mono_initialize_holodeck()
     }
     fclose(fp);
     return 0;
-}
-
-#define BUFSIZE		3000
-#define DELIM 		"|"
-#define CONFIGURATIONS	BBSDIR "etc/configurations.def"
-
-static int
-_mono_init_config()
-{
-
-    FILE *fp;
-    char buffer[BUFSIZE];
-    int i = 0;
-
-    fp = xfopen(CONFIGURATIONS, "r", FALSE);
-    if (fp == NULL)
-	return -1;
-
-    while (fgets(buffer, BUFSIZE, fp) != NULL) {
-
-	/* don't parse comment lines */
-	if (buffer[0] == '#')
-	    continue;
-
-	/* remove trailing '\n' */
-	buffer[strlen(buffer) - 1] = '\0';
-
-	strcpy(shm->config[i].bbsname, strtok(buffer, DELIM));
-	strcpy(shm->config[i].forum, strtok(NULL, DELIM));
-	strcpy(shm->config[i].forum_pl, strtok(NULL, DELIM));
-	strcpy(shm->config[i].message, strtok(NULL, DELIM));
-	strcpy(shm->config[i].message_pl, strtok(NULL, DELIM));
-	strcpy(shm->config[i].express, strtok(NULL, DELIM));
-	strcpy(shm->config[i].x_message, strtok(NULL, DELIM));
-	strcpy(shm->config[i].x_message_pl, strtok(NULL, DELIM));
-	strcpy(shm->config[i].user, strtok(NULL, DELIM));
-	strcpy(shm->config[i].user_pl, strtok(NULL, DELIM));
-	strcpy(shm->config[i].username, strtok(NULL, DELIM));
-	strcpy(shm->config[i].doing, strtok(NULL, DELIM));
-	strcpy(shm->config[i].location, strtok(NULL, DELIM));
-	strcpy(shm->config[i].chatmode, strtok(NULL, DELIM));
-	strcpy(shm->config[i].chatroom, strtok(NULL, DELIM));
-	strcpy(shm->config[i].admin, strtok(NULL, DELIM));
-	strcpy(shm->config[i].wizard, strtok(NULL, DELIM));
-	strcpy(shm->config[i].sysop, strtok(NULL, DELIM));
-	strcpy(shm->config[i].programmer, strtok(NULL, DELIM));
-	strcpy(shm->config[i].roomaide, strtok(NULL, DELIM));
-	strcpy(shm->config[i].guide, strtok(NULL, DELIM));
-	strcpy(shm->config[i].idle, strtok(NULL, DELIM));
-
-	i++;
-    }
-    fclose(fp);
-    return 0;
-
-}
-
-config_t
-mono_read_config(unsigned int i)
-{
-    if (strlen(shm->config[i].bbsname) == 0)
-	return shm->config[0];
-    else
-	return shm->config[i];
 }
 
 int

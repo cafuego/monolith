@@ -253,7 +253,6 @@ typedef struct {
     struct quickroom rooms[MAXQUADS];
 
     long status;
-    config_t config[MAXCONFIGS];
 
 } bigbtmp_t;
 
