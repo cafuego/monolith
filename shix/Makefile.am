@@ -9,8 +9,10 @@ LDADD = $(MYSQL_LIB) -lmysqlclient
 
 CFLAGS =-O3 -Wall -DBBSDIR=\"$(prefix)\"
 
+INCLUDES += -I../include
+
 #ifdef USE_MYSQL
-CFLAGS += $(MYSQL_INCLUDE)
+INCLUDES += $(MYSQL_INCLUDE)
 #endif
 
 #CFLAGS += -pedantic -w -W \
