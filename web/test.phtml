@@ -12,6 +12,8 @@ connect_db();
 $username = getenv("REMOTE_USER");
 $usernum = get_usernum($username);
 
+echo "<p>$username/$usernum<br>\n";
+
 if ($userfile == null || $userfile == "") {
     echo "<form enctype=\"multipart/form-data\" action=\"/bbs/test.phtml\" method=\"post\"\n";
     echo "  <input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"10000\">\n";
@@ -21,7 +23,6 @@ if ($userfile == null || $userfile == "") {
 } else {
     echo "File: `$userfile' ($userfile_type - ".filesize($userfile)." bytes)\n";
     if (file_exists($userfile)) {
-	connect_db();
 	$fp = fopen($userfile, "r");
 	$contents = fread($fp, filesize($userfile));
 	fclose($fp);
@@ -31,7 +32,6 @@ if ($userfile == null || $userfile == "") {
 	$result = mysql_query("UPDATE user SET content_type='$userfile_type' WHERE id=$usernum");
     }
     echo "<p>Hopefully saved your file \"$userfile_name\" ($userfile_size bytes) into the database.\n";
-}
 
 $result = mysql_query("SELECT content_type FROM user WHERE id=$usernum");
 $number = MYSQL_NUMROWS($result);
@@ -47,6 +47,8 @@ if ($number) {
 	echo "<p>Image is in unsupported format. Use GIF, JPEG or PNG.\n";
 } else {
     echo "<p>No image\n";
+}
+
 }
 
 
