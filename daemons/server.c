@@ -436,7 +436,7 @@ mono_login()
 	strcpy(testuser, "");
 	return;
     }
-    if ( check_password( user, pwtest ) == TRUE ) {
+    if ( mono_sql_u_check_passwd( user->usernum, pwtest ) == TRUE ) {
 	successful_pre_login = 1;
 	printf("\nYou are now logged in.\n\n");
 	strcpy(username, testuser);

@@ -122,14 +122,8 @@ main(int argc, char **argv)
     mono_connect_shm();
 
     if (shm->user_count >= maxallow) {	/* || shm->queue_count > 0) */
-#ifdef QUEUE
-	printf("\n\r\n\rSorry, Monolith Spacestation is overpopulated right now,\n\ryou will be put in the Airlock...\n\n\r");
-	printf(" At this moment we allow %d users online. ", maxallow);
-	printf(" ( press <Ctrl-C> to leave the AirLock or <Shift-L> to Login )\n\r\n");
-	if (wait_in_queue() == QUEUE_FULL)
-	    exit(0);
-#endif
 	printf("\n\r\n\rSorry, the BBS is full at the moment. Please try again later.\n\r\n\r");
+        mono_detach_shm();
 	exit(0);
     }
     /* sends the SIGALRM signal after 30 secs */
@@ -366,7 +360,7 @@ mono_login()
 	xfree(user);
 	return;
     }
-    if ( check_password( user, pwtest ) == TRUE ) {
+    if ( mono_sql_u_check_passwd( user->usernum, pwtest ) == TRUE ) {
 	successful_pre_login = 1;
 	strcpy(username, tmp_user);	/* added this - Lisa */
 	printf("\n [ Logged In ]\n\n");
