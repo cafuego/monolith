@@ -36,6 +36,8 @@
 #endif
 #endif
 
+#include "version.h"
+
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #include <locale.h>
@@ -365,7 +367,7 @@ print_system_config()
     printf("(%.2f%%)\n", percent);
 #endif
 
-    cprintf("\n\1wLast compiled                 : %s\n\1f", printdate(buf.st_mtime, 0));
+    cprintf("\n\1wLast compiled                 : %s \1w(\1g#%d\1w)\n\1f", printdate(buf.st_mtime, 0), COMPILE_NUM);
     cprintf("\1wMachine load                  :\1g ");
     printf("%.2f %.2f %.2f", l1, l2, l3);
     cprintf(" \1w(\1g%d\1w/\1g%d\1w)\n", aproc, iproc);
