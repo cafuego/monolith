@@ -68,7 +68,7 @@ function express_message($username, $recipient, $interface, $location) {
     //
     $now = strftime("%H:%M", time());
     PRINT "<p align=\"left\"><font color=\"#00CC00\">eXpress Message from</font> <font color=\"#ffff00\">$username@web</font> <font color=\"#00cc00\">to</font> <font color=\"#ffff00\">$recipient@$interface</font> <font color=\"#00cc00\">at</font> (<font color=\"#00cc00\">$now</font>)</p>\n";
-    PRINT "<textarea rows=\"6\" cols=\"70\" name=\"message\" style=\"font: 10pt Helvetica\"></textarea>\n";
+    PRINT "<textarea rows=\"6\" cols=\"60\" name=\"message\" style=\"font: 10pt Helvetica\"></textarea>\n";
 
     // Form buttons.
     //

@@ -227,14 +227,12 @@ function list_x_messages($username,$location) {
     $number = MYSQL_NUMROWS($result);
     if ($number) {
 
-        // Play sound file :)
-        //
-        messagesound();
-
         if($number == 1)
             addimage( "You have 1 new eXpress message" );
         else
             addimage( "You have $number new eXpress messages" );
+
+        messagesound();
 
         print "<table border=\"0\" cellpadding=\"2\" cellspacing=\"4\" align=\"center\">\n";
         $i = 0;
