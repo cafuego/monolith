@@ -266,21 +266,21 @@ format_date(message_header_t * header, char *header_string)
 
     if (usersupp->config_flags & CO_MONOHEADER)
 	strftime(fmt_date, sizeof(fmt_date) - 1,
-		 "\1g%a, %b %d %Y \1w(\1g%H:%M\1w)\1a", tp);
+		 "\1g%a, %b %d %Y \1w(\1g%H:%M\1w) (%Z)\1a", tp);
 
     else if (usersupp->config_flags & CO_LONGDATE)
 	if (usersupp->config_flags & CO_EUROPEANDATE)
 	    strftime(fmt_date, sizeof(fmt_date) - 1,
-		     "\1g%A, %d %B %Y \1w(\1g%H:%M\1w)\1a", tp);
+		     "\1g%A, %d %B %Y \1w(\1g%H:%M\1w) (%Z)\1a", tp);
 	else
 	    strftime(fmt_date, sizeof(fmt_date) - 1,
-		     "\1g%A, %B %d %Y \1w(\1g%I:%M %p\1w)\1a", tp);
+		     "\1g%A, %B %d %Y \1w(\1g%I:%M %p\1w) (%Z)\1a", tp);
     else if (usersupp->config_flags & CO_EUROPEANDATE)
 	strftime(fmt_date, sizeof(fmt_date) - 1,
-		 "\1g%a, %d %b %Y \1w(\1g%H:%M\1w)\1a", tp);
+		 "\1g%a, %d %b %Y \1w(\1g%H:%M\1w) (%Z)\1a", tp);
     else
 	strftime(fmt_date, sizeof(fmt_date) - 1,
-		 "\1g%a, %b %d %Y \1w(\1g%I:%M %p\1w)\1a", tp);
+		 "\1g%a, %b %d %Y \1w(\1g%I:%M %p\1w) (%Z)\1a", tp);
 
     strcat(datestring, fmt_date);
     strcat(datestring, "");

@@ -845,11 +845,16 @@ misc_menu()
 	    case 't':
 	    case 'T':
 		nox = 1;
-		cprintf( "\1f\1gTime Zone\1w:\1c " );
+                if ( strlen( usersupp->timezone ) ) 
+                   cprintf( "\1f\1gTimezone \1w[\1y%s\1w]\1g:\1c ", usersupp->timezone );
+		else 
+                   cprintf( "\1f\1gTimezone \1w:\1c " );
 		{ char str[40];
-		  getline( str, 10, 1 );
-                setenv( "TZ", str, 1 );
-                  tzset();
+		  getline( str, 38, 1 );
+                  if ( strlen( str ) != 0 ) {
+                      strcpy( usersupp->timezone, str );
+                      set_timezone( str );
+                 }
                     }
                 break;
 
