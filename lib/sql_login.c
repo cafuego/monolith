@@ -5,6 +5,7 @@
 #endif
 #include <build-defs.h>
 
+#include <assert.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include <time.h>
@@ -26,7 +27,6 @@
 #undef extern 
 
 #define LOGIN_TABLE	"login"
-#define SYSOP_TABLE	"sysop"
 
 /*
  * Writes a log entry into the `login' table.
@@ -37,6 +37,8 @@ mono_sql_log_logout(unsigned int user_id, time_t login, time_t logout, const cha
 
     int ret;
     MYSQL_RES *res;
+ 
+    assert( host != NULL );
 
     ret = mono_sql_query(&res, "INSERT INTO " LOGIN_TABLE 
      " (user_id,login,logout,online,host,reason) VALUES (%u,FROM_UNIXTIME(%u),FROM_UNIXTIME(%u),SEC_TO_TIME(%u),'%s',%d)"
