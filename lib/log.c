@@ -34,7 +34,7 @@ log_it(const char *type, const char *event,...)
 
     fp = fopen(work, "a");
     if (fp == NULL) {
-	(void) fprintf(stderr, "Can't open logfile! Please report the error yourself.\n");
+	(void) fprintf(stderr, "Can't open logfile %s Please report the error yourself.\n", work);
 	return -1;
     }
     t = time(0);

@@ -232,7 +232,7 @@ mono_sql_uf_list_hosts_by_forum(unsigned int forumnumber, userlist_t ** p)
 }
 
 int
-mono_sql_uf_list_hosts_by_user(unsigned int usernumber, forumlist_t ** p)
+mono_sql_uf_list_hosts_by_user(unsigned int usernumber , forumlist_t ** p)
 {
     int ret, rows, i;
     unsigned int forum_id;
@@ -259,6 +259,7 @@ mono_sql_uf_list_hosts_by_user(unsigned int usernumber, forumlist_t ** p)
 	    break;
 	if (sscanf(row[0], "%u", &forum_id) == -1)
 	    continue;
+
         e.forum_id = forum_id;
         strcpy(e.name, row[1] );
 	add_to_forumlist(e, p);

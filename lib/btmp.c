@@ -620,6 +620,7 @@ _mono_add_to_linked_list(btmp_t user)
 {
     unsigned int i, q;
     int p;
+    char *my_name;
 
     mono_lock_shm(WHO_LOCK);
 
@@ -651,9 +652,29 @@ _mono_add_to_linked_list(btmp_t user)
     /* done */
     shm->user_count++;
     mono_lock_shm(WHO_UNLOCK);
+
+    my_name = (char *) xmalloc(sizeof(char) * (L_USERNAME + 1));
+    strcpy(my_name, user.username);
+    who_am_i(my_name);
+    xfree(my_name);
     return 0;
 }
 
+char *
+who_am_i(const char * name)
+{
+    static char myname[L_USERNAME + 1];
+    static int i_am_me = 0;
+
+    if (!i_am_me) {  /* heh, not feeling like myself today.. */
+	strcpy(myname, name);
+	i_am_me = 1;
+    }
+
+    return myname;
+}
+    
+    
 static int
 _mono_remove_from_linked_list(const char *user)
 {

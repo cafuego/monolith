@@ -126,8 +126,15 @@ mono_sql_mes_retrieve(unsigned int id, unsigned int forum, message_t *data)
     message_t message;
     int ret = 0;
 
+#ifdef WE_KNOW_WHAT_AN_R_TABLE_IS_COMMIT_YOUR_CODE_PETER
+
     ret = mono_sql_query(&res, "SELECT m.message_id,m.topic_id,t.name as t_name,m.forum_id,f.name as f_name,f.highest as f_highest,(f.highest-m.message_id) as f_remaining,f.flags as f_flags,m.author,u.username AS a_name,m.alias,m.subject,UNIX_TIMESTAMP(m.date) AS date,m.type,m.priv,m.deleted,AVG(r.score) AS score FROM %s AS m LEFT JOIN %s AS u ON u.id=m.author LEFT JOIN %s AS f ON f.id=m.forum_id LEFT JOIN %s AS t ON t.topic_id=m.topic_id,%s AS r WHERE m.message_id IN(r.message_id) AND m.forum_id=%u AND m.message_id=%u GROUP BY m.message_id",
         M_TABLE, U_TABLE, F_TABLE, T_TABLE, R_TABLE, forum, id );
+
+#else
+    return -1;
+#endif
+
 
 #ifdef OLD_SHIT
     ret = mono_sql_query(&res, "SELECT message_id,topic_id,m.forum_id,author,alias,subject,UNIX_TIMESTAMP(date),type,priv,deleted FROM " M_TABLE " WHERE m.message_id=%u AND m.forum_id=%u", id, forum);
@@ -211,8 +218,15 @@ mono_sql_mes_list_forum(unsigned int forum, unsigned int start, mlist_t ** list)
     /*
      * Coolest query in the BBS sofar :)
      */
+
+#ifdef WE_KNOW_WHAT_AN_R_TABLE_IS_COMMIT_YOUR_CODE_PETER
+
     ret = mono_sql_query(&res, "SELECT m.message_id,m.topic_id,t.name as t_name,m.forum_id,f.name as f_name,f.highest as f_highest,(f.highest-m.message_id) as f_remaining,f.flags as f_flags,m.author,u.username AS a_name,m.alias,m.subject,UNIX_TIMESTAMP(m.date) AS date,m.type,m.priv,m.deleted,AVG(r.score) AS score FROM %s AS m LEFT JOIN %s AS u ON u.id=m.author LEFT JOIN %s AS f ON f.id=m.forum_id LEFT JOIN %s AS t ON t.topic_id=m.topic_id,%s AS r WHERE m.message_id IN(r.message_id) AND m.forum_id=%u AND m.message_id>%u GROUP BY m.message_id",
         M_TABLE, U_TABLE, F_TABLE, T_TABLE, R_TABLE, forum, start );
+
+#else 
+    return -1;
+#endif
 
 #ifdef OLD_SHIT
     ret = mono_sql_query(&res, "SELECT message_id,topic_id,forum_id,author,alias,subject,UNIX_TIMESTAMP(date) AS date,type,priv,deleted FROM " M_TABLE " WHERE message_id>%u AND forum_id=%u ORDER BY message_id", start, forum);
@@ -261,8 +275,14 @@ mono_sql_mes_list_topic(unsigned int topic, unsigned int start, mlist_t ** list)
     /*
      * Second coolest query in the BBS sofar.
      */
+#ifdef WE_KNOW_WHAT_AN_R_TABLE_IS_COMMIT_YOUR_CODE_PETER
+
     ret = mono_sql_query(&res, "SELECT m.message_id,m.topic_id,t.name as t_name,forum_id,f.name as f_name,f.highest as f_highest,(f.highest-m.message_id) as f_remaining,f.flags as f_flags,m.author,u.username AS a_name,m.alias,m.subject,UNIX_TIMESTAMP(m.date) AS date,m.type,m.priv,m.deleted,AVG(r.score) AS score FROM %s AS m LEFT JOIN %s AS u ON u.id=m.author LEFT JOIN %s AS f ON f.id=m.forum_id LEFT JOIN %s AS t ON t.topic_id=m.topic_id,%s AS r WHERE m.message_id IN(r.message_id) AND m.topic_id=%u AND m.message_id>%u GROUP BY m.message_id",
         M_TABLE, U_TABLE, F_TABLE, T_TABLE, R_TABLE, topic, start );
+
+#else
+    return -1;
+#endif
 
 #ifdef OLD_SHIT
     ret = mono_sql_query(&res, "SELECT message_id,topic_id,forum_id,author,alias,subject,UNIX_TIMESTAMP(date) AS date,type,priv,deleted FROM " M_TABLE " WHERE message_id>%u AND topic_id=%u ORDER BY message_id", start, topic);

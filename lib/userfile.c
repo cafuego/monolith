@@ -710,7 +710,7 @@ read_regis(const user_t * user, int override)
 char *
 getuserdir(const char *name)
 {
-    static char userdir[L_USERNAME + 23];
+    static char userdir[L_USERNAME + 50];
 
     (void) sprintf(userdir, "%s/%s", USERDIR, name);
     (void) name2file(userdir);
