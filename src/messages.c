@@ -536,7 +536,7 @@ search_via_sql(unsigned int forum)
     sprintf(line, "\n\1f\1g\nFound \1y%d \1gmatch%s in %.3f seconds. Listing by %s and %s number.\n\n", count, (count != 1) ? "es" : "", (float) working / 1000000, config.forum, config.message);
     strcat(p, line);
 
-    sprintf(line, "\1f\1g%-18s     \1y%-25s      \1gId \1y%-22s\n\1w--------------------------------------------------------------------------------\n", config.user, config.forum, "Subject");
+    sprintf(line, "\1f\1g%-18s     \1y%-25s      \1gId \1y%-22s\n\1w--------------------------------------------------------------------------------\n", "User", config.forum, "Subject");
     strcat(p, line);
 
     while (list != NULL) {
@@ -555,14 +555,14 @@ search_via_sql(unsigned int forum)
 
 	if (EQ(list->result->flag, "normal")) {
             if( (list->result->author == NULL) || (!strlen(list->result->author)) || (EQ(list->result->author,"(null)")) )
-	        sprintf(line, "\1f\1rDeleted %-10s \1w%3d.\1y%-25s \1g%7d \1y%-22s\n", config.user, list->result->f_id, list->result->forum, list->result->m_id, ((list->result->subject == NULL) || (EQ(list->result->subject, "(null)"))) ? "[no subject]" : list->result->subject);
+	        sprintf(line, "\1f\1rDeleted %-10s \1w%3d.\1y%-25s \1g%7d \1y%-22s\n", "User", list->result->f_id, list->result->forum, list->result->m_id, ((list->result->subject == NULL) || (EQ(list->result->subject, "(null)"))) ? "[no subject]" : list->result->subject);
             else
 	        sprintf(line, "\1f\1g%-18s \1w%3d.\1y%-25s \1g%7d \1y%-22s\n", list->result->author, list->result->f_id, list->result->forum, list->result->m_id, ((list->result->subject == NULL) || (EQ(list->result->subject, "(null)"))) ? "[no subject]" : list->result->subject);
 	} else if ((EQ(list->result->flag, "anon") && (strlen(list->result->alias) > 6)) || EQ(list->result->flag, "alias")) {
 	    sprintf(tempuser, "'%s'", list->result->alias);
 	    sprintf(line, "\1f\1g%-18s \1w%3d.\1y%-25s \1g%7d \1y%-22s\n", tempuser, list->result->f_id, list->result->forum, list->result->m_id, ((list->result->subject == NULL) || (EQ(list->result->subject, "(null)"))) ? "[no subject]" : list->result->subject);
 	} else {
-	    sprintf(line, "\1f\1bAnonymous %-8s \1w%3d.\1y%-25s \1g%7d \1y%-22s\n", config.user, list->result->f_id, list->result->forum, list->result->m_id, ((list->result->subject == NULL) || (EQ(list->result->subject, "(null)"))) ? "[no subject]" : list->result->subject);
+	    sprintf(line, "\1f\1bAnonymous %-8s \1w%3d.\1y%-25s \1g%7d \1y%-22s\n", "User", list->result->f_id, list->result->forum, list->result->m_id, ((list->result->subject == NULL) || (EQ(list->result->subject, "(null)"))) ? "[no subject]" : list->result->subject);
 	}
 	strcat(p, line);
 	list = list->next;

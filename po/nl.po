@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Monolith 2.0\n"
 "Report-Msgid-Bugs-To: webmaster@monolith.cc.com.au\n"
-"POT-Creation-Date: 2005-03-26 14:59+0100\n"
+"POT-Creation-Date: 2005-03-27 15:30+0200\n"
 "PO-Revision-Date: 2005-03-21 HO:MI+ZONE\n"
 "Last-Translator: Michel Oosterhof <michel@monolith.cc.com.au>\n"
 "Language-Team: TAALTEAM <LL@monolith.cc.com.au>\n"
@@ -1122,8 +1122,8 @@ msgid "fgRead old messages.a\n"
 msgstr "fgLees berichten vooruit.a\n"
 
 #: src/read_menu.c:297
-#, fuzzy, c-format
-msgid "fgProfile a %s.a\n"
+#, fuzzy
+msgid "fgProfile a user.a\n"
 msgstr "fgBekijk een %s.a\n"
 
 #: src/read_menu.c:303
@@ -1679,19 +1679,20 @@ msgid "fgHey! What do you think you are doing here?a\n"
 msgstr "fgHee! Wat denk je dat je aan het doen bent?a\n"
 
 #: src/wholist.c:119 src/wholist.c:123
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "\n"
-"gfThere are y%ug %s online at y%02d:%02dg local time.\n"
+"gfThere are y%ug users online at y%02d:%02dg local time.\n"
 msgstr ""
 "\n"
 "gfEr zijn y%ug %s aanwezig om y%02d:%02dg lokale tijd.\n"
 
 #: src/wholist.c:128
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "\n"
-"gfThere are y%udg %s online c( y%ud cqueued ) gat y%02d:%02dg local time.\n"
+"gfThere are y%udg users online c( y%ud cqueued ) gat y%02d:%02dg local "
+"time.\n"
 msgstr ""
 "\n"
 "gfEr zijn y%udg %s aanwezig c( y%ud cqueued ) gat y%02d:%02dg local time.\n"

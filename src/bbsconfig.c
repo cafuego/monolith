@@ -96,10 +96,6 @@ create_config()
 	MENU_ADDITEM(_config_set_xmessage, 0, 0, NULL, "tiv", str_t, "7", cfg.x_message);
 	sprintf(str_t, "X Message (pl) \1w(\1y%s\1a\1f\1w)", cfg.x_message_pl);
 	MENU_ADDITEM(_config_set_xmessage, 0, 0, NULL, "tiv", str_t, "8", cfg.x_message_pl);
-	sprintf(str_t, "User \1w(\1y%s\1a\1f\1w)", cfg.user);
-	MENU_ADDITEM(_config_set_user, 0, 0, NULL, "tiv", str_t, "9", cfg.user);
-	sprintf(str_t, "User (pl) \1w(\1y%s\1a\1f\1w)", cfg.user_pl);
-	MENU_ADDITEM(_config_set_user, 0, 0, NULL, "tiv", str_t, "a", cfg.user_pl);
 	sprintf(str_t, "Username \1w(\1y%s\1a\1f\1w)", cfg.username);
 	MENU_ADDITEM(_config_set_username, 0, 0, NULL, "tiv", str_t, "b", cfg.username);
 	sprintf(str_t, "Doing \1w(\1y%s\1a\1f\1w)", cfg.doing);
@@ -187,10 +183,6 @@ edit_config()
 	MENU_ADDITEM(_config_set_xmessage, 0, 0, NULL, "tiv", str_t, "7", cfg.x_message);
 	sprintf(str_t, "X Message (pl) \1w(\1y%s\1a\1f\1w)", cfg.x_message_pl);
 	MENU_ADDITEM(_config_set_xmessage, 0, 0, NULL, "tiv", str_t, "8", cfg.x_message_pl);
-	sprintf(str_t, "User \1w(\1y%s\1a\1f\1w)", cfg.user);
-	MENU_ADDITEM(_config_set_user, 0, 0, NULL, "tiv", str_t, "9", cfg.user);
-	sprintf(str_t, "User (pl) \1w(\1y%s\1a\1f\1w)", cfg.user_pl);
-	MENU_ADDITEM(_config_set_user, 0, 0, NULL, "tiv", str_t, "a", cfg.user_pl);
 	sprintf(str_t, "Username \1w(\1y%s\1a\1f\1w)", cfg.username);
 	MENU_ADDITEM(_config_set_username, 0, 0, NULL, "tiv", str_t, "b", cfg.username);
 	sprintf(str_t, "Doing \1w(\1y%s\1a\1f\1w)", cfg.doing);
@@ -388,24 +380,6 @@ _config_set_xmessage(const unsigned int a, const long b, void *string)
 }
 
 void
-_config_set_user(const unsigned int a, const long b, void *string)
-{
-    char tempstr[15];
-
-    strcpy(tempstr, "");
-    cprintf("\1f\1gEnter a new `\1yuser\1g' name \1w(\1g%s\1w): \1c", cfg.user);
-    getline(tempstr, 12, FALSE);
-    if (strlen(tempstr) > 1)
-	strcpy(cfg.user, tempstr);
-    strcpy(tempstr, "");
-    cprintf("\1f\1gEnter the plural \1w(\1g%s\1w): \1c", cfg.user_pl);
-    getline(tempstr, 14, FALSE);
-    if (strlen(tempstr) > 1)
-	strcpy(cfg.user_pl, tempstr);
-    return;
-}
-
-void
 _config_set_username(const unsigned int a, const long b, void *string)
 {
     char tempstr[13];
@@ -599,14 +573,6 @@ _config_ok()
     }
     if( strlen(cfg.x_message_pl) < 2 ) {
         cprintf("\n\1f\1rYou must change the plural X Message Name before you can save!\n");
-        return FALSE;
-    }
-    if( strlen(cfg.user) < 2 ) {
-        cprintf("\n\1f\1rYou must change the User Name before you can save!\n");
-        return FALSE;
-    }
-    if( strlen(cfg.user_pl) < 2 ) {
-        cprintf("\n\1f\1rYou must change the plural User Name before you can save!\n");
         return FALSE;
     }
     if( strlen(cfg.username) < 2 ) {

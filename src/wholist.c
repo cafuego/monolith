@@ -116,26 +116,26 @@ wholist(int level, const user_t * user)
 	    return p;
 	} else if (shm->queue_count <= 0) {
 #ifdef USE_MYSQL
-	    (void) sprintf(p, _("\n\1g\1fThere are \1y%u\1g %s online"
+	    (void) sprintf(p, _("\n\1g\1fThere are \1y%u\1g users online"
 			   " at \1y%02d:%02d\1g local time.\n"),
-		  (shm->user_count+web_count), config.user_pl, tp->tm_hour, tp->tm_min);
+		  (shm->user_count+web_count), tp->tm_hour, tp->tm_min);
 #else
-	    (void) sprintf(p, _("\n\1g\1fThere are \1y%u\1g %s online"
+	    (void) sprintf(p, _("\n\1g\1fThere are \1y%u\1g users online"
 			   " at \1y%02d:%02d\1g local time.\n"),
-		  shm->user_count, config.user_pl, tp->tm_hour, tp->tm_min);
+		  shm->user_count, tp->tm_hour, tp->tm_min);
 #endif
 	} else {
-	    (void) sprintf(p, _("\n\1g\1fThere are \1y%ud\1g %s online"
+	    (void) sprintf(p, _("\n\1g\1fThere are \1y%ud\1g users online"
 	     " \1c( \1y%ud \1cqueued ) \1gat \1y%02d:%02d\1g local time.\n"),
-			   shm->user_count, config.user_pl, shm->queue_count, tp->tm_hour, tp->tm_min);
+			   shm->user_count, shm->queue_count, tp->tm_hour, tp->tm_min);
 	}
     }
     strcat(p, "\n");
 
 #ifdef USE_MYSQL
-    (void) sprintf(string, "%u %s", (shm->user_count+web_count), ((shm->user_count+web_count) == 1) ? config.user : config.user_pl);
+    (void) sprintf(string, "%u %s", (shm->user_count+web_count), ((shm->user_count+web_count) == 1) ? "User" : "Users" );
 #else
-    (void) sprintf(string, "%u %s", shm->user_count, (shm->user_count == 1) ? config.user : config.user_pl);
+    (void) sprintf(string, "%u %s", shm->user_count, (shm->user_count == 1) ? "User" : "Users" );
 #endif
 
     switch (level) {

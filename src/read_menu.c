@@ -294,7 +294,7 @@ short_prompt(void)
 
 	    case 'P':
 		nox = 1;
-		cprintf(_("\1f\1gProfile a %s.\1a\n"), config.user);
+		cprintf(_("\1f\1gProfile a user.\1a\n"));
 		profile_user();
 		break;
 
