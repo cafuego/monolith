@@ -93,7 +93,7 @@ class user_t {
             echo "<br>\nEmail: <a href=\"mailto:$this->email\">$this->email</a>";
         if( (!(strstr( $this->hiddeninfo, "url" ))) && (strlen($this->url)))
             echo "<br>\nWebpage: <a href=\"$this->url\">$this->url</a>";
-        echo <br clear=\"all\">\n";
+        echo "<br clear=\"all\">\n";
         return;
     }
 
