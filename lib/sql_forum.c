@@ -254,8 +254,9 @@ mono_sql_f_fix_quickroom()
         shm->rooms[forum].highest=highest;
         shm->rooms[forum].lowest=(highest-(shm->rooms[forum].maxmsg));
     }
+
+    (void) mysql_free_result(res);
     return;
 }
 
-/* eof */
 /* eof */
