@@ -22,6 +22,8 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 
+#include <mysql.h>
+
 #include "monolith.h"
 #include "libmono.h"
 

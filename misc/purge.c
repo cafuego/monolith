@@ -12,6 +12,8 @@
 #include <dirent.h>
 #include <stdlib.h>
 
+#include <mysql.h>
+
 #include "monolith.h"
 #include "libmono.h"
 

@@ -21,6 +21,8 @@
 #include <fcntl.h>
 #include <sys/types.h>
 
+#include <mysql.h>
+
 #include "monolith.h"
 #include "libmono.h"
 #include "ext.h"

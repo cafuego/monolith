@@ -9,6 +9,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include <mysql.h>
+
 #include "monolith.h"
 #include "libmono.h"
 

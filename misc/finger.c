@@ -9,6 +9,8 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+#include <mysql.h>
+
 #include "monolith.h"
 #include "libmono.h"
 

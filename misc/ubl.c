@@ -20,6 +20,8 @@
 #include <time.h>
 #include <dirent.h>
 
+#include <mysql.h>
+
 #include "monolith.h"
 #include "libmono.h"
 #include "setup.h"
