@@ -13,7 +13,6 @@ extern int isbad( const char * );
 extern char * read_regis ( const user_t *, int );
 extern char * getuserdir( const char * );
 extern int check_password( const user_t *user, const char *password );
-extern int set_password( user_t *user, const char *password );
 extern unsigned int get_new_usernum(const char *, unsigned int *);
 extern int del_sql_user(unsigned int);
 extern int mono_lock_usernum(int);

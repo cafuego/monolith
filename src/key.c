@@ -111,13 +111,6 @@ enter_key()
     cprintf("\nPlease enter your key: ");
     getline(key, 5, 0);
 
-    if ( ikey==-1) {
-	/* dodgy backwards compatible code. i set all keys of current 
-	   users to = -1. this if can be removed in a few months.
-			20 sept 1999 */
-        ikey = usersupp->validation_key;
-    }
-
     if (atoi(key) == ikey ) {
 	cprintf(_("The key is correct, you are now validated.\n\n"));
 	usersupp->priv |= PRIV_VALIDATED;

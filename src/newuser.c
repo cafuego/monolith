@@ -41,7 +41,7 @@
 
 #include "sql_user.h"
 
-static void newuser_getname(user_t * user);
+static void newuser_getname(char * name);
 static void newuser_getpasswd(user_t * user);
 static void newuser_registration(user_t * user);
 static user_t *newuser_makesupp(void);
@@ -72,7 +72,7 @@ new_user(const char *hostname)
     inkey();
     more(BBSDIR "/share/newuser/welcome_username", 0);
  
-    newuser_getname(usersupp);
+    newuser_getname(usersupp->username);
 
     /* now we have a name, try to get a number */
     get_new_usernum( usersupp->username, &usernum );
@@ -180,9 +180,8 @@ newuser_makesupp()
 }
 
 static void
-newuser_getname(user_t * user)
+newuser_getname(char *name)
 {
-    char name[L_USERNAME + 1];
 
     for (;;) {
 	cprintf("\1f\1gUsername: \1w");
@@ -216,7 +215,6 @@ newuser_getname(user_t * user)
 	cprintf("\n");
 	break;
     }
-    strcpy(user->username, name);
     return;
 }
 
@@ -246,7 +244,6 @@ newuser_getpasswd(user_t * user)
 	}
     }
 
-    set_password( user, pwread );
     mono_sql_u_set_passwd( user->usernum, pwread );
     cprintf("\n");
     return;
