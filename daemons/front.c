@@ -18,14 +18,14 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#ifdef HAVE_TERMBITS_H
-#undef HAVE_ASM_TERMBITS_H
-#include <termbits.h>
-#else
-#undef HAVE_TERMBITS_H
 #ifdef HAVE_ASM_TERMBITS_H
-#include <asm/termbits.h>
-#endif
+  #undef HAVE_TERMBITS_H
+  #include <asm/termbits.h>
+#else
+  #undef HAVE_ASM_TERMBITS_H
+  #ifdef HAVE_TERMBITS_H
+    #include <termbits.h>
+  #endif
 #endif
 
 #include <time.h>
