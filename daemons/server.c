@@ -62,7 +62,6 @@ main(int argc, char **argv)
     printf("Welcome to %s. (%s)\n", BBSNAME, VERSION);
 
     fflush(stdout);
-    sleep(1);
 
     chdir(BBSDIR);
 

@@ -79,7 +79,6 @@ main(int argc, char **argv)
     printf("\r");
     printf("Welcome to %s. (%s)\n", BBSNAME, VERSION);
     fflush(stdout);
-    sleep(1);
 
     /* if the bbs is down no reason to do anything else */
     if (fexists(DOWNFILE)) {
