@@ -258,6 +258,8 @@ function list_x_messages($username,$location) {
         print "</table>\n";
     }
 
+    return;
+
     // See if messages were read and trash if yes.
     //
     $result = MYSQL_QUERY("SELECT w.id AS id,u.username AS user,w.i_recipient AS interface,DATE_FORMAT(w.date, '%H:%i') AS date FROM webx AS w LEFT JOIN user AS u ON u.id=w.recipient WHERE w.sender=$user_id AND w.status='read' AND w.i_sender='web' ORDER BY w.date ASC");
