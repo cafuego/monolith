@@ -86,150 +86,6 @@ the_menu_format.auto_columnize = 1;
     strcpy(the_menu_format.menu_title, "\1f\1yBing's Bongs:\n");
     MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
 	"tiv", "tastes like chicken(do_bing)", "\"", "1");
-/*    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "b", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "c", "1");
-MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "a", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "b", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "c", "1");
-
-MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "a", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "b", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "c", "1");
-
-MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "a", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "b", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "c", "1");
-
-MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "a", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "b", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "c", "1");
-
-MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "a", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "b", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "c", "1");
-
-MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "a", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "b", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "c", "1");
-
-MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "a", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "b", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "c", "1");
-
-MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "a", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "b", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "c", "1");
-
-MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "a", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "b", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "c", "1");
-
-MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "a", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "b", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "c", "1");
-
-MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "a", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "b", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "c", "1");
-
-MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "a", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "b", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "c", "1");
-
-MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "a", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "b", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "c", "1");
-
-MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "a", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "b", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "c", "1");
-
-MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "a", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "b", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "c", "1");
-
-MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "a", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "b", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "c", "1");
-
-MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "a", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "b", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "c", "1");
-
-MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "a", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "b", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "c", "1");
-
-MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "a", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "b", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "c", "1");
-
-MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "a", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "b", "1");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
-	"tiv", "tastes like chicken(do_bing)", "c", "1");
-*/
     MENU_PROCESS_INTERNALS;
     MENU_DISPLAY(1);
     MENU_EXEC_COMMAND;
@@ -297,14 +153,23 @@ menu_command(M_LN_t * the_menu, M_display_t * m_fmt)
     menu_command_prompt(m_fmt);
     strcpy(cmdstr, "");
     if (m_fmt->gen_0_idx || m_fmt->gen_1_idx) {
-	command = get_single(m_fmt->menu_valid_input);
+	command = get_single_quiet(m_fmt->menu_valid_input);
 	bing = qc_get_pos_int(command, m_fmt->idx_emax);
 	if (bing > -1)
 	    snprintf(cmdstr, sizeof(cmdstr), "%d", bing);
     } else {
-	command = get_single(m_fmt->menu_valid_input);
-	cmdstr[0] = command;
-	cmdstr[1] = '\0';
+	if (m_fmt->idx_emax > 1) {
+	    command = get_single_quiet(m_fmt->menu_valid_input);
+	    if (isdigit(command)) {
+	        bing = qc_get_pos_int(command, m_fmt->idx_emax);
+	        if (bing > -1)
+	            snprintf(cmdstr, sizeof(cmdstr), "%d", bing);
+	    } else
+		sprintf(cmdstr, "%c", command);
+        } else {
+	    command = get_single(m_fmt->menu_valid_input);
+	    sprintf(cmdstr, "%c", command);
+	}
     }
 
     if (strlen(cmdstr) && (!strpbrk(cmdstr, m_fmt->quit_command)))
@@ -321,7 +186,7 @@ exec_menu_cmd(M_LN_t * the_menu, const char *cmd)
 
     while (the_menu != NULL) {
 	linkPtr = the_menu->nextPtr;
-	if (strstr(the_menu->mi_ptr->MI_idx, cmd) != NULL)
+	if (strcmp(the_menu->mi_ptr->MI_idx, cmd) == 0)
 	    break;
 	the_menu = linkPtr;
     }

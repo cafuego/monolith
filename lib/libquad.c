@@ -21,6 +21,7 @@
 
 #include "btmp.h"
 #include "log.h"
+#include "msg_file.h"
 #include "userfile.h"
 #include "routines.h"
 #include "sql_userforum.h"

@@ -1,7 +1,6 @@
 /* $Id$ */
 
 /* prototypes */
-extern void storeug( int );
 extern void killroom( void );
 extern void look_into_quickroom( int );
 extern void edit_room_field( room_t *, unsigned int, int );

@@ -1,5 +1,6 @@
 
-bin_PROGRAMS = dexi purge ubl finger makeemp ccat initconf initgoto ql_sql fsql convert
+bin_PROGRAMS = dexi purge ubl finger makeemp ccat initconf initgoto ql_sql fsql convert qc_forum
+qc_forum_SOURCES = qc_forum.c
 ql_sql SOURCES = ql_sql.c
 dexi_SOURCES = dexi.c dexi2.c wholist.c
 convert_SOURCES = convert.c

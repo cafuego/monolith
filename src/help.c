@@ -48,14 +48,6 @@ static int config_commands_menu(void);
 static int helpish_commands_menu(void);
 static int utility_commands_menu(void);
 
-static void more_wrapper(const unsigned int, const long, const char *);
-
-void
-more_wrapper(const unsigned int col, const long bing, const char *filename)
-{
-    more(filename, 1);
-    return;
-}
 /*-----------------------------------------*/
 /*
  * context:

@@ -11,12 +11,8 @@
 #include <dirent.h>
 
 #include "monolith.h"
-
-#include "routines.h"
+#include "libmono.h"
 #include "libcache.h"
-#include "libquad.h"
-#include "userfile.h"
-#include "btmp.h"
 #include "sql_message.h"
 
 #define extern
@@ -147,7 +143,7 @@ message_copy(const unsigned int from_forum, const unsigned int to_forum, const u
 	mail_header_filename(to_header_file, to_name, new_message_id);
     } else {
 	if ((new_message_id = get_new_message_id(to_forum)) == -1) {
-	    printf("\n\1r\1fCouldn't get new post number for Forum #%u\n\1a, to_forum");
+	    printf("\n\1r\1fCouldn't get new post number for Forum #%u\n\1a", to_forum);
 	    return -1;
 	}
 	message_filename(to_file, to_forum, new_message_id);

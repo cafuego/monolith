@@ -17,8 +17,6 @@ extern int	line_count;		/* used for -- more (34%) --	*/
 extern unsigned int	curr_line;	/* used by increment()		*/
 
 extern int	curr_rm;		/* Room NUMBER of current room.	*/
-extern int	ugnum; 
-extern long 	uglsn;			/* holds <u>ngoto info		*/
 extern int	unseen;
 extern volatile int idletime;		/* how long user has been idle  */
 extern unsigned cmdflags;		/* internal flags		*/

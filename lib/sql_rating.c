@@ -30,6 +30,7 @@
 #endif
 
 #include "sql_rating.h"
+#include "sql_utils.h"
 
 int
 mono_sql_rat_add_rating(unsigned int user_id, unsigned int message_id, unsigned int forum_id, int rating)
@@ -83,7 +84,6 @@ mono_sql_rat_check_rating(unsigned int user_id, unsigned int message_id, unsigne
 {
 
     MYSQL_RES *res;
-    MYSQL_ROW row;
     int ret = 0;
 
     ret = mono_sql_query(&res, "SELECT score FROM %s WHERE user_id=%u AND message_id=%u AND forum_id=%u",

@@ -44,11 +44,13 @@
 #include "input.h"
 #include "rooms.h"
 #include "msg_file.h"
+#include "routines2.h"
+#include "uadmin.h"
 
 #include "sql_message.h"
 #include "sql_userforum.h"
 #include "sql_rating.h"
-
+#include "sql_llist.h"
 void
 search()
 {
@@ -397,7 +399,7 @@ rate_message(message_t * message, unsigned int number, unsigned int forum)
     cprintf("\1f\1gYour rating for this %s \1w(\1g-9 thru 9\1w): \1c", config.message);
 
     strcpy(buf_str, "");
-    getline(&buf_str, 3, TRUE);
+    getline(buf_str, 3, TRUE);
 
     if ((sscanf(buf_str, "%d", &score)) != 1) {
 	cprintf("\1f\1rSorry, but `\1y%s\1r' is not a valid entry.\1a\n", buf_str);

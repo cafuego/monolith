@@ -42,6 +42,7 @@
 #include "sql_message.h"
 #include "ext.h"
 #include "input.h"
+#include "messages.h"
 #include "usertools.h"
 
 #ifdef CLIENTSRC
@@ -195,15 +196,6 @@ format_header(message_header_t * header, unsigned int forum, char *header_string
     }
     header_string = m_strcat(header_string, "\1a\1c");
     return header_string;
-}
-
-char *
-m_strcat(char *string1, const char *string2)
-{
-
-    string1 = (char *) realloc(string1, strlen(string1) + strlen(string2) + 1);
-    strcat(string1, string2);
-    return (string1);
 }
 
 /* Displays only the message header.  */

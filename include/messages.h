@@ -12,4 +12,5 @@ extern void message_clip(const char *);
 extern void message_2_temp(const char *, char );
 extern void purge_mail_quad(void);
 extern int count_mail_messages(void);
-
+extern void search_via_sql(unsigned int forum);
+extern void rate_message(message_t * , unsigned int , unsigned int );

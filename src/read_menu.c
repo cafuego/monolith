@@ -23,9 +23,12 @@
 
 #include "monolith.h"
 #include "libmono.h"
+
+#include "commands.h"
 #include "input.h"
 #include "ext.h"
 #include "sql_config.h"
+#include "sql_rating.h"
 #include "routines2.h"
 #include "msg_file.h"
 #include "chat.h"
@@ -40,6 +43,7 @@
 #include "express.h"
 #include "inter.h"
 #include "main.h"
+#include "qc.h"
 #include "rooms.h"
 #include "setup.h"
 #include "statusbar.h"
@@ -1123,7 +1127,7 @@ unsigned int
 ungoto_message_id(const unsigned int current_id)
 {
     static unsigned int ungoto_m_id = 0;
-    unsigned int ret;
+    unsigned int ret = 1;
 
     if (current_id == 0)
 	ret = ungoto_m_id;

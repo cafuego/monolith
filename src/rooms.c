@@ -46,13 +46,13 @@
 #include "uadmin.h"
 #include "libquad.h"
 #include "menu.h"
+#include "qc.h"
 #include "routines.h"
 #include "read_menu.h"  // display_short_prompt()
 #include "commands.h"
 #include "routines2.h"
 #include "enter_message.h"
 #include "userfile.h"
-#include "quadcont.h"
 
 int need_rewrite;
 
@@ -63,6 +63,7 @@ void menu_hostedit_kill(const unsigned int, const long, const char *);
 
 static void show_qls(void);
 static int print_hosts_simple( unsigned int forum_id );
+static void show_room_aides(void);  /* sql ql's version */
 
 static char *fish[] =
 {
@@ -180,17 +181,6 @@ i_may_write_forum(const unsigned int forum)
     }
 }				
 
-
-/*
- * storeug()
- */
-
-void
-storeug(int old_room)
-{
-    ugnum = (curr_rm) ? old_room : 0;
-    uglsn = (ugnum) ? usersupp->lastseen[ugnum] : 0;
-}
 
 void
 show_known_rooms(int param)
@@ -512,7 +502,6 @@ killroom()
 
     int i;
     char temprmname[50];
-    char qc_file[80];
 
     quickroom = readquad(curr_rm);
 
@@ -544,9 +533,7 @@ killroom()
 
     log_sysop_action("deleted %s: %s>", config.forum, temprmname);
 
-    (void) sprintf(qc_file, QC_FILEDIR "%d/qcfile", curr_rm);
-    if (fexists(qc_file))
-	unlink(qc_file);
+    _sql_qc_zero_forum_categories(curr_rm);
 
     curr_rm = 0;
     gotocurr();
@@ -1267,9 +1254,7 @@ gotonext()
 	    usergoto(curr_rm, old_rm, 1);
 	    return;
 	}
-    } else if (ugnum && curr_rm == 0)
-	if (usersupp->lastseen[ugnum] == readquad(ugnum).highest)
-	    ugnum = uglsn = 0;	/* clear ugnum and uglsn */
+    } 
 
     if (last_skipped_rm > -1)	/* only count if we've skipped something */
 	for (i = 0; i < MAXQUADS; i++)
@@ -1369,7 +1354,6 @@ jump(int destructive_jump)
 	cprintf("\1f\1rNo %s called `\1y%s\1r'.\1a\n", config.forum, quad_name);
 	return 0;
     }
-    storeug(curr_rm);
     usergoto(i, curr_rm, destructive_jump);
 
     return 1;

@@ -190,7 +190,6 @@ mono_sql_mes_list_forum(unsigned int forum, unsigned int start, mlist_t ** list)
     MYSQL_ROW row;
     int ret = 0, rows = 0, i = 0;
     mlist_t entry;
-    message_t *message;
 
     /*
      * Coolest query in the BBS sofar :)

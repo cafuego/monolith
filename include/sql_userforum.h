@@ -20,6 +20,7 @@ extern int mono_sql_uf_remove_kicked(unsigned int , unsigned int );
 extern int mono_sql_uf_new_user(unsigned int);
 
 extern int dest_userlist(userlist_t * list);
+
 extern int add_to_userlist(userlist_t element, userlist_t ** list);
 
 extern int dest_forumlist(forumlist_t * list);

@@ -30,20 +30,34 @@
 #include "libmono.h"
 #include "ext.h"
 
-#include "bbsconfig.h"
-#include "input.h"
-#include "key.h"  
-#include "msg_file.h"
-#include "quadcont.h"
-#include "registration.h"
-#include "read_menu.h"
-#include "rooms.h"
-#include "setup.h"
-#include "telnet.h"
-
 #define extern
 #include "commands.h"
 #undef extern
+
+#include "bbsconfig.h"
+#include "chat.h"
+#include "clipboard.h"
+#include "enter_message.h"
+#include "express.h"
+#include "friends.h"
+#include "fun.h"
+#include "help.h"
+#include "input.h"
+#include "key.h"  
+#include "main.h"
+#include "messages.h"
+#include "msg_file.h"
+#include "qc.h"
+#include "registration.h"
+#include "read_menu.h"
+#include "routines2.h"
+#include "rooms.h"
+#include "setup.h"
+#include "sql_config.h"
+#include "sql_goto.h"
+#include "telnet.h"
+#include "usertools.h"
+#include "uadmin.h"
 
 
 void
@@ -58,7 +72,6 @@ sysop_menu()
 {
 
     register char cmd = '\0';
-    int i = 0;
 
     /* extra security */
     if ((usersupp->priv & (PRIV_WIZARD | PRIV_SYSOP)) == 0)
@@ -241,7 +254,7 @@ sysoproom_menu()
 
     register char cmd = '\0';
 
-    while ((cmd != SP) && (cmd != 13) && (cmd != 'Q')) {
+    while ((cmd != SP) && (cmd != 13)) {
 	IFNEXPERT
 	{
 	    cprintf("\1f\1w(\1rRoom Options\1w)\1a\n");
@@ -317,9 +330,9 @@ sysoproom_menu()
 		break;
 
 	    case 'Q':
-#ifdef QC_ADMIN_ENABLE
+#ifdef QC_ENABLE
 		cprintf("\1f\1rQuadcont Menu.\1a\n");
-		qc_menu();
+		new_qc();
 #endif
 		break;
 

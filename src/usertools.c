@@ -26,6 +26,7 @@
 
 #include "monolith.h"
 #include "libmono.h"
+#include "sql_config.h"
 #include "sql_userforum.h"
 #include "ext.h"
 #include "setup.h"
@@ -72,10 +73,10 @@ static void _tgl_silc(const unsigned int, const long, const char *);
 static unsigned int _get_locale(const unsigned long);
 static void _set_date_display(const unsigned int, const long, const char *);
 static void _set_locale(const unsigned int, const long, const char *);
-static float _get_monoholic_rating(user_t *user);
-static char * _get_monoholic_flag(user_t *user);
-static void _print_priv_flags(user_t *user, forumlist_t *p);
-static void _print_user_flags(user_t *user);
+static float _get_monoholic_rating(const user_t *user);
+static char * _get_monoholic_flag(const user_t *user);
+static void _print_priv_flags(const user_t *user, forumlist_t *p);
+static void _print_user_flags(const user_t *user);
 
 
 /* code */
@@ -1077,13 +1078,13 @@ _set_date_display(const unsigned int bongo, const long bouncing, const char *hor
 }
 
 static float
-_get_monoholic_rating(user_t *user)
+_get_monoholic_rating(const user_t *user)
 {
     return ((float) user->posted / (float) user->timescalled) + ((float) user->x_s / (float) user->timescalled / 100) + ((float) user->timescalled/4000) + ((float) user->priv / 20000);
 }
 
 static char *
-_get_monoholic_flag(user_t *user)
+_get_monoholic_flag(const user_t *user)
 {
     float var = 0;
 
@@ -1136,7 +1137,7 @@ _get_monoholic_flag(user_t *user)
 }
 
 static void
-_print_priv_flags(user_t *user, forumlist_t *p)
+_print_priv_flags(const user_t *user, forumlist_t *p)
 {
     cprintf("\n");
     if (user->priv & PRIV_WIZARD)
@@ -1163,7 +1164,7 @@ _print_priv_flags(user_t *user, forumlist_t *p)
 }
 
 static void
-_print_user_flags(user_t *user)
+_print_user_flags(const user_t *user)
 {
 
 #ifndef NO_MONOHOLIC_FLAG

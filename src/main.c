@@ -46,7 +46,7 @@
 #include "key.h"
 #include "msg_file.h"
 #include "messages.h"
-#include "quadcont.h"
+#include "qc.h"
 #include "statusbar.h"
 #include "newuser.h"
 #include "sql_config.h"
@@ -321,7 +321,6 @@ enter_name(char *usernm)
 void
 init_system()
 {
-    ugnum = 0;			/* no room to ungoto-to at first      */
     cmdflags = 0;		/* no internal command at start       */
     return;
 }
@@ -584,7 +583,7 @@ main(int argc, char *argv[])
 
     if (usersupp->timescalled == 1) {
 #ifdef QC_ENABLE
-        if (!(qc_user_menu(1))) /* qc is horked, or locked out */
+        if (qc_user_menu(1) == -1) /* qc is horked, or locked out */
 #endif
             newbie_mark_as_read(5);     /* marks all but 5 messages as read */
 

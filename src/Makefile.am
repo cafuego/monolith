@@ -2,12 +2,12 @@ bin_PROGRAMS = yawc_port yawc_client
 CFLAGS += -Wall 
 
 yawc_port_SOURCES = clipboard.c friends.c chat.c fun.c help.c menu.c \
-  normal_input.c newuser.c quadcont.c registration.c key.c inter.c vote.c \
-  uadmin.c wholist.c read_menu.c rooms.c bbsconfig.c enter_message.c
+  normal_input.c newuser.c registration.c key.c inter.c vote.c \
+  uadmin.c wholist.c read_menu.c rooms.c bbsconfig.c enter_message.c qc.c
 
 yawc_client_SOURCES = clipboard.c friends.c chat.c fun.c help.c menu.c \
-  client_input.c newuser.c quadcont.c registration.c key.c inter.c \
-  vote.c wholist.c uadmin.c read_menu.c rooms.c bbsconfig.c enter_message.c
+  client_input.c newuser.c registration.c key.c inter.c \
+  vote.c wholist.c uadmin.c read_menu.c rooms.c bbsconfig.c enter_message.c qc.c
 
 yawc_port_LDADD = p_commands.o p_express.o p_main.o p_messages.o cprintf.o \
   routines2.o p_statusbar.o p_usertools.o p_display_message.o \
@@ -70,12 +70,12 @@ p_statusbar.o: statusbar.c
 p_main.o: main.c
 	$(COMPILE) -c main.c -o p_main.o
 
-CFLAGS += -w -W \
-  -Wall \
-  -Waggregate-return -Wcast-align -Wcast-qual \
-  -Wcomment -Wconversion -Werror -Wformat -Wimplicit \
-  -Wimplicit-int -Wimplicit-function-declaration -Winline \
-  -Wmissing-prototypes -Wmissing-declarations \
-  -Wnested-externs -Wno-import -Wparentheses -Wpointer-arith \
-  -Wredundant-decls -Wreturn-type -Wshadow -Wstrict-prototypes \
-  -Wswitch
+#CFLAGS += -w -W \
+#  -Wall \
+#  -Waggregate-return -Wcast-align -Wcast-qual \
+#  -Wcomment -Wconversion -Werror -Wformat -Wimplicit \
+#  -Wimplicit-int -Wimplicit-function-declaration -Winline \
+#  -Wmissing-prototypes -Wmissing-declarations \
+#  -Wnested-externs -Wno-import -Wparentheses -Wpointer-arith \
+#  -Wredundant-decls -Wreturn-type -Wshadow -Wstrict-prototypes \
+#  -Wswitch

@@ -36,6 +36,7 @@
 
 #include "express.h"
 #include "main.h"
+#include "rooms.h"
 #include "routines2.h"
 
 /*************************************************

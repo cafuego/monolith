@@ -32,8 +32,10 @@
 #include "main.h"
 #include "messages.h"
 #include "msg_file.h"
+#include "rooms.h"
 #include "routines2.h"
 #include "sql_forum.h"
+#include "sql_userforum.h"
 #include "sql_message.h"
 #include "uadmin.h"
 
@@ -365,13 +367,22 @@ get_autobanner_info(message_header_t * header)
 	    header->banner_type |= MAIL_BANNER;
 	return;
     }
+
+	/* note:  quad_lizard() runs enter_message recursively */
     if (header->banner_type & QUADLIZARD_BANNER)
-	quad_lizard(header);	/* note:  quad_lizard() runs enter_message recursively */
+	quad_lizard(header);
 
     if (header->banner_type & QUADLIZARD_MAIL_BANNER) {
 	header->banner_type |= SYSTEM_BANNER;
 	strcpy(header->author, "Quad Lizard\1a");
     }
+
+    if (header->banner_type & QUADCONT_MAIL_BANNER) {
+	header->banner_type |= SYSTEM_BANNER;
+	strcpy(header->author, "HAL");
+	strcpy(header->subject, "\1f\1yQuadrant evaluation results.\1a");
+    }
+
     if (header->banner_type & DELETE_MAIL_BANNER) {
 	header->banner_type |= QL_BANNER;
 	strcpy(header->author, usersupp->username);
@@ -466,7 +477,7 @@ get_mail_names(const int reply, userlist_t ** name_list, message_header_t * head
 	if (reply) {
 	    strcpy(mailname, message_reply_name(NULL));
 	} else {
-	    if (!strlen(name_list)) {
+	    if (!name_list) {
 		cprintf("\1f\1yRecipient:\1c ");
 	    } else {
 		cprintf("\1f\1gPress \1w<\1renter\1w>\1g to finish.\n");
@@ -789,101 +800,45 @@ i_deleted_your_post_haha_mail(const unsigned int current_post)
     enter_message(curr_rm, EDIT_NOEDIT, DELETE_MAIL_BANNER, name);
 }
 
-#ifdef MERGE_CODE_FOR_THE_RECORD
-
-int
-save_new_mail(message_header_t * header, userlist_t ** recipient_list)
+void
+mail_myself_quadcont_results(int ** eval)
 {
-    char filename[L_FILENAME];
-    userlist_t *p;
+    FILE* fp;
+    room_t quad;
+    int i, items_left = 0;
 
-    message = (message_t *)xcalloc( 1, sizeof(message_t) );
+    fp = xfopen(temp, "w", FALSE);
+    if (fp == NULL) {
+	cprintf("\n\1f\1rTempfile write error.\1a");
+	return;
+    }
+
+    for (i = 0; i < MAXQUADS; i++) {
+	if (*eval[i] == -1) {
+	    quad = readquad(i);
+	    if (usersupp->forget[i] != quad.generation) {
+		if (!items_left)
+		    fprintf(fp, "\n\1f\1gSelection algorithm suggests zapping the following quads:\1a\n\n");
+		fprintf(fp, "\1f\1y%d\1w> \1g%s\n", i, quad.name);
+		items_left++;
+	    }
+	}
+    }
+
+    items_left = 0;
+    for (i = 0; i < MAXQUADS; i++) {
+	if (*eval[i] > 0) {
+	    quad = readquad(i);
+	    if (usersupp->forget[i] == quad.generation) {
+		if (!items_left)
+		    fprintf(fp, "\n\1f\1gSelection algorithm suggests unzapping the following quads:\1a\n\n");
+		fprintf(fp, "\1f\1y%d\1w> \1g%s\n", i, quad.name);
+		items_left++;
+	    }
+	}
+    }
+
+    fclose(fp);
     
-    message->author = usersupp->usernum;
-    message->topic = 1;
-    message->forum = forum;
-    message->deleted = 'n';
-
-    (void) get_priv(message, flag);
-    flag = 1;
-    (void) get_alias(quad, message);
-
-    /*
-     * Display just the username/alias. The rest we can format through
-     * proper input selection. Nice idea, coz quite often when the BBS
-     * lags, it takes forever to re-display the header.
-     */
-    (void) display_header(message);
-
-    /*
-     * Get the subject line.
-     */
-    (void) get_subject(message);
-
-    switch( get_content(flag)) {
-
-        case -1: /* Empty post */
-            cprintf("\1f\1rEmpty %s not saved!\n", config.message_pl);
-            xfree(message);
-            xfree(quad);
-            return -1;
-
-        case -2: /* <A>bort */
-            cprintf("\1f\1r%s aborted.\n", config.message);
-            xfree(message);
-            xfree(quad);
-            return -1;
-
-        default:
-            break;
-            
-    }
-    if( (mono_sql_mes_add(message, temp)) == -1)
-        cprintf("\1f\1rCould not save your %s!\n", config.message);
-    else
-        cprintf("\1f\1gSaved.\n");
-
-    if (!(header->banner_type & AUTOMAIL_NO_PERSONAL_COPY)) {
-
-	header->m_id = get_new_mail_number(who_am_i(NULL));
-	mail_header_filename(filename, who_am_i(NULL), header->m_id);
-	if ((write_message_header(filename, header)) == -1)
-	    cprintf("\1f\1rError saving your copy of the mail.\1a\n");
-	else {
-	    mail_filename(filename, who_am_i(NULL), header->m_id);
-	    if ((copy(temp, filename)) == -1) {
-		cprintf("\1f\1rError saving your copy of the mail.\1a\n");
-		mail_header_filename(filename, who_am_i(NULL), header->m_id);
-		if (fexists(filename))
-		    unlink(filename);
-	    }
-	}
-    }
-    for (p = *recipient_list; p; p = p->next) {
-	if (strcmp(p->name, "Sysop") == 0) {	/* yell, save in YELL_FORUM */
-	    unsigned long temp_banner_type;
-	    temp_banner_type = header->banner_type;
-	    header->banner_type = YELL_BANNER;	/* yell banner is exclusive ! */
-	    save_new_message(header, YELL_FORUM);
-	    header->banner_type = temp_banner_type;
-	} else {
-	    header->m_id = get_new_mail_number(p->name);
-	    header->f_id = MAIL_FORUM;
-	    mail_header_filename(filename, p->name, header->m_id);
-	    if ((write_message_header(filename, header)) == -1)
-		cprintf("\1f\1rError saving your mail to %s.\1a\n", p->name);
-	    else {
-		mail_filename(filename, p->name, header->m_id);
-		if ((copy(temp, filename)) == -1) {	/* clean up mess */
-		    cprintf("\1f\1rError saving your mail to %s.\1a\n", p->name);
-		    mail_header_filename(filename, p->name, header->m_id);
-		    if (fexists(filename))
-			unlink(filename);
-		}
-	    }
-	}
-    }
-
-    return 0;
+    enter_message(MAIL_FORUM, EDIT_NOEDIT, QUADCONT_MAIL_BANNER, who_am_i(NULL));
 }
-#endif

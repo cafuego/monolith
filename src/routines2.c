@@ -130,8 +130,29 @@ more(const char *filename, int color)
     return 1;
 }
 
+void
+more_wrapper(const unsigned int col, const long keypress, const char *filename)
+{
+    more(filename, 1);
+    if (keypress) {
+	cprintf("\1f\1g\n -- Press a key when done.");
+	inkey();
+    }
+    return;
+}
+
+char *
+m_strcat(char *string1, const char *string2)
+{
+
+    string1 = (char *) realloc(string1, strlen(string1) + strlen(string2) + 1);
+    strcat(string1, string2);
+    return (string1);
+}
+
+
 int
-more_string(const char *string)
+more_string(char * const string)
 {
 
     int inc;
@@ -653,66 +674,65 @@ modify_birthday(date_t * bday)
  */
 
 int
-qc_get_pos_int(const char first, int digits)
+qc_get_pos_int(const char first, const int places)
 {
-    int i, pos_int = 0;
-    char input = '\0';
+    int i, pos_int = 0, ctr = 0;
+    char input = '\0', st[10];
+    int digits;
+
+    digits = places;
+    st[0] = '\0';
 
     if (first != '\0')
         input = first;
     else
         input = get_single_quiet("1234567890\n\r");
-    for (;;) {
-        switch (input) {
-	    case ' ':
-            case '\n':
-            case '\r':
-                return -1;
-            case '0':
-                digits--;
-                break;
-            case '1':
-                pos_int += (int) (1 * (pow(10, --digits)));
-                break;
-            case '2':
-                pos_int += (int) (2 * (pow(10, --digits)));
-                break;
-            case '3':
-                pos_int += (int) (3 * (pow(10, --digits)));
-                break;
-            case '4':
-                pos_int += (int) (4 * (pow(10, --digits)));
-                break;
-            case '5':
-                pos_int += (int) (5 * (pow(10, --digits)));
-                break;
-            case '6':
-                pos_int += (int) (6 * (pow(10, --digits)));
-                break;
-            case '7':
-                pos_int += (int) (7 * (pow(10, --digits)));
-                break;
-            case '8':
-                pos_int += (int) (8 * (pow(10, --digits)));
-                break;
-            case '9':
-                pos_int += (int) (9 * (pow(10, --digits)));
-                break;
-        }
-        cprintf("\1f\1c%c\1a", input);
-        if (digits > 0) {
-            input = '\0';
-            input = get_single_quiet("1234567890\r\n");
-            if ((input == '\r') || (input == '\n')) {
-                for (i = 0; i < digits; i++)
-                    pos_int /= 10;
-                cprintf("\n\1a");
-                return pos_int;
-            }
-        } else
+    while (input != '\n' && input != '\r' && input != ' ') {
+	switch (input) {
+	    case '\b':
+		if (ctr > 0) {
+		    st[--ctr] = '\0';
+	    	    cprintf("\b \b");
+		}
+		break;
+	    case '0':
+	    case '1':
+	    case '2':
+	    case '3':
+	    case '4':
+	    case '5':
+	    case '6':
+	    case '7':
+	    case '8':
+	    case '9':
+		st[ctr] = input;
+		st[++ctr] = '\0';
+		break;
+	}
+
+	if (input != '\b')
+            cprintf("%c", input);
+
+        if (ctr <= digits) 
+            input = get_single_quiet("1234567890\r\n\b");
+        else
             break;
-    }                           /* for(;;) */
-    cprintf("\n\1a");
+    } 
+    if (!strlen(st) || st[0] == '\n' || st[0] == '\r' || st[0] == ' ')
+	return -1;
+
+    for (;;)  /* kill leading 0's */
+	if (st[0] != '0' || (st[0] == 0 && st[1] == '\0'))
+	    break;
+	else
+	    for (i = 1; st[i - 1] != '\0'; i++)
+		st[i - 1] = st[i];
+
+    if (ctr > digits)  /* trunctuate if too many digits (knob at keyboard) */
+	st[ctr - 1] = '\0';
+
+    pos_int = atoi(st);
+
     return pos_int;
 }
 /* eof */
