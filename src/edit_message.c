@@ -121,7 +121,7 @@ edit_message(unsigned int forum, unsigned int id)
     xfree(header);
 
     log_it("editlog", "%s edited message %u in forum %u.%s", usersupp->username, id, forum, quad.name);
-    cprintf("\n\1f\1f\1gEdited message was saved in %s successfully.\n");
+    cprintf("\n\1f\1f\1gEdited message was saved in %s successfully.\n", quad.name );
 
     return 0;
 }
