@@ -466,9 +466,6 @@ main(int argc, char *argv[])
     my_name = (char *) xmalloc(sizeof(char) * (L_USERNAME + 1));
     strcpy(my_name, usersupp->username);
 
-    fprintf(stdout, "Got to here!\n");
-    fflush(stdout);
-
     set_timezone(usersupp->timezone);
     mono_setuid(my_name);
     connecting_flag = 0;

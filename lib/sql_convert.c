@@ -159,7 +159,6 @@ mono_sql_convert_row_to_wu(MYSQL_ROW row)
 
     snprintf(u->username, L_USERNAME, "%s", row[0]);
     u->login = atol(row[1]);
-    u->done = 0;
 
     return u;
 }

@@ -40,16 +40,10 @@ main(int argc, char *argv[] )
     exit(0);
 #endif
 
+    mono_sql_connect();
     mono_connect_shm();
     strremcol(p = wholist(1, NULL));
     mono_detach_shm();
-
-    printf("%s", p);
-    fflush(stdout);
-    xfree(p);
-
-    mono_sql_connect();
-    strremcol(p = mono_sql_web_wholist(1));
     mono_sql_detach();
 
     printf("%s", p);
