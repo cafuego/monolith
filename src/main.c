@@ -49,6 +49,7 @@
 #include "newuser.h"
 #include "sql_config.h"
 #include "sql_login.h"
+#include "sql_online.h"
 #include "sql_useruser.h"
 #include "read_menu.h"
 #include "registration.h"
@@ -554,6 +555,11 @@ main(int argc, char *argv[])
 
     mono_remove_ghosts();
     mono_add_loggedin(usersupp);	/* put user to into sharedmem */
+#ifdef PORT
+    mono_sql_onl_add(usersupp->usernum, "telnet");
+#else
+    mono_sql_onl_add(usersupp->usernum, "client");
+#endif
     setup_express();		/* setup express stuff */
 
     xfree(my_name);  /* not needed, who_am_i() in btmp.c knows who i am now */
@@ -685,6 +691,8 @@ logoff(int code)
         (void) mono_sql_detach();
         (void) exit(0);
     }
+
+    (void) mono_sql_onl_remove( usersupp->usernum );	/* remove from sql */
 
     if (shm) {
 	(void) dump_quickroom();
