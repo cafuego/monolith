@@ -173,12 +173,17 @@ more_string(char *string)
 * print_system_config()
 *************************************************/
 
+#ifdef LINUX
+  /* proto  (see man sysinfo) */
+  int sysinfo(struct sysinfo *info);
+#endif
+
 void
 print_system_config()
 {
     struct stat buf;
 
-#ifdef linux
+#ifdef LINUX
     struct sysinfo *info;
 #endif
   
@@ -205,7 +210,7 @@ print_system_config()
     (void) fflush(stdout);
 
     /* Get system info via the proper channels */
-#ifdef linux
+#ifdef LINUX
     info =  xmalloc(sizeof(struct sysinfo));
     if( (sysinfo (info)) == -1 ) {
         cprintf("\1f\1rError getting current system info!\n");
