@@ -4,6 +4,8 @@
 #include <config.h>
 #endif
 
+#include <stdlib.h>
+
 /*
  * regcomp and regexec -- regsub and regerror are elsewhere
  *
@@ -306,7 +308,7 @@ reg(paren, flagp)
     register char *ret;
     register char *br;
     register char *ender;
-    register int parno;
+    register int parno = 0;
     int flags;
 
     *flagp = HASWIDTH;		/* Tentatively. */
