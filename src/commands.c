@@ -80,11 +80,13 @@ sysop_menu()
 
 	switch (cmd) {
 
+#ifdef DUMP_ALL_POSTS_INTO_SQL
             case 'A':
                 cprintf("Dump all posts into SQL.\n");
                 for (i = 76; i < MAXQUADS; i++)
                     bingle(i);
                 break;
+#endif
 
 	    case 'B':
 		cprintf("\1f\1rMake a broadcast.\1a\n");

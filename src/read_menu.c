@@ -1176,6 +1176,7 @@ ungoto(void)
 
 }
 
+#ifdef DUMP_ALL_POSTS_INTO_SQL
 void
 bingle(unsigned int forum)
 {
@@ -1210,7 +1211,6 @@ copy_message_to_sql(unsigned int forum, unsigned int message)
     message_header_filename(&filename, forum, message);
     if ((read_message_header(filename, header)) == -1)
 	return;
-    // message_filename(&content, forum, message);
     sprintf(content, "/usr/bbs/save/forums/%d/%d.t", forum, message);
 
     /* Now save it. */
@@ -1219,3 +1219,5 @@ copy_message_to_sql(unsigned int forum, unsigned int message)
 
     return;
 }
+#endif
+/*eof*/
