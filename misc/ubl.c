@@ -21,12 +21,8 @@
 #include <time.h>
 #include <dirent.h>
 
-#ifdef HAVE_MYSQL_H
-#include <mysql.h>
-#else
-#ifdef HAVE_MYSQL_MYSQL_H
-#include <mysql/mysql.h>
-#endif
+#ifdef USE_MYSQL
+  #include MYSQL_HEADER
 #endif
 
 #include "monolith.h"

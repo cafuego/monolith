@@ -907,7 +907,7 @@ _edit_profile(const unsigned int a, const long b, void *c)
     if ((mono_sql_write_profile(usersupp->usernum, profile)) == -1) {
 	xfree(profile);
 	log_it("errors", "mono_sql_write_profile() returned -1");
-	cprintf(_("\1f\1rUnble to mmap() file contents!\n"));
+	cprintf(_("\1f\1rUnable to store profile in database!\n"));
 	return;
     }
     xfree(profile);
@@ -920,7 +920,7 @@ void
 _change_profile(const unsigned int a, const long b, void *c)
 {
     int i;
-    char work[560];
+    char work[560], *profile = NULL, filename[L_FILENAME];
 #ifndef CLIENTSRC
     char tempstr[300];
 #endif
@@ -949,7 +949,23 @@ _change_profile(const unsigned int a, const long b, void *c)
 
     if (write_profile(who_am_i(NULL), work) == -1) {
 	cprintf("\1r\1fCould not save your profile.\n\1a");
+        return;
     }
+
+    sprintf(filename, "%s/profile", getuserdir(who_am_i(NULL)));
+    if ((profile = map_file(filename)) == NULL) {
+	xfree(profile);
+	log_it("errors", "Can't save profile: %s", filename);
+	cprintf(_("\1f\1rUnable to mmap() profile file contents!\n"));
+	return;
+    }
+    if ((mono_sql_write_profile(usersupp->usernum, profile)) == -1) {
+	xfree(profile);
+	log_it("errors", "mono_sql_write_profile() returned -1");
+	cprintf(_("\1f\1rUnable to store profile in database!\n"));
+        return;
+    }
+    xfree(profile);
     check_profile_updated();
 }
 

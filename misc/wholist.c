@@ -9,6 +9,7 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+#include <build-defs.h>
 
 #include <stdio.h>
 #include <signal.h>
@@ -21,12 +22,8 @@
 #include <fcntl.h>
 #include <sys/types.h>
 
-#ifdef HAVE_MYSQL_H
-#include <mysql.h>
-#else
-#ifdef HAVE_MYSQL_MYSQL_H
-#include <mysql/mysql.h>
-#endif
+#ifdef USE_MYSQL
+  #include MYSQL_HEADER
 #endif
 
 #include "monolith.h"
