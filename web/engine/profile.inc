@@ -21,8 +21,8 @@ function profile_user($username, $victim) {
 
     $victim = urldecode($victim);
 
-    include ('../classes/user.class');
-
+    // Instantiate new user_t.
+    //
     $user = new user_t;
 
     if( ($user->init($victim)) == false )

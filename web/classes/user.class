@@ -107,6 +107,7 @@ class user_t {
     // Add user's profile pic if it exists.
     //
     function add_image() {
+        echo "<b>$this->image</b>\n";
         if( valid_image($this->image)) {
             if( $this->image == "image/gif")
                 echo "<img align=\"center\" src=\"/bbs/pix/gif.php3?$this->id\">\n";
@@ -115,9 +116,12 @@ class user_t {
             else if ($this->image == "image/png")
                 echo "<img align=\"center\" src=\"/bbs/pix/png.php3?$this->id\">\n";
             else {
-                errorimage("Image is in unsupported format!");
+                errorimage("Image is in weird format!");
                 return -1;
             }
+        } else {
+            errorimage("Image is in unsupported format!");
+            return -1;
         }
         return 0;
     }
