@@ -153,6 +153,9 @@
             break;
     }
 
-    html_print_foot($username, $starttime, "");
+    if($handler != "x" )
+        html_print_foot($username, $starttime, "handler");
+    else
+        html_print_foot($username, $starttime, "");
     
 ?>

@@ -233,7 +233,8 @@ html_print_foot($username, $starttime, $location)
 	echo "<hr size=\"1\" width=\"400\" align=\"center\">\n";
 
 	echo "<div align=\"center\">\n";
-	addbutton("Check Xes", "$location", "Check for new eXpress messages");
+        if($location != "handler" )
+	    addbutton("Check Xes", "$location", "Check for new eXpress messages");
 	addbutton("Old X Log", "/bbs/index.phtml/o", "View your old eXpress messages");
 	addbutton("Wholist", "/bbs/index.phtml/w", "View who's online right now");
 	addbutton("Quadrants", "/bbs/index.phtml/l", "List all available quadrants");
