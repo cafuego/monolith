@@ -31,19 +31,15 @@
 
 #include "main.h"
 #include "messages.h"
-#include "msg_file.h"
 #include "rooms.h"
 #include "routines2.h"
-#include "sql_forum.h"
-#include "sql_userforum.h"
-#include "sql_message.h"
+#include "display_message.h"
 #include "uadmin.h"
 
 #define extern
 #include "enter_message.h"
 #undef extern
 
-#include "display_message.h"
 
 static void get_subject(message_header_t *);
 static void get_reply_info(message_header_t *, const unsigned);

@@ -26,11 +26,9 @@
 #include "telnet.h"
 #include "ext.h"
 #include "libmono.h"
-#include "libcache.h"
 #include "libshix.h"
 
 #include "setup.h"
-#include "msg_file.h"
 #include "chat.h"
 #include "enter_message.h"
 #include "express.h"

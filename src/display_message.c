@@ -36,10 +36,6 @@
 #include "monolith.h"
 #include "libmono.h"
 #include "routines2.h"
-#include "msg_file.h"
-#include "sql_forum.h"
-#include "sql_userforum.h"
-#include "sql_message.h"
 #include "ext.h"
 #include "input.h"
 #include "messages.h"
@@ -49,7 +45,9 @@
 #include "telnet.h"
 #endif
 
+#define extern
 #include "display_message.h"
+#undef extern
 
 static char *format_header(message_header_t *, unsigned int, char *);
 static char *format_date(message_header_t *, char *);

@@ -19,16 +19,16 @@
 #endif
 #endif
 
-#include "bbsconfig.h"
-#include "input.h"
-#include "menu.h"
-
 #include "monolith.h"
 #include "libmono.h"
 #include "ext.h"
-#include "log.h"
 #include "routines2.h"
-#include "sql_config.h"
+#include "input.h"
+#include "menu.h"
+
+#define extern
+#include "bbsconfig.h"
+#undef extern
 
 static config_t cfg;
 static int num;
