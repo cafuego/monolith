@@ -1,3 +1,5 @@
+<?
+
 /*
  * $Id$
  *
@@ -27,7 +29,7 @@ class user_t {
     // Load $target's userfile into this class.
     //
     function init( $target ) {
-        $res = mysql_query("SELECT id,username,name,address,zip,city,state,country,phone,email,url,hiddeninfo,content_type,profile FROM user WHERE username='$target'");
+        $result = mysql_query("SELECT id,username,name,address,zip,city,state,country,phone,email,url,hiddeninfo,content_type,profile FROM user WHERE username='$target'");
         $num = mysql_numrows($result);
         if ($num) {
             $this->id = mysql_result($result, $i, "id");
@@ -44,9 +46,9 @@ class user_t {
             $this->url = mysql_result($result, $i, "url");
             $this->image = mysql_result($result, $i, "content_type");
             $this->profile = mysql_result($result, $i, "profile");
-            return 0;
+            return true;
         }
-        return -1;
+        return false;
     }
 
     // Get this user's name.
@@ -72,24 +74,24 @@ class user_t {
 
     // Add user's info. (if available)
     function add_info() {
-        echo <p align=\"left\">\n";
-        if( ! (strstr( $this->hiddeninfo, "name" ))
+        echo "<p align=\"left\">\n";
+        if( ! (strstr( $this->hiddeninfo, "name" )))
             echo "Name: $this->realname";
-        if( ! (strstr( $this->hiddeninfo, "address" ))
+        if( ! (strstr( $this->hiddeninfo, "address" )))
             echo "<br>\nAddress: $this->address";
-        if( ! (strstr( $this->hiddeninfo, "city" ))
+        if( ! (strstr( $this->hiddeninfo, "city" )))
             echo "<br>\n$this->city";
-        if( ! (strstr( $this->hiddeninfo, "state" ))
+        if( ! (strstr( $this->hiddeninfo, "state" )))
             echo ", $this->state";
-        if( ! (strstr( $this->hiddeninfo, "zip" ))
+        if( ! (strstr( $this->hiddeninfo, "zip" )))
             echo " $this->zip\n";
-        if( ! (strstr( $this->hiddeninfo, "country" ))
+        if( ! (strstr( $this->hiddeninfo, "country" )))
             echo "<br>\n$this->country";
-        if( ! (strstr( $this->hiddeninfo, "phone" ))
+        if( ! (strstr( $this->hiddeninfo, "phone" )))
             echo "<br>\nPhone: $this->phone";
-        if( ! (strstr( $this->hiddeninfo, "email" ))
+        if( ! (strstr( $this->hiddeninfo, "email" )))
             echo "<br>\nEmail: <a href=\"mailto:$this->email\">$this->email</a>";
-        if( ! (strstr( $this->hiddeninfo, "url" ))
+        if( (!(strstr( $this->hiddeninfo, "url" ))) && (strlen($this->url)))
             echo "<br>\nURL: <a href=\"http://$this->url\">$this->url</a>";
         return;
     }
@@ -108,7 +110,7 @@ class user_t {
         if( valid_image($this->image)) {
             if( $this->image == "image/gif")
                 echo "<img align=\"center\" src=\"/bbs/pix/gif.php3?$this->id\">\n";
-            else if ($this->image == "image/jpg" || $content_type == "image/jpeg" || $content_type == "image/pjpeg")
+            else if ($this->image == "image/jpg" || $image == "image/jpeg" || $image == "image/pjpeg")
                 echo "<img align=\"center\" src=\"/bbs/pix/jpeg.php3?$this->id\">\n";
             else if ($this->image == "image/png")
                 echo "<img align=\"center\" src=\"/bbs/pix/png.php3?$this->id\">\n";
@@ -120,3 +122,5 @@ class user_t {
         return 0;
     }
 }
+
+?>
