@@ -23,7 +23,6 @@
 #include <mysql.h>
 
 #include "monolith.h"
-#include "msg_file.h"
 #include "libmono.h"
 #include "setup.h"
 
