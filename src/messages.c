@@ -437,8 +437,12 @@ search_via_sql(unsigned int forum)
 
     IFSYSOP {
 	cprintf("\1f\1gSearch only this %s? \1w(\1gY\1w/\1gn\1w) \1c", config.forum);
-	if (yesno_default(YES) == NO)
-	    forum = -1;
+	if (yesno_default(YES) == NO) {
+            cprintf("\1f\1rNote that searching about 17,000 %s will take approximately forever!\n", config.message_pl);
+            cprintf("\1f\1rAre you REALLY ABSOLUTELY sure? \1w(y\1w/\1rN\1w) \1c");
+            if(yesno_default(NO) == YES)
+	        forum = -1;
+        }
     }
     if (forum == 1) {
 	cprintf("\1f\1rCan't search Mail yet, sorry.\n");
