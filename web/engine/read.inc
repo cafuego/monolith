@@ -24,7 +24,11 @@ function read_message($username, $quad, $current, $direction) {
 
     connect_db();
 
+
     if( ($quad > -1) && ($quad < 150)) {
+
+        $usernum = get_usernum($username);
+
         if ($current) {
 
             switch ($direction) {
@@ -116,7 +120,6 @@ function read_message($username, $quad, $current, $direction) {
                 // Update lastseen!
                 //
                 if( $username != "Guest" ) {
-                    $usernum = get_usernum($username);
                     $result = MYSQL_QUERY("SELECT lastread FROM usertopic WHERE forum_id=$f_id AND user_id=$usernum");
                     $lastread = mysql_result($result,0,"lastread");
                     if($lastread < $m_id)

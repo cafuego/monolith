@@ -47,7 +47,10 @@ function list_messages($username, $quad, $listunread) {
         if($listunread)
             if($number != 1) {
                 $actual = $number -1;
-                addimage( "Listing $actual unread messages in $forum" );
+                if($actual == 1)
+                    addimage( "Listing 1 unread message in $forum" );
+                else
+                    addimage( "Listing $actual unread messages in $forum" );
             } else
                 errorimage( "No unread messages, listing 1 old message!" );
         else
