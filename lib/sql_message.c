@@ -25,6 +25,7 @@
 #endif
 
 #include "monolith.h"
+#include "libmono.h"
 #include "routines.h"
 #include "libquad.h"
 #include "sql_utils.h"
