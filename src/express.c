@@ -1654,7 +1654,7 @@ are_there_held_web_xs()
     if(count == -1)
        cprintf("\1f\1rAn error occurrect trying to retrieve \1pweb \1rx-es.\n");
     if(count > 0) {
-       cprintf("\n\1f\1gYou have \1y%d \1gnew \1pWeb \1g%s %s \1w(\1gHit \1w<\1r^\1w> \1g to reply\1w)\1a\n", count, config.express, (count == 1) ? config.x_message : config.x_message_pl);
+       cprintf("\n\1f\1gYou have \1y%d \1gnew \1pWeb \1g%s %s \1w(\1gHit \1w<\1r^\1w> \1gto reply\1w)\1a\n", count, config.express, (count == 1) ? config.x_message : config.x_message_pl);
        show_web_xes(list);
        (void) mono_sql_web_mark_wx_read(list);
     }
@@ -1672,7 +1672,7 @@ show_web_xes(wx_list_t *list)
 
     while(list != NULL) {
         tp = localtime(&(list->x->date));
-        cprintf("\1f\1b*** \1pWeb \1g%s %s from \1y%s@web \1gto \1y%s \1gat \1w(\1g%02d:%02d\1w) \1b***\n\1a\1c%s\n\n"
+        cprintf("\1f\1b\n*** \1pWeb \1g%s %s from \1y%s@web \1gto \1y%s \1gat \1w(\1g%02d:%02d\1w) \1b***\n\1a\1c%s\n"
             ,config.express, config.x_message, list->x->sender
             ,usersupp->username, tp->tm_hour, tp->tm_min, list->x->message );
         list = list->next;
