@@ -758,6 +758,22 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
     dis_regis(user, ((viewing_user->priv >= PRIV_SYSOP) || control));
 
     cprintf("\1f\1cFlying: %s\1a\n", user->doing);
+    if (user->timezone)
+        if (strlen(user->timezone)) {
+	    struct tm *tp;
+	    time_t now;
+	    char str[40], datestr[60];
+
+	    strcpy(str, user->timezone);
+	    set_timezone(str);
+	    time(&now);
+	    tp = localtime(&now);
+ 	    strftime(datestr, sizeof(datestr) - 1,
+                 "\1f\1cUser's localtime:\1g %A \1w(\1g%H:%M\1w) (%Z)\1a\n", tp);
+	    cprintf("%s", datestr);
+	    strcpy(str, usersupp->timezone);
+	    set_timezone(str);
+        }
 
     if ((viewing_user->priv >= PRIV_SYSOP) && (strlen(user->aideline) > 0))
 	cprintf("\1f\1yAideline:%s\n", user->aideline);
