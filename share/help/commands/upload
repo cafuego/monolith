@@ -1,0 +1,13 @@
+acfb       *** y Upload a Post b ***
+ 
+gFrom a telnet session, and the unix CLient, you can upload a post using
+w<rCtrlw-rnw>g (dump the post to the telnet port, i.e. large cut and pastes..)  When
+you're done, press w<rCtrlw-rdw>g to tell the system you're done.
+ 
+Unlike entering a post normally, this command does not stop taking input at two
+w<rentersw> gorw <rreturnsw>g.
+ 
+Under the yWinCLient:g
+  Tell you the truth, i'm not exactly sure what this command does under the    
+  WinClient.  It seems to enter a post normally from the WinCLient, and        
+  consistently defies my attempts at getting it to do something special.

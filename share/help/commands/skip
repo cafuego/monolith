@@ -1,0 +1,9 @@
+ac     fb  *** ySkip Quadrant b ***
+
+gSkip reading the current quadrant until later.
+ 
+gThis command does two things:
+  -  First, it <rsw>gkips over a quadrant from a short prompt 
+     so that you can read the quadrant later.
+  -  Second,w <rsw>gkip moves you into the next quadrant with unread messages. 
+ 

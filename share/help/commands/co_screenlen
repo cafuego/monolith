@@ -1,0 +1,10 @@
+fb       *** y Set Screenlength b ***g
+
+Allows you to set the number of lines of text on a single screen.
+
+If a post or other information is longer than one screenful, the 
+screenlength is how many lines appear at a time before a --more-- prompt.
+
+Note: Most terminal windows are w[r24w]g lines long, and it's
+      no accident that the default for this option is w[r24w]g.  
+

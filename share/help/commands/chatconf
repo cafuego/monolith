@@ -1,0 +1,8 @@
+acfp       b*** yConfigure Chat Channels b***ad   fb
+
+fgThis command brings up a menu of chat channels from which you can pick
+to receive messages from.
+
+Related commands:
+w<rcw>g  - Sends chat message. 
+w<r,w>g  - Chat wholist: Shows who is reading which channels.

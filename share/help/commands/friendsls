@@ -1,0 +1,35 @@
+acfb       *** y Friends List  b***
+ 
+gThe people in this list will ralwaysep afgbe able to sent you Intercom ew<rxw>gpress
+Messages, even if you're w<rXw>g disabled.ad
+ 
+fgTo use the menu, press w<r<w>g, and follow the directions.  
+  
+w    <rAw>gdd Quick-X userw:g 
+       Allows you to assign a user to a number from 0 to 9 so that you can
+       send them express messages with a single keystroke.  
+       See also: w<r0w-r9w>g in the yExpress Commandsg helpfile. 
+
+    w<rlw>gist friends:
+       Shows who's already on your friendslist. 
+
+fg    w<raw>gdd to friendslist:
+       Adds a user to the the regular friendslist, rnotg the Quick-X list.
+       These users can still send you express messages anytime you're online,
+       and if you have it enabled, the system will notify you when they logon,
+       or logoff Monolith. 
+
+    w<rrw>gemove from friendslist:
+       Does just that, press w<rrw>g and follow the directions. 
+      
+fg    w<rcw>glear friendslist:
+       Removes reverybodyg from your friendslist. 
+ad
+fg    w<rtw>goggle logon notificationsad
+       fgUse this option if you want to be informed by the system anytime one of
+       your friends logs on, or off the BBS.
+       See also:  yCommand Configurationg helpfiles.
+
+fbNotew:g You can also add friends that are Remote users. To do this fill themad
+fg      in with the cuser@BBSg syntax. Read the "yInterBBSg"-section in thead
+fg      helpfiles for more information about remote users and yInterBBSg.

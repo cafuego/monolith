@@ -1,0 +1,7 @@
+fb       *** y Reset Lastseen b ***g
+
+Manually move your last-seen message pointer in the current room.
+
+This function is somewhat obsolete, this same functionality is accomplished
+at long and short prompts with the w<r_w>g command.
+

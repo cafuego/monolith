@@ -1,0 +1,10 @@
+fb       *** y Toggle Command List b ***g
+
+Toggles display of the extra command list at every prompt.
+
+This list looks something like this:
+
+w<rww>gho w<rcw>ghat ew<rxw>gpress w<rjw>gump  w(gPress r?g for online helpw)g
+
+Experienced users generally find this list annoying, and have it disabled.
+

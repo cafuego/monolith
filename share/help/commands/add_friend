@@ -1,0 +1,14 @@
+fb       *** y yAdd user to Friends List b ***ad
+fb
+fgAdds a user to your Friends List.
+
+Users who are on your friends list can send you eXpress messages even when
+you have eXpress messages disabled.
+
+You can also be notified with a short message when users on your Friends 
+List log on and off the BBS.
+
+You can also add Remote users to your friends list with this syntax:
+
+    username@BBS
+

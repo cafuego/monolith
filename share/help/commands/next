@@ -1,0 +1,10 @@
+ac fb      ***  yRead next post b ***
+g 
+Displays the next unread post. 
+
+The w<rspacebarw>g also executes this command, as it is probably the
+      most commonly used command.
+
+If there are no new posts in the current room, w<rnw>gext checks the rest of the
+rooms that you read, and if there are unread posts in another room you read,
+w<rnw>gext will move you into that room automatically.

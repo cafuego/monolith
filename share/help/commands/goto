@@ -1,0 +1,12 @@
+ac       fb*** y Goto Quadrantb ***
+ 
+w<rgw>goto is a command that does all of the following:
+ 
+r1w>g - w<rsw>gtop, if you're reading in a quadrant.
+r2w>g - Brings up a short prompt.
+r3w>g - Marks all the posts in that quadrant as "read."
+r4w>g - w<rjw>gumps to the next quadrant in w<rkw>gnownlist that has
+     unread messages.. so that you can start reading there.
+
+fyNotew:  <ruw>gngoto does not undo a w<rgw>goto..  The messages, once marked as "read"
+        can't be "re-marked" as "unread."

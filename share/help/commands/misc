@@ -1,0 +1,24 @@
+ac      fb ***  yAccess the Miscellaneous Menu b *** 
+
+gIt's funny how just about anything can be filed under miscellaneous.. 
+The options from the miscellaneous menu are:
+ 
+w<rmw>r  Mail Direct.g  Sends a yMail>g message to an Alien from whatever
+      quadrant you happen to be in.  Useful when you don't want to
+      w<rsw>gtop reading, and w<rjw>gump to yMail>g to send a Mail.
+
+w<rMw>g r Mark all messages as "read". g Does just that, it marks all 
+      your unread messages as read.
+
+w<rrw>r  Roomlock.  gLocks you in the quad you're currently in.  To get
+      out, use this command again.
+
+w<rsw>r  System Configuration. g  Displays the current Monolith machine system      
+      configuration.
+
+w<rxw>r  Reset lastseens.g  Allows you to "unmark" messages from read to
+      unread.
+
+w<rzw>r  Zap all quadrants.  gRemoves rallg the quadrants from your known
+      list rexceptg for: Docking Bay, Announcements, Mail, and any 
+      administrative quadrants that you read. 

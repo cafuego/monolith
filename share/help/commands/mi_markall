@@ -1,0 +1,13 @@
+fb       *** y Mark all Posts as Read b ***g
+ 
+Moves your last-seen message pointer to the last message in all quadrants.
+
+This has the effect of making the BBS think you've read all the messages
+in all your quadrants.
+
+Sometimes, if a BBS session is terminated abnormally, your lastseen 
+message pointers aren't updated.  If you've just finished reading all
+the new messages, and get [disconnected], when you log back in, you'll
+see all those messages again, because the BBS never updated your userfile.
+In this case, this function is highly useful.
+

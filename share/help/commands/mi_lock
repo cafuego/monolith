@@ -1,0 +1,16 @@
+fb       *** y Lock Terminal b ***g
+
+Locks your terminal thus preventing others from fiddling with your account
+if you're away from the keyboard.
+
+To unlock:  
+
+Press a key.
+Enter your password.
+
+Lock also:
+
+- Clears the screen, for a minimal measure of privacy.
+- Counts incorrect password failures, and disconnects the BBS session if
+  a total of (4) failures is reached.
+

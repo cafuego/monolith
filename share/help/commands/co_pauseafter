@@ -1,0 +1,5 @@
+fb       *** y Toggle Pause after each Screenfulb ***g
+
+Toggles whether the system pauses display of posts that are longer than a 
+single screenfull.  You should probably leave this on.
+

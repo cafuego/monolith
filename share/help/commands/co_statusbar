@@ -1,0 +1,11 @@
+fb       *** y Toggle StatusBar b ***g
+
+Turns the status bar on and off.
+
+  The Status Bar is a line at the bottom or top of your screen that shows
+  who is sending you an eXpress message, the time, and various other 
+  things.  This option has been known to cause trouble with some terminal  
+  programs, so if you enable it and your screen goes awry, your terminal   
+  program and this option probably don't like each other..  disable it to  
+  get a nice clean screen back.
+ 

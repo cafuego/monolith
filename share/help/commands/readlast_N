@@ -1,0 +1,15 @@
+acfb ***  yStart reading a number of posts back from last post b*** 
+ 
+gMoves your last-seen message pointer back a number of Posts from
+the rlast post in the quadg.
+
+For example, if there are 10,000 new posts in Top Ten, but you only want
+to read the last 10 of them:
+ 
+w52.yThose Famous Top Tens!w> rJump a number of posts back from this quad.
+fgHow many messages back shall I jump?a 10d
+
+fgFri Oct 17, 1997 w(g21:58w) gfrom Tisaraad
+fySubject: non-school bc methodsad
+c10) abstinenced
+fw[yThose Famous Top Tens! g#9032w> (g9 remainingw)] -> g

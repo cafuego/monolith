@@ -1,0 +1,5 @@
+fb       *** y Notify on Deleted posts b ***g
+
+If a post is deleted in a room you read, this option will inform you that
+the post has been deleted, instead of the default terse behavior.
+

@@ -1,0 +1,13 @@
+acfb       *** y Jump to a Quadrantb  ***
+ 
+gJump to another quadrant by name or number.
+
+To w<rjw>gump:
+ - Press w<rjw>g.
+ - Type in the ynameg or the wnumberg of the quadrant you want
+   to "land" in.
+
+Note that using this command will mark any messages left in the room you're 
+currently in as "read".  There is another jump command, w<rShiftw-rJw>g that does
+the same thing as w<rjw>g but doesn't mark the current room as "read."
+

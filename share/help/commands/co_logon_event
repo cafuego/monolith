@@ -1,0 +1,58 @@
+fb       *** y Toggle Bold Colors b ***g
+
+Toggles display of bold colors.  
+
+ 
+A>   rDisabled X's at login.  gEnable this if you want your express messages     
+      turned off by default when you login.  (And note that you'll have to turn
+      them on with w<rShiftw-rXw>g if you want to send/receive ew<rxw>gpress messages.)
+ 
+B>   rRecieve logon/logoff notifies.g  Enable this option, and the system will
+      notify you when Aliens on your friendslist log on, or off.  For more 
+      information on your friendslist, see the helpfiles on  
+      fyCommandsac fg-> yExpress Commands g-> yFriendslistg.
+ 
+C>   rUse the SHIX System. g The SHIX system prevents other users from sending
+      you messages that contain profanity, or sexual content.  Note that this
+      is an experimental system.  For more information, see the helpfile on 
+      the ySHIXg system.
+ 
+D>   rHide your hostname.g  Does just that..  prevents other Aliens from seeing
+      where you are logged in from in thew <rww>gholist, and w<rpw>grofile. 
+
+acfgE>   rShow Status Bar.g  Enabling this option turns on the fbWStatus BargD, which is a
+      line at the bottom of your screen that shows the time, and various other 
+      things.  This option has been known to cause trouble with some terminal  
+      programs, so if you enable it and your screen goes awry, your terminal   
+      program and this option probably don't like each other..  disable it to  
+      get a nice clean screen back.
+ 
+F>   rInterBBS Access.g  The InterBBS is an ongoing project with other YAWC BBS's
+      that allows access to those BBS's from Monolith, and vice versa.
+      Enabling this option will allow you to send and receive ew<rxw>gpress        
+      messages from users on these other BBS's.  For more information, read the
+      helpfiles on yInterBBSg.
+ 
+G>   rDisable Command List.g  Using this option turns off the list of available  
+      commands at every prompt.  You can still get the list of available       
+      commands by pressing w<r?w>g, or the full list by pressing w<r/w>g.
+ 
+H>   rShow IP Address in the wholist.g  Enabling this option will show your IP   
+      (also known as numeric) internet address next to your name in the        
+      "Planet" column in the w<rww>gholist.
+ 
+I>   rShow Friends Online Upon Login.g  Enable this option if you want the system
+      to check your friendslist when you login.  The system will then tell you
+      which of the aliens in your friendslist (if any) are online.
+
+acfgJ>   rUse Standard Alias.  gIf you have defined a standard "alias" using w<rcw> <raw>g,ad
+fg      you can enable this option to automatically set your alias for b          
+      *anonymous*g posting, and anonymous programmes in the Holodeck.ad
+ 
+fgK>   frReceive all logon events.  gEnabling this option means you will be notified
+      by the system anytime *any* Alien logs on or off.
+ 
+L>   rReceive friends logon notifies.g  Enabling this option means that the      
+      system will check your friendslist, and notify you when aliens on your   
+      friendslist log on, or off.
+

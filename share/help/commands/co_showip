@@ -1,0 +1,5 @@
+fb       *** y Toggle Hostname Display b ***g
+
+Toggles wholist display of hostnames.  If enabled, shows the hostname or IP
+of users in the wholist.  If disabled,  shows the user's Country.
+

@@ -1,0 +1,11 @@
+fb       *** y Show System Configuration b ***g
+ 
+Displays current system configuration.
+
+This is a screen or so of information about the Monolith Server including.
+
+- System load.
+- Current binary date.  (last compile)
+- Operating System.
+- Other techno-geek-ish stuff.
+

@@ -1,0 +1,10 @@
+fb       *** y American/European Date Format b ***g
+
+Sets default date display.  
+
+If set to American, dates are displayed:
+   month-date-year
+
+If set to European, dates are displayed:
+   date-month-year
+

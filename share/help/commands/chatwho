@@ -1,0 +1,8 @@
+fb       *** yChat Wholist b***ad   fb
+
+fgDisplays a list of users who have chat channels enabled and
+what channels they subscribe to.
+
+Related commands:
+w<rcw>g  - Sends chat message.
+w<rdw>g  - Chat configuration.

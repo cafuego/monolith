@@ -1,0 +1,18 @@
+ac     fb  *** y Move to a specific post number b ***
+g 
+If you know which post number you want to read, you can get right to it by
+using the w<r#w>g command.  The system will ask you for the number of the post.
+ 
+for example, if i wanted to read post # 15947 in pUnidentified Space Junkw>g, this
+is what it'd look like..
+ 
+af78.pUnidentified Space Junkw> gJump to a specific message number.ad
+fgWhich message would you like to read? a15947d
+
+fgFrom b*anonymous*w (bthis is your postw)ad
+c d
+cMoo.  in tones of low menace.d
+c d
+fw[pUnidentified Space Junk g#15947w> (glastw)] -> ad
+ 
+fbNotew:  gThis only works for posts that havn't scrolled out of the room. 

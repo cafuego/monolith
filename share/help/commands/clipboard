@@ -1,0 +1,15 @@
+acfb       *** y Access Clipboardb  ***
+ 
+gBrings up a menu with the following options:
+ 
+w<rEw>  r Edit Clipboard. g Launches an editor so that you can edit your clipboard.
+
+w<rDw>r   Delete Clipboard. g Wipes the clipboard clean, removes all clips from it.
+
+w<rMw>r   E-Mail Clipboard.  gAllows you to send the contents of your clipboard to 
+       yourself at the e-mail address in your info.
+
+w<rRw>r   Remove Colorcodes. g Strips all the ANSI-color escape sequences from the
+       contents of the clipboard.
+
+w<rSw>r   Show Clipboard.g  Displays the contents of the clipboard.

@@ -1,0 +1,8 @@
+fb       *** y Toggle ANSI Colors b ***g
+ 
+Toggles display of colored text. 
+
+   If you enable ANSI colors and you see things like:
+                   w^[[31;0m g
+   then your terminal program isn't ANSI color compatible, sorry. 
+

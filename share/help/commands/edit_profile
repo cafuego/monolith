@@ -1,0 +1,10 @@
+ac     fb  *** y Editor Edit Profileb  ***
+g 
+Similar in all ways to "edit profile" except:
+
+Launches an editor to edit your profile.  Which editor is launched depends on
+how you access Monolith..  If you telnet, the pico-editor is launched.  If
+you're on the CLient, the editor will vary, depending on which CLient you use.
+ 
+yNotew:g  Editor editing of your profile allows you more than 7 lines, but please
+don't have a 30 screen profile..

@@ -1,0 +1,38 @@
+fb                             ***y Whob ***
+
+g Displays a list of users currently logged on to the BBS.
+
+ It also shows where those users are online from,  how long 
+ those users have been online and the user's cFlyingg.
+ The cFlying gis a little field that every user can change after their own
+ feeling / mood / whatever. 
+
+        If the user's name is ccyang, it means that that user is on your 
+	friendslist. If that user is also on your quick-friends list, 
+ 	his/her quick-x number will also be in the flags column.
+
+ The flags after the usernames:
+
+fr?g   means that this user is a Helpterminal and you can ask them
+    questions by pressing w<rshift-Qw>g.
+
+fg*g   means that this user has their eXpress messages disabled to
+    anyone who is not on their friendslist.
+
+fy+g   means this user is posting a message in a quadrant. Any messages
+    you send them will arrive, but will be held for them until they finish
+    posting.
+
+y-g   means that ths user is using the client. w<rjw>gump to
+    the Monolith Clientw> gQuadrant for more info on Clients.
+
+c$g   means that the alien has donated money to the BBS.
+
+yxg   means that user is sending you an eXpress message!
+
+pcg   means that user is typing a chat message to a chat room you read.
+
+yxg   means that user has changed their profile info in the past two days.
+
+rawayg means that user has marked him/herself as "away" from the keyboard
+    or *afk* for short.

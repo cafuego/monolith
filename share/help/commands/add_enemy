@@ -1,0 +1,17 @@
+fb       *** y yAdd Enemy to list b ***ad
+fb
+fgAdds a user to your enemylist.
+
+Users who are on your enemies list cannot:
+   Send you eXpress messages.
+   Send you mail.
+
+You cannot send those users eXpress messages to users on your enemy list.
+
+You can also add Remote users to your enemy list with this syntax:
+
+    username@BBS
+
+For example, adding 'Bing@Bong' would prevent the user Bing on Bong BBS
+from sending you any InterBBS eXpress messages.
+

@@ -1,0 +1,13 @@
+acfp       b*** ySend Chat Message b***ad   fb
+
+fgSends a Chat message to one of the chat channels.
+
+This is much like sending an x, but a chat message will be received by all
+users who have that chat channel enabled.
+
+Note that if you are harassed in chat messages, just like in express messages, 
+you can quote a channel to the administration by pressing w<r"w>g.
+
+Related commands:
+w<rdw>g  - Configures your chat channels. 
+w<r,w>g  - Chat wholist: Shows who is reading which channels.

@@ -1,0 +1,8 @@
+fb       *** y Toggle Prompt after Post b ***g
+ 
+Toggles whether the system prompts you for a command after you read a post.
+
+Disabling this option causes all the messages in the quadrant to scroll by
+without stopping between Posts.  Useful if you want to dump an entire quad
+to your screen..  Otherwise, leave this on.
+
