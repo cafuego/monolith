@@ -33,6 +33,8 @@
 #include "registration.h"
 #include "routines.h"
 
+#include "sql_forum.h"
+
 #include "telnet.h"
 
 #define WHO_LOCK 1
