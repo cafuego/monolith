@@ -87,6 +87,12 @@
 /* Define if you have the <sys/mman.h> header file.  */
 #undef HAVE_SYS_MMAN_H
 
+/* Define if you have the <mysql.h> header file.  */
+#undef HAVE_MYSQL_H
+
+/* Define if you have the <mysql/mysql.h> header file.  */
+#undef HAVE_MYSQL_MYSQL_H
+
 /* Define if you have the <sys/ndir.h> header file.  */
 #undef HAVE_SYS_NDIR_H
 

@@ -35,7 +35,7 @@ dnl Checks for header files.
 AC_HEADER_DIRENT
 AC_HEADER_STDC
 AC_HEADER_SYS_WAIT
-AC_CHECK_HEADERS(crypt.h fcntl.h sgtty.h sys/file.h sys/ioctl.h sys/time.h termio.h unistd.h termbits.h sys/mman.h mysql.h)
+AC_CHECK_HEADERS(crypt.h fcntl.h sgtty.h sys/file.h sys/ioctl.h sys/time.h termio.h unistd.h termbits.h sys/mman.h mysql.h mysql/mysql.h)
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
@@ -63,21 +63,28 @@ if test $with_mysql = yes ; then
   echo
   echo -n "Checking MySQL installation..."
   if test $ac_cv_header_mysql_h = no ; then
-    echo " whoops!"
-    echo
-    echo "ARGH: Unable to locate mysql!"
-    echo
-    echo "Please install the MySQL database system, which is available for free from"
-    echo "http://www.mysql.org/ and run this program again. If you do have MySQL in-"
-    echo "stalled, check directory and file permissions, or create symbolic links so"
-    echo "configure can find it."
-    echo
-    exit 0
+    echo " hmmm..."
+    AC_CHECK_HEADERS(mysql/mysql.h)
+    if test $ac_cv_header_mysql_mysql_h = no ; then
+      echo " whoops!"
+      echo
+      echo "ARGH: Unable to locate mysql!"
+      echo
+      echo "Please install the MySQL database system, which is available for free from"
+      echo "http://www.mysql.org/ and run this program again. If you do have MySQL in-"
+      echo "stalled, check directory and file permissions, or create symbolic links so"
+      echo "configure can find it."
+      echo
+      exit 0
+    else
+      AC_DEFINE(HAVE_MYSQL_MYSQL_H)
+    fi
   else
     echo " rock!"
-    AC_CHECK_LIB(mysqlclient, mysql_connect)
-    AC_DEFINE(USE_MYSQL)
   fi
+  AC_DEFINE(HAVE_MYSQL_H)
+  AC_CHECK_LIB(mysqlclient, mysql_connect)
+  AC_DEFINE(USE_MYSQL)
   echo
 fi
 
