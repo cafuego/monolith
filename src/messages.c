@@ -383,6 +383,11 @@ rate_message(message_t * message, unsigned int number, unsigned int forum)
     char buf_str[3];
     int score = 0;
 
+    if(forum < 21) {
+	cprintf("\1f\1rYou are not allowed to rate %s posted in this %s.\1a\n", config.message_pl, config.forum);
+        return;
+    }
+
     if ((mono_sql_rat_check_rating(usersupp->usernum, number, forum)) == -1) {
 	cprintf("\1f\1rYou have already rated this %s.\1a\n", config.message);
 	return;
