@@ -14,7 +14,7 @@ CREATE TABLE message (
    subject	VARCHAR(100),
    date		DATETIME NOT NULL,
 
-   content	MEDIUMTEXT,
+   content	VARCHAR(100) NOT NULL,
 
    type		ENUM( 'anon', 'alias', 'normal' ),
    priv		ENUM( 'emp', 'sysop', 'tech', 'host', 'normal' ),
