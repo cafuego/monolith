@@ -1,7 +1,12 @@
 <?php
 
-    echo "woof.";
-    require( 'engine/image.inc' );
-    pagetitle( "Bing!", "/usr/bbs/www/bbs/font/Arial.ttf" );
+    $bing = "\1ywoof.";
+    require( 'engine/routines.inc' );
+
+    
+    $bing = colorize($bing);
+    
+    print "<font color=\"#ffffff\">$bing</font>\n";
+
 
 ?>

@@ -51,7 +51,7 @@ function show_wholist($username,$location) {
 
             if($interface != "web" ) {
                 $doing = htmlspecialchars($doing);
-                $doing = colorize($doing);
+                // $doing = colorize($doing);
             }
 
             if( strstr($doing, "(null)") )

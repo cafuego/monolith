@@ -288,31 +288,6 @@ function colorize($doing) {
 
     // Convert to HTML colour codes.
     // 
-    $doing = strtr($doing, "%01f", " ");
-    echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "%01a", " ");
-    echo "<!-- $doing -->\n"; 
-    $doing = strtr($doing, "%01d", " ");
-    echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "%01D", " ");
-    echo "<!-- $doing -->\n";
-
-    // Remove bg colours.
-    //
-    $doing = strtr($doing, "%01W", " ");
-    echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "%01Y", " ");
-    echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "%01G", " ");
-    echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "%01C", " ");
-    echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "%01B", " ");
-    echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "%01P", " ");
-    echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "%01R", " ");
-    echo "<!-- $doing -->\n";
 
     // Fix fg colours.
     //
