@@ -23,7 +23,7 @@ function show_wholist($username,$location) {
 
     // List online users..
     //
-    $result = MYSQL_QUERY("SELECT u.username AS name,o.interface AS interface,o.doing AS doing,SEC_TO_TIME(NOW()-o.date) AS online FROM online AS o LEFT JOIN user AS u ON o.user_id=u.id ORDER by online DESC");
+    $result = MYSQL_QUERY("SELECT u.username AS name,o.interface AS interface,o.doing AS doing,UNIX_TIMESTAMP(o.date) AS date FROM online AS o LEFT JOIN user AS u ON o.user_id=u.id ORDER by date DESC");
     $number = MYSQL_NUMROWS($result);
     if ($number) {
         if($number > 1)
@@ -46,9 +46,11 @@ function show_wholist($username,$location) {
             $user = mysql_result($result,$i,"name");
             $interface = mysql_result($result,$i,"interface");
             $doing = mysql_result($result,$i,"doing");
-            $online = mysql_result($result,$i,"online");
+            $date = mysql_result($result,$i,"date");
             $url_user = rawurlencode($user);
             $url_user = strtr($url_user, " ", "+");
+
+            $online = time() - $date;
 
             if($interface != "web" ) {
                 $doing = htmlspecialchars($doing);
@@ -63,7 +65,7 @@ function show_wholist($username,$location) {
             print "    <p align=\"left\"><font color=\"#00cc00\">$doing</font>\n";
             print "  </td>\n";
             print "  <td align=\"right\">\n";
-            print "    <p align=\"right\"><font color=\"#00cc00\">$online</font>\n";
+            print "    <p align=\"right\"><font color=\"#00cc00\">". strftime("%H:%i", $online) ."</font>\n";
             print "  </td>\n";
             print "  <td align=\"right\">\n";
             print "    <p align=\"right\"><font color=\"#ff00ff\">&nbsp;$interface</font>\n";
