@@ -227,7 +227,7 @@ print_system_config()
 #endif
 
 #ifdef USE_MYSQL
-    cprintf("\1wMySQL Server (%-14s) :\1g %s\n",
+    cprintf("\1wMySQL Server %-16s :\1g %s\n",
         mono_mysql_server_info(), mono_mysql_host_info() );
     (void) fflush(stdout);
 #endif
