@@ -12,9 +12,17 @@
 
 #define MAXCONFIGS 50   /* max number of peet's configurations */
 
-  /* mail stuff */
+/* mail stuff */
 #define MAIL_QUOTA     /* turns mail quota (purge) on for users */
 #define MAX_USER_MAILS 200
+
+typedef struct topic_struct {
+	char name[L_TOPICNAME+1]; /* name of topic */
+        unsigned int id;	/* number of topic */
+        unsigned int highest; /* highest post number */
+	unsigned int parent; /* the forum that `owns' this thread */
+        unsigned int posttype;
+} topic_t;
 
 typedef struct date_struct {
     int day;
