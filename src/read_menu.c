@@ -821,11 +821,8 @@ long_prompt(long number, int direction)
 		    break;
 
 		case 'R':
-                    IFSYSOP {
-                        cprintf("\1f\1rThis would work IF I knew the correct %s Id.\n", config.message);
-                        break;
-                        rate_message(NULL);
-                    }
+		    cprintf("\1f\1gRate %s.\1a\n", config.message);
+                    rate_message(NULL, current, curr_rm);
                     break;
 
 		case 'S':

@@ -378,12 +378,12 @@ count_mail_messages(void)
 #ifdef USE_RATING
 
 void
-rate_message(message_t * message)
+rate_message(message_t * message, unsigned int number, unsigned int forum)
 {
     char buf_str[3];
     int score = 0;
 
-    if ((mono_sql_rat_check_rating(usersupp->usernum, message->m_id, message->f_id)) == -1) {
+    if ((mono_sql_rat_check_rating(usersupp->usernum, number, forum)) == -1) {
 	cprintf("\1f\1rYou have already rated this %s.\1a\n", config.message);
 	return;
     }
@@ -405,7 +405,7 @@ rate_message(message_t * message)
     if (yesno() == NO)
 	return;
 
-    if ((mono_sql_rat_add_rating(usersupp->usernum, message->m_id, message->f_id, score)) == -1)
+    if ((mono_sql_rat_add_rating(usersupp->usernum, number, forum, score)) == -1)
 	cprintf("\1f\1rAn internal SQL error occurred.\1a\n");
     else
 	cprintf("\1f\1gScore saved.\1a\n");
