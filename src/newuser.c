@@ -48,6 +48,7 @@ void
 new_user(const char *hostname)
 {
     int i = 0;
+    unsigned int usernum;
 
     if( check_lockout(hostname) == FALSE )
         logoff(0);
@@ -65,6 +66,11 @@ new_user(const char *hostname)
     more(BBSDIR "share/newuser/welcome_username", 0);
  
     newuser_getname(usersupp);
+
+    /* now we have a name, try to get a number */
+    get_new_usernum( usersupp->username, &usernum );
+    usersupp->usernum = usernum;
+
     newuser_getpasswd(usersupp);
     newuser_registration(usersupp);
 
@@ -222,7 +228,8 @@ newuser_getpasswd(user_t * user)
 	}
     }
 
-    strcpy(user->password, crypt(pwread, CRYPTKEY));
+    set_password( user, pwread );
+    mono_sql_u_set_passwd( user->usernum, pwread );
     cprintf("\n");
     return;
 }
