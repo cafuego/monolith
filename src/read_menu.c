@@ -387,11 +387,9 @@ short_prompt(void)
 		break;
 
             case '^':		/* <ctrl-w> */
-                IFSYSOP {
-		    nox = 1;
-		    cprintf("\1f\1gSend Web %s %s.\1a\n", config.express, config.x_message);
-                    express(-4);
-                }
+	        nox = 1;
+	        cprintf("\1f\1gSend Web %s %s.\1a\n", config.express, config.x_message);
+                express(-4);
                 break;
                 
 	    case '!':
