@@ -79,7 +79,6 @@ static void _print_user_flags(const user_t * user);
 /*************************************************
 * profile_user()
 *************************************************/
-
 void
 profile_user(void)
 {
@@ -115,9 +114,10 @@ profile_user(void)
      * This fails horribly if a user has an entry in the database, but
      * no userfile on disk. Using the old version instead.
      *
-     * if (mono_sql_u_check_user(p_name) == TRUE) {
-     */
+	* michel: but users should have an sql entry!
     if (check_user(p_name) == TRUE) {
+*/
+     if (mono_sql_u_check_user(p_name) == TRUE) {
 	user = readuser(p_name);
 	if (user == NULL) {
 	    cprintf("Error reading userfile.\n");
