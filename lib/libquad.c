@@ -26,6 +26,7 @@
 #include "userfile.h"
 #include "routines.h"
 #include "sql_userforum.h"
+#include "sql_user.h"
 #include "libshix.h"
 
 
