@@ -130,7 +130,7 @@ wholist(int level, const user_t * user)
     (void) mono_lock_shm(1);
     i = shm->first;
     while (i != -1) {
-	int xing, chat;
+	int xing, chat, silc;
 
 	r = &(shm->wholist[i]);
 	strcpy(line, "");
@@ -141,6 +141,7 @@ wholist(int level, const user_t * user)
 	min = tdif % 60;
 	hour = tdif / 60;
 	xing = (EQ(r->x_ing_to, username) || EQ(r->x_ing_to, "Everyone"));
+	silc = (EQ(r->x_ing_to, "SILC") && (usersupp->priv >= PRIV_SYSOP));
 	chat = (is_chat_subscribed(user->chat, r->x_ing_to));
 	if ((user != NULL) && is_cached_friend(r->username))
 	    (void) sprintf(col, "%s", FRIENDCOL);
@@ -167,10 +168,21 @@ wholist(int level, const user_t * user)
 		/* new flags */
 		else {
 		    q = line + strlen(line);
-		    (void) sprintf(q, "\1p[%s%s%s"
+		    (void) sprintf(q, "\1p[%s%s"
 				   ,((r->flags & B_DONATOR) ? "\1p$" : " ")
-				   ,((r->flags & B_XDISABLED) ? "\1g*" : ((r->flags & B_GUIDEFLAGGED) ? "\1r?" : " "))
-		                   ,((r->flags & B_POSTING) ? "\1y+" : ((xing) ? "\1yx" : ((chat) ? "\1pc" : ((r->flags & B_INFOUPDATED) ? "\1yi" : " " )))));
+   ,((r->flags & B_XDISABLED) ? "\1g*" : ((r->flags & B_GUIDEFLAGGED) ? "\1r?" : " ")));
+		    if (r->flags & B_POSTING)
+			strcat(q, "\1y+");
+		    else if (xing)
+			strcat(q, "\1yx");
+		    else if (chat)
+			strcat(q, "\1pc");
+		    else if (r->flags & B_INFOUPDATED)
+			strcat(q, "\1gi");
+		    else if (silc)
+			strcat(q, "\1r.");
+		    else
+			strcat(q, " ");
 
 		    q = line + strlen(line);
 		    j = cached_name_to_x(r->username);

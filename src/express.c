@@ -660,7 +660,7 @@ get_xmessage_destination(char *xmg_dest, const int X_PARAM, char *override)
 	    strcpy(chat_default, xmg_dest);
 
 	} else if (NSILC)	/* here for documentation porposes, xmg_dest is */
-	    strcpy(xmg_dest, "");	/* already strlen 0 */
+	    strcpy(xmg_dest, "SILC");	/* already strlen 0 */
     }
     return xmg_dest;
 }
