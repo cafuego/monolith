@@ -29,6 +29,12 @@
     else
         html_do_logout( $username, getenv("REMOTE_HOST") );
 
+    // Pick url open into commands and assign values.
+    //
+    require ("engine/routines.inc");
+    $url_array=explode("/",$REQUEST_URI);
+    $action=$url_array[3];		// What action?
+
     // Show stylesheet info.
     //
     echo "\n<style>\n";
@@ -50,86 +56,27 @@
     echo "</head>\n";
     echo "<body bgcolor=\"#000000\" text=\"#FFFFFF\">\n\n";
 
-    require ("engine/routines.inc");
+    echo "<div align=\"left\">\n";
+    echo "<table border=\"0\" cellpadding=\"5\" cellspacing=\"5">\n";
+    echo "  <tr>\n";
+    echo "    <td width=\"150\" align=\"left\">\n";
 
-    // Pick url open into commands.
+    // Buttons!!!!
+
+    echo "    </td>\n";
+    echo "    <td align=\"left\">\n";
+
+    // Main code switch block.
     //
-    $url_array=explode("/",$REQUEST_URI);
+    main_menu($username, $REQUEST_URI );
 
-    // Assign values so we can use 'em.
-    $action=$url_array[3];		// What action?
-    $quad=$url_array[4];		// First arg.
-    $recipient=$url_array[4];		// First arg too.
-    $message=$url_array[5];		// Second arg.
-    $interface=$url_array[5];		// Second arg too.
-    $direction=$url_array[6];		// Third arg.
-
-    if($action != "x")
-        $location = strtr($REQUEST_URI, "/", "-");
-    else
-        $location=$url_array[6];	// Third arg too.
-
-    list_x_messages($username,$location);
-
-    switch ($action) {
-
-        case "a":	// PHP info.
-            echo "<pre>\n" . phpinfo() . "</pre>\n";
-            break;
-
-        case "e":	// Enter (new).
-        case "f":	// Followup (reply).
-            require ('engine/post.inc');
-            enter_message($username,$quad,$message,$action);
-            break;
-
-        case "l":
-            require ('engine/list.inc');
-            list_quads($username, 0);
-            break;
-
-        case "m":
-            require ('engine/quad.inc');
-            list_messages($username,$quad, 0);
-            break;
-
-        case "n":
-            require ('engine/quad.inc');
-            list_messages($username,$quad, 1);
-            break;
-
-        case "q":
-            do_logout($username);
-            break;
-
-        case "r":
-            require ('engine/read.inc');
-            read_message($username,$quad,$message,$direction);
-            break;
-
-        case "u":
-            require ('engine/list.inc');
-            list_quads($username, 1);
-            break;
-
-        case "w":
-            require ('engine/who.inc');
-            show_wholist($username,$location);
-            break;
-
-        case "x":
-            require ('engine/express.inc');
-            express_message($username,$recipient,$interface,$location);
-            break;
-
-        default:
-            main_screen($username);
-            break;
-
-    }
+    echo "    </td>\n";
+    echo "  </tr>\n";
+    echo "</table>\n";
+    echo "</div>\n";
 
     if( $action != "q" )
-        html_print_foot($username, $starttime, $REQUEST_URI);
+    html_print_foot($username, $starttime, $REQUEST_URI);
     
 ?>
 

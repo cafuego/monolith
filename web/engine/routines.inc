@@ -344,4 +344,80 @@ function errorimage( $text ) {
 
 }
 
+function main_menu($username, $current_url) {
+
+    // Pick open url, so we know what to do.
+    //
+    $url_array=explode("/",$current_url);
+    $action=$url_array[3];              // What action?
+    $quad=$url_array[4];                // First arg.
+    $recipient=$url_array[4];           // First arg too.
+    $message=$url_array[5];             // Second arg.
+    $interface=$url_array[5];           // Second arg too.
+    $direction=$url_array[6];           // Third arg.
+    if($action != "x")
+        $location = strtr($REQUEST_URI, "/", "-");
+    else
+        $location=$url_array[6];        // Third arg too.
+
+    list_x_messages($username,$location);
+
+    switch ($action) {
+
+        case "a":	// PHP info.
+            echo "<pre>\n" . phpinfo() . "</pre>\n";
+            break;
+
+        case "e":	// Enter (new).
+        case "f":	// Followup (reply).
+            require ('engine/post.inc');
+            enter_message($username,$quad,$message,$action);
+            break;
+
+        case "l":
+            require ('engine/list.inc');
+            list_quads($username, 0);
+            break;
+
+        case "m":
+            require ('engine/quad.inc');
+            list_messages($username,$quad, 0);
+            break;
+
+        case "n":
+            require ('engine/quad.inc');
+            list_messages($username,$quad, 1);
+            break;
+
+        case "q":
+            do_logout($username);
+            break;
+
+        case "r":
+            require ('engine/read.inc');
+            read_message($username,$quad,$message,$direction);
+            break;
+
+        case "u":
+            require ('engine/list.inc');
+            list_quads($username, 1);
+            break;
+
+        case "w":
+            require ('engine/who.inc');
+            show_wholist($username,$location);
+            break;
+
+        case "x":
+            require ('engine/express.inc');
+            express_message($username,$recipient,$interface,$location);
+            break;
+
+        default:
+            main_screen($username);
+            break;
+
+    }
+}
+
 ?>

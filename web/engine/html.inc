@@ -200,22 +200,26 @@ function html_check_priv($action, $username, $forum_id) {
 
 function html_print_foot($username, $starttime, $location) {
 
+    $url_array=explode("/",$location);
     $endtime = microtime();
 
     $start = explode( " ", $starttime);
     $end = explode( " ", $endtime);
 
-    echo "<hr size=\"1\" width=\"400\" align=\"center\">\n";
-    echo "<p class=\"footer\">\n";
-    if($location)
+    // Don't show menu if we're logging off.
+    //
+    if($url_array[3] != "q") {
+        echo "<hr size=\"1\" width=\"400\" align=\"center\">\n";
+        echo "<p class=\"footer\">\n";
         echo "  <a href=\"$location\">Check X Messages</a> <b>|</b>\n";
-    echo "  <a href=\"/bbs/index.phtml/w\">View Wholist</a> <b>|</b>\n";
-    echo "  <a href=\"/bbs/index.phtml/l\">All Quadrants</a> <b>|</b>\n";
-    echo "  <a href=\"/bbs/index.phtml/u\">Unread Messages</a>\n";
-    echo "<p class=\"footer\">\n";
-    echo "  <a href=\"/bbs/index.phtml/\">Main Page</a> <b>|</b>\n";
-    echo "  <a href=\"/bbs/index.phtml/q\">Log out $username</a>\n";
-    echo "<hr size=\"1\" width=\"400\" align=\"center\">\n";
+        echo "  <a href=\"/bbs/index.phtml/w\">View Wholist</a> <b>|</b>\n";
+        echo "  <a href=\"/bbs/index.phtml/l\">All Quadrants</a> <b>|</b>\n";
+        echo "  <a href=\"/bbs/index.phtml/u\">Unread Messages</a>\n";
+        echo "<p class=\"footer\">\n";
+        echo "  <a href=\"/bbs/index.phtml/\">Main Page</a> <b>|</b>\n";
+        echo "  <a href=\"/bbs/index.phtml/q\">Log out $username</a>\n";
+        echo "<hr size=\"1\" width=\"400\" align=\"center\">\n";
+    }
 
     echo "<table border=\"0\" cellspacing=\"3\" align=\"center\">\n";
     echo "<tr>\n";
