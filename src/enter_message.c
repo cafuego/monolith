@@ -301,14 +301,14 @@ get_anon_banner(unsigned int anon_type, message_header_t * header)
     if (!(anon_type & QR_ALIASNAME))
 	return;
 
-    cprintf("\1f\1gDo you want to add an aliasname to this %s? \1w(\1rY/N\1w) \1c",
+    cprintf("\1f\1gDo you want to add an aliasname to this %s? \1w(\1rY/n\1w) \1c",
 	    config.message);
-    if (yesno() == YES) {
+    if (yesno_default(YES) == YES) {
 	if ((usersupp->config_flags & CO_USEALIAS) && strlen(usersupp->alias)) {
 	    strcpy(header->alias, usersupp->alias);
 	} else {
 	    cprintf("\1f\1gAlias\1w: \1c");
-	    getline(header->alias, L_USERNAME, 1);
+	    getline(header->alias, L_USERNAME - 1, TRUE);
 	}
     }
 }
@@ -316,8 +316,8 @@ get_anon_banner(unsigned int anon_type, message_header_t * header)
 void
 get_subject(message_header_t * header)
 {
-    cprintf("\1f\1gSubject\1w: \1y");
-    getline(header->subject, L_SUBJECT - 1, 1);
+    cprintf("\1f\1ySubject\1w: \1c");
+    getline(header->subject, L_SUBJECT - 1, TRUE);
 }
 
 void
@@ -344,7 +344,7 @@ get_reply_info(message_header_t * header, const unsigned quad_flags)
 
     if (quad_flags & QR_SUBJECTLINE) {
         if (!strlen(reply_header.subject))
-	    sprintf(header->subject, "\1a\1w[\1cNo Subject\1w]\1a");
+	    sprintf(header->subject, "[No subject]");
         else
 	    snprintf(header->subject, L_SUBJECT, "%s", reply_header.subject);
 	snprintf(header->reply_to_author, L_USERNAME, "%s",
