@@ -155,21 +155,29 @@ msgstr ""
 msgid "\001f\001rError trying to send clipboard to %s."
 msgstr ""
 
-#: src/commands.c:659
+#: src/commands.c:673
 msgid "\001f\001gLock Terminal.\n"
 msgstr ""
 
-#: src/commands.c:677
+#: src/commands.c:691
 msgid "Language not supported.\n"
 msgstr ""
 
-#: src/commands.c:693
+#: src/commands.c:707
 msgid "\001f\001cMark messages as read.\n"
 msgstr ""
 
-#: src/commands.c:727
+#: src/commands.c:741
 msgid "\001f\001w(\001gMisc. Options\001w)\n"
 msgstr "\001f\001w(\001gOverige Opties\001w)\n"
+
+#: src/express.c:113
+msgid "\001f\001gSuccessfully saved \001pWeb\001g %s %s for \001y%s.\001a\n"
+msgstr ""
+
+#: src/express.c:115
+msgid "\001f\001rUnable to save \001pWeb\001g %s %s for \001y%s to database.\001a\n"
+msgstr ""
 
 #: src/express.c:128
 msgid "\001f\001y%s \001glogged off before you finished typing.\001a\n"
@@ -183,85 +191,169 @@ msgstr ""
 msgid "\001f\001rPING to %s timed out waiting for ACK.\001a\n"
 msgstr ""
 
-#: src/express.c:217 src/express.c:1234 src/express.c:1239
+#: src/express.c:217 src/express.c:1235 src/express.c:1240
 msgid "\001f\001g%s %s received by \001y%s\001g.\001a\n"
 msgstr "\001f\001g%s %s ontvangen door \001y%s\001g.\001a\n"
 
-#: src/express.c:649 src/express.c:664
+#: src/express.c:440
+msgid "\001d** \001bAn X from \001r%s\001b has arrived. \001d** "
+msgstr ""
+
+#: src/express.c:523
+msgid "\001f\001r\001g%s %s \001raborted.\001a\n"
+msgstr ""
+
+#: src/express.c:587
+msgid "\001r\001fCould not open feeling file.\n"
+msgstr ""
+
+#: src/express.c:618
+msgid "\001f\001rThere's no X-Friend in slot #%d.\001a"
+msgstr ""
+
+#: src/express.c:622
+msgid ""
+"\n"
+"\001f\001gSend Quick %s %s to \001y%s\001g.\001a\n"
+msgstr ""
+
+#: src/express.c:650 src/express.c:665
 msgid "\001f\001gRecipient \001w(\001y%s\001w): \001c"
 msgstr "\001f\001gOntvanger \001w(\001y%s\001w): \001c"
 
-#: src/express.c:652 src/express.c:667
+#: src/express.c:653 src/express.c:668
 msgid "\001f\001gRecipient\001w: \001c"
 msgstr "\001f\001gOntvanger\001w: \001c"
 
-#: src/express.c:687
+#: src/express.c:688
 msgid "\001f\001gSend %s %s \001w(\001p%s\001w): \001c"
 msgstr ""
 
-#: src/express.c:690
+#: src/express.c:691
 msgid "\001f\001gSend %s %s\001w: \001c"
 msgstr "\001f\001gStuur %s %s\001w: \001c"
 
-#: src/express.c:708
+#: src/express.c:709
 msgid "\001r\001fNo such %s %s.\001a\n"
 msgstr ""
 
-#: src/express.c:715
+#: src/express.c:716
 msgid "\001r\001gYou're not listening to %s \001p%s\001g.\n"
 msgstr ""
 
-#: src/express.c:741
+#: src/express.c:742
 msgid ""
 "\001rYou cannot send %s to Guests.\n"
 "\001a"
 msgstr ""
 
-#. deleted/degraded recipient?
-#: src/express.c:786
+#: src/express.c:750
+msgid "\001f\001rYou have disabled InterBBS options.\001a\n"
+msgstr ""
+
+#: src/express.c:761
+msgid "\001f\001rNo such %s.\001a\n"
+msgstr ""
+
+#: src/express.c:767
+msgid "\001f\001rThat %s is not online via the web.\001a\n"
+msgstr ""
+
+#: src/express.c:780
+msgid "\001f\001rThat user is not online.\001a\n"
+msgstr ""
+
+#: src/express.c:780 src/usertools.c:134
+msgid "\001f\001rNo such user.\001a\n"
+msgstr ""
+
+#: src/express.c:787
 msgid "\001f\001rYou cannot send messages to degraded users.\001a\n"
 msgstr ""
 
-#: src/express.c:803
-msgid "\001f\001gSorry, you are \001rX-disabled\001g right now, and you cannot"
+#: src/express.c:795
+msgid ""
+"\n"
+"\001f\001rSorry, that user is unvalidated.\001a\n"
 msgstr ""
 
 #: src/express.c:804
+msgid "\001f\001gSorry, you are \001rX-disabled\001g right now, and you cannot"
+msgstr ""
+
+#: src/express.c:805
 msgid ""
 " X users that are not\n"
 "on your X-friends-list.\001a\n"
 msgstr ""
 
-#: src/express.c:940
+#: src/express.c:818
+msgid ""
+"\001f\001y\n"
+"%s is on both your friend and enemy lists, how odd..  (:\001a\n"
+msgstr ""
+
+#: src/express.c:821
+msgid ""
+"\001f\001r\n"
+"Sorry. You have \001y%s \001rX-disabled.\001a\n"
+msgstr ""
+
+#: src/express.c:823
+msgid "\001f\001rSorry, \001y%s \001rhas X-disabled you.\001a\n"
+msgstr ""
+
+#: src/express.c:825 src/express.c:844
+msgid "\001f\001pDo you wish to send the X anyway? \001w(\001ry/n\001w) \001a"
+msgstr ""
+
+#: src/express.c:841
+msgid ""
+"\001y\001f%s \001ghas disabled %s %s.\n"
+"\001a"
+msgstr ""
+
+#: src/express.c:858
+msgid "\001r\001y%s \001gis \001raway \001gand may not receive your %s %s immediately.\n"
+msgstr ""
+
+#: src/express.c:863
+msgid "\001g\001y%s \001gis \001clocked \001gand will not get your %s %s immediately.\n"
+msgstr ""
+
+#: src/express.c:941
 msgid "\001f\001rThere are no %s %s in your log.\001a\n"
 msgstr ""
 
-#: src/express.c:1032
+#: src/express.c:1015
+msgid "\001f\001wYour %s %s are %sabled\001w.\001a"
+msgstr ""
+
+#: src/express.c:1033
 msgid "\001f\001gThese %s %s were held for you while you were busy:\001a\n"
 msgstr ""
 
-#: src/express.c:1195 src/express.c:1202
+#: src/express.c:1196 src/express.c:1203
 msgid "\001f\001g%s %s received by \001y%s\001g.\n"
 msgstr ""
 
-#: src/express.c:1197
+#: src/express.c:1198
 msgid "\001f\001y%s\001g is marked as \001clocked\001g though.\001a\n"
 msgstr ""
 
-#: src/express.c:1204
+#: src/express.c:1205
 msgid "\001f\001y%s\001g is marked as \001raway\001g from keyboard though.\001a\n"
 msgstr ""
 
-#: src/express.c:1209
+#: src/express.c:1210
 msgid "\001f\001gOops! Something went wrong.\n"
 msgstr ""
 
-#: src/express.c:1210
+#: src/express.c:1211
 msgid "\001y%s\001g did \001rnot\001g receive your %s %s.\001a\n"
 msgstr ""
 
-#. ping
-#: src/express.c:1215
+#: src/express.c:1216
 msgid ""
 "\001f\001y%s \001gis not busy.\n"
 "\001a"
@@ -269,55 +361,55 @@ msgstr ""
 "\001f\001y%s \001gis niet bezig.\n"
 "\001a"
 
-#: src/express.c:1219
+#: src/express.c:1220
 msgid "\001f\001y%s\001g does not wish to receive that %s.\001a\n"
 msgstr ""
 
-#: src/express.c:1246
+#: src/express.c:1247
 msgid "\001f\001gSorry, \001y%s \001ghas \001rX-disabled\001g you!!!\001a\n"
 msgstr ""
 
-#: src/express.c:1251
+#: src/express.c:1252
 msgid "\001f\001gOops! \001y%s\001g's buffer is full.\n"
 msgstr ""
 
-#: src/express.c:1252
+#: src/express.c:1253
 msgid "Your %s was /1rnot/1g received, try re-sending it in a moment.\001a\n"
 msgstr ""
 
-#: src/express.c:1257
+#: src/express.c:1258
 msgid "\001f\001y%s \001gturned off %s %s before you finished typing.\001a\n"
 msgstr ""
 
-#: src/express.c:1262
+#: src/express.c:1263
 msgid "\001f\001y%s \001gis \001rbusy\001g.\001a\n"
 msgstr "\001f\001y%s \001gis \001rbezig\001g.\001a\n"
 
-#: src/express.c:1266
+#: src/express.c:1267
 msgid "\001f\001y%s \001gis \001rbusy\001g"
 msgstr "\001f\001y%s \001gis \001rbezig\001g"
 
-#: src/express.c:1267
+#: src/express.c:1268
 msgid " and will receive your %s when done.\001a\n"
 msgstr ""
 
-#: src/express.c:1271
+#: src/express.c:1272
 msgid "\001f\001gOops, \001y%s\001g is not making sense.\n"
 msgstr ""
 
-#: src/express.c:1272
+#: src/express.c:1273
 msgid "The %s %s may /1rnot/1g have arrived.\001a\n"
 msgstr ""
 
-#: src/express.c:1305
+#: src/express.c:1306
 msgid "\r\001f\001w*** \001gA %s from %s was intercepted by SHIX \001w***\n"
 msgstr ""
 
-#: src/express.c:1310
+#: src/express.c:1311
 msgid "\r\001f\001b*** %s \001g%s\n"
 msgstr ""
 
-#: src/express.c:1314
+#: src/express.c:1315
 msgid ""
 "\n"
 "\n"
@@ -325,7 +417,7 @@ msgid ""
 "\001y%s\n"
 msgstr ""
 
-#: src/express.c:1318
+#: src/express.c:1319
 msgid ""
 "\n"
 "\001f\001p=== \001g%s %s from %s \001gto \001p%s \001gat \001w(\001g%02d:%02d\001w) \001p===\001a\n"
@@ -335,21 +427,21 @@ msgstr ""
 "\001f\001p=== \001g%s %s van %s \001gnaar \001p%s \001gom \001w(\001g%02d:%02d\001w) \001p===\001a\n"
 "\001c%s"
 
-#: src/express.c:1324
+#: src/express.c:1325
 msgid ""
 "\n"
 "\001f\001b*** \001pBroadcast from %s \001gat \001c(\001p%02d:%02d\001w) \001b***\n"
 "\001c%s\001a"
 msgstr ""
 
-#: src/express.c:1329
+#: src/express.c:1330
 msgid ""
 "\n"
 "\r\001f\001w*** \001gMany squids wave their tentacles as if to say: \001w***\001a\n"
 "\001c%s"
 msgstr ""
 
-#: src/express.c:1333
+#: src/express.c:1334
 msgid ""
 "\n"
 "\r\001f\001r*** \001wYour Black Llama Airhostess says: \001r***\001a\n"
@@ -357,42 +449,42 @@ msgid ""
 msgstr ""
 
 #. shout message
-#: src/express.c:1337
+#: src/express.c:1338
 msgid ""
 "\n"
 "\r\001f\001b*** \001gYour mother shouts from downstairs \001b***\001a\n"
 "\001c%s"
 msgstr ""
 
-#. Emp Broadcast
-#: src/express.c:1341
+#: src/express.c:1342
 msgid ""
 "\007\n"
 "\001f\001r*** \001pIMPORTANT BROADCAST from \001w\001n%s\001N \001r***\n"
 "\001w%s\001a"
 msgstr ""
 
-#: src/express.c:1347
+#: src/express.c:1348
 msgid "\001f\001b*** \001gYour friend %s\001g just logged %s \001w(\001g%02d:%02d\001w) \001b***\001a\n"
 msgstr "\001f\001b*** \001gJe vriend %s\001g just logged %s \001w(\001g%02d:%02d\001w) \001b***\001a\n"
 
-#: src/express.c:1349
+#: src/express.c:1350
 msgid "\001f\001b*** %s\001g just logged %s \001w(\001g%02d:%02d\001w) \001b***\001a\n"
 msgstr ""
 
-#: src/express.c:1354
+#: src/express.c:1355
 msgid ""
 "\001f\001b*** \001gYour friend %s\001g has been logged off \001w(\001g%02d:%02d\001w) \001b***\n"
 "\001a\n"
 msgstr ""
 
-#: src/express.c:1356
+#: src/express.c:1357
 msgid ""
 "\001f\001b*** %s\001g has been logged off \001w(\001g%02d:%02d\001w) \001b***\n"
 "\001a\n"
 msgstr ""
 
-#: src/express.c:1360
+#. House Spirit Broadcast
+#: src/express.c:1361
 msgid ""
 "\n"
 "\001f\001r* \001wThe House Spirit whispers: \001r*\n"
@@ -400,27 +492,27 @@ msgid ""
 msgstr ""
 
 #. CountDown-Broadcast
-#: src/express.c:1364
+#: src/express.c:1365
 msgid ""
 "\n"
 "%s\n"
 msgstr ""
 
-#: src/express.c:1368
+#: src/express.c:1369
 msgid ""
 "\n"
 "\001f\001r***\001w Cthulhu whispers: \001r***\001a\n"
 "\001c%s"
 msgstr ""
 
-#: src/express.c:1372
+#: src/express.c:1373
 msgid ""
 "\n"
 "\001f\001b*** \001g%s %s from \001w( %s%s \001w) \001y\001n%s\001N \001gat \001w(\001g%02d:%02d\001w) \001b***\001a\n"
 "\001c%s"
 msgstr ""
 
-#: src/express.c:1378 src/express.c:1384
+#: src/express.c:1379 src/express.c:1385
 msgid ""
 "\n"
 "\001f\001b*** \001g%s %s from \001w( %s%s \001w) \001n%s\001N \001gat \001w(\001g%02d:%02d\001w) \001b***\001a\n"
@@ -430,7 +522,7 @@ msgstr ""
 "\001f\001b*** \001g%s %s van \001w( %s%s \001w) \001n%s\001N \001gom \001w(\001g%02d:%02d\001w) \001b***\001a\n"
 "\001c%s"
 
-#: src/express.c:1390
+#: src/express.c:1391
 msgid ""
 "\n"
 "\001f\001r????? \001gHELP REQUEST from \001y\001n%s\001N \001gat \001w(\001g%02d:%02d\001w) \001r?????\001a\n"
@@ -439,14 +531,14 @@ msgstr ""
 "\n"
 "\001f\001r????? \001gHULP VERZOEK van \001y\001n%s\001N \001gom \001w(\001g%02d:%02d\001w) \001r?????\001a\n"
 
-#: src/express.c:1396
+#: src/express.c:1397
 msgid ""
 "\n"
 "\001f\001b*** \001gFeeling from %s \001gat \001w(\001g%02d:%02d\001w) \001b***\001a\n"
 "%s\001a"
 msgstr ""
 
-#: src/express.c:1400
+#: src/express.c:1401
 msgid ""
 "\n"
 "\001f\001b*** \001pWeb\001g %s %s from %s \001gto \001y%s \001gat \001w(\001g%02d:%02d\001w) \001b***\001a\n"
@@ -456,7 +548,7 @@ msgstr ""
 "\001f\001b*** \001pWeb\001g %s %s van %s \001gnaar \001y%s \001gom \001w(\001g%02d:%02d\001w) \001b***\001a\n"
 "\001c%s"
 
-#: src/express.c:1406
+#: src/express.c:1407
 msgid ""
 "\n"
 "\001f\001b*** \001g%s %s from %s \001gto \001y%s \001gat \001w(\001g%02d:%02d\001w) \001b***\001a\n"
@@ -466,9 +558,111 @@ msgstr ""
 "\001f\001b*** \001g%s %s van %s \001gnaar \001y%s \001gom \001w(\001g%02d:%02d\001w) \001b***\001a\n"
 "\001c%s"
 
+#: src/express.c:1422
+msgid "\001f\001rYou cannot send %s %s.\001a\n"
+msgstr ""
+
+#: src/express.c:1440
+msgid ""
+"\001f\001rYour %s is no longer online.\n"
+"Searching for a new one...\001a\n"
+msgstr ""
+
+#: src/express.c:1442
+msgid "\001f\001rYour %s has his/her messages disabled.\001a\n"
+msgstr ""
+
+#: src/express.c:1443 src/express.c:1448
+msgid "\001f\001rSearching for a new one...\001a\n"
+msgstr ""
+
+#: src/express.c:1447
+msgid "\001f\001rYour %s is no longer marked as %s.\001a\n"
+msgstr ""
+
+#: src/express.c:1456
+msgid "\001f\001gThere are no %s online right now...\001a\n"
+msgstr ""
+
+#: src/express.c:1457
+msgid "\001f\001gYou could try to find the answer in the help files.\001a\n"
+msgstr ""
+
+#: src/express.c:1458
+msgid "\001f\001gPress \001w<\001r?\001w>\001g to see all commands, or \001w<\001rh\001w>\001g to access the helpfiles.\n"
+msgstr ""
+
+#: src/express.c:1468
+msgid ""
+"\001f\001gYou are asking a %s a Question, and therefore\n"
+" \001a"
+msgstr ""
+
+#: src/express.c:1484
+msgid ""
+"\001f\001gYou are now sending an emote.\n"
+"\001b*** \001y%s \001g"
+msgstr ""
+
+#: src/express.c:1490
+msgid "\001f\001gYou're now asking \001c%s\001g a BBS-related Question!\001a\n"
+msgstr ""
+
+#: src/express.c:1496
+msgid "\001f\001rYou're now sending a broadcast!\001a\n"
+msgstr ""
+
+#: src/express.c:1499
+msgid "\001rWarning: you are still marked as \001caway\001r.\001a\n"
+msgstr ""
+
+#: src/express.c:1517
+msgid "\001f\001gSend Feeling %s.\001a\n"
+msgstr ""
+
+#: src/express.c:1519
+msgid "\001f\001gPress \001w<\001r?\001w>\001g for a list of available feelings.\001a\n"
+msgstr ""
+
+#: src/express.c:1521
+msgid "\001f\001gYou're cool. Press \001w<\001rf\001w>\001g to send the \001cFREEZE\001g feeling.\001a\n"
+msgstr ""
+
+#: src/express.c:1664
+msgid "\001f\001rAn error occurrect trying to retrieve \001pweb \001rx-es.\n"
+msgstr ""
+
+#: src/express.c:1666
+msgid ""
+"\n"
+"\001f\001gYou have \001y%d \001gnew \001pWeb \001g%s %s \001w(\001gHit \001w<\001r^\001w> \001gto reply\001w)\001a\n"
+msgstr ""
+
 #: src/fun.c:56 src/fun.c:72
 msgid "\001f\001gNo unread %s.\001a"
 msgstr "\001f\001gGeen ongelezen %s.\001a"
+
+#: src/key.c:108
+msgid ""
+"\n"
+"Please enter your validation key, if you have received it.\n"
+msgstr ""
+
+#: src/key.c:109
+msgid "Otherwise, press return.\n"
+msgstr ""
+
+#: src/key.c:115
+msgid ""
+"The key is correct, you are now validated.\n"
+"\n"
+msgstr ""
+
+#: src/key.c:118
+msgid ""
+"Sorry, but the key was incorrect..\n"
+"\n"
+msgstr ""
 
 #: src/main.c:165
 msgid ""
@@ -485,7 +679,7 @@ msgstr ""
 msgid "No such user.\n"
 msgstr ""
 
-#: src/main.c:224 src/main.c:327
+#: src/main.c:224 src/main.c:326
 msgid "Incorrect login.\n"
 msgstr "Foute login.\n"
 
@@ -513,18 +707,18 @@ msgstr "Type het nogmaals: "
 msgid "The passwords you typed didn't match.  Please try again.\n"
 msgstr "De wachtwoorden waren niet gelijk. Probeer het nogmaals.\n"
 
-#: src/main.c:308
+#. loop until we get a real username
+#: src/main.c:307
 msgid ""
 "\n"
 "Username: "
 msgstr ""
 
-#: src/main.c:312
+#: src/main.c:311
 msgid "Enter \"Off\" to quit or \"New\" to enter as a new user.\n"
 msgstr "Type \"Off\" om te stoppen of \"New\" om een nieuwe gebruiker te creeren\n"
 
-#. if this user does not exist, fake a password-entry
-#: src/main.c:325
+#: src/main.c:324
 msgid "%s's Password: "
 msgstr "%s's wachtwoord: "
 
@@ -650,10 +844,6 @@ msgstr "\001g\001fBekijk gebruiker\001w: \001c"
 msgid "\001r\001fNot a valid InterBBS name.\n"
 msgstr ""
 
-#: src/usertools.c:134
-msgid "\001f\001rNo such user.\001a\n"
-msgstr ""
-
 #: src/usertools.c:536
 msgid "\001f\001pSubscribe to channel: \001a"
 msgstr ""
@@ -756,33 +946,34 @@ msgstr "\001gJe huidige %s is: \001y`%s\001a'\n"
 msgid "\001f\001gDo you want to change this? \001w(\001gy\001w/\001gn\001w)\001c "
 msgstr ""
 
-#: src/usertools.c:999
+#: src/usertools.c:1000
 msgid "\001f\001gChange address.\n"
 msgstr "\001f\001gVerander adres.\n"
 
-#: src/usertools.c:1014
+#: src/usertools.c:1015
 msgid "\001gYour current url is: \001y`%s'\n"
 msgstr "\001gJe huidige url is: \001y`%s'\n"
 
-#: src/usertools.c:1015
+#: src/usertools.c:1016
 msgid "\001gDo you want to change this? \001w(\001gy\001w/\001gn\001w)\001c "
 msgstr ""
 
-#: src/usertools.c:1017
+#: src/usertools.c:1018
 msgid "\001f\001gEnter the new url\001w: \001chttp://"
 msgstr ""
 
-#: src/usertools.c:1021
+#: src/usertools.c:1022
 msgid "\001f\001gURL not set.\n"
 msgstr ""
 
-#: src/usertools.c:1049
+#. disable x's in q_menu
+#: src/usertools.c:1050
 msgid ""
 "\n"
 "\001f\001gPress \001w<\001rh\001w>\001g to access the helpfiles.\n"
 msgstr ""
 
-#: src/usertools.c:1050
+#: src/usertools.c:1051
 msgid ""
 "\n"
 "\001gPress \001w<\001rc\001w>\001g for help on commands.\n"
@@ -790,11 +981,11 @@ msgstr ""
 "\n"
 "\001gToets \001w<\001rc\001w>\001g voor help over de commando's.\n"
 
-#: src/usertools.c:1051
+#: src/usertools.c:1052
 msgid "\001gPress \001w<\001r?\001w>\001g to get a list of commands.\n"
 msgstr "\001gToets \001w<\001r?\001w>\001g voor een lijst met commando's.\n"
 
-#: src/usertools.c:1052
+#: src/usertools.c:1053
 msgid ""
 "\001gPress \001w<\001rshift-Q\001w>\001g to ask a Question.\n"
 "\n"
@@ -802,7 +993,7 @@ msgstr ""
 "\001gToets \001w<\001rshift-Q\001w>\001g om een vraag te stellen.\n"
 "\n"
 
-#: src/usertools.c:1053
+#: src/usertools.c:1054
 msgid ""
 "\001gPress \001w<\001rq\001w>\001g to exit this menu.\n"
 "\n"
@@ -810,23 +1001,23 @@ msgstr ""
 "\001gToets \001w<\001rq\001w>\001g om dit menu te verlaten.\n"
 "\n"
 
-#: src/usertools.c:1054
+#: src/usertools.c:1055
 msgid "\001gChoice\001w:\001g "
 msgstr ""
 
-#: src/usertools.c:1150
+#: src/usertools.c:1151
 msgid "\001f\001wYou are now marked as \001gAWAY\001w.\n"
 msgstr ""
 
-#: src/usertools.c:1152
+#: src/usertools.c:1153
 msgid "\001gDefault away message: \001y%s\001a\n"
 msgstr ""
 
-#: src/usertools.c:1153
+#: src/usertools.c:1154
 msgid "\001f\001gNew Away message: \001c"
 msgstr ""
 
-#: src/usertools.c:1160
+#: src/usertools.c:1163
 msgid "\001f\001wYou are \001rno longer\001w marked as \001gAWAY\001w.\001a"
 msgstr ""
 
