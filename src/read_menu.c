@@ -664,8 +664,8 @@ long_prompt(long number, int direction)
 		    break;
 
 		case '*':
+                    cprintf("\1f\1gClip %s.\n", config.message );
 		    display_message(curr_rm, current, DISPLAY_2_CLIP);
-		    cprintf("\n");
 		    break;
 
 		case 'd':
