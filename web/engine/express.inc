@@ -17,8 +17,11 @@ function express_message($username, $recipient) {
     //
     switch(check_friend($username,$recipient)) {
 
-        case -3:
+        case -4:
             print "<h3 align=\"center\">$recipient has web express messages disabled.</h3>\n";
+            return;
+        case -3:
+            print "<h3 align=\"center\">$recipient is not currently online.</h3>\n";
             return;
         case -2:
             print "<h3 align=\"center\">$recipient is not an exisiting user.</h3>\n";
