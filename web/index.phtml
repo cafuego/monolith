@@ -1,12 +1,17 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<html lang="en">
-<head>
-<meta name="rcsid" content="$Id$">
-
 <?php
 
-    // Print caching info etc.
+    // Save execution start time.
     //
+    $starttime = microtime();
+
+    // Print header; caching info etc.
+    //
+    echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n";
+    echo "<html lang=\"en\">\n";
+    echo "<head>\n\n";
+    echo "<meta name="Generator" content=\"". phpversion() ." [uid: ". getmyuid() ." (". get_current_user() ."); pid: ". getmypid() ."]\">\n";
+    echo "<meta name="Rcsid" content=\"\$Id$\">\n";
+    echo "<meta name="Location" content=\"$REQUEST_URI\">\n\n";
     echo "<meta http-equiv=\"Expires\" content=\"" . gmdate("l, d F Y H:i:s") ." CET\">\n";
     echo "<meta http-equiv=\"Last-Modified\" content=\"" . gmdate("l, d F Y H:i:s") ." CET\">\n";
     echo "<meta http-equiv=\"Cache-Control\" content=\"no-cache, must-revalidate\">\n";
@@ -14,40 +19,40 @@
 
     // Get username and print off proper title.
     //
-    require('engine/html.inc');
-    if( html_print_title( getenv("REMOTE_USER"), $REQUEST_URI ) )
-        html_do_login( getenv("REMOTE_USER") );
-    else
-        html_do_logout( getenv("REMOTE_USER"), getenv("REMOTE_HOST") );
-
-?>
-
-<style>
-  p  		{ font: 12pt Helvetica; }
-  ul  		{ font: 12pt Helvetica; }
-  li  		{ font: 12pt Helvetica; }
-  a  		{ font: 12pt Helvetica; color: #FFFF00; text-decoration: underline; }
-  pre		{ font: 12pt Helvetica; }
-  font		{ font: 12pt Helvetica; }
-  b		{ font-weight: bold; }
-  .reply	{ font: 10pt Helvetica; }
-  .green	{ color: #00cc00; }
-  .red		{ font: 10pt Times; font-weight: bold; color: #ff0000; }
-  .footer	{ font: 10pt Times; text-align: center; }
-</style>
-
-</head>
-<body bgcolor="#000000" text="#FFFFFF">
-
-
-<?php
-
-    $starttime = microtime();
-
     $username = getenv("REMOTE_USER");
+
+    require('engine/html.inc');
+
+    if( html_print_title( $username, $REQUEST_URI ) )
+        html_do_login( $username );
+    else
+        html_do_logout( $username, getenv("REMOTE_HOST") );
+
+    // Show stylesheet info.
+    //
+    echo "<style>\n";
+    echo "  p  		{ font: 12pt Helvetica; }\n";
+    echo "  ul  	{ font: 12pt Helvetica; }\n";
+    echo "  li  	{ font: 12pt Helvetica; }\n";
+    echo "  a  		{ font: 12pt Helvetica; color: #FFFF00; text-decoration: underline; }\n";
+    echo "  pre		{ font: 12pt Helvetica; }\n";
+    echo "  font	{ font: 12pt Helvetica; }\n";
+    echo "  b		{ font-weight: bold; }\n";
+    echo "  .reply	{ font: 10pt Helvetica; }\n";
+    echo "  .green	{ color: #00cc00; }\n";
+    echo "  .red	{ font: 10pt Times; font-weight: bold; color: #ff0000; }\n";
+    echo "  .footer	{ font: 10pt Times; text-align: center; }\n";
+    echo "</style>\n";
+
+    // Header end and body start.
+    //
+    echo "</head>\n";
+    echo "<body bgcolor=\"#000000\" text=\"#FFFFFF\">\n";
+
     require ("engine/routines.inc");
 
     // Pick url open into commands.
+    //
     $url_array=explode("/",$REQUEST_URI);
 
     // Assign values so we can use 'em.
@@ -66,6 +71,10 @@
     list_x_messages($username,$location);
 
     switch ($action) {
+
+        case "a":	// PHP info.
+            echo "<pre>\n" . phpinfo() . "</pre>\n";
+            break;
 
         case "e":	// Enter (new).
         case "f":	// Followup (reply).
