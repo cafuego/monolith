@@ -2,7 +2,7 @@
 
 /* defines */
 #define DELIM	"|"
-#define NSUBEXP  10
+#define NSUBEXP  64
 #define SHIX_SCOREFILE BBSDIR "/etc/shix.scores"
 
 #define MAGIC   0234
@@ -27,3 +27,5 @@ extern void regerror(char *);
 extern int shix( const char *message );
 extern regexp * regcomp( char *exp);
 extern int regexec( regexp *prog, char *string);
+
+extern int shix_strmatch(char *, char *);

@@ -99,3 +99,18 @@ shix(const char *message)
 	return TRUE;
     return FALSE;
 }
+
+int
+shix_strmatch( char *input, char *match )
+{
+    regexp *expr = NULL;
+
+    expr = regcomp(match);
+    if( regexec(expr, input) != 0 ) {
+        xfree(expr);
+        return TRUE;
+    }
+    fflush(stdout);
+    xfree(expr);
+    return FALSE;
+}
