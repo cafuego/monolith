@@ -161,7 +161,9 @@ copy_message_wrapper(const unsigned int current_post, const int is_not_my_post, 
 	    return -1;
 	}
     } else if (!i_may_write_forum(to_quad)
-	       || to_quad == YELL_FORUM || (to_quad == MAIL_FORUM && !copy)) {
+		|| to_quad == YELL_FORUM
+		|| (to_quad == MAIL_FORUM && !copy)
+		|| (to_quad == MAIL_FORUM && curr_rm != MAIL_FORUM)) {
 	cprintf("You're not allowed to %s the %s there.\n",
 		(copy) ? "copy" : "move", config.message);
 	return -1;
