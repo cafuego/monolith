@@ -6,8 +6,6 @@
 
 function logout() {
 
-    var url;
-
     // Check where we're going.
     // If not to a link on the BBS pages, then we go and
     // visit our logout page.
