@@ -115,7 +115,8 @@ mono_sql_uf_list_hosts_by_forum(unsigned int forumnumber, userlist_t **p )
     ret = mono_sql_query(&res, 
           "SELECT u.id,u.username " 
           "FROM user u,userforum uf "
-          "WHERE forum_id=%u AND uf.user_id=u.id AND host='y'"
+          "WHERE forum_id=%u AND uf.user_id=u.id AND host='y' "
+          "ORDER BY u.username"
         , forumnumber);
 
     if (ret == -1) {
@@ -276,7 +277,8 @@ mono_sql_uf_list_invited_by_forum(unsigned int forumnumber, userlist_t **p )
     ret = mono_sql_query(&res, 
           "SELECT u.id,u.username " 
           "FROM user u,userforum uf "
-          "WHERE forum_id=%u AND uf.user_id=u.id AND status='invited'"
+          "WHERE forum_id=%u AND uf.user_id=u.id AND status='invited' "
+          "ORDER BY u.username"
         , forumnumber);
 
     if (ret == -1) {
@@ -409,7 +411,8 @@ mono_sql_uf_list_kicked_by_forum(unsigned int forumnumber, userlist_t **p )
     ret = mono_sql_query(&res, 
           "SELECT u.id,u.username " 
           "FROM user u,userforum uf "
-          "WHERE forum_id=%u AND uf.user_id=u.id AND status='kicked'"
+          "WHERE forum_id=%u AND uf.user_id=u.id AND status='kicked' "
+	  "ORDER BY u.username"
         , forumnumber);
 
     if (ret == -1) {
