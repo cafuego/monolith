@@ -167,7 +167,7 @@ function read_message($username, $quad, $current, $direction)
  */
 function mes_link_urls( $text ) {
 
-    eregi("http://.* ?", $text, $url_list);
+    eregi("http://.* [0-z]", $text, $url_list);
 
     if(isset($url_list)) {
         $url = current($url_list);
