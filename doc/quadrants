@@ -1,0 +1,14 @@
+
+Several forums are special, having properties based on the forum number.
+
+0> lobby/docking bay. main announcement room
+1> mail room
+2> yells
+3> sysop only room
+4> wizard only room
+5> garbage room
+6> ht/guide/fm/ql room.
+9> quoted x's room
+148> handled yells. (yells are moved here after a <r>eply)
+
+

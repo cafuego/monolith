@@ -1,0 +1,51 @@
+Welcome to the Monolith BBS Package.
+
+This package is a full featured BBS system, based on YAWC, DaveCode,
+Citadel, DOC, etc.
+
+Read INSTALL for information on how to install.
+(Basically, run `./configure; make', you don't need to dothis as root)
+
+After that you need to do the following as root:
+
+* add a group `bbs' to /etc/group
+* add a user `bbs' to /etc/passwd, the user should have /usr/bbs 
+    as homedir, and be in the `bbs' group.
+
+* run `make install' to install the binaries
+
+* add the daemons to /etc/inetd.conf
+Here are sample entries from Monolith 
+/etc/inetd.conf
+bbs     stream  tcp     nowait  bbs     /usr/bbs/bin/front   front
+monoclient stream tcp   nowait  bbs     /usr/bbs/bin/server     server
+dexi    stream  tcp     nowait  bbs     /usr/sbin/tcpd  /usr/bbs/bin/dexi
+private stream  tcp     nowait  root    /usr/sbin/tcpd  /usr/sbin/in.telnetd
+
+In /etc/services define the services to the ports you want them to use.
+/etc/services
+bbs             23/tcp
+monoclient      1976/tcp
+dexi            1996/tcp
+private         24/tcp
+
+Here we moved the telnet port to port 24 (normally unused), and put the
+bbs on the normal telnet port.
+
+* The `make install' procedure does not yet copy all files in share/ to
+  the bbs directories. You have to copy those by hand.
+
+* Create dirs in /usr/bbs/save/quads with numbers from 0 to MAXROOMS 
+  (usually 150)
+
+* Chown everything in /usr/bbs/ to the bbs user
+ 
+* The bbs is now running. You can login, and create an account for yourself
+
+* You can make the first account a sysop by running `makeemp username'
+  The utility is in the /usr/bbs/bin directory
+
+* Add something to your startupfiles that removes etc/geheugensleutel
+  after each reboot
+
+$Id$

@@ -1,0 +1,195 @@
+/* $Id$ */
+/* operatoins we can do on forums */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
+#include <stdio.h>
+#include <mysql.h>
+
+#include "monolith.h"
+#include "monosql.h"
+#include "routines.h"
+#include "sql_utils.h"
+
+#define F_TABLE "forum"
+
+/* nasty comaptible stuff */
+int
+mono_sql_f_write_quad(unsigned int num, const room_t * q)
+{
+    printf("debug: writing quad %u\n", num);
+    mono_sql_f_remove_forum(num);
+    return mono_sql_f_add_old_forum(num, q);
+}
+
+int
+mono_sql_f_read_quad(unsigned int num, room_t * room)
+{
+    int i, rows;
+    MYSQL_RES *res;
+    MYSQL_ROW row;
+    room_t r;
+
+    i = mono_sql_query(&res, "SELECT "
+	"name,category_old,flags,highest,lowest,generation,roominfo,maxmsg "
+		       "FROM " F_TABLE " WHERE id=%u", num);
+
+    if (i == -1) {
+	fprintf(stderr, "Error: ano results from query\n");
+	mysql_free_result(res);
+	return -1;
+    }
+    rows = mysql_num_rows(res);
+    if (rows != 1) {
+	mysql_free_result(res);
+	return -1;
+    }
+    row = mysql_fetch_row(res);
+
+    /* sscanf error codes need to be checked ! */
+    strcpy(r.name, row[0]);
+    strcpy(r.category, row[1]);
+    sscanf(row[2], "%u", &r.flags);
+    sscanf(row[3], "%lu", &r.highest);
+    sscanf(row[4], "%lu", &r.lowest);
+    sscanf(row[5], "%c", &r.generation);
+    sscanf(row[6], "%c", &r.roominfo);
+    sscanf(row[7], "%u", &r.maxmsg);
+
+    mysql_free_result(res);
+
+    *room = r;
+    return 0;
+}
+
+
+int
+mono_sql_f_add_old_forum(unsigned int forum_id, const room_t * q)
+{
+
+    int ret;
+    MYSQL_RES *res;
+
+    char *esc_name;
+
+    if (escape_string(q->name, &esc_name) != 0)
+	esc_name = q->name;
+
+    ret = mono_sql_query(&res, "INSERT INTO " F_TABLE
+			 " (id,name,category_old,flags,highest,lowest,generation,roominfo,maxmsg) "
+		       "VALUES ( %u, '%s', '%s', %u, %u, %u, %d, %d, %u )\n"
+	   ,forum_id, esc_name, q->category, q->flags, q->highest, q->lowest
+			 ,q->generation, q->roominfo, q->maxmsg);
+
+    xfree(esc_name);
+    mysql_free_result(res);
+
+    if (ret != 0) {
+	return -1;
+    }
+    return 0;
+
+}
+
+
+int
+mono_sql_f_update_forum(unsigned int forum_id, const room_t * q)
+{
+
+    int ret;
+    MYSQL_RES *res;
+
+    ret = mono_sql_query(&res, "UPDATE " F_TABLE " SET "
+			 " (name='%s',category_old='%s',flags=%u,highest=%u,lowest=%u,generation=%d,roominfo=%d,maxmsg=%u) "
+			 "WHERE id=%u\n"
+		 ,q->name, q->category, q->highest, q->lowest, q->generation
+			 ,q->roominfo, q->maxmsg, forum_id);
+
+    if (ret == -1) {
+	fprintf(stderr, "No results from query.\n");
+	mysql_free_result(res);
+	return -1;
+    }
+    mysql_free_result(res);
+    return 0;
+
+}
+int
+mono_sql_f_remove_forum(int forum_id)
+{
+
+    MYSQL_RES *res;
+    int ret;
+
+    ret = mono_sql_query(&res, "DELETE FROM " F_TABLE " WHERE (id='%u')",
+			 forum_id);
+    mysql_free_result(res);
+    return ret;
+
+    return 0;
+}
+
+int
+mono_sql_f_name2id(const char *forumname, unsigned int *forumid)
+{
+    int i;
+    MYSQL_RES *res;
+    MYSQL_ROW row;
+    char *esc_name;
+
+    escape_string(forumname, &esc_name);
+
+    i = mono_sql_query(&res, "SELECT id FROM " F_TABLE " WHERE name='%s'", esc_name);
+
+    xfree(esc_name);
+
+    if (i == -1) {
+	fprintf(stderr, "No results from query.\n");
+	return -1;
+    }
+    if (mysql_num_rows(res) != 1) {
+	mysql_free_result(res);
+	return -1;
+    }
+    row = mysql_fetch_row(res);
+    sscanf(row[0], "%u", forumid);
+
+    mysql_free_result(res);
+    return 0;
+}
+
+int
+mono_sql_f_partname2id(const char *forumname, unsigned int *forumid)
+{
+    int i;
+    MYSQL_RES *res;
+    MYSQL_ROW row;
+    char *esc_name;
+
+    escape_string(forumname, &esc_name);
+
+    i = mono_sql_query(&res, "SELECT id FROM " F_TABLE " WHERE name like '%%%s%%'", esc_name);
+
+    xfree(esc_name);
+
+    if (i == -1) {
+	fprintf(stderr, "No results from query.\n");
+	return -1;
+    }
+    if (mysql_num_rows(res) < 1) {
+	mysql_free_result(res);
+	return -1;
+    }
+    row = mysql_fetch_row(res);
+    sscanf(row[0], "%u", forumid);
+
+    mysql_free_result(res);
+    return 0;
+}
+
+
+/* eof */
+
+/* eof */

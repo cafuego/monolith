@@ -1,0 +1,139 @@
+# Monolith BBS cgi Makefile
+# $Id$
+
+SHELL=/bin/sh
+
+top_srcdir = @top_srcdir@
+srcdir = @srcdir@
+VPATH = @srcdir@
+
+incdir=$(top_srcdir)/include
+
+prefix=@prefix@
+exec_prefix=@prefix@
+
+bindir=$(exec_prefix)/bin
+libdir=$(prefix)/lib
+mandir=$(prefix)/man
+wwwdir=$(prefix)/www
+cgidir=$(wwwdir)/cgi-bin
+
+INSTALL=@INSTALL@
+INSTALL_PROGRAM=@INSTALL_PROGRAM@
+INSTALL_DATA=@INSTALL_DATA@
+
+CC=@CC@
+@SET_MAKE@
+
+BBSGID=bbs
+BBSUID=bbs
+
+CFLAGS=@CFLAGS@
+LDFLAGS=@LDFLAGS@ @LIBS@
+
+CFLAGS += -m486 -pipe -I$(incdir) -DLINUX -Wall -Wstrict-prototypes \
+          -Wtraditional -Wshadow -Wpointer-arith -Wbad-function-cast \
+          -Wmissing-prototypes -Wnested-externs # -Wredundant-decls
+
+LDFLAGS += -L$(top_srcdir)/lib
+
+#### End of system configuration section. ####
+
+all: cgis
+
+%.o:	 	%.c
+		@echo Compiling $<
+		@$(CC) $(CFLAGS) -c $<
+
+depend:		
+		@echo Generating dependencies...
+		@$(CC) $(CFLAGS) -MM *.c > .depend
+
+TAGS:		
+		ctags $(incdir)/*.h $(top_srcdir)/src/*.c $(top_srcdir)/lib/*.c $(top_srcdir)/shix/*.c
+
+
+ifeq (.depend,$(wildcard .depend))
+include .depend
+endif        
+ 
+# endof Rules.make
+
+INSTALLFLAGS = -o $(BBSUID) -g $(BBSGID) -m 4771
+BINS = counter profile wholist www_roomlist userlist interface register account www_auth_user www_auth_group
+
+cgis:		$(BINS)
+
+counter:	counter.o
+		@echo Linking $@
+		@$(CC) $(CFLAGS) -o $@ $< -lgdbm	
+
+profile: 	profile.o util.o hprintf.o
+		@echo Linking $@
+		@$(CC) $(CFLAGS) -o profile $(srcdir)/profile.o $(srcdir)/util.o $(srcdir)/hprintf.o -lyawc  $(LDFLAGS)
+
+account:	account.o util.o hprintf.o
+		@echo Linking $@
+		@$(CC) $(CFLAGS) -o $@ $(srcdir)/hprintf.o $(srcdir)/util.o $(srcdir)/profile.o -lyawc $(LDFLAGS)
+
+register:	register.o util.o
+		@echo Linking $@
+		@$(CC) $(CFLAGS) -o $@ $(srcdir)/register.o $(srcdir)/util.o -lyawc $(LDFLAGS)
+
+index:		index.o util.o
+		@echo Linking $@
+		@$(CC) $(CFLAGS) -o $@ $(srcdir)/index.o $(srcdir)/util.o -lyawc $(LDFLAGS)
+
+wholist:	wholist.o 
+		@echo Linking $@
+		@$(CC) $(CFLAGS) -o $@ $< -lyawc $(LDFLAGS)
+
+userlist:	userlist.o
+		@echo Linking $@
+		@$(CC) -o $@ $< -lyawc $(LDFLAGS)
+
+www_roomlist:	knownrooms.o
+		@echo Linking $@
+		@$(CC) $(CFLAGS) -o $@ $< -lyawc $(LDFLAGS)
+
+interface:	interface.o util.o hprintf.o 
+		@echo Linking $@
+		@$(CC) $(CFLAGS) -o $@ hprintf.o interface.o util.o -lyawc $(LDFLAGS)
+
+www_auth_user:	www_auth_user.o
+		@echo Linking $@
+		@$(CC) $(CFLAGS) -o $@ $< -lyawc $(LDFLAGS)
+
+www_auth_group:	www_auth_group.o
+		@echo Linking $@
+		@$(CC) $(CFLAGS) -o $@ $< -lyawc $(LDFLAGS)
+
+uninstall:
+		rm -f $(cgidir)/counter $(cgidir)/interface $(cgidir)/profile \
+		      $(bindir)/www_roomlist $(bindir)/wholist $(bindir)/userlist
+
+install:	all
+		@-$(INSTALL_PROGRAM) $(INSTALLFLAGS) counter $(cgidir)
+		@-$(INSTALL_PROGRAM) $(INSTALLFLAGS) interface    $(cgidir)
+		@-$(INSTALL_PROGRAM) $(INSTALLFLAGS) www_auth_user    $(bindir)
+		@-$(INSTALL_PROGRAM) $(INSTALLFLAGS) www_auth_group    $(bindir)
+		@-$(INSTALL_PROGRAM) $(INSTALLFLAGS) profile $(cgidir)
+		@-$(INSTALL_PROGRAM) $(INSTALLFLAGS) www_roomlist $(bindir)
+		@-$(INSTALL_PROGRAM) $(INSTALLFLAGS) wholist $(bindir)
+		@-$(INSTALL_PROGRAM) $(INSTALLFLAGS) userlist $(bindir)
+
+install-strip:
+		$(MAKE) INSTALL_PROGRAM='$(INSTALL_PROGRAM) -s' install
+
+mostlyclean:	
+		rm -f *.o *~ *save core
+
+clean:		mostlyclean
+		rm -f $(BINS)
+
+distclean:	clean
+		rm -f $(srcdir)/Makefile tags
+
+maintainer-clean:	distclean
+		@echo 'This command is intended for maintainers to use; it'
+		@echo 'deletes files that may need special tools to rebuild.'

@@ -1,0 +1,20 @@
+fg-- rBasic Commands g-------------------------------------------
+
+w<rcw>gonfig     Lets you change your presonal preferences.
+w<rCw>ghat       Beams you into the Holodeck, our chat-mode.
+w<rew>gnter      Lets you enter a message in the current room.
+w<rhw>gelp       Access to the helpfile system with extensive help.
+w<riw>gnfo       Shows information about the current room.
+w<rjw>gump       Allow you to jump to another room by name/number.
+w<rkw>gnownrooms Shows you a list of accessible rooms.
+w<rlw>gogout     Leave the BBS.
+w<rpw>grofile    Get more information about a user.
+w<rww>gholist    See which users are logged onto the BBS.
+ew<rxw>gpress    Send direct personal messages to online users.
+w<ryw>gell       Yell to the Admin about a problem you might have.
+w<rzw>gap        Mark a room as zapped, so you no longer read it.
+fg
+To scan for and read new messages you can also press the spacebar. If you
+want more help, the helpfiles are availbale under the w<rhw>g key and you can
+ask questions to experienced users by pressing w<rshift-Qw>g at any time.
+A full list of commands is available under  w<r/w>g.

@@ -1,0 +1,64 @@
+fg-- rList of all Commands g-------------------------
+
+fpKey       Prompt  What's it do, really?
+
+fw<r1-9w>     yshort   gSend an eXpress Message to friend #1-9.
+fw<raw>       ylong    gRead current message again.
+fw<raw>       yshort   gAdmin menu (admin only)
+fw<rAw>       yshort   gToggle away status.
+fw<rbw>       yboth    gStart reading messages backwards.
+fw<rBw>       yshort   gToggle eXress beeps.
+fw<rcw>       yshort   gAccess config menu.
+fw<rcw>       ylong    gClip current message to clipboard.
+fw<rCw>       yshort   gEnter the Holodeck (chat mode).
+fw<rdw>       ylong    gDelete the current message.
+fw<rew>       yboth    gEnter a message in the current quadrant.
+fw<rEw>       yboth    gEnter editor message in the current quadrant.
+fw<rctrl-ew>  yboth    gEnter a mesage with title in the current quadrant.
+fw<rfw>       yboth    gStart reading messages forward.
+fw<rctrl-fw>  yshort   gShow which x friends are online.
+fw<rgw>       yboth    gMark quadrant as read and go to the next one.
+fw<rhw>       yboth    gAccess the helpfiles.
+fw<riw>       yboth    gLook at the quadrantinfo.
+fw<rIw>       yshort   gToggle InterBBS access.
+fw<rjw>       yboth    gGo to another quadrant name/number.
+fw<rkw>       yshort   gGet a list of quadrants.
+fw<rKw>       yshort   gGet a list of quadrants with unread messages.
+fw<rlw>       yboth    gLog off.
+fw<rmw>       yshort   gAccess the miscellaneous menu.
+fw<rnw>       yboth    gRead the next unread message.
+fw<rctrl-nw>  yshort   gUpload a message to the bbs.
+fw<row>       yshort   gRead old messages. (backwards)
+fw<rpw>       yboth    gProfile a user.
+fw<rqw>       yshort   gGet a small help menu.
+fw<rQw>       yshort   gAsk an online HelpTerminal for help.
+fw<rrw>       ylong    gReply to the previous post.
+fw<rRw>       yshort   gAccess the InterBBS menu.
+fw<rsw>       ylong    gStop reading messages.
+fw<rtw>       yshort   gPrint the local time.
+fw<ruw>       yshort   gGo back to the previous quadrant.
+fw<rvw>       yboth    gReply to the last received eXpress message.
+fw<rww>       yboth    gShow who is online in long format.
+fw<rWw>       yboth    gShow who is online in short format.
+fw<rxw>       yboth    gSend an eXpress message.
+fw<rXw>       yshort   gDis/enable eXpress messages.
+fw<rctrl-xw>  yboth    gView your previously received eXpress messages.
+fw<ryw>       yshort   gSend a Yell to the admin.
+fw<rzw>       yshort   gZap (forget) the current quadrant.
+fw<r~w>       yshort   gSend and emote message.
+fw<r!w>       yshort   gSend a feeling.
+fw<r#w>       yshort   gJump to a specific message number.
+fw<r$w>       yshort   gShow a list of all donators.
+fw<r%w>       yshort   gToggle HelpTerminal status. (HT only)
+fw<r-w>       yshort   gGo a number of messages backwards.
+fw<r*w>       yboth    gAccess the Clipboard menu.
+fw<r"w>       yshort   gSend a log of a conversation to the Admin.
+fw<r'w>       yshort   gAccess the literature menu.
+fw<r<w>       yshort   gEdit your X-Friends list.
+fw<r>w>       yshort   gEdit your X-Enemies list.
+fw<r?w>       yboth    gGet a short list of possible commands.
+fw<r/w>       yshort   gShow this help file.
+fw<rctrl-lw>  yboth    gClear your screen.
+fw<rctrl-rw>  yboth    gClear your screen.
+
+fyA few undocumented options are present.

@@ -1,0 +1,3 @@
+"Issues" with the current code.
+
+- myqsl is not detected by ./configure

@@ -1,0 +1,17 @@
+fg-- rBasic Quadrant Commands g-------------------------------------------
+
+w<raw>ggain      Read this message again.
+w<rbw>gackwards  Start reading messages backwards.
+w<rcw>glip       Save a copy of this message in your personal clipboard.
+w<rdw>gelete     Delete this message. (only works with your own messages)
+w<rew>gnter      Lets you enter a message in the current room.
+w<rfw>gorward    Start reading messages forward.
+w<rgw>goto       Mark this room as read and go to the next one.
+w<rjw>gump       Jump to a room by name/number.
+w<rrw>geply      Reply to the current message. (works only with Mail or if
+             the room you are in supports subjectlines)
+w<rsw>gtop       Stop reading and go back to the short prompt.
+fg
+To scan for and read new messages you can also press the spacebar. If you
+want more help, the helpfiles are availbale under the w<rhw>g key and you can
+ask questions to experienced users by pressing w<rshift-Qw>g at any time.

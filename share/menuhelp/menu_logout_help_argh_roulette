@@ -1,0 +1,7 @@
+fg    --r Logout Menu g------------
+
+fw    <ryw>ges    --  Log out.
+fw    <rnw>go     --  Don't log out.
+fw    <rmw>gaybe  --  Maybe log out.
+
+fw    <r?w>g Show a help screen.

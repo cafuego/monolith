@@ -1,0 +1,62 @@
+bin_PROGRAMS = yawc_port yawc_client
+
+yawc_port_SOURCES = clipboard.c friends.c chat.c fun.c help.c menu.c \
+  normal_input.c newuser.c quadcont.c registration.c key.c inter.c vote.c \
+  uadmin.c wholist.c   rooms.c bbsconfig.c
+yawc_client_SOURCES = clipboard.c friends.c chat.c fun.c help.c menu.c \
+  client_input.c newuser.c quadcont.c registration.c key.c inter.c \
+  vote.c wholist.c uadmin.c rooms.c bbsconfig.c
+
+yawc_port_LDADD = p_commands.o p_express.o p_main.o p_messages.o cprintf.o \
+  routines2.o p_statusbar.o p_usertools.o -L../lib -L../shix -lyawc -lm -lshix -lmysqlclient
+
+yawc_client_LDADD =  c_commands.o c_express.o c_main.o c_messages.o \
+  c_routines2.o c_statusbar.o c_usertools.o -L../lib -L../shix -lyawc -lm -lshix -lmysqlclient
+
+c_commands.o: commands.c
+	$(COMPILE) -DCLIENTSRC -c commands.c -o c_commands.o
+
+c_express.o: express.c
+	$(COMPILE) -DCLIENTSRC -c express.c -o c_express.o
+
+c_messages.o: messages.c
+	$(COMPILE) -DCLIENTSRC -c messages.c -o c_messages.o
+
+c_routines2.o: routines2.c
+	$(COMPILE) -DCLIENTSRC -c routines2.c -o c_routines2.o
+
+c_usertools.o: usertools.c
+	$(COMPILE) -DCLIENTSRC -c usertools.c -o c_usertools.o
+
+c_statusbar.o: statusbar.c
+	$(COMPILE) -DCLIENTSRC -c statusbar.c -o c_statusbar.o
+
+c_main.o: main.c
+	$(COMPILE) -DCLIENTSRC -c main.c -o c_main.o
+
+# port
+
+cprintf.o: cprintf.c
+	$(COMPILE) -DPORT -c cprintf.c -o cprintf.o
+
+p_commands.o: commands.c
+	$(COMPILE) -c commands.c -o p_commands.o
+
+p_express.o: express.c
+	$(COMPILE) -c express.c -o p_express.o
+
+p_messages.o: messages.c
+	$(COMPILE) -c messages.c -o p_messages.o
+
+p_routines2.o: routines2.c
+	$(COMPILE) -c routines2.c -o p_routines2.o
+
+p_usertools.o: usertools.c
+	$(COMPILE) -c usertools.c -o p_usertools.o
+
+p_statusbar.o: statusbar.c
+	$(COMPILE) -c statusbar.c -o p_statusbar.o
+
+p_main.o: main.c
+	$(COMPILE) -c main.c -o p_main.o
+

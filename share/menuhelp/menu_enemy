@@ -1,0 +1,6 @@
+fg    -- rEnemies List Menu g------------------
+af
+    w<raw>gdd to enemylist       w<rlw>gist enemies
+    w<rrw>gemove from enemylist  w<rqw>guit
+    w<rcw>glear enemylista
+  

@@ -1,0 +1,18 @@
+
+	Sorry, this command is a command that an unvalidated user as yourself
+	cannot use.
+
+	If you didn't receive a validation key, do the following:
+
+	1) go to <c>onfig <a>dress and check if your e-mail adress is filled
+           in correctly. If this is not the case, change it and fill in your
+           correct e-mail adress.
+        2) when you're sure your e-mail adress is filled in correctly, go to
+           <c>onfig <k>ey and type <s>end to send a new validation key
+           it will be sent to your e-mail adress.
+	3) log off, check your e-mail and keep the 4 digit validation key at
+           hand (it's in the header of the Monolith-e-mail)
+        4) login to Monolith again, and enter the validation key.
+
+	DO NOT <y>ell at the admins before you tried all of this.
+

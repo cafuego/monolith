@@ -1,0 +1,9 @@
+#/bin/bash
+
+MYSQL=/opt/mysql/bin/mysql
+
+for i in *.sql; do
+  echo $i; 
+  $MYSQL -u root bbs < $i;
+done
+

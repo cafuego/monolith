@@ -1,0 +1,6 @@
+bugs in monolith:
+
+ - copy post as ql to your own quad, and you can see anon posts
+ - entering too many names in multimail crashes (if total length > 400)
+ - chat/loginmsg's do not lock the shared memory block. 
+    messages can go missing

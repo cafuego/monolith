@@ -1,0 +1,7 @@
+fg    -- rFriends List Menu g--------------------------
+af
+    w<rAw>gdd Quick-X user    w<rlw>gist friends
+    w<raw>gdd to friendslist  w<rrw>gemove from friendslist
+    w<rcw>glear friendslist   w<rqw>guit
+    w<rtw>goggle logon notificationsa
+

@@ -1,0 +1,36 @@
+$Id$
+
+This Monolith distribution was based upon YAWC which itself was based on
+Davecode, which was in turn based on Citadel/UX.
+
+Most changes were made by:
+
+
+Michel Oosterhof <m.oosterhof@thn.tn.utwente.nl>
+  Responsible for:
+   - new way to handle express messages
+   - new handling of shared memory
+   - cleaning up in general
+   - interbbs support
+   - shared library use
+   - daemonization for front
+   - made the client server an inetd daemon
+   - added fingerdaemon, and www utilities
+   - new room system
+   - new friends/enemy lists
+   - new voting booth
+   - autoconf/automake support
+
+Peter Lieverdink <p.lieverdink@monolith.yawc.net>
+  Responsible for:
+   - new room system
+   - `fun' additions
+   - chatmode
+   - user interface
+   - new help system
+   - making coffee
+   - new mash system
+   - new known rooms list
+   - new web interface
+   - BBS configurations
+

@@ -1,0 +1,72 @@
+*** This is your Monolith BBS validation key ***
+
+Welcome new user!
+
+This e-mail contains your validation key to get full access to Monolith
+BBS.  When you login to Monolith BBS again, you will be asked to enter
+your this key. Enter the number mentioned in the subject of this e-mail
+and you will be granted full access.
+
+You can also validate yourself by pressing <c> to get into the config
+menu and then press <k> and <e> to enter your validation key. To make
+things easier for you, and to get to know the BBS easier, below we
+provide a list of basic functions in the BBS.
+
+*** Reading Quadrants and posting in Quadrants
+
+<k> gives you a full list of all Quadrants available on the BBS.
+<j> lets you jump to a specific quad by either typing the Quadrant 
+    number, or typing the Quadrant name. Most of the time you only have 
+    to type a small part of the quadrant name (like the first 4 letters).
+<space> lets you read the posts that have been made in the Quadrant 
+    you're reading. Pressing <space> continously will scroll you through
+    all messages of the BBS.
+<b>,<o> or <r> let's you read old posts in reverse order.
+<e> lets you enter a message in the quadrant you're reading. Some 
+    quadrants have an anonymous option. You will be prompted whether you 
+    want to post anonymously or not. Hit <enter> twice to finish your post, 
+    and then <s> to save it, or <a> to abort, if you decide you don't want 
+    to post the message you just typed.
+<d> lets you delete a post. (you can only delete your own posts).
+<z> enables you to <z>ap a quadrant. This mean you will not automatically
+    read new posts there.
+
+*** Sending and reading eXpress messages
+
+An eXpress message is a message you send to a specific user on the BBS.
+That user is the only one who can read it.  Pressing <x> lets you send
+an eXpress message to a certain user. You'll be asked whom you want to
+send it to. Then you have seven lines to enter a message. You send the
+message by pressing <enter/return> twice.
+
+<ctrl-x> lets you view your old eXpress messages.
+
+We can't cover all functions Monolith BBS offers in this e-mail because 
+that would make this text too long. If you encounter any problems while 
+using the BBS, feel free to hit <shift-Q>.  This will send your question
+to an experienced user, who is willing to help you.
+
+The system guides (or Help Terminals, as they are called on Monolith BBS)
+are your friend! They will be happy to help you with any problem you 
+encounter on Monolith BBS. You can also get additional help by pressing 
+<?> for a list of basic commands, and <h> to get more detailed help from 
+the Monolith helpfiles. You wil get a list of topics.
+
+So the ways to get help are:
+ * Press <shift-q> to ask a question to a guide.
+ * Press <?> for context sensitive help.
+ * Press <h> for the main documentation of the BBS (the helpfiles)
+
+We hope this e-mail has helped you understand the BBS-functions more 
+easily. Enjoy your stay at Monolith BBS! If you've forgotten the adress
+of Monolith BBS by mistake, here it is again:
+
+Telnet to: monolith.yawc.net
+Numerical Address: 130.89.230.12
+
+Also do take a look at our webpages, at http://monolith.yawc.net/
+
+The admins of Monolith.
+
+*** Your validation key is the number in the SUBJECT of this e-mail ***
+***********************************************************************

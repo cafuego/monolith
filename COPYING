@@ -1,0 +1,54 @@
+
+This is something i quickly copy&pasted from other licenses.
+It isn't etched in stone, you can always email me to see if we can
+work things out. The licence is still quite restrictive, because what
+i don't want now is the diverging of software versions like what happened
+with YAWC. You can always ask me for a new (updated) version, and in the
+near future I'll add a bit permitting you to redistribute the (unmodified)
+code. 
+
+kirth (m.oosterhof@thn.tn.utwente.nl)
+--------------
+
+        MONOLITH SOFTWARE END USER LICENSE AGREEMENT
+           REDISTRIBUTION OR RENTAL NOT PERMITTED
+
+This Agreement sets forth the terms and conditions of your use of the
+accompanying Monolith software product(s) (the "Software"). Any third
+party software that is provided with the Software with such third party's
+license agreement (in either electronic or printed form) is included for
+use at your option.  If you choose to use such software, then such use
+shall be governed by such third party's license and not by this Agreement.
+
+DISCLAIMER OF WARRANTY.  Monolith Software is provided on an "AS IS"
+basis, without warranty of any kind, including without limitation the
+warranties that the Software is free of defects, merchantable, fit for a
+particular purpose or non-infringing.  The entire risk as to the quality
+and performance of the Software is borne by you. Should the Software
+prove defective in any respect, you and not Licensor or its suppliers
+assume the entire cost of any service and repair.
+
+TITLE.  Title, ownership rights, and intellectual property rights in the
+Software shall remain in Monolith and/or its suppliers.  The Software
+is protected by copyright and other intellectual property laws and by
+international treaties. Title and related rights in the content accessed
+through the Software is the property of the applicable content owner and
+is protected by applicable law. The license granted under this Agreement
+gives you no rights to such content.
+
+TERMINATION.  This Agreement and the license granted hereunder will
+terminate automatically if you fail to comply with the limitations
+described herein. Upon termination, you must destroy all copies of the
+Software and Documentation.
+
+HIGH RISK ACTIVITIES.  The Software is not fault-tolerant and is not
+designed, manufactured or intended for use or resale as on-line control
+equipment in hazardous environments requiring fail-safe performance,
+such as in the operation of nuclear facilities, aircraft navigation or
+communication systems, air traffic control, direct life support machines,
+or weapons systems, in which the failure of the Software could lead
+directly to death, personal injury, or severe physical or environmental
+damage ("High Risk Activities"). Accordingly, Licensor and its suppliers
+specifically disclaim any express or implied warranty of fitness for
+High Risk Activities.
+
