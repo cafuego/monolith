@@ -171,14 +171,14 @@ function mes_link_urls( $text ) {
 
     $line = current($line_array);
     do {
-        eregi("http://.* ", $line, $http_list);
+        eregi("http://[0-z].* ", $line, $http_list);
         if(isset($http_list)) {
             $url = current($http_list);
             $tmplist = split(" ", $url);
             $url = $tmplist[0];
             $line = eregi_replace($url, "<a href=\"$url\">$url</a>", $line);
         }
-        eregi("ftp://.* ", $line, $ftp_list);
+        eregi("ftp://[0-z].* ", $line, $ftp_list);
         if(isset($ftp_list)) {
             $url = current($ftp_list);
             $tmplist = split(" ", $url);
