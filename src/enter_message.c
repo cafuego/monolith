@@ -5,17 +5,9 @@
 #include <config.h>
 #endif
 
-#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#ifdef HAVE_SYS_MMAN_H
-  #include <sys/mman.h>
-#else
-  #include <asm/mman.h>
-#endif
-#include <sys/stat.h>
-#include <sys/types.h>
 #include <unistd.h>
 
 #ifdef HAVE_MYSQL_H
@@ -40,8 +32,7 @@
 static int get_alias(room_t *quad, message_t *message);
 static int get_priv(message_t *message, int flag);
 static int get_subject(message_t *message);
-static int get_content(message_t *message, int flag);
-static int fill_buffer(char **content);
+static int get_content(int flag);
 
 /*
  *	1: normal message.
@@ -70,7 +61,6 @@ enter_message(unsigned int forum, unsigned int flag)
     
     message->forum = forum;
     message->author = usersupp->usernum;
-    message->content = NULL;
     message->deleted = 'n';
 
     (void) get_priv(message, flag);
@@ -89,18 +79,16 @@ enter_message(unsigned int forum, unsigned int flag)
      */
     (void) get_subject(message);
 
-    switch( get_content(message, flag)) {
+    switch( get_content(flag)) {
 
         case -1: /* Empty post */
             cprintf("\1f\1rEmpty %s not saved!\n", config.message_pl);
-            xfree(message->content);
             xfree(message);
             xfree(quad);
             return -1;
 
         case -2: /* <A>bort */
             cprintf("\1f\1r%s aborted.\n", config.message);
-            xfree(message->content);
             xfree(message);
             xfree(quad);
             return -1;
@@ -110,12 +98,11 @@ enter_message(unsigned int forum, unsigned int flag)
             
     }
 
-    if( (mono_sql_mes_add(message, forum)) == -1)
+    if( (mono_sql_mes_add(message, forum, temp)) == -1)
         cprintf("\1f\1rCould not save your %s!\n", config.message);
     else
         cprintf("\1f\1gSaved.\n");
 
-    xfree(message->content);
     xfree(message);
     xfree(quad);
 
@@ -200,7 +187,7 @@ get_subject(message_t *message)
  */
 
 static int
-get_content(message_t *message, int mode)
+get_content(int mode)
 {
     FILE *fp;
     int lines = 0;
@@ -215,7 +202,7 @@ get_content(message_t *message, int mode)
         case 's':
         case 'S':
             fclose(fp);
-            return fill_buffer(&message->content);
+            return 1;
             break;
 
         case 'a':
@@ -227,75 +214,4 @@ get_content(message_t *message, int mode)
     }
 
     return 0;
-}
-
-static int
-fill_buffer(char **content)
-{
-
-     char *post = NULL;
-     int fd = -1;
-     struct stat buf;
-
-     /*
-      * Open temp file.
-      */
-     if( (fd = open(temp, O_RDONLY)) == -1) {
-         log_it("sqlpost", "Can't open() temp file %s!", temp);
-         return -1;
-     }
-
-     /*
-      * Determine file size.
-      */
-     fstat(fd, &buf);
-
-     /*
-      * mmap() tempfile.
-      */ 
-#ifdef HAVE_MAP_FAILED
-     if( (post = mmap(post, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED ) { 
-#else
-     if( (post = mmap(post, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == ((__ptr_t) -1) ) { 
-#endif
-         log_it("sqlpost", "Can't mmap() temp file %s!", temp);
-         return -1;
-     }
-
-     /*
-      * Reserve memory for the post content.
-      */
-     *content = (char*)xcalloc(1, strlen(post));
-     if( *content == NULL ) {
-         log_it("sqlpost", "Unable to malloc() message content.");
-         return -1;
-     }
-
-     /*
-      * Copy post content into mem.
-      */
-     if( (*content = memcpy(*content, post, strlen(post))) == NULL) {
-         log_it("sqlpost", "memcpy() of message content failed!");
-         return -1;
-     }
-
-     /*
-      * The Terminator; he said he'd be back!
-      */
-#ifdef SHIT
-     *content[ strlen(*content)-1 ] = '\0';
-#else
-     strcat(*content, "\0");
-#endif
-
-     /*
-      * And close, destroy, kill etc.
-      */
-     if( (munmap(post, buf.st_size)) == -1) {
-         log_it("sqlpost", "Can't munmap() temp file %s!", temp);
-     }
-     close(fd);
-     unlink(temp);
-
-     return 0;
 }

@@ -9,6 +9,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <fcntl.h>
 
 #ifdef HAVE_MYSQL_H
   #undef HAVE_MYSQL_MYSQL_H
@@ -30,20 +34,25 @@
 #include "sql_message.h"
 
 static int _mono_sql_mes_add_num_to_list(mlist_t entry, mlist_t ** list);
+static void _mono_sql_mes_save(const char *tmpfile, const char *filename);
+static char * _mono_sql_mes_make_file(unsigned int forum, unsigned int num);
 
 int
-mono_sql_mes_add(message_t *message, unsigned int forum)
+mono_sql_mes_add(message_t *message, unsigned int forum, const char *tmpfile)
 {
     MYSQL_RES *res;
     int ret = 0;
-    char *alias = NULL, *subject = NULL, *content = NULL;
+    char *alias = NULL, *subject = NULL, message_file[100];
 
     if( (message->num = mono_sql_f_get_new_message_id(forum)) == 0)
         return -1;
 
+    strcpy(message_file, _mono_sql_mes_make_file(forum, message->num));
+    strcpy(message->content, message_file);
+    (void) _mono_sql_mes_save(tmpfile, message_file);
+
     (void) escape_string(message->alias, &alias);
     (void) escape_string(message->subject, &subject);
-    (void) escape_string(message->content, &content);
 
     /*
      * We add the date here, so it really is the date the message was
@@ -54,16 +63,45 @@ mono_sql_mes_add(message_t *message, unsigned int forum)
 
     ret = mono_sql_query(&res, "INSERT INTO " M_TABLE " (message_id,topic_id,forum_id,author,alias,subject,date,content,type,priv,deleted) VALUES (%u,%u,%u,%u,'%s','%s',FROM_UNIXTIME(%u),'%s','%s','%s','%c')",
         message->num, message->topic, message->forum, message->author,
-        alias, subject, message->date, content, message->type,
+        alias, subject, message->date, message->content, message->type,
         message->priv, message->deleted );
 
     (void) mysql_free_result(res);
     xfree(alias);
     xfree(subject);
-    xfree(content);
 
     return ret;
 
+}
+
+static char *
+_mono_sql_mes_make_file(unsigned int forum, unsigned int number)
+{
+    static char filename[100];
+
+    (void) snprintf(filename, 100, FILEDIR "/forum.%u/message.%u", forum, number);
+    return filename;
+}
+
+static void
+_mono_sql_mes_save(const char *tmpfile, const char *filename)
+{
+    int fd = 0;
+    struct stat buf;
+    char *buffer = NULL;
+    
+    old = open(tmpfile, O_RDONLY);
+    buffer = (char *) xmalloc(buf.st_size);
+    (void) read(old, buffer, buf.st_size);
+    (void) close(old);
+
+    new = open(filename, O_RDWR | O_CREAT);
+    (void) write(new, &buffer, strlen(buffer));
+    (void) close(new);
+    xfree(buffer);
+
+    (void) unlink(tmpfile);
+    return;
 }
 
 int
@@ -122,8 +160,6 @@ mono_sql_mes_retrieve(unsigned int id, unsigned int forum, message_t *data)
      */
 
     memset(&message, 0, sizeof(message_t));
-    message.content = (char *) xmalloc(strlen(row[7]));
-    memset(message.content, 0, sizeof(message.content));
 
     /*
      * Admin info
@@ -142,7 +178,7 @@ mono_sql_mes_retrieve(unsigned int id, unsigned int forum, message_t *data)
     sscanf( row[6], "%lu", &message.date);
 
     /*
-     * Message content
+     * Content
      */
     sprintf(message.content, row[7]);
 

@@ -6,7 +6,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#ifdef HAVE_SYS_MMAN_H
+  #include <sys/mman.h>
+#else
+  #include <asm/mman.h>
+#endif
+
 #include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 #include <unistd.h>
 #include <time.h>
 
@@ -375,6 +384,35 @@ static int
 format_content(message_t *message, char **string )
 {
 
+    char *content = NULL;
+    int fd = -1;
+    struct stat buf;
+
+     /*
+      * Open temp file.
+      */
+     if( (fd = open(message->content, O_RDONLY)) == -1) {
+         log_it("sqlpost", "Can't open() message file %s!", temp);
+         return -1;
+     }
+
+     /*
+      * Determine file size.
+      */
+     fstat(fd, &buf);
+
+     /*
+      * mmap() message file.
+      */ 
+#ifdef HAVE_MAP_FAILED
+     if( (content = mmap(content, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED ) { 
+#else
+     if( (content = mmap(content, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == ((__ptr_t) -1) ) { 
+#endif
+         log_it("sqlpost", "Can't mmap() message file %s!", message->content);
+         return -1;
+     }
+
     /*
      * Empty lines around content?
      */
@@ -392,13 +430,22 @@ format_content(message_t *message, char **string )
     /*
      * Append actual message content.
      */
-    *string = (char *)xrealloc( *string, strlen(*string)+strlen(message->content) );
-    strcat( *string, message->content );
+    *string = (char *)xrealloc( *string, strlen(*string)+strlen(content) );
+    strcat( *string, content );
 
     if( usersupp->config_flags & CO_NEATMESSAGES ) {
         *string = (char *)xrealloc( *string, strlen(*string)+strlen("\n") );
         strcat( *string, "\n" );
     }
+
+    /*
+     * And close, destroy, kill etc.
+     */
+    if( (munmap(content, buf.st_size)) == -1) {
+        log_it("sqlpost", "Can't munmap() message file %s!", message->content);
+    }
+    close(fd);
+
     return 0;
 
 }
