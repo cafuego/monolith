@@ -385,7 +385,7 @@ short_prompt(void)
 		break;
 
 	    case 'w':
-		cprintf("\1f\1gWhich %s are online?\1a\n", config.user_pl);
+		cprintf(_("\1f\1gWhich %s are online?\1a\n"), config.user_pl);
 		show_online(1);
 		break;
 
