@@ -1,7 +1,8 @@
 # $Id$
 # list of currently online users.
 
-DROP TABLE online;
+# DO not drop, contains data.
+# DROP TABLE online;
 
 CREATE TABLE online (
 
@@ -10,6 +11,6 @@ CREATE TABLE online (
    interface	ENUM( 'telnet', 'client', 'web' ) DEFAULT 'telnet',
    stamp        TIMESTAMP,
 
-   PRIMARY KEY( user_id ),
+   PRIMARY KEY( user_id )
 
 )
