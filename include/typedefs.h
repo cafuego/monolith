@@ -110,7 +110,9 @@ typedef struct sr {
     char forum[L_QUADNAME + 1];
     char topic[L_TOPICNAME + 1];
     char author[L_USERNAME + 1];
+    char alias[L_USERNAME + 1];
     char subject[L_SUBJECT + 1];
+    char flag[L_FLAGNAME + 1];
     float score;
 } sr_t;
 

@@ -1,8 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT(cgi/index.c)
 
-AC_CANONICAL_SYSTEM
-
 AM_INIT_AUTOMAKE(monolith, 1.0)
 AM_CONFIG_HEADER(include/config.h)
 AC_PREFIX_DEFAULT(/usr/bbs)
@@ -13,7 +11,7 @@ AC_ARG_WITH(rating, [  --with-rating           use message rating system  [defau
                           (allows users to rate messages)],,with_rating=yes)
 AC_ARG_WITH(hero, [  --with-hero             include superhero toy  [default=yes]
                           (requires silly sysops)],,with_hero=yes)
-AC_ARG_WITH(overview, [  --with-overview         give overview after configuring  [default=yes]],,with_overview=yes)
+AC_ARG_WITH(overview, [  --with-overview         give overview after configuring  [default=no]],,with_overview=no)
 
 if test "x$with_mysql" != "xyes"; then
   with_mysql=no

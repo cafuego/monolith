@@ -67,7 +67,7 @@ search()
     }
     cprintf("\1f\1gSearching...\1a");
     fflush(stdout);
-    p = search_msgbase(string, curr_rm, 0, usersupp );
+    p = search_msgbase(string, curr_rm, 0, usersupp);
     cprintf("\n");
     if (strlen(p) < 110)
 	cprintf("\1f\1rNothing found...\n");
@@ -126,8 +126,8 @@ copy_message_wrapper(const unsigned int current_post, const int is_not_my_post, 
     scratch = read_quad(curr_rm);
 
     if (!copy && !(!is_not_my_post
-		  || is_ql(who_am_i(NULL), scratch)
-		  || usersupp->priv >= PRIV_SYSOP || curr_rm == MAIL_FORUM))
+		   || is_ql(who_am_i(NULL), scratch)
+		   || usersupp->priv >= PRIV_SYSOP || curr_rm == MAIL_FORUM))
 	return -1;
 
     cprintf("\1f\1g%s %s.\n", (copy) ? "Copy" : "Move", config.message);
@@ -140,43 +140,39 @@ copy_message_wrapper(const unsigned int current_post, const int is_not_my_post, 
 	    cprintf("\1f\1rNo such %s.\1a\n", config.forum);
 	return -1;
     }
-
     scratch = read_quad(to_quad);
 
     if (usersupp->priv >= PRIV_SYSOP) {
 	if (to_quad == YELL_FORUM) {
 	    cprintf("Can't copy/move to YELLS, it'll mung stuff..\n");
 	    return -1;
-	} else if (!i_may_write_forum(to_quad)) { /* no fc's in emps */
-	 cprintf("You're not allowed to %s the %s there.\n",
-		(copy) ? "copy" : "move", config.message);
+	} else if (!i_may_write_forum(to_quad)) {	/* no fc's in emps */
+	    cprintf("You're not allowed to %s the %s there.\n",
+		    (copy) ? "copy" : "move", config.message);
 	    return -1;
 	}
-
-    } else if (!i_may_write_forum(to_quad) 
-	|| to_quad == YELL_FORUM || to_quad == MAIL_FORUM) {
+    } else if (!i_may_write_forum(to_quad)
+	       || to_quad == YELL_FORUM || to_quad == MAIL_FORUM) {
 	cprintf("You're not allowed to %s the %s there.\n",
 		(copy) ? "copy" : "move", config.message);
 	return -1;
     }
-
     if (curr_rm != MAIL_FORUM) {
-        char filename[L_FILENAME + 1];
-        message_header_t message;
+	char filename[L_FILENAME + 1];
+	message_header_t message;
 
 	message_header_filename(filename, curr_rm, current_post);
 	read_message_header(filename, &message);
 
 	if (message.banner_type & ANON_BANNER &&
-		usersupp->priv < PRIV_SYSOP) {
+	    usersupp->priv < PRIV_SYSOP) {
 	    cprintf("\1gYou can't copy anonymous posts.\n");
 	    return -1;
 	}
     }
-
     cprintf("\1f\1g%s this %s to `\1y%s\1g'? \1w(\1gy\1w/\1gn\1w)\1c ",
 	    (copy) ? "Copy" : "Move", config.message, scratch.name);
-    if (yesno() == NO) 
+    if (yesno() == NO)
 	return 0;
 
     for (count = 0;; count++) {
@@ -193,17 +189,16 @@ copy_message_wrapper(const unsigned int current_post, const int is_not_my_post, 
 		cprintf("\nNo such user..");
 		continue;
 	    }
-	    fail = message_copy(curr_rm, to_quad, current_post, 
-		to_name, (copy) ? MOD_COPY : MOD_MOVE);
+	    fail = message_copy(curr_rm, to_quad, current_post,
+				to_name, (copy) ? MOD_COPY : MOD_MOVE);
 
-	} else 
-    	    if (copy)
-	        fail = message_copy(curr_rm, to_quad, current_post, "", MOD_COPY);
-	    else
-	        fail = message_move(curr_rm, to_quad, current_post, "");
+	} else if (copy)
+	    fail = message_copy(curr_rm, to_quad, current_post, "", MOD_COPY);
+	else
+	    fail = message_move(curr_rm, to_quad, current_post, "");
 	if (fail == 0)
-	    cprintf("\n\1f\1gThe %s has been %s.\1a\n\n", 
-		config.message, (copy) ? "copied" : "moved");
+	    cprintf("\n\1f\1gThe %s has been %s.\1a\n\n",
+		    config.message, (copy) ? "copied" : "moved");
 	else
 	    cprintf("\1f\1rOops, couldn't %s the %s.\1a\n",
 		    config.message, (copy) ? "copy" : "move");
@@ -226,9 +221,9 @@ delete_message_wrapper(const unsigned int current_post, const int is_not_my_post
 
 	cprintf("\1f\1rDelete.\1a\n");
 	cprintf("\1f\1gAre you sure you want to delete this %s? \1w(\1gy\1w/\1gn\1w)\1a", config.message);
-	if (yesno() == FALSE) 
+	if (yesno() == FALSE)
 	    return 0;
-	
+
 	if (curr_rm == MAIL_FORUM)
 	    tempint = message_delete(curr_rm, current_post);
 	else if (is_not_my_post) {
@@ -266,7 +261,7 @@ lookup_anon_author(const unsigned int current_post)
 	    scratch = read_quad(curr_rm);
 	    cprintf("\n\1f\1w[ \1gPost was by\1w: \1y%s\1w ]\1a\n", message.author);
 	    log_sysop_action("looked at anonymous post #%d by %s in %s>",
-		 current_post, message.author, scratch.name);
+			     current_post, message.author, scratch.name);
 	} else
 	    cprintf("\1f\1wNot an anonymous post.\1a\n");
     } else
@@ -282,8 +277,8 @@ x_message_to_mail(const char *x, char *to_user)
     if ((check_user(to_user)) == FALSE)
 	return;
 
-    cprintf("\1f\1gSave %s %s to \1y%s\1g's Mail? \1w(\1gy\1w/\1gn\1w) \1c", 
-		config.express, config.x_message, to_user);
+    cprintf("\1f\1gSave %s %s to \1y%s\1g's Mail? \1w(\1gy\1w/\1gn\1w) \1c",
+	    config.express, config.x_message, to_user);
 
     if (yesno() == NO)
 	return;
@@ -291,17 +286,18 @@ x_message_to_mail(const char *x, char *to_user)
     fp = xfopen(temp, "w", TRUE);
 
     if (fp != NULL) {
-        fprintf(fp, "%s%s%s",
-	    "\n\1f\1b*** \1gYou logged off while I was sending you this", 
-	    " eXpress message \1b***\1a\1c\n\n",
-            x );
+	fprintf(fp, "%s%s%s",
+		"\n\1f\1b*** \1gYou logged off while I was sending you this",
+		" eXpress message \1b***\1a\1c\n\n",
+		x);
 
 	fclose(fp);
     }
     enter_message(MAIL_FORUM, EDIT_NOEDIT, X_2_MAIL_BANNER, to_user);
 }
 
-void message_clip(const char *header_string)
+void
+message_clip(const char *header_string)
 {
     FILE *fp;
 
@@ -313,12 +309,13 @@ void message_clip(const char *header_string)
     }
 }
 
-void message_2_temp(const char *header_string, char mode)
+void
+message_2_temp(const char *header_string, char mode)
 {
-    FILE* fp;
+    FILE *fp;
 
     if (mode == 'a')
-        fp = xfopen(temp, "a", TRUE);
+	fp = xfopen(temp, "a", TRUE);
     else
 	fp = xfopen(temp, "w", TRUE);
 
@@ -348,7 +345,7 @@ purge_mail_quad(void)
 		unlink(filename);
 		mail_total--;
 	    } else {
-		if (i > usersupp->mailnum)  /* uhh-ohh.. */
+		if (i > usersupp->mailnum)	/* uhh-ohh.. */
 		    break;
 		continue;
 	    }
@@ -367,9 +364,9 @@ count_mail_messages(void)
     char mail_dir[L_FILENAME + 1], name[L_USERNAME + 1];
 
     strcpy(name, usersupp->username);
-  
+
     if (check_user(name) == FALSE || EQ(name, "Guest"))
-	return -1; 
+	return -1;
     sprintf(mail_dir, "%s/mail/.", getuserdir(who_am_i(NULL)));
 
     count = count_dir_files(mail_dir);
@@ -381,14 +378,14 @@ count_mail_messages(void)
 #ifdef USE_RATING
 
 void
-rate_message(message_t *message)
+rate_message(message_t * message, unsigned int number, unsigned int forum)
 {
     char buf_str[3];
     int score = 0;
 
-    if( (mono_sql_rat_check_rating(usersupp->usernum, message->m_id, message->f_id )) == -1 ) {
-        cprintf("\1f\1rYou have already rated this %s.\1a\n", config.message);
-        return;
+    if ((mono_sql_rat_check_rating(usersupp->usernum, number, forum)) == -1) {
+	cprintf("\1f\1rYou have already rated this %s.\1a\n", config.message);
+	return;
     }
     cprintf("\n\1f\1gRatings vary from \1y-9\1g for a horrible %s to \1y9\1g for an excellent %s\n", config.message, config.message);
     cprintf("\1f\1gThe overall score is based on the average of all ratings for this %s.\n\n", config.message);
@@ -397,22 +394,21 @@ rate_message(message_t *message)
     strcpy(buf_str, "");
     getline(&buf_str, 3, TRUE);
 
-    if( (sscanf(buf_str, "%d", &score)) != 1) {
-        cprintf("\1f\1rSorry, but `\1y%s\1r' is not a valid entry.\1a\n", buf_str);
-        return;
-    } else if( (score < -9) || (score > 9) ) {
-        cprintf("\1f\1rSorry, but `\1y%d\1r' is not a valid entry.\1a\n", score);
-        return;
-   }
-
+    if ((sscanf(buf_str, "%d", &score)) != 1) {
+	cprintf("\1f\1rSorry, but `\1y%s\1r' is not a valid entry.\1a\n", buf_str);
+	return;
+    } else if ((score < -9) || (score > 9)) {
+	cprintf("\1f\1rSorry, but `\1y%d\1r' is not a valid entry.\1a\n", score);
+	return;
+    }
     cprintf("\1f\1gSave a rating of \1y%d\1g for this %s? \1w(\1gy\1w/\1gn\1w) \1c", score, config.message);
-    if( yesno() == NO )
-        return;
+    if (yesno() == NO)
+	return;
 
-    if( (mono_sql_rat_add_rating(usersupp->usernum, message->m_id, message->f_id, score )) == -1 )
-        cprintf("\1f\1rAn internal SQL error occurred.\1a\n");
+    if ((mono_sql_rat_add_rating(usersupp->usernum, number, forum, score)) == -1)
+	cprintf("\1f\1rAn internal SQL error occurred.\1a\n");
     else
-        cprintf("\1f\1gScore saved.\1a\n");
+	cprintf("\1f\1gScore saved.\1a\n");
 
     return;
 }
@@ -431,43 +427,42 @@ search_via_sql()
     long working = 0;
 
     IFNSYSOP {
-        cprintf("\1f\1rBug off!\1a\n");
-        return;
+	cprintf("\1f\1rBug off!\1a\n");
+	return;
     }
 
     tz.tz_minuteswest = 0;
     tz.tz_dsttime = 0;
 
-    cprintf("\1f\1gPlease enter a %s to search or hit return for the current %s.\n", config.forum, config.forum );
-    cprintf("Or enter \1y-1\1g to search all %s\1w: \1c", config.forum_pl );
- 
+    cprintf("\1f\1gPlease enter a %s to search or hit return for the current %s.\n", config.forum, config.forum);
+    cprintf("Or enter \1y-1\1g to search all %s\1w: \1c", config.forum_pl);
+
     strcpy(needle, "");
     getline(needle, 4, FALSE);
     needle[strlen(needle)] = '\0';
     sscanf(needle, "%d", &forum);
 
-    if(forum == 0)
-        forum = curr_rm;
+    if (forum == 0)
+	forum = curr_rm;
 
     cprintf("\1f\1gNow, enter a string \1w(\1gmax 20 characters\1w)\1g to search for in the\n");
 
-    if(forum >= 2 && forum < 150) {
-        quad = read_quad(forum);
-        cprintf("content and subject lines of %s.\n", quad.name );
+    if (forum >= 2 && forum < 150) {
+	quad = read_quad(forum);
+	cprintf("content and subject lines of %s.\n", quad.name);
     } else {
-        forum = -1;
-        cprintf("content and subject lines and all %s.\n", config.forum_pl);
+	forum = -1;
+	cprintf("content and subject lines and all %s.\n", config.forum_pl);
     }
     cprintf("\nFind\1w: \1c");
     strcpy(needle, "");
     getline(needle, 20, FALSE);
     needle[strlen(needle)] = '\0';
 
-    if( !(strlen(needle))) {
-        cprintf("\1f\1rError:\1w: \1rCan't search for nothing...\1a\n");
-        return;
+    if (!(strlen(needle))) {
+	cprintf("\1f\1rError:\1w: \1rCan't search for nothing...\1a\n");
+	return;
     }
-
     cprintf("\1f\1wSearching...");
     fflush(stdout);
 
@@ -475,30 +470,46 @@ search_via_sql()
     count = mono_sql_mes_search_forum(forum, needle, &list);
     (void) gettimeofday(&tv_end, &tz);
 
-    working = ((1000000*tv_end.tv_sec) + tv_end.tv_usec) - ((1000000*tv_start.tv_sec) + tv_start.tv_usec);
+    working = ((1000000 * tv_end.tv_sec) + tv_end.tv_usec) - ((1000000 * tv_start.tv_sec) + tv_start.tv_usec);
 
-    cprintf(" done, %d record%s found.\n", count, (count!=1) ? "s" : "");
+    if (count == -1) {
+	cprintf("\1f\1rAn error occurred after ");
+	printf("%.4f", (float) working / 1000000);
+	cprintf(" seconds.\n");
+    }
+    cprintf(" done, %d record%s found.\n", count, (count != 1) ? "s" : "");
     fflush(stdout);
 
     cprintf("\1f\1rListing matches\1w:\n\n");
     cprintf("  \1g   Id     \1y%-20s \1g%-18s \1y%-20s \1rScore\n\1w--------------------------------------------------------------------------------\n",
-       config.forum, config.user, "Subject" );
-    if(count > 0) {
-        while(list != NULL) {
-            list->result->forum[20] = '\0';
-            list->result->subject[20] = '\0';
-            cprintf("  \1f\1g%5d \1w%3d.\1y%-20s \1g%-18s \1y%-20s \1r",
-                list->result->m_id, list->result->f_id, list->result->forum,
-                list->result->author, ((list->result->subject == NULL) || (EQ(list->result->subject,"(null)"))) ? "[no subject]" : list->result->subject );
-            printf("%.3f\n\r", list->result->score );
-            list = list->next;
-        }  
-        cprintf("\1f\1w--------------------------------------------------------------------------------\n" );
-        cprintf("\1f\1g%d result%s, listed by %s and %s number; time working\1w: \1g",
-            count, (count != 1) ? "s" : "" , config.message, config.forum );
-        printf("%.5f seconds\n\r", (float)working/1000000);
+	    config.forum, config.user, "Subject");
+    if (count > 0) {
+	while (list != NULL) {
+	    list->result->forum[20] = '\0';
+	    list->result->subject[20] = '\0';
+
+	    if (EQ(list->result->flag, "normal"))
+		cprintf("  \1f\1g%5d \1w%3d.\1y%-20s \1g%-18s \1y%-20s \1r",
+		    list->result->m_id, list->result->f_id, list->result->forum,
+		    list->result->author, ((list->result->subject == NULL) || (EQ(list->result->subject, "(null)"))) ? "[no subject]" : list->result->subject);
+	    else if (EQ(list->result->flag, "anon") && strlen(list->result->alias))
+		cprintf("  \1f\1g%5d \1w%3d.\1y%-20s \1bAnon \g'%-12s' \1y%-20s \1r",
+		    list->result->m_id, list->result->f_id, list->result->forum,
+		    list->result->alias, ((list->result->subject == NULL) || (EQ(list->result->subject, "(null)"))) ? "[no subject]" : list->result->subject);
+	    else
+		cprintf("  \1f\1g%5d \1w%3d.\1y%-20s \1bAnonymous %-9 \1y%-20s \1r",
+		    list->result->m_id, list->result->f_id, list->result->forum,
+		    config.user, ((list->result->subject == NULL) || (EQ(list->result->subject, "(null)"))) ? "[no subject]" : list->result->subject);
+
+	    printf("%.3f\n\r", list->result->score);
+	    list = list->next;
+	}
+	cprintf("\1f\1w--------------------------------------------------------------------------------\n");
+	cprintf("\1f\1g%d result%s, listed by %s and %s number; time working\1w: \1g",
+	      count, (count != 1) ? "s" : "", config.message, config.forum);
+	printf("%.5f seconds\n\r", (float) working / 1000000);
     } else {
-        cprintf("\1f\1rNo results.\1a\n");
+	cprintf("\1f\1rNo results.\1a\n");
     }
     mono_sql_ll_free_sr_list(list);
     return;

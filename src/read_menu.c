@@ -331,8 +331,8 @@ short_prompt(void)
 		break;
 
 	    case 'S':
-		cprintf("\1f\1gSearch.  (temporarily disabled)\n");
-//		search();
+                cprintf("\1f\1wSearch %s\n", config.message_pl);
+                search_via_sql();
 		break;
 
 	    case 's':
@@ -595,7 +595,10 @@ long_prompt(long number, int direction)
 
             not_my_post = strcmp(usersupp->username, message_reply_name(NULL));
 
-	    read_command = get_single_quiet("1234567890 aAbBcCdDeEfFgGhHiIjJlkKLpPrRqQmMnNsStTvVWwxXyYzZ?!#\006\005\014\018\022\030<>%\":~,.*");
+            IFSYSOP
+	        read_command = get_single_quiet("1234567890 aAbBcCdDeEfFgGhHiIjJlkKLpPrRqQmMnNsStTvVWwxXyYzZ?!#\006\005\014\018\022\030<>%\":~,.*");
+            else
+	        read_command = get_single_quiet("1234567890 aAbBcCdDeEfFgGhHiIjJlkKLpPrqQmMnNstTvVWwxXyYzZ?!#\006\005\014\018\022\030<>%\":~,.*");
 
 	    read_command = validate_read_command(read_command);		/* priv check */
 
@@ -813,11 +816,15 @@ long_prompt(long number, int direction)
 		    break;
 
 		case 'r':
-		case 'R':
 		    direction = 1;
 		    cprintf("\1f\1gReply.\1a\n");
 		    enter_message(curr_rm, REPLY_MODE, NO_BANNER, NULL);
 		    break;
+
+		case 'R':
+                    IFSYSOP
+                        rate_message(NULL, number, curr_rm);
+                    break;
 
 		case 'S':
 		    cprintf("\1f\1gSearch.  (temporarily disabled)\1a\n");

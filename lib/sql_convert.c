@@ -115,8 +115,10 @@ mono_sql_convert_row_to_sr(MYSQL_ROW row)
     snprintf(result->forum, L_QUADNAME, "%s", row[3]);
     snprintf(result->topic, L_TOPICNAME, "%s", row[4]);
     snprintf(result->author, L_USERNAME, "%s", row[5]);
-    snprintf(result->subject, L_SUBJECT, "%s", row[6]);
-    sscanf(row[7], "%u", &result->score);
+    snprintf(result->alias, L_USERNAME, "%s", row[6]);
+    snprintf(result->subject, L_SUBJECT, "%s", row[7]);
+    snprintf(result->flag, L_FLAGNAME, "%s", row[8]);
+    sscanf(row[9], "%u", &result->score);
 
     return result;
 }
