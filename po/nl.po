@@ -841,6 +841,8 @@ msgid ""
 "\n"
 "\001a\001f\001gWelcome to %s, \001g%s! \001gThis is your \001w#%d \001glogin.\n"
 msgstr ""
+"\n"
+"\001a\001f\001gWelkom op %s, \001g%s! \001gDit is je \001w#%d \001glogin.\n"
 
 #: src/main.c:787
 msgid "\001f\001gLast login: %s \001g\001ffrom \001r%-16.16s\n"
@@ -974,7 +976,7 @@ msgstr ""
 
 #: src/read_menu.c:418
 msgid "\001f\001gZap %s.\001a\n"
-msgstr ""
+msgstr "\001f\001gVergeet %s.\001a\n"
 
 #: src/read_menu.c:437
 msgid "\001f\001gJump a number of %s back from the Last Read %s.\001a\n"
@@ -1020,7 +1022,7 @@ msgstr ""
 
 #: src/read_menu.c:883
 msgid "\001f\001gWhich aliens are online?\001a\n"
-msgstr ""
+msgstr "\001f\001gWelke gebruikers zijn online?\001a\n"
 
 #: src/read_menu.c:928
 msgid "\001f\001gJump a number of %s back from the current %s.\001a\n"
@@ -1222,7 +1224,7 @@ msgstr ""
 
 #: src/usertools.c:1097
 msgid "\001f\001gAsk a Question.\001a\n"
-msgstr ""
+msgstr "\001f\001gStel een vraag.\001a\n"
 
 #: src/usertools.c:1103
 msgid "\001f\001gHelp!\001a\n"
@@ -1230,7 +1232,7 @@ msgstr ""
 
 #: src/usertools.c:1169
 msgid "\001f\001wYou are now marked as \001gAWAY\001w.\n"
-msgstr ""
+msgstr "\001f\001wJe bent nu gemarkeerd als \001gAFWEZIG\001w.\n"
 
 #: src/usertools.c:1171
 msgid "\001gDefault away message: \001y%s\001a\n"
@@ -1242,7 +1244,7 @@ msgstr ""
 
 #: src/usertools.c:1181
 msgid "\001f\001wYou are \001rno longer\001w marked as \001gAWAY\001w.\001a"
-msgstr ""
+msgstr "\001f\001wJe staat \001niet meer\001w gemarkeerd als \001gAFWEZIG001w.\001a"
 
 #: src/usertools.c:1218
 msgid "\001f\001gKey Menu.\n"
@@ -1254,7 +1256,7 @@ msgstr ""
 
 #: src/usertools.c:1284
 msgid "\001f\001gAlias unchanged.\001a\n"
-msgstr ""
+msgstr "\001f\001gAlias onveranderd.\001a\n"
 
 #: src/usertools.c:1288
 msgid "\001f\001gEnter the new alias\001w: \001c"
@@ -1399,6 +1401,3 @@ msgid ""
 "\001f\001g%-19s  \001pFlags  \001g%-17s \001pTime \001g%-28s\n"
 "\001w"
 msgstr ""
-# msgid "Are you sure you want to edit your profile? (y/n) "
-# msgstr "Weet je zeker dat je je profile wil editen? (y/n) "
-# 
