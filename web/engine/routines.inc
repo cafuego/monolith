@@ -172,13 +172,14 @@ format_js_username($user, $alias, $flag)
 function
 format_user($user)
 {
-  IF($user == ""):
+  if($user == "") {
     return "<font color=\"#ff0000\">Deleted User</font>";
-    ENDIF;
-  IF($user == "NULL"):
+  }
+  if($user == "NULL") {
     return "<font color=\"#ff0000\">Deleted User</font>";
-    ENDIF;
-    return "<font color=\"#ffff00\">$user</font>";
+  }
+  $url_user = rawurlencode($user);
+  return "<font color=\"#ffff00\"><a href=\"/bbs/index.phtml/p/$url_user\">$user</a></font>";
 }
 
 function
