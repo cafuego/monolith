@@ -839,172 +839,173 @@ msgstr "\001f\001gJe hebt \001r%d \001gnieuwe poststukken in \001pMail>\n"
 msgid "\001f\001gYou have \001rno\001g new Mail %s.\001a\n"
 msgstr "\001f\001gJe hebt \001rgeen\001g nieuwe post.\001a\n"
 
-#: src/messages.c:493
+#: src/messages.c:495
 msgid "\001f\001rERROR: Can't search for nothing...\001a\n"
 msgstr ""
 
-#: src/messages.c:497
+#: src/messages.c:499
 msgid "\001f\001rERROR: '\001y%s\001r' is not a valid search pattern...\001a\n"
 msgstr ""
 
-#: src/messages.c:501
+#: src/messages.c:503
 msgid "\001f\001r\001eSearching..."
 msgstr ""
 
-#: src/read_menu.c:129
+#: src/read_menu.c:130
 msgid "\001f\001gRead messages backwards.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:150
+#: src/read_menu.c:151
 msgid "\001f\001pSubscribe to %s: \001a"
 msgstr ""
 
-#: src/read_menu.c:155
+#: src/read_menu.c:156
 msgid "\001f\001gEnter message.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:172
+#: src/read_menu.c:173
 msgid "\001f\001gRead messages forward.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:177
+#: src/read_menu.c:178
 msgid "\001f\001gYour friends online.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:207
+#: src/read_menu.c:208
 msgid "\001f\001gHelpfiles.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:212
+#: src/read_menu.c:213
 msgid "\001f\001g%s Info.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:228
+#: src/read_menu.c:229
 msgid "\001f\001gJump to %s name/number: \001a"
 msgstr ""
 
-#: src/read_menu.c:237
+#: src/read_menu.c:238
 msgid "\001f\001gAll %s\001w:\n"
 msgstr "\001f\001gAlle %s\001w:\n"
 
-#: src/read_menu.c:242
+#: src/read_menu.c:243
 msgid "\001f\001gKnown %s.\n"
 msgstr "\001f\001gBekende %s.\n"
 
-#: src/read_menu.c:258
+#: src/read_menu.c:259
 msgid "\001f\001gLogout.\001a"
 msgstr "\001f\001gUitloggen.\001a"
 
-#: src/read_menu.c:295
+#: src/read_menu.c:296
 msgid "\001f\001gProfile an %s.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:301
+#: src/read_menu.c:302
 msgid "\001f\001rAsk a Question.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:311
+#: src/read_menu.c:312
 msgid "\001f\001gRead %s reverse.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:316
+#: src/read_menu.c:317
 msgid "\001f\001gInterBBS Wholist.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:323
+#: src/read_menu.c:324
 msgid "\001f\001gSearch %s\n"
 msgstr ""
 
-#: src/read_menu.c:334
+#: src/read_menu.c:335
 msgid "\001f\001gDate: \001w%s\001a"
 msgstr ""
 
-#: src/read_menu.c:354
+#. Holodeck Wholist
+#: src/read_menu.c:355
 msgid "\001f\001g%s Wholist.\n"
 msgstr "\001f\001g%s Wie-lijst.\n"
 
-#: src/read_menu.c:359
+#: src/read_menu.c:360
 msgid "\001f\001gWhich %s are online?\001a\n"
 msgstr "\001f\001gWelke %s zijn aanwezig?\001a\n"
 
-#: src/read_menu.c:364 src/read_menu.c:874
+#: src/read_menu.c:365 src/read_menu.c:875
 msgid "\001f\001gShort Wholist.\001a\n"
 msgstr "\001f\001gKorte Wie-lijst.\001a\n"
 
-#: src/read_menu.c:370 src/read_menu.c:887
+#. <ctrl-w>
+#: src/read_menu.c:371 src/read_menu.c:888
 msgid "\001f\001gSend \001pWeb \001g%s %s.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:381 src/read_menu.c:893
+#: src/read_menu.c:382 src/read_menu.c:894
 msgid "\001f\001gSend %s %s.\001a\n"
 msgstr "\001f\001gStuur %s %s.\001a\n"
 
-#. <ctrl-x>
-#: src/read_menu.c:404
+#: src/read_menu.c:405
 msgid "\001f\001gRead %s-Log.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:409
+#: src/read_menu.c:410
 msgid "\001f\001gYell-menu.\001a \n"
 msgstr ""
 
-#: src/read_menu.c:415
+#: src/read_menu.c:416
 msgid "\001f\001gZap %s.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:434
+#: src/read_menu.c:435
 msgid "\001f\001gJump a number of %s back from the Last Read %s.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:435 src/read_menu.c:447 src/read_menu.c:926
+#: src/read_menu.c:436 src/read_menu.c:448 src/read_menu.c:927
 msgid "\001f\001gHow many %s back shall I jump?\001c "
 msgstr ""
 
-#: src/read_menu.c:440 src/read_menu.c:452 src/read_menu.c:931 src/read_menu.c:946
+#: src/read_menu.c:441 src/read_menu.c:453 src/read_menu.c:932 src/read_menu.c:947
 msgid "\001f\001rThat is not a valid entry.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:446
+#: src/read_menu.c:447
 msgid "\001f\001rJump a number of %s back from the Last %s in this %s.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:482
+#: src/read_menu.c:483
 msgid "\001f\001gRandom Quote!\n"
 msgstr ""
 
-#: src/read_menu.c:488
+#: src/read_menu.c:489
 msgid "\001a\001f\001gDonator List.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:528 src/read_menu.c:989
+#: src/read_menu.c:529 src/read_menu.c:990
 msgid ""
 "\001f\001gChange your Friends-list.\001a\n"
 "\n"
 msgstr ""
 
-#: src/read_menu.c:533 src/read_menu.c:994
+#: src/read_menu.c:534 src/read_menu.c:995
 msgid ""
 "\001f\001gChange your Enemylist.\001a\n"
 "\n"
 msgstr ""
 
-#: src/read_menu.c:542
+#: src/read_menu.c:543
 msgid "\001f\001gList all commands.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:880
+#: src/read_menu.c:881
 msgid "\001f\001gWhich aliens are online?\001a\n"
 msgstr ""
 
-#: src/read_menu.c:925
+#: src/read_menu.c:926
 msgid "\001f\001gJump a number of %s back from the current %s.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:940
+#: src/read_menu.c:941
 msgid "\001f\001gJump a number of %s forward from the current %s.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:941
+#: src/read_menu.c:942
 msgid "\001f\001gHow many %s forward shall I jump?\001c "
 msgstr ""
 
