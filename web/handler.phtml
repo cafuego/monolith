@@ -84,55 +84,57 @@
         // Update account details.
         //
         case "i":
-            $hiddenarg = "";
-            if(!$name) $hiddenarg .= "name";
+            $hiddeninfo = "";
+            if(!$name) $hiddeninfo .= "name";
             if( (!$address))
-                if(strlen($hiddenarg))
-                    $hiddenarg .= ",address";
+                if(strlen($hiddeninfo))
+                    $hiddeninfo .= ",address";
                 else
-                    $hiddenarg .= "address";
+                    $hiddeninfo .= "address";
             if( (!$city))
-                if(strlen($hiddenarg))
-                    $hiddenarg .= ",city";
+                if(strlen($hiddeninfo))
+                    $hiddeninfo .= ",city";
                 else
-                    $hiddenarg .= "city";
+                    $hiddeninfo .= "city";
             if( (!$state))
-                if(strlen($hiddenarg))
-                    $hiddenarg .= ",state";
+                if(strlen($hiddeninfo))
+                    $hiddeninfo .= ",state";
                 else
-                    $hiddenarg .= "state";
+                    $hiddeninfo .= "state";
             if( (!$zip))
-                if(strlen($hiddenarg))
-                    $hiddenarg .= ",zip";
+                if(strlen($hiddeninfo))
+                    $hiddeninfo .= ",zip";
                 else
-                    $hiddenarg .= "zip";
+                    $hiddeninfo .= "zip";
             if( (!$country))
-                if(strlen($hiddenarg))
-                    $hiddenarg .= ",country";
+                if(strlen($hiddeninfo))
+                    $hiddeninfo .= ",country";
                 else
-                    $hiddenarg .= "country";
+                    $hiddeninfo .= "country";
             if( (!$phone))
-                if(strlen($hiddenarg))
-                    $hiddenarg .= ",phone";
+                if(strlen($hiddeninfo))
+                    $hiddeninfo .= ",phone";
                 else
-                    $hiddenarg .= "phone";
+                    $hiddeninfo .= "phone";
             if( (!$email))
-                if(strlen($hiddenarg))
-                    $hiddenarg .= ",email";
+                if(strlen($hiddeninfo))
+                    $hiddeninfo .= ",email";
                 else
-                    $hiddenarg .= "email";
+                    $hiddeninfo .= "email";
             if( (!$url))
-                if(strlen($hiddenarg))
-                    $hiddenarg .= ",url";
+                if(strlen($hiddeninfo))
+                    $hiddeninfo .= ",url";
                 else
-                    $hiddenarg .= "url";
+                    $hiddeninfo .= "url";
 
-            echo "String sofar: $hiddenarg<br>\n";
-            if($website) echo "Website: $website<br>\n";
+            $website = rawurldecode($website);
+            $website = htmlspecialchars($website);
+            $website = strtr($website, "'", "\\'");
 
-            
-
-            // UPDATE user SET hiddeninfo='' WHERE username='$username'
+            $result = mysql_query("UPDATE user SET hiddeninfo='$hiddeninfo' WHERE username='$username'");
+            if($result) echo "<h2 align=\"center\">1: ". mysql_error() ."</h2>\n";
+            $result = mysql_query("UPDATE user SET url='$website' WHERE username='$username');
+            if($result) echo "<h2 align=\"center\">2: ". mysql_error() ."</h2>\n";
             break;
 
         // Save profile image.
