@@ -21,6 +21,7 @@
 
 #include "btmp.h"
 #include "log.h"
+#include "sql_topic.h"
 #include "msg_file.h"
 #include "userfile.h"
 #include "routines.h"
@@ -196,6 +197,7 @@ get_new_message_id(const unsigned int quadno)
     }
     (void) mono_lock_rooms(0);
 
+    mono_sql_t_updated_highest( quadno, 0, p->highest );
     return p->highest;
 }
 
