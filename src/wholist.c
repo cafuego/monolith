@@ -75,7 +75,7 @@ wholist(int level, const user_t * user)
     char string[20];
     time_t t;
     struct tm *tp;
-    btmp_t *r;
+    btmp_t *r = NULL;
 #ifdef USE_MYSQL
     int web_count = 0;
     wu_list_t *list = NULL;
@@ -351,6 +351,7 @@ wholist(int level, const user_t * user)
     }				/* for */
     (void) mono_lock_shm(0);
 
+#ifdef USE_MYSQL
     /*
      * Add any left over SQL users.
      */
@@ -389,6 +390,7 @@ wholist(int level, const user_t * user)
     }
     /* Free SQL userlist. */
     (void) mono_sql_ll_free_wulist(list);
+#endif
 
     if ((j % 3) != 0 && (level == 3 || level == 6))
 	strcat(p, "\n");
