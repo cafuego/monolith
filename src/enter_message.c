@@ -31,7 +31,7 @@ static int fill_buffer(char **content);
 #endif
 
 /*
- * 	1: normal message.
+ *	1: normal message.
  *	2: upload message.
  *	3: editor message.
  *	4: titled message.
@@ -61,7 +61,6 @@ enter_message(unsigned int forum, unsigned int flag)
     message->deleted = 'n';
 
     (void) get_priv(message, flag);
-    if(flag == 4) flag =1;
     (void) get_alias(quad, message);
 
     /*
@@ -147,14 +146,16 @@ get_alias(room_t *quad, message_t *message)
                 } while ( (check_user(message->alias) == TRUE) && (!(EQ(message->alias, usersupp->username))) );
             }
             if(strlen(message->alias))
-                sprintf( message->type, "alias");
+                strcpy( message->type, "alias");
             else {
-                sprintf( message->type, "anon");
+                strcpy( message->type, "anon");
             }
         }
-    }
     if( !(strlen(message->alias)))
         strcpy(message->alias, "");
+    } else {
+        strcpy(message->type, "normal");
+    }
 
     return 0;
 }
@@ -244,7 +245,7 @@ fill_buffer(char **content)
      /*
       * Reserve memory for the post content.
       */
-     *content = (char*)xcalloc(1, sizeof(post));
+     *content = (char*)xcalloc(1, strlen(post));
      if( *content == NULL ) {
          log_it("sqlpost", "Unable to malloc() message content.");
          return -1;
@@ -253,7 +254,7 @@ fill_buffer(char **content)
      /*
       * Copy post content into mem.
       */
-     if( (*content = memcpy(*content, post, sizeof(post))) == NULL) {
+     if( (*content = memcpy(*content, post, strlen(post))) == NULL) {
          log_it("sqlpost", "memcpy() of message content failed!");
          return -1;
      }
