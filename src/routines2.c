@@ -542,7 +542,7 @@ increment(int extraflag)
 		    break;
 
 		case '\030':	/* read X-Log                            */
-		    cprintf("\n\01f\01gRead X-Log.\01a\n");
+		    cprintf(_("\n\01f\01gRead X-Log.\01a\n"));
 		    old_express();
 		    break;
 

@@ -108,7 +108,7 @@ wholist(int level, const user_t * user)
 
     switch (level) {
 	case 1:
-	    (void) sprintf(line, "\1f\1g%-19s  \1pFlags  \1g%-17s \1pTime \1g%-28s\n\1w", string, config.location, config.doing);
+	    (void) sprintf(line, _("\1f\1g%-19s  \1pFlags  \1g%-17s \1pTime \1g%-28s\n\1w"), string, config.location, config.doing);
 	    strcat(p, line);
 	    strcat(p, "-------------------------------------------------------------------------------\1a\n");
 	    break;

@@ -153,7 +153,7 @@ message_reply_name(char *message_author)
     return NULL;
 }
 
-char *
+static char *
 format_header(message_header_t * header, unsigned int forum, char *header_string)
 {
     unsigned int length, length2;
@@ -247,7 +247,7 @@ display_message_header(message_header_t * header)
     return;
 }
 
-char *
+static char *
 format_date(message_header_t * header, char *header_string)
 {
 
@@ -293,7 +293,7 @@ format_date(message_header_t * header, char *header_string)
 }
 
 
-char *
+static char *
 format_info(message_header_t * header, char *header_string)
 {
 #define SQL_QL_LIST
@@ -384,7 +384,7 @@ format_info(message_header_t * header, char *header_string)
     return header_string;
 }
 
-char *
+static char *
 format_author(message_header_t * header, char *header_string)
 {
 

@@ -71,14 +71,6 @@ int not_my_post = TRUE;
 /* ---------------------------------------------------- */
 
 void
-new_message_system(void)
-{
-
-    short_prompt();
-
-}
-
-void
 short_prompt(void)
 {
     char tempstr[40];
@@ -299,13 +291,13 @@ short_prompt(void)
 
 	    case 'P':
 		nox = 1;
-		cprintf("\1f\1gProfile an %s.\1a\n", config.user);
+		cprintf(_("\1f\1gProfile an %s.\1a\n"), config.user);
 		profile_user();
 		break;
 
 	    case 'Q':
 		nox = 1;
-		cprintf("\1f\1rAsk a Question.\1a\n");
+		cprintf(_("\1f\1rAsk a Question.\1a\n"));
 		express(1);
 		break;
 
@@ -315,7 +307,7 @@ short_prompt(void)
 		break;
 
 	    case 'r':
-		cprintf("\1f\1gRead %s reverse.\1a\n", config.message_pl);
+		cprintf(_("\1f\1gRead %s reverse.\1a\n"), config.message_pl);
 		long_prompt(0, -1);
 		break;
 
@@ -327,18 +319,18 @@ short_prompt(void)
 
 	    case 'S':
 		nox = 1;
-		cprintf("\1f\1gSearch %s\n", config.message_pl);
+		cprintf(_("\1f\1gSearch %s\n"), config.message_pl);
 		search_via_sql(curr_rm);
 		break;
 
 	    case 's':
-		cprintf("\1f\1gSkipping this %s.\n\n\1a", config.forum);
+		cprintf(("\1f\1gSkipping this %s.\n\n\1a"), config.forum);
 		cmdflags &= ~C_ROOMLOCK;
 		skiproom();
 		break;
 
 	    case 'T':
-		cprintf("\1f\1gDate: \1w%s\1a", printdate(time(0), 0));
+		cprintf(_("\1f\1gDate: \1w%s\1a"), printdate(time(0), 0));
 		break;
 
 	    case 'U':

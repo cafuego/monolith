@@ -58,13 +58,6 @@
 #undef extern
 
 void
-main_menu()
-{
-    new_message_system();
-
-}
-
-void
 sysop_menu()
 {
 
@@ -503,12 +496,12 @@ roomaide_menu()
 	switch (cmd) {
 
 	    case 'D':
-		cprintf("\1f\1wEdit %s Description.\1a\n", config.forum);
+		cprintf(_("\1f\1wEdit %s Description.\1a\n"), config.forum);
 		change_forum_info();
 		break;
 
 	    case 'E':
-		cprintf("\1f\1wEdit %s.\1a\n", config.forum);
+		cprintf(_("\1f\1wEdit %s.\1a\n"), config.forum);
 		if (usersupp->flags & US_ADMINHELP)
 		    more(QUADRANT "/edit", 1);
 		editroom();
@@ -527,7 +520,7 @@ roomaide_menu()
             
 
 	    case 'k':
-		cprintf("\1f\1wKickout %s from %s.\1a\n", config.user, config.forum);
+		cprintf(_("\1f\1wKickout %s from %s.\1a\n"), config.user, config.forum);
 		if (usersupp->flags & US_ADMINHELP)
 		    more(QUADRANT "/kickout", 1);
 		do_kickout();
@@ -688,7 +681,7 @@ misc_menu()
               ++_nl_msg_cat_cntr;
             }
 #else
-		cprintf(_("Language not supported.\n"));
+		cprintf("Locales not supported.\n");
 #endif
                 break;
 
@@ -722,7 +715,7 @@ misc_menu()
 		break;
 
 	    case 's':
-		cprintf("\1f\1cSystem Configuration.\n");
+		cprintf(_("\1f\1cSystem Configuration.\n"));
 		print_system_config();
 		break;
 
