@@ -45,27 +45,27 @@ msgstr "Waarschuwing: Bestand eindigt in kleur `%s'. Repareer dit\n"
 
 #: src/clipboard.c:59
 msgid "\001f\001gClipboard: \001a"
-msgstr ""
+msgstr "\001f\001gKlembord: \001a"
 
 #: src/clipboard.c:72
 msgid "\001f\001gDelete ClipBoard.\n"
-msgstr ""
+msgstr "\001f\001gWis klembord.\n"
 
 #: src/clipboard.c:73
 msgid "\001f\001yAre you sure you want to delete your clipboard? (y/N) "
-msgstr ""
+msgstr "\001f\001yWeet je zeker dat je het klembord wil wissen? (y/N) "
 
 #: src/clipboard.c:75
 msgid "\001f\001gClipboard not deleted.\n"
-msgstr ""
+msgstr "\001f\001gKlembord niet gewist.\n"
 
 #: src/clipboard.c:78
 msgid "\001f\001gClipboard deleted.\n"
-msgstr ""
+msgstr "\001f\001gClipboard gewist.\n"
 
 #: src/clipboard.c:83
 msgid "\001f\001gEdit ClipBoard.\n"
-msgstr ""
+msgstr "\001f\001gBewerk klembord.\n"
 
 #: src/clipboard.c:92
 msgid "\001r\001fInvalid email address, can't send message!\001a\n"
@@ -85,7 +85,7 @@ msgstr ""
 
 #: src/commands.c:732
 msgid "\001f\001w(\001gMisc. Options\001w)\n"
-msgstr ""
+msgstr "\001f\001w(\001gOverige Opties\001w)\n"
 
 #: src/fun.c:60 src/fun.c:76
 msgid "\001f\001gNo unread %s.\001a"
@@ -320,7 +320,7 @@ msgstr ""
 
 #: src/usertools.c:739
 msgid "\001g*** is available to help others ***\n"
-msgstr ""
+msgstr "\001g*** is beschikbaar om anderen te helpen ***\n"
 
 #: src/usertools.c:758
 msgid ""
@@ -330,7 +330,7 @@ msgstr ""
 
 #: src/usertools.c:793
 msgid "\001gYou're not a %s!"
-msgstr ""
+msgstr "\001gJe bent geen %s!"
 
 #: src/usertools.c:873
 msgid "Are you sure you want to edit your profile? (y/n) "
@@ -348,11 +348,11 @@ msgstr ""
 
 #: src/usertools.c:926
 msgid "\001f\001gChange birthday/date.\n"
-msgstr ""
+msgstr "\001f\001gVerander verjaardag.\n"
 
 #: src/usertools.c:934
 msgid "\001gYour current %s is: \001y`%s\001a'\n"
-msgstr ""
+msgstr "\001gJe huidige %s is: \001y`%s\001a'\n"
 
 #: src/usertools.c:935
 msgid "\001f\001gDo you want to change this? \001w(\001gy\001w/\001gn\001w)\001c "
@@ -360,7 +360,7 @@ msgstr ""
 
 #: src/usertools.c:950
 msgid "\001f\001gChange address.\n"
-msgstr ""
+msgstr "\001f\001gVerander adres.\n"
 
 #: src/usertools.c:965
 msgid "\001gYour current url is: \001y`%s'\n"
