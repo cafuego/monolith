@@ -474,7 +474,7 @@ search_via_sql( unsigned int forum )
         mono_sql_ll_free_sr_list(list);
         return;
     } else { 
-        cprintf("\r\1a\1f\1gSearching... ok.\nPress any key to display results...");
+        cprintf("\r\1a\1f\1gSearching... \1y%d\1g matches.\nPress any key to display results...", count);
         fflush(stdout);
         inkey();
     }
