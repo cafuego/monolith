@@ -42,6 +42,11 @@
 #include "sql_goto.h"
 #include "routines2.h"
 
+static char *munchies[] = {
+    "cookie", "petit four", "biscuit", "waffle",
+    "piece of pie", "biscotti", "butterfinger"
+};
+
 void
 random_goto()
 {
@@ -58,7 +63,7 @@ random_goto()
 	xfree(thegoto);
 
     } else if ((rand() % 1000) == 666 && usersupp->timescalled > 99) { 
-        food = rand() % 4;
+        food = rand() % 7;
         strcpy(april_fools, "");
         while ( strstr(april_fools, munchies[food]) == NULL) {
             cprintf("\n\1w666.\1yCthulhu\1w> \1rGimme a %s! \1w", munchies[food]);
