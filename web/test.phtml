@@ -8,6 +8,18 @@
 
 require('engine/routines.inc');
 
+function valid( $file_type ) {
+    if($file_type == "image/gif")
+        return 1;
+    if($file_type == "image/jpeg")
+        return 1;
+    if($file_type == "image/jpg")
+        return 1;
+    if($file_type == "image/png")
+        return 1;
+    return 0;
+}
+
 connect_db();
 $username = getenv("REMOTE_USER");
 $usernum = get_usernum($username);
@@ -60,17 +72,6 @@ if(
 }
 
 
-function valid( $file_type ) {
-    if($file_type == "image/gif")
-        return 1;
-    if($file_type == "image/jpeg")
-        return 1;
-    if($file_type == "image/jpg")
-        return 1;
-    if($file_type == "image/png")
-        return 1;
-    return 0;
-}
 
 ?>
 
