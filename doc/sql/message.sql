@@ -18,7 +18,6 @@ CREATE TABLE message (
    # Extra display info.
    date		DATETIME NOT NULL,
    flag		ENUM( 'normal','anon','alias','forced','yell','auto','roomaide','tech','sysop','emp' ),
-   deleted	ENUM( 'y', 'n' ),
 
    # Reply info.
    r_message_id	INT UNSIGNED,
@@ -34,6 +33,8 @@ CREATE TABLE message (
    m_author	INT UNSIGNED,
    m_date	TIMESTAMP,
    m_reason	ENUM( 'copied','moved','' ),
+
+   deleted	ENUM( 'y', 'n' ),
 
    stamp	TIMESTAMP,
 
