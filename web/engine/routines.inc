@@ -202,7 +202,7 @@ function list_x_messages($username) {
 
     connect_db();
 
-    $result = MYSQL_QUERY("SELECT w.id AS id,u.username AS user,w.sender AS sender,w.recipient AS recipient,w.message AS message,DATE_FORMAT(w.date, '%H:%i') AS date FROM webx AS w LEFT JOIN user AS u ON u.id=w.sender) WHERE w.recipient=$user_id AND w.status='unread' ORDER BY w.date ASC");
+    $result = MYSQL_QUERY("SELECT w.id AS id,u.username AS user,w.sender AS sender,w.recipient AS recipient,w.message AS message,DATE_FORMAT(w.date, '%H:%i') AS date FROM webx AS w LEFT JOIN user AS u ON u.id=w.sender WHERE w.recipient=$user_id AND w.status='unread' ORDER BY w.date ASC");
     $number = MYSQL_NUMROWS($result);
     if ($number) {
         print "<h3 align=\"center\">You have $number eXpress messages</h3>\n<p> </p>\n";
