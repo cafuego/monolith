@@ -39,7 +39,7 @@ mono_sql_rename_user(unsigned int num, const char *newname)
     MYSQL_RES *res;
     int ret;
 
-    ret = mono_sql_query(&res, "UPDATE SET username=%s IN " U_TABLE " WHERE id=%u", newname, num);
+    ret = mono_sql_query(&res, "UPDATE " U_TABLE " SET username='%s' WHERE id=%u", newname, num);
 
     return ret;
 }
