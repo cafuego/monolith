@@ -7,7 +7,7 @@ libyawc_a_SOURCES = btmp.c libcache.c libdexi.c libfriends.c libquad.c libuid.c 
  sql_usertopic.c sql_message.c
 
 LDADD = -L/usr/local/mysql/lib -lmysqlclient
-CFLAGS += -pedantic -pedantic-errors -w -W \
+CFLAGS += -w -W -pedantic \
   -Wall -Waggregate-return -Wcast-align -Wcast-qual \
   -Wcomment -Wconversion -Werror -Wformat -Wimplicit \
   -Wimplicit-int -Wimplicit-function-declaration -Winline \
