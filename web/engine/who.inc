@@ -52,7 +52,7 @@ function show_wholist($username) {
             print "<tr>\n";
             print "  <td align=\"left\">\n";
             if($interface == "web" )
-                print "    <p align=\"left\"><a href=\"/bbs/index.phtml/x/$url_user/\">$user</a>\n";
+                print "    <p align=\"left\"><a href=\"/bbs/index.phtml/x/$url_user/$interface\">$user</a>\n";
             else
                 print "    <p align=\"left\"><font color=\"#ffff00\">$user</font>\n";
             print "  </td>\n";

@@ -8,6 +8,8 @@ CREATE TABLE webx (
 
    sender	INT UNSIGNED NOT NULL,
    recipient	INT UNSIGNED NOT NULL,
+   i_sender	ENUM( 'telnet', 'client', 'web' ) DEFAULT 'telnet' NOT NULL,
+   i_recipient	ENUM( 'telnet', 'client', 'web' ) DEFAULT 'telnet' NOT NULL,
    message	BLOB NOT NULL,
    date		DATETIME NOT NULL,
 

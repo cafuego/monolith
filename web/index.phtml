@@ -48,6 +48,7 @@
     $quad=$url_array[4];		// First arg.
     $recipient=$url_array[4];		// First arg too.
     $message=$url_array[5];		// Second arg.
+    $interface=$url_array[5];		// Second arg too.
     $direction=$url_array[6];		// Third arg.
 
     list_x_messages($username);
@@ -86,7 +87,7 @@
 
         case "x":
             require ('engine/express.inc');
-            express_message($username,$recipient);
+            express_message($username,$recipient,$interface);
             break;
 
         default:

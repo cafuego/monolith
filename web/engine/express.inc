@@ -4,7 +4,7 @@
   * $Id$
   */
 
-function express_message($username, $recipient) {
+function express_message($username, $recipient, $interface) {
 
     // Turn recipient name into a normal string.
     //
@@ -44,7 +44,7 @@ function express_message($username, $recipient) {
             break;
     }
 
-    print "<h3 align=\"center\">Sending an eXpress message to $recipient</h3>\n";
+    print "<h3 align=\"center\">Sending an eXpress message to $recipient@$interface</h3>\n";
 
     PRINT "<div style=\"margin-left: 150;\">\n";
 
@@ -56,11 +56,12 @@ function express_message($username, $recipient) {
     //
     PRINT "<input type=\"hidden\" name=\"recipient\" value=\"$recipient\">\n";
     PRINT "<input type=\"hidden\" name=\"sender\" value=\"$username\">\n";
+    PRINT "<input type=\"hidden\" name=\"interface\" value=\"$interface\">\n";
 
     // Show formatted header.
     //
     $now = strftime("%H:%M", time());
-    PRINT "<p align=\"left\"><font color=\"#00CC00\">eXpress Message from</font> <font color=\"#ffff00\">$username</font> <font color=\"#00cc00\">to</font> <font color=\"#ffff00\">$recipient</font> <font color=\"#00cc00\">at</font> (<font color=\"#00cc00\">$now</font>)</p>\n";
+    PRINT "<p align=\"left\"><font color=\"#00CC00\">eXpress Message from</font> <font color=\"#ffff00\">$username@web</font> <font color=\"#00cc00\">to</font> <font color=\"#ffff00\">$recipient@$interface</font> <font color=\"#00cc00\">at</font> (<font color=\"#00cc00\">$now</font>)</p>\n";
     PRINT "<textarea rows=\"6\" cols=\"70\" name=\"message\" style=\"font: 10pt Helvetica\">Enter your message here.</textarea>\n";
 
     // Form buttons.

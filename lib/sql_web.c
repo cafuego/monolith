@@ -35,7 +35,7 @@
  * Adds an entry into the `online' table.
  */
 int
-mono_sql_web_send_x(unsigned int sender, unsigned int recipient, const char *message)
+mono_sql_web_send_x(unsigned int sender, unsigned int recipient, const char *message, const char *interface)
 {
 
     int ret;
@@ -45,8 +45,8 @@ mono_sql_web_send_x(unsigned int sender, unsigned int recipient, const char *mes
     (void) escape_string(message, &fmt_message );
 
     ret = mono_sql_query(&res, "INSERT INTO " WEB_X_TABLE 
-     " (sender,recipient,message,date,status) VALUES (%u,%u,'%s',NOW(),'unread')"
-     , sender,recipient,message);
+     " (sender,recipient,message,date,status,i_recipient,i_sender) VALUES (%u,%u,'%s',NOW(),'unread','web','%s')"
+     , sender,recipient,message, interface);
 
     if (ret == -1) {
         xfree(fmt_message);
@@ -66,7 +66,7 @@ mono_sql_web_remove_read(unsigned int user_id)
     MYSQL_RES *res;
 
     ret = mono_sql_query(&res, "DELETE FROM " WEB_X_TABLE 
-     " WHERE sender=%u AND status='read'", user_id );
+     " WHERE sender=%u AND status='read' AND (r_interface='client' OR r_interface='telnet')", user_id );
 
     if (ret == -1)
 	return FALSE;

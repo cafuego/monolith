@@ -218,7 +218,7 @@ function list_x_messages($username) {
 
     connect_db();
 
-    $result = MYSQL_QUERY("SELECT w.id AS id,u.username AS user,w.sender AS sender,w.recipient AS recipient,w.message AS message,DATE_FORMAT(w.date, '%H:%i') AS date FROM webx AS w LEFT JOIN user AS u ON u.id=w.sender WHERE w.recipient=$user_id AND w.status='unread' ORDER BY w.date ASC");
+    $result = MYSQL_QUERY("SELECT w.id AS id,u.username AS user,w.sender AS sender,w.i_sender AS i_sender,w.recipient AS recipient,w.message AS message,DATE_FORMAT(w.date, '%H:%i') AS date FROM webx AS w LEFT JOIN user AS u ON u.id=w.sender WHERE w.recipient=$user_id AND w.status='unread' AND w.i_recipient='web' ORDER BY w.date ASC");
     $number = MYSQL_NUMROWS($result);
     if ($number) {
         if(number == 1)
@@ -231,6 +231,7 @@ function list_x_messages($username) {
             $id = mysql_result($result,$i,"id");
             $user = mysql_result($result,$i,"user");
             $sender = mysql_result($result,$i,"sender");
+            $i_sender = mysql_result($result,$i,"i_sender");
             $recipient = mysql_result($result,$i,"recipient");
             $message = mysql_result($result,$i,"message");
             $date = mysql_result($result,$i,"date");
@@ -239,7 +240,7 @@ function list_x_messages($username) {
 
             print "<tr>\n";
             print "  <td align=\"left\">\n";
-            print "    <p align=\"left\"><font color=\"#00cc00\">eXpress Message from <a href=\"/bbs/index.phtml/x/$user/\">$user</a> at </font>(<font color=\"#00cc00\">$date</font>)\n";
+            print "    <p align=\"left\"><font color=\"#00cc00\">eXpress Message from <a href=\"/bbs/index.phtml/x/$user/$s_interface\">$user@$s_interface</a> to <font color=\"#ffff00\">$recipient@$web</font> at </font>(<font color=\"#00cc00\">$date</font>)\n";
             print "    <font color=\"#00cccc\"><pre>$message</pre></font>\n";
             print "  </td>\n";
             print "</tr>\n";
@@ -251,7 +252,7 @@ function list_x_messages($username) {
 
     // See if messages were read and trash if yes.
     //
-    $result = MYSQL_QUERY("SELECT w.id AS id,u.username AS user,DATE_FORMAT(w.stamp, '%H:%i') AS date FROM webx AS w LEFT JOIN user AS u ON u.id=w.recipient WHERE w.sender=$user_id AND w.status='read' ORDER BY w.stamp ASC");
+    $result = MYSQL_QUERY("SELECT w.id AS id,u.username AS user,DATE_FORMAT(w.date, '%H:%i') AS date FROM webx AS w LEFT JOIN user AS u ON u.id=w.recipient WHERE w.sender=$user_id AND w.status='read' AND w.i_recipient='web' ORDER BY w.date ASC");
     $number = MYSQL_NUMROWS($result);
     if ($number) {
         print "<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\" align=\"center\">\n";

@@ -100,7 +100,11 @@ sendx(char *to, const char *send_string, char override)
 	Sendxs = &(shm->broadcast);
     else if (IS_WEB) {
         (void) mono_sql_u_name2id(to, &to_id);
-        if (mono_sql_web_send_x(usersupp->usernum, to_id, send_string))
+#ifdef PORT
+        if (mono_sql_web_send_x(usersupp->usernum, to_id, send_string, "telnet"))
+#else
+        if (mono_sql_web_send_x(usersupp->usernum, to_id, send_string, "client"))
+#endif
 	    cprintf("\1f\1gSuccessfully saved \1pWeb\1g %s %s for \1y%s.\1a\n", config.express, config.x_message, to);
         else
 	    cprintf("\1f\1rUnable to save \1pWeb\1g %s %s for \1y%s to database.\1a\n", config.express, config.x_message, to);

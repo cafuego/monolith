@@ -9,7 +9,8 @@
     //
     $sender = rawurldecode($sender);
     $recipient = rawurldecode($recipient);
-    print "<title>$sender@Monolith BBS: Sending eXpress message to $recipient</title>\n";
+    $interface = rawurldecode($interface);
+    print "<title>$sender@Monolith BBS: Sending eXpress message to $recipient@$interface</title>\n";
 
 ?>
 
@@ -41,6 +42,7 @@
     $recipient = rawurldecode($recipient);
     $u_id = get_usernum($username);
     $r_id = get_usernum($recipient);
+    $interface = rawurldecode($interface);
     $message = rawurldecode($message);
     $message = htmlspecialchars($message);
     $message = nl2br($message);
@@ -50,11 +52,11 @@
 
     connect_db();
 
-    $result = MYSQL_QUERY("INSERT INTO webx (sender,recipient,message,date,status) VALUES ($u_id,$r_id,'$message',NOW(),'unread')");
+    $result = MYSQL_QUERY("INSERT INTO webx (sender,recipient,message,date,status,i_sender,i_recipient) VALUES ($u_id,$r_id,'$message',NOW(),'unread'),'web','$interface'");
     if ($result == true )
-        print "<h3 align=\"center\">eXpress message to $recipient was sucessfully saved</h3>\n";
+        print "<h3 align=\"center\">eXpress message to $recipient@$interface was sucessfully saved</h3>\n";
     else {
-        print "<h3 align=\"center\">eXpress message to $recipient could not be saved due to an error</h3>\n";
+        print "<h3 align=\"center\">eXpress message to $recipient@$interface could not be saved due to an error</h3>\n";
         echo "<h2 align=\"center\">". mysql_error() ."</h2>\n";
     }
 

@@ -10,6 +10,7 @@ function html_print_title($username, $location) {
     $url_array=explode("/",$location);
     $action=$url_array[3];		// What action?
     $quad=$url_array[4];		// What quad?
+    $interface=$url_array[5];
 
     // Check privs and print error if the user is BAD.
     //
@@ -58,7 +59,7 @@ function html_print_title($username, $location) {
             break;
         case "x":
             $quad = rawurldecode($quad);
-            print "<title>$username@Monolith BBS: Sending eXpress message to $quad</title>\n";
+            print "<title>$username@Monolith BBS: Sending eXpress message to $quad@$interface</title>\n";
             break;
         default:
             print "<title>$username@Monolith BBS: Logged in</title>\n";
