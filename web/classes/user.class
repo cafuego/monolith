@@ -73,24 +73,24 @@ class user_t {
     // Add user's info. (if available)
     function add_info() {
         echo <p align=\"left\">\n";
-        if( ! (strstr( $this->hidden_info, "name" ))
-            echo "$this->realname";
-        if( ! (strstr( $this->hidden_info, "address" ))
-            echo "$this->address<br>\n";
-        if( ! (strstr( $this->hidden_info, "zip" ))
-            echo "$this->zip<br>\n";
-        if( ! (strstr( $this->hidden_info, "city" ))
-            echo "$this->city<br>\n";
-        if( ! (strstr( $this->hidden_info, "state" ))
-            echo "$this->state<br>\n";
-        if( ! (strstr( $this->hidden_info, "country" ))
-            echo "$this->country<br>\n";
-        if( ! (strstr( $this->hidden_info, "phone" ))
-            echo "$this->phone<br>\n";
-        if( ! (strstr( $this->hidden_info, "email" ))
-            echo "$this->email<br>\n";
-        if( ! (strstr( $this->hidden_info, "url" ))
-            echo "$this->url<br>\n";
+        if( ! (strstr( $this->hiddeninfo, "name" ))
+            echo "Name: $this->realname";
+        if( ! (strstr( $this->hiddeninfo, "address" ))
+            echo "<br>\nAddress: $this->address";
+        if( ! (strstr( $this->hiddeninfo, "city" ))
+            echo "<br>\n$this->city";
+        if( ! (strstr( $this->hiddeninfo, "state" ))
+            echo ", $this->state";
+        if( ! (strstr( $this->hiddeninfo, "zip" ))
+            echo " $this->zip\n";
+        if( ! (strstr( $this->hiddeninfo, "country" ))
+            echo "<br>\n$this->country";
+        if( ! (strstr( $this->hiddeninfo, "phone" ))
+            echo "<br>\nPhone: $this->phone";
+        if( ! (strstr( $this->hiddeninfo, "email" ))
+            echo "<br>\nEmail: <a href=\"mailto:$this->email\">$this->email</a>";
+        if( ! (strstr( $this->hiddeninfo, "url" ))
+            echo "<br>\nURL: <a href=\"http://$this->url\">$this->url</a>";
         return;
     }
 
@@ -106,11 +106,11 @@ class user_t {
     //
     function add_image() {
         if( valid_image($this->image)) {
-            if( $content_type == "image/gif")
+            if( $this->image == "image/gif")
                 echo "<img align=\"center\" src=\"/bbs/pix/gif.php3?$this->id\">\n";
-            else if ($content_type == "image/jpg" || $content_type == "image/jpeg" || $content_type == "image/pjpeg")
+            else if ($this->image == "image/jpg" || $content_type == "image/jpeg" || $content_type == "image/pjpeg")
                 echo "<img align=\"center\" src=\"/bbs/pix/jpeg.php3?$this->id\">\n";
-            else if ($content_type == "image/png")
+            else if ($this->image == "image/png")
                 echo "<img align=\"center\" src=\"/bbs/pix/png.php3?$this->id\">\n";
             else {
                 errorimage("Image is in unsupported format!");

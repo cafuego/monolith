@@ -622,6 +622,7 @@ main_menu($username, $current_url)
 	    break;
 
 	case "p":
+	    require('classes/user.class');
 	    require('engine/profile.inc');
 	    profile_user($username, $victim);
     	    break;
