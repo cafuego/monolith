@@ -126,9 +126,13 @@ profile_user(void)
      */
     if (check_user(p_name) == TRUE) {
 	user = readuser(p_name);
+        if ( user == NULL ) {
+	   cprintf( "Error reading userfile.\n" );
+        } else {
 	print_user_stats(user, usersupp);
 	xfree(user);
 	strcpy(profile_default, p_name);
+        }
     } else
 	cprintf(_("\1f\1rNo such user.\1a\n"));
     return;
@@ -533,7 +537,7 @@ _menu_friend_wrapper(const unsigned int a, const long which, void *c)
 void
 _chat_subscribe_wrapper(const unsigned int a, const long b, void *c)
 {
-		cprintf("\1f\1pSubscribe to channel: \1a");
+		cprintf(_("\1f\1pSubscribe to channel: \1a"));
 		chat_subscribe();
 }
 
@@ -713,7 +717,7 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
 
     if (viewing_user->priv >= PRIV_SYSOP) {	/* a sysop profiles */
         (void) mono_sql_read_config(user->configuration, &frog);
-        cprintf("\1f\1cConfiguration\1w: \1g%s \1cMonoholic Rating\1w: \1g", frog.bbsname);
+        cprintf(_("\1f\1cConfiguration\1w: \1g%s \1cMonoholic Rating\1w: \1g"), frog.bbsname);
         printf("%.3f",_get_monoholic_rating(user));
         cprintf("\n");
 	cprintf("\1f\1cUsernum\1w: \1g%d \1cFirst login\1w: \1g%s\n",user->usernum, printdate(user->firstcall, 1) );
@@ -732,7 +736,7 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
     record = mono_read_btmp(user->username);
     if (record != NULL) {
 	if ((user->flags & US_GUIDE) && (record->flags & B_GUIDEFLAGGED))
-	    cprintf("\1g*** is available to help others ***\n");
+	    cprintf(_("\1g*** is available to help others ***\n"));
 	xfree(record);
     }
     /* --- PROFILE --- */
@@ -751,17 +755,15 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
 
     if (file_line_len(fp) > (viewing_user->screenlength - 15)) {
 	fclose(fp);
-	cprintf("\n\1a\1f\1gPress \1w<\1rSPACE\1w>\1g to continue or \1w<\1rs\1w>\1g to skip... \1a");
+	cprintf(_("\n\1a\1f\1gPress \1w<\1rSPACE\1w>\1g to continue or \1w<\1rs\1w>\1g to skip... \1a"));
 	cmd = get_single_quiet(" s");
 	switch (cmd) {
 	    case ' ':
-		cprintf("\1f\1g Continue.\1a\n");
 		more(work, TRUE);
 		cprintf("\n");
 		break;
 
 	    case 's':
-		cprintf("\1f\1g Skip.\1a\n");
 
 	}
     } else {
@@ -788,7 +790,7 @@ change_atho(int i)
 
     if ((!(usersupp->flags & US_GUIDE) &&
 	 !(usersupp->priv >= PRIV_TECHNICIAN)) && i == 0) {
-	cprintf("\1gYou're not a %s!", GUIDE);
+	cprintf(_("\1gYou're not a %s!"), GUIDE);
 	return;
     }
     tmpbtmp = mono_read_btmp(who_am_i(NULL));
@@ -921,7 +923,7 @@ _change_profile(const unsigned int a, const long b, void *c)
 void
 _change_birthday(const unsigned int a, const long b, void *c)
 {
-    cprintf("\1f\1gChange birthday/date.\n");
+    cprintf(_("\1f\1gChange birthday/date.\n"));
     modify_birthday(&(usersupp->birthday));
 }
 
@@ -929,8 +931,8 @@ _change_birthday(const unsigned int a, const long b, void *c)
 void
 _change_flying(const unsigned int a, const long b, void *c)
 {
-    cprintf("\1gYour current %s is: \1y`%s\1a'\n", config.doing, usersupp->doing);
-    cprintf("\1f\1gDo you want to change this? \1w(\1gy\1w/\1gn\1w)\1c ");
+    cprintf(_("\1gYour current %s is: \1y`%s\1a'\n"), config.doing, usersupp->doing);
+    cprintf(_("\1f\1gDo you want to change this? \1w(\1gy\1w/\1gn\1w)\1c "));
     if (yesno() == YES) {
 	cprintf("\1gEnter the new %s\1w: \1f\1c", config.doing);
 	getline(usersupp->doing, 28, 0);
@@ -960,14 +962,14 @@ _change_url(const unsigned int a, const long b, void *c)
 {
     char p[RGurlLEN];
 
-    cprintf("\1gYour current url is: \1y`%s'\n", usersupp->RGurl);
-    cprintf("\1gDo you want to change this? \1w(\1gy\1w/\1gn\1w)\1c ");
+    cprintf(_("\1gYour current url is: \1y`%s'\n"), usersupp->RGurl);
+    cprintf(_("\1gDo you want to change this? \1w(\1gy\1w/\1gn\1w)\1c "));
     if (yesno() == YES) {
-	cprintf("\1f\1gEnter the new url\1w: \1chttp://");
+	cprintf(_("\1f\1gEnter the new url\1w: \1chttp://"));
 	getline(p, RGurlLEN - 7, TRUE);
 	if (strlen(p) < 5) {
 	    strcpy(usersupp->RGurl, "");
-	    cprintf("\1f\1gURL not set.\n");
+	    cprintf(_("\1f\1gURL not set.\n"));
 	} else
 	    sprintf(usersupp->RGurl, "http://%s", p);
 
@@ -993,12 +995,12 @@ q_menu(void)
 
     nox = 1;			/* disable x's in q_menu */
 
-    cprintf("\n\1f\1gPress \1w<\1rh\1w>\1g to access the helpfiles.\n");
-    cprintf("\n\1gPress \1w<\1rc\1w>\1g for help on commands.\n");
-    cprintf("\1gPress \1w<\1r?\1w>\1g to get a list of commands.\n");
-    cprintf("\1gPress \1w<\1rshift-Q\1w>\1g to ask a Question.\n\n");
-    cprintf("\1gPress \1w<\1rq\1w>\1g to exit this menu.\n\n");
-    cprintf("\1gChoice\1w:\1g ");
+    cprintf(_("\n\1f\1gPress \1w<\1rh\1w>\1g to access the helpfiles.\n"));
+    cprintf(_("\n\1gPress \1w<\1rc\1w>\1g for help on commands.\n"));
+    cprintf(_("\1gPress \1w<\1r?\1w>\1g to get a list of commands.\n"));
+    cprintf(_("\1gPress \1w<\1rshift-Q\1w>\1g to ask a Question.\n\n"));
+    cprintf(_("\1gPress \1w<\1rq\1w>\1g to exit this menu.\n\n"));
+    cprintf(_("\1gChoice\1w:\1g "));
 
     cmd = get_single_quiet(" chqQ?");
 

@@ -661,7 +661,7 @@ misc_menu()
             case 'l':
             case 'L':
                 nox = 1;
-                cprintf("\1f\1gLock Terminal.\n");
+                cprintf(_("\1f\1gLock Terminal.\n"));
                 lock_terminal();
                 break;
 
@@ -679,7 +679,7 @@ misc_menu()
               ++_nl_msg_cat_cntr;
             }
 #else
-		cprintf("Language not supported.\n");
+		cprintf(_("Language not supported.\n"));
 #endif
                 break;
 
@@ -695,7 +695,7 @@ misc_menu()
 		break;
 
 	    case 'M':
-		cprintf("\1f\1cMark messages as read.\n");
+		cprintf(_("\1f\1cMark messages as read.\n"));
 		cprintf("\1f\1gAre you \1rSURE\1g you want to mark ALL messages as read? \1w(\1gy\1w/\1gn\1w) \1c");
 		if (yesno() == YES) {
 		    for (i = 0; i < MAXQUADS; i++) {
@@ -729,7 +729,7 @@ misc_menu()
 
 
 	    case '/':
-		cprintf("\1f\1w(\1gMisc. Options\1w)\n");
+		cprintf(_("\1f\1w(\1gMisc. Options\1w)\n"));
 		more(MENUDIR "/menu_misc", 1);
 		break;
  
