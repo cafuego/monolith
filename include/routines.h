@@ -6,6 +6,7 @@
 #define TIME_START 1
 extern float time_function(const int );
 
+extern int set_timezone( const char * );
 extern int printfile ( const char *name);
 extern int xopen ( const char *name, int mode, int critical );
 extern char *date (void);
