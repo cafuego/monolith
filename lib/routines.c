@@ -14,7 +14,10 @@
 #include <sys/ioctl.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+
+#ifdef HAVE_TERMBITS_H
 #include <termbits.h>
+#endif
 
 #ifdef HAVE_TERMIO_H
 #include <termio.h>

@@ -51,7 +51,7 @@ mono_sql_mes_add(message_t *message, unsigned int forum)
 {
     MYSQL_RES *res;
     int ret = 0;
-    char *alias = NULL, *subject = NULL, *content = NULL, date[20];
+    char *alias = NULL, *subject = NULL, *content = NULL;
   
     if( (message->num = mono_sql_f_get_new_message_id(forum)) == 0)
         return -1;
@@ -64,11 +64,10 @@ mono_sql_mes_add(message_t *message, unsigned int forum)
      * added to the BBS. TIMESTAMP in the table would be better though.
      */
     message->date = time(0);
-    (void) time_to_datetime(message->date, date);
 
-    ret = mono_sql_query(&res, "INSERT INTO " M_TABLE " (message_id,topic_id,forum_id,author,alias,subject,date,type,priv,deleted) VALUES (%u,%u,%u,%u,'%s','%s','%s',%d,%d,'n')",
+    ret = mono_sql_query(&res, "INSERT INTO " M_TABLE " (message_id,topic_id,forum_id,author,alias,subject,date,type,priv,deleted) VALUES (%u,%u,%u,%u,'%s','%s',FROM_UNIXTIME(%u),%d,%d,'n')",
         message->num, message->topic, message->forum, message->author,
-        alias, subject, date, message->type, message->priv );
+        alias, subject, message->date, message->type, message->priv );
 
     (void) mysql_free_result(res);
     xfree(alias);
@@ -157,6 +156,7 @@ mono_sql_mes_retrieve(unsigned int id, unsigned int forum, message_t *data)
     message.author = atoi(row[3]);
     sprintf(message.alias, row[4]);
     sprintf(message.subject, row[5]);
+
     (void) datetime_to_time(row[6], &message.date);
 
     /*
