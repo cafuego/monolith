@@ -64,6 +64,21 @@ time_function(const int action)
     return seconds / 1000000;
 }
 
+int
+set_timezone( const char *tz )
+{
+    int ret;
+    char str[50];
+
+    ret = sprintf( str, "TZ=%s", tz );
+    if ( ret == -1 ) return -1;
+
+    ret = putenv( str );
+    if ( ret == -1 ) return -1;
+    tzset();
+    return ret;
+}
+
 /* date()
  * return value points to static buffer, must be used
  * before next call to ctime()

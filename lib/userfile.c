@@ -270,6 +270,10 @@ readuser(const char *name)
 	    p = strtok(NULL, DELIM);
 	    if (p)
 		strcpy(user->doing, p);
+	} else if (strcmp("timezone", type) == 0) {
+	    p = strtok(NULL, DELIM);
+	    if (p)
+		strcpy(user->timezone, p);
 	} else if (strcmp("awaymsg", type) == 0) {
 	    p = strtok(NULL, DELIM);
 	    if (p)
@@ -446,6 +450,7 @@ writeuser(user_t * user, int update)
     (void) fprintf(fp, "laston_to|%ld\n", user->laston_to);
     (void) fprintf(fp, "online|%ld\n", user->online);
     (void) fprintf(fp, "doing|%s\n", user->doing);
+    (void) fprintf(fp, "timezone|%s\n", user->timezone );
     (void) fprintf(fp, "awaymsg|%s\n", user->awaymsg);
     (void) fprintf(fp, "lasthost|%s\n", user->lasthost);
     (void) fprintf(fp, "xtrapflag|%s\n", user->xtrapflag);
