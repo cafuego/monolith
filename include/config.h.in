@@ -87,6 +87,9 @@
 /* Define if you have the <sys/mman.h> header file.  */
 #undef HAVE_SYS_MMAN_H
 
+/* Define if you <sys/mman.h> defines MAP_FAILED.  */
+#undef HAVE_MAP_FAILED
+
 /* Define if you have the <mysql.h> header file.  */
 #undef HAVE_MYSQL_H
 

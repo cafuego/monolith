@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#ifdef HAVE_SYS_MMAN_H	/* configure checks for this */
+#ifdef HAVE_SYS_MMAN_H
   #include <sys/mman.h>
 #else
   #include <asm/mman.h>
@@ -253,10 +253,10 @@ fill_buffer(char **content)
      /*
       * mmap() tempfile.
       */ 
-#ifdef HAVE_SYS_MMAN_H
+#ifdef HAVE_MAP_FAILED
      if( (post = mmap(post, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED ) { 
 #else
-     if( (post = mmap(post, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == -1 ) { 
+     if( (post = mmap(post, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == ((__ptr_t) -1) ) { 
 #endif
          log_it("sqlpost", "Can't mmap() temp file %s!", temp);
          return -1;

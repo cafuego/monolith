@@ -78,10 +78,15 @@ dnl Check if MAP_FAILED is defined...
 if test "x$grep_path" != "xno" ; then
   AC_CHECK_HEADERS(sys/mman.h)
   if test "x$ac_cv_header_sys_mman_h" != "xno" ; then
+    AC_DEFINE(HAVE_SYS_MMAN_H)
     if test -r /usr/include/sys/mman.h; then
+      echo "Checking if sys/mman.h defines MAP_FAILED..."
       result=`grep MAP_FAILED /usr/include/sys/mman.h`
       if test "x$result" != "x"; then
-        AC_DEFINE(HAVE_SYS_MMAN_H)
+        echo " yes"
+        AC_DEFINE(HAVE_MAP_FAILED)
+      else
+        echo " no"
       fi
     fi
   fi
