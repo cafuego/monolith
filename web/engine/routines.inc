@@ -173,7 +173,7 @@ function do_logout($username) {
 
 function main_screen($username) {
 
-    print "<h3 align=\"center\">Welcome to Monolith BBS, $username</h3>\n";
+    print "<h3 align=\"center\">Hello, $username. Welcome to Monolith BBS.</h3>\n";
     print "<p align=\"center\"><img align=\"center\" src=\"/bbs/pix/monolith.jpg\" width=\"300\" height =\"300\" alt=\"[ image: Monolith BBS Logo ]\"></p>\n";
 
 }
