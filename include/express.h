@@ -84,7 +84,7 @@ extern void old_express(void);
 extern volatile int xmsgp;
 extern express_t *xmsgb[XLIMIT];
 extern void emergency_boot_all_users( void );
-extern void SILC( void );
+extern void send_silc( void );
 extern void add_x_to_personal_xlog(char, x_str *, char);
 extern char *get_guide_name( char * );
 extern char * get_xmessage_destination(char * , const int, char * );
