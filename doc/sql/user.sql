@@ -33,6 +33,11 @@ CREATE TABLE user (
    picture	BLOB,
    profile	TEXT,
 
+# statistics
+   x_count	INT UNSIGNED DEFAULT 0,
+   post_count	INT UNSIGNED DEFAULT 0,
+   login_count	INT UNSIGNED DEFAULT 0,
+
    PRIMARY KEY  ( id ),
    INDEX( username ),
    UNIQUE ( username )
