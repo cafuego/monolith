@@ -741,17 +741,22 @@ sysop_menu()
 	    which_room("\1f\1wAdmin cmd: \1a");
 	}
 
-	cmd = get_single_quiet("BCEFgGKMNOQRTU\r\b ?");
+	cmd = get_single_quiet("ABCEFgGKMNOQTU\r\b ?");
 
-	if (strchr("BCEMFgOP", cmd))
+	if (strchr("BCEMRFgOP", cmd))
 	    nox = 1;		/* is busy, wants no x's */
 
 	switch (cmd) {
 
 	    case 'M':
-		cprintf("\1f\1rEnter SQL message in quad 140 (break code)\n");
+		cprintf("\1f\1rEnter SQL %s in %s 140 \1w(\1rbreak code\1w)\n", config.message, config.forum);
 		enter_message(140, 1);
 		break;
+
+            case 'A':
+		cprintf("\1f\1rRead SQL %s in %s 140\1w (\1rbreak code\1w)\n", config.message_pl, config.forum);
+                new_read_menu(140,0);
+                break;
 
 	    case 'B':
 		cprintf("\1f\1rMake a broadcast.\1a\n");
@@ -951,7 +956,7 @@ sysoproom_menu()
            
 
 	    case 'k':
-		cprintf("\1f\1rKickout user from %s.\1a\n", config.forum);
+		cprintf("\1f\1rKickout %s from %s.\1a\n", config.user, config.forum);
 		do_kickout();
 		break;
 
@@ -961,7 +966,7 @@ sysoproom_menu()
             
 
 	    case 'L':
-		cprintf("\1f\1pList of %ss.\1a\n", config.forum);
+		cprintf("\1f\1pList of %s.\1a\n", config.forum_pl);
 		look_into_quickroom(1);
 		break;
 

@@ -52,6 +52,7 @@
 #include "usertools.h"
 #include "routines2.h"
 
+#include "sql_message.h"
 #include "sql_userforum.h"
 
 #define MODIFICATION_TIME
@@ -1735,4 +1736,101 @@ x_to_mail(const char *x, char *to_user)
 /* end of post */
     fprintf(fp, "\n%c", 0);
     fclose(fp);
+}
+
+/* ------------ NEW EMSSAGE SYSTEM ------------- */
+
+/*
+ * NO PRIV CHECKING!!!
+ */
+void
+new_read_menu(unsigned int forum, int direction)
+{
+
+    mlist_t *list = NULL;
+    char tempstr[100];
+    char cmd = '\0';
+    int unread = 0, direction = 1;
+
+    /*
+     * If no unread messages, exit. (but not now)
+     * if( (unread = mono_sql_uf_get_unread(forum, usersupp->lastseen)) <= 0 )
+     *     return;
+     */
+
+    strcpy(tempstr, "");
+    sprintf(tempstr, "\1f\1w(\1g%d unread %s\1w)", unread, config.message_pl);
+    which_room( tempstr );
+
+    /*
+     * If we can't list unread messages, exit.
+     */
+    if( (mono_sql_mes_list_forum(forum, usersupp->lastseen, list)) == -1)
+        return;
+
+    while( list != NULL ) {
+
+        cmd = get_single_quiet("abfnsq ");
+
+        switch(cmd) {
+
+           case 'a':
+               if(list != NULL)
+                   cprintf("\1f\1gRead this %s again.\n", config.message );
+               break;
+
+           case 'b':
+               if(list->prev != NULL) {
+                   cprintf("\1f\1gRead %s backwards.\n", config.message_pl );
+                   direction = -1;
+               } else {
+                   cprintf("\1f\1gNo %s left in that direction.\n", config.message_pl );
+               }
+               break;
+
+           case 'f':
+               if(list->next != NULL) {
+                   cprintf("\1f\1gRead %s forward.\n", config.message_pl );
+                   direction = 1;
+               } else {
+                   cprintf("\1f\1gNo %s left in that direction.\n", config.message_pl );
+               }
+               break;
+
+           case 'n':
+           case ' ':
+               cprintf("\1f\1gRead next %s.\n", config.message );
+               break;
+
+           case 's':
+               cprintf("\1f\1gStop.");
+               (void) mono_sql_mes_free_list(list);
+               return;
+               break;
+
+           case 'q':
+               cprintf("\1f\1gQuit.\n");
+               (void) mono_sql_mes_free_list(list);
+               return;
+               break;
+
+        } /* switch */
+
+        switch(direction) {
+            case '-1':
+                list = list->prev;
+            case 1:
+                list = list->next;
+            case 0:
+                direction = 1;
+        } /* switch */
+
+        if(list != NULL)
+            display_message(list->id, forum);
+
+    } /* while */
+
+    (void) mono_sql_mes_free_list(list);
+
+    return;
 }
