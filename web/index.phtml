@@ -35,20 +35,11 @@
     $url_array=explode("/",$REQUEST_URI);
     $action=$url_array[3];		// What action?
 
-    // Show stylesheet info.
+    // Include StyleSheet and JavaScript.
     //
-    echo "\n<style type=\"text/css\">\n";
-    echo "  p          { font: 10pt Helvetica; }\n";
-    echo "  a          { font: 10pt Helvetica; color: #FFFF00; text-decoration: underline; }\n";
-    echo "  b          { font-weight: bold; }\n";
-    echo "  ul         { font: 10pt Helvetica; }\n";
-    echo "  li         { font: 10pt Helvetica; }\n";
-    echo "  pre        { font-family: monospace; text-align: left; }\n";
-    echo "  font       { font: 10pt Helvetica; }\n";
-    echo "  .red       { font: 10pt Times; font-weight: bold; color: #ff0000; }\n";
-    echo "  .green     { color: #00cc00; }\n";
-    echo "  .footer    { font: 10pt Times; text-align: center; }\n";
-    echo "</style>\n\n";
+    echo "<link rev=\"made\" href=\"mailto:webmaster@monolith.student.utwente.nl\">\n";
+    echo "<link rel=\"StyleSheet\" href=\"/bbs/style/global.css\" type=\"text/css\">\n";
+    echo "<script src=\"/bbs/script/global.js\" type=\"application/x-javascript\"></script>\n";
 
     // Header end and body start.
     //

@@ -1,0 +1,20 @@
+/*
+ * $Id$
+ *
+ * Global Style info for BBS Web Interface.
+ */
+
+// Tag definitions.
+//
+p		{ font: 10pt Helvetica; }
+a		{ font: 10pt Helvetica; color: #FFFF00; text-decoration: underline; }
+b		{ font-weight: bold; }
+ul		{ font: 10pt Helvetica; }
+li		{ font: 10pt Helvetica; }
+pre		{ font-family: monospace; text-align: left; }
+
+// Custom classes.
+//
+.red		{ font: 10pt Times; font-weight: bold; color: #ff0000; }
+.green		{ color: #00cc00; }
+.footer		{ font: 10pt Times; text-align: center; }
