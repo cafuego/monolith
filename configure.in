@@ -201,7 +201,7 @@ echo
 if test "x$with_overview" = "xno"; then
   echo "----------------------------------------------------------------------"
 fi
-echo "Just run \`make' and sit back whilst the BBS is compiled. After"
+echo "Just run make and sit back whilst the BBS is compiled. After"
 echo "compilation is finished, refer to the README file for details on"
 echo "how to install the BBS on your machine. Note that you will need"
 echo "root access to do this."

@@ -17,6 +17,7 @@ if test ! -d "$FILEDIR"; then
   mkdir $FILEDIR
 fi
 
+mkdir $FILEDIR
 cd $FILEDIR
 
 echo -n "enter number of forums to create: "

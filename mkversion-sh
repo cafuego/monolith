@@ -3,9 +3,9 @@ echo "Creating version.h..."
 
 MYSQL=x`which mysql`
 if [ $MYSQL = x ]; then 
-     echo "#define VERSION	\"Mono 2.010 - `uname -m` `uname -s` `uname -r`\"" > include/version.h
+     echo "#define VERSION	\"Mono 2.061 - `uname -m` `uname -s` `uname -r`\"" > include/version.h
 else
     MYSQL="`which mysql` --version"
     SQLVERSION="MySQL `$MYSQL | awk '{print $5}' | awk -F',' '{print $1}'`"
-     echo "#define VERSION	\"Mono 2.010 - `uname -m` `uname -s` `uname -r` - $SQLVERSION\"" > include/version.h
+     echo "#define VERSION	\"Mono 2.061 - `uname -m` `uname -s` `uname -r` - $SQLVERSION\"" > include/version.h
 fi
