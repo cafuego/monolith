@@ -383,7 +383,7 @@ function addimage( $text ) {
     // Image parser only knows basics tho!
     //
     $font = "Myriad_B";
-    $size = "18";
+    $size = 18;
     $colour = "white";
     $imgtext = strtr($text, "/", "\\");
     $imgtext = rawurlencode($imgtext);
@@ -399,14 +399,16 @@ function addbutton( $text, $url ) {
     // To change all images in one go.
     // Image parser only knows basics tho!
     //
+    $font = "Myriad_I";
+    $size = 12;
     $colour = "yellow";
     $imgtext = strtr($text, "/", "\\");
     $imgtext = rawurlencode($imgtext);
 
     if($url != "")
-    echo "<a href=\"$url\"><img src=\"/bbs/image.phtml/Arialblack_I,12,$colour/$imgtext/\" alt=\"[ button: $text ]\" border=\"0\"></a>\n";
+    echo "<a href=\"$url\"><img src=\"/bbs/image.phtml/$font,$size,$colour/$imgtext/\" alt=\"[ button: $text ]\" border=\"0\"></a>\n";
     else
-    echo "<img src=\"/bbs/image.phtml/Arialblack_I,12,$colour/$imgtext/\" alt=\"[ image: $text ]\">\n";
+    echo "<img src=\"/bbs/image.phtml/$font,$size,$colour/$imgtext/\" alt=\"[ image: $text ]\">\n";
 
 }
 
@@ -414,7 +416,7 @@ function addbutton( $text, $url ) {
 function errorimage( $text ) {
 
     $font = "Myriad_B";
-    $size = "18";
+    $size = 18;
 
     $imgtext = strtr($text, "/", "\\");
     $imgtext = rawurlencode($imgtext);
