@@ -175,7 +175,6 @@ menu_command(M_LN_t * the_menu, M_display_t * m_fmt)
 	}
     }
 
-    cprintf("Got input: %c\n", command);
     fflush(stdout);
 
     if (strlen(cmdstr) && (!strpbrk(cmdstr, m_fmt->quit_command)))
