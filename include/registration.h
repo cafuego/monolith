@@ -11,6 +11,7 @@
 #define H_URL          64 
 #define H_BIRTHDAY    128
 #define H_ZIP	      256
+#define H_STATE	      512
 
 /* prototypes */
 extern void dis_regis( const user_type *userdata, int override );
