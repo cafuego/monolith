@@ -69,7 +69,7 @@ function html_print_title($username, $location) {
             if( html_are_there_xs($username) ) {
                 print "<title>$username@Monolith BBS: Looking at the Wholist [New X, not updating!]</title>\n";
             } else {
-                print "<meta http-equiv=\"Refresh\" content=\"60; url=http://monolith.yawc.net/bbs/index.phtml/w/\">\n";
+                print "<meta http-equiv=\"Refresh\" content=\"60; url=http://monolith.student.utwente.nl/bbs/index.phtml/w/\">\n";
                 print "<title>$username@Monolith BBS: Looking at the Wholist [Updating every minute]</title>\n";
             }
             break;
@@ -139,7 +139,7 @@ function html_do_logout($username, $hostname) {
     $result = MYSQL_QUERY("DELETE FROM webx WHERE (recipient=$usernum AND i_recipient='web') OR (sender=$usernum AND i_sender='web'");
     $result = MYSQL_QUERY("INSERT INTO login (user_id,login,logout,host) VALUES($user_id,FROM_UNIXTIME($login),FROM_UNIXTIME($logout),SEC_TO_TIME($online),'$hostname')");
 
-    print "<meta http-equiv=\"Refresh\" content=\"10; url=http://monolith.yawc.net/\">\n";
+    print "<meta http-equiv=\"Refresh\" content=\"10; url=http://monolith.student.utwente.nl/\">\n";
 
 }
 
@@ -241,7 +241,7 @@ function html_print_foot($username, $starttime, $location) {
     echo "  <td>\n";
     echo "    <p class=\"footer\" style=\"text-align: right;\">&copy; The Monolith Community 1999 -\n";
     echo "      Generated: ". gmdate("l, d F Y H:i:s", time()) ." GMT.<br>\n";
-    echo "      Send email to <a class=\"red\" href=\"mailto:webmaster@monolith.yawc.net\">webmaster@monolith.yawc.net</a> for suggestions and comments.</p>\n";
+    echo "      Send email to <a class=\"red\" href=\"mailto:webmaster@monolith.student.utwente.nl\">webmaster@monolith.student.utwente.nl</a> for suggestions and comments.</p>\n";
     echo "  </td>\n";
     echo "  <td>\n";
     echo "    <img align=\"left\" src=\"/bbs/pix/logo.jpg\" height=\"32\" width=\"32\" alt=\"Logo\">\n";
