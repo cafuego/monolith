@@ -32,7 +32,9 @@ function show_wholist($username,$location) {
             $text = "Listing 1 user online";
         $text = rawurlencode($text);
 
-        echo "<img align=\"center\" src=\"/bbs/image.phtml/Arial/$text/\" height=\"30\" width=\"500\">\n";
+        echo "<div align=\"center\">\n";
+        echo "<img src=\"/bbs/image.phtml/Arial/$text/\" height=\"30\" width=\"500\" alt=\"[ image: ". rawurldecode($test) ." ]\">\n";
+        echo "</div>\n";
 
         print "<table border=\"0\" cellpadding=\"4\" cellspacing=\"2\" align=\"center\">\n";
         print "<tr>\n";

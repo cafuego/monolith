@@ -3,8 +3,8 @@
     Header( "Content-type: image/gif" );
 
     $url_array=explode("/",$REQUEST_URI);
-    $font = "/usr/bbs/www/bbs/font/". url_array[1] .".ttf" );
-    $text = rawurldecode($url_array[2]);
+    $font = "/usr/bbs/www/bbs/font/". url_array[2] .".ttf" );
+    $text = rawurldecode($url_array[3]);
 
     $im = imagecreate( 500, 30 );
     $black = ImageColorAllocate( $im, 0, 0, 0 );
