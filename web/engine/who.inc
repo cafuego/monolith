@@ -82,6 +82,10 @@ function show_wholist($username, $location)
     } else {
 	addimage("Noone is online");
     }
+    
+    echo "<form action=\"/bbs/profile.phtml\" method\"get\">\n";
+    echo "<p align=\"center\">Profile user: <input type=\"text\" name=\"victim\" size=\"20\" maxsize=\"21\"><input type=\"submit\" value=\"Profile\">\n";
+    echo "</form>\n";
 }
 
 ?>

@@ -5,7 +5,7 @@
 SUBDIRS = classes engine pix style script
 
 webdir = $(prefix)/www/bbs
-web_DATA = index.phtml image.phtml handler.phtml
+web_DATA = index.phtml image.phtml handler.phtml profile.phtml
 
 #endif
 

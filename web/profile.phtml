@@ -1,0 +1,41 @@
+<?php
+
+    // Print header; caching info etc.
+    //
+    echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n";
+    echo "<html lang=\"en\">\n";
+    echo "<head>\n\n";
+    echo "<meta name=\"Generator\" content=\"PHP ".phpversion()."\">\n";
+    echo "<meta name=\"Process-id\" content=\"".getmypid()."\">\n";
+    echo "<meta name=\"Location\" content=\"$REQUEST_URI\">\n";
+    echo "<meta name=\"Rcsid\" content=\"\$Id$\">\n\n";
+    echo "<meta http-equiv=\"Expires\" content=\"".gmdate("l, d F Y H:i:s")." GMT\">\n";
+    echo "<meta http-equiv=\"Last-Modified\" content=\"".gmdate("l, d F Y H:i:s")." GMT\">\n";
+    echo "<meta http-equiv=\"Cache-Control\" content=\"no-cache, must-revalidate\">\n";
+    echo "<meta http-equiv=\"Pragma\" content=\"no-cache\">\n";
+
+    echo "<meta http-equiv=\"Refresh\" content=\"0; url=http://monolith.student.utwente.nl/bbs/index.phtml/p/$victim/\">\n";
+
+    $username = getenv("REMOTE_USER");
+    echo "<title>$username@Monolith BBS: Profiling " .urldecode($victim) ."</title>\n";
+
+    // Include StyleSheet and JavaScript.
+    //
+    echo "<link rev=\"made\" href=\"mailto:webmaster@monolith.student.utwente.nl\">\n";
+    echo "<link rel=\"StyleSheet\" href=\"/bbs/style/global.css\" type=\"text/css\">\n";
+    echo "<script language=\"JavaScript\">\n";
+    echo "<!--\n";
+    echo "function setStatus( text ) {\n";
+    echo "    window.status = text;\n";
+    echo "    return true;\n";
+    echo "}\n";
+    echo "// -->\n";
+    echo "</script>\n";
+
+    echo "</head>\n";
+    echo "<body bgcolor=\"#000000\" text=\"#FFFFFF\" style=\"margin-left: 0; margin-top: 0;\">\n\n";
+    echo "</body>\n";
+    echo "</html>\n";
+
+
+?>
