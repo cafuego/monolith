@@ -12,6 +12,7 @@
 #include "sql_config.h"
 #include "sql_useruser.h"
 #include "sql_userforum.h"
+#include "sql_forum.h"
 #include "sql_usertopic.h"
 #include "msg_file.h"
 #include "sql_utils.h"

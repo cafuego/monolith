@@ -18,9 +18,9 @@
 
 typedef struct topic_struct {
 	char name[L_TOPICNAME+1]; /* name of topic */
-        unsigned int id;	/* number of topic */
-        unsigned int highest; /* highest post number */
-	unsigned int forum; /* the forum that `owns' this thread */
+	unsigned int forum_id; /* the forum that `owns' this thread */
+        unsigned int topic_id;	/* number of topic */
+        unsigned int highest;  /* highest post number */
         unsigned int posttype;
 } topic_t;
 
