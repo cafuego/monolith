@@ -34,7 +34,7 @@
 #define Q_CLIENTUSER    1	/* i am a client-user                   */
 
 unsigned int maxallow, my_position;
-char hostname[L_HOSTNAME + 1];
+char hostname[255];
 char username[L_USERNAME + 1];
 int successful_pre_login = 0;
 int allowed_skip_queue = 0;
