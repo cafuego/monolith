@@ -19,7 +19,7 @@
  * without blocking normal x-es.
  *
  * MASH  -  Copyright (c) Monolith Community Development 1995.
- * SHIX  -  Copyright (c) Monolith Community Development 1996 - 1997.
+ * SHIX  -  Copyright (c) Monolith Community Development 1996 - 1999.
  *
  * Both MASH and SHIX may _not_ be used or distributed before obtaining
  * permission from the developers of the system or the founders of Monolith
@@ -52,7 +52,7 @@
 
 /*
  * on TRUE the x will be killed, on FALSE it will not be killed.
- * scoring per word should be installed instead a one-hit evaluation.
+ * scoring per word should be installed instead of a one-hit evaluation.
  */
 
 int
@@ -94,7 +94,8 @@ shix(const char *message)
 	if (regexec(expr, nocase) != 0)
 	    hiscore += atoi(strtok(NULL, DELIM));
 
-	expr = NULL;
+	xfree(expr);
+        expr = NULL;
     }
 
     fclose(fp);

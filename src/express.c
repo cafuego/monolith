@@ -344,13 +344,7 @@ catchx(int key)
     if ((usersupp->flags & US_SHIX) && (!friendb) && (shix(Catchxs->message) == TRUE)) {
 	Catchxs->ack = ACK_SHIX;
 	Catchxs->override = OR_FREE;
-	sprintf(tempstr, "\1d**\1b SHIX killed an X by \1r%s.\1d ** ", Catchxs->sender);
-
 	nox = 1;
-	statusbar(tempstr);
-	if (usersupp->flags & US_BEEP) {
-	    cprintf("");
-	}
 	return;
     }
 /* other non-broadcast received ACK's and set x_default to sender */
