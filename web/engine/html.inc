@@ -209,18 +209,23 @@ function html_print_foot($username, $starttime, $location) {
     // Don't show menu if we're logging off.
     //
     if($url_array[3] != "q") {
+
         echo "<hr size=\"1\" width=\"400\" align=\"center\">\n";
-        echo "<p class=\"footer\">\n";
-        echo "  <a href=\"$location\">Check X Messages</a> <b>|</b>\n";
-        echo "  <a href=\"/bbs/index.phtml/w\">View Wholist</a> <b>|</b>\n";
-        echo "  <a href=\"/bbs/index.phtml/l\">All Quadrants</a> <b>|</b>\n";
-        echo "  <a href=\"/bbs/index.phtml/u\">Unread Messages</a>\n";
-        echo "<p class=\"footer\">\n";
-        echo "  <a href=\"/bbs/index.phtml/\">Main Page</a> <b>|</b>\n";
-        echo "  <a href=\"/bbs/index.phtml/q\">Log out $username</a>\n";
-        echo "<hr size=\"1\" width=\"400\" align=\"center\">\n";
+
+        echo "<div align=\"center\">\n";
+        addbutton("X Messages", "$location");
+        addbutton("Wholist", "/bbs/index.phtml/w");
+        addbutton("Unread", "/bbs/index.phtml/u");
+        addbutton("Quadrants", "/bbs/index.phtml/l");
+
+        addbutton("Monolith", "/");
+        addbutton("Main Page", "/bbs/index.phtml/");
+        addbutton("Log out", "/bbs/index.phtml/q");
+        echo "</div>\n";
+
     }
 
+    echo "<hr size=\"1\" width=\"400\" align=\"center\">\n";
     echo "<table border=\"0\" cellspacing=\"3\" align=\"center\">\n";
     echo "<tr>\n";
     echo "  <td colspan=\"2\">\n";
@@ -266,15 +271,15 @@ function html_print_buttons($username, $location) {
     if($url_array[3] == "q")
         return;
 
-    addbutton("Monolith", "/");
-    addbutton("Main Page", "/bbs/index.phtml/");
-    addbutton(" ", "");
-    addbutton("X Messages", "$location");
-    addbutton("Wholist", "/bbs/index.phtml/w");
-    addbutton("Unread", "/bbs/index.phtml/u");
-    addbutton("Quadrants", "/bbs/index.phtml/l");
-    addbutton(" ", "");
-    addbutton("Log out", "/bbs/index.phtml/q");
+    echo "". addbutton("Monolith", "/") ."<br>\n";
+    echo "". addbutton("Main Page", "/bbs/index.phtml/") ."<br>\n";
+    echo "". addbutton(" ", "") ."<br>\n";
+    echo "". addbutton("X Messages", "$location") ."<br>\n";
+    echo "". addbutton("Wholist", "/bbs/index.phtml/w") ."<br>\n";
+    echo "". addbutton("Unread", "/bbs/index.phtml/u") ."<br>\n";
+    echo "". addbutton("Quadrants", "/bbs/index.phtml/l") ."<br>\n";
+    echo "". addbutton(" ", "") ."<br>\n";
+    echo "". addbutton("Log out", "/bbs/index.phtml/q") ."<br>\n";
 }
 
 ?>
