@@ -221,7 +221,7 @@ function html_print_foot($username, $starttime) {
     echo "</tr>\n";
     echo "</table>\n";
 
-    $elapsed = $end[0]-$start[0]+end[1]-$start[1];
+    $elapsed = ($end[0]-$start[0])+($end[1]-$start[1]);
     printf( "<!-- Gen: %.4f sec. -->\n", $elapsed );
 
 }
