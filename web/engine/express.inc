@@ -1,4 +1,4 @@
-< ?
+<?
 
  /*
   * $Id$
@@ -79,4 +79,4 @@ function express_message($username, $recipient, $interface, $location)
 
 }
 
-? >
+?>

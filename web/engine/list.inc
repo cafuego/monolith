@@ -1,4 +1,4 @@
-< ?
+<?
 
  /*
   * $Id$
@@ -92,4 +92,4 @@ function list_quads($username, $listunread)
     }
 }
 
-? >
+?>

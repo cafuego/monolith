@@ -1,4 +1,4 @@
-< ?
+<?
 
  /*
   * $Id$
@@ -645,4 +645,4 @@ main_menu($username, $current_url)
     }
 }
 
-? >
+?>

@@ -1,4 +1,4 @@
-< ?
+<?
 
  /*
   * $Id$
@@ -313,4 +313,4 @@ html_loginsound()
     echo "    </embed>\n\n";
 }
 
-? >
+?>

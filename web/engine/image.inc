@@ -1,5 +1,4 @@
-
-< ? php
+<?php
 
 function pagetitle($text, $fontfile)
 {
@@ -18,4 +17,4 @@ function pagetitle($text, $fontfile)
     return;
 }
 
-? >
+?>

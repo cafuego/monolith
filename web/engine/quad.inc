@@ -1,4 +1,4 @@
-< ?
+<?
 
  /*
   * $Id$
@@ -107,4 +107,4 @@ function list_messages($username, $quad, $listunread)
     }
 }
 
-? >
+?>

@@ -1,4 +1,4 @@
-< ?
+<?
 
  /*
   * $Id$
@@ -80,4 +80,4 @@ function show_wholist($username, $location)
     }
 }
 
-? >
+?>

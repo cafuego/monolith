@@ -1,4 +1,4 @@
-< ?
+<?
 
  /*
   * $Id$
@@ -160,4 +160,4 @@ function read_message($username, $quad, $current, $direction)
     }
 }
 
-? >
+?>
