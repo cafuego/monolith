@@ -255,7 +255,7 @@ check_voting_results(int item)
     int totalYES = 0;
     int totalNO = 0;
     char work[140];
-    int i;
+    unsigned int i;
 
 
     sprintf(file, "%s/votings%d", VOTEDIR, item);
