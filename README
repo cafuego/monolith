@@ -37,9 +37,10 @@ Here we moved the telnet port to port 24 (normally unused), and put the
 bbs on the normal telnet port.
 
 * Create dirs in /usr/bbs/save/quads with numbers from 0 to MAXROOMS 
-  (usually 150)
+  (usually 150) A utility called `make_message_dirs' is provided in the
+  tools diretory.
 
-* Chown everything in /usr/bbs/ to the bbs user
+* Chown everything in /usr/bbs/ to the bbs user and bbs group.
  
 * The bbs is now running. You can login, and create an account for yourself
 
