@@ -16,7 +16,7 @@
 #include <time.h>
 #include <dirent.h>
 
-#include <mysql.h>
+#include MYSQL_HEADER
 
 #include "monolith.h"
 #include "libmono.h"

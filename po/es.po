@@ -32,7 +32,7 @@ msgstr "\001f\001gEl sujetapapeles no fue borrado.\n"
 
 #: src/clipboard.c:69
 msgid "\001f\001gClipboard deleted.\n"
-msgstr "\001f\001gEl sujetapapeles fue borrado.\n "
+msgstr "\001f\001gEl sujetapapeles fue borrado.\n"
 
 #: src/clipboard.c:74
 msgid "\001f\001gEdit ClipBoard.\n"
@@ -40,7 +40,7 @@ msgstr "\001f\001gEdite el sujetapapeles.\n"
 
 #: src/clipboard.c:83
 msgid "\001f\001gRemove Colorcodes.\n"
-msgstr "\001f\001gQuitar los códigos para color."
+msgstr "\001f\001gQuitar los códigos para color.\n"
 
 #: src/clipboard.c:85
 msgid ""
@@ -68,11 +68,11 @@ msgstr ""
 
 #: src/clipboard.c:92
 msgid "\001f\001w----- CLIPBOARD -----\n"
-msgstr "\001f\001w----- SUJETAPAPELES -----\n "
+msgstr "\001f\001w----- SUJETAPAPELES -----\n"
 
 #: src/clipboard.c:98
 msgid "\001f\001gQuit.\n"
-msgstr "\001f\001gQuite.\n "
+msgstr "\001f\001gQuite.\n"
 
 #: src/clipboard.c:131
 msgid ""
@@ -94,7 +94,7 @@ msgstr "\001fNo pudo abrir su legajo de sujetapapeles.\n"
 
 #: src/clipboard.c:223
 msgid "Copy'ing the NoteBook to the end of the ClipBoard.\n"
-msgstr "Copiando el cuaderno al fin del sujetapapeles"
+msgstr "Copiando el cuaderno al fin del sujetapapeles.\n"
 
 #: src/clipboard.c:229
 msgid "Delete NoteBook!\n"
@@ -106,7 +106,7 @@ msgstr "¿Está seguro? "
 
 #: src/clipboard.c:286
 msgid "\001r\001fInvalid email address, can't send message!\001a\n"
-msgstr "\001r\001f¡Drección e-mail inválida; no se pudo mandar el mensaje!\001a\n "
+msgstr "\001r\001f¡Drección e-mail inválida; no se pudo mandar el mensaje!\001a\n"
 
 #: src/clipboard.c:291
 msgid ""
@@ -118,7 +118,7 @@ msgstr ""
 
 #: src/clipboard.c:298
 msgid "\001f\001gE-Mail yourself the ClipBoard.\n"
-msgstr "\001f\001gE-Mail el cuaderno a Ud. mismo.\n "
+msgstr "\001f\001gE-Mail el cuaderno a Ud. mismo.\n"
 
 #: src/clipboard.c:300
 msgid "\001g\001fAre you sure you want to email your clipboard? \001w(\001gy\001w/\001gN\001w) \001c"
@@ -188,7 +188,7 @@ msgstr ""
 
 #: src/commands.c:700
 msgid "\001f\001cMark messages as read.\n"
-msgstr "\001f\001cMarque los mensajes: leídos.\n "
+msgstr "\001f\001cMarque los mensajes: leídos.\n"
 
 #: src/commands.c:718
 msgid "\001f\001cSystem Configuration.\n"
@@ -196,7 +196,7 @@ msgstr ""
 
 #: src/commands.c:734
 msgid "\001f\001w(\001gMisc. Options\001w)\n"
-msgstr "\001f\001w(\001gOpciones Misceláneos\001w)\n "
+msgstr "\001f\001w(\001gOpciones Misceláneos\001w)\n"
 
 #: src/express.c:113
 msgid "\001f\001gSuccessfully saved \001pWeb\001g %s %s for \001y%s.\001a\n"
@@ -220,7 +220,7 @@ msgstr ""
 
 #: src/express.c:217 src/express.c:1235 src/express.c:1240
 msgid "\001f\001g%s %s received by \001y%s\001g.\001a\n"
-msgstr "\001f\001g%s %s recibió por \001y%s\001g.\001a\n "
+msgstr "\001f\001g%s %s recibió por \001y%s\001g.\001a\n"
 
 #: src/express.c:440
 msgid "\001d** \001bAn X from \001r%s\001b has arrived. \001d** "
@@ -262,11 +262,11 @@ msgstr "\001f\001gMande %s %s\001w: \001c "
 
 #: src/express.c:709
 msgid "\001r\001fNo such %s %s.\001a\n"
-msgstr "\001r\001fNo hay un %s %s.\001a\n "
+msgstr "\001r\001fNo hay un %s %s.\001a\n"
 
 #: src/express.c:716
 msgid "\001r\001gYou're not listening to %s \001p%s\001g.\n"
-msgstr "\001r\001gNo está escuchando %s \001p%s\001g.\n "
+msgstr "\001r\001gNo está escuchando %s \001p%s\001g.\n"
 
 #: src/express.c:742
 msgid ""
@@ -298,7 +298,7 @@ msgstr ""
 
 #: src/express.c:787
 msgid "\001f\001rYou cannot send messages to degraded users.\001a\n"
-msgstr "\001f\001rNo se puede mandar mensajes a un usario que está degradado.\001a\n "
+msgstr "\001f\001rNo se puede mandar mensajes a un usario que está degradado.\001a\n"
 
 #: src/express.c:795
 msgid ""
@@ -354,7 +354,7 @@ msgstr ""
 
 #: src/express.c:941
 msgid "\001f\001rThere are no %s %s in your log.\001a\n"
-msgstr "\001f\001rNo hay %s %s en su cuaderno de X's.\001a\n "
+msgstr "\001f\001rNo hay %s %s en su cuaderno de X's.\001a\n"
 
 #: src/express.c:1015
 msgid "\001f\001wYour %s %s are %sabled\001w.\001a"
@@ -366,7 +366,7 @@ msgstr "\001f\001gEstes %s %s few reteniendo para Ud.  mientras estuvo ocupado:\
 
 #: src/express.c:1196 src/express.c:1203
 msgid "\001f\001g%s %s received by \001y%s\001g.\n"
-msgstr "\001f\001g%s %s recibió por \001y%s\001g.\n "
+msgstr "\001f\001g%s %s recibió por \001y%s\001g.\n"
 
 #: src/express.c:1198
 msgid "\001f\001y%s\001g is marked as \001clocked\001g though.\001a\n"
@@ -378,11 +378,11 @@ msgstr ""
 
 #: src/express.c:1210
 msgid "\001f\001gOops! Something went wrong.\n"
-msgstr "\001f\001g¡Oops! Algo mal pasó.\n "
+msgstr "\001f\001g¡Oops! Algo mal pasó.\n"
 
 #: src/express.c:1211
 msgid "\001y%s\001g did \001rnot\001g receive your %s %s.\001a\n"
-msgstr "\001y%s\001g \001rno\001g recibió su %s %s.\001a\n "
+msgstr "\001y%s\001g \001rno\001g recibió su %s %s.\001a\n"
 
 #: src/express.c:1216
 msgid ""
@@ -394,7 +394,7 @@ msgstr ""
 
 #: src/express.c:1220
 msgid "\001f\001y%s\001g does not wish to receive that %s.\001a\n"
-msgstr "\001f\001y%s\001g no le desaría recibirlo %s.\001a\n "
+msgstr "\001f\001y%s\001g no le desaría recibirlo %s.\001a\n"
 
 #: src/express.c:1247
 msgid "\001f\001gSorry, \001y%s \001ghas \001rX-disabled\001g you!!!\001a\n"
@@ -402,7 +402,7 @@ msgstr "\001f\001g¡¡¡Lo siento, pero \001y%s \001gtiene \001rX-disabled\001g Ud.
 
 #: src/express.c:1252
 msgid "\001f\001gOops! \001y%s\001g's buffer is full.\n"
-msgstr "\001f\001g¡Oops! La amortiguador de\001y%s\001g está llena.\n "
+msgstr "\001f\001g¡Oops! La amortiguador de\001y%s\001g está llena.\n"
 
 #: src/express.c:1253
 msgid "Your %s was /1rnot/1g received, try re-sending it in a moment.\001a\n"

@@ -12,7 +12,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-#include <mysql.h>
+#include MYSQL_HEADER
 
 #include "monolith.h"
 #include "sql_utils.h"

@@ -1,10 +1,15 @@
 /* forums to sql */
 /* a conversiion program */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+#include <build-defs.h>
+
 #include <sys/types.h>
 #include <stdio.h>
 
-#include <mysql.h>
+#include MYSQL_HEADER
 
 #include "monolith.h"
 #include "libmono.h"
