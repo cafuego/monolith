@@ -7,15 +7,27 @@ msgstr ""
 "Files: ./cgi/index.c ./cgi/account.c ./cgi/counter.c ./cgi/hprintf.c ./cgi/util.c ./cgi/interface.c ./cgi/knownrooms.c ./cgi/profile.c ./cgi/register.c ./cgi/userlist.c ./cgi/wholist.c ./cgi/www_auth_group.c ./cgi/www_auth_user.c ./daemons/front.c ./daemons/server.c ./lib/btmp.c ./lib/libcache.c ./lib/libdexi.c ./lib/libfriends.c ./lib/libquad.c ./lib/libuid.c ./lib/log.c ./lib/msg_file.c ./lib/routines.c ./lib/sql_config.c ./lib/sql_convert.c ./lib/sql_express.c ./lib/sql_forum.c ./lib/sql_goto.c ./lib/sql_llist.c ./lib/sql_login.c ./lib/sql_mail.c ./lib/sql_message.c ./lib/sql_online.c ./lib/sql_rating.c ./lib/sql_topic.c ./lib/sql_user.c ./lib/sql_userforum.c ./lib/sql_usertopic.c ./lib/sql_useruser.c ./lib/sql_utils.c ./lib/sql_web.c ./lib/userfile.c ./misc/fsql.c ./misc/add_quads.c ./misc/bbscheck.c ./misc/ccat.c ./misc/convert.c ./misc/delsql.c ./misc/dexi.c ./misc/dexi2.c ./misc/findlowest.c ./misc/finger.c ./misc/initdb.c ./misc/initgoto.c ./misc/makeemp.c ./misc/purge.c "
 "./misc/ql_sql.c ./misc/test.c ./misc/ubl.c ./misc/userlist.c ./misc/wholist.c ./shix/libshix.c ./shix/regerror.c ./shix/regexp.c ./shix/regsub.c ./src/menu.c ./src/bbsconfig.c ./src/chat.c ./src/client_input.c ./src/clipboard.c ./src/commands.c ./src/config.c ./src/cprintf.c ./src/display_message.c ./src/enter_message.c ./src/express.c ./src/friends.c ./src/fun.c ./src/help.c ./src/inter.c ./src/key.c ./src/main.c ./src/messages.c ./src/newuser.c ./src/normal_input.c ./src/qc.c ./src/read_menu.c ./src/registration.c ./src/rooms.c ./src/routines2.c ./src/statusbar.c ./src/uadmin.c ./src/usertools.c ./src/vote.c ./src/wholist.c ./intl/bindtextdom.c ./intl/cat-compat.c ./intl/dcgettext.c ./intl/dgettext.c ./intl/finddomain.c ./intl/gettext.c ./intl/intl-compat.c ./intl/loadmsgcat.c ./intl/localealias.c ./intl/textdomain.c\n"
 
-#: misc/ccat.c:90
+#: lib/sql_web.c:163
+msgid ""
+"\n"
+"\001f\001gThere are no users online via the web.\n"
+msgstr ""
+
+#: lib/sql_web.c:167
+msgid ""
+"\n"
+"\001f\001gThere %s \001y%d\001g user%s online via the web.\n"
+msgstr ""
+
+#: misc/ccat.c:87
 msgid "Too many arguments\n"
 msgstr "Te veel argumenten\n"
 
-#: misc/ccat.c:91
+#: misc/ccat.c:88
 msgid "Try `%s --help' for more information\n"
 msgstr "Probeer `%s --help' voor meer informatie\n"
 
-#: misc/ccat.c:99
+#: misc/ccat.c:96
 msgid ""
 "This is Monolith ccat.\n"
 "Usage: %s [OPTION] [FILE]\n"
@@ -25,6 +37,273 @@ msgid ""
 "Report bugs to bugs@monolith.yawc.net.\n"
 msgstr ""
 
-#: misc/ccat.c:131
+#: misc/ccat.c:128
 msgid "Warning: File ends in colour `%s'. Please fix this\n"
 msgstr "Waarschuwing: Bestand eindigt in kleur `%s'. Repareer dit\n"
+
+#: src/clipboard.c:59
+msgid "\001f\001gClipboard: \001a"
+msgstr ""
+
+#: src/clipboard.c:72
+msgid "\001f\001gDelete ClipBoard.\n"
+msgstr ""
+
+#: src/clipboard.c:73
+msgid "\001f\001yAre you sure you want to delete your clipboard? (y/N) "
+msgstr ""
+
+#: src/clipboard.c:75
+msgid "\001f\001gClipboard not deleted.\n"
+msgstr ""
+
+#: src/clipboard.c:78
+msgid "\001f\001gClipboard deleted.\n"
+msgstr ""
+
+#: src/clipboard.c:83
+msgid "\001f\001gEdit ClipBoard.\n"
+msgstr ""
+
+#: src/clipboard.c:92
+msgid "\001r\001fInvalid email address, can't send message!\001a\n"
+msgstr ""
+
+#: src/fun.c:60 src/fun.c:76
+msgid "\001f\001gNo unread %s.\001a"
+msgstr "\001f\001gGeen ongelezen %s.\001a"
+
+#: src/main.c:170
+msgid ""
+"OH NO!!!!!!! A SEGFAULT!!!!!\n"
+" "
+msgstr ""
+
+#: src/main.c:218 src/main.c:322
+msgid "Incorrect login.\n"
+msgstr "Foute login.\n"
+
+#: src/main.c:235
+msgid "\001f\001gPlease enter your \001rcurrent\001g password: "
+msgstr "\001f\001gType je \001rhuidige\001g wachtwoord: "
+
+#: src/main.c:244
+msgid "Password changed.\n"
+msgstr "Wachtwoord gewijzigd.\n"
+
+#: src/main.c:246
+msgid "Password unchanged.\n"
+msgstr "Wachtwoord niet gewijzigd.\n"
+
+#: src/main.c:266
+msgid "Please enter a password: "
+msgstr "Type je wachtwoord: "
+
+#: src/main.c:273
+msgid "Please enter it again: "
+msgstr "Type het nogmaals: "
+
+#: src/main.c:277
+msgid "The passwords you typed didn't match.  Please try again.\n"
+msgstr "De wachtwoorden waren niet gelijk. Probeer het nogmaals.\n"
+
+#. loop until we get a real username
+#: src/main.c:303
+msgid ""
+"\n"
+"Username: "
+msgstr ""
+
+#: src/main.c:307
+msgid "Enter \"Off\" to quit or \"New\" to enter as a new user.\n"
+msgstr "Type \"Off\" om te stoppen of \"New\" om een nieuwe gebruiker te creeren\n"
+
+#: src/main.c:320
+msgid "%s's Password: "
+msgstr "%s's wachtwoord: "
+
+#: src/main.c:551
+msgid ""
+"\n"
+"*** Registration is required. ***\n"
+"\n"
+msgstr ""
+"\n"
+"*** Registratie is vereist. ***\n"
+"\n"
+
+#: src/main.c:555
+msgid ""
+"\001f\001yNow \001w<\001ry\001w>\001yell to the admin to be granted full access.\n"
+"\n"
+msgstr ""
+
+#: src/main.c:652
+msgid ""
+"\n"
+"\n"
+"\001g\001f%s \001yis still sending you an %s %s.\n"
+"\001a"
+msgstr ""
+
+#: src/main.c:653
+msgid "\001f\001gHit any key to continue...\001a"
+msgstr "\001f\001gDruk om een toets om door te gaan...\001a"
+
+#: src/main.c:658
+msgid ""
+"\n"
+"\001f\001gAre you sure you want to leave the bbs? \001w(\001gy\001w/\001gn\001w/\001gm\001w/\001g?\001w)\001g "
+msgstr ""
+"\n"
+"\001f\001gWeet je zeker dat je het BBS wil verlaten? \001w(\001gy\001w/\001gn\001w/\001gm\001w/\001g?\001w)\001g "
+
+#: src/main.c:663
+msgid "\001f\001gHelp.\001a\n"
+msgstr ""
+
+#: src/main.c:668
+msgid "\001f\001gYes.\n"
+msgstr ""
+
+#: src/main.c:672
+msgid "\001f\001gNo.\n"
+msgstr ""
+
+#: src/main.c:774
+msgid ""
+"\n"
+"\001a\001f\001gWelcome to Monolith BBS, \001g%s! \001gThis is your \001w#%d \001glogin.\n"
+msgstr ""
+"\n"
+"\001a\001f\001gWelkom op Monoliet BBS, \001g%s! \001gDit is je \001w#%d \001gverbinding.\n"
+
+#: src/main.c:778
+msgid "\001f\001gLast login: %s \001g\001ffrom \001r%-16.16s\n"
+msgstr "\001f\001gLaatste login: %s \001g\001fvanaf \001r%-16.16s\n"
+
+#: src/main.c:798
+msgid "\001f\001gYour friends online\001w:\001a\n"
+msgstr "\001f\001gJe aanwezige vrienden\001w:\001a\n"
+
+#: src/main.c:836
+msgid "\001f\001gYou have a new private %s in \001pMail>\n"
+msgstr ""
+
+#: src/main.c:838
+msgid "\001f\001gYou have \001r%d \001gnew private %s in \001pMail>\n"
+msgstr "\001f\001gJe hebt \001r%d \001gnieuwe poststukken in \001pMail>\n"
+
+#: src/main.c:840
+msgid "\001f\001gYou have \001rno\001g new Mail %s.\001a\n"
+msgstr "\001f\001gJe hebt \001rgeen\001g nieuwe post.\001a\n"
+
+#: src/read_menu.c:266
+msgid "\001f\001gAll %s\001w:\n"
+msgstr "\001f\001gAlle %s\001w:\n"
+
+#: src/read_menu.c:271
+msgid "\001f\001gKnown %s.\n"
+msgstr "\001f\001gBekende %s.\n"
+
+#: src/read_menu.c:287
+msgid "\001f\001gLogout.\001a"
+msgstr ""
+
+#: src/read_menu.c:345
+msgid "\001f\001gInterBBS Wholist.\001a\n"
+msgstr ""
+
+#: src/read_menu.c:383
+msgid "\001f\001g%s Wholist.\n"
+msgstr "\001f\001g%s Wie-lijst.\n"
+
+#: src/read_menu.c:388
+msgid "\001f\001gWhich %s are online?\001a\n"
+msgstr "\001f\001gWelke %s zijn aanwezig?\001a\n"
+
+#: src/read_menu.c:393
+msgid "\001f\001gShort Wholist.\001a\n"
+msgstr "\001f\001gKorte Wie-lijst.\001a\n"
+
+#: src/read_menu.c:410
+msgid "\001f\001gSend %s %s.\001a\n"
+msgstr "\001f\001gStuur %s %s.\001a\n"
+
+#: src/usertools.c:98
+msgid "\001f\001gProfile user \001w(\001y%s\001w): \001c"
+msgstr "\001f\001gBekijk gebruiker \001w(\001y%s\001w): \001c"
+
+#: src/usertools.c:100
+msgid "\001g\001fProfile user\001w: \001c"
+msgstr "\001g\001fBekijk gebruiker\001w: \001c"
+
+#: src/usertools.c:112
+msgid "\001r\001fNot a valid InterBBS name.\n"
+msgstr ""
+
+#: src/usertools.c:125
+msgid "\001f\001rNo such user.\001a\n"
+msgstr ""
+
+#: src/usertools.c:701
+msgid "Birthday: \001g"
+msgstr "Verjaardag: \001g"
+
+#: src/usertools.c:863
+msgid "Are you sure you want to edit your profile? (y/n) "
+msgstr "Weet je zeker dat je je profile wil editen? (y/n) "
+
+#: src/usertools.c:883
+msgid "Are you sure you want to change your profile? (y/n) "
+msgstr "Weet je zeker dat je je profile wil wijzigen? (y/n) "
+
+#: src/usertools.c:888
+msgid ""
+"\001yYou now have seven lines to create a nice profile of yourself.\001g\n"
+"\n"
+msgstr ""
+
+#: src/usertools.c:940
+msgid "\001f\001gChange address.\n"
+msgstr ""
+
+#: src/usertools.c:1089
+msgid "\001f\001wYou are now marked as \001gAWAY\001w.\n"
+msgstr ""
+
+#: src/usertools.c:1091
+msgid "\001gDefault away message: \001y%s\001a\n"
+msgstr ""
+
+#: src/usertools.c:1092
+msgid "\001f\001gNew Away message: \001c"
+msgstr ""
+
+#: src/usertools.c:1099
+msgid "\001f\001wYou are \001rno longer\001w marked as \001gAWAY\001w.\001a"
+msgstr ""
+
+#: src/wholist.c:96
+msgid ""
+"\n"
+"\001g\001fYou are all alone online at \001y%02d:%02d\001g local time.\n"
+msgstr ""
+
+#: src/wholist.c:98
+msgid "\001f\001gHey! What do you think you are doing here?\001a\n"
+msgstr ""
+
+#: src/wholist.c:101
+msgid ""
+"\n"
+"\001g\001fThere are \001y%u\001g %s online at \001y%02d:%02d\001g local time.\n"
+msgstr ""
+"\n"
+"\001g\001fEr zijn \001y%u\001g %s gebruikers aanwezig op \001y%02d:%02d\001g lokale tijd.\n"
+
+#: src/wholist.c:105
+msgid ""
+"\n"
+"\001g\001fThere are \001y%ud\001g %s online \001c( \001y%ud \001cqueued ) \001gat \001y%02d:%02d\001g local time.\n"
+msgstr ""
