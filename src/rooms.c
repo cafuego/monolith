@@ -526,8 +526,7 @@ killroom()
 	if (quickroom.flags & QR_INUSE)
 	    quickroom.flags ^= QR_INUSE;
 
-	for (i = 0; i < NO_OF_QLS; i++)
-	    strcpy(quickroom.qls[i], "");
+	for (i = 0; i < NO_OF_QLS; i++) strcpy(quickroom.qls[i], "");
 
 	cprintf("\1f\1rErase all %s in this %s%s",
 		config.message_pl, config.forum,

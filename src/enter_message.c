@@ -16,7 +16,7 @@
 #include <sys/signal.h>
 
 #ifdef USE_MYSQL
-  #include MYSQL_HEADER
+#include MYSQL_HEADER
 #endif
 
 #ifdef ENABLE_NLS
@@ -43,7 +43,6 @@
 #define extern
 #include "enter_message.h"
 #undef extern
-
 
 static void get_subject(message_header_t *);
 static void get_reply_info(message_header_t *, const unsigned);
@@ -72,7 +71,7 @@ enter_message(unsigned int forum, int mode, unsigned long banner_flag, const cha
     nox = TRUE;
     reply = (mode == REPLY_MODE) ? 1 : 0;
 
-    read_forum( forum, &quad );
+    read_forum(forum, &quad);
 
     /* priv checking */
     if ((quad.flags & QR_READONLY) && (usersupp->priv < PRIV_SYSOP)) {
@@ -80,8 +79,8 @@ enter_message(unsigned int forum, int mode, unsigned long banner_flag, const cha
 	    cprintf("\1f\1rYou cannot enter %s in read-only %s.\1a\n", config.message_pl, config.forum_pl);
 	else if (((int) rand() % 2) == 1)
 	    cprintf("\1f\1rThe pod bay door remains closed.\1a\n");
-        else
-            cprintf("\1f\1rThe door slams in your face and you hear voices.\1a\n");
+	else
+	    cprintf("\1f\1rThe door slams in your face and you hear voices.\1a\n");
 	return 0;
     }
     header = (message_header_t *) xmalloc(sizeof(message_header_t));
@@ -249,9 +248,9 @@ save_new_message(message_header_t * header, unsigned int forum)
     } else {
 	time_function(TIME_STOP);
     }
-time_function(TIME_STOP);
+    time_function(TIME_STOP);
 #endif
-    mono_sql_u_increase_post_count( usersupp->usernum );
+    mono_sql_u_increase_post_count(usersupp->usernum);
 
     return 0;
 }
@@ -635,7 +634,7 @@ change_forum_info(void)
 	    enter_message(curr_rm, EDIT_CTRLD, INFO_BANNER, NULL);
     }
 
-    read_forum( curr_rm, &quad );
+    read_forum(curr_rm, &quad);
     quad.roominfo++;
     quad.flags |= QR_DESCRIBED;	/* set the flag */
     write_quad(quad, curr_rm);
@@ -654,11 +653,13 @@ quad_lizard(message_header_t * header)
 {
     FILE *fp1, *fp2;
     char filename[L_FILENAME + 1];
-    int i, ql_ctr, idle_for, mail_the_lamer_qls;
+    int ret;
+    int i, idle_for, mail_the_lamer_qls;
     long j;
     room_t quad;
     time_t timenow;
     user_t *qlPtr = NULL;
+    userlist_t *p, *q;
     message_header_t last_message;
 
     time(&timenow);
@@ -674,7 +675,9 @@ quad_lizard(message_header_t * header)
     fp2 = xfopen(tmpname, "w", TRUE);
 
     for (i = 20; i < MAXQUADS; i++) {
-        read_forum( i, &quad );
+
+	read_forum(i, &quad);
+
 	if (!((quad.flags & QR_INUSE) && (quad.highest)))
 	    continue;
 
@@ -699,31 +702,45 @@ quad_lizard(message_header_t * header)
 #else /* 15 days */
 	if (idle_for >= 15) {
 #endif
-	    fprintf(fp2,
-		  "\1f\1w%d.\1g%s\1w: \1gLast post \1w%d\1g days ago.\1a\n",
+	    fprintf(fp2, "\1f\1w%d.\1g%s\1w: \1gLast post \1w%d\1g days ago.\1a\n",
 		    i, quad.name, idle_for);
 
-	    for (j = 0; j < NO_OF_QLS && mail_the_lamer_qls; j++) {
-		if ((strlen(quad.qls[j]) <= 0) || (strcmp(quad.qls[j], "Sysop") == 0))
-		    continue;
-		else if (mono_sql_u_check_user(quad.qls[j])) {
-		    char quadname[L_QUADNAME + 1];
-		    char name[L_USERNAME + 1];
 
-		    strcpy(quadname, quad.name);
-		    strcpy(name, quad.qls[j]);
+	    if (mail_the_lamer_qls == 1) {
 
-		    fp1 = xfopen(temp, "w", FALSE);
-		    your_forum_is_boring_zzzz_form_letter(fp1, quad.name,
-							  idle_for);
-		    fclose(fp1);
-		    enter_message(MAIL_FORUM, EDIT_NOEDIT, QUADLIZARD_MAIL_BANNER, name);
+		ret = mono_sql_uf_list_hosts_by_forum( i, &p);
 
-		    log_it("quadlizard",
-			   "Mailed %s QL #%ld, %s no posts in %d days.",
-			   quadname, j, name, idle_for);
-		    fprintf(fp2, "    \1f\1gNotified QL %ld, \1y%s\1g, via mail.\1a\n",
-			    j, name);
+		if (ret == -1) {
+		    cprintf("\1f\1rError getting hosts.\n");
+		} else {
+		    if (p) {
+			q = p;
+			while (q) {
+			    if (!EQ(q->name, "Sysop")) {
+
+				char quadname[L_QUADNAME + 1];
+				char name[L_USERNAME + 1];
+
+				strcpy(quadname, quad.name);
+				strcpy(name, q->name);
+
+				fp1 = xfopen(temp, "w", FALSE);
+				your_forum_is_boring_zzzz_form_letter(fp1, quad.name,
+								  idle_for);
+				fclose(fp1);
+				enter_message(MAIL_FORUM, EDIT_NOEDIT, QUADLIZARD_MAIL_BANNER, name);
+
+				log_it("quadlizard",
+				"Mailed %s QL #%ld, %s no posts in %d days.",
+				       quadname, j, name, idle_for);
+				fprintf(fp2, "    \1f\1gNotified QL %ld, \1y%s\1g, via mail.\1a\n",
+					j, name);
+
+			    }
+			    q = q->next;
+			}
+			dest_userlist(p);
+		    }
 		}
 	    }
 	}
@@ -731,29 +748,41 @@ quad_lizard(message_header_t * header)
 
 	if (strcmp(quad.category, "Admin") == 0)
 	    continue;
-	ql_ctr = 0;
-	for (j = 0; j < NO_OF_QLS; j++) {
-	    if ((strlen(quad.qls[j]) <= 0) || (strcmp(quad.qls[j], "Sysop") == 0))
-		continue;
-	    else if (mono_sql_u_check_user(quad.qls[j]) != 1) {
-		fprintf(fp2, "\1f\1w%d.\1r%s\1w: \1rQL slot #\1w%ld: \1rUser \1r%s \1rdoesn't exist.  \1w(\1r!\1w)\1a\n", i, quad.name, j + 1, quad.qls[j]);
-		continue;
+
+	ret = mono_sql_uf_list_hosts_by_forum(i, &p);
+
+	if (ret == -1) {
+	    cprintf("\1f\1rError getting hosts.\n");
+	} else {
+	    if (!p) {
+		fprintf(fp2, "\1f\1w%d.\1y%s\1w: \1yNo QL.\1a\n", i, quad.name);
 	    } else {
-		qlPtr = readuser(quad.qls[j]);
-		ql_ctr++;
+		q = p;
+		while (q) {
+		    if (!EQ(q->name, "Sysop")) {
+
+			if (mono_sql_u_check_user(q->name) != TRUE) {
+			    fprintf(fp2, "\1f\1w%d.\1r%s\1w: \1rHost \1c%s \1rdoesn't exist.  \1w(\1r!\1w)\1a\n", i, quad.name, q->name);
+			    continue;
+			} else {
+			    qlPtr = readuser(q->name);
+			    if (qlPtr == NULL)
+				break;
+			}
+			if (timenow - qlPtr->laston_to > 2592000) {
+			    fprintf(fp2, "\1f\1w%d.\1y%s\1w: \1gQL %s\1g absent \1w%d\1g days.\1a\n", i, quad.name, q->name, (int) (timenow - qlPtr->laston_to) / 86400);
+			}
+			if ((!(qlPtr->flags & US_ROOMAIDE)) && (qlPtr->priv < PRIV_SYSOP)) {
+			    fprintf(fp2, "\1f\1w%d.\1r%s\1w: \1rQL %s has no QL flag.  \1w(\1r!\1w)\1a\n", i, quad.name, q->name);
+			}
+			xfree(qlPtr);
+		    }
+		    q = q->next;
+		}		/* WHILE */
+		dest_userlist(p);
 	    }
-	    if (timenow - qlPtr->laston_to > 2592000) {
-		fprintf(fp2, "\1f\1w%d.\1y%s\1w: \1gQL #\1w%ld\1y %s\1g absent \1w%d\1g days.\1a\n", i, quad.name, j + 1, quad.qls[j], (int) (timenow - qlPtr->laston_to) / 86400);
-	    }
-	    if ((!(qlPtr->flags & US_ROOMAIDE)) && (qlPtr->priv < PRIV_SYSOP)) {
-		fprintf(fp2, "\1f\1w%d.\1r%s\1w: \1rQL #\1w%ld \1r%s\1r has no QL flag.  \1w(\1r!\1w)\1a\n", i, quad.name, j + 1, quad.qls[j]);
-	    }
-	    xfree(qlPtr);
 	}
-	if (!ql_ctr) {
-	    fprintf(fp2, "\1f\1w%d.\1y%s\1w: \1yNo QL.\1a\n", i, quad.name);
-	}
-    }
+    }				/* FOR */
     fclose(fp2);
     if (fexists(temp))
 	unlink(temp);
@@ -779,9 +808,7 @@ your_forum_is_boring_zzzz_form_letter(FILE * fp, char *quadname, int idle)
 	    "  - Usually generates enough interest to get the Quadrant's readers to post.\n\n",
 	    "                      Good Luck!\n\n");
 
-}
-
-void
+} void
 i_deleted_your_post_haha_mail(const unsigned int current_post)
 {
     FILE *fp;
@@ -808,7 +835,7 @@ i_deleted_your_post_haha_mail(const unsigned int current_post)
 	cprintf("\1gEnter text.  Deleted message will be appended to reason.\n\n\1a\1c");
 	get_content(EDIT_NORMAL);
     }
-    read_forum( curr_rm, &quad );
+    read_forum(curr_rm, &quad);
     fp = xfopen(temp, "a", TRUE);
 
     if (fp != NULL) {
