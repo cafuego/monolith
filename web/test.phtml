@@ -38,14 +38,15 @@
     if($number) {
         $content_type = mysql_result($result, 0, "content_type");
         switch($content_type) {
-            if($content_type == "image/gif") 
+            if($content_type == "image/gif") {
                 echo "<img src=\"/bbs/pix/gif.php3?$usernum\" width=\"100\">\n;
-            else if($content_type ==  "image/jpeg" )
+            } else if($content_type ==  "image/jpeg" ) {
                 echo "<img src=\"/bbs/pix/jpeg.php3?$usernum\" width=\"100\">\n;
-            else if ($content_type == "image/png")
+            } else if ($content_type == "image/png") {
                 echo "<img src=\"/bbs/pix/png.php3?$usernum\" width=\"100\">\n;
-            else
+            } else {
                 echo "<p>Image is in unsupported format. Use GIF, JPEG or PNG.\n";
+            }
         }
     } else {
         echo "<p>No image\n";
