@@ -1423,7 +1423,7 @@ feeling()
     cprintf("\1f\1gSend Feeling %s.\1a\n", config.x_message);
     if (usersupp->flags & US_EXPERT)
 	cprintf("\1f\1gPress \1w<\1r?\1w>\1g for a list of available feelings.\1a\n");
-    if (usersupp->flags)
+    if (usersupp->flags & US_COOL )
 	cprintf("\1f\1gYou're cool. Press \1w<\1rf\1w>\1g to send the \1cFREEZE\1g feeling.\1a\n");
 
     while ((cmd != SP) && (cmd != 13) && (cmd !='\n')) {

@@ -398,7 +398,7 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
     } else
 	/* IS NOT ONLINE */
     {
-	cprintf("Last on \1g%s ", printdate(user->laston_from, 1));
+	cprintf("\1f\1cLast on \1g%s ", printdate(user->laston_from, 1));
 	cprintf("\1cto \1g%s \1p", printdate(user->laston_to, 2));
 	if ((a = (timecall / 60 / 24)))
 	    cprintf("(\1y%d\1p day%s ago)\1c", a, (a == 1) ? "" : "s");
