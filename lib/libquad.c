@@ -39,7 +39,7 @@ change_QL(unsigned int quad_num, const char *QLname, int how)
     user_t *QL;
     int i, has_ql_flag;
 
-    if ((quad_num < 0) || (quad_num > MAXQUADS)) {
+    if ( quad_num > MAXQUADS) {
 	mono_errno = E_NOQUAD;
 	return -1;
     }
@@ -252,7 +252,7 @@ kickout(const char *user, unsigned int room)
 	mono_errno = E_NOUSER;
 	return -1;
     }
-    if ((room < 0) || (room > MAXQUADS)) {
+    if ( room > MAXQUADS ) {
 	mono_errno = E_NOQUAD;
 	return -1;
     }
@@ -303,7 +303,7 @@ invite(const char *name, unsigned int room)
 
     if (check_user(name) == FALSE)
 	return -1;
-    if ((room < 0) || (room > MAXQUADS))
+    if ( (room > MAXQUADS) )
 	return -1;
 
     user = readuser(name);
