@@ -1650,17 +1650,34 @@ are_there_held_web_xs()
     wx_list_t *list = NULL;
     int count = 0;
 
-    printf("Checking web x-es... "); fflush(stdout);
     count = mono_sql_web_get_xes(usersupp->usernum, &list);
-    printf("%d found!\n", count); fflush(stdout);
 
     if(count == -1)
        cprintf("\1f\1rAn error occurrect trying to retrieve \1pweb \1rx-es.\n");
-    if(count > 0)
-       cprintf("\1f\1gYou have \1y%d \1gnew \1pweb \1gx-es:\n\1rBut I can't show them yet.\n");
+    if(count > 0) {
+       cprintf("\1f\1gYou have \1y%d \1gnew \1pweb \1g%s %s\1w:\1a\n", count, config.express, (count == 1) ? config.x_message : config.x_message_pl);
+       show_web_xes(list);
+       (void) mono_sql_web_mark_wx_read(list);
+    }
 
     mono_sql_ll_free_wxlist(list);
 
+    return;
+}
+
+void
+show_web_xes(wx_list_t *list)
+{
+
+    struct tm *tp;
+
+    while(list != NULL) {
+        tp = localtime(&(list->x->date));
+        cprintf("\1f\1b*** \1pWeb \1g%s %s from \1y%s@web \1gto \1y%s \1gat \1w(\1g%02d:%02d\1w) \1b***\n\1c%s"
+            ,config.express, config.x_message, list->x->sender
+            ,usersupp->username, tp->tm_hour, tp->tm_min, list->x->message );
+        list = list->next;
+    }
     return;
 }
 

@@ -96,6 +96,7 @@ extern char check_x_permissions(const char *, const int, char);
 extern void display_express_prompt(const int);
 extern void feeling(void);
 extern void are_there_held_web_xs(void);
+extern void show_web_xes(wx_list_t *);
 
 /* eof */
 

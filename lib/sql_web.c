@@ -188,8 +188,6 @@ mono_sql_web_get_xes(unsigned int user_id, wx_list_t ** list)
     MYSQL_ROW row;
     wx_list_t entry;
 
-    printf("Trying query... "); fflush(stdout);
-
     ret = mono_sql_query(&res, "SELECT w.id AS id,u.username AS user,w.message AS message,UNIX_TIMESTAMP(w.date) AS date FROM webx AS w LEFT JOIN user AS u ON u.id=w.sender WHERE w.recipient=%u AND w.status='unread' AND (w.i_recipient='telnet' OR w.i_recipient='client') ORDER BY w.date ASC", user_id);
 
     if (ret == -1) {
@@ -200,8 +198,6 @@ mono_sql_web_get_xes(unsigned int user_id, wx_list_t ** list)
 	(void) mono_sql_u_free_result(res);
 	return 0;
     }
-
-    printf("ok: %d entries found.\n", rows); fflush(stdout);
 
     for (i = 0; i < rows; i++) {
 	row = mysql_fetch_row(res);
@@ -219,8 +215,20 @@ mono_sql_web_get_xes(unsigned int user_id, wx_list_t ** list)
     }
     (void) mono_sql_u_free_result(res);
 
-    printf("%d entries stored.\n", rows); fflush(stdout);
-
     return rows;
+}
+
+void
+mono_sql_web_mark_wx_read(wx_list_t *list)
+{
+    MYSQL_RES *res;
+    int ret = 0;
+
+    while(list != NULL) {
+        ret = mono_sql_query(&res, "UPDATE webx SET status='read' WHERE id=%u", list->x->id);
+        (void) mono_sql_u_free_result(res);
+    }
+    return;
+
 }
 /* eof */
