@@ -987,6 +987,7 @@ _change_flying(const unsigned int a, const long b, void *c)
 	getline(usersupp->doing, 28, 0);
 	usersupp->doing[28] = '\0';
 	writeuser(usersupp, 0);
+	mono_sql_u_update_doing( usersupp->usernum, usersupp->doing );
 	mono_change_online(who_am_i(NULL), usersupp->doing, 14);
 	cprintf("\1a");
     }
@@ -1152,8 +1153,10 @@ toggle_away(void)
 	    cprintf(_("\1gDefault away message: \1y%s\1a\n"), usersupp->awaymsg);
 	cprintf(_("\1f\1gNew Away message: \1c"));
 	getline(away, 99, TRUE);
-	if (strlen(away))
+	if (strlen(away)) {
 	    strcpy(usersupp->awaymsg, away);
+  	    mono_sql_u_update_awaymsg(usersupp->usernum, away );
+        }
 	mono_change_online(who_am_i(NULL), usersupp->awaymsg, 16);
 	change_atho(-1);
     } else {

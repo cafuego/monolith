@@ -110,9 +110,9 @@ sendx(char *to, const char *send_string, char override)
 #else
         if (mono_sql_web_send_x(usersupp->usernum, to_id, send_string, "client"))
 #endif
-	    cprintf("\1f\1gSuccessfully saved \1pWeb\1g %s %s for \1y%s.\1a\n", config.express, config.x_message, to);
+	    cprintf(_("\1f\1gSuccessfully saved \1pWeb\1g %s %s for \1y%s.\1a\n"), config.express, config.x_message, to);
         else
-	    cprintf("\1f\1rUnable to save \1pWeb\1g %s %s for \1y%s to database.\1a\n", config.express, config.x_message, to);
+	    cprintf(_("\1f\1rUnable to save \1pWeb\1g %s %s for \1y%s to database.\1a\n"), config.express, config.x_message, to);
     } else {
 	Sendxs = mono_find_xslot(to);
 	tuser = mono_read_btmp(to);
@@ -437,7 +437,7 @@ catchx(int key)
 		(void) fflush(stdout);
 	    }
 	} else {
-	    sprintf(tempstr, "\1d** \1bAn X from \1r%s\1b has arrived. \1d** ",
+	    sprintf(tempstr, _("\1d** \1bAn X from \1r%s\1b has arrived. \1d** "),
 		    xmsgb[XLIMIT - 1]->sender);
 	    statusbar(tempstr);
 	    if (usersupp->flags & US_BEEP) {
@@ -520,7 +520,7 @@ express(int X_PARAM)
     } else if (!FEEL) {
 	switch ((tmpoverride = get_x_lines(send_string, X_PARAM))) {
 	    case 'A':
-		cprintf("\1f\1r\1g%s %s \1raborted.\1a\n", config.express, config.x_message);
+		cprintf(_("\1f\1r\1g%s %s \1raborted.\1a\n"), config.express, config.x_message);
 		if (!(QUESTION || BROADCAST)) {
 		    mono_change_online(who_am_i(NULL), "", 15);
 		    return;
@@ -584,7 +584,7 @@ express(int X_PARAM)
 	    sprintf(filename, "share/feelings/feeling%d", X_PARAM - 20);
 	    f = xfopen(filename, "r", FALSE);
 	    if (f == NULL) {
-		cprintf("\1r\1fCould not open feeling file.\n");
+		cprintf(_("\1r\1fCould not open feeling file.\n"));
 		mono_change_online(who_am_i(NULL), "", 15);
 		return;
 	    }
@@ -615,11 +615,11 @@ get_xmessage_destination(char *xmg_dest, const int X_PARAM, char *override)
 
 	    strcpy(namePtr, cached_x_to_name(X_PARAM-10));
 	    if (!strlen( namePtr )) {
-		cprintf("\1f\1rThere's no X-Friend in slot #%d.\1a", X_PARAM - 10);
+		cprintf(_("\1f\1rThere's no X-Friend in slot #%d.\1a"), X_PARAM - 10);
 		return xmg_dest;
 	    }
 	    strcpy(xmg_dest, namePtr);
-	    cprintf("\n\1f\1gSend Quick %s %s to \1y%s\1g.\1a\n",
+	    cprintf(_("\n\1f\1gSend Quick %s %s to \1y%s\1g.\1a\n"),
 		    config.express, config.x_message, xmg_dest);
 	    fflush(stdout);
 
@@ -747,7 +747,7 @@ check_x_permissions(const char *x_recip_name, const int X_PARAM, char override)
 	    /* InterBBS x ?  */
 	    if (strchr(x_recip_name, '@') != NULL) {
 		if (usersupp->flags & US_NOINTERXS)
-		    cprintf("\1f\1rYou have disabled InterBBS options.\1a\n");
+		    cprintf(_("\1f\1rYou have disabled InterBBS options.\1a\n"));
 		else
 		    remote_express(x_recip_name);
 		override = OR_NO_PERMS;		/* this will cause the calling funx to return */
@@ -758,13 +758,13 @@ check_x_permissions(const char *x_recip_name, const int X_PARAM, char override)
 /* This must be checked before we try to read a btmp entry!!! */
             if(WEB) {
                 if( mono_sql_u_check_user(x_recip_name) == FALSE ) {
-		    cprintf("\1f\1rNo such %s.\1a\n", config.user);
+		    cprintf(_("\1f\1rNo such %s.\1a\n"), config.user);
                     flush_input();
                     override = OR_NO_PERMS;
                     return override;
                 }
                 if( mono_sql_onl_check_user(x_recip_name) == FALSE ) {
-		    cprintf("\1f\1rThat %s is not online via the web.\1a\n", config.user);
+		    cprintf(_("\1f\1rThat %s is not online via the web.\1a\n"), config.user);
                     flush_input();
                     override = OR_NO_PERMS;
                     return override;
@@ -777,7 +777,7 @@ check_x_permissions(const char *x_recip_name, const int X_PARAM, char override)
             x_recip_btmp = mono_read_btmp(x_recip_name);
 	    if (x_recip_btmp == NULL) {
 		cprintf("%s", (mono_sql_u_check_user(x_recip_name) == TRUE) ?
-		 "\1f\1rThat user is not online.\1a\n" : "\1f\1rNo such user.\1a\n");
+		 _("\1f\1rThat user is not online.\1a\n") : _("\1f\1rNo such user.\1a\n"));
 		flush_input();
 		override = OR_NO_PERMS;
 		break;
@@ -792,7 +792,7 @@ check_x_permissions(const char *x_recip_name, const int X_PARAM, char override)
 /* unvalidated recipient ? */
 	    if (!(x_recip_btmp->priv & PRIV_VALIDATED))
 		if (!(usersupp->flags & US_GUIDE)) {
-		    cprintf("\n\1f\1rSorry, that user is unvalidated.\1a\n");
+		    cprintf(_("\n\1f\1rSorry, that user is unvalidated.\1a\n"));
 		    override = OR_NO_PERMS;
 		    break;
 		} else
@@ -815,14 +815,14 @@ check_x_permissions(const char *x_recip_name, const int X_PARAM, char override)
 		    }    
 		if (is_my_vnemy)
 		    if (is_cached_friend(x_recip_name))
-			cprintf("\1f\1y\n%s is on both your friend and enemy lists, how odd..  (:\1a\n"
+			cprintf(_("\1f\1y\n%s is on both your friend and enemy lists, how odd..  (:\1a\n")
 				,x_recip_name);
 		    else
-			cprintf("\1f\1r\nSorry. You have \1y%s \1rX-disabled.\1a\n", x_recip_name);
+			cprintf(_("\1f\1r\nSorry. You have \1y%s \1rX-disabled.\1a\n"), x_recip_name);
 		else
-		    cprintf("\1f\1rSorry, \1y%s \1rhas X-disabled you.\1a\n", x_recip_name);
+		    cprintf(_("\1f\1rSorry, \1y%s \1rhas X-disabled you.\1a\n"), x_recip_name);
 		if (override != OR_ENABLED && usersupp->priv >= PRIV_TECHNICIAN) {
-		    cprintf("\1f\1pDo you wish to send the X anyway? \1w(\1ry/n\1w) \1a");
+		    cprintf(_("\1f\1pDo you wish to send the X anyway? \1w(\1ry/n\1w) \1a"));
 		    if (yesno() == NO) {
 			override = OR_NO_PERMS;
 			break;
@@ -838,10 +838,10 @@ check_x_permissions(const char *x_recip_name, const int X_PARAM, char override)
 	    if (x_recip_btmp->flags & B_XDISABLED) {
 		if (is_friend(x_recip_name, username))
 		    override = OR_ENABLED;
-		cprintf("\1y\1f%s \1ghas disabled %s %s.\n\1a", x_recip_btmp->username
+		cprintf(_("\1y\1f%s \1ghas disabled %s %s.\n\1a"), x_recip_btmp->username
 			,config.express, config.x_message_pl);
 		if (override != OR_ENABLED && usersupp->priv >= PRIV_TECHNICIAN) {
-		    cprintf("\1f\1pDo you wish to send the X anyway? \1w(\1ry/n\1w) \1a");
+		    cprintf(_("\1f\1pDo you wish to send the X anyway? \1w(\1ry/n\1w) \1a"));
 		    if (yesno() == NO) {
 			override = OR_NO_PERMS;
 			break;
@@ -855,12 +855,12 @@ check_x_permissions(const char *x_recip_name, const int X_PARAM, char override)
 	    }
 /* away notify */
 	    if (x_recip_btmp->flags & B_AWAY) {
-		cprintf("\1r\1y%s \1gis \1raway \1gand may not receive your %s %s immediately.\n"
+		cprintf(_("\1r\1y%s \1gis \1raway \1gand may not receive your %s %s immediately.\n")
 			,x_recip_btmp->username, config.express, config.x_message);
 		cprintf("\1rAway\1w: \1r%s\n", x_recip_btmp->awaymsg);
 	    }
             if (x_recip_btmp->flags & B_LOCK) {
-		cprintf("\1g\1y%s \1gis \1clocked \1gand will not get your %s %s immediately.\n"
+		cprintf(_("\1g\1y%s \1gis \1clocked \1gand will not get your %s %s immediately.\n")
 			,x_recip_btmp->username, config.express, config.x_message);
             }
 	    if (EMOTE)
@@ -1012,7 +1012,7 @@ change_express(int how)
 	cmdflags &= ~C_XDISABLED;
     } else
 	cprintf("oopsie.. ? changing-problems...\n");
-    cprintf("\1f\1wYour %s %s are %sabled\1w.\1a",
+    cprintf(_("\1f\1wYour %s %s are %sabled\1w.\1a"),
 	    config.express, config.x_message_pl,
 	    (cmdflags & C_XDISABLED) ? "\1rdis" : "\1gen");
 
@@ -1419,7 +1419,7 @@ user_not_allowed_to_send_x(const int X_PARAM)
 {
     if (usersupp->priv & PRIV_DELETED || usersupp->priv & PRIV_DEGRADED ||
 	(!(usersupp->priv & PRIV_VALIDATED) && X_PARAM != 1)) {
-	cprintf("\1f\1rYou cannot send %s %s.\1a\n", config.express, config.x_message_pl);
+	cprintf(_("\1f\1rYou cannot send %s %s.\1a\n"), config.express, config.x_message_pl);
 	return 1;
     }
     return 0;
@@ -1437,15 +1437,15 @@ get_guide_name(char *guide_person_name)
 	search_again = 1;
     } else if ((guide_person = mono_read_btmp(mySysGuide)) == NULL) {
 	search_again = 1;
-	cprintf("\1f\1rYour %s is no longer online.\nSearching for a new one...\1a\n", config.guide);
+	cprintf(_("\1f\1rYour %s is no longer online.\nSearching for a new one...\1a\n"), config.guide);
     } else if (guide_person->flags & B_XDISABLED) {
-	cprintf("\1f\1rYour %s has his/her messages disabled.\1a\n", config.guide);
-	cprintf("\1f\1rSearching for a new one...\1a\n");
+	cprintf(_("\1f\1rYour %s has his/her messages disabled.\1a\n"), config.guide);
+	cprintf(_("\1f\1rSearching for a new one...\1a\n"));
 	search_again = 1;
 	xfree(guide_person);
     } else if ((guide_person->flags & B_GUIDEFLAGGED) == 0) {
-	cprintf("\1f\1rYour %s is no longer marked as %s.\1a\n", config.guide, config.guide);
-	cprintf("\1f\1rSearching for a new one...\1a\n");
+	cprintf(_("\1f\1rYour %s is no longer marked as %s.\1a\n"), config.guide, config.guide);
+	cprintf(_("\1f\1rSearching for a new one...\1a\n"));
 	search_again = 1;
 	xfree(guide_person);
     }
@@ -1453,9 +1453,9 @@ get_guide_name(char *guide_person_name)
 
     if (search_again == 1) {
 	if ((guide_person = mono_search_guide()) == NULL) {
-	    cprintf("\1f\1gThere are no %s online right now...\1a\n", config.guide);
-	    cprintf("\1f\1gYou could try to find the answer in the help files.\1a\n");
-	    cprintf("\1f\1gPress \1w<\1r?\1w>\1g to see all commands, or \1w<\1rh\1w>\1g to access the helpfiles.\n");
+	    cprintf(_("\1f\1gThere are no %s online right now...\1a\n"), config.guide);
+	    cprintf(_("\1f\1gYou could try to find the answer in the help files.\1a\n"));
+	    cprintf(_("\1f\1gPress \1w<\1r?\1w>\1g to see all commands, or \1w<\1rh\1w>\1g to access the helpfiles.\n"));
 	    xfree(mySysGuide);
 	    mySysGuide = NULL;
 	    strcpy(guide_person_name, "");
@@ -1465,7 +1465,7 @@ get_guide_name(char *guide_person_name)
 	}
     }
     if ((cmdflags & C_XDISABLED) && (strlen(guide_person_name))) {
-	cprintf("\1f\1gYou are asking a %s a Question, and therefore\n \1a",
+	cprintf(_("\1f\1gYou are asking a %s a Question, and therefore\n \1a"),
 		config.guide);
 	change_express(1);
 	cprintf("\n");
@@ -1481,22 +1481,22 @@ display_express_prompt(const int X_PARAM)
 {
 /* emote */
     if (EMOTE) {
-	cprintf("\1f\1gYou are now sending an emote.\n\1b*** \1y%s \1g"
+	cprintf(_("\1f\1gYou are now sending an emote.\n\1b*** \1y%s \1g")
 		,username);
 	cprintf("\1c");
 
 /* question */
     } else if (QUESTION)
-	cprintf("\1f\1gYou're now asking \1c%s\1g a BBS-related Question!\1a\n"
+	cprintf(_("\1f\1gYou're now asking \1c%s\1g a BBS-related Question!\1a\n")
 		,mySysGuide);
 
 /* broadcast */
     else if (BROADCAST)
 	if ((X_PARAM != 7) && (X_PARAM != 3))
-	    cprintf("\1f\1rYou're now sending a broadcast!\1a\n");
+	    cprintf(_("\1f\1rYou're now sending a broadcast!\1a\n"));
 
     if (cmdflags & C_AWAY)
-	cprintf("\1rWarning: you are still marked as \1caway\1r.\1a\n");
+	cprintf(_("\1rWarning: you are still marked as \1caway\1r.\1a\n"));
 
     if (!(FEEL || EMOTE))
 	cprintf("\1a\1c");
@@ -1514,11 +1514,11 @@ feeling()
 
     register char cmd = '\0';
 
-    cprintf("\1f\1gSend Feeling %s.\1a\n", config.x_message);
+    cprintf(_("\1f\1gSend Feeling %s.\1a\n"), config.x_message);
     if (usersupp->flags & US_EXPERT)
-	cprintf("\1f\1gPress \1w<\1r?\1w>\1g for a list of available feelings.\1a\n");
+	cprintf(_("\1f\1gPress \1w<\1r?\1w>\1g for a list of available feelings.\1a\n"));
     if (usersupp->flags & US_COOL )
-	cprintf("\1f\1gYou're cool. Press \1w<\1rf\1w>\1g to send the \1cFREEZE\1g feeling.\1a\n");
+	cprintf(_("\1f\1gYou're cool. Press \1w<\1rf\1w>\1g to send the \1cFREEZE\1g feeling.\1a\n"));
 
     while ((cmd != SP) && (cmd != 13) && (cmd !='\n')) {
 	IFNEXPERT
@@ -1661,9 +1661,9 @@ are_there_held_web_xs()
     count = mono_sql_web_get_xes(usersupp->usernum, &list);
 
     if(count == -1)
-       cprintf("\1f\1rAn error occurrect trying to retrieve \1pweb \1rx-es.\n");
+       cprintf(_("\1f\1rAn error occurrect trying to retrieve \1pweb \1rx-es.\n"));
     if(count > 0) {
-       cprintf("\n\1f\1gYou have \1y%d \1gnew \1pWeb \1g%s %s \1w(\1gHit \1w<\1r^\1w> \1gto reply\1w)\1a\n", count, config.express, (count == 1) ? config.x_message : config.x_message_pl);
+       cprintf(_("\n\1f\1gYou have \1y%d \1gnew \1pWeb \1g%s %s \1w(\1gHit \1w<\1r^\1w> \1gto reply\1w)\1a\n"), count, config.express, (count == 1) ? config.x_message : config.x_message_pl);
        show_web_xes(list);
        (void) mono_sql_web_mark_wx_read(list);
     }

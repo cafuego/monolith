@@ -281,6 +281,7 @@ edit_field(user_t * user, int fieldnum)
 	case 'p':
 	    cprintf("Enter new profileflag (current is %s): ", user->xtrapflag);
 	    getline(user->xtrapflag, 69, 0);
+	    mono_sql_u_update_xtrapflag(user->usernum,user->xtrapflag );
 	    uadmin_need_rewrite = TRUE;
 	    log_sysop_action("changed %s's profileflag to %s."
 			     ,user->username, user->xtrapflag);
