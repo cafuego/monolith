@@ -337,7 +337,7 @@ print_system_config()
 #endif
 
 #ifdef HAVE_ANIMAL
-    cprintf("\1wOS version                    :\1g %s.\n", kernel_name);
+    cprintf("\1wOS version                    :\1g %s\n", kernel_name);
     (void) xfree(kernel_name);
 #endif
 
