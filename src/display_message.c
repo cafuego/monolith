@@ -59,20 +59,20 @@ display_message(message_t *message)
     char *string = NULL;
 
     /*
-     * Don't show deleted messages.
+     * Don't show deleted messages, but show warning if the user wants it...
      */
     if( message->deleted == 'y') {
         if(usersupp->priv < PRIV_SYSOP ) {
             if(usersupp->config_flags & CO_DELETEDINFO)
-                cprintf("\1f\1rDeleted %s.\1a\n", config.message);
+                cprintf("\n\1f\1w[\1rDeleted %s.\1w]\1a\n", config.message);
             return;
         } else {
             /*
              * For admins, the whole message is shown if DELETEDINFO is
              * not set.
              */
-            if(!usersupp->config_flags & CO_DELETEDINFO) {
-                cprintf("\1f\1rDeleted %s.\1a\n", config.message);
+            if(!(usersupp->config_flags & CO_DELETEDINFO)) {
+                cprintf("\n\1f\1w[\1rDeleted %s.\1w]\1a\n", config.message);
                 return;
             }
         }
