@@ -240,7 +240,7 @@ mono_sql_uu_quickx2user(unsigned int user_id, int quickx, unsigned int *friend_i
 
 
 /* translates       usernumber -> quickx number */
-unsigned int
+int
 mono_sql_uu_user2quickx(unsigned int user_id, unsigned int friend_id, int *quickx)
 {
 

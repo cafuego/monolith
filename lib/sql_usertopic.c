@@ -22,7 +22,6 @@
 
 #include "monolith.h"
 #include "libmono.h"
-#include "monosql.h"
 #include "sql_utils.h"
 #include "sql_usertopic.h"
 

@@ -15,6 +15,7 @@
 #include <sys/types.h>
 
 #include "monolith.h"
+#include "routines.h"
 
 #ifdef extern
 #include "sql_llist.h"
