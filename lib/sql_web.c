@@ -173,6 +173,7 @@ mono_sql_web_wholist(int level)
                     strcat(p, line);
                     list = list->next;
                 }
+                strcat(p, "\n");
                 break;
 
             default:	/* normal */
