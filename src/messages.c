@@ -1829,11 +1829,12 @@ new_read_menu(unsigned int forum, int direction)
      * If no unread messages, exit. (but not now)
      * if( (unread = mono_sql_uf_get_unread(forum, usersupp->lastseen)) <= 0 )
      *     return;
+     *
+     * strcpy(tempstr, "");
+     * sprintf(tempstr, "\1f\1w(\1g%d unread %s\1w)", unread, config.message_pl);
+     * which_room(tempstr);
      */
-
-    strcpy(tempstr, "");
-    sprintf(tempstr, "\1f\1w(\1g%d unread %s\1w)", unread, config.message_pl);
-    which_room( tempstr );
+    which_room("");
 
     /*
      * If we can't list unread messages, exit.
@@ -1844,9 +1845,9 @@ new_read_menu(unsigned int forum, int direction)
     while( list != NULL ) {
 
 #ifdef USE_RATING
-        cmd = get_single_quiet("abfnsqR ");
+        cmd = get_single_quiet("abefnsqR ");
 #else
-        cmd = get_single_quiet("abfnsq ");
+        cmd = get_single_quiet("abefnsq ");
 #endif
 
         switch(cmd) {
@@ -1863,6 +1864,11 @@ new_read_menu(unsigned int forum, int direction)
                } else {
                    cprintf("\1f\1gNo %s left in that direction.\n", config.message_pl );
                }
+               break;
+
+           case 'e':
+               cprintf("\1f\1rEnter SQL %s in %s 140 \1w(\1rbreak code\1w)\n", config.message, config.forum);
+               enter_message(140, 1);
                break;
 
            case 'f':
