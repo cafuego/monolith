@@ -21,10 +21,7 @@
         echo "File: `$userfile' ($userfile_type - ". filesize($userfile) ." bytes)\n";
         if( file_exists($userfile) ) {
             connect_db();
-            if( ($fp = fopen($userfile, "r")) == 0) {
-                echo "Uable to open $userfile for reading\n";
-                exit;
-            }
+            $fp = fopen($userfile, "r");
             $contents = fread( $fp, filesize( $userfile ) );
             fclose($fp);
             unlink ($userfile);
