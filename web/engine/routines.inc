@@ -179,7 +179,7 @@ function main_screen($username) {
 
     $usernum = get_usernum($username);
 
-    $result = MYSQL_QUERY("SELECT MAX(logout) AS logout,online,hostname FROM login WHERE user_id=$usernum");
+    $result = MYSQL_QUERY("SELECT logout,online,hostname FROM login WHERE user_id=$usernum ORDER BY logout DESC");
     $number = MYSQL_NUMROWS($result);
     if ($number) {
         $logout = mysql_result($result,0,"logout");
