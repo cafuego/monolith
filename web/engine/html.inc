@@ -278,6 +278,8 @@ function html_print_buttons($username, $location) {
     echo "". addbutton("Unread", "/bbs/index.phtml/u") ."<br>\n";
     echo "". addbutton(" ", "") ."<br>\n";
     echo "". addbutton(" ", "") ."<br>\n";
+    echo "". addbutton(" ", "") ."<br>\n";
+    echo "". addbutton(" ", "") ."<br>\n";
     echo "". addbutton("Log out", "/bbs/index.phtml/q") ."<br>\n";
 }
 
