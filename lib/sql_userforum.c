@@ -681,7 +681,7 @@ mono_sql_uf_whoknows(unsigned int forum_id, char **result)
 
     ret = mono_sql_query(&res, "SELECT uf.host,u.username FROM %s AS u LEFT JOIN %s "
     " AS uf ON u.id=uf.user_id WHERE uf.forum_id=%u AND uf.status='invited'"
-			 ,U_TABLE, UF_TABLE, forum_id);
+    " ORDER BY u.username ASC" ,U_TABLE, UF_TABLE, forum_id);
 
     if (ret == -1) {
 	fprintf(stdout, "Query error\n");

@@ -710,7 +710,7 @@ whoknows()
             cprintf("\n\1f\1rNo users currently know this %s.\n", config.forum);
             break;
         default:
-            cprintf("\n\1f\1g%d users can currently read %s\1w:\n", ret, bing.name );
+            cprintf("\n\1f\1g%d users can currently read \1y'%s'\1w:\n", ret, bing.name );
             more_string(string);
             break;
     }

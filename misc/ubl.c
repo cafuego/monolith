@@ -51,7 +51,9 @@ int NewUser = 0, no_cursed = 0, no_deleted = 0, no_purged = 0, expert_users = 0,
 void read_all_users(void);
 void read_all_rooms(void);
 int main(int, char **);
+#ifdef OLD
 void update_whoknows(void);
+#endif
 void update_admin_lists(void);
 
 /* cleaning up the warnings behind peter */
@@ -78,7 +80,9 @@ main(int argc, char *argv[] )
     read_all_rooms();
 
     /* update lists */
+#ifdef OLD
     update_whoknows();
+#endif
     update_admin_lists();
     fprintf(stdout, "Posting results to Fleet headquarters...");
     fflush(stdout);
@@ -254,6 +258,7 @@ add_date()
     return str;
 }
 
+#ifdef OLD
 /************************************************************
 * update the who knows room list for all rooms
 ************************************************************/
@@ -314,6 +319,7 @@ update_whoknows()
     return;
 }
 
+#endif
 
 
 /*************************************************
