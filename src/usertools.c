@@ -155,7 +155,10 @@ menu_message(void)
 	     "tiv", tempstr, "2", (usersupp->config_flags & CO_EXPANDHEADER) ? "1" : "0");
 
 	strcpy(tempstr, "");
-	sprintf(tempstr, "Notify on deleted %s", config.message_pl);
+        if( usersupp-> priv < PRIV_SYSOP )
+            sprintf(tempstr, "Notify on deleted %s", config.message_pl);
+        else
+            sprintf(tempstr, "Display deleted %s", config.message_pl);
 	MENU_ADDITEM(set_usersupp_config_flag, CO_DELETEDINFO, 0, tempstr,
 	     "tiv", tempstr, "3", (usersupp->config_flags & CO_DELETEDINFO) ? "1" : "0");
 
