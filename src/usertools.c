@@ -26,15 +26,9 @@
 
 #include "monolith.h"
 #include "libmono.h"
-#include "sql_config.h"
-#include "sql_userforum.h"
 #include "ext.h"
 #include "setup.h"
 #include "telnet.h"
-
-#define extern
-#include "usertools.h"
-#undef extern
 
 #include "express.h"
 #include "help.h"
@@ -52,6 +46,9 @@
 #include "uadmin.h"
 #include "wholist.h"
 
+#define extern
+#include "usertools.h"
+#undef extern
 
 /* PR additions for debugging */
 #define UID_MathFox 23
