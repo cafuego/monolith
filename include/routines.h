@@ -24,3 +24,4 @@ extern FILE *xfopen ( const char *, const char *, int fatal );
 extern int de_colorize( const char * );
 extern size_t file_line_len(FILE * fp);
 extern int copy( const char *source, const char *destination );
+extern char *map_file(const char *filename);

@@ -400,12 +400,10 @@ format_content(message_t *message, char **string )
 {
 
     char *content = NULL;
-    char message_file[100];
-    int fd = -1;
-    struct stat buf;
+    char filename[100];
 
     /* Find message filename. */
-    sprintf( message_file, "%s", mono_sql_mes_make_file(message->forum, message->num));
+    sprintf( filename, "%s", mono_sql_mes_make_file(message->forum, message->num));
 
     /* Empty lines around content? */
     if( usersupp->config_flags & CO_NEATMESSAGES ) {
@@ -420,43 +418,23 @@ format_content(message_t *message, char **string )
     else
         strcat( *string, "\1a\1c" );
 
-     /* Open temp file. */
-     if( (fd = open(message_file, O_RDONLY)) == -1) {
-         log_it("sqlpost", "Can't open() message file %s!", message_file);
-         return -1;
+     /*
+      * Get file contents into mem.
+      */
+     if( (content = map_file(filename)) == NULL) {
+         content = (char *) xmalloc( 100 );
+         sprintf(content, "%s\n", "\1f\1rAIIEE! Real nasty error: message file missing!" );
      }
-
-     /* Determine file size. */
-     fstat(fd, &buf);
-
-     /* mmap() message file. */ 
-#ifdef HAVE_MAP_FAILED
-     if( (content = mmap(content, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED ) { 
-#else
-     if( (content = mmap(content, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == ((__ptr_t) -1) ) { 
-#endif
-         log_it("sqlpost", "Can't mmap() message file %s!", message_file);
-         return -1;
-     }
-
 
     /* Append actual message content. */
     *string = (char *)xrealloc( *string, strlen(*string)+strlen(content) );
     strcat( *string, content );
+    (void) xfree(content);
 
     if( usersupp->config_flags & CO_NEATMESSAGES ) {
         *string = (char *)xrealloc( *string, strlen(*string)+strlen("\n") );
         strcat( *string, "\n" );
     }
-
-    /* And close, destroy, kill etc. */
-    if( (munmap(content, buf.st_size)) == -1) {
-        /* Should we exit the BBS nastily or just keep going coz
-         * we have the message anyways? */
-        log_it("sqlpost", "Can't munmap() message file %s!", message_file);
-    }
-    close(fd);
-
     return 0;
 
 }
@@ -478,17 +456,17 @@ format_footer(unsigned int forum, message_t *message, char **string )
 
     if(usersupp->config_flags & CO_EXPANDHEADER)
         if( (quad->highest - message->num) > 0 )
-            sprintf(fmt_footer, "\1f\1w[\1%c%s\1w> \1g%s %u of %lu \1w(\1g%lu remaining\1w)] -> "
+            sprintf(fmt_footer, "\n\1f\1w[\1%c%s\1w> \1g%s %u of %lu \1w(\1g%lu remaining\1w)] -> "
                 ,col, quad->name, config.message, message->num, quad->highest, (quad->highest - message->num) );
         else
-            sprintf(fmt_footer, "\1f\1w[\1%c%s\1w> \1g%s %u of %lu \1w(\1glast in this %s\1w)] -> "
+            sprintf(fmt_footer, "\n\1f\1w[\1%c%s\1w> \1g%s %u of %lu \1w(\1glast in this %s\1w)] -> "
                 ,col, quad->name, config.message, message->num, quad->highest, config.forum );
     else
         if( (quad->highest - message->num) > 0 )
-            sprintf(fmt_footer, "\1f\1w[\1%c%s\1w> \1g#%u \1w(\1g%lu remaining\1w)] -> "
+            sprintf(fmt_footer, "\n\1f\1w[\1%c%s\1w> \1g#%u \1w(\1g%lu remaining\1w)] -> "
                 ,col, quad->name, message->num, (quad->highest - message->num) );
         else
-            sprintf(fmt_footer, "\1f\1w[\1%c%s\1w> \1g#%u \1w(\1glast\1w)] -> "
+            sprintf(fmt_footer, "\n\1f\1w[\1%c%s\1w> \1g#%u \1w(\1glast\1w)] -> "
                 ,col, quad->name, message->num );
 
     xfree(quad);

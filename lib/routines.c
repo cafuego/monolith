@@ -14,6 +14,7 @@
 #include <sys/ioctl.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <sys/mman.h>
 
 #ifdef HAVE_TERMBITS_H
 #include <termbits.h>
@@ -505,6 +506,80 @@ copy(const char *source, const char *dest)
     (void) close(fd1);
     (void) close(fd2);
     return 0;
+}
+
+/*
+ * Returns file contents in a char *
+ */
+char *
+map_file(const char *filename)
+{
+    char *tmpbuf = NULL, *message = NULL;
+    struct stat buf;
+    int fd = -1;
+
+    /*
+     * Open file.
+     */
+    if( (fd = open(filename, O_RDONLY)) == -1) {
+        (void) log_it("errors", "Cannot open() file: %s, mode: O_RDONLY", filename );
+        return NULL;
+    }
+
+    /*
+     * Determine file size.
+     */
+    if( (fstat(fd, &buf)) == -1) {
+        (void) close(fd);
+        (void) log_it("errors", "Cannot fstat() file: %s", filename );
+        return NULL;
+    }
+
+    /*
+     * mmap() file.
+     */ 
+#ifdef HAVE_MAP_FAILED
+    if( (tmpbuf = mmap(NULL, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED ) { 
+#else
+    if( (tmpbuf = mmap(NULL, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == ((__ptr_t) -1) ) { 
+#endif
+        (void) xfree(tmpbuf);
+        (void) close(fd);
+        (void) log_it("errors", "Can't mmap() file: %s", filename);
+        return NULL;
+    }
+
+    /*
+     * Close file.
+     */
+    (void) close(fd);
+
+    /* 
+     * Check for weirdness (we can't more_string a 0 length string)
+     */
+    if( (tmpbuf == NULL) || (strlen(tmpbuf) < 1) ) {
+        (void) xfree(tmpbuf);
+        (void) log_it("errors", "Bad mmap(): %s.", filename);
+        (void) log_it("errors", "File size was %lu bytes.", buf.st_size);
+        return NULL;
+    }
+
+    /*
+     * Copy buffer contents into `message'.
+     */
+    message = (char *) xmalloc( strlen(tmpbuf) );
+    (void) memset(message, 0, strlen(tmpbuf) );
+    (void) snprintf(message, strlen(tmpbuf), "%s", tmpbuf );
+
+    /*
+     * Kill buffer.
+     */
+    if( (munmap(tmpbuf, buf.st_size)) == -1) {
+        (void) xfree(tmpbuf);
+        (void) log_it("errors", "Can't munmap() file %s!", filename);
+    }
+
+    return message;
 }
 
 /* eof */
