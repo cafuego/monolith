@@ -1,8 +1,9 @@
-/* $Id$ */
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+
+/* define SQL_CONFIGS */
 
 #define HAVE_FUN_C 1
 
@@ -13,13 +14,12 @@
 #include <time.h>
 #include <unistd.h>
 
-#include <mysql.h>
-
 #include "monolith.h"
 #include "libmono.h"
 
 #include "telnet.h"
 #include "ext.h"
+#include "libcache.h"
 #include "setup.h"
 #include "sql_config.h"
 #include "sql_userforum.h"
@@ -189,10 +189,19 @@ main_menu()
 		break;
 
 	    case 'F':
+		  cprintf("\1f\1gYour friends online.\1a\n");
+	  	  friends_online();
+	  	  break;
+
 	    case 006:
-		cprintf("\1f\1gYour friends online.\1a\n");
-		friends_online();
-		break;
+		 if (1 /* usersupp->priv >= PRIV_TECHNICIAN */) {
+		     cprintf("\1f\1gCache debug: \n");
+		     show_user_cache();
+		 } else {
+		     cprintf("\1f\1gYour friends online.\1a\n");
+		     friends_online();
+		 }
+		 break;
 
 	    case 'G':
 		cmdflags &= ~C_ROOMLOCK;
