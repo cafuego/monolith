@@ -23,7 +23,7 @@ function show_wholist($username) {
 
     // List online users..
     //
-    $result = MYSQL_QUERY("SELECT u.username AS name,o.interface AS interface,o.doing AS doing,SEC_TO_TIME(NOW()-o.stamp) AS online FROM online AS o LEFT JOIN user AS u ON o.user_id=u.id ORDER by online DESC");
+    $result = MYSQL_QUERY("SELECT u.username AS name,o.interface AS interface,o.doing AS doing,SEC_TO_TIME(NOW()-o.date) AS online FROM online AS o LEFT JOIN user AS u ON o.user_id=u.id ORDER by online DESC");
     $number = MYSQL_NUMROWS($result);
     if ($number) {
         print "<h3 align=\"center\">Listing $number users online</h3>\n<p> </p>\n";

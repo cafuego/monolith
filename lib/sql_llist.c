@@ -164,4 +164,49 @@ mono_sql_ll_free_xlist(xlist_t *list)
     }
     return;
 }
+
+/*
+ * Add wu_list_t to linked list.
+ */
+int
+mono_sql_ll_add_wulist_to_list(wu_list_t x, wu_list_t ** list)
+{
+    wu_list_t *p, *q;
+
+    /*
+     * Note mono_sql_ll_free_wulist()
+     */
+    p = (wu_list_t *) xmalloc(sizeof(wu_list_t));
+
+    if (p == NULL)
+	return -1;
+
+    *p = x;
+    p->next = NULL;
+
+    q = *list;
+    if (q == NULL) {
+	*list = p;
+    } else {
+	while (q->next != NULL)
+	    q = q->next;
+	q->next = p;
+    }
+    return 0;
+}
+
+void
+mono_sql_ll_free_wulist(wu_list_t *list)
+{
+    wu_list_t *ref;
+
+    while (list != NULL) {
+        ref = list->next;
+        (void) xfree(list->user);
+        (void) xfree(list);
+        list = ref;
+    }
+    return;
+}
+
 /* eof */

@@ -127,6 +127,23 @@ struct sr_list {
     sr_t *result;
 };
 
+/*
+ * Web user entry.
+ */
+typedef struct wu {
+    char username[L_USERNAME+1];
+    char online[16];
+} wu_t;
+
+/*
+ * A linked list with web users.
+ */
+typedef struct wu_list wu_list_t;
+struct wu_list {
+    wu_list_t *next;
+    wu_t *user;
+};
+
 typedef struct xfriend friend_t;
 struct xfriend {
     char name[L_USERNAME + L_BBSNAME + 1];

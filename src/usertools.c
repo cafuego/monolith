@@ -50,6 +50,8 @@
 #include "uadmin.h"
 #include "wholist.h"
 
+#include "sql_web.h"
+
 #define extern
 #include "usertools.h"
 #undef extern
@@ -1180,6 +1182,11 @@ show_online(int type)
 	putchar(WHO_E);
     }
 #endif
+
+    /* Web! */
+    p = mono_sql_web_wholist();
+    more_string(p);
+    xfree(p);
 
 }
 

@@ -5,6 +5,7 @@
 #endif
 
 #include <stdio.h>
+#include <string.h>
 #include <unistd.h>
 
 #ifdef HAVE_MYSQL_H
@@ -21,6 +22,8 @@
 #include "monosql.h"
 #include "routines.h"
 
+#include "sql_convert.h"
+#include "sql_llist.h"
 #include "sql_user.h"
 #include "sql_utils.h"
 
@@ -89,4 +92,90 @@ mono_sql_web_cleanup(unsigned int user_id)
     return TRUE;
 }
 
+int
+mono_sql_web_get_online(wu_list_t ** list)
+{
+
+    int ret, rows, i;
+    MYSQL_RES *res;
+    MYSQL_ROW row;
+    wu_list_t entry;
+
+    ret = mono_sql_query(&res, "SELECT u.username AS name,SEC_TO_TIME(NOW()-o.date) AS online FROM online AS o LEFT JOIN user AS u ON o.user_id=u.id WHERE o.interface='web' ORDER by online DESC");
+
+    if (ret == -1) {
+	(void) mono_sql_u_free_result(res);
+	return -1;
+    }
+    if ((rows = mysql_num_rows(res)) == 0) {
+	(void) mono_sql_u_free_result(res);
+	return 0;
+    }
+    for (i = 0; i < rows; i++) {
+	row = mysql_fetch_row(res);
+	if (row == NULL)
+	    break;
+	/*
+	 * Get result and add to list.
+	 */
+	if ((entry.user = mono_sql_convert_row_to_wu(row)) == NULL) {
+	    continue;
+	}
+	if (mono_sql_ll_add_wulist_to_list(entry, list) == -1) {
+	    continue;
+	}
+    }
+    (void) mono_sql_u_free_result(res);
+    return rows;
+}
+
+#define WHOLIST_LINE_LENGTH 200
+
+char *
+mono_sql_web_wholist()
+{
+    char *p, *q, line[WHOLIST_LINE_LENGTH];
+    wu_list_t *list = NULL;
+    int count = 0;
+
+    count = mono_sql_web_get_online(&list);
+
+    /*
+     * Query error?
+     */
+    if(count == -1) {
+        mono_sql_ll_free_wulist(list);
+        return NULL;
+    }
+
+    p = (char *) xmalloc(WHOLIST_LINE_LENGTH * (count+5));
+    strcpy(p, "");
+
+    if(count == 0) {
+        (void) sprintf(p, "\n\1f\1gThere are no users online via the web.\n");
+        mono_sql_ll_free_wulist(list);
+        return p;
+    } else {
+        (void) sprintf(p, "\n\1f\1gThere %s \1y%d\1g user%s online via the web.\n"
+            , (count == 1) ? "is" : "are", count, (count == 1) ? "" : "s" );
+	strcat(p, "-------------------------------------------------------------------------------\1a\n");
+
+        /*
+         * Start printing users.
+         */
+        while(list != NULL) {
+            sprintf(line, "\1a\1f%-20s ", list->user->username);
+            strcat(line, "\1p[    ] ");
+            strcat(line, "\1gMonolith Website ");
+            q = line + strlen(line);
+            (void) sprintf(q, "\1f\1p%s ", list->user->online);
+            q = line + strlen(line);
+            (void) sprintf(q, "\1f\1ySurfing the web\1a\n");
+            strcat(p, line);
+            list = list->next;
+        }
+    }
+    mono_sql_ll_free_wulist(list);
+    return p;
+}
 /* eof */

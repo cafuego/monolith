@@ -9,6 +9,7 @@ CREATE TABLE online (
    status	ENUM( 'yes', 'no' ) DEFAULT 'yes',
    interface	ENUM( 'telnet', 'client', 'web' ) DEFAULT 'telnet' NOT NULL,
    doing	CHAR(40) NOT NULL,
+   date        	DATETIME NOT NULL,
    stamp        TIMESTAMP,
 
    PRIMARY KEY( user_id,interface )

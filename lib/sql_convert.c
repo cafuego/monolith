@@ -145,4 +145,32 @@ mono_sql_convert_row_to_x(MYSQL_ROW row)
 
     return x;
 }
+
+/*
+ * Convert MYSQL_ROW to wu_t.
+ */
+wu_t *
+mono_sql_convert_row_to_wu(MYSQL_ROW row)
+{
+    wu_t *u = NULL;
+    char *c = NULL;
+
+    u = (wu_t *) xmalloc(sizeof(wu_t));
+
+    if(u == NULL)
+        return NULL;
+
+    memset(u, 0, sizeof(wu_t));
+
+    snprintf(u->username, L_USERNAME, "%s", row[0]);
+    snprintf(u->online, 15, "%s", row[1]);
+
+    /*
+     * Chop seconds :)
+     */
+    c = strrchr(u->online, ':');
+    c = '\0';
+
+    return u;
+}
 /* eof */
