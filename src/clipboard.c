@@ -3,6 +3,7 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+#include <build-defs.h>
 
 #include <string.h>
 #include <stdlib.h>
@@ -34,7 +35,6 @@
 #include "ext.h"
 
 #include "clipboard.h"
-// #include "commands.h"
 #include "read_menu.h"
 #include "express.h"
 #include "input.h"

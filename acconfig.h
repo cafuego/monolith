@@ -18,6 +18,7 @@
 #undef HAVE_ANIMAL
 #undef HAVE_MAP_FAILED
 #undef HAVE_MYSQL_H
+#undef HAVE_MYSQL_MYSQL_H
 #undef MYSQL_DIR
 #undef MYSQL_INCLUDE
 #undef MYSQL_LIB

@@ -5,7 +5,7 @@ AC_INIT(src/main.c)
 AC_CANONICAL_SYSTEM
 
 AM_INIT_AUTOMAKE(monolith, 1.0)
-AM_CONFIG_HEADER(include/config.h)
+AM_CONFIG_HEADER(config.h)
 AC_PREFIX_DEFAULT(/usr/bbs)
 
 AC_ARG_WITH(name, [  --with-name=NAME      set the BBS name [default=none]],,with_name=none)
@@ -37,11 +37,11 @@ AC_PROG_CC
 AC_PROG_RANLIB
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
-AC_PATH_PROG(PROG_SENDMAIL, sendmail, /usr/lib/sendmail, $PATH /usr/bin /usr/sbin /usr/etc /etc /usr/ucblib)
-if test -n "$PROG_SENDMAIL"; then
+AC_PATH_PROG(SENDMAIL, sendmail, /usr/lib/sendmail, $PATH /usr/bin /usr/sbin /usr/etc /etc /usr/ucblib)
+if test -n "$SENDMAIL"; then
   AC_DEFINE(HAVE_SENDMAIL)
 fi
-AC_SUBST(PROG_SENDMAIL)
+AC_SUBST(SENDMAIL)
 AC_PATH_PROG(PROG_CAT, cat, /bin/cat, $PATH /usr/bin /usr/sbin /usr/etc /etc /usr/ucblib)
 if test -n "$PROG_CAT"; then
   AC_DEFINE(HAVE_CAT)
@@ -243,11 +243,11 @@ else
 fi
 
 AC_OUTPUT(cgi/Makefile lib/Makefile daemons/Makefile src/Makefile \
-     misc/Makefile shix/Makefile share/Makefile share/feelings/Makefile \
-     share/loginscreens/Makefile web/Makefile web/engine/Makefile \
-     web/pix/Makefile web/style/Makefile web/script/Makefile \
-     web/sound/Makefile web/flash/Makefile po/Makefile.in intl/Makefile \
-     include/Makefile Makefile web/classes/Makefile)
+    misc/Makefile shix/Makefile share/Makefile share/feelings/Makefile \
+    share/loginscreens/Makefile web/Makefile web/classes/Makefile \
+    web/engine/Makefile web/pix/Makefile web/style/Makefile \
+    web/script/Makefile web/sound/Makefile web/flash/Makefile \
+    po/Makefile.in intl/Makefile include/Makefile Makefile build-defs.h)
 
 dnl Only do this if we're not called from the makefile.
 dnl

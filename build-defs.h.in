@@ -1,0 +1,3 @@
+#define BBSDIR		"@prefix@"
+#define BBSNAME		"@BBSNAME@"
+#define SENDMAIL	"@SENDMAIL@"

@@ -3,7 +3,7 @@
 # Extremely crude util for creating forum directories.
 # Creates dirs forum.0/ - forum.149/
 
-BBSDIR=`grep "define BBSDIR" ../include/sysconfig.h |awk '{print $3}'`
+BBSDIR=`grep "define BBSDIR" build-defs.h | awk '{print $3}'`
 FILEDIR=$BBSDIR/save/messages
 typeset -i n=0
 

@@ -3,7 +3,7 @@ bin_PROGRAMS = server front
 server_SOURCES = server.c
 front_SOURCES = front.c
 
-CFLAGS = -O3 -Wall -DBBSDIR=\"$(prefix)\" -DBBSNAME=\"$(BBSNAME)\"
+CFLAGS=-O3 -Wall -I../include
 
 #ifdef USE_MYSQL
 CFLAGS += $(MYSQL_INCLUDE)

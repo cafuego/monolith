@@ -1,39 +1,27 @@
 bin_PROGRAMS = yawc_port yawc_client
-CFLAGS=-O3 -Wall -g -DBBSDIR=\"$(prefix)\"
+CFLAGS=-O3 -Wall -g -I../include
 
 #ifdef USE_MYSQL
   CFLAGS+=$(MYSQL_INCLUDE)
 #endif
 
-yawc_port_SOURCES = friends.c chat.c help.c menu.c \
+yawc_port_SOURCES = clipboard.c key.c fun.c friends.c chat.c help.c menu.c \
   normal_input.c newuser.c registration.c inter.c vote.c \
   uadmin.c wholist.c read_menu.c rooms.c bbsconfig.c enter_message.c qc.c
 
-yawc_client_SOURCES = friends.c chat.c help.c menu.c \
+yawc_client_SOURCES = clipboard.c key.c fun.c friends.c chat.c help.c menu.c \
   newuser.c registration.c inter.c vote.c wholist.c uadmin.c \
   read_menu.c rooms.c bbsconfig.c enter_message.c qc.c
 
-yawc_port_LDADD = clipboard.o key.o fun.o p_commands.o p_express.o p_main.o p_messages.o p_cprintf.o \
+yawc_port_LDADD = p_commands.o p_express.o p_main.o p_messages.o p_cprintf.o \
   p_routines2.o p_statusbar.o p_usertools.o p_display_message.o \
   $(MYSQL_LIB) -L../lib -L../shix -lyawc -lm -lshix -lintl \
   -lmysqlclient
 
-yawc_client_LDADD = clipboard.o key.o fun.o c_commands.o c_client_input.o c_express.o c_main.o \
+yawc_client_LDADD = c_commands.o c_client_input.o c_express.o c_main.o \
   c_messages.o c_routines2.o c_statusbar.o c_usertools.o c_display_message.o \
   $(MYSQL_LIB) -L../lib -L../shix -lyawc -lm -lshix -lintl \
   -lmysqlclient
-
-clipboard.o:	clipboard.c
-	$(COMPILE) -DBBSNAME=\"$(BBSNAME)\" \
-		-DSENDMAIL=\"$(PROG_SENDMAIL)\" -c clipboard.c -o clipboard.o
-
-key.o:	key.c
-	$(COMPILE) -DBBSNAME=\"$(BBSNAME)\" \
-		-DSENDMAIL=\"$(PROG_SENDMAIL)\" -c key.c -o key.o
-
-fun.o:	fun.c
-	$(COMPILE) -DBBSNAME=\"$(BBSNAME)\" \
-		-DSENDMAIL=\"$(PROG_SENDMAIL)\" -c fun.c -o fun.o
 
 c_commands.o: commands.c
 	$(COMPILE) \
@@ -61,7 +49,7 @@ c_routines2.o: routines2.c
 
 c_usertools.o: usertools.c
 	$(COMPILE) \
-		-DCLIENTSRC -DBBSNAME=\"$(BBSNAME)\" -c usertools.c -o c_usertools.o
+		-DCLIENTSRC -c usertools.c -o c_usertools.o
 
 c_statusbar.o: statusbar.c
 	$(COMPILE) \
@@ -69,7 +57,7 @@ c_statusbar.o: statusbar.c
 
 c_main.o: main.c
 	$(COMPILE) \
-		-DCLIENTSRC -DBBSNAME=\"$(BBSNAME)\" -c main.c -o c_main.o
+		-DCLIENTSRC -c main.c -o c_main.o
 
 # port
 
@@ -99,7 +87,7 @@ p_routines2.o: routines2.c
 
 p_usertools.o: usertools.c
 	$(COMPILE) \
-		-DPORT -DBBSNAME=\"$(BBSNAME)\" -c usertools.c -o p_usertools.o
+		-DPORT -c usertools.c -o p_usertools.o
 
 p_statusbar.o: statusbar.c
 	$(COMPILE) \
@@ -107,11 +95,7 @@ p_statusbar.o: statusbar.c
 
 p_main.o: main.c
 	$(COMPILE) \
-		-DPORT -DBBSNAME=\"$(BBSNAME)\" -c main.c -o p_main.o
-
-%.o:	%.c
-	$(COMPILE) \
-		-DBBSNAME=\"$(BBSNAME)\" -c $< -o $@
+		-DPORT -c main.c -o p_main.o
 
 #CFLAGS += -w -W \
 #  -Wall \
