@@ -222,7 +222,7 @@ short_prompt(void)
 		break;
 
 	    case 'i':
-		cprintf("\1f\1g%s Info.\1a\n", config.forum_pl);
+		cprintf("\1f\1g%s Info.\1a\n", config.forum);
 		display_message(curr_rm, 0, DISPLAY_INFO);
 		break;
 
