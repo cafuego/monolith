@@ -283,57 +283,55 @@ function list_x_messages($username,$location) {
 
 function colorize($doing) {
 
-    
-    echo "<!-- 1: $doing -->\n";
-    $doing = QuoteMeta($doing);
-    echo "<!-- 2: $doing -->\n";
+    $doing = rawurlencode($doing);
+    echo "<!-- $doing -->\n";
 
     // Convert to HTML colour codes.
     // 
-    $doing = strtr($doing, "\1f", "");
+    $doing = strtr($doing, "%01f", "");
     echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "\1a", "");
+    $doing = strtr($doing, "%01a", "");
     echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "\1d", "");
+    $doing = strtr($doing, "%01d", "");
     echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "\1D", "");
+    $doing = strtr($doing, "%01D", "");
     echo "<!-- $doing -->\n";
 
     // Remove bg colours.
     //
-    $doing = strtr($doing, "\1W", "");
+    $doing = strtr($doing, "%01W", "");
     echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "\1Y", "");
+    $doing = strtr($doing, "%01Y", "");
     echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "\1G", "");
+    $doing = strtr($doing, "%01G", "");
     echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "\1C", "");
+    $doing = strtr($doing, "%01C", "");
     echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "\1B", "");
+    $doing = strtr($doing, "%01B", "");
     echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "\1P", "");
+    $doing = strtr($doing, "%01P", "");
     echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "\1R", "");
+    $doing = strtr($doing, "%01R", "");
     echo "<!-- $doing -->\n";
 
     // Fix fg colours.
     //
-    $doing = strtr($doing, "\1w", "</font><font color=\"#ffffff\">");	// White.
+    $doing = strtr($doing, "%01w", "</font><font color=\"#ffffff\">");	// White.
     echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "\1y", "</font><font color=\"#ffff00\">");	// Yellow.
+    $doing = strtr($doing, "%01y", "</font><font color=\"#ffff00\">");	// Yellow.
     echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "\1g", "</font><font color=\"#00ff00\">");	// Green.
+    $doing = strtr($doing, "%01g", "</font><font color=\"#00ff00\">");	// Green.
     echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "\1c", "</font><font color=\"#00ffff\">");	// Cyan.
+    $doing = strtr($doing, "%01c", "</font><font color=\"#00ffff\">");	// Cyan.
     echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "\1b", "</font><font color=\"#0000ff\">");	// Blue.
+    $doing = strtr($doing, "%01b", "</font><font color=\"#0000ff\">");	// Blue.
     echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "\1p", "</font><font color=\"#ff00ff\">");	// Purple.
+    $doing = strtr($doing, "%01p", "</font><font color=\"#ff00ff\">");	// Purple.
     echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "\1r", "</font><font color=\"#ff0000\">");	// Red.
+    $doing = strtr($doing, "%01r", "</font><font color=\"#ff0000\">");	// Red.
     echo "<!-- $doing -->\n";
 
-    return $doing;
+    return rawurldecode($doing);
 }
 
 ?>
