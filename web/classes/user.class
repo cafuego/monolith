@@ -6,18 +6,44 @@
 
 class user_t {
 
-    var $usernum;
+    var $id;
     var $username;
 
-    // Load $usernames userfile into this class.
+    var $realname;
+    var $address;
+    var $zip;
+    var $city;
+    var $state;
+    var $country;
+    var $phone;
+    var $email;
+    var $url;
+
+    var $hiddeninfo;
+
+    var $image;
+    var $profile;
+
+    // Load $target's userfile into this class.
     //
-    function init( $username ) {
-        connect_db();
-        $res = mysql_query("SELECT id,username FROM user WHERE username='$username'");
+    function init( $target ) {
+        $res = mysql_query("SELECT id,username,name,address,zip,city,state,country,phone,email,url,hiddeninfo,content_type,profile FROM user WHERE username='$target'");
         $num = mysql_numrows($result);
         if ($num) {
-            $this->usernum = mysql_result($result, $i, "id");
+            $this->id = mysql_result($result, $i, "id");
             $this->username = mysql_result($result, $i, "username");
+            $this->hiddeninfo = mysql_result($result, $i, "hiddeninfo");
+            $this->realname = mysql_result($result, $i, "name");
+            $this->address = mysql_result($result, $i, "address");
+            $this->zip = mysql_result($result, $i, "zip");
+            $this->city = mysql_result($result, $i, "city");
+            $this->state = mysql_result($result, $i, "state");
+            $this->country = mysql_result($result, $i, "country");
+            $this->phone = mysql_result($result, $i, "phone");
+            $this->email = mysql_result($result, $i, "email");
+            $this->url = mysql_result($result, $i, "url");
+            $this->image = mysql_result($result, $i, "content_type");
+            $this->profile = mysql_result($result, $i, "profile");
             return 0;
         }
         return -1;
@@ -26,12 +52,71 @@ class user_t {
     // Get this user's name.
     //
     function getname() {
-        return $this->usernum;
+        return $this->username;
     }
 
     // Get this user's usernumber.
     //
-    function getname() {
-        return $this->username;
+    function getnum() {
+        return $this->id;
+    }
+
+    // Show user's profile.
+    //
+    function show_profile() {
+       addimage("$this->username's Profile");
+       $this->add_info();
+       $this->add_image();
+       $this->add_profile();
+    }
+
+    // Add user's info. (if available)
+    function add_info() {
+        echo <p align=\"left\">\n";
+        if( ! (strstr( $this->hidden_info, "name" ))
+            echo "$this->realname";
+        if( ! (strstr( $this->hidden_info, "address" ))
+            echo "$this->address<br>\n";
+        if( ! (strstr( $this->hidden_info, "zip" ))
+            echo "$this->zip<br>\n";
+        if( ! (strstr( $this->hidden_info, "city" ))
+            echo "$this->city<br>\n";
+        if( ! (strstr( $this->hidden_info, "state" ))
+            echo "$this->state<br>\n";
+        if( ! (strstr( $this->hidden_info, "country" ))
+            echo "$this->country<br>\n";
+        if( ! (strstr( $this->hidden_info, "phone" ))
+            echo "$this->phone<br>\n";
+        if( ! (strstr( $this->hidden_info, "email" ))
+            echo "$this->email<br>\n";
+        if( ! (strstr( $this->hidden_info, "url" ))
+            echo "$this->url<br>\n";
+        return;
+    }
+
+    // Add user's profile.
+    //
+    function add_profile() {
+        $this->profile = htmlspecialchars($this->profile);
+        $this->profile = colorize($this->profile);
+        echo "<pre><font color=\"#00ffff\">$this->profile</font></pre>\n";
+    }
+
+    // Add user's profile pic if it exists.
+    //
+    function add_image() {
+        if( valid_image($this->image)) {
+            if( $content_type == "image/gif")
+                echo "<img align=\"center\" src=\"/bbs/pix/gif.php3?$this->id\">\n";
+            else if ($content_type == "image/jpg" || $content_type == "image/jpeg" || $content_type == "image/pjpeg")
+                echo "<img align=\"center\" src=\"/bbs/pix/jpeg.php3?$this->id\">\n";
+            else if ($content_type == "image/png")
+                echo "<img align=\"center\" src=\"/bbs/pix/png.php3?$this->id\">\n";
+            else {
+                errorimage("Image is in unsupported format!");
+                return -1;
+            }
+        }
+        return 0;
     }
 }
