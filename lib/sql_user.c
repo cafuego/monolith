@@ -30,6 +30,8 @@
 #include "monosql.h"
 #include "sql_utils.h"
 
+#include "routines.h"
+
 #define extern
 #include "sql_user.h"
 #undef extern
@@ -212,8 +214,6 @@ mono_sql_u_name2id(const char *username, unsigned int *userid)
 int
 mono_sql_read_profile(unsigned int user_id, char ** profile )
 {   
-    char *p, work[61];
-    struct stat buf;
     int i;
     MYSQL_RES *res;
     MYSQL_ROW row;
@@ -229,8 +229,7 @@ mono_sql_read_profile(unsigned int user_id, char ** profile )
 	return -1;
     }
 
-
-    /* copy entire proflie into 'p' here *
+    /* copy entire proflie into 'p' here */
     row = mysql_fetch_row(res);
 
     *profile = (char *) xmalloc( strlen(row[0]) * sizeof(char) );
