@@ -90,7 +90,7 @@
 
   // Check if we have a username, check password if we do.
   //
-  if(!isset($PHP_AUTH_USER)) {
+  if((!isset($PHP_AUTH_USER)) || ($PHP_AUTH_USER = "") || ($PHP_AUTH_USER == NULL)) {
     Header("WWW-Authenticate: Basic realm=\"$BBSNAME BBS\"");
     Header("HTTP/1.0 401 Unauthorized");
     auth_head();
