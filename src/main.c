@@ -655,7 +655,7 @@ user_terminate()
     }
     while (cmd != 'n' || cmd != 'y' || cmd != 'm') {
 
-	cprintf(_("\n\1f\1gAre you sure you want to leave the bbs? \1w(\1gy\1w/\1gn\1w/\1gm\1w/\1g?\1w)\1g "));
+	cprintf(_("\n\1f\1gAre you sure you want to leave Monolith? \1w(\1gy\1w/\1gn\1w/\1gm\1w/\1g?\1w)\1g "));
 	cmd = get_single_quiet("ynm?");
 
 	switch (cmd) {
