@@ -379,11 +379,17 @@ function colorize($doing) {
 
 function errorsound() {
 
-    echo "<object src=\"/bbs/sound/error.aiff\" type=\"audio/x-aiff\" autostart=\"true\" hidden=\"true\" loop=\"false\">\n";
-    echo "  <embed src=\"/bbs/sound/error.aiff\" type=\"audio/x-aiff\" autostart=\"true\" hidden=\"true\" loop=\"false\">\n";
-    echo "    <noembed>[ <a href=\"/bbs/sound/error.aiff\">sound: error mesage</a> ]</noembed>\n";
-    echo "  </embed>\n";
+    // echo "<object src=\"/bbs/sound/error.aiff\" type=\"audio/x-aiff\" autostart=\"true\" hidden=\"true\" loop=\"false\">\n";
+    // echo "  <embed src=\"/bbs/sound/error.aiff\" type=\"audio/x-aiff\" autostart=\"true\" hidden=\"true\" loop=\"false\">\n";
+    // echo "    <noembed>[ <a href=\"/bbs/sound/error.aiff\">sound: error mesage</a> ]</noembed>\n";
+    // echo "  </embed>\n";
+    // echo "</object>\n";
+
+    echo "<object src=\"/bbs/sound/error.au\" type=\"audio/basic\" autostart=\"true\" hidden=\"true\" loop=\"false\">\n";
     echo "</object>\n";
+    echo "<embed src=\"/bbs/sound/error.au\" type=\"audio/basic\" autostart=\"true\" hidden=\"true\" loop=\"false\">\n";
+    echo "  <noembed>[ <a href=\"/bbs/sound/error.au\">sound: error mesage</a> ]</noembed>\n";
+    echo "</embed>\n";
 
 }
 
