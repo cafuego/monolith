@@ -235,12 +235,13 @@ function list_x_messages($username,$location) {
             $recipient = mysql_result($result,$i,"recipient");
             $message = mysql_result($result,$i,"message");
             $date = mysql_result($result,$i,"date");
+            $reply = rawurlencode($user);
 
             $bing = MYSQL_QUERY("UPDATE webx SET status='read' WHERE id=$id");
 
             print "<tr>\n";
             print "  <td align=\"left\" bgcolor=\"#333333\">\n";
-            print "    <p align=\"left\"><font color=\"#00cc00\">eXpress Message from <a href=\"/bbs/index.phtml/x/$user/$i_sender/$location\">$user@$i_sender</a> to <font color=\"#ffff00\">$username@web</font> at </font>(<font color=\"#00cc00\">$date</font>)\n";
+            print "    <p align=\"left\"><font color=\"#00cc00\">eXpress Message from <a href=\"/bbs/index.phtml/x/$reply/$i_sender/$location\">$user@$i_sender</a> to <font color=\"#ffff00\">$username@web</font> at </font>(<font color=\"#00cc00\">$date</font>)\n";
             print "    <font color=\"#00cccc\"><pre>$message</pre></font>\n";
             print "  </td>\n";
             print "</tr>\n";

@@ -48,5 +48,10 @@ main(int argc, char *argv[] )
     printf("%s", p);
     fflush(stdout);
     xfree(p);
+    strremcol(p = mono_sql_web_wholist(1, NULL));
+    printf("%s", p);
+    fflush(stdout);
+    xfree(p);
+
     return 0;
 }
