@@ -201,8 +201,17 @@ short_prompt(void)
 		break;
 
 	    case 006:
+#ifndef FRIENDS_CACHE_DEBUG
 		cprintf("\1f\1gYour friends online.\1a\n");
 		friends_online();
+#else
+		{
+		    char *cachedump;
+		    cachedump = show_user_cache();
+		    more_string(cachedump);
+		    xfree(cachedump);
+		}
+#endif
 		break;
 
 	    case 'G':
