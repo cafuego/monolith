@@ -1843,7 +1843,11 @@ new_read_menu(unsigned int forum, int direction)
 
     while( list != NULL ) {
 
+#ifdef USE_RATING
         cmd = get_single_quiet("abfnsqR ");
+#else
+        cmd = get_single_quiet("abfnsq ");
+#endif
 
         switch(cmd) {
 
@@ -1887,11 +1891,13 @@ new_read_menu(unsigned int forum, int direction)
                return;
                break;
 
+#ifdef USE_RATING
            case 'R':
                cprintf("\1f\1gRate this %s.\n", config.message );
                rate_message(forum, list->id);
                direction = 0;
                break;
+#endif
 
         } /* switch */
   
@@ -1914,6 +1920,7 @@ new_read_menu(unsigned int forum, int direction)
     return;
 }
 
+#ifdef USE_RATING
 void
 rate_message(unsigned int forum, unsigned int message)
 {
@@ -1951,3 +1958,4 @@ rate_message(unsigned int forum, unsigned int message)
 
     return;
 }
+#endif

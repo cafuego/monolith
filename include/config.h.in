@@ -120,5 +120,5 @@
 /* Define if you have the gdbm library (-lgdbm).  */
 #undef HAVE_LIBGDBM
 
-/* Define if you want the superhero toy  */
-#undef SUPERHERO
+/* Define if you want to use the rating system  */
+#undef USE_RATING

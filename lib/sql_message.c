@@ -30,7 +30,9 @@
 #include "sql_utils.h"
 #include "sql_forum.h"
 #include "sql_userforum.h"
-#include "sql_rating.h"
+#ifdef USE_RATING
+  #include "sql_rating.h"
+#endif
 
 #include "sql_message.h"
 
@@ -67,10 +69,12 @@ mono_sql_mes_add(message_t *message, unsigned int forum, const char *tmpfile)
     xfree(alias);
     xfree(subject);
 
+#ifdef USE_RATING
     /*
      * To prevent an autor from uprating their own posts.
      */
     (void) mono_sql_rat_add_rating(message->author, message->num, message->forum, 0);
+#endif
 
     return ret;
 
@@ -164,10 +168,14 @@ mono_sql_mes_retrieve(unsigned int id, unsigned int forum, message_t *data)
     sscanf(row[8], "%s", message.priv);
     sscanf(row[9], "%c", &message.deleted);
 
+#ifdef USE_RATING
     /*
      * Score!
      */
     message.score = mono_sql_rat_get_rating(message.num, message.forum);
+#else
+    message.score = 0;
+#endif
 
     (void) mysql_free_result(res);
 

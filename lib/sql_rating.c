@@ -8,6 +8,8 @@
 #include "config.h"
 #endif
 
+#ifdef USE_RATING
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -95,3 +97,4 @@ mono_sql_rat_check_rating(unsigned int user_id, unsigned int message_id, unsigne
     (void) mysql_free_result(res);
     return 0;
 }
+#endif /* USE_RATING */

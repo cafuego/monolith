@@ -83,6 +83,7 @@ display_message(unsigned int num, unsigned int forum)
 
     }
 
+#ifdef USE_RATING
     cprintf("\n\1f\1wDEBUG: Rating: ");
     if(message.score < 0)
         cprintf("\1r");
@@ -94,6 +95,7 @@ display_message(unsigned int num, unsigned int forum)
         cprintf("\1g");
     printf("%.3f", message.score );
     fflush(stdout);
+#endif
 
     string = format_message( &message, forum );
 
