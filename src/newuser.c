@@ -179,7 +179,7 @@ newuser_getname(user_t * user)
 	if (strlen(name) < 1)
 	    continue;
 
-	if (check_user(name) == TRUE) {
+	if (mono_sql_u_check_user(name) == TRUE) {
 	    cprintf("\1rSorry, that name is already taken; try another one.\n");
 	    continue;
 	}

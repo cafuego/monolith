@@ -197,7 +197,7 @@ copy_message_wrapper(const unsigned int current_post, const int is_not_my_post, 
 		if (!copy && count)
 		    message_delete(curr_rm, current_post);
 		break;
-	    } else if (check_user(to_name) == FALSE) {
+	    } else if (mono_sql_u_check_user(to_name) == FALSE) {
 		cprintf("\nNo such user..");
 		continue;
 	    } else if (is_enemy(to_name, who_am_i(NULL))) {
@@ -301,7 +301,7 @@ x_message_to_mail(const char *x, char *to_user)
 {
     FILE *fp;
 
-    if ((check_user(to_user)) == FALSE)
+    if ((mono_sql_u_check_user(to_user)) == FALSE)
 	return;
 
     cprintf("\1f\1gSave %s %s to \1y%s\1g's Mail? \1w(\1gy\1w/\1gn\1w) \1c",
@@ -392,7 +392,7 @@ count_mail_messages(void)
 
     strcpy(name, usersupp->username);
 
-    if (check_user(name) == FALSE || EQ(name, "Guest"))
+    if (mono_sql_u_check_user(name) == FALSE || EQ(name, "Guest"))
 	return -1;
     sprintf(mail_dir, "%s/mail/.", getuserdir(who_am_i(NULL)));
 

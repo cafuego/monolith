@@ -983,7 +983,7 @@ format_username(message_t * message, char **string)
     type = get_message_type(message->type);
     priv = get_message_priv(message->priv);
 
-    if (check_user(message->a_name) == FALSE) {
+    if (mono_sql_u_check_user(message->a_name) == FALSE) {
 	if (usersupp->config_flags & CO_EXPANDHEADER)
 	    sprintf(fmt_username, "\n\1f\1gFrom\1w: \1rDeleted %s\1a", config.user);
 	else

@@ -412,7 +412,7 @@ sysopuser_menu()
 		cprintf("\1f\1rSee the KnownQuadsList for a user.\1a\n");
 		cprintf("\1f\1gUser: \1c");
 		p = get_name(2);
-		if (!check_user(p)) {
+		if (!mono_sql_u_check_user(p)) {
 		    printf("\1r\1fNo such user.\n");
 		    break;
 		} else if ((tmpuser = readuser(p)) != NULL) {

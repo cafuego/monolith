@@ -501,7 +501,7 @@ get_mail_names(const int reply, userlist_t ** name_list, message_header_t * head
 	if (!strlen(mailname))
 	    break;
 	if (strcmp(mailname, "Sysop"))
-	    if (check_user(mailname) != TRUE || mailname[0] == '.') {
+	    if (mono_sql_u_check_user(mailname) != TRUE || mailname[0] == '.') {
 		cprintf("\1f\1rNo such user.\1a\n");
 		if (reply)
 		    break;
@@ -694,7 +694,7 @@ quad_lizard(message_header_t * header)
 	    for (j = 0; j < NO_OF_QLS && mail_the_lamer_qls; j++) {
 		if ((strlen(quad.qls[j]) <= 0) || (strcmp(quad.qls[j], "Sysop") == 0))
 		    continue;
-		else if (check_user(quad.qls[j])) {
+		else if (mono_sql_u_check_user(quad.qls[j])) {
 		    char quadname[L_QUADNAME + 1];
 		    char name[L_USERNAME + 1];
 
@@ -723,7 +723,7 @@ quad_lizard(message_header_t * header)
 	for (j = 0; j < NO_OF_QLS; j++) {
 	    if ((strlen(quad.qls[j]) <= 0) || (strcmp(quad.qls[j], "Sysop") == 0))
 		continue;
-	    else if (check_user(quad.qls[j]) != 1) {
+	    else if (mono_sql_u_check_user(quad.qls[j]) != 1) {
 		fprintf(fp2, "\1f\1w%d.\1r%s\1w: \1rQL slot #\1w%ld: \1rUser \1r%s \1rdoesn't exist.  \1w(\1r!\1w)\1a\n", i, quad.name, j + 1, quad.qls[j]);
 		continue;
 	    } else {
@@ -784,7 +784,7 @@ i_deleted_your_post_haha_mail(const unsigned int current_post)
     read_message_header(filename, &message);
 
     strcpy(name, message.author);
-    if (check_user(name) == FALSE) {
+    if (mono_sql_u_check_user(name) == FALSE) {
 	cprintf("\1f\1rOriginal author \1w`\1y%s\1w' \1rdoes not exist.\1a\n", name);
 	return;
     }

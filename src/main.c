@@ -308,7 +308,7 @@ enter_name(char *usernm)
 	    logoff(ULOG_OFF);
 	} else {
 	    /* if this user does not exist, fake a password-entry */
-	    if (check_user(usernm) == FALSE) {
+	    if (mono_sql_u_check_user(usernm) == FALSE) {
 		cprintf("%s's Password: ", usernm);
 		(void) getline(pwordshit, -19, 1);
 		cprintf("Incorrect login.\n");

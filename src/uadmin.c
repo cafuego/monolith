@@ -63,7 +63,7 @@ useradmin()
     if (strlen(name) == 0)
 	return;
 
-    if (check_user(name) == FALSE) {
+    if (mono_sql_u_check_user(name) == FALSE) {
 	cprintf("\1rNo such user.\n");
 	return;
     }
@@ -475,7 +475,8 @@ namechange(void)
     strcpy(newname, get_name(2));
     if (!strlen(newname))
 	return;
-    if (check_user(newname) == TRUE) {
+
+    if (mono_sql_u_check_user(newname) == TRUE) {
 	cprintf("\1f\1rName already exists.\n\1a");
 	return;
     }

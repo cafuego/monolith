@@ -363,7 +363,7 @@ do_invite()
     if (strlen(the_user) == 0)
 	return;
 
-    if (check_user(the_user) == FALSE) {
+    if (mono_sql_u_check_user(the_user) == FALSE) {
 	cprintf("\1f\1rNo such user.\1a\n");
 	return;
     }
@@ -406,7 +406,7 @@ do_kickout()
     if (the_user[0] == 0)
 	return;
 
-    if (check_user(the_user) == FALSE) {
+    if (mono_sql_u_check_user(the_user) == FALSE) {
 	cprintf("\n\1f\1rNo such user.\1a\n");
 	return;
     }
@@ -916,7 +916,7 @@ edit_room_field(room_t * QRedit, unsigned int forum_id, int fieldnum )
 	/* empty field for QL[slot] -> remove QL */
 
 	    if (strlen(name) == 0) {
-		if (check_user(QRedit->qls[slot]) == FALSE)
+		if (mono_sql_u_check_user(QRedit->qls[slot]) == FALSE)
 		    cprintf("\1rRemoving non-existant user as QL.\n");
 		else if (change_QL(curr_rm, QRedit->qls[slot], -1) == -1) {
 		    cprintf("\1rCould not remove %s as QL.\n", 
@@ -927,7 +927,7 @@ edit_room_field(room_t * QRedit, unsigned int forum_id, int fieldnum )
 		need_rewrite = TRUE;
 		break;
 	    }
-	    if (check_user(name) == FALSE) {
+	    if (mono_sql_u_check_user(name) == FALSE) {
 		cprintf("\1rNo such user.\n");
 		break;
 	    }
@@ -1186,7 +1186,7 @@ look_into_quickroom(int degree)
 		    cprintf("\1c %-20s \1g", scratch.qls[z]);
 
 		if (degree == 1) {
-/*                  if (check_user(scratch.qls[z]) != 1)
+/*                  if (mono_sql_u_check_user(scratch.qls[z]) != 1)
  * cprintf("\1r[ABSENT]"); */
 		} else {
 		    tmpuser = readuser(scratch.qls[z]);
