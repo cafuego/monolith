@@ -46,6 +46,9 @@ function html_print_title($username, $location) {
             $name = html_get_quadname($username,$quad);
             print "<title>$username@Monolith BBS: Listing messages in $name</title>\n";
             break;
+        case "n":
+            print "<title>$username@Monolith BBS: Listing quadrants with unread messages</title>\n";
+            break;
         case "q":
             print "<title>$username@Monolith BBS: Logging out</title>\n";
             break;
@@ -202,7 +205,8 @@ function html_print_foot($username, $starttime) {
     echo "<p class=\"footer\">\n";
     echo "  <a href=\"/bbs/index.phtml/\">Main</a> |\n";
     echo "  <a href=\"/bbs/index.phtml/w\">Wholist</a> |\n";
-    echo "  <a href=\"/bbs/index.phtml/l\">Quadrants</a> |\n";
+    echo "  <a href=\"/bbs/index.phtml/l\">All Quadrants</a> |\n";
+    echo "  <a href=\"/bbs/index.phtml/u\">Unread Messages</a> |\n";
     echo "  <a href=\"/bbs/index.phtml/q\">Log out $username</a>\n";
     echo "<hr size=\"1\" width=\"400\" align=\"center\">\n";
 
