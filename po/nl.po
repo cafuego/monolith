@@ -7,55 +7,111 @@ msgstr ""
 "Files: ./cgi/index.c ./cgi/account.c ./cgi/counter.c ./cgi/hprintf.c ./cgi/util.c ./cgi/interface.c ./cgi/knownrooms.c ./cgi/profile.c ./cgi/register.c ./cgi/userlist.c ./cgi/wholist.c ./cgi/www_auth_group.c ./cgi/www_auth_user.c ./daemons/front.c ./daemons/server.c ./lib/btmp.c ./lib/libcache.c ./lib/libdexi.c ./lib/libfriends.c ./lib/libquad.c ./lib/libuid.c ./lib/log.c ./lib/msg_file.c ./lib/routines.c ./lib/sql_config.c ./lib/sql_convert.c ./lib/sql_express.c ./lib/sql_forum.c ./lib/sql_goto.c ./lib/sql_llist.c ./lib/sql_login.c ./lib/sql_mail.c ./lib/sql_message.c ./lib/sql_online.c ./lib/sql_rating.c ./lib/sql_topic.c ./lib/sql_user.c ./lib/sql_userforum.c ./lib/sql_usertopic.c ./lib/sql_useruser.c ./lib/sql_utils.c ./lib/sql_web.c ./lib/userfile.c ./misc/fsql.c ./misc/add_quads.c ./misc/bbscheck.c ./misc/ccat.c ./misc/convert.c ./misc/delsql.c ./misc/dexi.c ./misc/dexi2.c ./misc/findlowest.c ./misc/finger.c ./misc/initdb.c ./misc/initgoto.c ./misc/makeemp.c ./misc/purge.c "
 "./misc/ql_sql.c ./misc/test.c ./misc/ubl.c ./misc/userlist.c ./misc/wholist.c ./shix/libshix.c ./shix/regerror.c ./shix/regexp.c ./shix/regsub.c ./src/menu.c ./src/bbsconfig.c ./src/chat.c ./src/client_input.c ./src/clipboard.c ./src/commands.c ./src/config.c ./src/cprintf.c ./src/display_message.c ./src/enter_message.c ./src/express.c ./src/friends.c ./src/fun.c ./src/help.c ./src/inter.c ./src/key.c ./src/main.c ./src/messages.c ./src/newuser.c ./src/normal_input.c ./src/qc.c ./src/read_menu.c ./src/registration.c ./src/rooms.c ./src/routines2.c ./src/statusbar.c ./src/uadmin.c ./src/usertools.c ./src/vote.c ./src/wholist.c ./intl/bindtextdom.c ./intl/cat-compat.c ./intl/dcgettext.c ./intl/dgettext.c ./intl/finddomain.c ./intl/gettext.c ./intl/intl-compat.c ./intl/loadmsgcat.c ./intl/localealias.c ./intl/textdomain.c\n"
 
-#: src/clipboard.c:59
+#: src/clipboard.c:50
 msgid "\001f\001gClipboard: \001a"
 msgstr "\001f\001gKlembord: \001a"
 
-#: src/clipboard.c:72
+#: src/clipboard.c:63
 msgid "\001f\001gDelete ClipBoard.\n"
 msgstr "\001f\001gWis klembord.\n"
 
-#: src/clipboard.c:73
+#: src/clipboard.c:64
 msgid "\001f\001yAre you sure you want to delete your clipboard? (y/N) "
 msgstr "\001f\001yWeet je zeker dat je het klembord wil wissen? (y/N) "
 
-#: src/clipboard.c:75
+#: src/clipboard.c:66
 msgid "\001f\001gClipboard not deleted.\n"
 msgstr "\001f\001gKlembord niet gewist.\n"
 
-#: src/clipboard.c:78
+#: src/clipboard.c:69
 msgid "\001f\001gClipboard deleted.\n"
 msgstr "\001f\001gClipboard gewist.\n"
 
-#: src/clipboard.c:83
+#: src/clipboard.c:74
 msgid "\001f\001gEdit ClipBoard.\n"
 msgstr "\001f\001gBewerk klembord.\n"
 
-#: src/clipboard.c:92
+#: src/clipboard.c:286
 msgid "\001r\001fInvalid email address, can't send message!\001a\n"
 msgstr ""
 
-#: src/commands.c:664
+#: src/clipboard.c:291
+msgid ""
+"\001f\001g\n"
+"Do you wish to send it to yourself? \001c"
+msgstr ""
+
+#: src/clipboard.c:298
+msgid "\001f\001gE-Mail yourself the ClipBoard.\n"
+msgstr ""
+
+#: src/clipboard.c:300
+msgid "\001g\001fAre you sure you want to email your clipboard? \001w(\001gy\001w/\001gN\001w) \001c"
+msgstr ""
+
+#: src/clipboard.c:305
+msgid ""
+"\001g\001f\n"
+"Would you like to remove the color codes? \001w(\001gY/n\001w)\001g \001c"
+msgstr ""
+
+#: src/clipboard.c:308
+msgid ""
+"\001f\001r\n"
+"Warning\001w:\001g Couldn't remove colours.\001a"
+msgstr ""
+
+#: src/clipboard.c:316
+msgid "\001r\001fSubject contains invalid characters, can't send message!\001a\n"
+msgstr ""
+
+#: src/clipboard.c:327
+msgid ""
+"\001f\001rError trying to send clipboard to %s.\n"
+"Can't popen(%s)\n"
+msgstr ""
+
+#: src/clipboard.c:333
+msgid ""
+"\001f\001rError trying to send clipboard to %s.\n"
+"Can't mmap(%s)\n"
+msgstr ""
+
+#: src/clipboard.c:344
+msgid ""
+"\001f\001rError trying to send clipboard to %s.\n"
+"Can't pclose(%X)\n"
+msgstr ""
+
+#: src/clipboard.c:351
+msgid "\001f\001rError trying to send clipboard to %s."
+msgstr ""
+
+#: src/clipboard.c:357
+msgid "\001g\001fMail was sent to \001c%s\001a\n"
+msgstr ""
+
+#: src/commands.c:659
 msgid "\001f\001gLock Terminal.\n"
 msgstr ""
 
-#: src/commands.c:682
+#: src/commands.c:677
 msgid "Language not supported.\n"
 msgstr ""
 
-#: src/commands.c:698
+#: src/commands.c:693
 msgid "\001f\001cMark messages as read.\n"
 msgstr ""
 
-#: src/commands.c:732
+#: src/commands.c:727
 msgid "\001f\001w(\001gMisc. Options\001w)\n"
 msgstr "\001f\001w(\001gOverige Opties\001w)\n"
 
-#: src/fun.c:60 src/fun.c:76
+#: src/fun.c:56 src/fun.c:72
 msgid "\001f\001gNo unread %s.\001a"
 msgstr "\001f\001gGeen ongelezen %s.\001a"
 
-#: src/main.c:170
+#: src/main.c:165
 msgid ""
 "OH NO!!!!!!! A SEGFAULT!!!!!\n"
 " "
@@ -66,54 +122,54 @@ msgstr ""
 #.
 #. * First check if user exists. If not, just say so.
 #.
-#: src/main.c:212
+#: src/main.c:207
 msgid "No such user.\n"
 msgstr ""
 
-#: src/main.c:229 src/main.c:332
+#: src/main.c:224 src/main.c:327
 msgid "Incorrect login.\n"
 msgstr "Foute login.\n"
 
-#: src/main.c:245
+#: src/main.c:240
 msgid "\001f\001gPlease enter your \001rcurrent\001g password: "
 msgstr "\001f\001gType je \001rhuidige\001g wachtwoord: "
 
-#: src/main.c:254
+#: src/main.c:249
 msgid "Password changed.\n"
 msgstr "Wachtwoord gewijzigd.\n"
 
-#: src/main.c:256
+#: src/main.c:251
 msgid "Password unchanged.\n"
 msgstr "Wachtwoord niet gewijzigd.\n"
 
-#: src/main.c:276
+#: src/main.c:271
 msgid "Please enter a password: "
 msgstr "Type je wachtwoord: "
 
-#: src/main.c:283
+#: src/main.c:278
 msgid "Please enter it again: "
 msgstr "Type het nogmaals: "
 
-#: src/main.c:287
+#: src/main.c:282
 msgid "The passwords you typed didn't match.  Please try again.\n"
 msgstr "De wachtwoorden waren niet gelijk. Probeer het nogmaals.\n"
 
-#: src/main.c:313
+#: src/main.c:308
 msgid ""
 "\n"
 "Username: "
 msgstr ""
 
-#: src/main.c:317
+#: src/main.c:312
 msgid "Enter \"Off\" to quit or \"New\" to enter as a new user.\n"
 msgstr "Type \"Off\" om te stoppen of \"New\" om een nieuwe gebruiker te creeren\n"
 
 #. if this user does not exist, fake a password-entry
-#: src/main.c:330
+#: src/main.c:325
 msgid "%s's Password: "
 msgstr "%s's wachtwoord: "
 
-#: src/main.c:564
+#: src/main.c:563
 msgid ""
 "\n"
 "*** Registration is required. ***\n"
@@ -123,13 +179,14 @@ msgstr ""
 "*** Registratie is vereist. ***\n"
 "\n"
 
-#: src/main.c:568
+#: src/main.c:567
 msgid ""
 "\001f\001yNow \001w<\001ry\001w>\001yell to the admin to be granted full access.\n"
 "\n"
 msgstr ""
 
-#: src/main.c:664
+#. add stuff here to check if someone is x-ing you
+#: src/main.c:663
 msgid ""
 "\n"
 "\n"
@@ -141,266 +198,282 @@ msgstr ""
 "\001g\001f%s \001yis is nog bezig je een %s %s te sturen.\n"
 "\001a"
 
-#: src/main.c:665
+#: src/main.c:664
 msgid "\001f\001gHit any key to continue...\001a"
 msgstr "\001f\001gDruk om een toets om door te gaan...\001a"
 
-#: src/main.c:670
+#: src/main.c:669
 msgid ""
 "\n"
-"\001f\001gAre you sure you want to leave Monolith? \001w(\001gy\001w/\001gn\001w/\001gm\001w/\001g?\001w)\001g "
+"\001f\001gAre you sure you want to leave %s? \001w(\001gy\001w/\001gn\001w/\001gm\001w/\001g?\001w)\001g "
 msgstr ""
 
-#: src/main.c:675
+#: src/main.c:674
 msgid "\001f\001gHelp.\001a\n"
 msgstr ""
 
-#: src/main.c:680
+#: src/main.c:679
 msgid "\001f\001gYes.\n"
 msgstr "\001f\001gJa.\n"
 
-#: src/main.c:684
+#: src/main.c:683
 msgid "\001f\001gNo.\n"
 msgstr "\001f\001gNee.\n"
 
-#: src/main.c:785
+#: src/main.c:784
 msgid ""
 "\n"
-"\001a\001f\001gWelcome to Monolith BBS, \001g%s! \001gThis is your \001w#%d \001glogin.\n"
+"\001a\001f\001gWelcome to %s, \001g%s! \001gThis is your \001w#%d \001glogin.\n"
 msgstr ""
-"\n"
-"\001a\001f\001gWelkom op Monoliet BBS, \001g%s! \001gDit is je \001w#%d \001gverbinding.\n"
 
-#: src/main.c:789
+#: src/main.c:788
 msgid "\001f\001gLast login: %s \001g\001ffrom \001r%-16.16s\n"
 msgstr "\001f\001gLaatste login: %s \001g\001fvanaf \001r%-16.16s\n"
 
-#: src/main.c:809
+#: src/main.c:808
 msgid "\001f\001gYour friends online\001w:\001a\n"
 msgstr "\001f\001gJe aanwezige vrienden\001w:\001a\n"
 
-#: src/main.c:848
+#: src/main.c:847
 msgid "\001f\001gYou have a new private %s in \001pMail>\n"
 msgstr ""
 
-#: src/main.c:850
+#: src/main.c:849
 msgid "\001f\001gYou have \001r%d \001gnew private %s in \001pMail>\n"
 msgstr "\001f\001gJe hebt \001r%d \001gnieuwe poststukken in \001pMail>\n"
 
-#: src/main.c:852
+#: src/main.c:851
 msgid "\001f\001gYou have \001rno\001g new Mail %s.\001a\n"
 msgstr "\001f\001gJe hebt \001rgeen\001g nieuwe post.\001a\n"
 
-#: src/read_menu.c:266
+#: src/read_menu.c:262
 msgid "\001f\001gAll %s\001w:\n"
 msgstr "\001f\001gAlle %s\001w:\n"
 
-#: src/read_menu.c:271
+#: src/read_menu.c:267
 msgid "\001f\001gKnown %s.\n"
 msgstr "\001f\001gBekende %s.\n"
 
-#: src/read_menu.c:287
+#: src/read_menu.c:283
 msgid "\001f\001gLogout.\001a"
 msgstr "\001f\001gUitloggen.\001a"
 
-#: src/read_menu.c:345
+#: src/read_menu.c:341
 msgid "\001f\001gInterBBS Wholist.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:383
+#. Holodeck Wholist
+#: src/read_menu.c:379
 msgid "\001f\001g%s Wholist.\n"
 msgstr "\001f\001g%s Wie-lijst.\n"
 
-#: src/read_menu.c:388
+#: src/read_menu.c:384
 msgid "\001f\001gWhich %s are online?\001a\n"
 msgstr "\001f\001gWelke %s zijn aanwezig?\001a\n"
 
-#: src/read_menu.c:393
+#: src/read_menu.c:389
 msgid "\001f\001gShort Wholist.\001a\n"
 msgstr "\001f\001gKorte Wie-lijst.\001a\n"
 
-#: src/read_menu.c:410
+#: src/read_menu.c:406
 msgid "\001f\001gSend %s %s.\001a\n"
 msgstr "\001f\001gStuur %s %s.\001a\n"
 
-#: src/usertools.c:98
+#: src/usertools.c:95
 msgid "\001f\001gProfile user \001w(\001y%s\001w): \001c"
 msgstr "\001f\001gBekijk gebruiker \001w(\001y%s\001w): \001c"
 
-#: src/usertools.c:100
+#: src/usertools.c:97
 msgid "\001g\001fProfile user\001w: \001c"
 msgstr "\001g\001fBekijk gebruiker\001w: \001c"
 
-#: src/usertools.c:112
+#: src/usertools.c:109
 msgid "\001r\001fNot a valid InterBBS name.\n"
 msgstr ""
 
-#: src/usertools.c:137
+#: src/usertools.c:134
 msgid "\001f\001rNo such user.\001a\n"
 msgstr ""
 
-#: src/usertools.c:540
+#: src/usertools.c:536
 msgid "\001f\001pSubscribe to channel: \001a"
 msgstr ""
 
-#: src/usertools.c:644
+#: src/usertools.c:640
 msgid "\001f\001cUser's localtime:\001g %A \001w(\001g%H:%M\001w) (%Z)\001a\n"
 msgstr ""
 
-#: src/usertools.c:651
+#: src/usertools.c:646
 msgid "\001f\001yAideline:%s\n"
 msgstr ""
 
-#. IS NOT ONLINE
-#: src/usertools.c:688
+#: src/usertools.c:683
 msgid "\001f\001cLast on \001g%s "
 msgstr ""
 
-#: src/usertools.c:689
+#: src/usertools.c:684
 msgid "\001cto \001g%s \001p"
 msgstr ""
 
-#: src/usertools.c:713
+#: src/usertools.c:708
 msgid "Birthday: \001g"
 msgstr "Verjaardag: \001g"
 
-#: src/usertools.c:720
+#. a sysop profiles
+#: src/usertools.c:715
 msgid "\001f\001cConfiguration\001w: \001g%s \001cMonoholic Rating\001w: \001g"
 msgstr ""
 
-#: src/usertools.c:723
+#: src/usertools.c:718
 msgid "\001f\001cUsernum\001w: \001g%d \001cFirst login\001w: \001g%s\n"
 msgstr ""
 
-#: src/usertools.c:724
+#: src/usertools.c:719
 msgid "\001f\001cLogins\001w: \001g%-5d \001cPosts: \001g%-5d \001cOnlinetime: \001g%2ld:%2.2ld   \001cPriv: \001g%5d  \001cX's: \001g%5ld \n"
 msgstr ""
 
-#: src/usertools.c:729
+#. you profile yourself
+#: src/usertools.c:724
 msgid ""
 "First login: \001g%s\001c\n"
 "Logins: \001g%-5d \001cPosts: \001g%-5d \001cOnlinetime: \001g%2ld:%2.2ld \001cX's: \001g%5ld \n"
 msgstr ""
 
-#: src/usertools.c:739
+#: src/usertools.c:734
 msgid "\001g*** is available to help others ***\n"
 msgstr "\001g*** is beschikbaar om anderen te helpen ***\n"
 
-#: src/usertools.c:758
+#: src/usertools.c:753
 msgid ""
 "\n"
 "\001a\001f\001gPress \001w<\001rSPACE\001w>\001g to continue or \001w<\001rs\001w>\001g to skip... \001a"
 msgstr ""
 
-#: src/usertools.c:793
+#: src/usertools.c:788
 msgid "\001gYou're not a %s!"
 msgstr "\001gJe bent geen %s!"
 
-#: src/usertools.c:873
+#: src/usertools.c:869
 msgid "Are you sure you want to edit your profile? (y/n) "
 msgstr "Weet je zeker dat je je profile wil editen? (y/n) "
 
-#: src/usertools.c:893
+#: src/usertools.c:880
+msgid "\001f\001rUnable to fopen() profile file!\n"
+msgstr ""
+
+#: src/usertools.c:886
+msgid "\001f\001rUnble to fetch profile from database!\n"
+msgstr ""
+
+#: src/usertools.c:904 src/usertools.c:959
+msgid "\001f\001rUnable to mmap() profile file contents!\n"
+msgstr ""
+
+#: src/usertools.c:910 src/usertools.c:965
+msgid "\001f\001rUnable to store profile in database!\n"
+msgstr ""
+
+#: src/usertools.c:928
 msgid "Are you sure you want to change your profile? (y/n) "
 msgstr "Weet je zeker dat je je profile wil wijzigen? (y/n) "
 
-#: src/usertools.c:898
+#: src/usertools.c:932
 msgid ""
 "\001yYou now have seven lines to create a nice profile of yourself.\001g\n"
 "\n"
 msgstr ""
 
-#: src/usertools.c:926
+#: src/usertools.c:976
 msgid "\001f\001gChange birthday/date.\n"
 msgstr "\001f\001gVerander verjaardag.\n"
 
-#: src/usertools.c:934
+#: src/usertools.c:984
 msgid "\001gYour current %s is: \001y`%s\001a'\n"
 msgstr "\001gJe huidige %s is: \001y`%s\001a'\n"
 
-#: src/usertools.c:935
+#: src/usertools.c:985
 msgid "\001f\001gDo you want to change this? \001w(\001gy\001w/\001gn\001w)\001c "
 msgstr ""
 
-#: src/usertools.c:950
+#: src/usertools.c:1000
 msgid "\001f\001gChange address.\n"
 msgstr "\001f\001gVerander adres.\n"
 
-#: src/usertools.c:965
+#: src/usertools.c:1015
 msgid "\001gYour current url is: \001y`%s'\n"
 msgstr ""
 
-#: src/usertools.c:966
+#: src/usertools.c:1016
 msgid "\001gDo you want to change this? \001w(\001gy\001w/\001gn\001w)\001c "
 msgstr ""
 
-#: src/usertools.c:968
+#: src/usertools.c:1018
 msgid "\001f\001gEnter the new url\001w: \001chttp://"
 msgstr ""
 
-#: src/usertools.c:972
+#: src/usertools.c:1022
 msgid "\001f\001gURL not set.\n"
 msgstr ""
 
-#: src/usertools.c:998
+#: src/usertools.c:1048
 msgid ""
 "\n"
 "\001f\001gPress \001w<\001rh\001w>\001g to access the helpfiles.\n"
 msgstr ""
 
-#: src/usertools.c:999
+#: src/usertools.c:1049
 msgid ""
 "\n"
 "\001gPress \001w<\001rc\001w>\001g for help on commands.\n"
 msgstr ""
 
-#: src/usertools.c:1000
+#: src/usertools.c:1050
 msgid "\001gPress \001w<\001r?\001w>\001g to get a list of commands.\n"
 msgstr ""
 
-#: src/usertools.c:1001
+#: src/usertools.c:1051
 msgid ""
 "\001gPress \001w<\001rshift-Q\001w>\001g to ask a Question.\n"
 "\n"
 msgstr ""
 
-#: src/usertools.c:1002
+#: src/usertools.c:1052
 msgid ""
 "\001gPress \001w<\001rq\001w>\001g to exit this menu.\n"
 "\n"
 msgstr ""
 
-#: src/usertools.c:1003
+#: src/usertools.c:1053
 msgid "\001gChoice\001w:\001g "
 msgstr ""
 
-#: src/usertools.c:1099
+#: src/usertools.c:1149
 msgid "\001f\001wYou are now marked as \001gAWAY\001w.\n"
 msgstr ""
 
-#: src/usertools.c:1101
+#: src/usertools.c:1151
 msgid "\001gDefault away message: \001y%s\001a\n"
 msgstr ""
 
-#: src/usertools.c:1102
+#: src/usertools.c:1152
 msgid "\001f\001gNew Away message: \001c"
 msgstr ""
 
-#: src/usertools.c:1109
+#: src/usertools.c:1159
 msgid "\001f\001wYou are \001rno longer\001w marked as \001gAWAY\001w.\001a"
 msgstr ""
 
-#: src/wholist.c:96
+#: src/wholist.c:91
 msgid ""
 "\n"
 "\001g\001fYou are all alone online at \001y%02d:%02d\001g local time.\n"
 msgstr ""
 
-#: src/wholist.c:98
+#: src/wholist.c:93
 msgid "\001f\001gHey! What do you think you are doing here?\001a\n"
 msgstr ""
 
-#: src/wholist.c:101
+#: src/wholist.c:96
 msgid ""
 "\n"
 "\001g\001fThere are \001y%u\001g %s online at \001y%02d:%02d\001g local time.\n"
@@ -408,10 +481,17 @@ msgstr ""
 "\n"
 "\001g\001fEr zijn \001y%u\001g %s gebruikers aanwezig om \001y%02d:%02d\001g lokale tijd.\n"
 
-#: src/wholist.c:105
+#: src/wholist.c:100
 msgid ""
 "\n"
 "\001g\001fThere are \001y%ud\001g %s online \001c( \001y%ud \001cqueued ) \001gat \001y%02d:%02d\001g local time.\n"
 msgstr ""
 "\n"
 "\001g\001fEr zijn \001y%ud\001g %s aanwezig \001c( \001y%ud \001cqueued ) \001gat \001y%02d:%02d\001g local time.\n"
+# msgid ""
+# "\n"
+# "\001a\001f\001gWelcome to Monolith BBS, \001g%s! \001gThis is your \001w#%d \001glogin.\n"
+# msgstr ""
+# "\n"
+# "\001a\001f\001gWelkom op Monoliet BBS, \001g%s! \001gDit is je \001w#%d \001gverbinding.\n"
+# 
