@@ -12,9 +12,9 @@
     #endif
   #endif
 #endif
-*/
 
 extern int mono_sql_query(MYSQL_RES ** result, const char *format,...);
+*/
 
 extern int mono_sql_connect(void);
 extern int mono_sql_connected(void);
