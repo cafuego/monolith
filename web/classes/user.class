@@ -80,13 +80,13 @@ class user_t {
         if( (!(strstr( $this->hiddeninfo, "address" ))) && (strlen($this->address)))
             echo "<br>\nAddress: $this->address";
         if( (!(strstr( $this->hiddeninfo, "city" ))) && (strlen($this->city)))
-            echo "<br>\n$this->city";
+            echo "<br>\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;$this->city";
         if( (!(strstr( $this->hiddeninfo, "state" ))) && (strlen($this->state)))
             echo ", $this->state";
         if( (!(strstr( $this->hiddeninfo, "zip" ))) && (strlen($this->zip)))
             echo " $this->zip\n";
         if( (!(strstr( $this->hiddeninfo, "country" ))) && (strlen($this->country)))
-            echo "<br>\n$this->country";
+            echo "<br>\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;$this->country";
         if( (!(strstr( $this->hiddeninfo, "phone" ))) && (strlen($this->phone)))
             echo "<br>\nPhone: $this->phone";
         if( (!(strstr( $this->hiddeninfo, "email" ))) && (strlen($this->email)))
