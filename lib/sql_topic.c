@@ -108,6 +108,7 @@ mono_sql_t_get_new_message_id( unsigned int forum, unsigned int topic, unsigned 
     MYSQL_RES *res;
     MYSQL_ROW row;
     int ret = 0;
+    unsigned int max;
 
     ret = mono_sql_query(&res, "SELECT highest FROM " T_TABLE " WHERE forum_id=%u AND topic_id=%u", forum, topic );
 
@@ -125,21 +126,23 @@ mono_sql_t_get_new_message_id( unsigned int forum, unsigned int topic, unsigned 
     }
 
     row = mysql_fetch_row(res);
-
-    ret = atoi(row[0]);
+    sscanf( row[0], "%u", &max );
     (void) mysql_free_result(res);
 
-    ret++;
-    *highest = ret;
+    max++;
 
-    if( (mono_sql_query(&res, "UPDATE " T_TABLE " SET highest=%u WHERE id=%u", ret, forum)) == -1) {
-        (void) mysql_free_result(res);
-        return 0;
+    ret = mono_sql_query(&res, "UPDATE " T_TABLE 
+          " SET highest=%u WHERE id=%u", max, forum);
+
+    (void) mysql_free_result(res);
+
+    if ( ret == -1 ) {
+        return -1;
     }
 
-    (void) mysql_free_result(res);
+    *highest = max;
 
-    return -1;
+    return 0;
 }
 
 /* eof */
