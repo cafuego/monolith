@@ -19,6 +19,7 @@
 
 #include "monolith.h"
 #include "libmono.h"
+#include "libcache.h"
 #include "ext.h"
 #include "setup.h"
 
@@ -166,18 +167,18 @@ wholist(int level, const user_t * user)
 				   ,((r->flags & B_POSTING) ? "\1y+" : ((xing) ? "\1yx" : ((chat) ? "\1pc" : " "))));
 
 		    q = line + strlen(line);
-/*		    j = -1;
-		    if ( mono_sql_u_name2id( r->username, &id2 ) == -1 ) {
-		    if (is_cached_friend(r->username) {
-		       j = -1;
-                    } else {
-         	       if ( mono_sql_uu_user2quickx( user->usernum, id2, &j ) == -1 ){ 
-                       printf( "\1r\1fError, could not get quickx number.\n" );
-                       j = -1;
-                          }                     
-
-                    }
-*/
+/*                  j = -1;
+ * if ( mono_cached_sql_u_name2id( r->username, &id2 ) == -1 ) {
+ * if (is_cached_friend(r->username) {
+ * j = -1;
+ * } else {
+ * if ( mono_sql_uu_user2quickx( user->usernum, id2, &j ) == -1 ){ 
+ * printf( "\1r\1fError, could not get quickx number.\n" );
+ * j = -1;
+ * }                     
+ * 
+ * }
+ */
 		    j = cached_name_to_x(r->username);
 
 		    if ((user != NULL) && (j >= 0)) {
@@ -216,7 +217,7 @@ wholist(int level, const user_t * user)
 
 	    case 2:
 /*** Chat  Wholist ***/
-                q = line;
+		q = line;
 		(void) sprintf(q, "\1f%s%-17s \1p", col, r->username);
 		for (i = 0; i < 10; i++) {
 		    if (r->chat & (1 << i)) {
@@ -229,11 +230,11 @@ wholist(int level, const user_t * user)
 	    case 3:
 /*** Short Wholist ***/
 		j++;
-                (void) sprintf(line, "\1p[%s%s%s\1p] "  /* green $ is boring */
-				   ,((r->flags & B_DONATOR) ? "\1p$" : " ")
-				   ,((r->flags & B_XDISABLED) ? "\1g*" : ((r->flags & B_GUIDEFLAGGED) ? "\1r?" : " "))
-				   ,((r->flags & B_POSTING) ? "\1y+" : ((xing) ? "\1yx" : ((chat) ? "\1pc" : " "))));
-                q = line + strlen( line );
+		(void) sprintf(line, "\1p[%s%s%s\1p] "	/* green $ is boring */
+			       ,((r->flags & B_DONATOR) ? "\1p$" : " ")
+			       ,((r->flags & B_XDISABLED) ? "\1g*" : ((r->flags & B_GUIDEFLAGGED) ? "\1r?" : " "))
+			       ,((r->flags & B_POSTING) ? "\1y+" : ((xing) ? "\1yx" : ((chat) ? "\1pc" : " "))));
+		q = line + strlen(line);
 		(void) sprintf(q, "\1f%s%-18s ", col, r->username);
 		if ((j % 3) == 0)
 		    strcat(line, "\n");

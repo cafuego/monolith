@@ -18,6 +18,7 @@
 #include "telnet.h"
 #include "ext.h"
 #include "libmono.h"
+#include "libcache.h"
 #include "libshix.h"
 
 #include "setup.h"
@@ -659,7 +660,7 @@ check_x_permissions(const char *x_recip_name, const int X_PARAM, char override)
     for (;;) {
 	if (!BROADCAST) {
 	    is_vnemy_to = is_enemy(x_recip_name, usersupp->username);
-	    is_my_vnemy = is_enemy(usersupp->username, x_recip_name);
+	    is_my_vnemy = is_my_enemy(x_recip_name);
 
 	    if (EQ("guest", x_recip_name)) {
 		cprintf("\1rYou cannot send %s to Guests.\n\1a", config.x_message_pl);
@@ -807,7 +808,8 @@ setup_express()
 	xmsgb[i] = NULL;
     xmsgp = XLIMIT;
     mono_find_xslot(usersupp->username)->override = OR_FREE;
-    update_friends_cache();
+    start_user_cache();
+//    update_friends_cache();
     return;
 }
 /*----------------------------------*/

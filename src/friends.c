@@ -14,6 +14,7 @@
 
 #include "monolith.h"
 #include "libmono.h"
+#include "libcache.h"
 #include "sql_useruser.h"
 
 #include "ext.h"
@@ -43,19 +44,19 @@ friend_t *friend_cache = NULL;
 int
 is_my_enemy(const char *person)
 {
-    return is_enemy(username, person);
+    return is_cached_enemy(person);
 }
 
 int
 is_my_friend(const char *person)
 {
-    return is_friend(username, person);
+    return is_cached_friend(person);
 }
-
+/*
 void
 update_friends_cache(void)
 {
-    if (friend_cache != NULL)	/* flush any existing cache to /dev/null */
+    if (friend_cache != NULL)
         dest_friends_list(friend_cache);
 	
     mono_sql_uu_read_list(usersupp->usernum, &friend_cache, L_FRIEND);
@@ -103,7 +104,7 @@ cached_name_to_x(const char * bobs_name)
     }
     return -1;
 }
-
+*/
 void
 friends_online()
 {
@@ -179,7 +180,8 @@ menu_friend(int param)
 	    case ' ':
 	    case 'q':
 		cprintf("\1f\1gQuit.\n");
-		update_friends_cache();
+//		update_friends_cache();
+		start_user_cache();
 		return;
 		break;
 
