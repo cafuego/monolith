@@ -644,7 +644,6 @@ get_xmessage_destination(char *xmg_dest, const int X_PARAM, char *override)
 	    strcpy( namePtr, get_name(5)); /* was assignment */
 	    strcpy(xmg_dest, namePtr);
             *override = OR_WEB;
-            cprintf("Got to here!\n"); fflush(stdout);
 
 	    /* normal/feeling */
 	} else if (NORMAL || FEEL || EMOTE) {
@@ -708,7 +707,6 @@ get_xmessage_destination(char *xmg_dest, const int X_PARAM, char *override)
 	} else if (NSILC)	/* here for documentation porposes, xmg_dest is */
 	    strcpy(xmg_dest, "SILC");	/* already strlen 0 */
     }
-    cprintf("Returning!\n"); fflush(stdout);
     return xmg_dest;
 }
 

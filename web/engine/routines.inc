@@ -37,6 +37,9 @@ function check_priv($username, $forum_id) {
     if($username == "" || $username == NULL)
         return -1;
 
+    if($forum_id == "" || $forum_id == NULL)
+        $forum_id = 0;
+
     connect_db();
 
     // Get user number.
