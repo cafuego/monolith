@@ -49,7 +49,9 @@ function show_wholist($username,$location) {
             $url_user = rawurlencode($user);
             $url_user = strtr($url_user, " ", "+");
 
-            $doing  = htmlspecialchars($doing);
+            if($interface != "web" )
+                $doing  = htmlspecialchars($doing);
+
             if($doing == "(null)" || $doing == NULL)
                 $doing == "";
 
