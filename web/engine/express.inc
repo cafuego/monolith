@@ -9,12 +9,15 @@ function express_message($username, $recipient) {
     // Turn recipient name into a normal string.
     //
     $recipient = rawurldecode($recipient);
-    $recipient = strtr($recipient, "+", " ");
 
     // Guests aren't allowed to X.
     //
     if( $username == "Guest" ) {
         print "<h3 align=\"center\">Guests are not allowed to send eXpress messages.</h3>\n";
+        return;
+    }
+    if ($recipient == "Guest" ) {
+        print "<h3 align=\"center\">You cannot send eXpress messages to guests.</h3>\n";
         return;
     }
 

@@ -187,7 +187,7 @@ function main_screen($username) {
         $hostname = mysql_result($result,0,"host");
     }
 
-    print "<h3 align=\"center\">Hello, $username. Welcome to Monolith BBS.</h3>\n";
+    print "<h2 align=\"center\">Hello, $username. Welcome to Monolith BBS.</h2>\n";
     if($number)
         print "<p class=\"footer\">Your last login was on $date at $time CET from host '$hostname'.</p>\n";
     else

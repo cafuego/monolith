@@ -110,7 +110,7 @@ function html_do_logout($username, $hostname) {
     MYSQL_CONNECT("localhost", "root", "")  OR DIE("Unable to connect to SQL server");
     @mysql_select_db("bbs") or die( "Unable to select database");
 
-    $result = MYSQL_QUERY("SELECT online AS login,(NOW()-online) AS online,NOW() AS logout FROM online WHERE user_id=$usernum AND interface='web'");
+    $result = MYSQL_QUERY("SELECT stamp AS login,(NOW()-stamp) AS online,NOW() AS logout FROM online WHERE user_id=$usernum AND interface='web'");
     $login = mysql_result($result, 0, "login");
     $logout = mysql_result($result, 0, "logout");
     $online = mysql_result($result, 0, "online");
