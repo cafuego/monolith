@@ -385,11 +385,15 @@ function errorsound() {
     // echo "  </embed>\n";
     // echo "</object>\n";
 
-    echo "<object src=\"/bbs/sound/error.au\" type=\"audio/basic\" autostart=\"true\" hidden=\"true\" loop=\"false\">\n";
-    echo "</object>\n";
-    echo "<embed src=\"/bbs/sound/error.au\" type=\"audio/basic\" autostart=\"true\" hidden=\"true\" loop=\"false\">\n";
-    echo "  <noembed>[ <a href=\"/bbs/sound/error.au\">sound: error mesage</a> ]</noembed>\n";
-    echo "</embed>\n";
+    echo "\n    <!-- error sound -->\n";
+    echo "    <embed src=\"/bbs/sound/error.au\" autoplay=\"true\" autostart=\"true\" hidden=\"false\" loop=\"false\">\n";
+    echo "    </embed>\n\n";
+
+    // echo "<object src=\"/bbs/sound/error.au\" type=\"audio/basic\" autostart=\"true\" hidden=\"true\" loop=\"false\">\n";
+    // echo "</object>\n";
+    // echo "<embed src=\"/bbs/sound/error.au\" type=\"audio/basic\" autostart=\"true\" hidden=\"true\" loop=\"false\">\n";
+    // echo "  <noembed>[ <a href=\"/bbs/sound/error.au\">sound: error mesage</a> ]</noembed>\n";
+    // echo "</embed>\n";
 
 }
 
