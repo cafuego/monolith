@@ -681,73 +681,73 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/main.c:167
+#: src/main.c:166
 msgid ""
 "OH NO!!!!!!! A SEGFAULT!!!!!\n"
 " "
 msgstr ""
 
-#: src/main.c:206
+#: src/main.c:205
 msgid "No such user.\n"
 msgstr ""
 
-#: src/main.c:225 src/main.c:326
+#: src/main.c:224 src/main.c:325
 msgid "Incorrect login.\n"
 msgstr ""
 
-#: src/main.c:243
+#: src/main.c:242
 msgid "\001f\001gPlease enter your \001rcurrent\001g password: "
 msgstr ""
 
-#: src/main.c:252
+#: src/main.c:251
 msgid "Password changed.\n"
 msgstr ""
 
-#: src/main.c:254
+#: src/main.c:253
 msgid "Password unchanged.\n"
 msgstr ""
 
-#: src/main.c:274
+#: src/main.c:273
 msgid "Please enter a password: "
 msgstr ""
 
-#: src/main.c:278
+#: src/main.c:277
 msgid "Please enter it again: "
 msgstr ""
 
-#: src/main.c:282
+#: src/main.c:281
 msgid "The passwords you typed didn't match.  Please try again.\n"
 msgstr ""
 
 #. loop until we get a real username
-#: src/main.c:307
+#: src/main.c:306
 msgid ""
 "\n"
 "Username: "
 msgstr ""
 
-#: src/main.c:311
+#: src/main.c:310
 msgid "Enter \"Off\" to quit or \"New\" to enter as a new user.\n"
 msgstr ""
 
-#: src/main.c:324
+#: src/main.c:323
 msgid "%s's Password: "
 msgstr ""
 
-#: src/main.c:554
+#: src/main.c:553
 msgid ""
 "\n"
 "*** Registration is required. ***\n"
 "\n"
 msgstr ""
 
-#: src/main.c:558
+#: src/main.c:557
 msgid ""
 "\001f\001yNow \001w<\001ry\001w>\001yell to the admin to be granted full access.\n"
 "\n"
 msgstr ""
 
-#: src/main.c:657
+#: src/main.c:656
 msgid ""
 "\n"
 "\n"
@@ -755,51 +755,51 @@ msgid ""
 "\001a"
 msgstr ""
 
-#: src/main.c:658
+#: src/main.c:657
 msgid "\001f\001gHit any key to continue...\001a"
 msgstr ""
 
-#: src/main.c:663
+#: src/main.c:662
 msgid ""
 "\n"
 "\001f\001gAre you sure you want to leave %s? \001w(\001gy\001w/\001gn\001w/\001gm\001w/\001g?\001w)\001g "
 msgstr ""
 
-#: src/main.c:668
+#: src/main.c:667
 msgid "\001f\001gHelp.\001a\n"
 msgstr ""
 
-#: src/main.c:673
+#: src/main.c:672
 msgid "\001f\001gYes.\n"
 msgstr ""
 
-#: src/main.c:677
+#: src/main.c:676
 msgid "\001f\001gNo.\n"
 msgstr ""
 
-#: src/main.c:780
+#: src/main.c:779
 msgid ""
 "\n"
 "\001a\001f\001gWelcome to %s, \001g%s! \001gThis is your \001w#%d \001glogin.\n"
 msgstr ""
 
-#: src/main.c:784
+#: src/main.c:783
 msgid "\001f\001gLast login: %s \001g\001ffrom \001r%-16.16s\n"
 msgstr ""
 
-#: src/main.c:804
+#: src/main.c:803
 msgid "\001f\001gYour friends online\001w:\001a\n"
 msgstr ""
 
-#: src/main.c:843
+#: src/main.c:842
 msgid "\001f\001gYou have a new private %s in \001pMail>\n"
 msgstr ""
 
-#: src/main.c:845
+#: src/main.c:844
 msgid "\001f\001gYou have \001r%d \001gnew private %s in \001pMail>\n"
 msgstr ""
 
-#: src/main.c:847
+#: src/main.c:846
 msgid "\001f\001gYou have \001rno\001g new Mail %s.\001a\n"
 msgstr ""
 
@@ -835,7 +835,7 @@ msgstr ""
 msgid "\001f\001gYour friends online.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:208
+#: src/read_menu.c:208 src/usertools.c:1080
 msgid "\001f\001gHelpfiles.\001a\n"
 msgstr ""
 
@@ -884,92 +884,92 @@ msgid "\001f\001gDate: \001w%s\001a"
 msgstr ""
 
 #. Holodeck Wholist
-#: src/read_menu.c:355
+#: src/read_menu.c:357
 msgid "\001f\001g%s Wholist.\n"
 msgstr ""
 
-#: src/read_menu.c:360
+#: src/read_menu.c:362
 msgid "\001f\001gWhich %s are online?\001a\n"
 msgstr ""
 
-#: src/read_menu.c:365 src/read_menu.c:875
+#: src/read_menu.c:367 src/read_menu.c:877
 msgid "\001f\001gShort Wholist.\001a\n"
 msgstr ""
 
 #. <ctrl-w>
-#: src/read_menu.c:371 src/read_menu.c:888
+#: src/read_menu.c:373 src/read_menu.c:890
 msgid "\001f\001gSend \001pWeb \001g%s %s.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:382 src/read_menu.c:894
+#: src/read_menu.c:384 src/read_menu.c:896
 msgid "\001f\001gSend %s %s.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:405
+#: src/read_menu.c:407
 msgid "\001f\001gRead %s-Log.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:410
+#: src/read_menu.c:412
 msgid "\001f\001gYell-menu.\001a \n"
 msgstr ""
 
-#: src/read_menu.c:416
+#: src/read_menu.c:418
 msgid "\001f\001gZap %s.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:435
+#: src/read_menu.c:437
 msgid "\001f\001gJump a number of %s back from the Last Read %s.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:436 src/read_menu.c:448 src/read_menu.c:927
+#: src/read_menu.c:438 src/read_menu.c:450 src/read_menu.c:929
 msgid "\001f\001gHow many %s back shall I jump?\001c "
 msgstr ""
 
-#: src/read_menu.c:441 src/read_menu.c:453 src/read_menu.c:932 src/read_menu.c:947
+#: src/read_menu.c:443 src/read_menu.c:455 src/read_menu.c:934 src/read_menu.c:949
 msgid "\001f\001rThat is not a valid entry.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:447
+#: src/read_menu.c:449
 msgid "\001f\001rJump a number of %s back from the Last %s in this %s.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:483
+#: src/read_menu.c:485
 msgid "\001f\001gRandom Quote!\n"
 msgstr ""
 
-#: src/read_menu.c:489
+#: src/read_menu.c:491
 msgid "\001a\001f\001gDonator List.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:529 src/read_menu.c:990
+#: src/read_menu.c:531 src/read_menu.c:992
 msgid ""
 "\001f\001gChange your Friends-list.\001a\n"
 "\n"
 msgstr ""
 
-#: src/read_menu.c:534 src/read_menu.c:995
+#: src/read_menu.c:536 src/read_menu.c:997
 msgid ""
 "\001f\001gChange your Enemylist.\001a\n"
 "\n"
 msgstr ""
 
-#: src/read_menu.c:543
+#: src/read_menu.c:545
 msgid "\001f\001gList all commands.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:881
+#: src/read_menu.c:883
 msgid "\001f\001gWhich aliens are online?\001a\n"
 msgstr ""
 
-#: src/read_menu.c:926
+#: src/read_menu.c:928
 msgid "\001f\001gJump a number of %s back from the current %s.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:941
+#: src/read_menu.c:943
 msgid "\001f\001gJump a number of %s forward from the current %s.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:942
+#: src/read_menu.c:944
 msgid "\001f\001gHow many %s forward shall I jump?\001c "
 msgstr ""
 
@@ -1143,6 +1143,22 @@ msgstr ""
 msgid "\001gChoice\001w:\001g "
 msgstr ""
 
+#: src/usertools.c:1086
+msgid "\001f\001gCommand Helpfiles.\001a\n"
+msgstr ""
+
+#: src/usertools.c:1093
+msgid "\001f\001gQuit.\001a\n"
+msgstr ""
+
+#: src/usertools.c:1097
+msgid "\001f\001gAsk a Question.\001a\n"
+msgstr ""
+
+#: src/usertools.c:1103
+msgid "\001f\001gHelp!\001a\n"
+msgstr ""
+
 #: src/usertools.c:1169
 msgid "\001f\001wYou are now marked as \001gAWAY\001w.\n"
 msgstr ""
@@ -1157,6 +1173,72 @@ msgstr ""
 
 #: src/usertools.c:1181
 msgid "\001f\001wYou are \001rno longer\001w marked as \001gAWAY\001w.\001a"
+msgstr ""
+
+#: src/usertools.c:1218
+msgid "\001f\001gKey Menu.\n"
+msgstr ""
+
+#: src/usertools.c:1282
+msgid "\001f\001gYour current alias is \001y`%s'\001g. Do you want to change it? \001w(\001gy\001w/\001gn\001w) \001c"
+msgstr ""
+
+#: src/usertools.c:1284
+msgid "\001f\001gAlias unchanged.\001a\n"
+msgstr ""
+
+#: src/usertools.c:1288
+msgid "\001f\001gEnter the new alias\001w: \001c"
+msgstr ""
+
+#: src/usertools.c:1293
+msgid "\001f\001gAlias \001rnot\001g set.\001a\n"
+msgstr ""
+
+#: src/usertools.c:1300 src/usertools.c:1309
+msgid "\001f\001gYour alias is set to \001y`%s'\001g.\n"
+msgstr ""
+
+#: src/usertools.c:1303
+msgid "\001f\001rThat is an existing user!\001a\n"
+msgstr ""
+
+#: src/usertools.c:1342
+msgid "\001f\001cToggle hidden info.\001a\n"
+msgstr ""
+
+#: src/usertools.c:1353
+msgid "\001f\001gEnter your screen length \001w[\001r%d\001w]:\001c "
+msgstr ""
+
+#: src/usertools.c:1384
+msgid "\001f\001cToggle usage of default alias %s\001c.\001a\n"
+msgstr ""
+
+#: src/usertools.c:1387
+msgid "\001f\001rYou have not set an alias yet!\001a\n"
+msgstr ""
+
+#: src/usertools.c:1421
+msgid ""
+"\n"
+"\001f\001cUsing %s date format."
+msgstr ""
+
+#: src/usertools.c:1432
+msgid ""
+"\n"
+"\001f\001cDate display set to %s\001c."
+msgstr ""
+
+#: src/usertools.c:1602
+msgid ""
+"\n"
+"\001f\001gTimezone set to \001w[\001y%s\001w]\001g\001c\n"
+msgstr ""
+
+#: src/usertools.c:1604
+msgid "\001f\001gTimezone not set, using %s timezone."
 msgstr ""
 
 #: src/usertools.c:2215
