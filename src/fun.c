@@ -85,6 +85,7 @@ static char *munchmatch[] = {
 
 static char *no = "[Nn][Oo][Tt. ]";
 static char *why = "[Ww][Hh][Yy][?. ]";
+static char *dont = "[Dd][Oo][Nn]['t ].*[!]$";
 
 /*
  * Getting scarier by the hour today.
@@ -112,7 +113,8 @@ cthulhu()
         ) || (
             !(shix_strmatch(april_fools, no)) &&
             !(shix_strmatch(april_fools, why)) &&
-            !(shix_strmatch(april_fools, munchmatch[food]))
+            !(shix_strmatch(april_fools, munchmatch[food])) &&
+            (shix_strmatch(april_fools, dont))
         )
     );
 
