@@ -1189,10 +1189,9 @@ bingle(unsigned int forum)
     if(!(quad.flags & QR_INUSE ))
         return;
 
-    cprintf("\rWorking on %d.%s", forum, quad.name); fflush(stdout);
+    cprintf("\rWorking on %d.%s...", forum, quad.name); fflush(stdout);
     for (i = quad.lowest; i <= quad.highest; i++) {
        (void)copy_message_to_sql(forum,i);
-       cprintf("."); fflush(stdout);
     }
     cprintf(" done.\n"); fflush(stdout);
 
