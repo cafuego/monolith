@@ -16,6 +16,29 @@
 #include "monosql.h"
 #include "sql_utils.h"
 #include "sql_userforum.h"
+#include "sql_forum.h"
+
+int
+mono_sql_uf_update_lastseen(usernum, forum)
+{
+    MYSQL_RES *res;
+    MYSQL_ROW row;
+    int ret = 0, lastseen = 0;
+
+    ret = mono_sql_query( &res, "SELECT highest FROM %s WHERE id=%d", F_TABLE, forum);
+    if(ret == -1) {
+        (void) mysql_free_result(res);
+        return -1;
+    }
+
+    row = mysql_fetch_row(res);
+    sscanf( row[0], "%d", &lastseen);
+    (void) mysql_free_result(res);
+
+    (void) mono_sql_query( &res, "UPDATE %s SET lastseen=%d WHERE forum_id=%d AND user_id=%d", UF_TABLE, lastseen, forum, usernum);
+    (void) mysql_free_result(res);
+    return 0;
+}
 
 int
 add_to_userlist(userlist_t element, userlist_t ** list)
@@ -103,8 +126,8 @@ mono_sql_uf_add_entry(unsigned int user_id, unsigned int forum_id)
 
     /* make this into an sql query that also checks if room & user exist */
     ret = mono_sql_query(&res,
-			 "SELECT user_id,username FROM userforum"
-		     "WHERE forum_id=%u AND user_id=%u", forum_id, user_id);
+			 "SELECT user_id,username FROM %s"
+		     "WHERE forum_id=%u AND user_id=%u", UF_TABLE, forum_id, user_id);
     mysql_free_result(res);
 
     if (ret != 0) {
