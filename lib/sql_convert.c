@@ -118,7 +118,7 @@ mono_sql_convert_row_to_sr(MYSQL_ROW row)
     snprintf(result->alias, L_USERNAME, "%s", row[6]);
     snprintf(result->subject, L_SUBJECT, "%s", row[7]);
     snprintf(result->flag, L_FLAGNAME, "%s", row[8]);
-    sscanf(row[9], "%u", &result->score);
+    sscanf(row[9], "%f", &result->score);
 
     return result;
 }
