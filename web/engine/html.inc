@@ -53,7 +53,7 @@ function html_print_title($username, $location) {
             print "<title>$username@Monolith BBS: Reading message in $name</title>\n";
             break;
         case "w":
-            print "<title>$username@Monolith BBS: Looking at the Wholist [autorefresh: 30 seconds]</title>\n";
+            print "<title>$username@Monolith BBS: Looking at the Wholist [Updating every 30 seconds]</title>\n";
             print "<meta http-equiv=\"Refresh\" content=\"30; url=http://monolith.yawc.net/bbs/index.phtml/w/\">\n";
             break;
         case "x":
