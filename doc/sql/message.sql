@@ -1,6 +1,6 @@
 # quads
 
-DROP TABLE message;
+# DROP TABLE message;
 
 CREATE TABLE message (
 
