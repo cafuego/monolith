@@ -1,6 +1,8 @@
 <?php
 
-    // Header( "Content-type: image/gif" );
+    // Print content type first.
+    //
+    Header( "Content-type: image/gif" );
 
     // Image, font and string data passed through.
     //
@@ -11,11 +13,6 @@
     $font_info = explode(",", $url_array[3]);
     $font = "/usr/bbs/www/bbs/font/". $font_info[0] .".ttf";
     $size = $font_info[1];
-
-    echo "<p>$url_array[3]\n";
-    echo "<p>$url_array[4]\n";
-    echo "<p>$font_info[0]\n";
-    echo "<p>$font_info[1]\n";
 
     // Then, get the string to display.
     //
@@ -28,11 +25,22 @@
     $width = $bounds[3] + 4;
     $height = $bounds[2] + 4;
 
-    $im = imagecreate( width, height );
+    // Create the image and set fore and background colours.
+    //
+    $im = imagecreate( $width, $height );
     $black = ImageColorAllocate( $im, 0, 0, 0 );
     $white = ImageColorAllocate( $im, 255, 255, 255 );
+
+    // Draw the string onto the image.
+    //
     ImageTTFText( $im, $size, 0, 2, $height-2, $white, $font, $text );
+
+    // Dump output :)
+    //
     ImageGif( $im );
+
+    // Destroy image.
+    //
     ImageDestroy( $im );
 
 ?>
