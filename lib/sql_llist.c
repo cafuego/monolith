@@ -17,9 +17,9 @@
 #include "monolith.h"
 #include "routines.h"
 
-#ifdef extern
+#define extern
 #include "sql_llist.h"
-#endif
+#undef extern
  
 /*
  * Add mlist_t to linked list.

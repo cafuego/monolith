@@ -28,9 +28,9 @@
 #include "monolith.h"
 #include "routines.h"
 
-#ifdef extern
+#define extern
 #include "sql_convert.h"
-#endif
+#undef extern
 
 /*
  * Convert MYQSL_ROW to message_t.
