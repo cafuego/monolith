@@ -45,7 +45,7 @@ RANLIB = @RANLIB@
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" -DGNULOCALEDIR=\"$(gnulocaledir)\" \
 -DLOCALE_ALIAS_PATH=\"$(aliaspath)\" @DEFS@
-CFLAGS = @CFLAGS@
+CFLAGS = @CFLAGS@ -I../include
 
 COMPILE = $(CC) -c $(DEFS) $(INCLUDES) $(CPPFLAGS) $(CFLAGS) $(XCFLAGS)
 
@@ -111,7 +111,7 @@ uninstall:
 
 info dvi:
 
-$(OBJECTS): ../config.h libgettext.h
+$(OBJECTS): ../include/config.h libgettext.h
 bindtextdom.o finddomain.o loadmsgcat.o: gettextP.h gettext.h
 dcgettext.o: gettextP.h gettext.h hash-string.h
 
