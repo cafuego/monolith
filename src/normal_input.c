@@ -140,7 +140,7 @@ get_name(int quit_priv)
 		    qkr = read_quad(a);
 		    if ((qkr.flags & QR_INUSE)
 			&& strncmp(pbuf, qkr.name, pblen) == 0
-			&& i_may_read_forum(qkr, a)
+			&& i_may_read_forum(a)
 			) {
 			back(strlen(pbuf));
 			strcpy(pbuf, qkr.name);

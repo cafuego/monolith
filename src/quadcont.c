@@ -1465,7 +1465,7 @@ qc_evaluate_quads(const qc_thingme * user_input, int newuser, const user_t * use
 	    continue;		/* Admin quads make no sense here anyways.. */
 	/* skip other user useless stuff */
 	scratch = readquad(i);
-	if ((!i_may_read_forum(scratch, i)) ||
+	if ((!i_may_read_forum(i)) ||
 	    (!(scratch.flags & QR_INUSE)))
 	    continue;
 	if ((scratch.flags & QR_PRIVATE) && (usersupp->priv < PRIV_SYSOP))

@@ -89,8 +89,12 @@ readquad(int num)
 }
 
 int
-i_may_read_forum(const room_t quad, const unsigned int forum)
+i_may_read_forum(const unsigned int forum)
 {
+    room_t quad;
+
+    quad = read_quad(forum);
+
     if (forum == DOCKING_BAY_FORUM)
 	return 1;
 
@@ -150,8 +154,11 @@ i_may_read_forum(const room_t quad, const unsigned int forum)
 }
 
 int
-i_may_write_forum(const room_t quad, const unsigned int forum)
+i_may_write_forum(const unsigned int forum)
 {
+    room_t quad;
+
+    quad = read_quad(forum);
 
     if (forum >= MAXQUADS)  /* uhh-ohh */
 	return 0;
@@ -169,7 +176,7 @@ i_may_write_forum(const room_t quad, const unsigned int forum)
 	is_ql(who_am_i(NULL), quad)) {
 	return 0;
     } else {
-	return i_may_read_forum(quad, forum);
+	return i_may_read_forum(forum);
     }
 }				
 
@@ -241,7 +248,7 @@ known_rooms_list(const user_t * user, int long_k_list)
 
 	    /* match all these conditions no matter what function
 	     */
-	    if (!i_may_read_forum(scratch, quad_num))
+	    if (!i_may_read_forum(quad_num))
 		continue;
 	    if (!(scratch.flags & QR_INUSE))
 		continue;
@@ -308,7 +315,7 @@ unread_rooms_list(const user_t * user)
     for (i = 0; i < MAXQUADS; i++) {
 	scratch = readquad(i);
 
-	if (!i_may_read_forum(scratch, i))
+	if (!i_may_read_forum(i))
 	    continue;
 	if (!(scratch.flags & QR_INUSE))
 	    continue;
@@ -457,7 +464,7 @@ zap_all()
 	if (i == 1)
 	    continue;		/* mail */
 	room = readquad(i);
-	if (i_may_read_forum(room, i) && !(room.flags & QR_NOZAP)) {
+	if (i_may_read_forum(i) && !(room.flags & QR_NOZAP)) {
 	    usersupp->forget[i] = room.generation;
 	    usersupp->generation[i] = -1;
 	}
@@ -1125,7 +1132,7 @@ look_into_quickroom(int degree)
 	scratch = readquad(round);
 
 	if ((scratch.highest >= 0) && (scratch.flags & QR_INUSE) &&
-	    (i_may_read_forum(scratch, round) || degree == 1)) {
+	    (i_may_read_forum(round) || degree == 1)) {
 	    blank = 0;
 	    cprintf("\1w%3d \1y%-30.30s \1r%6ld ", round, scratch.name,
 		    scratch.highest);
@@ -1330,13 +1337,13 @@ get_room_name(const char *quad_name)
 	if (i < 0 || i >= MAXQUADS)
 	    return -1;
 	scratch = readquad(i);
-	if (i_may_read_forum(scratch, i))
+	if (i_may_read_forum(i))
 	    return i;
     }
     for (i = 0; i < MAXQUADS; i++) {
 	scratch = readquad(i);
 	if (strstr(scratch.name, quad_name) != NULL) {
-	    if (i_may_read_forum(scratch, i)) {
+	    if (i_may_read_forum(i)) {
 		return i;
 	    }
 	}
@@ -1735,8 +1742,6 @@ show_room_aides()
 int
 we_can_post(const unsigned int forum)
 {
-    room_t quad;
-
     /* priv check for guests and cursed handled in validate_read_command() */
     /* if we are in the docking bay, the user must be Sysop (or Technician) */
     if (forum == 0) {
@@ -1755,8 +1760,7 @@ we_can_post(const unsigned int forum)
 	}
     }
 
-    quad = read_quad(forum);
-    if (!i_may_write_forum(quad, forum)) {
+    if (!i_may_write_forum(forum)) {
 	cprintf("\n\1f\1gYou are not allowed to post here.\1a\n");
 	return FALSE;
     }
@@ -1777,7 +1781,7 @@ unread_room()
 
     for (i = 0; i < MAXQUADS; i++) {
         scratch = readquad(i);
-        if (i_may_read_forum(scratch, i)
+        if (i_may_read_forum(i)
             && (skipping[i] == 0)
             && (!is_zapped(i, &scratch))) {
             if (check_messages(scratch, i) > 0) {

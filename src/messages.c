@@ -118,13 +118,14 @@ reset_lastseen_message(void)
 int
 copy_message_wrapper(const unsigned int current_post, const int is_not_my_post, const int copy)
 {
-    int to_quad, fail;
-    char tempstr[100], filename[L_FILENAME + 1];
+    int to_quad, fail, count;
+    char tempstr[100], *to_name = NULL;
     room_t scratch;
-    message_header_t message;
+
+    scratch = read_quad(curr_rm);
 
     if (!copy && !(!is_not_my_post
-		  || is_ql(who_am_i(NULL), read_quad(curr_rm))
+		  || is_ql(who_am_i(NULL), scratch)
 		  || usersupp->priv >= PRIV_SYSOP || curr_rm == MAIL_FORUM))
 	return -1;
 
@@ -140,19 +141,33 @@ copy_message_wrapper(const unsigned int current_post, const int is_not_my_post, 
     }
 
     scratch = read_quad(to_quad);
-    if (!i_may_write_forum(scratch, to_quad) 
+
+    if (usersupp->priv >= PRIV_SYSOP) {
+	if (to_quad == YELL_FORUM) {
+	    cprintf("Can't copy/move to YELLS, it'll mung stuff..\n");
+	    return -1;
+	} else if (!i_may_write_forum(to_quad)) { /* no fc's in emps */
+	 cprintf("You're not allowed to %s the %s there.\n",
+		(copy) ? "copy" : "move", config.message);
+	    return -1;
+	}
+
+    } else if (!i_may_write_forum(to_quad) 
 	|| to_quad == YELL_FORUM || to_quad == MAIL_FORUM) {
 	cprintf("You're not allowed to %s the %s there.\n",
 		(copy) ? "copy" : "move", config.message);
 	return -1;
     }
 
-    if (copy && curr_rm != MAIL_FORUM) {
+    if (curr_rm != MAIL_FORUM) {
+        char filename[L_FILENAME + 1];
+        message_header_t message;
 
 	message_header_filename(filename, curr_rm, current_post);
 	read_message_header(filename, &message);
 
-	if (message.banner_type & ANON_BANNER) {
+	if (message.banner_type & ANON_BANNER &&
+		usersupp->priv < PRIV_SYSOP) {
 	    cprintf("\1gYou can't copy anonymous posts.\n");
 	    return -1;
 	}
@@ -160,19 +175,43 @@ copy_message_wrapper(const unsigned int current_post, const int is_not_my_post, 
 
     cprintf("\1f\1g%s this %s to `\1y%s\1g'? \1w(\1gy\1w/\1gn\1w)\1c ",
 	    (copy) ? "Copy" : "Move", config.message, scratch.name);
-    if (yesno() == YES) {
-	fail = (copy) 
-		? message_copy(curr_rm, to_quad, current_post, "", MOD_COPY)
-		: message_move(curr_rm, to_quad, current_post, "");
+    if (yesno() == NO) 
+	return 0;
+
+    for (count = 0;; count++) {
+
+	if (to_quad == MAIL_FORUM) {
+
+	    to_name = (char *) xmalloc(sizeof(L_USERNAME + 1));
+	    cprintf("\n\1f\1yRecipient: \1c");
+	    strcpy(to_name, get_name(2));
+	    if (!strlen(to_name)) {
+		if (!copy && count)
+		    message_delete(curr_rm, current_post);
+		break;
+	    } else if (check_user(to_name) == FALSE) {
+		cprintf("\nNo such user..");
+		continue;
+	    }
+	    fail = message_copy(curr_rm, to_quad, current_post, 
+		to_name, (copy) ? MOD_COPY : MOD_MOVE);
+
+	} else 
+    	    if (copy)
+	        fail = message_copy(curr_rm, to_quad, current_post, "", MOD_COPY);
+	    else
+	        fail = message_move(curr_rm, to_quad, current_post, "");
 	if (fail == 0)
-	    cprintf("\1f\1g%s %s.\1a\n", (copy) ? "copied" : "moved", config.message);
+	    cprintf("\n\1f\1gThe %s has been %s.\1a\n\n", 
+		config.message, (copy) ? "copied" : "moved");
 	else
-	    cprintf("\1f\1rOops, couldn't %s %s.\1a\n",
-		    (copy) ? "copied" : "moved", config.message);
-	if (copy)
-	    log_it("copylog", "%s copied message by %s to %s", usersupp->username,
-		   message.author, scratch.name);
+	    cprintf("\1f\1rOops, couldn't %s the %s.\1a\n",
+		    config.message, (copy) ? "copy" : "move");
+	if (to_quad != MAIL_FORUM)
+	    break;
     }
+
+//    xfree(to_name);
     return 0;
 }
 

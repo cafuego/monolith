@@ -12,7 +12,6 @@
 
 #include "monolith.h"
 #include "libmono.h"
-#include "ext.h"
 #include "msg_file.h"
 
 int
@@ -150,7 +149,6 @@ message_copy(const unsigned int from_forum, const unsigned int to_forum, const u
 	    xfree(to_header);
 	    break;
 	}
-
 	forum = read_quad(to_forum);
 
 	to_header->orig_m_id = to_header->m_id;
@@ -169,10 +167,23 @@ message_copy(const unsigned int from_forum, const unsigned int to_forum, const u
 	    to_header->banner_type |= MAIL_BANNER;
 	    strcpy(to_header->recipient, to_name);
 	}
+#ifdef THIS_CODE_DOESNT_SEGFAULT_COPY_AND_MOVE_ANYMORE_AND_HANG_TRASH
+#ifndef ADDED_BY_PETER_FOR_TESTING
+        if (to_forum != MAIL_FORUM && from_forum != MAIL_FORUM ) {
+	    unsigned long temp_banner;
 
-#ifndef ADDED_BY_PETER_FOR_TESTING!
-        if (to_forum != MAIL_FORUM)
-            (void) save_to_sql(to_header, from_file);
+/* added this to get rid of segfaults copying mails -russ 
+   but it didn't work. */
+
+	    if (to_header->banner_type & MAIL_BANNER) { 
+		temp_banner = to_header->banner_type;
+		to_header->banner_type &= ~MAIL_BANNER;
+                (void) save_to_sql(to_header, from_file);
+		to_header->banner_type = temp_banner;
+	    } else
+		(void) save_to_sql(to_header, from_file);
+	}
+#endif
 #endif
 
 	if ((write_message_header(to_header_file, to_header)) == -1) {
@@ -230,15 +241,20 @@ int message_delete(const unsigned int from_forum, const unsigned int message_id)
     return ret;
 }
 
+/* 
+ * peter, i removed ext.h, as this is a library function.  (no /src externals)
+ * patched stuff appropriately..  this function still breaks stuff from copy
+ * and move.  
+ */
 void
-save_to_sql(message_header_t *header, char *filename)
+save_to_sql(const message_header_t const *header, const char *filename)
 {
     message_t *message = NULL;
 
     message = (message_t *)xcalloc( 1, sizeof(message_t) );
     message->f_id = header->f_id;
     message->t_id = 0;
-    message->a_id = usersupp->usernum;
+    mono_cached_sql_u_name2id(who_am_i(NULL), &message->a_id);
     sprintf(message->alias, "%s", header->alias);
     sprintf(message->subject, "%s", header->subject);
     sprintf(message->flag, "%s", get_flag(header->banner_type));
@@ -254,15 +270,15 @@ save_to_sql(message_header_t *header, char *filename)
     message->orig_date = header->orig_date;
     sprintf(message->mod_reason, "%s", get_reason(header->mod_type));
     if( (message->content = map_file(filename)) == NULL ) {
-        printf("SQL DEBUG: Unable to save %s to SQL (content is missing)\n", config.message );
+        printf("SQL DEBUG: Unable to save message to SQL (content is missing)\n" );
         printf("   Error has been logged, don't bother reporting it.\n" );
         xfree(message->content);
         xfree(message);
         return;
     }
     if( (mono_sql_mes_add(message)) == -1) {
-        printf("SQL DEBUG: Unable to save %s to SQL (query fuckswed up)\n", config.message );
-        printf("   Error has been logged, don't bother reporting it.\n" );
+        printf("SQL DEBUG: Unable to save message to SQL (query fuckswed up)\n");
+        printf("   Error has been logged (argh), don't bother reporting it.\n" );
     }
 
     xfree(message->content);

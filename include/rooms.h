@@ -42,4 +42,6 @@ extern int get_room_name( const char * );
 extern int unread_room(void);
 extern int new_quadinfo(void);
 extern int we_can_post(const unsigned int);
-
+extern int i_may_read_forum(const unsigned int);
+extern int i_may_write_forum(const unsigned int);
+ 

@@ -770,6 +770,7 @@ long_prompt(long number, int direction)
 
 		case 'M':
 		    copy_message_wrapper(current, not_my_post, FALSE);
+		    read_position_modified = TRUE;
 		    break;
 
 		case 'n':
