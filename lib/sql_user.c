@@ -332,19 +332,19 @@ mono_sql_u_get_registration( unsigned int user_id,
         return -1;
     }   
 
-    if (mysql_num_rows(res) != 7) {
+    if (mysql_num_rows(res) != 1) {
         return -1;
     }
 
     row = mysql_fetch_row(res);
 
-    ret = sscanf(row[0], "%s", name);
-    ret = sscanf(row[1], "%s", address);
-    ret = sscanf(row[2], "%s", zip);
-    ret = sscanf(row[3], "%s", city);
-    ret = sscanf(row[4], "%s", state);
-    ret = sscanf(row[5], "%s", country);
-    ret = sscanf(row[6], "%s", phone);
+    ret = snprintf( name, 80, "%s", row[0]);
+    ret = snprintf( address, 80, "%s", row[1]);
+    ret = snprintf( zip, 80, "%s", row[2]);
+    ret = snprintf( city, 80, "%s", row[3]);
+    ret = snprintf( state, 80, "%s", row[4]);
+    ret = snprintf( country, 80, "%s", row[5]);
+    ret = snprintf( phone, 80, "%s", row[6]);
 
     mono_sql_u_free_result(res);
 
@@ -398,7 +398,7 @@ mono_sql_u_get_email( unsigned int user_id, char *email )
     }
 
     row = mysql_fetch_row(res);
-    ret = sscanf(row[0], "%s", email);
+    ret = snprintf( email, 80, "%s", row[0]);
     mono_sql_u_free_result(res);
 
     return 0;
@@ -445,7 +445,7 @@ mono_sql_u_get_url( unsigned int user_id, char *url )
     }
 
     row = mysql_fetch_row(res);
-    ret = sscanf(row[0], "%s", url);
+    ret = snprintf( url, 100, "%s", row[0]);
     mono_sql_u_free_result(res);
 
     return 0;

@@ -24,7 +24,7 @@
 #include "sql_forum.h"
 #undef extern
 
-/* nasty comaptible stuff */
+/* nasty compatible stuff */
 int
 mono_sql_f_write_quad(unsigned int num, room_t * const q)
 {

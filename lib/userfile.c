@@ -636,6 +636,15 @@ char *
 read_regis(const user_t * user, int override)
 {
     char *p, line[80];
+    char name[80];
+    char address[80];
+    char zip[80];
+    char city[80];
+    char state[80];
+    char country[80];
+    char phone[80];
+    char email[80];
+    char url[100];
 
     if (user == NULL)
 	return NULL;
@@ -648,50 +657,55 @@ read_regis(const user_t * user, int override)
 	strcpy(p, "[info hidden]\n");
 	return p;
     }
+
+    mono_sql_u_get_registration( user->usernum, name, address, zip, city, state, country, phone );
+    mono_sql_u_get_email( user->usernum, email );
+    mono_sql_u_get_url( user->usernum, url );
+
     strcpy(p, "\1a\1g");
 
     if (strlen(user->RGname) > 0) {
 	strcpy(line, "");
 	if (!(user->hidden_info & H_REALNAME))
-	    (void) sprintf(line, "\1f%s\n", user->RGname);
+	    (void) sprintf(line, "\1f%s\n", name); 
 	else if (override == TRUE)
-	    (void) sprintf(line, "(%s)\n", user->RGname);
+	    (void) sprintf(line, "(%s)\n", name);
 	strcat(p, "\1a\1g");
 	strcat(p, line);
     }
     if (strlen(user->RGaddr) > 0) {
 	strcpy(line, "");
 	if (!(user->hidden_info & H_ADDRESS))
-	    (void) sprintf(line, "\1f%s\n", user->RGaddr);
+	    (void) sprintf(line, "\1f%s\n", address);
 	else if (override == TRUE)
-	    (void) sprintf(line, "(%s)\n", user->RGaddr);
+	    (void) sprintf(line, "(%s)\n", address);
 	strcat(p, "\1a\1g");
 	strcat(p, line);
     }
     if (strlen(user->RGzip) > 0 || strlen(user->RGcity) > 0) {
 	strcpy(line, "");
 	if (!(user->hidden_info & H_CITY))
-	    (void) sprintf(line, "\1f%s %s, ", user->RGzip, user->RGcity);
+	    (void) sprintf(line, "\1f%s %s, ", zip, city);
 	else if (override == TRUE)
-	    (void) sprintf(line, "(%s %s), ", user->RGzip, user->RGcity);
+	    (void) sprintf(line, "(%s %s), ", zip, city);
 	strcat(line, "\1a\1g");
 	strcat(p, line);
     }
     if (strlen(user->RGstate) > 0) {
 	strcpy(line, "");
 	if (!(user->hidden_info & H_COUNTRY))
-	    (void) sprintf(line, "\1f%s, ", user->RGstate);
+	    (void) sprintf(line, "\1f%s, ", state);
 	else if (override == TRUE)
-	    (void) sprintf(line, "(%s), ", user->RGstate);
+	    (void) sprintf(line, "(%s), ", state);
 	strcat(line, "\1a\1g");
 	strcat(p, line);
     }
     if (strlen(user->RGcountry) > 0) {
 	strcpy(line, "");
 	if (!(user->hidden_info & H_COUNTRY))
-	    (void) sprintf(line, "\1f%s\n", user->RGcountry);
+	    (void) sprintf(line, "\1f%s\n", country);
 	else if (override == TRUE)
-	    (void) sprintf(line, "(%s)\n", user->RGcountry);
+	    (void) sprintf(line, "(%s)\n", country);
 	strcat(line, "\1a\1g");
 	strcat(p, line);
     } else
@@ -700,27 +714,33 @@ read_regis(const user_t * user, int override)
     if (strlen(user->RGphone) > 0) {
 	strcpy(line, "");
 	if (!(user->hidden_info & H_PHONE))
-	    (void) sprintf(line, "\1fPhone:\1g %s  ", user->RGphone);
+	    (void) sprintf(line, "\1fPhone:\1g %s  ", phone);
 	else if (override == TRUE)
-	    (void) sprintf(line, "Phone:\1g (%s)  ", user->RGphone);
+	    (void) sprintf(line, "Phone:\1g (%s)  ", phone);
 	strcat(line, "\1a\1g");
 	strcat(p, line);
     }
     if (strlen(user->RGemail) > 0) {
 	strcpy(line, "");
-	if (!(user->hidden_info & H_EMAIL))
-	    (void) sprintf(line, "\1fEmail:\1g %s\n", user->RGemail);
-	else if (override == TRUE)
-	    (void) sprintf(line, "Email:\1g (%s)\n", user->RGemail);
+	if (!(user->hidden_info & H_EMAIL)) {
+/*	    (void) sprintf(line, "\1fEmail:\1g %s\n", user->RGemail); */
+	    (void) sprintf(line, "\1fEmail:\1g %s\n", email);
+        } else if (override == TRUE) {
+/*	    (void) sprintf(line, "Email:\1g (%s)\n", user->RGemail); */
+	    (void) sprintf(line, "Email:\1g (%s)\n", email);
+        }
 	strcat(line, "\1a\1g");
 	strcat(p, line);
     }
     if (strlen(user->RGurl) > 0) {
 	strcpy(line, "");
-	if (!(user->hidden_info & H_URL))
-	    (void) sprintf(line, "\1fURL  :\1g %s\n", user->RGurl);
-	else if (override == TRUE)
-	    (void) sprintf(line, "URL  :\1g (%s)\n", user->RGurl);
+	if (!(user->hidden_info & H_URL)) {
+/*	    (void) sprintf(line, "\1fURL  :\1g %s\n", user->RGurl); */
+	    (void) sprintf(line, "\1fURL  :\1g %s\n", url);
+	} else if (override == TRUE) {
+/*	    (void) sprintf(line, "URL  :\1g (%s)\n", user->RGurl); */
+	    (void) sprintf(line, "URL  :\1g (%s)\n", url);
+        }
 	strcat(line, "\1a\1g");
 	strcat(p, line);
     }
