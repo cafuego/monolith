@@ -11,3 +11,5 @@ POTFILES
 Makefile
 Makefile.in
 monolith.pot
+es.mo
+es.gmo
