@@ -358,8 +358,16 @@ size_t
 get_filesize(const char *filename)
 {
     struct stat filestat;
+    int ret;
     
-    stat(filename, &filestat);
+    ret = stat(filename, &filestat);
+
+    if ( ret == -1 ) {
+         fprintf( stderr, "%s: %s", filename, strerror(errno) );
+         log_it( "errors", "%s: %s", filename, strerror(errno) );
+ 
+         return  0;
+    }
     return (size_t) filestat.st_size;
 }
 
