@@ -502,6 +502,9 @@ _config_personal_info_menu(const unsigned int a, const long b, void *c)
 
 #ifdef USE_ICQ
 IFSYSOP {
+
+	MENU_ADDITEM(do_nothing, 0, 0, NULL, "ti", "-----------", "");
+
 	MENU_ADDITEM(_change_icq_number, 0, 0, NULL,
 		     "ti", "Change ICQ Number", "u");
 
@@ -2252,10 +2255,10 @@ _change_icq_password(const unsigned int a, const long b, void *c)
     if (yesno() == NO)
         return;
 
-    cprintf(_("\1f\1w(\1gThis password is stored in encrypted form\1w)\n"));
+    cprintf(_("\1f\1w(\1gThis password is stored in encrypted form\1w)\n\n"));
     icq_pw = (char *) xmalloc( 65 * sizeof(char) );
     strcpy(icq_pw, "");
-    cprintf(_("\1f\1gPlease enter your ICQ Password: \1c"));
+    cprintf(_("\1f\1gPlease enter your ICQ Password\1w (\1gMax. 64 characters\1w): \1c"));
     getline(icq_pw, -64, 1);
 
     if (strlen(icq_pw) == 0) {
