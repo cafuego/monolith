@@ -105,19 +105,6 @@ is_ql(const char *name, room_t quad)
     return FALSE;
 }
 
-/* this function returns the quickroom structure of room 'num' */
-room_t
-read_quad(unsigned int num)
-{
-    room_t scratch;
-    if (!shm) {
-	mono_errno = E_NOSHM;
-	return scratch;
-    }
-    scratch = shm->rooms[num];
-    return scratch;
-}
-
 int
 read_forum( unsigned int no, room_t *forum ) 
 {
