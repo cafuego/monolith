@@ -1,0 +1,45 @@
+<?php
+
+    // Website URL:
+    // MD5 Checksum / Current Username / Command id / { arg1, arg2, arg3, ... }
+
+
+    $url_array = explode("/", $REQUEST_URI);
+    $str3 = $url_array[2];
+    if(! $str3) {
+    $str1 = "Cafuego/001/{21,32994,35,1}";
+    $checksum = md5($str1);
+    $str2 .= $checksum;
+    $str2 .= "+";
+    $str2 .= $str1;
+    $str3 = base64_encode($str2);
+
+    echo "<p>No command given, creating example. Paste the following string behind the url in your location pane.";
+    echo "<p><b>String</b>: $str3";
+
+    }
+
+    $str4 = base64_decode($str3);
+    $array1 = explode("+", $str4);
+
+    $check = $array1[0];
+    $str6 = $array1[1];
+    $array2 = explode("/", $str6);
+
+
+    if($check == md5( $str6) ) {
+    echo "<b>Checksum correct.</b>";
+    echo "<p>Checksum: $check";
+    echo "<p>User: $array2[0]";
+    echo "<p>Command: $array2[1]";
+    echo "<p>Arglist: $array2[2]";
+    } else {
+        echo "<p><b>BAD CHECKSUM</b>: $check should be ".md5($str6);
+    }
+
+
+
+
+
+    
+?>
