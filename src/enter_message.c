@@ -198,6 +198,7 @@ save_new_message(message_header_t * header, unsigned int forum)
 	    unlink(filename);
 	copy(temp, filename);
     } else {
+        time_function(TIME_START);
 	header->m_id = get_new_message_id(forum);
 	if (header->m_id == 0)
 	    cprintf("\n\1f\1rget_new_message_id() returned 0.  aborting\n\1a");
@@ -207,10 +208,19 @@ save_new_message(message_header_t * header, unsigned int forum)
 	    write_message_header(filename, header);
 	    copy(temp, message_filename(filename, forum, header->m_id));
         }
+	if (usersupp->priv >= PRIV_TECHNICIAN)
+	    cprintf("\n\1a\1wFilesystem time elapsed: %f", 
+		    time_function(TIME_STOP));
+	else
+	    time_function(TIME_STOP);
     }
-
+    
+    time_function(TIME_START);
     save_to_sql(header, temp);
-
+    if (usersupp->priv >= PRIV_TECHNICIAN)
+        cprintf("\n\1a\1wSQL time elapsed: %f", time_function(TIME_STOP));
+    else
+	time_function(TIME_STOP);
     return 0;
 }
 
