@@ -81,12 +81,13 @@ function list_quads($username, $listunread) {
 
         PRINT "</table>\n";
     } else {
-        if($listunread)
+        if($listunread) {
             errorsound();
             errorimage( "No unread messages!" );
-        else
+        } else {
             errorsound();
             errorimage( "No quadrants found!" );
+        }
     }
 }
 
