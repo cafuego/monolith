@@ -703,7 +703,7 @@ mono_sql_uf_whoknows(unsigned int forum_id, char **result)
 	if (row == NULL)
 	    break;
         host = row[0];
-	sprintf(line, "\1%c%-24s", (host == n) ? 'g' : 'r', row[1]);
+	sprintf(line, "\1%c%-24s", (host == 'n') ? 'g' : 'r', row[1]);
 	if ((j % 3) == 0) {
 	    strcat(line, "\n");
 	}
