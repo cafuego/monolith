@@ -1604,7 +1604,7 @@ unlock_terminal()
             failures++;
             done = FALSE;
         } else {
-            if ( check_password( usersupp, pwtest ) == TRUE ) {
+            if ( mono_sql_u_check_passwd( usersupp->usernum, pwtest ) == TRUE ) {
                done = TRUE;
             } else {
                fflush(stdout);
