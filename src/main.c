@@ -200,9 +200,6 @@ enter_passwd(const char *username)
     static int failures;
     user_t *user = NULL;
 
-    /*
-     * First check if user exists. If not, just say so.
-     */
     if (!(check_user(username))) {
         cprintf(_("No such user.\n"));
 	log_it("badpw", "Login as %s from %s, but user does not exist", username, hname);
@@ -217,12 +214,16 @@ enter_passwd(const char *username)
 	failures++;
 	return FALSE;
     }
+
     if (mono_sql_u_check_passwd(user->usernum, pwtest) == TRUE) {
+	xfree( user );
 	return TRUE;
     }
 
     cprintf(_("Incorrect login.\n"));
     log_it("badpw", "%s from %s", user->username, hname);
+
+    xfree( user );
 
     if (++failures >= 4) {
 	cprintf("Too many failures.\n");
@@ -331,16 +332,6 @@ enter_name(char *usernm)
     }
 }				/* enter_name() */
 
-/* 
- * void init_system( void )
- */
-
-void
-init_system()
-{
-    cmdflags = 0;		/* no internal command at start       */
-    return;
-}
 
 /*********************************************************************
 *** *********************** MAIN PROGRAM ************************* ***
@@ -414,7 +405,7 @@ main(int argc, char *argv[])
 
     alarm(60);			/* send the first SIGALRM-signal after 60 seconds. */
 
-    init_system();
+    cmdflags = 0;		/* no internal command at start       */
     nox = 1;
 
     sprintf(temp, BBSDIR "/tmp/%d.1", getpid());	/* make up a temp file name     */
