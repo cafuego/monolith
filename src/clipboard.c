@@ -47,11 +47,8 @@ static void wacky_email_stuff(void);
 void
 clip_board()
 {
-    size_t accepted;
 
     int cmd = 0;
-    char subject[50];
-    char work[L_USERNAME + RGemailLEN + 85];
 
     while (cmd != 'Q' && cmd != ' ' && cmd != '\r') {
 	display_short_prompt();
@@ -85,43 +82,7 @@ clip_board()
 		break;
 
 	    case 'M':
-
-		accepted = strspn(usersupp->RGemail, ACCEPTED);
-
-		if (accepted < strlen(usersupp->RGemail)) {
-		    cprintf(_("\01r\01fInvalid email address, can't send message!\01a\n"));
-		} else {
-		    IFSYSOP {
-			cprintf("\01f\01g\nDo you wish to send it to yourself? ");
-			if (yesno() == NO) {
-			    nox = 1;
-			    wacky_email_stuff();
-			    break;
-			}
-		    }
-		    cprintf("\01f\01gE-Mail yourself the ClipBoard.\n");
-
-		    cprintf("\01g\01fAre you sure you want to email your clipboard? (y/N) ");
-		    if (yesno_default(NO) == NO)
-			break;
-		    cprintf("\01g\01f\nWould you like to remove the color codes? \01w(\01gy/n\01w)\01g  ");
-		    if (yesno() == YES) {
-			if (de_colorize(CLIPFILE) != 0)
-			    cprintf("\01f\01r\nWarning\01w:\01g Couldn't remove colours.\01a");
-		    }
-		    cprintf("\01f\01gSubject for the email: \01c");
-		    getline(subject, sizeof(subject), 1);
-		    if (strspn(subject, ACCEPTED) < strlen(subject)) {
-			cprintf("\01r\01fSubject contains invalid characters, can't send message!\01a\n");
-			break;
-		    }
-		    if (strlen(subject) == 0)
-			strcpy(subject, "Clipboard-Contents");
-		    log_it("email", "%s sent clipboard to %s", usersupp->username, usersupp->RGemail);
-		    sprintf(work, "/bin/mail -s '%s' %s < %s", subject, usersupp->RGemail, CLIPFILE);
-		    system(work);
-		    cprintf("\01g\01fMail was sent to \01c%s\01a\n", usersupp->RGemail);
-		}
+                (void) mail_clipboard(CLIPFILE);
 		break;
 
 	    case 'R':
@@ -310,4 +271,96 @@ notebook(int for_who)
 		return;
 	}
     }
+}
+
+int
+mail_clipboard(const char *file)
+{
+
+#ifdef HAVE_SENDMAIL
+    FILE *sendmail = NULL;
+    char *message = NULL;
+#else
+    char work[L_USERNAME + RGemailLEN + 85];
+#endif
+    char subject[50];
+    size_t accepted;
+
+    accepted = strspn(usersupp->RGemail, ACCEPTED);
+
+    if (accepted < strlen(usersupp->RGemail)) {
+        cprintf(_("\1r\1fInvalid email address, can't send message!\1a\n"));
+        return -1;
+    }
+
+    IFSYSOP {
+        cprintf(_("\1f\1g\nDo you wish to send it to yourself? \1c"));
+        if (yesno() == NO) {
+            nox = 1;
+            wacky_email_stuff();
+            return 0;
+        }
+    }
+    cprintf(_("\1f\1gE-Mail yourself the ClipBoard.\n"));
+
+    cprintf(_("\1g\1fAre you sure you want to email your clipboard? \1w(\1gy\1w/\1gN\1w) \1c"));
+
+    if (yesno_default(NO) == NO)
+        return 0;
+
+    cprintf(_("\1g\1f\nWould you like to remove the color codes? \1w(\1gY/n\1w)\1g \1c"));
+    if (yesno_default(YES) == YES)
+        if (de_colorize(file) != 0)
+            cprintf(_("\1f\1r\nWarning\1w:\1g Couldn't remove colours.\1a"));
+
+    cprintf("\1f\1gSubject for the email: \1c");
+    getline(subject, sizeof(subject), 1);
+
+#ifndef HAVE_SENDMAIL
+    if (strspn(subject, ACCEPTED) < strlen(subject)) {
+        log_it("email", "Email to %s failed.\n%s tried to send clipboard with subject %s", usersupp->RGemail, usersupp->username, subject);
+        cprintf(_("\1r\1fSubject contains invalid characters, can't send message!\1a\n"));
+        return 1;
+    }
+#endif
+
+    if (strlen(subject) == 0)
+        sprintf(subject, "%s@%s BBS: Clipboard-Contents", usersupp->username, BBSNAME);
+
+#ifdef HAVE_SENDMAIL
+    if( (sendmail = popen( SENDMAIL " -t", "w" )) == NULL ) {
+	log_it("email", "Error trying to send clipboard to %s.\nCan't popen(%s)", usersupp->RGemail, SENDMAIL);
+        cprintf(_("\1f\1rError trying to send clipboard to %s.\nCan't popen(%s)\n"), usersupp->RGemail, SENDMAIL );
+	return 2;
+    }
+    if ((message = map_file(file)) == NULL) {
+        xfree(message);
+	log_it("email", "Error trying to send clipboard to %s.\nCan't mmap(%s)", usersupp->RGemail, file);
+	cprintf(_("\1f\1rError trying to send clipboard to %s.\nCan't mmap(%s)\n"), usersupp->RGemail, file);
+	return 2;
+    }
+
+    fprintf(sendmail, "To: %s <%s>\n", usersupp->RGname, usersupp->RGemail);
+    fprintf(sendmail, "Subject: %s\n", subject);
+    fprintf(sendmail, "%s\n", message);
+    xfree(message);
+
+    if( pclose(sendmail) == -1 ) {
+	log_it("email", "Error trying to send clipboard to %s.\nCan't pclose(%X)", usersupp->RGemail, sendmail);
+	cprintf(_("\1f\1rError trying to send clipboard to %s.\nCan't pclose(%X)\n"), usersupp->RGemail, sendmail);
+	return 2;
+    }
+#else
+    sprintf(work, "/bin/mail -s '%s' %s < %s", subject, usersupp->RGemail, file);
+    if (system(work) == -1) {
+        log_it("email", "Error trying to send clipboard to %s.", usersupp->RGemail );
+        cprintf(_("\1f\1rError trying to send clipboard to %s."), usersupp->RGemail );
+        return 2;
+    }
+#endif
+
+    log_it("email", "%s sent clipboard to %s", usersupp->username, usersupp->RGemail);
+    cprintf(_("\1g\1fMail was sent to \1c%s\1a\n"), usersupp->RGemail);
+
+    return 0;
 }
