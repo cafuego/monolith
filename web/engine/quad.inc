@@ -46,8 +46,7 @@ function list_messages($username, $quad, $listunread) {
             if($number != 1)
                 addimage( "Listing $number unread messages in $forum" );
             else
-                errorimage( "No unread messages in $forum!" );
-                addimage( "Listing 1 old message" );
+                errorimage( "No unread messages, listing 1 old message!" );
         else
             if($number != 1)
                 addimage( "Listing $number messages in $forum" );
