@@ -44,12 +44,12 @@ echo $bbs_version > .version
 # Nasty call to MySQL which is prolly absolutely not cross-platform to
 # get the MySQL version. (If it is installed) and re-create version.h
 #
-MYSQL=$1/bin/mysql
-if [ -x $MYSQL ]; then 
+MYSQL=$1
+if [ "x$MYSQL" = "x" ]; then 
+    echo -e "#define BBS_VERSION\t\"Mono 2.061 #$bbs_version - `uname -m` `uname -s` `uname -r`\"" > $VERSIONFILE
+else
     SQLVERSION="MySQL `$MYSQL --version | awk '{print $5}' | awk -F',' '{print $1}'`"
     echo -e "#define BBS_VERSION\t\"Mono 2.061 #$bbs_version - `uname -m` `uname -s` `uname -r` - $SQLVERSION\"" > $VERSIONFILE
-else
-    echo -e "#define BBS_VERSION\t\"Mono 2.061 #$bbs_version - `uname -m` `uname -s` `uname -r`\"" > $VERSIONFILE
 fi
 
 # Add build base dir and version as integer.
