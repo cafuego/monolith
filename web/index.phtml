@@ -41,7 +41,6 @@
     require ("engine/routines.inc");
 
     // Pick url open into commands.
-    $location=strtr($REQUEST_URI, "/", "-");
     $url_array=explode("/",$REQUEST_URI);
 
     // Assign values so we can use 'em.
@@ -52,7 +51,12 @@
     $interface=$url_array[5];		// Second arg too.
     $direction=$url_array[6];		// Third arg.
 
-    list_x_messages($username,$loc);
+    if($action != "x")
+        $location = strtr($REQUEST_URI, "/", "-");
+    else
+        $location=$url_array[6];	// Third arg too.
+
+    list_x_messages($username,$location);
 
     switch ($action) {
 

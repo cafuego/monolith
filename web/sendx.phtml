@@ -51,7 +51,7 @@
     $message = nl2br($message);
     $message = strtr($message, "'", "\\'");
 
-    list_x_messages($username);
+    list_x_messages($username, $location);
 
     connect_db();
 
