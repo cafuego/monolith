@@ -22,6 +22,24 @@ typedef struct date_struct {
     int year;
 } date_t;
 
+/* a short list with username/numbers. mainly to be returned 
+   when we need a list of users. (used in userforum for example) */
+typedef struct userlist userlist_t;
+struct userlist {
+    char name[L_USERNAME+1];
+    unsigned int usernum;
+    userlist_t *next;
+};
+
+/* a short list with forumname/numbers. mainly to be returned 
+   when we need a list of forums. (used in userforum for example) */
+typedef struct forumlist forumlist_t;
+struct forumlist {
+    char name[L_QUADNAME+1];
+    unsigned int forumnum;
+    forumlist_t *next;
+};
+
 typedef struct xfriend friend_t;
 struct xfriend {
     char name[L_USERNAME + L_BBSNAME + 1];
