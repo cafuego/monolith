@@ -200,6 +200,7 @@ typedef struct {	/* User record */
     char xtrapflag[70];		/* The User's Extra "Title-thing"       */
     char aideline[162];		/* The User's Aideline                  */
     char lasthost[80];		/* utmp name of last host on from       */
+    char timezone[40];		/* timezone */
     char awaymsg[100];		/* away message */
     char RGname[RGnameLEN + 1];	/* The User's real full name            */
     char RGaddr[RGaddrLEN + 1];	/* The User's address                   */
