@@ -205,7 +205,8 @@ mono_change_online(const char *user, const char *tmp_string, int ch)
 
 
 		case 1:
-		    p->priv = atoi(tmp_string);
+                    sscanf( tmp_string, "%ul", &(p->priv) );
+		    /* p->priv = atoi(tmp_string); */
 		    break;
 
 		case 2:
@@ -621,8 +622,7 @@ mono_find_xslot(const char *name)
 static int
 _mono_add_to_linked_list(btmp_t user)
 {
-    unsigned int i, q;
-    int p;
+    int i, p, q;
     char *my_name;
 
     mono_lock_shm(WHO_LOCK);
