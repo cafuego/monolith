@@ -579,6 +579,9 @@ long_prompt(long number, int direction)
 
 	if (current > usersupp->lastseen[curr_rm])
 	    usersupp->lastseen[curr_rm] = current;	/* update lastseen */
+/*
+            mono_sql_ut_update_lastseen( usersupp->usernum, curr_rm, 0, current );
+*/
 
 	if (read_command == 0)
 	    continue;

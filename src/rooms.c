@@ -1366,11 +1366,14 @@ usergoto(int new_rm, int old_rm, int destructive_jump)
 	if (here.highest <= usersupp->lastseen[curr_rm]) {
 	    skipping[curr_rm] = 0;
 	    usersupp->lastseen[curr_rm] = here.highest;
+            mono_sql_ut_update_lastseen( usersupp->usernum, curr_rm, 0, here.highest );
 	    display_short_prompt();
 	    cprintf("\1f\1w(\1g%ld %s\1w)\1a\n", here.highest - here.lowest, config.message_pl);
 	} else {
-	    if (usersupp->lastseen[curr_rm] < here.lowest)
+	    if (usersupp->lastseen[curr_rm] < here.lowest) {
 		usersupp->lastseen[curr_rm] = here.lowest;
+                mono_sql_ut_update_lastseen( usersupp->usernum, curr_rm, 0, here.lowest );
+            }
 	    if (curr_rm && !skipping[curr_rm])	/* looks ugly at Docking Bay, don't bother */
 		cprintf("\1f\1gRead next %s with unread %s.\n", config.forum, config.message_pl);
 	    display_short_prompt();
@@ -1485,6 +1488,7 @@ void
 mark_as_read(int room)
 {
     usersupp->lastseen[room] = readquad(room).highest;
+    mono_sql_ut_update_lastseen( usersupp->usernum, room, 0, usersupp->lastseen[room] );
     return;
 }
 

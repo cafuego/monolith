@@ -97,6 +97,12 @@ sysop_menu()
                 break;
 #endif
 
+            case 'A':
+		/* michel test */
+		mono_sql_ut_update_lastseen( usersupp->usernum, curr_rm, 0, 0 );
+ 		break;
+
+
 	    case 'B':
 		cprintf("\1f\1rMake a broadcast.\1a\n");
 		express(-2);
