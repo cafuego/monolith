@@ -60,7 +60,7 @@ endif
 # endof Rules.make
 
 INSTALLFLAGS = -o $(BBSUID) -g $(BBSGID) -m 4771
-BINS = counter profile wholist www_roomlist userlist interface register account www_auth_user www_auth_group
+BINS = counter profile wholist www_roomlist userlist interface register account # www_auth_user www_auth_group
 
 cgis:		$(BINS)
 
