@@ -45,13 +45,10 @@ function list_messages($username, $quad, $listunread) {
     $number = MYSQL_NUMROWS($result);
     if ($number) {
         if($listunread)
-            if($number != 1) {
-                errorsound();
+            if($number != 1)
                 addimage( "Listing $number unread messages in $forum" );
-            } else {
-                errorsound();
+            else
                 errorimage( "No unread messages, listing 1 old message!" );
-            }
         else
             if($number != 1)
                 addimage( "Listing $number messages in $forum" );
