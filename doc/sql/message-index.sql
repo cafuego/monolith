@@ -1,3 +1,4 @@
+# $Id$
 # New message index table.
 # DROP TABLE message-index;
 
