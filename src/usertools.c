@@ -1020,8 +1020,10 @@ _change_url(const unsigned int a, const long b, void *c)
 	if (strlen(p) < 5) {
 	    strcpy(usersupp->RGurl, "");
 	    cprintf(_("\1f\1gURL not set.\n"));
-	} else
+	} else{
 	    sprintf(usersupp->RGurl, "http://%s", p);
+	mono_sql_u_update_url( usersupp->usernum, usersupp->RGurl );
+}
 
 	cprintf("\1a");
     }

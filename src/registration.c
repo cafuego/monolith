@@ -53,6 +53,8 @@ enter_reginfo()
         usersupp->RGname, usersupp->RGaddr, usersupp->RGzip, usersupp->RGcity,
 	usersupp->RGstate, usersupp->RGcountry, usersupp->RGphone );
 	mono_sql_u_update_hidden( usersupp->usernum, usersupp->hidden_info );
+    mono_sql_u_update_email( usersupp->usernum, usersupp->RGemail );
+    mono_sql_u_update_url( usersupp->usernum, usersupp->RGurl );
     }
 }
 

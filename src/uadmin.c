@@ -268,6 +268,8 @@ edit_field(user_t * user, int fieldnum)
         user->RGstate, user->RGcountry, user->RGphone );
 	    log_sysop_action("modified address info for %s."
 			     ,user->username);
+  mono_sql_u_update_email( user->usernum, user->RGemail );
+  mono_sql_u_update_url( user->usernum, user->RGurl );
 	    uadmin_need_rewrite = TRUE;
 	    break;
 
