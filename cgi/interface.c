@@ -15,6 +15,8 @@
 #include <unistd.h>
 #include <dirent.h>
 
+#include <mysql.h>
+
 #include "monolith.h"
 #include "extra.h"
 #include "libmono.h"
@@ -338,6 +340,7 @@ main (int argc, char **argv)
   parse_cgi_input ();
 
   chdir (BBSDIR);
+  mono_sql_connect();
   mono_connect_shm ();
 
   /* this translates the arguments to the room and message number */
@@ -383,6 +386,7 @@ main (int argc, char **argv)
   }
 
   mono_detach_shm ();
+  mono_sql_detach();
   return 0;
 }
 
