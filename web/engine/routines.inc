@@ -30,6 +30,19 @@ function get_usernum($username) {
 
 }
 
+function get_username($usernum) {
+
+    connect_db();
+    $result = MYSQL_QUERY("SELECT username FROM user WHERE id=$usernum");
+    $number = MYSQL_NUMROWS($result);
+    if ($number)
+        $username = mysql_result($result,0,"username");
+    else
+        $username = "";
+    return $username;
+
+}
+
 function check_priv($username, $forum_id) {
 
     // Username exists?
