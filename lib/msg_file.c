@@ -40,9 +40,8 @@ static char * get_reason(int mod_reason);
 int
 write_message_header(const char *header_filename, message_header_t *header)
 {
-    FILE *fp = NULL;
-    int ret;
     size_t sz;
+    FILE *fp;
 
     if ((fp = xfopen(header_filename, "w", FALSE)) == NULL)
 	return -1;
