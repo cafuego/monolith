@@ -163,9 +163,9 @@ typedef struct {
 } config_t;
 
 typedef struct {
-    char att;		/* attribute */
-    char fg;		/* foreground colour */
-    char bg;		/* background colour */
+    unsigned int attrib;	/* attribute */
+    char fg_colour;		/* foreground colour */
+    char bg_colour;		/* background colour */
 } colour_t;
 
 /* typedef struct usersupp {	/ * User record */
