@@ -69,7 +69,7 @@ msgstr "\001f\001w----- KLEMBORD -----\n"
 
 #: src/clipboard.c:98
 msgid "\001f\001gQuit.\n"
-msgstr ""
+msgstr "\001f\001gStop.\n"
 
 #: src/clipboard.c:131
 msgid ""
@@ -159,11 +159,11 @@ msgstr ""
 
 #: src/commands.c:499
 msgid "\001f\001wEdit %s Description.\001a\n"
-msgstr ""
+msgstr "\001f\001wBewerk %s beschrijving.\001a\n"
 
 #: src/commands.c:504
 msgid "\001f\001wEdit %s.\001a\n"
-msgstr ""
+msgstr "\001f\001wBewerk %s.\001a\n"
 
 #: src/commands.c:523
 msgid "\001f\001wKickout %s from %s.\001a\n"
@@ -175,7 +175,7 @@ msgstr ""
 
 #: src/commands.c:700
 msgid "\001f\001cMark messages as read.\n"
-msgstr ""
+msgstr "\001f\001cMarkeer berichten als gelezen.\n"
 
 #: src/commands.c:718
 msgid "\001f\001cSystem Configuration.\n"
@@ -520,6 +520,9 @@ msgid ""
 "\001f\001r***\001w Cthulhu whispers: \001r***\001a\n"
 "\001c%s"
 msgstr ""
+"\n"
+"\001f\001r***\001w Cthulhu fluistert: \001r***\001a\n"
+"\001c%s"
 
 #: src/express.c:1373
 msgid ""
@@ -580,7 +583,7 @@ msgstr ""
 
 #: src/express.c:1422
 msgid "\001f\001rYou cannot send %s %s.\001a\n"
-msgstr ""
+msgstr "\001f\001rJe kunt geen %s %s versturen.\001a\n"
 
 #: src/express.c:1440
 msgid ""
@@ -829,7 +832,7 @@ msgstr "\001f\001gJe aanwezige vrienden\001w:\001a\n"
 
 #: src/main.c:843
 msgid "\001f\001gYou have a new private %s in \001pMail>\n"
-msgstr ""
+msgstr "\001f\001gJe hebt een nieuw prive %s in \001pMail>\n"
 
 #: src/main.c:845
 msgid "\001f\001gYou have \001r%d \001gnew private %s in \001pMail>\n"
@@ -839,17 +842,17 @@ msgstr "\001f\001gJe hebt \001r%d \001gnieuwe poststukken in \001pMail>\n"
 msgid "\001f\001gYou have \001rno\001g new Mail %s.\001a\n"
 msgstr "\001f\001gJe hebt \001rgeen\001g nieuwe post.\001a\n"
 
-#: src/messages.c:495
+#: src/messages.c:500
 msgid "\001f\001rERROR: Can't search for nothing...\001a\n"
 msgstr ""
 
-#: src/messages.c:499
+#: src/messages.c:504
 msgid "\001f\001rERROR: '\001y%s\001r' is not a valid search pattern...\001a\n"
-msgstr ""
+msgstr "\001f\001rERROR: '\001y%s\001r' is geen geldig zoekpatroon...\001a\n"
 
-#: src/messages.c:503
+#: src/messages.c:508
 msgid "\001f\001r\001eSearching..."
-msgstr ""
+msgstr "\001f\001r\001eZoeken..."
 
 #: src/read_menu.c:130
 msgid "\001f\001gRead messages backwards.\001a\n"
@@ -897,7 +900,7 @@ msgstr "\001f\001gUitloggen.\001a"
 
 #: src/read_menu.c:296
 msgid "\001f\001gProfile an %s.\001a\n"
-msgstr ""
+msgstr "\001f\001gBekijk een %s.\001a\n"
 
 #: src/read_menu.c:302
 msgid "\001f\001rAsk a Question.\001a\n"
@@ -917,7 +920,7 @@ msgstr ""
 
 #: src/read_menu.c:335
 msgid "\001f\001gDate: \001w%s\001a"
-msgstr ""
+msgstr "\001f\001gDatum: \001w%s\001a"
 
 #. Holodeck Wholist
 #: src/read_menu.c:355
@@ -982,6 +985,8 @@ msgid ""
 "\001f\001gChange your Friends-list.\001a\n"
 "\n"
 msgstr ""
+"\001f\001gVerander je vrienden-lijst.\001a\n"
+"\n"
 
 #: src/read_menu.c:534 src/read_menu.c:995
 msgid ""

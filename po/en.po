@@ -804,15 +804,15 @@ msgstr ""
 msgid "\001f\001gYou have \001rno\001g new Mail %s.\001a\n"
 msgstr ""
 
-#: src/messages.c:495
+#: src/messages.c:500
 msgid "\001f\001rERROR: Can't search for nothing...\001a\n"
 msgstr ""
 
-#: src/messages.c:499
+#: src/messages.c:504
 msgid "\001f\001rERROR: '\001y%s\001r' is not a valid search pattern...\001a\n"
 msgstr ""
 
-#: src/messages.c:503
+#: src/messages.c:508
 msgid "\001f\001r\001eSearching..."
 msgstr ""
 
