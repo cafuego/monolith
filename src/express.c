@@ -100,9 +100,19 @@ sendx(char *to, const char *send_string, char override)
 	Sendxs = mono_find_xslot(to);
 	tuser = mono_read_btmp(to);
 	if (Sendxs == NULL || tuser == NULL) {
+	    char * save_x, * save_to;
+
+	    save_x = (char *) xmalloc(strlen(send_string) + 1);
+	    save_to = (char *) xmalloc(strlen(to) + 1);
+
+	    strcpy(save_to, to);
+	    strcpy(save_x, send_string);
+
 	    cprintf("\1f\1y%s \1glogged off before you finished typing.\1a\n", to);
             /* ask user if perhaps mail to the user that logged off... */
-            x_message_to_mail(send_string, to);
+            x_message_to_mail(save_x, save_to);
+	    xfree(save_to);
+	    xfree(save_x);
 	    return;
 	}
     }
