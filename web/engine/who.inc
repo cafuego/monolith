@@ -4,7 +4,7 @@
   * $id$
   */
 
-function show_wholist($username) {
+function show_wholist($username,$location) {
 
     // Check user priv.
     //
@@ -51,7 +51,7 @@ function show_wholist($username) {
 
             print "<tr>\n";
             print "  <td align=\"left\">\n";
-            print "    <p align=\"left\"><a href=\"/bbs/index.phtml/x/$url_user/$interface\">$user</a>\n";
+            print "    <p align=\"left\"><a href=\"/bbs/index.phtml/x/$url_user/$interface/$location\">$user</a>\n";
             print "  </td>\n";
             print "  <td align=\"left\">\n";
             print "    <p align=\"left\"><font color=\"#00cc00\">$doing</font>\n";
