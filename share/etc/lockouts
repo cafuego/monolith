@@ -1,0 +1,16 @@
+### ### this file contains the locked out sites
+# Any account creating hostname that matches a string in here
+# will be logged off immediately with a nice greeting.
+#
+# Note that due to utmp entries NOT the entire host can be matched.
+# Also beware to not block innocent users.
+#
+.bart.nl
+.carroll.com
+.plymouth.edu
+.smu.edu
+.cswnet.com
+globalvillage
+peak.org
+orion.cc
+memphisonl

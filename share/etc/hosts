@@ -1,0 +1,15 @@
+# YAWC BBS hosts file for InterBBS.
+# Monolith BBS version 1.1
+#
+# The own host should be the first in the list.
+# Comments should start with a hash.
+# Empty lines are not allowed.
+Monolith		130.89.230.12		1996
+Jassyca			134.109.48.2		1996
+Olymp			138.232.112.32		1996
+Global			138.232.92.39		1996
+# Flexania		129.27.203.203		1996
+# The-Far-Side		137.92.12.115		1996
+Coffee			202.21.8.47		1996
+Swamp                   130.89.227.171          1996
+# EOF
