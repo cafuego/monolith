@@ -668,7 +668,7 @@ mono_sql_uf_new_user(unsigned int user_id)
     return 0;
 }
 
-#define BUFFZISE	100
+#define BUFFSIZE	100
 
 int
 mono_sql_uf_whoknows(unsigned int forum_id, char **result)
