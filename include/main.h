@@ -9,7 +9,7 @@ extern void change_passwd(user_t *user);
 extern void do_changepw(void);
 extern void getwindowsize(int sig);
 extern void enter_name( char *usernm);
-extern void enter_passwd(user_t *user,int *done);
+extern int enter_passwd(user_t *user);
 extern void init_system(void);
 extern void logoff(int code);
 extern void mailcheck(void);
