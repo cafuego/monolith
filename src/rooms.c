@@ -704,13 +704,13 @@ whoknows()
 
     switch(ret) {
         case -1:
-            cprintf("\1f\1rAn error occurred in the SQL query.\n");
+            cprintf("\n\1f\1rAn error occurred in the SQL query.\n");
             break;
         case 0:
-            cprintf("\1f\1rNo users currently know this %s.\n", config.forum);
+            cprintf("\n\1f\1rNo users currently know this %s.\n", config.forum);
             break;
         default:
-            cprintf("\1f\1g%d users can currently read %s.\n", ret, bing.name );
+            cprintf("\n\1f\1g%d users can currently read %s\1w:\n", ret, bing.name );
             more_string(string);
             break;
     }
