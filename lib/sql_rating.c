@@ -50,7 +50,7 @@ mono_sql_rat_get_rating(unsigned int message_id, unsigned int forum_id)
 {
     MYSQL_RES *res;
     MYSQL_ROW row;
-    int ret = 0;
+    int ret = -1;
     float rating = 0;
 
     ret = mono_sql_query(&res, "SELECT AVG(score) FROM %s WHERE forum_id=%u AND message_id=%u",
@@ -73,7 +73,7 @@ mono_sql_rat_get_rating(unsigned int message_id, unsigned int forum_id)
     if( (sscanf(row[0], "%f", &rating)) != 1)
          rating = 0;
 
-    mysql_free_result(res);
+    (void) mysql_free_result(res);
 
     return rating;
 }

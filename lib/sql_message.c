@@ -199,7 +199,16 @@ mono_sql_mes_list_forum(unsigned int forum, unsigned int start, mlist_t ** list)
     mlist_t entry;
     message_t *message;
 
-    ret = mono_sql_query(&res, "SELECT message_id,topic_id,forum_id,author,alias,subject,UNIX_TIMESTAMP(date),type,priv,deleted FROM " M_TABLE " WHERE message_id>%u AND forum_id=%u ORDER BY message_id", start, forum);
+
+    /*
+     * Coolest query in the BBS sofar :)
+     */
+#ifdef ALLOW_SUBQUERIES
+    ret = mono_sql_query(&res, "SELECT m.message_id,m.topic_id,m.forum_id,m.author,m.alias,m.subject,UNIX_TIMESTAMP(m.date) AS date,m.type,m.priv,m.deleted,AVG(r.score) AS score FROM message AS m LEFT JOIN rating AS r ON m.message_id = r.message_id AND m.forum_id = m.forum_id WHERE m.message_id>%u AND m.forum_id=%u ORDER BY m.message_id", start, forum );
+#else
+    ret = mono_sql_query(&res, "SELECT message_id,topic_id,forum_id,author,alias,subject,UNIX_TIMESTAMP(date) AS date,type,priv,deleted FROM " M_TABLE " WHERE message_id>%u AND forum_id=%u ORDER BY message_id", start, forum);
+#endif
+
     
     if (ret == -1) {
 	(void) mysql_free_result(res);
@@ -216,10 +225,13 @@ mono_sql_mes_list_forum(unsigned int forum, unsigned int start, mlist_t ** list)
 	/*
          * Get message and add to list.
          */
-        if( (entry.message = _mono_sql_mes_row_to_mes(row)) == NULL )
-            break;
-	if( _mono_sql_mes_add_mes_to_list(entry, list) == -1 )
-	    break;
+        if( (entry.message = _mono_sql_mes_row_to_mes(row)) == NULL ) {
+            continue;
+        }
+
+	if( _mono_sql_mes_add_mes_to_list(entry, list) == -1 ) {
+	    continue;
+        }
     }
     mysql_free_result(res);
     return 0;
@@ -238,7 +250,11 @@ mono_sql_mes_list_topic(unsigned int topic, unsigned int start, mlist_t ** list)
     int ret = 0, rows = 0, i = 0;
     mlist_t entry;
 
-    ret = mono_sql_query(&res, "SELECT message_id,topic_id,forum_id,author,alias,subject,UNIX_TIMESTAMP(date),type,priv,deleted FROM " M_TABLE " WHERE message_id>%u AND topic_id=%u ORDER BY message_id", start, topic);
+#ifdef ALLOW_SUBQUERIES
+    ret = mono_sql_query(&res, "SELECT m.message_id,m.topic_id,m.forum_id,m.author,m.alias,m.subject,UNIX_TIMESTAMP(m.date) AS date,m.type,m.priv,m.deleted,AVG(r.score) AS score FROM message AS m LEFT JOIN rating AS r ON m.message_id = r.message_id AND m.topic_id = m.topic_id WHERE m.message_id>%u AND m.topic_id=%u ORDER BY m.message_id", start, topic );
+#else
+    ret = mono_sql_query(&res, "SELECT message_id,topic_id,forum_id,author,alias,subject,UNIX_TIMESTAMP(date) AS date,type,priv,deleted FROM " M_TABLE " WHERE message_id>%u AND topic_id=%u ORDER BY message_id", start, topic);
+#endif
 
     if (ret == -1) {
 	(void) mysql_free_result(res);
@@ -255,8 +271,9 @@ mono_sql_mes_list_topic(unsigned int topic, unsigned int start, mlist_t ** list)
 	/*
          * Get message and add to list.
          */
-        if( (entry.message = _mono_sql_mes_row_to_mes(row)) == NULL )
+        if( (entry.message = _mono_sql_mes_row_to_mes(row)) == NULL ) {
             break;
+        }
 	if (_mono_sql_mes_add_mes_to_list(entry, list) == -1)
 	    break;
     }
@@ -346,10 +363,11 @@ _mono_sql_mes_row_to_mes(MYSQL_ROW row)
     sscanf(row[9], "%c", &message->deleted);
 
 #ifdef USE_RATING
-    /*
-     * Score!
-     */
+  #ifdef ALLOW_SUBQUERIES
+    sscanf(row[10], "%f", &message->score);
+  #else
     message->score = mono_sql_rat_get_rating(message->num, message->forum);
+  #endif
 #else
     message->score = 0;
 #endif

@@ -1894,7 +1894,7 @@ new_read_menu(unsigned int forum, int direction)
 #ifdef USE_RATING
            case 'R':
                cprintf("\1f\1gRate this %s.\n", config.message );
-               rate_message(message);
+               rate_message(list->message);
                direction = 0;
                break;
 #endif
