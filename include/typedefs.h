@@ -209,12 +209,12 @@ typedef struct quickroom {
     char name[L_QUADNAME + 1];	/* Max. len is 40, plus null term       */
     char qls[NO_OF_QLS][L_USERNAME + 1];	/* RA's username                */
     char category[60];		/* room category */
-    long highest;		/* Highest message NUMBER in room       */
-    long lowest;		/* This was the dirname before. notused */
+    unsigned long highest;	/* Highest message NUMBER in room       */
+    unsigned long lowest;	/* This was the dirname before. notused */
     char generation;		/* Generation number of room            */
     unsigned flags;		/* See flag values below                */
     char roominfo;		/* RoomInfo-checknumber                 */
-    int maxmsg;			/* Max number of messages in a quad     */
+    unsigned int maxmsg;	/* Max number of messages in a quad     */
 } room_t;
 
 /* this contains the chat channels */
