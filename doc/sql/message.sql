@@ -1,6 +1,7 @@
 # quads
 
-DROP TABLE message;
+# Do not drop, contains live data!
+# DROP TABLE message;
 
 CREATE TABLE message (
 
