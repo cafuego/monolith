@@ -744,10 +744,13 @@ check_x_permissions(const char *x_recip_name, const int X_PARAM, char override)
 	    }
 /* away notify */
 	    if (x_recip_btmp->flags & B_AWAY) {
-		cprintf("\1r\1f%s is away from keyboard and may not receive your %s immediately.\n"
-			,x_recip_btmp->username, config.x_message);
-		cprintf("Away: \1g%s\n", x_recip_btmp->awaymsg);
+		cprintf("\1r\1y%s \1gis \1raway \1gand may not receive your %s %s immediately.\n"
+			,x_recip_btmp->username, config.express, config.x_message);
+		cprintf("\1rAway\1w: \1r%s\n", x_recip_btmp->awaymsg);
 	    }
+            if (x_recip_btmp->flags & B_LOCK) {
+		cprintf("\1g\1y%s \1gis \1clocked \1gand will not get your %s %s immediately.\n"
+			,x_recip_btmp->username, config.express, config.x_message);
 	    if (EMOTE)
 		override = OR_EMOTE;
 	    else if (QUESTION)
