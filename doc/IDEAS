@@ -1,7 +1,7 @@
 Ideas and things to do with monolith bbs code.
 
-- Add usernumbers for SQL. (via UBL)
-- Expand web interface.
+- Add usernumbers for SQL. (via UBL) -> IMPLEMENTED
+- Expand web interface. -> IMPLEMENTED
 - Dyunamic menus.
 - Infobot.
 - Floating scroll of quads, via external purge app.
