@@ -25,6 +25,7 @@
 #endif
 
 #include "monolith.h"
+#include "libmono.h"
 #include "routines.h"
 #include "monosql.h"
 #include "sql_utils.h"
@@ -38,6 +39,8 @@
   #include "sql_rating.h"
 #endif
 #include "sql_message.h"
+
+static void _mono_sql_mes_cleanup(unsigned int forum);
 
 int
 mono_sql_mes_add(message_t *message)
@@ -91,6 +94,8 @@ mono_sql_mes_add(message_t *message)
      */
     (void) mono_sql_rat_add_rating(message->a_id, message->m_id, message->f_id, 0);
 #endif
+
+    (void) _mono_sql_mes_cleanup(message->f_id);
 
     return ret;
 }
@@ -373,6 +378,35 @@ mono_sql_mes_search_forum(int forum, const char *string, sr_list_t **list)
     }
     (void) mysql_free_result(res);
     return rows;
+}
+
+static void
+_mono_sql_mes_cleanup(unsigned int forum)
+{
+    MYSQL_RES *res = NULL;
+    room_t scratch;
+    int lowest = 0;
+
+    scratch = read_quad(forum);
+    if( (lowest = scratch.highest - scratch.maxmsg) < 0)
+        lowest = 0;
+    /*
+     * Delete old messages from message table.
+     */
+    (void) mono_sql_query( &res, "DELETE FROM " M_TABLE " WHERE forum_id=%u AND message_id<%d",
+        forum, lowest );
+    (void) mysql_free_result(res);
+
+#ifdef USE_RATING
+    /*
+     * Delete old messages from message table.
+     */
+    (void) mono_sql_query( &res, "DELETE FROM " R_TABLE " WHERE forum_id=%u AND message_id<%d",
+        forum, lowest );
+    (void) mysql_free_result(res);
+#endif
+
+    return;
 }
 
 /* eof */
