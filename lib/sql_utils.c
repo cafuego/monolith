@@ -35,12 +35,10 @@ static unsigned long _mono_sql_u_query_length(const char *format, va_list arg);
 int
 mono_sql_connect()
 {
-    if (!(mysql_connect(&mp, "localhost", "root", NULL))) {
+    mysql_init(&mp);
+
+    if (!(mysql_real_connect(&mp, MYSQL_SERVER, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE, 0, MYSQL_SOCKET, 0))) {
 	log_it("sql", "could not connect to server (%s) !", mysql_error(&mp));
-	return -1;
-    }
-    if (mysql_select_db(&mp, "bbs")) {
-	log_it("sql", "could not connect to database (%s)!", mysql_error(&mp));
 	return -1;
     }
     connected = TRUE;

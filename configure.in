@@ -8,9 +8,19 @@ AM_INIT_AUTOMAKE(monolith, 1.0)
 AM_CONFIG_HEADER(config.h)
 AC_PREFIX_DEFAULT(/usr/bbs)
 
-AC_ARG_WITH(name, [  --with-name=NAME      set the BBS name [default=none]],,with_name=none)
+AC_ARG_WITH(name, [  --with-name=NAME        set the BBS name [default=none]],,with_name=none)
 AC_ARG_WITH(mysql, [  --with-mysql[=DIR]      use mysql database system  [default=yes]
-                          (requires mysql to be installed)],,with_mysql=yes)
+                          This option requires mysql to be installed.
+
+    When --with-mysql is specified, you may also specify the following MySQL
+    options, which the BBS will use to connect to the MySQL Server:],,with_mysql=yes)
+AC_ARG_WITH(sql_host, [    --with-sql_host=HOST  Connect to this MySQL Server [default=localhost]],,with_sql_host=localhost)
+AC_ARG_WITH(sql_user, [    --with-sql_user=USER  Connect using this MySQL username [default=bbs]],,with_sql_user=bbs)
+AC_ARG_WITH(sql_pass, [    --with-sql_pass=PASS  Connect using this MySQL password [default=NULL]],,with_sql_pass=NULL)
+AC_ARG_WITH(sql_db, [    --with-sql_db=DB      Use this MySQL database [default=bbs]],,with_sql_db=bbs)
+AC_ARG_WITH(sql_sock, [    --with-sql_sock=SOCK  Connect via this socket [default=/tmp/mysql.sock]
+                          
+Additional --enable and --with options recognized:],,with_sql_sock=/tmp/mysql.sock)
 AC_ARG_WITH(rating, [  --with-rating           use message rating system  [default=yes]
                           (allows users to rate messages)],,with_rating=yes)
 AC_ARG_WITH(hero, [  --with-hero             include superhero toy  [default=yes]
@@ -195,7 +205,28 @@ else
     mysql_app=mysql
 fi
 
+dnl Additional MySQL options.
+dnl
+
+if test "x${with_sql_pass}" = "x"; then
+    with_mysql_pass="NULL"
+fi
+MYSQL_SERVER=${with_sql_host}
+MYSQL_USER=${with_sql_user}
+MYSQL_PASSWORD=${with_sql_pass}
+MYSQL_DATABASE=${with_sql_db}
+MYSQL_SOCKET=${with_sql_sock}
+
+dnl Define properly.
+dnl
+AC_SUBST(MYSQL_SERVER)
+AC_SUBST(MYSQL_USER)
+AC_SUBST(MYSQL_PASS)
+AC_SUBST(MYSQL_DATABASE)
+AC_SUBST(MYSQL_SOCKET)
+
 dnl Use message rating system?
+dnl
 echo -n "checking whether to enable ratings..."
 if test "x$with_rating" = "xyes"; then
   echo " yes"
@@ -216,10 +247,10 @@ fi
 dnl Check if the proc-animal patch is installed.
 echo -n "checking for proc-animal kernel patch..."
 if test -r /proc/sys/kernel/name; then
-    echo "`${PROG_CAT} /proc/sys/kernel/name`"
+    echo " `${PROG_CAT} /proc/sys/kernel/name`"
     AC_DEFINE(HAVE_ANIMAL)
 else
-    echo " no"
+    echo " nope"
 fi
 
 dnl Define LINUX if this is a linux system.
@@ -273,7 +304,11 @@ if test "$no_create" != "yes" ; then
     echo "       You have set up $with_name BBS with the following features:"
     echo "----------------------------------------------------------------------"
     echo
-    echo "  * MySQL is installed and will be used."
+    echo "  * MySQL is installed and will be used as follows:"
+    echo
+    echo "    The BBS will connect to database \"${with_sql_db}\" on server ${with_sql_host}"
+    echo "    as user ${with_sql_user} and password ${with_sql_pass} using ${with_sql_sock}"
+    echo
     if test "x$with_rating" = "xyes"; then
       echo "  * Rating system is enabled."
     else
