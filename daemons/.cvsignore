@@ -1,7 +1,0 @@
-.deps
-front.o
-server.o
-front
-server
-Makefile
-Makefile.in

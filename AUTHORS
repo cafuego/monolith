@@ -5,8 +5,7 @@ Davecode, which was in turn based on Citadel/UX.
 
 Most changes were made by:
 
-
-Michel Oosterhof <m.oosterhof@thn.tn.utwente.nl>
+Michel Oosterhof <michel@oosterhof.net>
   Responsible for:
    - new way to handle express messages
    - new handling of shared memory
