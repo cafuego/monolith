@@ -5,6 +5,11 @@
 #endif
 #include <ctype.h>
 #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include <unistd.h>
 
 #ifdef HAVE_MYSQL_H
 #undef HAVE_MYSQL_MYSQL_H
@@ -15,18 +20,18 @@
 #include <mysql/mysql.h>
 #endif
 #endif
- 
-#include "sql_goto.h"
+
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#include <locale.h>
+#define _(String) gettext (String)
+#else
+#define _(String) (String)
+#endif
 
 #ifdef SUPERHERO
 #include "superhero.h"
 #endif
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-#include <unistd.h>
 
 #include "monolith.h"
 #include "libmono.h"
@@ -38,6 +43,7 @@
 #undef extern
 
 #include "input.h"
+#include "sql_goto.h"
 #include "routines2.h"
 
 void

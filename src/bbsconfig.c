@@ -30,6 +30,14 @@
 #include "bbsconfig.h"
 #undef extern
 
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#include <locale.h>
+#define _(String) gettext (String)
+#else
+#define _(String) (String)
+#endif
+
 static config_t cfg;
 static int num;
 

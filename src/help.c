@@ -10,6 +10,14 @@
 #include <string.h>
 #include <sys/types.h>
 
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#include <locale.h>
+#define _(String) gettext (String)
+#else
+#define _(String) (String)
+#endif
+
 #include "monolith.h"
 #include "routines.h"
 #include "ext.h" 
