@@ -22,7 +22,15 @@
 #include <string.h>
 #include <sys/types.h>
 
+#ifdef HAVE_MYSQL_H
+#undef HAVE_MYSQL_MYSQL_H
 #include <mysql.h>
+#else
+#ifdef HAVE_MYSQL_MYSQL_H
+#undef HAVE_MYSQL_H
+#include <mysql/mysql.h>
+#endif
+#endif
 
 #include "monolith.h"
 #include "libmono.h"

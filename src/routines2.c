@@ -16,12 +16,20 @@
 #include <stdarg.h>
 #include <math.h>
 
-#ifdef linux
+#ifdef LINUX
 #include <linux/kernel.h>
 #include <linux/sys.h>
 #endif
 
+#ifdef HAVE_MYSQL_H
+#undef HAVE_MYSQL_MYSQL_H
 #include <mysql.h>
+#else
+#ifdef HAVE_MYSQL_MYSQL_H
+#undef HAVE_MYSQL_H
+#include <mysql/mysql.h>
+#endif
+#endif
 
 #include "monolith.h"
 #include "libmono.h"
