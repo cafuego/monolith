@@ -116,15 +116,17 @@ enter_message(unsigned int forum, int mode, unsigned long banner_flag, const cha
 	if (banner_flag & CUSTOM_BANNER)
 	    get_custom_banner(header);
 
-	if (quad.flags & QR_SUBJECTLINE || reply)
+	if (quad.flags & QR_SUBJECTLINE || reply) {
 	    if (reply) {    /* yells are saved via save_new_mail */
 		if (forum == YELL_FORUM) {  
 		    get_mail_names(reply, &recipient_list, header);
 		    header->banner_type |= (ADMIN_BANNER | YELL_REPLY_BANNER | MAIL_BANNER);
 		} else if (quad.flags & QR_SUBJECTLINE && reply)
 		    get_reply_info(header, quad.flags);
-	    } else
+	    } else {
 		get_subject(header);
+            }
+        }
     }
     if ( ! (mode == EDIT_NOEDIT && banner_flag & AUTOBANNER)) {
 	size_t filesize;
@@ -298,13 +300,14 @@ get_anon_banner(unsigned int anon_type, message_header_t * header)
 
     cprintf("\1f\1gDo you want to add an aliasname to this %s? \1w(\1rY/N\1w) \1c",
 	    config.message);
-    if (yesno() == YES)
-	if ((usersupp->config_flags & CO_USEALIAS) && strlen(usersupp->alias))
+    if (yesno() == YES) {
+	if ((usersupp->config_flags & CO_USEALIAS) && strlen(usersupp->alias)) {
 	    strcpy(header->alias, usersupp->alias);
-	else {
+	} else {
 	    cprintf("\1f\1gAlias\1w: \1c");
 	    getline(header->alias, L_USERNAME, 1);
 	}
+    }
 }
 
 void
