@@ -12,6 +12,7 @@ function html_print_title($username, $location)
     $action = $url_array[3];	// What action?
 
     $quad = $url_array[4];	// What quad?
+    $victim = rawurldecode($url_array[4]);	// What quad?
 
     $interface = $url_array[5];
 
@@ -58,6 +59,9 @@ function html_print_title($username, $location)
 	    break;
 	case "o":
 	    print "<title>$username@Monolith BBS: Listing old eXpress messages</title>\n";
+	    break;
+	case "p":
+	    print "<title>$username@Monolith BBS: Profiling $victim</title>\n";
 	    break;
 	case "q":
 	    print "<title>$username@Monolith BBS: Logging out</title>\n";
