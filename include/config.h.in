@@ -3,6 +3,9 @@
 /* Define to empty if the keyword does not work.  */
 #undef const
 
+/* Define if we're a linux system */
+#undef LINUX
+
 /* Define if we use the link to the MySQL database */
 #undef USE_MYSQL
 
