@@ -187,6 +187,7 @@ function mes_link_urls( $text ) {
             $line = eregi_replace($url, "<a href=\"$url\">$url</a>", $line);
         }
         $text .= $line;
+        $text .= "\n";
     } while($line = next($line_array));
 
     return $text;
