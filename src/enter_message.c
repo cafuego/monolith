@@ -190,6 +190,8 @@ get_subject(message_t *message)
     if(!(strlen(message->subject)))
         strcpy(message->subject, "" );
 
+    cprintf("\1a\1c");
+
     return 0;
 }
 

@@ -95,6 +95,26 @@ display_message(unsigned int num, unsigned int forum)
     return;
 }
 
+static char *
+format_message( message_t *message, unsigned int forum)
+{
+    char *string = NULL;
+
+    /*
+     * malloc() here and realloc in all following functions.
+     */
+    string = (char *)xmalloc( sizeof(char) );
+    memset( string, 0, sizeof(string) );
+
+
+    (void) format_header(message, &string);
+    (void) format_content(message, &string);
+    (void) format_footer(forum, message, &string);
+
+    return string;
+
+}
+
 /*
  * Displays header as show when entering a new message.
  */
@@ -114,26 +134,6 @@ display_header(message_t *message)
     xfree(string);
 
     return;
-}
-
-static char *
-format_message( message_t *message, unsigned int forum)
-{
-    char *string = NULL;
-
-    /*
-     * malloc() here and realloc in all following functions.
-     */
-    string = (char *)xmalloc( sizeof(char) );
-    memset( string, 0, sizeof(string) );
-
-
-    (void) format_header(message, &string);
-    (void) format_content(message, &string);
-    (void) format_footer(forum, message, &string);
-
-    return string;
-
 }
 
 /*
@@ -341,7 +341,6 @@ format_title(message_t *message, char **string)
     return 0;
 
 }
-
 
 static int
 format_subject(message_t *message, char **string)
