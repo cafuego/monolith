@@ -189,7 +189,7 @@ function main_screen($username) {
 
     print "<h3 align=\"center\">Hello, $username. Welcome to Monolith BBS.</h3>\n";
     if($number)
-        print "<p class=\"footer\">Your last login was on $date CET from host '$hostname' and lasted for $online.</p>\n";
+        print "<p class=\"footer\">Your last login was on $date CET.<br>You were online from host '$hostname' for $online.</p>\n";
     else
         print "<p class=\"footer\">Unable to retrieve your previous login details.</p>\n";
     print "<p align=\"center\"><img align=\"center\" src=\"/bbs/pix/monolith.jpg\" width=\"300\" height =\"300\" alt=\"[ image: Monolith BBS Logo ]\"></p>\n";
