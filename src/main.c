@@ -261,6 +261,7 @@ change_passwd(user_t * user)
     }
 
     set_password( user, pwread );
+    mono_sql_u_set_passwd( user->usernum, pwread );
     cprintf("\n");
 
 }				/* end change_passwd */
