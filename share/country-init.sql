@@ -1,9 +1,5 @@
 # initialises the country table with ISO 3166 data
-# This file contains a table with the following columns:
-# 1.  ISO 3166-1:1997 2-character country code.  See: 
-# 2.  The usual English name for the country,
-#       chosen so that alphabetic sorting of subsets produces helpful lists.
-#       This is not the same as the English name in the ISO 3166 tables.
+# get updates here: http://www.din.de/gremien/nas/nabd/iso3166ma/index.html 
 delete from country;
 insert into country(code,englishname) values('AD','Andorra');
 insert into country(code,englishname) values('AE','United Arab Emirates');
