@@ -15,6 +15,7 @@ CREATE TABLE user (
 # registration information
    name		VARCHAR(80),
    address	VARCHAR(80),
+   zip          VARCHAR(10),
    city		VARCHAR(80),
    state	VARCHAR(80),
    country	VARCHAR(80),
