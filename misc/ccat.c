@@ -11,6 +11,7 @@
 #define _(String) (String)
 #endif
 
+
 #include <ctype.h>
 #include <stdarg.h>
 #include <stdio.h>
@@ -19,6 +20,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <getopt.h>
 
 #define BUFSIZE 1024
 
@@ -33,6 +35,15 @@ int cprintf(const char *fmt,...);
 
 char CURRCOL = '\0';
 
+struct option longopts[] =
+{
+    {"version", no_argument, NULL, 'v'},
+    {"help", no_argument, NULL, 'h'},
+    {NULL, 0, NULL, 0}
+};
+
+static char *progname;
+
 int
 main(int argc, char *argv[])
 {
@@ -40,42 +51,80 @@ main(int argc, char *argv[])
     FILE *fp = NULL;
     char buf[BUFSIZE];
     long lines = 0;
+    int h = 0, v = 0;
+    int optc;
+    int lose = 0;
 
-/*
- * if (argc < 2) {
- * fprintf(stderr, _("Usage: %s [-v] [-h] [file]\n"), argv[0]);
- * return 1;
- * }
- */
+    progname = argv[0];
 
-    if (argc == 1) {
-	fp = stdin;
+    while ((optc = getopt_long(argc, argv, "hv", longopts, (int *) 0))
+	   != EOF)
+	switch (optc) {
+	    case 'v':
+		v = 1;
+		break;
+	    case 'h':
+		h = 1;
+		break;
+	    case '?':
+		lose = 1;
+		break;
+	    default:
+		lose = 1;
+		break;
+	}
+
+    if (lose || optind < argc - 1) {
+	/* Print error message and exit.  */
+	if (optind < argc)
+	    fputs(_("Too many arguments\n"), stderr);
+	fprintf(stderr, _("Try `%s --help' for more information\n"),
+		progname);
+	exit(1);
+    }
+    /* `help' should come first.  If `help' is requested, ignore the other
+     * options. */
+    if (h) {
+	/* Print help info and exit.  */
+	printf(_("\
+This is Monolith ccat.\n\
+Usage: %s [OPTION] [FILE]\n\
+  -h, --help          display this help and exit\n\
+  -v, --version       display version information and exit\n\
+\n\
+Report bugs to bugs@monolith.yawc.net.\n"),
+	       progname);
+
+	exit(0);
+    }
+    if (v) {
+	/* Print version number.  */
+	printf("ccat - %s %s\n", "Monolith", "1.0");
+	exit(0);
     } else {
-	if (strcmp(argv[1], "-v") == 0) {
-	    cprintf(_("\1f\1rC\1yC\1bA\1pT\1a version 1.0 - based on YAWC cprintf()\n"), argv[0]);
-	    return 0;
-	}
-	if (strcmp(argv[1], "-h") == 0) {
-	    fprintf(stderr, _("Usage: %s [-v] [-h] file\n"), argv[0]);
-	    return 0;
-	}
-	if ((fp = fopen(argv[1], "r")) == NULL) {
-	    fprintf(stderr, "%s: %s: %s\n", argv[0], argv[1], strerror(errno));
-	    return 1;
-	}
-    }
-    while (fgets(buf, BUFSIZE, fp) != NULL) {
-	buf[strlen(buf) - 1] = '\0';
-	cprintf("%s\n", buf);
-	lines++;
-    }
 
-    if (CURRCOL != 'a' && CURRCOL != '\0') {
-	fprintf(stderr, _("[Warning: File ends in colour `%s'. Please fix this\n"), getcolour(CURRCOL));
+	if (optind == argc) {
+	    fp = stdin;
+	} else {
+	    if ((fp = fopen(argv[optind], "r")) == NULL) {
+		fprintf(stderr, "%s: %s: %s\n", progname, argv[optind], strerror(errno));
+		return 1;
+	    }
+	}
+	while (fgets(buf, BUFSIZE, fp) != NULL) {
+	    buf[strlen(buf) - 1] = '\0';
+	    cprintf("%s\n", buf);
+	    lines++;
+	}
+
+	if (CURRCOL != 'a' && CURRCOL != '\0') {
+	    fprintf(stderr, _("Warning: File ends in colour `%s'. Please fix this\n"), getcolour(CURRCOL));
+	    cprintf("\1a");
+	}
+/*    fprintf(stderr, _("[%s: %ld line%s]\n"), argv[optind], lines, (lines == 1) ? "" : "s"); */
+	fclose(fp);
+	return 0;
     }
-/*    fprintf(stderr, _("[%s: %ld line%s]\n"), argv[1], lines, (lines == 1) ? "" : "s"); */
-    fclose(fp);
-    return 0;
 
 }
 
@@ -256,25 +305,25 @@ skip_atoi(const char **s)
 }
 
 #define ZEROPAD 1		/*
-				 * * * * * * * * * pad with zero  
+				 * * * * * * * * * * * pad with zero  
 				 */
 #define SIGN    2		/*
-				 * * * * * * * * * unsigned/signed long  
+				 * * * * * * * * * * * unsigned/signed long  
 				 */
 #define PLUS    4		/*
-				 * * * * * * * * * show plus  
+				 * * * * * * * * * * * show plus  
 				 */
 #define SPACE   8		/*
-				 * * * * * * * * * space if plus  
+				 * * * * * * * * * * * space if plus  
 				 */
 #define LEFT    16		/*
-				 * * * * * * * * * left justified  
+				 * * * * * * * * * * * left justified  
 				 */
 #define SPECIAL 32		/*
-				 * * * * * * * * * 0x  
+				 * * * * * * * * * * * 0x  
 				 */
 #define LARGE   64		/*
-				 * * * * * * * * * use 'ABCDEF' instead of 'abcdef'  
+				 * * * * * * * * * * * use 'ABCDEF' instead of 'abcdef'  
 				 */
 
 #define do_div(n,base) ({ \
