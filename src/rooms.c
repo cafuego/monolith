@@ -1650,6 +1650,7 @@ low_traffic_quad_list(void)
     fprintf(mesg_fp, "\n%c", 0);
     fclose(mesg_fp);
 }
+
 void
 print_userlist_list(userlist_t * p)
 {
@@ -1676,6 +1677,26 @@ print_userlist_list(userlist_t * p)
     return;
 }
 
+void
+print_forumlist_list(forumlist_t *p)
+{
+    unsigned int j = 0;
+    char line[100], *q;
+
+    q = (char *) xmalloc(100 * 100);
+    strcpy(q, "");
+
+    sprintf(q, "\1g\1f");
+    while (p) {
+	sprintf(line, "\1w%3u.\1g%s\n", p->forum_id, p->name);
+	p = p->next;
+        strcat(q, line);
+    }
+
+    more_string(q);
+    xfree(q);
+    return;
+}
 
 int
 print_hosts_simple( unsigned int forum_id )
@@ -1830,7 +1851,6 @@ menu_hostedit_list(void)
     mono_sql_uf_list_hosts_by_forum(curr_rm, &p);
     print_userlist_list(p);
     dest_userlist(p);
-    return;
     return;
 }
 
