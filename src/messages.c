@@ -184,26 +184,26 @@ delete_message_wrapper(const unsigned int current_post, const int is_not_my_post
     if ((!is_not_my_post)
 	|| (is_ql(who_am_i(NULL), read_quad(curr_rm)))
 	|| (usersupp->priv >= PRIV_SYSOP)
-	|| (curr_rm == 1)) {
+	|| (curr_rm == MAIL_FORUM)) {
 
 	cprintf("\1f\1rDelete.\1a\n");
 	cprintf("\1f\1gAre you sure you want to delete this %s? \1w(\1gy\1w/\1gn\1w)\1a", config.message);
-	if (yesno() == TRUE) {
-	    if (is_not_my_post) {
-  	        if (curr_rm == MAIL_FORUM)
-		    tempint = message_delete(curr_rm, current_post);
-		else {
-		    i_deleted_your_post_haha_mail(current_post);
-		    tempint = message_move(curr_rm, GARBAGE_FORUM, current_post, "");
-		}
-	    } else
-	        tempint = message_move(curr_rm, GARBAGE_FORUM, current_post, "");
+	if (yesno() == FALSE) 
+	    return 0;
+	
+	if (curr_rm == MAIL_FORUM)
+	    tempint = message_delete(curr_rm, current_post);
+	else if (is_not_my_post) {
+	    i_deleted_your_post_haha_mail(current_post);
+	    tempint = message_move(curr_rm, GARBAGE_FORUM, current_post, "");
+	} else
+	    tempint = message_move(curr_rm, GARBAGE_FORUM, current_post, "");
 
-	    if (tempint == 0)
-		cprintf("\1f\1g%s deleted.\1a\n", config.message);
-	    else
-		cprintf("\1f\1rOops, %s could not be deleted.\1a\n", config.message);
-	}
+	if (tempint == 0)
+	    cprintf("\1f\1g%s deleted.\1a\n", config.message);
+	else
+	    cprintf("\1f\1rOops, %s could'nt be deleted.\1a\n", config.message);
+
     } else
 	cprintf("\1f\1rI'm sorry Dave, but I can't do that..\1a\n");
     return 0;
