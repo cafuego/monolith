@@ -30,6 +30,8 @@ CREATE TABLE user (
 
 # user customizable
    doing	VARCHAR(80),
+   awaymsg	VARCHAR(100) DEFAULT "",
+   xtrapflag	VARCHAR(100) DEFAULT "",
    picture	BLOB,
    profile	TEXT,
 
