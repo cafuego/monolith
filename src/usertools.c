@@ -116,7 +116,15 @@ profile_user(void)
 	sprintf(profile_default, "%s@%s", ruser, rbbs);
 	return;
     }
-    if (mono_sql_u_check_user(p_name) == TRUE) {
+    p_name[L_USERNAME-1] = '\0';	/* no overflow, please */
+
+    /*
+     * This fails horribly if a user has an entry in the database, but
+     * no userfile on disk. Using the old version instead.
+     *
+     * if (mono_sql_u_check_user(p_name) == TRUE) {
+     */
+    if (check_user(p_name) == TRUE) {
 	user = readuser(p_name);
 	print_user_stats(user, usersupp);
 	xfree(user);

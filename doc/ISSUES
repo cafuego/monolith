@@ -1,4 +1,6 @@
 "Issues" with the current code. 
 
+- Database usertable and file usertable are not synced, resulting in a segfault
+  when a user exists in database, but not in file.
 - myqsl is not detected by ./configure  -- FIXED
 - php/mod_php is not detected by ./configure
