@@ -1188,6 +1188,8 @@ _get_monoholic_flag(user_t *user)
         return "\1f\1w* \1pExalted High Monoholic \1w*";
     if(var < 10)
         return "\1f\1w* \1pSupreme High Monoholic \1w*";
+    if(var < 12)
+        return "\1f\1w* \1pSupreme High Exalted Monoholic \1w*";
 
     return "\1f\1w(* \1rPenultimate Monoholic \1w*)";
 
