@@ -115,12 +115,11 @@ read_all_users()
 	user = readuser(name);
 	if (user == NULL)
 	    continue;
-	if (EQ(user->username, "Sysop"))
-	    continue;
 
         fprintf(stdout, "Processing %s... ", user->username);
         fflush(stdout);
 
+        strcpy(work, "");
         sprintf(work, "%s/profile", getuserdir(user->username) );
         if( (profile = map_file( work )) == NULL) {
             fprintf(stdout, "Error: map_file(%s)\n", work);
@@ -135,6 +134,8 @@ read_all_users()
         }
         xfree(profile);
 	xfree(user);
+        fprintf(stdout, "ok.\n");
+        fflush(stdout);
 
 	i++;
 	printf("%-5u users left to read.\r", usercount - i);	/* users left to READ */
