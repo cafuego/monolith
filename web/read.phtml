@@ -1,0 +1,29 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html lang="en">
+<head>
+<?php
+    $ruser = getenv("REMOTE_USER");
+    PRINT "<title>Monolith BBS: Web Interface [Logged in as $ruser]</title>\n";
+?>
+<style>
+  p  	{ font: 12pt Helvetica; }
+  ul  	{ font: 12pt Helvetica; }
+  li  	{ font: 12pt Helvetica; }
+  a  	{ font: 12pt Helvetica; color: #FFFF00; text-decoration: underline; }
+  pre	{ font: 12pt Helvetica; }
+  font	{ font: 12pt Helvetica; }
+</style>
+</head>
+<body bgcolor="#000000" text="#FFFFFF" style="margin-left: 150; ">
+
+<?php
+
+    $username = getenv("REMOTE_USER");
+
+    require ("bbs.inc");
+    read_message($username, $quad, $message);
+  
+?>
+
+</body>
+</html>
