@@ -5,6 +5,8 @@
 #endif
 #include <build-defs.h>
 
+/* define SQL_CONFIGS */
+
 #define HAVE_FUN_C 1
 
 #include <ctype.h>

@@ -7,7 +7,7 @@ libshix_a_SOURCES = libshix.c regerror.c regexp.c regsub.c
 LDADD = $(MYSQL_LIB) -lmysqlclient
 #endif
 
-CFLAGS =-O3 -Wall -DBBSDIR=\"$(prefix)\"
+CFLAGS =-O3 -Wall
 
 INCLUDES += -I../include
 

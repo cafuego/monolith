@@ -136,6 +136,8 @@ read_all_users()
             fprintf(stdout, "Error: write_profile(%u, %X)\n", user->usernum, *profile);
             fflush(stdout);
         }
+        fprintf(stdout, "free() ");
+        fflush(stdout);
         xfree(profile);
 	xfree(user);
         fprintf(stdout, "ok.\n");

@@ -3,6 +3,7 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+#include <build-defs.h>
 
 /*
  * SHIX  -  Scan for Harassment and Intercept eXpress messages.
