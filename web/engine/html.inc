@@ -76,6 +76,9 @@ function html_check_priv($action, $username, $forum_id) {
     if( !($action) )
         return 1;
 
+    if ( gettype($forum_id) != integer )
+        return 1;
+
     // Make sure the query works.
     //
     if ( !($forum_id))

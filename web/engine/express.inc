@@ -10,6 +10,7 @@ function express_message($username, $recipient) {
     //
     print "<p>Checking user '$recipient' -&gt; ";
     $recipient = rawurldecode($recipient);
+    $recipient = strtr($recipient, "+", " ");
     print "'$recipient'.\n";
 
     // Check user priv.

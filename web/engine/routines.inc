@@ -98,9 +98,9 @@ function check_friend($username, $friend) {
     if ($number)
         $status = mysql_result($result,0,"status");
     else
-        return -2;
-    if( $status == "no" )
         return -3;
+    if( $status == "no" )
+        return -4;
 
     // Check status.
     //
