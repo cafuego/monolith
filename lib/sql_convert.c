@@ -111,13 +111,11 @@ mono_sql_convert_row_to_sr(MYSQL_ROW row)
 
     sscanf(row[0], "%u", &result->m_id);
     sscanf(row[1], "%u", &result->f_id);
-    sscanf(row[2], "%u", &result->t_id);
-    snprintf(result->forum, L_QUADNAME, "%s", row[3]);
-    snprintf(result->topic, L_TOPICNAME, "%s", row[4]);
-    snprintf(result->author, L_USERNAME, "%s", row[5]);
-    snprintf(result->alias, L_USERNAME, "%s", row[6]);
-    snprintf(result->subject, L_SUBJECT, "%s", row[7]);
-    snprintf(result->flag, L_FLAGNAME, "%s", row[8]);
+    snprintf(result->forum, L_QUADNAME, "%s", row[2]);
+    snprintf(result->author, L_USERNAME, "%s", row[3]);
+    snprintf(result->alias, L_USERNAME, "%s", row[4]);
+    snprintf(result->subject, L_SUBJECT, "%s", row[5]);
+    snprintf(result->flag, L_FLAGNAME, "%s", row[6]);
 
     return result;
 }
