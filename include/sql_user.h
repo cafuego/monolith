@@ -42,5 +42,14 @@ extern int mono_sql_u_get_post_count( unsigned int user_id, int *post_count );
 extern int mono_sql_u_update_login_count( unsigned int user_id, int login_count );
 extern int mono_sql_u_increase_login_count( unsigned int user_id );
 extern int mono_sql_u_get_login_count( unsigned int user_id, int *login_count );
+
+
+extern int mono_sql_u_update_awaymsg( unsigned int user_id, const char *awaymsg );
+extern int mono_sql_u_get_awaymsg( unsigned int user_id, char *awaymsg );
+extern int mono_sql_u_update_doing( unsigned int user_id, const char *doing );
+extern int mono_sql_u_get_doing( unsigned int user_id, char *doing );
+extern int mono_sql_u_update_xtrapflag( unsigned int user_id, const char *xtrapflag );
+extern int mono_sql_u_get_xtrapflag( unsigned int user_id, char *xtrapflag );
+
 #define U_TABLE	"user"
 /* eof */

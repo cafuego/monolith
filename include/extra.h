@@ -13,3 +13,6 @@
 #define L_REASON	10
 
 #define L_LANG 20 /* locale language length */
+#define L_LOCALE 20 
+
+#define L_AWAYMSG 100
