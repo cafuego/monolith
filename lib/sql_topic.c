@@ -82,6 +82,4 @@ mono_sql_kill_topic(int topic_id)
     return 0;
 }
 
-
-
 /* eof */
