@@ -30,6 +30,7 @@
 #include "registration.h"
 #include "routines.h"
 #include "sql_userforum.h"
+#include "sql_usertopic.h"
 #include "sql_user.h"
 #include "sql_useruser.h"
 

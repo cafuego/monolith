@@ -46,9 +46,6 @@ mono_sql_ut_update_lastseen( unsigned int user_id, unsigned int forum_id,
                 , message_id, topic_id, user_id, forum_id );
     mono_sql_u_free_result(res);
 
-    if (ret != 0) {
-	return -1;
-    }
     return ret;
 }
 

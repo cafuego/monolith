@@ -41,12 +41,10 @@ mono_sql_uf_unread_room(unsigned int usernum)
     ret = mono_sql_query(&res, "SELECT forum_id FROM %s,%s WHERE %s.user_id=%u AND %s.id=%s.forum_id AND %s.lastseen < %s.highest",
       F_TABLE, UF_TABLE, UF_TABLE, usernum, F_TABLE, UF_TABLE, UF_TABLE, F_TABLE );
 
-    /*
-     * No unread messages...
-     */
+    if ( ret == -1 ) return -1;
+
     if (mysql_num_rows(res) == 0) {
-        (void) mono_sql_u_free_result(res);
-        return 0;
+        return -1;
     }
 
     row = mysql_fetch_row(res);
@@ -65,11 +63,17 @@ mono_sql_uf_update_lastseen(unsigned int usernum, unsigned int forum)
 
     ret = mono_sql_query( &res, "SELECT highest FROM %s WHERE id=%u", F_TABLE, forum);
     if(ret == -1) {
-        (void) mono_sql_u_free_result(res);
+        return -1;
+    }
+
+    if (mysql_num_rows(res) == 0) {
         return -1;
     }
 
     row = mysql_fetch_row(res);
+
+
+
     sscanf( row[0], "%u", &lastseen);
     (void) mono_sql_u_free_result(res);
 
