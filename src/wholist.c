@@ -180,7 +180,7 @@ wholist(int level, const user_t * user)
 		    else if (r->flags & B_INFOUPDATED)
 			strcat(q, "\1gi");
 		    else if (silc)
-			strcat(q, "\1r.");
+			strcat(q, "\1w.");
 		    else
 			strcat(q, " ");
 
