@@ -9,5 +9,7 @@
 #define L_SUBJECT  50
 #define NO_OF_QLS  5
 #define L_BBSNAME  15  /* interbbs stuff */
+#define L_FLAGNAME	10
+#define L_REASON	10
 
 #define QUADDIR BBSDIR "save/quads/"
