@@ -166,7 +166,8 @@ function format_subject($subject) {
 function do_logout($username) {
 
     print "<h3 align=\"center\">$username was logged out</h3>\n";
-    print "<h3 align=\"center\">In 5 seconds you will be taken to Monoliths main page.</h3>\n";
+    print "<h3 align=\"center\">In 10 seconds you will be taken to Monoliths main page.</h3>\n";
+    print "<h3 align=\"center\"><a href=\"/bbs/\">Log back in</a></h3>\n";
 
 }
 

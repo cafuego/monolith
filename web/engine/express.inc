@@ -11,6 +11,13 @@ function express_message($username, $recipient) {
     $recipient = rawurldecode($recipient);
     $recipient = strtr($recipient, "+", " ");
 
+    // Guests aren't allowed to X.
+    //
+    if( $username == "Guest" ) {
+        print "<h3 align=\"center\">Guests are not allowed to send eXpress messages.</h3>\n";
+        return;
+    }
+
     // Check user priv.
     //
     switch(check_friend($username,$recipient)) {
@@ -35,6 +42,7 @@ function express_message($username, $recipient) {
     }
 
     print "<h3 align=\"center\">Sending an eXpress message to $recipient</h3>\n";
+    print "<h3 align=\"center\">.. but not quite yet. We're working on it, though.</h3>\n";
 
 }
 

@@ -46,10 +46,12 @@ function show_wholist($username) {
             $interface = mysql_result($result,$i,"interface");
             $doing = mysql_result($result,$i,"doing");
             $online = mysql_result($result,$i,"online");
+            $url_user = rawurlencode($user);
+            $url_user = strtr($url_user, " ", "+");
 
             print "<tr>\n";
             print "  <td align=\"left\">\n";
-            print "    <p align=\"left\"><font color=\"#00cc00\">$user</font>\n";
+            print "    <p align=\"left\"><a href=\"/bbs/index.phtml/x/$url_user/\">$user</a>\n";
             print "  </td>\n";
             print "  <td align=\"left\">\n";
             print "    <p align=\"left\"><font color=\"#00cc00\">$doing</font>\n";

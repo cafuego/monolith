@@ -57,6 +57,7 @@ function html_print_title($username, $location) {
             print "<meta http-equiv=\"Refresh\" content=\"30; url=http://monolith.yawc.net/bbs/index.phtml/w/\">\n";
             break;
         case "x":
+            $quad = rawurldecode($quad);
             print "<title>$username@Monolith BBS: Sending eXpress message to $quad</title>\n";
             break;
         default:
