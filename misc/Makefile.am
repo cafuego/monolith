@@ -12,6 +12,6 @@ ubl_SOURCES = ubl.c
 fsql_SOURCES = fsql.c
 initgoto_SOURCES = initgoto.c
 
-LDADD = -L../lib -lyawc -L/usr/local/mysql/lib 
+LDADD = -L../lib -lyawc -L/usr/local/mysql/lib  -lintl
 
 CFLAGS = -I/usr/local/include/mysql -O3 -Wall
