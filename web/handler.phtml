@@ -133,9 +133,19 @@
 
             connect_db();
             $result = mysql_query("UPDATE user SET hiddeninfo='$hiddeninfo' WHERE username='$username'");
-            if($result) echo "<h2 align=\"center\">1: ". mysql_error() ."</h2>\n";
+            if(!$result)
+                errorimage( "Info update: ". mysql_error() );
+            else
+                addimage("Hidden info configuration successfully saved.");
+
             $result = mysql_query("UPDATE user SET url='$website' WHERE username='$username'");
-            if($result) echo "<h2 align=\"center\">2: ". mysql_error() ."</h2>\n";
+            if(!$result)
+                errorimage( "Webpage update: ". mysql_error() );
+            else
+                addimage("Web page successfully saved.");
+
+            addbutton("Go back", "/bbs/index.phtml/c", "Go back to account configuration.");
+
             break;
 
         // Save profile image.
