@@ -34,8 +34,9 @@
 #define OR_ENABLE_FORCE 'E' /* used to override enemylists by >= sys_analysts */
 #define OR_NO_PERMS     'D' /* no permissions to send x */
 
-#define IS_BROADCAST   (strchr( "IBZvbJKHLlkCN" , override ))
-#define QUEUED         (!strchr( "IZ", override ))
+#define IS_WEB		(override == 'W')
+#define IS_BROADCAST	(strchr( "IBZvbJKHLlkCN" , override ))
+#define QUEUED		(!strchr( "IZ", override ))
 
 #define OR_NORMAL       ' ' /* sendx() express() ping() */
 #define OR_FREE         255 /* sendx() catchx() setup_express() */

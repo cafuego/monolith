@@ -44,6 +44,7 @@
 #include "usertools.h"
 
 #include "sql_online.h"
+#include "sql_web.h"
 
 char x_default[L_USERNAME + L_BBSNAME + 2];
 char chat_default[L_USERNAME + 1];
@@ -85,9 +86,10 @@ void
 sendx(char *to, const char *send_string, char override)
 {
 
-    x_str *Sendxs, xmessage;
+    x_str *Sendxs = NULL, xmessage;
     int channel = -1, i, timeout;
     btmp_t *tuser = NULL, *p;
+    unsigned int to_id = 0;
 
     nox = 1;
     /* important: read the btmp structure as soon as possible, because the
@@ -96,7 +98,13 @@ sendx(char *to, const char *send_string, char override)
 /* who to send it to */
     if (IS_BROADCAST)
 	Sendxs = &(shm->broadcast);
-    else {
+    else if (IS_WEB) {
+        (void) mono_sql_u_name2id(to, &to_id);
+        if (mono_sql_web_send_x(usersupp->usernum, to_id, send_string))
+	    cprintf("\1f\1gSuccessfully saved \1pWeb\1g %s %s for \1y%s.\1a\n", config.express, config.x_message, to);
+        else
+	    cprintf("\1f\1rUnable to save \1pWeb\1g %s %s for \1y%s to database.\1a\n", config.express, config.x_message, to);
+    } else {
 	Sendxs = mono_find_xslot(to);
 	tuser = mono_read_btmp(to);
 	if (Sendxs == NULL || tuser == NULL) {
@@ -123,7 +131,7 @@ sendx(char *to, const char *send_string, char override)
     xmessage.ack = NO_ACK;
     if (tuser != NULL)
 	strcpy(xmessage.recipient, tuser->username);
-    else if (override == OR_CHAT)
+    else if (override == OR_CHAT || IS_WEB)
 	strcpy(xmessage.recipient, to);
     else
 	strcpy(xmessage.recipient, "Everyone");
@@ -131,6 +139,11 @@ sendx(char *to, const char *send_string, char override)
     strcpy(xmessage.sender, usersupp->username);
     strcpy(xmessage.message, send_string);
     time(&xmessage.time);
+
+    if(IS_WEB) {
+        add_x_to_personal_xlog(SENDX, &xmessage, override);
+        return;
+    }
 
 /* wait until memory is not locked */
     if ((Sendxs->override != OR_FREE) && (!IS_BROADCAST))
