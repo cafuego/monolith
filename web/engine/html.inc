@@ -192,39 +192,36 @@ function html_check_priv($action, $username, $forum_id) {
 
 function html_print_foot($username, $starttime) {
 
-    $currtime = strftime("%B %d %Y, %H:%M %Z", time());
     $endtime = microtime();
 
     $start = explode( " ", $starttime);
     $end = explode( " ", $endtime);
 
-    $elapsed = ($end[0]-$start[0])+($end[1]-$start[1]);
+    echo "<hr size=\"1\" width=\"400\" align=\"center\">\n";
+    echo "<p class=\"footer\">\n";
+    echo "  <a href=\"/bbs/index.phtml/\">Main</a> |\n";
+    echo "  <a href=\"/bbs/index.phtml/w\">Wholist</a> |\n";
+    echo "  <a href=\"/bbs/index.phtml/l\">Quadrants</a> |\n";
+    echo "  <a href=\"/bbs/index.phtml/q\">Log out $username</a>\n";
+    echo "<hr size=\"1\" width=\"400\" align=\"center\">\n";
 
-    print "<hr size=\"1\" width=\"400\" align=\"center\">\n";
-    print "<p class=\"footer\">\n";
-    print "  <a href=\"/bbs/index.phtml/\">Main</a> |\n";
-    print "  <a href=\"/bbs/index.phtml/w\">Wholist</a> |\n";
-    print "  <a href=\"/bbs/index.phtml/l\">Quadrants</a> |\n";
-    print "  <a href=\"/bbs/index.phtml/q\">Log out $username</a>\n";
-    print "<hr size=\"1\" width=\"400\" align=\"center\">\n";
-
-    print "<table border=\"0\" cellspacing=\"3\" align=\"center\">\n";
-    print "<tr>\n";
-    print "  <td colspan=\"2\">\n";
-    print "    <p class=\"footer\">All messages posted to Monolith BBS are copyrighted to their authors, unless stated otherwise.</p>\n";
-    print "  </td>\n";
-    print "</tr>\n";
-    print "<tr>\n";
-    print "  <td>\n";
-    print "    <p class=\"footer\" style=\"text-align: right;\">&copy; The Monolith Community 1999 - Generated: $currtime in ";
-    printf ("%.3f", $elapsed);
-    print " seconds.<br>\n    Send email to <a class=\"red\" href=\"mailto:webmaster@monolith.yawc.net\">webmaster@monolith.yawc.net</a> for suggestions and comments.</p>\n";
-    print "  </td>\n";
-    print "  <td>\n";
-    print "    <img align=\"left\" src=\"/bbs/pix/logo.jpg\" height=\"32\" width=\"32\" alt=\"Logo\">\n";
-    print "  </td>\n";
-    print "</tr>\n";
-    print "</table>\n";
+    echo "<table border=\"0\" cellspacing=\"3\" align=\"center\">\n";
+    echo "<tr>\n";
+    echo "  <td colspan=\"2\">\n";
+    echo "    <p class=\"footer\">All messages posted to Monolith BBS are copyrighted to their authors, unless stated otherwise.</p>\n";
+    echo "  </td>\n";
+    echo "</tr>\n";
+    echo "<tr>\n";
+    echo "  <td>\n";
+    echo "    <p class=\"footer\" style=\"text-align: right;\">&copy; The Monolith Community 1999 -\n";
+    echo "      Generated: ". gmdate("l, d F Y H:i:s", time()) ." GMT\" in ". printf("%.2f", $elapsed) ." seconds.<br>\n";
+    echo "      Send email to <a class=\"red\" href=\"mailto:webmaster@monolith.yawc.net\">webmaster@monolith.yawc.net</a> for suggestions and comments.</p>\n";
+    echo "  </td>\n";
+    echo "  <td>\n";
+    echo "    <img align=\"left\" src=\"/bbs/pix/logo.jpg\" height=\"32\" width=\"32\" alt=\"Logo\">\n";
+    echo "  </td>\n";
+    echo "</tr>\n";
+    echo "</table>\n";
 
 }
 
