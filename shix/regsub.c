@@ -74,7 +74,7 @@ regsub(prog, source, dest)
 	    *dst++ = c;
 	} else if (prog->startp[no] != NULL && prog->endp[no] != NULL) {
 	    len = prog->endp[no] - prog->startp[no];
-	    (void) strncpy(dst, prog->startp[no], len);
+	    (void) strncpy(dst, prog->startp[no], (unsigned) len);
 	    dst += len;
 	    if (len != 0 && *(dst - 1) == '\0') {	/* strncpy hit NUL. */
 		regerror("damaged match string");
