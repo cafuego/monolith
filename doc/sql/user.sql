@@ -10,7 +10,7 @@ CREATE TABLE user (
 
    id		INT UNSIGNED NOT NULL AUTO_INCREMENT,
    username	VARCHAR(20) NOT NULL,
-   password	VARCHAR(20),
+   password	VARCHAR(13),
 
 # registration information
    name		VARCHAR(80),
