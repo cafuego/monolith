@@ -945,7 +945,7 @@ regmatch(prog)
 		reginput++;
 		break;
 	    case EXACTLY:{
-		    register int len;
+		    register unsigned int len;
 		    register char *opnd;
 
 		    opnd = OPERAND(scan);

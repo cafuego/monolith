@@ -4,10 +4,21 @@
 #include <config.h>
 #endif
 
-#ifndef NO_STDLIB_H
-#include <stdlib.h>
+#ifdef HAVE_MYSQL_H
+  #undef HAVE_MYSQL_MYSQL_H
+  #include <mysql.h>
+  char *getenv();
 #else
-char *getenv();
+  #ifdef HAVE_MYSQL_MYSQL_H
+    #undef HAVE_MYSQL_H
+    #include <mysql/mysql.h>
+  #else
+    #ifndef NO_STDLIB_H
+      #include <stdlib.h>
+    #else
+      char *getenv();
+    #endif
+  #endif
 #endif
 
 #include <fcntl.h>
@@ -18,7 +29,6 @@ char *getenv();
 #include <time.h>
 #include <unistd.h>
 
-#include <mysql.h>
 
 #include "monolith.h"
 #include "libmono.h"

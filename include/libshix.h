@@ -16,7 +16,7 @@ typedef struct regexp {
 	char regstart;		/* Internal use only. */
 	char reganch;		/* Internal use only. */
 	char *regmust;		/* Internal use only. */
-	int regmlen;		/* Internal use only. */
+	unsigned int regmlen;		/* Internal use only. */
 	char program[1];	/* Unwarranted chumminess with compiler. */
 } regexp;
 

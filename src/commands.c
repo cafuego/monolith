@@ -110,7 +110,11 @@ main_menu()
 
 	are_there_held_xs();	/* HERE! in main menu, mark as not busy */
 	which_room("");
+#ifdef SUPERHERO
 	cmd = get_single_quiet("~aAbBcCdefEFGHiIjJkKlLMNOPQqrRsSTUvVwWxXYZ0123456789!<>-_+:#.,*\"@`$&a([]% /?\005\006\011\014\016\022\030\'");
+#else
+	cmd = get_single_quiet("~aAbBcCdefEFGHiIjJkKlLMNOPQqrRsSTUvVwWxXYZ0123456789!<>-_+:#.,*\"@$&a([]% /?\005\006\011\014\016\022\030\'");
+#endif
 
 	cmd = validate_read_command(cmd);	/* priv check */
 
@@ -501,11 +505,13 @@ main_menu()
 		cprintf("\n");
 		break;
 
+#ifdef SUPERHERO
 	    case '`':
 		cprintf("\1a\1f\1gGenerate Superhero.\1a\1n");
 		crap(3, "", 0);
 		cprintf("\n");
 		break;
+#endif
 
 	    case '\'':
 		nox = 1;

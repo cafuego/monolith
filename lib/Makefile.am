@@ -9,12 +9,10 @@ libyawc_a_SOURCES = btmp.c libcache.c libdexi.c libfriends.c libquad.c libuid.c 
 LDADD = -L/usr/local/mysql/lib -lmysqlclient
 CFLAGS += -pedantic -pedantic-errors -w -W \
   -Wall -Waggregate-return -Wcast-align -Wcast-qual \
-  -Wcomment -Wconversion \
-  -Werror -Wformat \
-  -Wimplicit -Wimplicit-int \
-  -Wimplicit-function-declaration -Winline \
-  -Wmissing-prototypes \
-  -Wmissing-declarations -Wnested-externs -Wno-import \
-  -Wparentheses -Wpointer-arith -Wredundant-decls \
-  -Wreturn-type -Wshadow -Wstrict-prototypes -Wswitch
+  -Wcomment -Wconversion -Werror -Wformat -Wimplicit \
+  -Wimplicit-int -Wimplicit-function-declaration -Winline \
+  -Wmissing-prototypes -Wmissing-declarations \
+  -Wnested-externs -Wno-import -Wparentheses -Wpointer-arith \
+  -Wredundant-decls -Wreturn-type -Wshadow -Wstrict-prototypes \
+  -Wswitch
 

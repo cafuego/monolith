@@ -336,11 +336,11 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
 #endif
     {
 
-    if ( p != NULL ) {
-    cprintf("\1c\1f%s in: \1g\n", config.roomaide );
-    print_forumlist_list(p);
-    dest_forumlist(p);
-    }
+        if ( p != NULL ) {
+            cprintf("\1c\1f%s in: \1g\n", config.roomaide );
+            print_forumlist_list(p);
+            dest_forumlist(p);
+        }
     }
 
 /*    IFSYSOP mono_sql_uf_list_hosts_by_user( user->usernum ); */

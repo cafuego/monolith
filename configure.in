@@ -7,10 +7,16 @@ AM_INIT_AUTOMAKE(monolith, 1.0)
 AM_CONFIG_HEADER(include/config.h)
 AC_PREFIX_DEFAULT(/usr/bbs)
 
-AC_ARG_WITH(mysql, [  --with-mysql            use mysql database system [default=yes]
+AC_ARG_WITH(hero, [  --with-hero             include superhero toy  [default=yes]
+                          (requires silly sysops)],,with_hero=yes)
+AC_ARG_WITH(mysql, [  --with-mysql            use mysql database system  [default=yes]
                           (requires mysql to be installed)],,with_mysql=yes)
+
 if test "x$with_mysql" != "xyes"; then
   with_mysql=no
+fi
+if test "x$with_hero" != "xyes"; then
+  with_hero=no
 fi
 
 umask 002
@@ -97,5 +103,15 @@ if test "x$with_mysql" = "xyes" ; then
   AC_DEFINE(USE_MYSQL)
   echo
 fi
+
+dnl Use superhero generator?
+echo -n "Probing superhero powers..."
+if test "x$with_hero" = "xyes"; then
+  AC_DEFINE(SUPERHERO)
+  echo " found in /dev/he-man."
+else
+  echo " need more spinach (sorry)."
+fi
+echo
 
 AC_OUTPUT(cgi/Makefile lib/Makefile daemons/Makefile src/Makefile misc/Makefile shix/Makefile share/Makefile share/feelings/Makefile share/loginscreens/Makefile Makefile)
