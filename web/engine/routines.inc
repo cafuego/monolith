@@ -183,7 +183,7 @@ function do_logout($username) {
 
     errorimage( "$username was logged out" );
     errorimage( "You will be taken to our main page in 10 seconds");
-    print "<h3 align=\"center\"><a href=\"/bbs/\">Log back in</a></h3>\n";
+    addbutton( "Log back in as $username", "/bbs/");
 
 }
 
