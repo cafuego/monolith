@@ -13,9 +13,6 @@ function show_wholist($username) {
         case -1:
             print "<h3 align=\"center\">You are not currently logged in. Log in first.</h3>\n";
             return;
-        case 0:
-            print "<h3 align=\"center\">You do not have the privileges to view this quadrant.</h3>\n";
-            return;
         default:
             break;
     }
@@ -51,7 +48,10 @@ function show_wholist($username) {
 
             print "<tr>\n";
             print "  <td align=\"left\">\n";
-            print "    <p align=\"left\"><a href=\"/bbs/index.phtml/x/$url_user/\">$user</a>\n";
+            if($interface == "web" ) {
+                print "    <p align=\"left\"><a href=\"/bbs/index.phtml/x/$url_user/\">$user</a>\n";
+            else
+                print "    <p align=\"left\"><font color=\"#ffff00\">$user</font>\n";
             print "  </td>\n";
             print "  <td align=\"left\">\n";
             print "    <p align=\"left\"><font color=\"#00cc00\">$doing</font>\n";
