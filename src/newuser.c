@@ -304,8 +304,10 @@ newuser_registration(user_t * user)
     if (strlen(p) < 5) {
 	strcpy(user->RGurl, "");
 	cprintf("\1gURL left blank.\n");
-    } else
+    } else {
+        strremcol( p );
 	sprintf(user->RGurl, "\1whttp://%s", p);
+    }
 
     cprintf("\n\1f\1gYou have entered the following information:\n\n");
     dis_regis(user, TRUE);

@@ -256,7 +256,7 @@ sysoproom_menu()
 	    cprintf("\1f\1w(\1rRoom Options\1w)\1a\n");
 	    more(MENUDIR "/menu_room", 1);
 	    display_short_prompt();
-	    cprintf("\1f\1pAdmin cmd: \1rRoom cmd: \1a");
+	    cprintf("\1f\1pAdmin cmd: \1r%s cmd: \1a", config.forum );
 	}
 
 	cmd = get_single_quiet("CDEHiILkKNPTWZQG\r\b ?");
@@ -353,11 +353,11 @@ sysoproom_menu()
 		break;
 
 	    default:
-		back(14);
+		back( 6 + strlen( config.forum ) );
 		return;
 	}
 	display_short_prompt();
-	cprintf("\1f\1wAdmin cmd: \1rQuadrant cmd: \1a");
+	cprintf("\1f\1wAdmin cmd: \1r%s cmd: \1a", config.forum );
     }
     return;
 }
@@ -445,7 +445,7 @@ sysopuser_menu()
 		break;
 
 	    default:
-		back(11);
+		back(10);
 		return;
 	}
 
