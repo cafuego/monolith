@@ -276,30 +276,29 @@ mono_sql_u_update_registration( unsigned int user_id,
 		const char *name,
 		const char *address,
 		const char *zip,
+		const char *city,
 		const char *state,
-		const char *country
+		const char *country,
+		const char *phone
 ) {
 
     int i;
     MYSQL_RES *res;
 
     i = mono_sql_query(&res, "UPDATE " U_TABLE 
-                " set name='%s', "
-		"   address='%s', "
-		"   zip='%s', "
-		"   state='%s', "
-		"   country='%s', "
-		"   phone='%s'"
-		" WHERE id=%u", name, address, zip, state, country, user_id );
+        " set name='%s', "
+	" address='%s', "
+	" zip='%s', "
+	" city='%s', "
+	" state='%s', "
+	" country='%s', "
+	" phone='%s'"
+	" WHERE id=%u", name, address, zip, city, state, country, phone, user_id );
 
     if (i == -1) {
 	fprintf(stderr, "No results from query.\n");
         return -1;
     }   
-
-    if (mysql_num_rows(res) != 1) {
-	return -1;
-    }
 
     mono_sql_u_free_result(res);
     return 0;
