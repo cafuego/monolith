@@ -838,7 +838,7 @@ long_prompt(long number, int direction)
 
 		case 'S':
                     cprintf("\1f\1wSearch %s\n", config.message_pl);
-                    search_via_sql()
+                    search_via_sql();
 		    break;
 
 		case 's':
