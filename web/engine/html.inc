@@ -232,7 +232,7 @@ function html_are_there_xs($username) {
     MYSQL_CONNECT("localhost", "root", "")  OR DIE("Unable to connect to SQL server");
     @mysql_select_db("bbs") or die( "Unable to select database");
     $result = MYSQL_QUERY("SELECT w.id AS id,u.username AS user,w.sender AS sender,w.i_sender AS i_sender,w.recipient AS recipient,w.message AS message,DATE_FORMAT(w.date, '%H:%i') AS date FROM webx AS w LEFT JOIN user AS u ON u.id=w.sender WHERE w.recipient=$user_id AND w.status='unread' AND w.i_recipient='web' ORDER BY w.date ASC");
-    $return MYSQL_NUMROWS($result);
+    return MYSQL_NUMROWS($result);
 
 }
 
