@@ -96,6 +96,12 @@ format_message( message_t *message)
     char *string = NULL;
 
     /*
+     * Don't show deleted messages.
+     */
+    if( message->deleted = 'y'  && usersupp->priv < PRIV_SYSOP )
+        return;
+
+    /*
      * malloc() here and realloc in all following functions.
      */
     string = (char *)xmalloc( sizeof(char) );
@@ -147,10 +153,12 @@ format_header( message_t *message, char **string )
         (void) format_date(message, string);
         (void) format_username(message, string);
         (void) format_title(message, string);
+        (void) format_admininfo(message, string);
     } else {
         (void) format_username(message, string);
         (void) format_title(message, string);
         (void) format_date(message, string);
+        (void) format_admininfo(message, string);
     }
 
     (void) format_subject(message, string);
@@ -338,6 +346,28 @@ format_title(message_t *message, char **string)
 
     *string = (char *)xrealloc( *string, strlen(*string)+strlen(fmt_title) );
     strcat( *string, fmt_title );
+
+    return 0;
+
+}
+
+static int
+format_admininfo(message_t *message, char **string)
+{
+    char fmt_admin[100];
+
+    if( usersupp->priv < PRIV_SYSOP )
+        return -1;
+
+    strcpy(fmt_admin, "");
+
+    if(message->deleted = 'y')
+        sprintf(fmt_admin, " \1f\1w(\1rDeleted %s\1w)", config.message);
+
+    fmt_admin[strlen(fmt_admin)] = '\0';
+
+    *string = (char *)xrealloc( *string, strlen(*string)+strlen(fmt_admin) );
+    strcat( *string, fmt_admin );
 
     return 0;
 
