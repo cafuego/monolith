@@ -202,7 +202,7 @@ enter_passwd(const char *username)
     static int failures;
     user_t *user = NULL;
 
-    if (!(check_user(username))) {
+    if (!(mono_sql_u_check_user(username))) {
         cprintf(_("No such user.\n"));
 	log_it("badpw", "Login as %s from %s, but user does not exist", username, hname);
         return FALSE;
