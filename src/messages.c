@@ -97,16 +97,17 @@ newbie_mark_as_read(int number_to_leave_unread)
 }
 
 void
-reset_lastseen_message(void)
+reset_lastseen_message()
 {
-    room_t frog;
-
     cprintf("\1f\n\1y%s \1g#%d, Lastseen %s %ld.\n", config.forum, curr_rm,
 	    config.message, usersupp->lastseen[curr_rm]);
     cprintf("\1gDo you want to reset this value? ");
 
     if (yesno() == YES) {
-	frog = read_quad(curr_rm);
+        room_t frog;
+
+        read_forum( curr_rm, &frog );
+
 	if (frog.highest < frog.maxmsg)
 	    usersupp->lastseen[curr_rm] = 0;
 	else
@@ -124,7 +125,7 @@ copy_message_wrapper(const unsigned int current_post, const int is_not_my_post, 
     char tempstr[100], to_name[L_USERNAME + 1];
     room_t scratch;
 
-    scratch = read_quad(curr_rm);
+    read_forum( curr_rm, &scratch );
 
     if (!copy && !(!is_not_my_post
 		   || is_ql(who_am_i(NULL), scratch)
@@ -141,7 +142,7 @@ copy_message_wrapper(const unsigned int current_post, const int is_not_my_post, 
 	    cprintf("\1f\1rNo such %s.\1a\n", config.forum);
 	return -1;
     }
-    scratch = read_quad(to_quad);
+    read_forum( to_quad, &scratch );
 
     if (usersupp->priv >= PRIV_SYSOP) {
 	if (to_quad == YELL_FORUM) {
@@ -216,7 +217,7 @@ delete_message_wrapper(const unsigned int current_post, const int is_not_my_post
     int tempint;
 
     if ((!is_not_my_post)
-	|| (is_ql(who_am_i(NULL), read_quad(curr_rm)))
+	|| (is_ql(who_am_i(NULL), readquad(curr_rm)))
 	|| (usersupp->priv >= PRIV_SYSOP)
 	|| (curr_rm == MAIL_FORUM)) {
 
@@ -250,7 +251,7 @@ lookup_anon_author(const unsigned int current_post)
     room_t scratch;
     message_header_t message;
 
-    scratch = read_quad(curr_rm);
+    read_forum( curr_rm, &scratch );
 
     if ((usersupp->priv >= PRIV_SYSOP)
 	|| is_ql(who_am_i(NULL), scratch)) {
@@ -259,7 +260,7 @@ lookup_anon_author(const unsigned int current_post)
 	read_message_header(filename, &message);
 
 	if (message.banner_type & ANON_BANNER) {
-	    scratch = read_quad(curr_rm);
+	    /* scratch = read_quad(curr_rm);  michel commented out. */
 	    cprintf("\n\1f\1w[ \1gPost was by\1w: \1y%s\1w ]\1a\n", message.author);
 	    log_sysop_action("looked at anonymous post #%d by %s in %s>",
 			     current_post, message.author, scratch.name);

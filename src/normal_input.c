@@ -138,7 +138,7 @@ get_name(int quit_priv)
 	    } else if (c == 9 && quit_priv == 3) {
 		/* TAB-feature with roomname */
 		for (; a < MAXQUADS; a++) {
-		    qkr = read_quad(a);
+                    read_forum( a, &qkr );
 		    if ((qkr.flags & QR_INUSE)
 			&& strncmp(pbuf, qkr.name, pblen) == 0
 			&& i_may_read_forum(a)

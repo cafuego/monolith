@@ -69,7 +69,7 @@ enter_message(unsigned int forum, int mode, unsigned long banner_flag, const cha
     nox = TRUE;
     reply = (mode == REPLY_MODE) ? 1 : 0;
 
-    quad = read_quad(forum);
+    read_forum( forum, &quad );
 
     /* priv checking */
     if ((quad.flags & QR_READONLY) && (usersupp->priv < PRIV_SYSOP)) {
@@ -623,7 +623,7 @@ change_forum_info(void)
 	    enter_message(curr_rm, EDIT_CTRLD, INFO_BANNER, NULL);
     }
 
-    quad = read_quad(curr_rm);
+    read_forum( curr_rm, &quad );
     quad.roominfo++;
     quad.flags |= QR_DESCRIBED;	/* set the flag */
     write_quad(quad, curr_rm);
@@ -662,7 +662,7 @@ quad_lizard(message_header_t * header)
     fp2 = xfopen(tmpname, "w", TRUE);
 
     for (i = 20; i < MAXQUADS; i++) {
-	quad = read_quad(i);
+        read_forum( i, &quad );
 	if (!((quad.flags & QR_INUSE) && (quad.highest)))
 	    continue;
 
@@ -796,7 +796,7 @@ i_deleted_your_post_haha_mail(const unsigned int current_post)
 	cprintf("\1gEnter text.  Deleted message will be appended to reason.\n\n\1a\1c");
 	get_content(EDIT_NORMAL);
     }
-    quad = read_quad(curr_rm);
+    read_forum( curr_rm, &quad );
     fp = xfopen(temp, "a", TRUE);
 
     if (fp != NULL) {

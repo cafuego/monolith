@@ -282,7 +282,7 @@ short_prompt(void)
 
 	    case 'N':		/* second parm of no_new_posts_here is direction, which is   */
 	    case 32:		/* understood to be forward in main menu, although undefined */
-		if (no_new_posts_here(read_quad(curr_rm).highest, 1, usersupp->lastseen[curr_rm])) {
+		if (no_new_posts_here(readquad(curr_rm).highest, 1, usersupp->lastseen[curr_rm])) {
 		    if (cmdflags & C_ROOMLOCK)
 			random_goto();
 		    else {
@@ -976,9 +976,9 @@ get_read_start_number(const long read_number, const int read_direction)
     long start_at;
     room_t scratch;
 
-    scratch = read_quad(curr_rm);
+    read_forum( curr_rm, &scratch );
 
-    /* mail uses the userfile, NOT he quickroom */
+    /* mail uses the userfile, NOT the quickroom */
     if (curr_rm == 1) {
 	if (usersupp->lastseen[curr_rm] <= usersupp->mailnum)
 	    start_at = usersupp->lastseen[curr_rm] + 1;
@@ -1027,7 +1027,7 @@ numeric_read(const long current_post)
     if (curr_rm == MAIL_FORUM)
 	highest_id = usersupp->mailnum;
     else {
-	quad = read_quad(curr_rm);
+        read_forum( curr_rm, &quad );
 	highest_id = quad.highest;
 	lowest_id = quad.lowest;
     }
@@ -1050,7 +1050,7 @@ set_read_bounds(long *lower_bound, long *upper_bound)
 {
     room_t quad;
 
-    quad = read_quad(curr_rm);
+    read_forum( curr_rm, &quad );
     if (curr_rm == MAIL_FORUM) {
 	*lower_bound = 0;
 	*upper_bound = usersupp->mailnum;
@@ -1147,7 +1147,7 @@ display_short_prompt(void)
     static int last_prompt_forum = -1;
 
     if (curr_rm != last_prompt_forum) {
-	quad = read_quad(curr_rm);
+        read_forum( curr_rm, &quad );
 	last_prompt_forum = curr_rm;
     }
     if (curr_rm == MAIL_FORUM) {

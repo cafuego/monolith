@@ -68,7 +68,7 @@ display_message(unsigned int forum, unsigned int num, const unsigned int mode)
     int m_exists;
     room_t quad;
 
-    quad = read_quad(forum);
+    read_forum( forum, &quad );
 
     header = (message_header_t *) xmalloc(sizeof(message_header_t));
     header_string = (char *) xmalloc(sizeof(char) * 2);
@@ -306,7 +306,7 @@ format_info(message_header_t * header, char *header_string)
     header_string = format_date(header, header_string);
     header_string = format_author(header, header_string);
 
-    quad = read_quad(header->f_id);
+    read_forum( header->f_id, &quad );
 
     if (quad.flags & QR_PRIVATE)
 	c = 'r';
@@ -703,7 +703,8 @@ show_long_prompt(const unsigned int forum, const unsigned int num, const int dir
     room_t quad;
     int high, low;
 
-    quad = read_quad(forum);
+    read_forum( forum, &quad );
+
     high = (forum == MAIL_FORUM) ? usersupp->mailnum : quad.highest;
     low = (forum == MAIL_FORUM) ? 1 : quad.lowest;
 

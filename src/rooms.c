@@ -76,10 +76,10 @@ static char *fish[] =
 /* WARNING! this is similar to read_quad() but not the same. This also
  * takes care of mail stuff */
 room_t
-readquad(int num)
+readquad( unsigned int num)
 {
     room_t scratch;
-    scratch = read_quad(num);
+    read_forum( num, &scratch );
     if (num == 1) {
 	scratch.highest = usersupp->mailnum;
 	scratch.lowest = 0;
@@ -93,7 +93,7 @@ i_may_read_forum(const unsigned int forum)
 {
     room_t quad;
 
-    quad = read_quad(forum);
+    read_forum( forum, &quad );
 
     if (forum == DOCKING_BAY_FORUM)
 	return 1;
@@ -158,7 +158,7 @@ i_may_write_forum(const unsigned int forum)
 {
     room_t quad;
 
-    quad = read_quad(forum);
+    read_forum( forum, &quad );
 
     if (forum >= MAXQUADS)  /* uhh-ohh */
 	return 0;
@@ -390,7 +390,7 @@ do_kickout()
     unsigned int user_id;
     int not_done;
 
-    scratch = read_quad(curr_rm);
+    read_forum( curr_rm, &scratch );
 
     cprintf("\n");
     if (!(scratch.flags & QR_PRIVATE))

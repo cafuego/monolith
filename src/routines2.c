@@ -169,11 +169,11 @@ more_string(char *const string)
     int inc;
     char c, *p, *q;
 
-    line_total = 0;
-    p = q = string;
-
     if (string == NULL)
 	return -1;
+
+    line_total = 0;
+    p = q = string;
 
     while (p) {
 	p = strchr(q, '\n');
