@@ -44,7 +44,7 @@ function list_quads($username) {
             PRINT "    <p align=\"left\">$id.\n";
             PRINT "  </td>\n";
             PRINT "  <td align=\"left\">\n";
-            PRINT "    <p align=\"left\"><a href=\"/bbs/index.phtml/l/$id\"><font color=\"#ffff00\">$name</font></a>\n";
+            PRINT "    <p align=\"left\"><a href=\"/bbs/index.phtml/m/$id\"><font color=\"#ffff00\">$name</font></a>\n";
             PRINT "  </td>\n";
             PRINT "  <td align=\"left\">\n";
             if ($unread == NULL || $unread  <= 0)

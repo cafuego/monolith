@@ -82,14 +82,14 @@ function read_message($username, $quad, $current, $direction) {
                     print "<a href=\"/bbs/index.phtml/e/$quad/$m_id\">New message</a> | \n";
                 }
                 print "<a href=\"/bbs/index.phtml/r/$quad/$m_id/n\">Read Next</a> | \n";
-                print "<a href=\"/bbs/index.phtml/r/$quad/$m_id/p\">Read Previous</a> | \n";
-                print "<a href=\"/bbs/index.phtml/l/$quad\">Message Index</a> | \n";
-                print "<a href=\"/bbs/\">Quadrant Index</a></p>\n";
+                print "<a href=\"/bbs/index.phtml/r/$quad/$m_id/p\">Read Previous</a>\n";
 
                 // Update lastseen!
                 //
-                $usernum = get_usernum($username);
-                $result = MYSQL_QUERY("UPDATE usertopic SET lastread=$current WHERE forum_id=$f_id AND user_id=$usernum");
+                if( $username != "Guest" ) {
+                    $usernum = get_usernum($username);
+                    $result = MYSQL_QUERY("UPDATE usertopic SET lastread=$current WHERE forum_id=$f_id AND user_id=$usernum");
+                }
 
             } else {
                 switch ($direction) {
