@@ -190,11 +190,7 @@ enter_passwd(user_t * user, int *done)
 	failures++;
 	*done = FALSE;
     } else {
-#ifdef NOSQL
-        if ( check_password( user, pwtest ) == TRUE )
-#else
         if ( mono_sql_u_check_passwd( user->usernum, pwtest ) == TRUE )
-#endif
 	    *done = TRUE;
 	else {
 	    cprintf("Incorrect login.\n");
@@ -222,7 +218,7 @@ do_changepw()
     if (strlen(pwtest) == 0)
 	return;
 
-    if ( check_password( usersupp, pwtest ) == TRUE ) {
+    if ( mono_sql_u_check_passwd( usersupp->usernum, pwtest ) == TRUE ) {
 	change_passwd(usersupp);
 	(void) writeuser(usersupp, 0);
 	(void) cprintf("Password changed.\n");
