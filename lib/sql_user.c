@@ -495,4 +495,52 @@ mono_sql_u_get_hidden( unsigned int user_id, int *hiddeninfo )
 
 }
 
+int
+mono_sql_u_update_validation( unsigned int user_id, int validation )
+{
+
+    int i;
+    MYSQL_RES *res;
+
+    i = mono_sql_query(&res, "UPDATE " U_TABLE 
+        " set validation='%d' "
+	" WHERE id=%u", validation, user_id );
+
+    if (i == -1) {
+	fprintf(stderr, "No results from query.\n");
+        return -1;
+    }   
+
+    mono_sql_u_free_result(res);
+    return 0;
+}
+
+int
+mono_sql_u_get_validation( unsigned int user_id, int *validation )
+{
+    int i;
+    int ret;
+    MYSQL_RES *res;
+    MYSQL_ROW row;
+
+    i = mono_sql_query(&res, "SELECT validation FROM " U_TABLE 
+	" WHERE id=%u", user_id );
+
+    if (i == -1) {
+        fprintf(stderr, "No results from query.\n");
+        return -1;
+    }
+
+    if (mysql_num_rows(res) != 1) {
+        return -1;
+    }
+
+    row = mysql_fetch_row(res);
+
+    ret = sscanf( row[0], "%d", validation );
+    mono_sql_u_free_result(res);
+
+    return 0;
+}
+
 /* eof */
