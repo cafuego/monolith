@@ -55,7 +55,6 @@ static void set_wholist_posting_flag(unsigned long);
 static int get_mail_names(const int, userlist_t **, message_header_t *);
 static void get_autobanner_info(message_header_t *);
 static int get_automail_info(message_header_t *, userlist_t **);
-static unsigned int get_new_message_id(const unsigned int);   /* could go to libquad */
 
 int
 enter_message(unsigned int forum, int mode, unsigned long banner_flag, const char *automail_name)
@@ -264,37 +263,6 @@ save_new_mail(message_header_t * header, userlist_t ** recipient_list)
     }
 
     return 0;
-}
-
-
-/* note:  save_new_message -must- abort if this funx returns 0.  */
-unsigned int
-get_new_message_id(const unsigned int quadno)
-{
-    room_t *p;
-
-    (void) mono_lock_rooms(1);
-
-    /* for convenience */
-    p = &shm->rooms[quadno];
-
-    /* first step: increase highest postnumber */
-    p->highest++;
-
-    if (!p->highest) {  
-	if (p->lowest > p->highest)    /* rollover */
-	    log_it("forums", "forum %u has rolled over..  convert it!", quadno);
-	return 0;
-    }	
-
-    /* next, check if we should increase the lowest number */
-    if ((p->highest - p->lowest) > p->maxmsg) {
-	message_delete(quadno, p->lowest);
-	p->lowest++;
-    }
-    (void) mono_lock_rooms(0);
-
-    return p->highest;
 }
 
 

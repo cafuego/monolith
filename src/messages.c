@@ -263,6 +263,84 @@ x_message_to_mail(const char *x, char *to_user)
     enter_message(MAIL_FORUM, EDIT_NOEDIT, X_2_MAIL_BANNER, to_user);
 }
 
+void message_clip(const char *header_string)
+{
+    FILE *fp;
+
+    fp = xfopen(CLIPFILE, "a", TRUE);
+
+    if (fp != NULL) {
+	fprintf(fp, "%s", header_string);
+	fclose(fp);
+    }
+}
+
+void message_2_temp(const char *header_string, char mode)
+{
+    FILE* fp;
+
+    if (mode == 'a')
+        fp = xfopen(temp, "a", TRUE);
+    else
+	fp = xfopen(temp, "w", TRUE);
+
+    if (fp != NULL) {
+	fprintf(fp, "%s", header_string);
+	fclose(fp);
+    }
+}
+
+void
+purge_mail_quad(void)
+{
+    int i, mail_total;
+    char filename[L_FILENAME + 1];
+
+    mail_total = count_mail_messages();
+
+return;
+    if (mail_total == -1)
+	return;
+
+    if (mail_total > MAX_USER_MAILS &&
+	usersupp->priv < PRIV_TECHNICIAN) {
+
+	for (i = 0; mail_total - MAX_USER_MAILS > 0; i++) {
+	    mail_header_filename(filename, who_am_i(NULL), i);
+	    if (fexists(filename)) {
+		unlink(filename);
+		mail_total--;
+	    } else {
+		if (i > usersupp->mailnum)  /* uhh-ohh.. */
+		    break;
+		continue;
+	    }
+	    mail_filename(filename, who_am_i(NULL), i);
+	    if (fexists(filename))
+		unlink(filename);
+	}
+    }
+    return;
+}
+
+int
+count_mail_messages(void)
+{
+    int count;
+    char mail_dir[L_FILENAME + 1], name[L_USERNAME + 1];
+
+    strcpy(name, usersupp->username);
+  
+    if (check_user(name) == FALSE || EQ(name, "Guest"))
+	return -1; 
+    sprintf(mail_dir, "%s/mail/.", getuserdir(who_am_i(NULL)));
+
+    count = count_dir_files(mail_dir);
+
+    return (count > 0) ? count / 2 : -1;
+}
+
+
 #ifdef USE_RATING
 
 void

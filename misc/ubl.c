@@ -23,6 +23,7 @@
 #include <mysql.h>
 
 #include "monolith.h"
+#include "msg_file.h"
 #include "libmono.h"
 #include "setup.h"
 
@@ -270,7 +271,7 @@ update_whoknows()
 	printf("Updating WKR file for room: %d.\r", rm_nbr);
 	fflush(stdout);
 
-	sprintf(filestr, QUADDIR "/%d/whoknows", rm_nbr);
+	sprintf(filestr, FORUMDIR "/%u/whoknows", rm_nbr);
 
 	fp = xfopen(filestr, "w", FALSE);
 	if (fp == NULL) {
@@ -575,30 +576,32 @@ post_ubl_results()
 {
 
     FILE *fp;
-    post_t mesg;
-    char tempstr[80];
+    message_header_t header;
+    char filename[L_FILENAME + 1];
 
-    mesg.type = MES_SYSTEM;
-    strcpy(mesg.author, "Monolith UBL");
-    time(&mesg.date);
-
-    strcpy(mesg.subject, "UBL results.");
+    memset(&header, 0, sizeof(message_header_t));
+    header.banner_type = SYSTEM_BANNER;
+    strcpy(header.author, "Monolith UBL");
+    strcpy(header.forum_name, "Fleet Headquarters");
+    header.date = time(NULL);
+    header.f_id = SYSOP_FORUM;
+    strcpy(header.subject, "UBL results.");
 
     mono_connect_shm();
-    sprintf(tempstr, BBSDIR "save/quads/3/%ld", get_new_post_number(3));
+    header.m_id = get_new_message_id(SYSOP_FORUM);
     mono_detach_shm();
 
-    fp = xfopen(tempstr, "a", FALSE);
+    sprintf(filename, FORUMDIR "/%u/%u.h", header.f_id, header.m_id);
+    fp = xfopen(filename, "w", FALSE);
     if (fp == NULL)
 	return -1;
+    fwrite(&header, sizeof(message_header_t), 1, fp);
+    fclose(fp);
 
-    fprintf(fp, "%c%c%c", 255, mesg.type, 0);
-    fprintf(fp, "L008%c", 0);
-    fprintf(fp, "T%ld%c", mesg.date, 0);
-    fprintf(fp, "A%s%c", mesg.author, 0);
-    fprintf(fp, "S%s%c", mesg.subject, 0);
-
-    putc('M', fp);
+    sprintf(filename, FORUMDIR "/%u/%u.t", header.f_id, header.m_id);
+    fp = xfopen(filename, "w", FALSE);
+    if (fp == NULL)
+	return -1;
     fprintf(fp, "\n");
 
     /* the actual post content. */
@@ -609,7 +612,8 @@ post_ubl_results()
     fprintf(fp, "%d users have Expert Status enabled. (%d%%)\n", expert_users, (expert_users * 100) / usercount);
     fprintf(fp, "%d users have SHIX enabled. (%d%%)\n", shix_users, (shix_users * 100) / usercount);
 
-    fprintf(fp, "\n%c", 0);
+    fprintf(fp, "\n");
     fclose(fp);
+
     return 0;
 }

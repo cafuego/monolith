@@ -26,7 +26,7 @@ write_message_header(const char *header_filename, message_header_t *header)
     fwrite(header, sizeof(message_header_t), 1, fp);
 
     if (ferror(fp)) {
-	cprintf("\n\1f\1rError: File error at write_message_header()\n");
+	printf("\n\1f\1rError: File error at write_message_header()\n");
 	unlink(header_filename);
 	fclose(fp);
 	return -1;
@@ -51,7 +51,7 @@ read_message_header(const char *header_filename, message_header_t *header)
     fread(header, sizeof(message_header_t), 1, fp);
 
     if (ferror(fp)) {
-        cprintf("\n\1r\1fError: File error at read_message_header()\n");
+        printf("\n\1r\1fError: File error at read_message_header()\n");
         fclose(fp);
         return -1;
     }
@@ -121,21 +121,21 @@ message_copy(const unsigned int from_forum, const unsigned int to_forum, const u
     }
 
     if (!fexists(from_file) || !fexists(from_header_file)) {
-	cprintf("\n\1f\1rfexists() returned 0 for header and/or text at message_copy()\1a");
+	printf("\n\1f\1rfexists() returned 0 for header and/or text at message_copy()\1a");
         return -1;
     }
 
     if (to_forum == MAIL_FORUM) {
 	strcpy(to_name, recipient_name);
 	if ((new_message_id = get_new_mail_number(to_name)) == -1) {
-	    cprintf("\n\1r\1fCouldn't get new mail number for %s\n\1a", recipient_name);
+	    printf("\n\1r\1fCouldn't get new mail number for %s\n\1a", recipient_name);
 	    return -1;
 	}
 	mail_filename(to_file, to_name, new_message_id);
 	mail_header_filename(to_header_file, to_name, new_message_id);
     } else {
-	if ((new_message_id = get_new_post_number(to_forum)) == -1) {
-	    cprintf("\n\1r\1fCouldn't get new post number for Forum #%u\n\1a, to_forum");
+	if ((new_message_id = get_new_message_id(to_forum)) == -1) {
+	    printf("\n\1r\1fCouldn't get new post number for Forum #%u\n\1a, to_forum");
 	    return -1;
 	}
 	message_filename(to_file, to_forum, new_message_id);
@@ -188,10 +188,10 @@ message_copy(const unsigned int from_forum, const unsigned int to_forum, const u
 int message_move(const unsigned int from_forum, const unsigned int to_forum, const unsigned int message_id, const char *recipient_name) 
 {
     if (message_copy(from_forum, to_forum, message_id, recipient_name, MOD_MOVE) != 0) {
-	cprintf("\1f\1r\nmessage_copy() returned error at message_move()\1a\n");
+	printf("\1f\1r\nmessage_copy() returned error at message_move()\1a\n");
 	return -1;
     } else if (message_delete(from_forum, message_id) != 0) {
-	cprintf("\1f\1r\nmessage_delete() returned error at message_move()\1a\n");
+	printf("\1f\1r\nmessage_delete() returned error at message_move()\1a\n");
 	return -1;
     }
     return 0;
@@ -283,7 +283,13 @@ init_message_header(message_header_t * header)
    header->quad_flags = 0;
 }
 
+/* eof */
 
+
+
+
+
+#ifdef OHH_SHIT_WE_HAVE_TO_CONVERT_AGAIN_ARRRRRRGH
 
 /* must be compiled and run 3 times..  called with forum parm 0 to MAXQUADS.
  *
@@ -318,10 +324,10 @@ convert_message_base(int forum)
     userdir = opendir(USERDIR);
 
     if (userdir == NULL) {
-        cprintf("opendir(%s) problems!\n", USERDIR);
+        printf("opendir(%s) problems!\n", USERDIR);
 	return -1;
     } else
-        cprintf("opened (%s)\n", USERDIR);
+        printf("opened (%s)\n", USERDIR);
 
     rewinddir(userdir);
     
@@ -331,7 +337,7 @@ convert_message_base(int forum)
             continue;
 
         strcpy(name, tmpdirent->d_name);
-	cprintf("\nName: %s\n", name);
+	printf("\nName: %s\n", name);
         user = readuser(name);
         if (user == NULL)
             continue;
@@ -375,7 +381,7 @@ for (i = 1; i <= highest_message; i++) {
 	}
 
         if (read_post_header(postfile, &post) == -1) {
-            cprintf("\1r\1fTrouble reading the reply header.\1a\n");
+            printf("\1r\1fTrouble reading the reply header.\1a\n");
             fclose(postfile);
 	    return -1;
 	}
@@ -466,7 +472,7 @@ for (i = 1; i <= highest_message; i++) {
         if ((fp = xfopen(info_filename(filename, forum), "w", FALSE)) == NULL) {
   #endif
 #endif
-    	    cprintf("\n\n\1r\1ffailed to open %s.\n\1a", filename);
+    	    printf("\n\n\1r\1ffailed to open %s.\n\1a", filename);
 	    return -1;
         }
 	strcpy(hugestring, "");
@@ -492,81 +498,7 @@ closedir(userdir);
 return 0;
 }
 
-void message_clip(const char *header_string)
-{
-    FILE *fp;
+#endif
 
-    fp = xfopen(CLIPFILE, "a", TRUE);
-
-    if (fp != NULL) {
-	fprintf(fp, "%s", header_string);
-	fclose(fp);
-    }
-}
-
-void message_2_temp(const char *header_string, char mode)
-{
-    FILE* fp;
-
-    if (mode == 'a')
-        fp = xfopen(temp, "a", TRUE);
-    else
-	fp = xfopen(temp, "w", TRUE);
-
-    if (fp != NULL) {
-	fprintf(fp, "%s", header_string);
-	fclose(fp);
-    }
-}
-
-void
-purge_mail_quad(void)
-{
-    int i, mail_total;
-    char filename[L_FILENAME + 1];
-
-    mail_total = count_mail_messages();
-
-return;
-    if (mail_total == -1)
-	return;
-
-    if (mail_total > MAX_USER_MAILS &&
-	usersupp->priv < PRIV_TECHNICIAN) {
-
-	for (i = 0; mail_total - MAX_USER_MAILS > 0; i++) {
-	    mail_header_filename(filename, who_am_i(NULL), i);
-	    if (fexists(filename)) {
-		unlink(filename);
-		mail_total--;
-	    } else {
-		if (i > usersupp->mailnum)  /* uhh-ohh.. */
-		    break;
-		continue;
-	    }
-	    mail_filename(filename, who_am_i(NULL), i);
-	    if (fexists(filename))
-		unlink(filename);
-	}
-    }
-    return;
-}
-
-int
-count_mail_messages(void)
-{
-    int count;
-    char mail_dir[L_FILENAME + 1], name[L_USERNAME + 1];
-
-    strcpy(name, usersupp->username);
-  
-    if (check_user(name) == FALSE || EQ(name, "Guest"))
-	return -1; 
-    sprintf(mail_dir, "%s/mail/.", getuserdir(who_am_i(NULL)));
-
-    count = count_dir_files(mail_dir);
-
-    return (count > 0) ? count / 2 : -1;
-}
 
 

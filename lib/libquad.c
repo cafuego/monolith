@@ -168,6 +168,37 @@ dump_quickroom()
 }
 
 
+/* note:  save_new_message -must- abort if this funx returns 0.  */
+unsigned int
+get_new_message_id(const unsigned int quadno)
+{
+    room_t *p;
+
+    (void) mono_lock_rooms(1);
+
+    /* for convenience */
+    p = &shm->rooms[quadno];
+
+    /* first step: increase highest postnumber */
+    p->highest++;
+
+    if (!p->highest) {  
+	if (p->lowest > p->highest)    /* rollover */
+	    log_it("forums", "forum %u has rolled over..  convert it!", quadno);
+	return 0;
+    }	
+
+    /* next, check if we should increase the lowest number */
+    if ((p->highest - p->lowest) > p->maxmsg) {
+	message_delete(quadno, p->lowest);
+	p->lowest++;
+    }
+    (void) mono_lock_rooms(0);
+
+    return p->highest;
+}
+
+
 unsigned long
 get_new_mail_number(const char *name)
 {
@@ -413,343 +444,3 @@ search_msgbase(char *string, unsigned int room, unsigned long start, user_t * us
 
 #endif
 
-
-#ifdef PORCUPINE
-char *
-post_to_file(unsigned int quad, unsigned long number, const char *name)
-{
-    static char filename[100];	/* too much probably */
-
-    if ((quad < 0) || (quad > MAXQUADS)) {
-	mono_errno = E_NOQUAD;
-	return NULL;
-    }
-    if (number < 0) {
-	mono_errno = E_NOMESG;
-	return NULL;
-    }
-    if (quad == 1)
-	(void) snprintf(filename, 100, "%s/mail/%ld", getuserdir(name), number);
-    else
-	(void) snprintf(filename, 100, QUADDIR "/%d/%ld", quad, number);
-
-    return filename;
-}
-
-
-/*************************************************
-* save_essage()
-* mtmp: temp file that containes message
-*	- this file is removed when posted.
-* rec : recipient if mail
-
-* return value: 0 - okay
-* return value non-0 - error
-*************************************************/
-
-int
-save_message(const char *mtmp, unsigned int room, const char *rec)
-{
-    int tries = 0;
-    char recip[L_USERNAME + 1];
-
-    if (rec == NULL)
-	strcpy(recip, "");
-    else
-	strcpy(recip, rec);
-
-    if (!fexists(mtmp)) {
-	mono_errno = E_NOFILE;
-	return -1;
-    }
-    if (EQ(recip, "sysop")) {
-	while (copy(mtmp, post_to_file(2, get_new_post_number(2), NULL)) != 0) {
-	    if (++tries > 20) {
-		(void) log_it("rooms", "error in saving post in yells");
-		return -1;
-	    }
-	}
-    } else if (room == 1) {	/* put in both mail dirs */
-	while (copy(mtmp, post_to_file(1, get_new_mail_number(recip), recip)) != 0) {
-	    if (++tries > 20) {
-		(void) log_it("rooms", "error in saving post in %s's mail", recip);
-		return -1;
-	    }
-	}
-    } else {
-	while (copy(mtmp, post_to_file(room, get_new_post_number(room), NULL)) != 0) {
-	    if (++tries > 20) {
-		(void) log_it("rooms", "error in saving post in #%d", room);
-		return -1;
-	    }
-	}
-    }
-    return 0;
-}
-
-
-/* return values:
- *  0 - okay
- * -1 - error 
- */
-int
-copy_message(unsigned int from, unsigned long number, unsigned int to, const char *mailbox)
-{
-    char to_file[100], from_file[100];
-
-    strcpy(from_file, post_to_file(from, number, mailbox));
-    strcpy(to_file, post_to_file(to, get_new_post_number(to), mailbox));
-
-    if (copy(from_file, to_file) != 0)
-	return -1;		/* ERROR! */
-    return 0;
-}
-
-int
-move_message(unsigned int from, unsigned long number, unsigned int to, const char *mailbox)
-{
-    char to_file[100], from_file[100];
-    int ret;
-
-    strcpy(from_file, post_to_file(from, number, mailbox));
-    strcpy(to_file, post_to_file(to, get_new_post_number(to), mailbox));
-
-    ret = rename(from_file, to_file);
-    return ret;
-}
-
-int
-trash_message(unsigned int quad, unsigned long number, const char *mailbox)
-{
-    if (quad != 1) {		/* don't copy deleted mails to the   */
-	(void) copy_message(quad, number, 5, NULL);	/* garbagequad.      */
-	/* if cannot delete, then bad luck, and just delete */
-    }
-    return delete_message(quad, number, mailbox);
-}
-
-
-int
-delete_message(unsigned int quad, unsigned long number, const char *mailbox)
-{
-
-    if (unlink(post_to_file(quad, number, mailbox)) != 0) {
-	mono_errno = E_NOMESG;
-	return -1;
-    }
-    return 0;
-}
-
-/*************************************************
-* fpgetfield()
-*************************************************/
-
-void
-fpgetfield(FILE * fp, char *string)
-{
-    int a = 0, b;
-
-    strcpy(string, "");
-
-    do {
-	b = getc(fp);
-	if (b < 1 || b == EOF) {
-	    string[a] = '\0';
-	    return;
-	}
-	string[a] = b;
-	++a;
-    }
-    while (a < 510);		/* added the || a<510 -lj */
-
-    string[a] = '\0';
-}
-
-/* return the first free number to post */
-unsigned long
-get_new_post_number(unsigned int quadno)
-{
-    room_t *p;
-
-    (void) mono_lock_rooms(1);
-
-    /* for convenience */
-    p = &shm->rooms[quadno];
-
-    /* first step: increase highest postnumber */
-    p->highest++;
-
-    /* next, check if we should increase the lowest number */
-    if ((p->highest - p->lowest) > p->maxmsg) {
-	(void) delete_message(quadno, p->lowest, NULL);
-	p->lowest++;
-    }
-    (void) mono_lock_rooms(0);
-
-    return p->highest;
-}
-
-
-
-int
-read_post_header(FILE * fp, post_t * post)
-{
-    int b;
-    char bbb[550];
-
-    if (fp == NULL)
-	return -1;
-
-    memset(post, 0, sizeof(post_t));
-
-    (void) getc(fp);
-    post->type = getc(fp);
-    (void) getc(fp);		/* read dummy 0 */
-
-    while (1) {
-	b = getc(fp);
-
-	if (b == EOF || b == 'M')
-	    return 0;
-
-	fpgetfield(fp, bbb);
-
-	switch (b) {
-
-	    case 'L':
-		post->lines = atoi(bbb) + 1;
-		break;
-
-	    case 'I':
-		post->num = atol(bbb);
-		break;
-
-	    case 'Y':
-		post->ref = atol(bbb);
-		break;
-
-	    case 'D':
-		strncpy(post->modifier, bbb, L_USERNAME);
-		break;
-
-	    case 'U':
-		post->moddate = atol(bbb);
-		break;
-
-	    case 'S':
-		strncpy(post->subject, bbb, L_SUBJECT);
-		break;
-
-		/* X identifies reference author (user whose post was replied to) */
-	    case 'X':
-		strncpy(post->refauthor, bbb, L_USERNAME);
-		break;
-
-	    case 'A':
-		strncpy(post->author, bbb, L_USERNAME);
-		break;
-
-	    case 'O':
-		strncpy(post->origroom, bbb, L_QUADNAME);
-		break;
-
-	    case 'R':
-		strcpy(post->recipient, bbb);
-		break;
-
-	    case 'T':
-		post->date = atol(bbb);
-		break;
-
-	    case 'C':
-		strncpy(post->alias, bbb, L_USERNAME);
-		break;
-
-		/* post number that was replied to */
-	    case 'Q':
-		post->ref = atol(bbb);
-		break;
-	    case 'Z':
-		post->reftype = atol(bbb);
-		break;
-	}
-    }
-
-    return 0;
-}
-
-
-/* this function puts the header of post in the open file descriptor fp */
-int
-write_post_header(FILE * fp, post_t mesg)
-{
-    if (fp == NULL)
-	return -1;
-
-    (void) fprintf(fp, "%c%c%c", 255, (char) mesg.type, 0);	/* type of message    */
-    (void) fprintf(fp, "L000%c", 0);	/* #Lines in msg      */
-    (void) fprintf(fp, "T%ld%c", mesg.date, 0);		/* date/time          */
-    (void) fprintf(fp, "A%s%c", mesg.author, 0);	/* author     */
-
-    if (mesg.refauthor && strlen(mesg.refauthor))
-	(void) fprintf(fp, "X%s%c", mesg.refauthor, 0);
-    if (mesg.ref)
-	(void) fprintf(fp, "Q%ld%c", mesg.ref, 0);
-    if (mesg.reftype)
-	(void) fprintf(fp, "Z%ld%c", mesg.reftype, 0);
-    if (mesg.alias && strlen(mesg.alias) != 0)
-	(void) fprintf(fp, "C%s%c", mesg.alias, 0);	/* aliasname          */
-    if (mesg.recipient && strlen(mesg.recipient) != 0)
-	(void) fprintf(fp, "R%s%c", mesg.recipient, 0);		/* recipient if mail  */
-    if (mesg.subject && strlen(mesg.subject) != 0 && mesg.type != MES_DESC)
-	(void) fprintf(fp, "S%s%c", mesg.subject, 0);	/* subjectline        */
-
-    if (!mesg.recipient && strlen(mesg.recipient) == 0)		/* do not save orig room whe */
-	(void) fprintf(fp, "O%s%c", mesg.origroom, 0);	/* original room      */
-
-    (void) putc('M', fp);	/* start of message   */
-    return 0;
-}
-
-int
-write_post_footer(FILE * filep, int lines)
-{
-    (void) putc(0, filep);
-    if (fseek(filep, 4L, SEEK_SET) != 0)
-	return -1;
-
-    fprintf(filep, "%3.3d%c", lines, '\0');
-    return 0;
-}
-
-int
-make_auto_message(const char *tofile, const char *fromfile, post_t mesg)
-{
-    FILE *fp, *fp2;
-    int b, lines;
-
-    fp2 = xfopen(fromfile, "r", FALSE);
-    if (fp2 == NULL)
-	return -1;
-
-    fp = xfopen(tofile, "w", FALSE);
-    if (fp == NULL) {
-	(void) fclose(fp2);
-	return -1;
-    }
-    (void) write_post_header(fp, mesg);
-    lines = 0;
-
-    while (b = getc(fp2), b > 0) {
-	(void) putc(b, fp);
-	if (b == '\n')
-	    lines++;
-    }
-    (void) fclose(fp2);
-    (void) putc(0, fp);
-    (void) write_post_footer(fp, lines);
-    (void) fclose(fp);
-    return 0;
-}
-
-#endif

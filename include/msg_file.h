@@ -94,7 +94,6 @@ typedef struct {
 
 } message_header_t;
 
-extern int convert_message_base(int);
 extern size_t get_filesize(const char *);
 extern int count_dir_files(const char *);
 extern int write_message_header(const char *, message_header_t *);
@@ -111,7 +110,7 @@ extern int message_move(const unsigned int, const unsigned int,
 			const unsigned int, const char *);
 extern int message_delete(const unsigned int, const unsigned int);
 extern void init_message_header(message_header_t *); 
-extern void message_clip(const char *);
-extern void message_2_temp(const char *, char );
-extern void purge_mail_quad(void);
-extern int count_mail_messages(void);
+
+#ifdef OHH_SHIT_WE_HAVE_TO_CONVERT_AGAIN_ARRRRRRGH
+extern int convert_message_base(int);
+#endif

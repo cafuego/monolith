@@ -2,12 +2,10 @@ bin_PROGRAMS = yawc_port yawc_client
 CFLAGS += -Wall 
 
 yawc_port_SOURCES = clipboard.c friends.c chat.c fun.c help.c menu.c \
-  msg_file.c \
   normal_input.c newuser.c quadcont.c registration.c key.c inter.c vote.c \
   uadmin.c wholist.c read_menu.c rooms.c bbsconfig.c enter_message.c
 
 yawc_client_SOURCES = clipboard.c friends.c chat.c fun.c help.c menu.c \
-  msg_file.c \
   client_input.c newuser.c quadcont.c registration.c key.c inter.c \
   vote.c wholist.c uadmin.c read_menu.c rooms.c bbsconfig.c enter_message.c
 

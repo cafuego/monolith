@@ -16,9 +16,3 @@ extern int print_birthday(date_t bday);
 extern void modify_birthday(date_t * bday);
 extern int qc_get_pos_int(const char, int);
 
-#define PORCUPINE
-#ifdef PORCUPINE
-
-extern void fmout2(FILE *, char );
-
-#endif
