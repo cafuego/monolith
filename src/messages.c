@@ -16,8 +16,6 @@
 #include <ctype.h>
 #include <dirent.h>
 
-#include <mysql.h>
-
 #include "monolith.h"
 #include "libmono.h"
 #include "ext.h"
@@ -1668,60 +1666,59 @@ count_mail_messages(void)
 }
 
 void
-x_to_mail( const char *x, char *to_user )
+x_to_mail(const char *x, char *to_user)
 {
-
     FILE *fp;
-    user_t *victim;
-    post_t *message;
-    char *p;
-    int lines = 5;
+    post_t mesg;
+    char filename[120], *p;
+    int no_of_lines = 5;
 
-    /* if no such user, exit */
-    if( (check_user(to_user)) == FALSE)
-        return;
+    if ((check_user(to_user)) == FALSE)
+	return;
 
-    victim = readuser(to_user);
+    cprintf("\1f\1gSave %s %s to \1y%s\1g's Mail? \1w(\1gy\1w/\1gn\1w) \1c", 
+		config.express, config.x_message, to_user);
 
-    cprintf("\1f\1gDo you want to redirect this %s %s to \1y%s\1g's Mail? \1w(\1gy\1w/\1gn\1w) \1c", config.express, config.x_message, victim->username );
+    if (yesno() == NO)
+	return;
 
-    /* if don't want to mail, exit */
-    if( yesno() == NO ) {
-        xfree(victim);
-        return;
+    filename[0] = '\0';
+    mesg.type = MES_NORMAL;
+    strcpy(mesg.author, usersupp->username);
+    time(&mesg.date);
+
+    strcpy(mesg.subject, "Saved X message.");
+
+    sprintf(filename, "%s%s%ld", getuserdir(to_user), "/mail/", 
+				 get_new_mail_number(to_user));
+
+    if ((fp = xfopen(filename, "a", FALSE)) == NULL) {
+	cprintf("\n\n\1r\1fWeird error number 494-FF-A24\nSave failed.\n\1a");
+	return;
     }
 
-    fp = xfopen(temp, "w", TRUE);
-  
-    message = ((post_t *) xmalloc(sizeof(post_t)));
-    memset(message, 0, sizeof(post_t));
-
-    strcpy(message->author, usersupp->username);
-    strcpy(message->recipient, victim->username);
-    sprintf(message->subject, "Saved %s %s from %s.", config.express, config.x_message, usersupp->username);
-    message->type = MES_NORMAL;
-    message->date = time(NULL);
-
-    write_post_header(fp, *message);
-    fprintf(fp, "\nYou logged off during an X, you lamer!\nAnyway, here's what I wanted you to know:\n\n%s\n", x);
-    xfree(message);
-    fflush(fp);
-
-    for (p = (char *)x; *p != '\0'; p++)
+/* count lines */
+    for (p = (char *) x; *p != '\0'; p++)
         if( *p == '\n' || *p == '\r')
-            lines++;
+            no_of_lines++;
 
-    write_post_footer(fp, lines);
+/* write file header */
+
+    fprintf(fp, "%c%c%c", 255, (int) mesg.type, 0);
+    fprintf(fp, "L%3d%c", no_of_lines, 0);
+    fprintf(fp, "T%ld%c", mesg.date, 0);
+    fprintf(fp, "A%s%c", mesg.author, 0);
+    fprintf(fp, "S%s%c", mesg.subject, 0);
+    putc('M', fp);
+
+/* body of post */
+
+    fprintf(fp, "%s%s%s%s",
+	    "\n\1f\1b*** \1gYou logged off while I was sending you this", 
+	    " eXpress message \1b***\1a\1c\n\n",
+            x, "\n");
+
+/* end of post */
+    fprintf(fp, "\n%c", 0);
     fclose(fp);
-
-    if (save_message(temp, 1, victim->username) != 0) {
-        cprintf("\1f\1rOops, couldn't save that message! *fumbles*\1a\n");
-        xfree(victim);
-        unlink(temp);
-        return;
-    }
-    xfree(victim);
-    unlink(temp);
-
-    return;
 }
