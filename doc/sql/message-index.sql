@@ -17,6 +17,9 @@ CREATE TABLE message-index (
    status	ENUM( 'read, 'unread' ),
    deleted	ENUM( 'y', 'n' ),
 
+   # Still require reply info
+   # Still require modification info
+
    stamp	TIMESTAMP,
 
    PRIMARY KEY  ( id ),
