@@ -18,10 +18,6 @@
     $sql_pass = mysql_result($res, 0, "password");
     $enc_pass = crypt($password, substr($sql_pass, 0, 2));
 
-    echo "<!-- $password -->\n";
-    echo "<!-- $sql_pass -->\n";
-    echo "<!-- $enc_pass -->\n";
-
     if($enc_pass == $sql_pass)
       return true;
 
