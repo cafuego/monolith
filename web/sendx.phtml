@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html lang="en">
+<head>
+<meta name="rcsid" content="$Id$">
+
+<?php
+
+    // Get username and print off proper title.
+    //
+    require('engine/html.inc');
+    if( html_print_title( getenv("REMOTE_USER"), $REQUEST_URI ) )
+        html_do_login( getenv("REMOTE_USER") );
+    else
+        html_do_logout( getenv("REMOTE_USER"), getenv("REMOTE_HOST") );
+
+?>
+
+<style>
+  p  		{ font: 12pt Helvetica; }
+  ul  		{ font: 12pt Helvetica; }
+  li  		{ font: 12pt Helvetica; }
+  a  		{ font: 12pt Helvetica; color: #FFFF00; text-decoration: underline; }
+  pre		{ font: 12pt Helvetica; }
+  font		{ font: 12pt Helvetica; }
+  b		{ font-weight: bold; }
+  .reply	{ font: 10pt Helvetica; }
+  .green	{ color: #00cc00; }
+  .red		{ font: 10pt Times; font-weight: bold; color: #ff0000; }
+  .footer	{ font: 10pt Times; text-align: center; }
+</style>
+
+</head>
+<body bgcolor="#000000" text="#FFFFFF">
+
+
+<?php
+
+    $starttime = microtime();
+
+    $username = getenv("REMOTE_USER");
+    require ("engine/routines.inc");
+
+    $u_id = getusernum($username);
+    $recipient = rawurldecode($recipient);
+    $r_id = getusernum($recipient);
+    $message = rawurldecode($message);
+
+    list_x_messages($username);
+
+    connect_db();
+
+    $result = MYSQL_QUERY("INSERT INTO webx (sender,recipient,message,date,status) VALUES ($u_id,$r_id,$message,NOW(),'unread')");
+    if ($result == true )
+        print "<h3 align=\"center\">eXpress message to $recipient was sucessfully saved</h3>\n";
+    else {
+        print "<h3 align=\"center\">eXpress message to $recipient could not be saved due to an error</h3>\n";
+        echo "<h2 align=\"center\">". mysql_error() ."</h2>\n";
+    }
+
+    html_print_foot($username, $starttime);
+    
+?>
+
+</body>
+</html>
