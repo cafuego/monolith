@@ -42,8 +42,6 @@
 #include "sql_goto.h"
 #include "routines2.h"
 
-static char[] munchies = { "cookie", "petit four", "biscuit", "waffle" };
-
 void
 random_goto()
 {

@@ -5,4 +5,7 @@ extern int roulette ( void );
 extern void crap( int, const char *, int );
 extern void roll_the_bones( void );
 extern void add_goto(void);
+
+static char *munchies[] = { "cookie", "petit four", "biscuit", "waffle" };
+
 /* eof */
