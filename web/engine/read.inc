@@ -28,15 +28,15 @@ function read_message($username, $quad, $current, $direction) {
             switch ($direction) {
 
                 case "p":
-                    $query_string = "SELECT m.message_id AS m_id,m.forum_id AS f_id,m.topic_id,m.author AS a_id,u.username AS username,m.flag AS flag,m.alias AS alias,m.subject AS subject,m.content AS content,DATE_FORMAT(m.date,'%W, %e %M %Y %H:%i:%S') AS date,f.name AS forum FROM message AS m LEFT JOIN user AS u ON u.id=m.author LEFT JOIN forum AS f ON f.id=m.forum_id WHERE forum_id=$quad AND m.message_id<$current AND m.deleted='n' ORDER BY m.message_id DESC";
+                    $query_string = "SELECT m.message_id AS m_id,m.forum_id AS f_id,m.topic_id,m.author AS a_id,t.highest AS highest,u.username AS username,m.flag AS flag,m.alias AS alias,m.subject AS subject,m.content AS content,DATE_FORMAT(m.date,'%W, %e %M %Y %H:%i:%S') AS date,f.name AS forum FROM message AS m LEFT JOIN topics AS t ON t.forum_id=m.forum_id LEFT JOIN user AS u ON u.id=m.author LEFT JOIN forum AS f ON f.id=m.forum_id WHERE forum_id=$quad AND m.message_id<$current AND m.deleted='n' ORDER BY m.message_id DESC";
                     break;
 
                 case "n":
-                    $query_string = "SELECT m.message_id AS m_id,m.forum_id AS f_id,m.topic_id,m.author AS a_id,u.username AS username,m.flag AS flag,m.alias AS alias,m.subject AS subject,m.content AS content,DATE_FORMAT(m.date,'%W, %e %M %Y %H:%i:%S') AS date,f.name AS forum FROM message AS m LEFT JOIN user AS u ON u.id=m.author LEFT JOIN forum AS f ON f.id=m.forum_id WHERE forum_id=$quad AND m.message_id>$current AND m.deleted='n' ORDER BY m.message_id ASC";
+                    $query_string = "SELECT m.message_id AS m_id,m.forum_id AS f_id,m.topic_id,m.author AS a_id,t.highest AS highest,u.username AS username,m.flag AS flag,m.alias AS alias,m.subject AS subject,m.content AS content,DATE_FORMAT(m.date,'%W, %e %M %Y %H:%i:%S') AS date,f.name AS forum FROM message AS m LEFT JOIN topics AS t ON t.forum_id=m.forum_id LEFT JOIN user AS u ON u.id=m.author LEFT JOIN forum AS f ON f.id=m.forum_id WHERE forum_id=$quad AND m.message_id>$current AND m.deleted='n' ORDER BY m.message_id ASC";
                     break;
 
                 default:
-                    $query_string = "SELECT m.message_id AS m_id,m.forum_id AS f_id,m.topic_id,m.author AS a_id,u.username AS username,m.flag AS flag,m.alias AS alias,m.subject AS subject,m.content AS content,DATE_FORMAT(m.date,'%W, %e %M %Y %H:%i:%S') AS date,f.name AS forum FROM message AS m LEFT JOIN user AS u ON u.id=m.author LEFT JOIN forum AS f ON f.id=m.forum_id WHERE forum_id=$quad AND m.message_id=$current";
+                    $query_string = "SELECT m.message_id AS m_id,m.forum_id AS f_id,m.topic_id,m.author AS a_id,t.highest AS highest,u.username AS username,m.flag AS flag,m.alias AS alias,m.subject AS subject,m.content AS content,DATE_FORMAT(m.date,'%W, %e %M %Y %H:%i:%S') AS date,f.name AS forum FROM message AS m LEFT JOIN topics AS t ON t.forum_id=m.forum_id LEFT JOIN user AS u ON u.id=m.author LEFT JOIN forum AS f ON f.id=m.forum_id WHERE forum_id=$quad AND m.message_id=$current";
                     break;
 
             }
@@ -51,6 +51,7 @@ function read_message($username, $quad, $current, $direction) {
                 $m_id = mysql_result($result,0,"m_id");
                 $f_id = mysql_result($result,0,"f_id");
                 $a_id = mysql_result($result,0,"a_id");
+                $highest = mysql_result($result,0,"highest");
                 $user = mysql_result($result,0,"username");
                 $alias = mysql_result($result,0,"alias");
                 $flag = mysql_result($result,0,"flag");
@@ -77,7 +78,10 @@ function read_message($username, $quad, $current, $direction) {
                 // Don't let guests be able to post.
                 //
                 echo "<div align=\"center\">\n";
-                addbutton("Read Next    ", "/bbs/index.phtml/r/$quad/$m_id/n");
+                if($m_id != $highest)
+                    addbutton("Read Next", "/bbs/index.phtml/r/$quad/$m_id/n");
+                else
+                    addbutton("No more unread messages", "");
                 addbutton("Read Previous", "/bbs/index.phtml/r/$quad/$m_id/p");
                 // if( $username != "Guest" ) {
                 //    addbutton("        ", "");
