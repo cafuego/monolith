@@ -4,7 +4,7 @@ function config_account( $username ) {
 
     $usernum = get_usernum($username);
 
-    if($username == "Guest") {
+    if( strtolower($username) == "guest") {
         errorimage("Permission denied");
         return;
     }

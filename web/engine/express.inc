@@ -13,12 +13,12 @@ function express_message($username, $recipient, $interface, $location)
 
     // Guests aren't allowed to X.
     //
-    if ($username == "Guest") {
+    if ( strtolower($username) == "guest") {
 	sorrysound();
 	errorimage("Guests are not allowed to send eXpress messages!");
 	return;
     }
-    if ($recipient == "Guest") {
+    if ( strtolower($recipient) == "guest") {
 	sorrysound();
 	errorimage("You cannot send eXpress messages to guests!");
 	return;
