@@ -440,47 +440,30 @@ colorize($doing)
     // Remove misc codes.
     //
     $doing = ereg_replace("%01a", "", $doing);	// Reset.
-
     $doing = ereg_replace("%01f", "", $doing);	// Bold.
-
     $doing = ereg_replace("%01d", "", $doing);	// Dark.
-
     $doing = ereg_replace("%01D", "", $doing);	// Dark bg.
-
     $doing = ereg_replace("%01n", "", $doing);	// Start user.
-
     $doing = ereg_replace("%01N", "", $doing);	// End user.
 
     // Remove bg colours.
     //
     $doing = ereg_replace("%01W", "", $doing);	// White.
-
     $doing = ereg_replace("%01Y", "", $doing);	// Yellow.
-
     $doing = ereg_replace("%01G", "", $doing);	// Green.
-
     $doing = ereg_replace("%01C", "", $doing);	// Cyan.
-
     $doing = ereg_replace("%01B", "", $doing);	// Blue.
-
     $doing = ereg_replace("%01P", "", $doing);	// Purple.
-
     $doing = ereg_replace("%01R", "", $doing);	// Red.
 
     // Fix fg colours.
     //
     $doing = ereg_replace("%01w", "</font><font color=\"#ffffff\">", $doing);	// White.
-
     $doing = ereg_replace("%01y", "</font><font color=\"#ffff00\">", $doing);	// Yellow.
-
     $doing = ereg_replace("%01g", "</font><font color=\"#00ff00\">", $doing);	// Green.
-
     $doing = ereg_replace("%01c", "</font><font color=\"#00ffff\">", $doing);	// Cyan.
-
     $doing = ereg_replace("%01b", "</font><font color=\"#0000ff\">", $doing);	// Blue.
-
     $doing = ereg_replace("%01p", "</font><font color=\"#ff00ff\">", $doing);	// Purple.
-
     $doing = ereg_replace("%01r", "</font><font color=\"#ff0000\">", $doing);	// Red.
 
     return rawurldecode($doing);
