@@ -18,7 +18,6 @@
 #include <math.h>
 
 #ifdef HAVE_SYS_UTSNAME_H
-#define __SVR4_I386_ABI_L1__
 #include <sys/utsname.h>
 #endif
 
