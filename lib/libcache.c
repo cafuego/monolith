@@ -19,8 +19,10 @@
 #endif
 
 #include "monolith.h"
-#include "libmono.h"
+#include "btmp.h"
+#include "routines.h"
 #include "sql_user.h"
+#include "libfriends.h"
 #include "sql_useruser.h"
 
 #define extern
