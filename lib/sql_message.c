@@ -51,7 +51,9 @@ mono_sql_mes_add(message_t *message)
 
     (void) escape_string(message->alias, &alias);
     (void) escape_string(message->subject, &subject);
+time_function(TIME_START);
     (void) escape_string(message->content, &content);
+printf("\nElapsed time: %f\n", time_function(TIME_STOP));
     (void) escape_string(message->reply_alias, &reply_alias);
 
     /*

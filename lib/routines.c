@@ -26,6 +26,7 @@
 
 #include <time.h>
 #include <unistd.h>
+#include <sys/time.h>
 
 #include "monolith.h"
 #include "telnet.h"
@@ -41,6 +42,27 @@
 #include "userfile.h"
 
 static struct termio stty0;	/* SUN terminal settings */
+
+
+float
+time_function(const int action)
+{
+    static struct timeval start_time;
+    struct timeval stop_time;
+    float seconds = 0;
+
+    struct timezone porcupine;  /* placeholder in gettimeofday call */
+
+    if (action == TIME_START)
+	gettimeofday(&start_time, &porcupine);
+    else {
+	gettimeofday(&stop_time, &porcupine);
+	if ((seconds = stop_time.tv_sec - start_time.tv_sec) > 180)
+	    return seconds;
+        seconds = (stop_time.tv_usec - start_time.tv_usec);
+    }
+    return seconds / 1000000;
+}
 
 /* date()
  * return value points to static buffer, must be used
