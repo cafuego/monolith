@@ -226,6 +226,11 @@ function list_x_messages($username,$location) {
     $result = MYSQL_QUERY("SELECT w.id AS id,u.username AS user,w.sender AS sender,w.i_sender AS i_sender,w.recipient AS recipient,w.message AS message,DATE_FORMAT(w.date, '%H:%i') AS date FROM webx AS w LEFT JOIN user AS u ON u.id=w.sender WHERE w.recipient=$user_id AND w.status='unread' AND w.i_recipient='web' ORDER BY w.date ASC");
     $number = MYSQL_NUMROWS($result);
     if ($number) {
+
+        // Play sound file :)
+        //
+        messagesound();
+
         if($number == 1)
             addimage( "You have 1 new eXpress message" );
         else
@@ -381,6 +386,12 @@ function colorize($doing) {
 function errorsound() {
 
     echo "\n    <embed src=\"/bbs/sound/error.aiff\" type=\"audio/x-aiff\" height=\"0\" width=\"0\" autoplay=\"true\" autostart=\"true\" hidden=\"false\" loop=\"false\" bgcolor=\"#000\">\n";
+    echo "    </embed>\n\n";
+}
+
+function messagesound() {
+
+    echo "\n    <embed src=\"/bbs/sound/message.aiff\" type=\"audio/x-aiff\" height=\"0\" width=\"0\" autoplay=\"true\" autostart=\"true\" hidden=\"false\" loop=\"false\" bgcolor=\"#000\">\n";
     echo "    </embed>\n\n";
 }
 
