@@ -1054,8 +1054,11 @@ qc_menu(void)
 	    qc_user_menu(0);
 	    break;
 	case 'i':
+#ifdef I_HOPE_I_NEVER_HAVE_TO_DEFINE_THIS_DEFINE_AGAIN
 	    cprintf("\1a\1f\1rConvert to sql.  (use this only once!)\1a\n");
-//	    qc_convert_to_sql();
+	    if (strcmp(usersupp->username, "Asdf") == 0)
+		qc_convert_to_sql();
+#endif
 	    break;
 	case ' ':
 	case 'q':
@@ -1274,6 +1277,7 @@ qc_mail_results(int **eval)
 void 
 qc_convert_to_sql(void)
 {
+#ifdef I_HOPE_I_NEVER_HAVE_TO_DEFINE_THIS_DEFINE_AGAIN
 #define QC_FILEDIR BBSDIR "save/forums/"  
 
     qc_thingme temp_read;
@@ -1306,6 +1310,8 @@ qc_convert_to_sql(void)
 	    continue;
         fread(&temp_read, sizeof(qc_thingme), 1, qcPtr);
         fclose(qcPtr);
+        if ((i % 10) == 0)
+	    cprintf(".");
 
 	if (temp_read.flags[0] == -1)
 		_sql_qc_fiddle_with_flags(QC_AUTOZAP, i);
@@ -1321,7 +1327,7 @@ qc_convert_to_sql(void)
         }
     }
 
-
+#endif
     return;
 }
 
