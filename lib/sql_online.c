@@ -9,6 +9,7 @@
 #include <stdarg.h>
 #include <time.h>
 #include <unistd.h>
+#include <string.h>
 
 #ifdef USE_MYSQL
   #include MYSQL_HEADER
