@@ -1344,10 +1344,19 @@ format_express(express_t * Catchxs)
 
 	    case OR_LOGIN:
 	    case OR_LOGOUT:
-		if (vriend)
-		    sprintf(buf, _("\1f\1b*** \1gYour friend %s\1g just logged %s \1w(\1g%02d:%02d\1w) \1b***\1a\n"), from, (Catchxs->override == OR_LOGIN) ? "\1gon" : "\1roff", tp->tm_hour, tp->tm_min);
-		else
-		    sprintf(buf, _("\1f\1b*** %s\1g just logged %s \1w(\1g%02d:%02d\1w) \1b***\1a\n"), from, (Catchxs->override == OR_LOGIN) ? "\1gon" : "\1roff", tp->tm_hour, tp->tm_min);
+		if (vriend) {
+			if ( Catchxs->override == OR_LOGIN ) {
+		    sprintf(buf, _("\1f\1b*** \1gYour friend %s\1g just logged \1gon \1w(\1g%02d:%02d\1w) \1b***\1a\n"), from, tp->tm_hour, tp->tm_min);
+			} else {
+		    sprintf(buf, _("\1f\1b*** \1gYour friend %s\1g just logged \1roff \1w(\1g%02d:%02d\1w) \1b***\1a\n"), from, tp->tm_hour, tp->tm_min);
+			}
+		} else {
+                       if ( Catchxs->override == OR_LOGIN ) {
+		    sprintf(buf, _("\1f\1b*** %s\1g just logged \1gon \1w(\1g%02d:%02d\1w) \1b***\1a\n"), from, tp->tm_hour, tp->tm_min);
+			} else {
+		    sprintf(buf, _("\1f\1b*** %s\1g just logged \1roff \1w(\1g%02d:%02d\1w) \1b***\1a\n"), from, tp->tm_hour, tp->tm_min);
+			}
+		}
 		break;
 
 	    case OR_KICKOFF:
