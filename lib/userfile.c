@@ -557,9 +557,9 @@ read_profile(const char *name)
     if (fstat(fd, &buf) == -1)
 	return "";
 
-    p = (char *) xmalloc(buf.st_size);
+    p = (char *) xmalloc((unsigned)buf.st_size);
     /* needs more error checking */
-    read(fd, p, buf.st_size);
+    read(fd, p, (unsigned)buf.st_size);
     (void) close(fd);
     return p;
 }

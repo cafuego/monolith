@@ -27,7 +27,7 @@
 #include "libshix.h"
 
 char *
-post_to_file(int quad, long number, const char *name)
+post_to_file(unsigned int quad, unsigned long number, const char *name)
 {
     static char filename[100];	/* too much probably */
 
@@ -59,7 +59,7 @@ post_to_file(int quad, long number, const char *name)
 *************************************************/
 
 int
-save_message(const char *mtmp, int room, const char *rec)
+save_message(const char *mtmp, unsigned int room, const char *rec)
 {
     int tries = 0;
     char recip[L_USERNAME + 1];
@@ -104,7 +104,7 @@ save_message(const char *mtmp, int room, const char *rec)
  * -1 - error 
  */
 int
-copy_message(int from, long number, int to, const char *mailbox)
+copy_message(unsigned int from, unsigned long number, unsigned int to, const char *mailbox)
 {
     char to_file[100], from_file[100];
 
@@ -117,7 +117,7 @@ copy_message(int from, long number, int to, const char *mailbox)
 }
 
 int
-move_message(int from, long number, int to, const char *mailbox)
+move_message(unsigned int from, unsigned long number, unsigned int to, const char *mailbox)
 {
     char to_file[100], from_file[100];
     int ret;
@@ -130,7 +130,7 @@ move_message(int from, long number, int to, const char *mailbox)
 }
 
 int
-trash_message(int quad, long number, const char *mailbox)
+trash_message(unsigned int quad, unsigned long number, const char *mailbox)
 {
     if (quad != 1) {		/* don't copy deleted mails to the   */
 	(void) copy_message(quad, number, 5, NULL);	/* garbagequad.      */
@@ -141,7 +141,7 @@ trash_message(int quad, long number, const char *mailbox)
 
 
 int
-delete_message(int quad, long number, const char *mailbox)
+delete_message(unsigned int quad, unsigned long number, const char *mailbox)
 {
 
     if (unlink(post_to_file(quad, number, mailbox)) != 0) {
@@ -183,7 +183,7 @@ fpgetfield(FILE * fp, char *string)
 *************************************************/
 
 int
-change_QL(int quad_num, const char *QLname, int how)
+change_QL(unsigned int quad_num, const char *QLname, int how)
 {
     user_t *QL;
     int i, has_ql_flag;
@@ -326,7 +326,7 @@ may_write_room(user_t user, room_t room, int a)
 
 /* this function returns the quickroom structure of room 'num' */
 room_t
-read_quad(int num)
+read_quad(unsigned int num)
 {
     room_t scratch;
     if (!shm) {
@@ -392,8 +392,8 @@ dump_quickroom()
 
 
 /* return the first free number to post */
-long
-get_new_post_number(int quadno)
+unsigned long
+get_new_post_number(unsigned int quadno)
 {
     room_t *p;
 
@@ -415,7 +415,7 @@ get_new_post_number(int quadno)
     return p->highest;
 }
 
-long
+unsigned long
 get_new_mail_number(const char *name)
 {
     long a;
@@ -443,7 +443,7 @@ get_new_mail_number(const char *name)
     return a;
 }
 
-int
+unsigned int
 get_room_number(const char *name)
 {
     int i;
@@ -458,7 +458,7 @@ get_room_number(const char *name)
 * returns 1 on successfull kickout
 *************************************************/
 int
-kickout(const char *user, int room)
+kickout(const char *user, unsigned int room)
 {
 
     user_t *userP;
@@ -511,7 +511,7 @@ kickout(const char *user, int room)
 *************************************************/
 
 int
-invite(const char *name, int room)
+invite(const char *name, unsigned int room)
 {
 
     user_t *user;
@@ -714,7 +714,7 @@ make_auto_message(const char *tofile, const char *fromfile, post_t mesg)
 #define LINE_LENGTH		(L_SUBJECT + L_USERNAME + 20)
 
 char *
-search_msgbase(char *string, int room, long start, user_t * user)
+search_msgbase(char *string, unsigned int room, unsigned long start, user_t * user)
 {
 
     int match = 0;

@@ -120,7 +120,7 @@ mono_sql_uu_is_on_list(unsigned int user_id, unsigned int friend_id, int flags)
 
 /* add entry */
 int
-mono_sql_uu_add_entry(unsigned int user_id, unsigned int friend_id, int flag)
+mono_sql_uu_add_entry(unsigned int user_id, unsigned int friend_id, unsigned int flag)
 {
     MYSQL_RES *res;
     int ret;
@@ -187,7 +187,7 @@ mono_sql_uu_kill_user(unsigned int user_id)
 }
 
 int
-mono_sql_uu_add_quickx(unsigned int user_id, unsigned int friend_id, unsigned int quickx)
+mono_sql_uu_add_quickx(unsigned int user_id, unsigned int friend_id, int quickx)
 {
     MYSQL_RES *res;
     int ret;

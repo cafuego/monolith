@@ -475,7 +475,8 @@ int
 copy(const char *source, const char *dest)
 {
 
-    int fd1, fd2, a;
+    int fd1, fd2;
+    unsigned int a;
     char buf[BUFSIZE + 1];
 
     if (fexists(dest)) {

@@ -17,6 +17,32 @@
 #include "sql_utils.h"
 #include "sql_userforum.h"
 #include "sql_forum.h"
+#include "sql_message.h"
+
+int
+mono_sql_uf_unread_room(unsigned int usernum)
+{
+    MYSQL_RES *res;
+    MYSQL_ROW row;
+    int ret = 0;
+
+    ret = mono_sql_query(&res, "SELECT forum_id FROM %s,%s WHERE %s.user_id=%d AND %s.id=%s.forum_id AND %s.lastseen < %s.highest",
+      F_TABLE, UF_TABLE, UF_TABLE, usernum, F_TABLE, UF_TABLE, UF_TABLE, F_TABLE );
+
+    /*
+     * No unread messages...
+     */
+    if (mysql_num_rows(res) == 0) {
+        (void) mysql_free_result(res);
+        return 0;
+    }
+
+    row = mysql_fetch_row(res);
+    sscanf(row[0],"%d", &ret);
+    (void) mysql_free_result(res);
+
+    return ret;
+}
 
 int
 mono_sql_uf_update_lastseen(unsigned int usernum, unsigned int forum)
@@ -38,6 +64,26 @@ mono_sql_uf_update_lastseen(unsigned int usernum, unsigned int forum)
     (void) mono_sql_query( &res, "UPDATE %s SET lastseen=%u WHERE forum_id=%u AND user_id=%u", UF_TABLE, lastseen, forum, usernum);
     (void) mysql_free_result(res);
     return 0;
+}
+
+int
+mono_sql_uf_get_unread(unsigned int forum, unsigned int lastseen)
+{
+    MYSQL_RES *res;
+    MYSQL_ROW row;
+    int ret = 0;
+
+    ret = mono_sql_query(&res, "SELECT COUNT(*) FROM %s WHERE message_id>%d AND forum_id=%d", M_TABLE, lastseen, forum);
+    if (ret == -1) {
+        (void) mysql_free_result(res);
+        return -1;
+    }
+
+    row = mysql_fetch_row(res);
+    sscanf(row[0],"%d", &ret);
+    (void) mysql_free_result(res);
+
+    return ret;
 }
 
 int

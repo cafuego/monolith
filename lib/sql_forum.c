@@ -138,7 +138,7 @@ mono_sql_f_update_forum(unsigned int forum_id, const room_t * q)
 
 }
 int
-mono_sql_f_kill_forum(int forum_id)
+mono_sql_f_kill_forum(unsigned int forum_id)
 {
 
     MYSQL_RES *res;
