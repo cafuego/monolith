@@ -272,9 +272,6 @@ change_passwd(user_t * user)
 	cprintf(_("Please enter a password: "));
 	getline(pwread, -19, 1);
 
-	if ((!strlen(pwread)) && (user->timescalled > 0))
-	    return;
-
 	if (strlen(pwread)) {
 	    cprintf(_("Please enter it again: "));
 	    getline(pwtest, -19, 1);
@@ -527,7 +524,6 @@ main(int argc, char *argv[])
     }
     laston = usersupp->laston_from;
     usersupp->laston_from = time(&login_time);
-    usersupp->timescalled++;
     mono_sql_u_increase_login_count( usersupp->usernum );
     strcpy(previous_host, usersupp->lasthost);
     strncpy(usersupp->lasthost, hname, L_HOSTNAME);
