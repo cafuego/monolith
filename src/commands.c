@@ -388,12 +388,26 @@ sysopuser_menu()
 	    cprintf("\1f\1wAdmin cmd: \1rUser cmd: \1a");
 	}
 
-	cmd = get_single_quiet("EkKLnv\r\b ?");
+	cmd = get_single_quiet("EDkKLnv\r\b ?");
 
 	if (strchr("BEKLvn", cmd))
 	    nox = 1;
 
 	switch (cmd) {
+	    case 'D': {
+		char user[L_USERNAME+1];
+		cprintf("\1f\1rDelete a user.\1a\n");
+		cprintf("User to be deleted: ");
+		getline( user, L_USERNAME, 1 );
+		if ( strlen( user ) < 1 ) break;
+		cprintf( "Are you sure you want to delete %s ? (y/n)", user );
+		if ( yesno() == YES ) {
+   	 		del_user( user );
+		}
+		}
+		break;
+
+
 	    case 'E':
 		cprintf("\1f\1rEdit a user.\1a\n");
 		useradmin( NULL );
