@@ -60,7 +60,7 @@ random_goto()
             cprintf("\n\1w666.\1yCthulhu\1w> \1rGimme a cookie! \1w");
             getline(april_fools, 64, 1);
         }
-        if( strstr(april_fools, " no") == NULL) {
+        if( strstr(april_fools, " no") == NULL)
             cprintf("\n\1g*buurrRp*  (:\n");
         else
             cprintf("\n\1g*pout*  ):\n");
