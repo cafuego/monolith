@@ -19,7 +19,10 @@
     require ('engine/routines.inc');
     require ('engine/html.inc');
 
+    $handler = rawurldecode($handler);
     echo "<!-- handler: '$handler' -->\n";
+    echo "<p><b>DEBUG</b> handler: '$handler'\n";
+    echo "<p><b>DEBUG</b> username: '$username'\n";
 
     // Get username and print off proper title.
     //
