@@ -1,0 +1,37 @@
+# $Id$
+
+# Access info for connecting to the password database.
+# Replace username and password with a mysql account
+# you created yourself.
+#
+Auth_MySQL_Info localhost username password
+
+# This is where the BBS website lives, edit to taste.
+#
+<Location /bbs>
+
+  # Set up PHP support and make sure index.phtml loads
+  # as default page. Force any subdir calls to be run
+  # through PHP too.
+  #
+  AddType application/x-httpd-php3 .php3 .phtml
+  ForceType application/x-httpd-php3
+  DirectoryIndex index.phtml
+
+  # Set up access to the BBS database for identifying
+  # user logins.
+  #
+  AuthName "Monolith BBS"
+  Auth_MySQL_DB bbs
+  Auth_MySQL_Password_Table user
+  Auth_MySQL_Username_Field username
+  Auth_MySQL_Password_Field password
+  AuthType Basic
+
+  # I don't know what this does, but it looks useful.
+  #
+  <Limit GET>
+    require valid-user
+  </Limit>
+
+</Location>
