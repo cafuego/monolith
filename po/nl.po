@@ -12,6 +12,8 @@ msgid ""
 "\n"
 "\001f\001gThere are no users online via the web.\n"
 msgstr ""
+"\n"
+"\001f\001gEr zijn geen gebruikers online via het web.\n"
 
 #: lib/sql_web.c:167
 msgid ""
@@ -78,6 +80,8 @@ msgid ""
 "OH NO!!!!!!! A SEGFAULT!!!!!\n"
 " "
 msgstr ""
+"OH NEE!!!!!!! EEN SEGMENTATIEFOUT!!!!!\n"
+" "
 
 #: src/main.c:218 src/main.c:322
 msgid "Incorrect login.\n"
@@ -145,6 +149,10 @@ msgid ""
 "\001g\001f%s \001yis still sending you an %s %s.\n"
 "\001a"
 msgstr ""
+"\n"
+"\n"
+"\001g\001f%s \001yis is nog bezig je een %s %s te sturen.\n"
+"\001a"
 
 #: src/main.c:653
 msgid "\001f\001gHit any key to continue...\001a"
@@ -164,11 +172,11 @@ msgstr ""
 
 #: src/main.c:668
 msgid "\001f\001gYes.\n"
-msgstr ""
+msgstr "\001f\001gJa.\n"
 
 #: src/main.c:672
 msgid "\001f\001gNo.\n"
-msgstr ""
+msgstr "\001f\001gNee.\n"
 
 #: src/main.c:774
 msgid ""
@@ -208,7 +216,7 @@ msgstr "\001f\001gBekende %s.\n"
 
 #: src/read_menu.c:287
 msgid "\001f\001gLogout.\001a"
-msgstr ""
+msgstr "\001f\001gUitloggen.\001a"
 
 #: src/read_menu.c:345
 msgid "\001f\001gInterBBS Wholist.\001a\n"
