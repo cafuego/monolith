@@ -55,7 +55,7 @@ function show_wholist($username,$location) {
                 $doing = colorize($doing);
             }
 
-            if( strstr($doing, "(null)") )
+            if( $doing == "(null)" || $doing == "(null) ") || $doing == null )
                 $doing == "";
 
             print "<tr>\n";
