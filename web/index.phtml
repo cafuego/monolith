@@ -61,12 +61,14 @@
     echo "  <tr>\n";
     echo "    <td width=\"150\" align=\"left\">\n";
 
-    // Buttons!!!!
+    // Buttons (where available)
+    //
+    html_print_buttons($username, $starttime, $REQUEST_URI);
 
     echo "    </td>\n";
     echo "    <td align=\"left\">\n";
 
-    // Main code switch block.
+    // Main code switch block
     //
     main_menu($username, $REQUEST_URI );
 
@@ -75,10 +77,8 @@
     echo "</table>\n";
     echo "</div>\n";
 
-    if( $action != "q" )
+    // Footer (where available)
+    //
     html_print_foot($username, $starttime, $REQUEST_URI);
     
 ?>
-
-</body>
-</html>

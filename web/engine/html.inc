@@ -242,6 +242,9 @@ function html_print_foot($username, $starttime, $location) {
     $elapsed = ($end[0]-$start[0])+($end[1]-$start[1]);
     printf( "<!-- Gen: %.4f sec. -->\n", $elapsed );
 
+    echo "</body>"\n";
+    echo "</html>"\n";
+
 }
 
 function html_are_there_xs($username) {
@@ -252,6 +255,26 @@ function html_are_there_xs($username) {
     $result = MYSQL_QUERY("SELECT w.id AS id,u.username AS user,w.sender AS sender,w.i_sender AS i_sender,w.recipient AS recipient,w.message AS message,DATE_FORMAT(w.date, '%H:%i') AS date FROM webx AS w LEFT JOIN user AS u ON u.id=w.sender WHERE w.recipient=$user_id AND w.status='unread' AND w.i_recipient='web' ORDER BY w.date ASC");
     return MYSQL_NUMROWS($result);
 
+}
+
+function html_print_buttons($username, $location) {
+
+    $url_array=explode("/",$location);
+
+    // Don't show menu if we're logging off.
+    //
+    if($url_array[3] == "q")
+        return;
+
+    echo "<a href=\"/\">". addbutton("Monolith") ."</a><br>\n";
+    echo "<a href=\"/bbs/index.phtml/\">". addbutton("Main Page") ."</a><br>\n";
+    echo "<p>&nbsp;</p>\n";
+    echo "<a href=\"$location\">". addbutton("Check X Messages") ."</a><br>\n";
+    echo "<a href=\"/bbs/index.phtml/w\">". addbutton("View Wholist") ."</a><br>\n";
+    echo "<a href=\"/bbs/index.phtml/l\">". addbutton("All Quadrants") ."</a><br>\n";
+    echo "<a href=\"/bbs/index.phtml/u\">". addbutton("Unread Messages") ."</a><br>\n";
+    echo "<p>&nbsp;</p>\n";
+    echo "<a href=\"/bbs/index.phtml/q\">". addbutton( "Log out" ) ."</a><br>\n";
 }
 
 ?>

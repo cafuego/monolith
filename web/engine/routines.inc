@@ -334,12 +334,25 @@ function addimage( $text ) {
 
 }
 
+function addbutton( $text ) {
+
+    // To change all images in one go.
+    // Image parser only knows basics tho!
+    //
+    $colour = "yellow";
+    $text = rawurlencode($text);
+
+    return "<img src=\"/bbs/image.phtml/Arial_I,18,$colour/$text/\" alt=\"[ button: $text ]\">\n";
+
+}
+
+
 function errorimage( $text ) {
 
     $text = rawurlencode($text);
 
     echo "<div align=\"center\">\n";
-    echo "<img src=\"/bbs/image.phtml/Tahoma_B,18,red/$text/\" alt=\"[ image: ". rawurldecode($text) ." ]\">\n";
+    echo "<img src=\"/bbs/image.phtml/Tahoma_B,18,red/$text/\" alt=\"[ image: $text ]\">\n";
     echo "</div>\n";
 
 }
