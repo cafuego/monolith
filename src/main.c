@@ -219,12 +219,10 @@ enter_passwd(const char *username)
     (void) getline(pwtest, -19, 1);
 
     if (strlen(pwtest) == 0) {
-        xfree(user);
 	failures++;
 	return FALSE;
     }
     if (mono_sql_u_check_passwd(user->usernum, pwtest) == TRUE) {
-        xfree(user);
 	return TRUE;
     }
 
@@ -235,7 +233,6 @@ enter_passwd(const char *username)
 	cprintf("Too many failures.\n");
 	logoff(-1);
     }
-    xfree(user);
     return FALSE;
 }
 
