@@ -1,5 +1,9 @@
 <?
 
+ /*
+  * $id$
+  */
+
 function enter_message($username, $quad, $current, $action) {
 
     // Check user priv.

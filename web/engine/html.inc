@@ -1,5 +1,9 @@
 <?
 
+ /*
+  * $id$
+  */
+
 function print_title($username, $location) {
 
     // Assign values so we can use 'em.

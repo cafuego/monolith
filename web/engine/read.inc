@@ -1,5 +1,9 @@
 <?
 
+ /*
+  * $id$
+  */
+
 function read_message($username, $quad, $current, $direction) {
 
     // Check user priv.

@@ -1,5 +1,9 @@
 <?
 
+ /*
+  * $id$
+  */
+
 function list_quads($username) {
 
     // Check user priv.

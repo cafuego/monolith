@@ -1,5 +1,9 @@
 <?
 
+ /*
+  * $id$
+  */
+
 function list_messages($username, $quad) {
 
     // Check user priv.

@@ -1,5 +1,9 @@
 <?
 
+ /*
+  * $id$
+  */
+
 $check = true;
 $persistent_connections = true;
 
