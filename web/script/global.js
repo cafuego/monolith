@@ -22,7 +22,7 @@ function setStatus( text ) {
 
     // Set status window content to `text'.
     //
-    window.status = text;
+    status = text;
     return true;
 
 }
