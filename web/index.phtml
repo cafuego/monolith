@@ -24,7 +24,7 @@
 
     // Get username and print off proper title.
     //
-    $username = getenv("REMOTE_USER");
+    $username = getenv("PHP_AUTH_USER");
 
     require('engine/html.inc');
 

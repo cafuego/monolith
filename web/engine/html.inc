@@ -7,6 +7,8 @@
 function html_print_title($username, $location)
 {
 
+    global $BBSNAME;
+
     // Assign values so we can use 'em.
     $url_array = explode("/", $location);
     $action = $url_array[3];	// What action?

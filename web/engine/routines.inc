@@ -10,6 +10,7 @@ $persistent_connections = false;
 function
 connect_db()
 {
+    global $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASS, $MYSQL_DATABASE;
 
     @mysql_connect($MYSQL_HOST, $MYSQL_USER, $MYSQL_PASS) OR DIE("Unable to connect to sql server.");
     @mysql_select_db($MYSQL_DATABASE) or die("Unable to select database");

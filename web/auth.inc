@@ -100,7 +100,7 @@
     auth_permission_denied();
     exit;
   } else {
-    if(!(auth_verify_password( $PHP_AUTH_USER, $PHP_AUTH_PW )))
+    if( (auth_verify_password( $PHP_AUTH_USER, $PHP_AUTH_PW )) == false) {
       Header("WWW-Authenticate: Basic realm=\"$BBSNAME BBS\"");
       Header("HTTP/1.0 401 Unauthorized");
       auth_head();
