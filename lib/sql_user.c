@@ -218,7 +218,7 @@ mono_sql_read_profile(unsigned int user_id, char ** profile )
     MYSQL_RES *res;
     MYSQL_ROW row;
 
-    i = mono_sql_query(&res, "SELECT proflie FROM " U_TABLE " WHERE id=%u", user_id);
+    i = mono_sql_query(&res, "SELECT profile FROM " U_TABLE " WHERE id=%u", user_id);
 
     if (i == -1) {
 	fprintf(stderr, "No results from query.\n");
@@ -235,6 +235,38 @@ mono_sql_read_profile(unsigned int user_id, char ** profile )
     *profile = (char *) xmalloc( strlen(row[0]) * sizeof(char) );
 
     strcpy( *profile, row[0] );
+
+    mono_sql_u_free_result(res);
+    return 0;
+}
+
+int
+mono_sql_write_profile(unsigned int user_id, const char * profile )
+{   
+    int i;
+    MYSQL_RES *res;
+    MYSQL_ROW row;
+    char *p2;
+
+    i = escape_string( profile, &p2 );
+
+    if (i == -1) {
+	fprintf(stderr, "Can't escape query.\n");
+        return -1;
+    }   
+
+    i = mono_sql_query(&res, "UPDATE " U_TABLE " set profile='%s' WHERE id=%u", p2, user_id);
+
+    xfree( p2 );
+
+    if (i == -1) {
+	fprintf(stderr, "No results from query.\n");
+        return -1;
+    }   
+
+    if (mysql_num_rows(res) != 1) {
+	return -1;
+    }
 
     mono_sql_u_free_result(res);
     return 0;
