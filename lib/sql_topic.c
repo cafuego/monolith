@@ -40,9 +40,10 @@ mono_sql_t_create_topic( const topic_t * top)
 	printf("could not escape topicname (#%u).\n", top->topic_id);
 	return -1;
     }
+
     ret = mono_sql_query(&res, "INSERT INTO " T_TABLE
-	 " (topic_id,forum_id,name) " "VALUES (%u,%u,'%s')" 
-	   ,top->topic_id, esc_name, top->forum_id);
+	 " (topic_id,name) " "VALUES (%u,%u,'%s')" 
+	   ,top->topic_id, esc_name );
 
     xfree(esc_name);
     return ret;
@@ -102,7 +103,7 @@ mono_sql_t_updated_highest( unsigned int forum, unsigned int topic, unsigned int
 }
 
 int
-mono_sql_t_get_new_message_id( unsigned int forum, unsigned int topic, unsigned int *highest )
+mono_sql_t_get_new_message_id( unsigned int topic, unsigned int *highest )
 {
 
     MYSQL_RES *res;
@@ -110,7 +111,7 @@ mono_sql_t_get_new_message_id( unsigned int forum, unsigned int topic, unsigned 
     int ret = 0;
     unsigned int max;
 
-    ret = mono_sql_query(&res, "SELECT highest FROM " T_TABLE " WHERE forum_id=%u AND topic_id=%u", forum, topic );
+    ret = mono_sql_query(&res, "SELECT highest FROM " T_TABLE " WHERE topic_id=%u", topic );
 
     if (ret == -1) {
         (void) mono_sql_u_free_result(res);
@@ -132,7 +133,7 @@ mono_sql_t_get_new_message_id( unsigned int forum, unsigned int topic, unsigned 
     max++;
 
     ret = mono_sql_query(&res, "UPDATE " T_TABLE 
-          " SET highest=%u WHERE id=%u", max, forum);
+          " SET highest=%u WHERE id=%u", max, topic);
 
     (void) mono_sql_u_free_result(res);
 
