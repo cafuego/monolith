@@ -147,6 +147,16 @@ function format_username($username,$user, $alias, $flag) {
         return format_user($user);
 }
 
+function format_js_username($username,$user, $alias, $flag) {
+
+    if( $flag == "anon" ) {
+        $usernum = get_usernum($username);
+        $author = get_usernum($user);
+        return format_js_alias($alias);
+    } else
+        return format_js_user($user);
+}
+
 function format_user($user) {
     IF($user == ""):
         return "<font color=\"#ff0000\">Deleted User</font>";
@@ -155,6 +165,16 @@ function format_user($user) {
         return "<font color=\"#ff0000\">Deleted User</font>";
     ENDIF;
     return "<font color=\"#ffff00\">$user</font>";
+}
+
+function format_js_user($user) {
+    IF($user == ""):
+        return "Deleted User";
+    ENDIF;
+    IF($user == "NULL" ):
+        return "Deleted User";
+    ENDIF;
+    return "$user";
 }
 
 function format_alias($alias,$mine) {
@@ -170,6 +190,14 @@ function format_alias($alias,$mine) {
         else
             return "<font color=\"#0000ff\">Anon</font> &quot;<font color=\"#0000ff\">$alias</font>&quot; (<font color=\"#0000ff\">This is your post</font>)";
 
+}
+
+function format_js_alias($alias) {
+
+    if($alias == "" || $alias == "(null)")
+        return "Anonymous User";
+    else
+        return "Anon '$alias'";
 }
 
 function format_subject($subject) {

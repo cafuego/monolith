@@ -67,6 +67,7 @@ function list_messages($username, $quad, $listunread) {
             $date = mysql_result($result,$i,"date");
             $subject = htmlspecialchars($subject);
             $user = format_username($username,$user,$alias,$flag);
+            $js_user = format_js_username($username,$user,$alias,$flag);
             $subject = format_subject($subject);
 
             echo "<tr>\n";
@@ -80,7 +81,7 @@ function list_messages($username, $quad, $listunread) {
  
             // Don't show date if anon post *sigh*
             //
-            echo "     <a href=\"/bbs/index.phtml/r/$quad/$m_id\">$subject</a> <font color=\"#00cc00\">by</font> $user";
+            echo "     <a href=\"/bbs/index.phtml/r/$quad/$m_id\" ". mouseover("Read message $m_id by $js_username in $forum") .">$subject</a> <font color=\"#00cc00\">by</font> $user";
             if( $flag != "anon"  )
                 echo " <font color=\"#00cc00\">on $date CET</font><br>\n";
             else
