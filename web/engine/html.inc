@@ -213,7 +213,7 @@ function html_print_foot($username, $starttime, $location) {
         echo "<hr size=\"1\" width=\"400\" align=\"center\">\n";
 
         echo "<div align=\"center\">\n";
-        addbutton("X Messages", "$location");
+        addbutton("Check Xes", "$location");
         addbutton("Wholist", "/bbs/index.phtml/w");
         addbutton("Unread", "/bbs/index.phtml/u");
         addbutton("Quadrants", "/bbs/index.phtml/l");
@@ -272,7 +272,7 @@ function html_print_buttons($username, $location) {
     echo "". addbutton("Monolith", "/") ."<br>\n";
     echo "". addbutton("Main Page", "/bbs/index.phtml/") ."<br>\n";
     echo "". addbutton(" ", "") ."<br>\n";
-    echo "". addbutton("X Messages", "$location") ."<br>\n";
+    echo "". addbutton("Check Xes", "$location") ."<br>\n";
     echo "". addbutton("Wholist", "/bbs/index.phtml/w") ."<br>\n";
     echo "". addbutton("Unread", "/bbs/index.phtml/u") ."<br>\n";
     echo "". addbutton("Quadrants", "/bbs/index.phtml/l") ."<br>\n";
