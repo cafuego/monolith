@@ -26,11 +26,11 @@ function config_account( $username ) {
     echo "  <input type=\"hidden\" name=\"handler\" value=\"h\">\n";
     echo "  <input type=\"hidden\" name=\"username\" value=\"$username\">\n";
 
-    echo "  <table align=\"left\" border=\"0\" cellpadding=\'2\" cellspacing=\"2\">\n";
+    echo "  <table align=\"left\" border=\"0\" cellpadding=\"2\" cellspacing=\"2\">\n";
     if( strstr( $user->hiddeninfo, "name" ))
         echo "<tr><td><input type=\"checkbox\" name=\"name\"> Real name:</td><td>$user->realname</td></tr>\n";
     else
-        echo "<tr><td><input type=\"checkbox\" name=\"name\" checked> Real name: $user->realname</td></tr>\n";
+        echo "<tr><td><input type=\"checkbox\" name=\"name\" checked> Real name:</td><td>$user->realname</td></tr>\n";
 
     if( strstr( $user->hiddeninfo, "address" ))
         echo "<tr><td><input type=\"checkbox\" name=\"address\"> Address:</td><td>$user->address</td></tr>\n";
@@ -76,6 +76,8 @@ function config_account( $username ) {
     echo "  <p align=\"center\">\n";
     echo "  <input type=\"submit\" value=\"Update\">\n";
     echo "</form>\n";
+
+    echo "<br clear=\"all\">\n";
 
     // Image.
     //
