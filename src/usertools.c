@@ -869,7 +869,9 @@ test_ansi_colours(user_t * user)
 void
 _edit_profile(const unsigned int a, const long b, void *c)
 {
+    FILE *fp = NULL;
     char filename[L_FILENAME];
+    char *profile = NULL;
 
     cprintf(_("Are you sure you want to edit your profile? (y/n) "));
     if (yesno() == NO) {
@@ -877,8 +879,51 @@ _edit_profile(const unsigned int a, const long b, void *c)
     }
 
     sprintf(filename, "%s/profile", getuserdir(who_am_i(NULL)));
+
+    /*
+     * Get profile data from SQL and store in file.
+     */
+    if((fp = fopen(filename, "w") == NULL) {
+        log_it("errors", "Can't open profile: %s", filename);
+        cprintf(_("\1f\1rUnable to fopen() profile file!\n"));
+        return;
+    }
+
+    if( (mono_sql_read_profile(user->usernum, &profile)) == -1) {
+        xfree(profile);
+        log_it("errors", "mono_sql_read_profile() returned -1");
+        cprintf(_("\1f\1rUnble to fetch profile from database!\n"));
+        return;
+    }
+
+    fprintf(fp, "%s", profile );
+    fclose(fp);
+    xfree(profile);
+
+    /*
+     * Edit file.
+     */
     editor_edit(filename);
+
+    /*
+     * Dump profile data back into database.
+     */
+    if( (profile = map_file( filename )) == NULL) {
+        xfree(profile);
+        log_it("errors", "Can't edit profile: %s", filename);
+        cprintf(_("\1f\1rUnable to mmap() profile file contents!\n"));
+        return;
+    }
+
+    if( (mono_sql_write_profile(user->usernum, profile)) == -1) {
+        xfree(profile);
+        log_it("errors", "mono_sql_write_profile() returned -1");
+        cprintf(_("\1f\1rUnble to mmap() file contents!\n"));
+        return;
+    }
+    xfree(profile);
     check_profile_updated();
+    return;
 }
 
 
