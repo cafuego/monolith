@@ -373,8 +373,9 @@ print_system_config()
     xfree(info);
 #endif
 
+    cprintf("\1wTotal Logins                  : \1g%u since %s\1f\1g.\n", shm->login_count, printdate(shm->boot_time, 0) );
     cprintf("\1wMaximum Users Online          : \1g%d.\n", MAXUSERS);
-    cprintf("\1wSleeping timeout              : \1g%d min.\n", TIMEOUT);
+    cprintf("\1wSleeping timeout              : \1g%d minutes.\n", TIMEOUT);
     cprintf("\1wUnused accounts purge after   : \1g%d days.\n", PURGEDAY);
     print_inter_hosts();
     return;
