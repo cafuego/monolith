@@ -67,7 +67,7 @@ class user_t {
     //
     function show_profile() {
        addimage("$this->username's Profile");
-       $this->add_image();
+       $this->add_image("right");
        $this->add_info();
        $this->add_profile();
     }
@@ -111,14 +111,14 @@ class user_t {
 
     // Add user's profile pic if it exists.
     //
-    function add_image() {
+    function add_image($alignment) {
         if( valid_image($this->image)) {
             if( $this->image == "image/gif")
-                echo "<img align=\"right\" src=\"/bbs/pix/gif.php3?$this->id\">\n";
+                echo "<img align=\"$alignment\" src=\"/bbs/pix/gif.php3?$this->id\">\n";
             else if ($this->image == "image/jpg" || $this->image == "image/jpeg" || $this->image == "image/pjpeg")
-                echo "<img align=\"right\" src=\"/bbs/pix/jpeg.php3?$this->id\">\n";
+                echo "<img align=\"$alignment\" src=\"/bbs/pix/jpeg.php3?$this->id\">\n";
             else if ($this->image == "image/png")
-                echo "<img align=\"right\" src=\"/bbs/pix/png.php3?$this->id\">\n";
+                echo "<img align=\"$alignment\" src=\"/bbs/pix/png.php3?$this->id\">\n";
             else {
                 errorimage("Image mime type error: $this->image");
                 return -1;

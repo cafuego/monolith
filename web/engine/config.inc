@@ -32,7 +32,7 @@ function config_account( $username ) {
     echo "</form>\n";
 
     echo "<p align=\"left\">This is the image that is currently in your profile:<p align=\"center\">&nbsp;\n";
-    $user->add_image();
+    $user->add_image("center");
 
 }
 
