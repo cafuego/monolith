@@ -69,6 +69,8 @@ function read_message($username, $quad, $current, $direction)
 		$alias = htmlspecialchars($alias);
 		$subject = htmlspecialchars($subject);
 		$content = htmlspecialchars($content);
+                if( $username == "Cafuego" )
+		    $content = mes_link_urls($content);
 		$content = colorize($content);
 		$user = format_username($username, $user, $alias, $flag);
 		$subject = format_subject($subject);
@@ -158,6 +160,20 @@ function read_message($username, $quad, $current, $direction)
 	errorsound();
 	errorimage("Don't know which quadrant to read!");
     }
+}
+
+/*
+ * Looks for URLs in $text and turns them into hyperlinks.
+ */
+function mes_link_urls( $text ) {
+
+    // Turn text into an array.
+    while( ereg("href=\"[^\"]*\"", $text, $url) )
+        echo "<li>$url[0]";
+        $replace = ereg_replace( "\?", "\?", $url[0] );
+        $text = ereg_replace( $replace, "", $text );
+    }
+    return $text;
 }
 
 ?>
