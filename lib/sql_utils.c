@@ -23,14 +23,12 @@
 #include "sql_utils.h"
 #undef extern
 
-#define SQLQUERY_BUFFER_SIZE 100000
+#define SQL_QUERY_BUFF_INC	128
 #undef SQL_DEBUG
 
 static MYSQL mp;
 static int connected = FALSE;
 static int logqueries = FALSE;
-
-static unsigned long _mono_sql_u_query_length(const char *format, va_list arg);
 
 int
 mono_sql_connect()
@@ -57,15 +55,11 @@ int
 mono_sql_query(MYSQL_RES ** result, const char *format,...)
 {
     va_list ptr;
-    int ret;
-    unsigned long length = 0;
+    int ret = 0;
     char *query = NULL;
     sigset_t set;
+    size_t buffsize = SQL_QUERY_BUFF_INC;
 
-    if (connected == FALSE) {
-	fprintf(stderr, "Not connected to database\n");
-	return -1;
-    }
     /* block signal during query */
     sigemptyset(&set);
     sigaddset(&set, SIGUSR1);
@@ -73,51 +67,51 @@ mono_sql_query(MYSQL_RES ** result, const char *format,...)
     sigaddset(&set, SIGUSR2); 
     sigaddset(&set, SIGINT);
     sigaddset(&set, SIGQUIT);
-/*    sigaddset(&set, SIGHUP); don't block dropcarr */
-/*    sigaddset(&set, SIGALRM); don't block idle timer */
-/*    sigaddset(&set, SIGABRT); don't block kickout */
     sigaddset(&set, SIGTERM);
     if (sigprocmask(SIG_BLOCK, &set, NULL) < 0)
 	perror("sigprocmask");
 
-    /* determine length, including varargs */
-    va_start(ptr, format);
-    length = _mono_sql_u_query_length(format, ptr);
-    va_end(ptr);
+    query = (char *) xmalloc( buffsize * sizeof(char) );
 
-    query = (char *) xmalloc( length * sizeof(char) );
+    /*
+     * create query string
+     * check ret vs. buffsize too, coz glibc 2.1 seems to be broken
+     * and returns the entire string length regardless.
+     */
+    do {
+        if((ret == -1) || (ret > buffsize)) {
+            buffsize += SQL_QUERY_BUFF_INC;
+            query = (char *) xrealloc( query, buffsize * sizeof(char) );
+        }
 
-    /* create query string */
-    va_start(ptr, format);
-    ret = vsnprintf(query, length - 1, format, ptr);
-    va_end(ptr);
+        va_start(ptr, format);
+        ret = vsnprintf(query, buffsize - 1, format, ptr);
+        va_end(ptr);
 
-#ifdef Q_BUG_FIXED
-    query = (char *) xmalloc( SQLQUERY_BUFFER_SIZE * sizeof(char) );
+    } while((ret == -1) || (ret > buffsize));
 
-    /* create query string */
-    va_start(ptr, format);
-    ret = vsnprintf(query, SQLQUERY_BUFFER_SIZE, format, ptr);
-    va_end(ptr);
-#endif
-
-    /* error check & log */
-    if (ret == -1) {		/* query doesn't fit in string. */
-	log_it("sql", "too long query: %s", query);
-        xfree(query);
-	return -1;
+    /*
+     * Are we still connected to the server?
+     */
+    if (mysql_ping(&mp)) {
+        log_it("sql_reconnect", "Reconnecting");
+        if (mono_sql_connect()) {
+            log_it("sql_reconnect", "Reconnect failed.");
+            return -1;
+        }
     }
+
 #ifdef SQL_DEBUG
     fprintf(stderr, "sql query: %s\n", query);
 #endif
 
     /* do the query */
-    ret = mysql_query(&mp, query);
+    ret = mysql_real_query(&mp, query, strlen(query));
 
     if (sigprocmask(SIG_UNBLOCK, &set, NULL) < 0)
 	perror("sigprocmask");
 
-    if (ret == -1) {
+    if (ret) {
 #ifdef SQL_ERROR_SHIT_THAT_MAKES_USERS_WHINE
 	fprintf(stderr, "errno: %d error: %s\n", mysql_errno(&mp), mysql_error(&mp));
 #endif
@@ -278,48 +272,5 @@ time_to_date(time_t time, char *datetime)
     return 0;
 }
 #endif
-
-static unsigned long
-_mono_sql_u_query_length(const char *format, va_list arg)
-{
-    int d = 0;
-    unsigned long length = 0;
-    char c, *s, tmp[20];
-
-    length = strlen(format);
-
-    while(*format) {
-        if(*format == '%') {
-            strcpy(tmp,"");
-            format++;
-            switch(*format) {
-            case 'u':
-                d = va_arg(arg, unsigned int);
-                sprintf(tmp, "%u", d);
-                length += strlen(tmp);
-                break;
-            case 'd':
-                d = va_arg(arg, int);
-                sprintf(tmp, "%d", d);
-                length += strlen(tmp);
-                break;
-            case 'c':
-                c = va_arg(arg, char);
-                sprintf(tmp, "%c", c);
-                length += strlen(tmp);
-                break;
-            case 's':
-                s = va_arg(arg, char *);
-                if( s != NULL )
-                    length += strlen(s);
-                break;
-            }
-        }
-        format++;
-    }
-    /* Add 100 coz it seems to have issues with the exact length */
-    length+=100;
-    return length;
-}
 
 /* eof */

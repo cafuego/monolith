@@ -669,7 +669,7 @@ get_xmessage_destination(char *xmg_dest, const int X_PARAM, char *override)
 	    if (*namePtr) {
 	        if (strchr(namePtr, '@')) 
 	            if (parse_inter_address(namePtr, ruser, rbbs) != 0)
-            	       if (EQ(rbbs, "monolith"))
+            	       if (EQ(rbbs, BBSNAME))
 	                   strcpy(namePtr, ruser);
 
 		strcpy(xmg_dest, namePtr);

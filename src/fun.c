@@ -50,7 +50,7 @@ random_goto()
   
     if((rand() % 10) == 1) {
 	thegoto = mono_sql_random_goto();
-        if(strlen(thegoto))
+        if(strlen(thegoto) && thegoto != NULL)
             cprintf("\1f\1g%s\1a", thegoto);
 	else
             cprintf(_("\1f\1gNo unread %s.\1a"), config.message_pl );
