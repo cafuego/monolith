@@ -13,7 +13,7 @@ CFLAGS += -pedantic -pedantic-errors -w -W \
   -Werror -Wformat \
   -Wimplicit -Wimplicit-int \
   -Wimplicit-function-declaration -Winline \
-  -Wlong-long -Wmain -Wmissing-prototypes \
+  -Wmissing-prototypes \
   -Wmissing-declarations -Wnested-externs -Wno-import \
   -Wparentheses -Wpointer-arith -Wredundant-decls \
   -Wreturn-type -Wshadow -Wstrict-prototypes -Wswitch
