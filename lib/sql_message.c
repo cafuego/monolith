@@ -52,7 +52,7 @@ mono_sql_mes_add(message_t *message, unsigned int forum)
     MYSQL_RES *res;
     int ret = 0;
     char *alias = NULL, *subject = NULL, *content = NULL;
-  
+
     if( (message->num = mono_sql_f_get_new_message_id(forum)) == 0)
         return 12;
 
@@ -62,13 +62,15 @@ mono_sql_mes_add(message_t *message, unsigned int forum)
 
     /*
      * We add the date here, so it really is the date the message was
-     * added to the BBS. TIMESTAMP in the table would be better though.
+     * added to the BBS. TIMESTAMP in the table will not be used, as it might
+     * be updated. That's better used to check if a message was modified.
      */
     message->date = time(0);
 
-    ret = mono_sql_query(&res, "INSERT INTO " M_TABLE " (message_id,topic_id,forum_id,author,alias,subject,date,content,type,priv,deleted) VALUES (%u,%u,%u,%u,'%s','%s',FROM_UNIXTIME(%u),%d,%d,'n')",
+    ret = mono_sql_query(&res, "INSERT INTO " M_TABLE " (message_id,topic_id,forum_id,author,alias,subject,date,content,type,priv,deleted) VALUES (%u,%u,%u,%u,'%s','%s',FROM_UNIXTIME(%u),'%s','%s','%s','%c')",
         message->num, message->topic, message->forum, message->author,
-        alias, subject, message->date, content, message->type, message->priv );
+        alias, subject, message->date, content, message->type,
+        message->priv, message->deleted );
 
     (void) mysql_free_result(res);
     xfree(alias);
@@ -114,7 +116,7 @@ mono_sql_mes_retrieve(unsigned int id, unsigned int forum, message_t *data)
     message_t message;
     int ret = 0;
 
-    ret = mono_sql_query(&res, "SELECT message_id,topic_id,forum_id,author,alias,subject,UNIX_TIMESTAMP(date),content,type,priv,deleted FROM " M_TABLE " WHERE message_id=%d AND forum_id=%d", id, forum);
+    ret = mono_sql_query(&res, "SELECT message_id,topic_id,forum_id,author,alias,subject,UNIX_TIMESTAMP(date),content,type,priv,deleted FROM " M_TABLE " WHERE message_id=%u AND forum_id=%u", id, forum);
 
     if (ret == -1) {
  	(void) mysql_free_result(res);
@@ -149,7 +151,7 @@ mono_sql_mes_retrieve(unsigned int id, unsigned int forum, message_t *data)
     /*
      * Header info
      */
-    message.author = atoi(row[3]);
+    sscanf( row[3], "%u", &message.author);
     sprintf(message.alias, row[4]);
     sprintf(message.subject, row[5]);
     sscanf( row[6], "%lu", &message.date);
@@ -162,9 +164,9 @@ mono_sql_mes_retrieve(unsigned int id, unsigned int forum, message_t *data)
     /*
      * And more admin info.
      */
-    message.type = atoi(row[8]);;
-    message.priv = atoi(row[9]);
-    message.deleted = atoi(row[10]);
+    sscanf( row[8], "%s", &message.type);
+    sscanf( row[9], "%s", &message.priv);
+    sscanf( row[10], "%c", &message.deleted);
 
     (void) mysql_free_result(res);
 
@@ -204,7 +206,6 @@ mono_sql_mes_list_forum(unsigned int forum, unsigned int start, mlist_t ** list)
 	if (sscanf(row[0], "%u", &(entry.id)) == -1)
 	    continue;
 	/* Add this one to the linked list */
-        cprintf("DEBUG: Added message %u.\n", entry.id);
 	if (_mono_sql_mes_add_num_to_list(entry, list) == -1)
 	    break;
     }
