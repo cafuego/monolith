@@ -51,6 +51,7 @@ static int _mono_initialize_shm(void);
 static int _mono_remove_from_linked_list(const char *user);
 static int _mono_add_to_linked_list(btmp_t user);
 static int _mono_initialize_holodeck(void);
+static int _mono_guide_ok(btmp_t *guide);
 
 /* -------------------------------------------------------------------- */
 /* return_pid() */
@@ -560,7 +561,7 @@ btmp_t *
 mono_search_guide()
 {
 
-    btmp_t *record, *p;
+    btmp_t *record = NULL, *p = NULL;
     int i, total_sgnumber = 0, sysguide_number = 0, sysguide_count = 0;
 
     if (!shm) {
@@ -580,23 +581,35 @@ mono_search_guide()
     if (total_sgnumber < 1)
 	return NULL;
 
-    sysguide_number = ((time(0) * rand()) % total_sgnumber);
 
-    i = shm->first;
-    while (i != -1) {
-	p = &(shm->wholist[i]);
-	if ((p->flags & B_GUIDEFLAGGED)
-	    && ((p->flags & B_XDISABLED) == 0)
-	    && (p->pid != getpid())) {
-	    if (sysguide_count++ == sysguide_number) {
-		record = (btmp_t *) xcalloc(1, sizeof(btmp_t));
-		memcpy(record, p, sizeof(btmp_t));
-		return record;
+    do {
+        sysguide_number = ((time(0) * rand()) % total_sgnumber);
+        i = shm->first;
+        while (i != -1) {
+	    p = &(shm->wholist[i]);
+	    if ((p->flags & B_GUIDEFLAGGED)
+	        && ((p->flags & B_XDISABLED) == 0)
+	        && (p->pid != getpid())) {
+	        if (sysguide_count++ == sysguide_number) {
+	   	    record = (btmp_t *) xcalloc(1, sizeof(btmp_t));
+		    memcpy(record, p, sizeof(btmp_t));
+		    return record;
+	        } 
 	    }
-	}
-	i = p->next;
-    }
+	    i = p->next;
+        }
+    } while (! _mono_guide_ok(record));
     return NULL;
+}
+
+static int
+_mono_guide_ok(btmp_t *guide) {
+
+    if ((guide->flags & B_GUIDEFLAGGED)
+        && ((guide->flags & B_XDISABLED) == 0) &&
+        (guide->pid != getpid()))
+        return 1;
+    return 0;
 }
 
 /* --------------------------------------------------------------------- */

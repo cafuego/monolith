@@ -377,8 +377,8 @@ get_filesize(const char *filename)
     ret = stat(filename, &filestat);
 
     if ( ret == -1 ) {
-         fprintf( stderr, "%s: %s", filename, strerror(errno) );
-         log_it( "errors", "%s: %s", filename, strerror(errno) );
+         fprintf( stderr, "%s: %s", filename, strerror(mono_errno) );
+         log_it( "errors", "%s: %s", filename, strerror(mono_errno) );
  
          return  0;
     }
