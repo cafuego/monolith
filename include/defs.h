@@ -242,3 +242,9 @@
 
 #define EQ(a,b)         (strcasecmp(a,b)==0)
 
+#define ATTRIB_NONE		0
+#define ATTRIB_BOLD		1
+#define ATTRIB_FLASH		2
+#define ATTRIB_HIDDEN		4
+#define ATTRIB_INVERSE		8
+#define ATTRIB_UNDERLINE	16

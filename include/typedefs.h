@@ -162,6 +162,12 @@ typedef struct {
     char idle[18];
 } config_t;
 
+typedef struct {
+    unsigned int attrib;	/* attribute */
+    char fg_colour;		/* foreground colour */
+    char bg_colour;		/* background colour */
+} colour_t;
+
 /* typedef struct usersupp {	/ * User record */
 typedef struct {	/* User record */
     char username[L_USERNAME + 1];	/* The User's UserName          */
