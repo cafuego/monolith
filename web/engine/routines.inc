@@ -384,7 +384,6 @@ function errorsound() {
 
 }
 
-}
 
 function addimage( $text ) {
 
