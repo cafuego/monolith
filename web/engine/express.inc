@@ -8,7 +8,9 @@ function express_message($username, $recipient) {
 
     // Turn recipient name into a normal string.
     //
+    print "<p>Checking user '$recipient' -&gt; ";
     $recipient = rawurldecode($recipient);
+    print "'$recipient'.\n";
 
     // Check user priv.
     //
