@@ -42,13 +42,14 @@ main(int argc, char **argv)
     read_all_users();
     mono_detach_shm();
     mono_sql_detach();
+    return 0;
 };
 
 void
 read_all_users()
 {
     char name[L_USERNAME + 1];
-    unsigned int i, j;
+    unsigned int i;
     user_t *user;
     DIR *userdir;
     MYSQL_RES *res;
@@ -60,40 +61,38 @@ read_all_users()
     userdir = opendir(USERDIR);
 
     if (userdir == NULL) {
-	fprintf(stderr, "opendir(%s) problems!\n", USERDIR);
-	perror(program_invocation_short_name);
+	printf("opendir(%s) problems!\n", USERDIR);
 	exit(2);
     }
     usercount = 0;
     while ((tmpdirent = readdir(userdir)) != NULL) {
-	if (tmpdirent->d_name[0] != '.')	/* && tmpdirent->d_type == DT_DIR ) peculiar.. */
+	if (tmpdirent->d_name[0] != '.')
 	    usercount++;
     }
-    rewinddir(userdir);
 
+    rewinddir(userdir);
     printf("\nFound %u users\n", usercount);
 
     i = 0;
     while ((tmpdirent = readdir(userdir)) != NULL) {
 
-#ifdef DT_DIR
-	if (tmpdirent->d_type != DT_DIR)	/* ignore normal files */
-	    continue;
-#endif /* DT_DIR */
-
 	if (tmpdirent->d_name[0] == '.')	/* ignore . files */
 	    continue;
-
 	strcpy(name, tmpdirent->d_name);
 
 	if (i > usercount) {
-	    fprintf(stderr, "%s", "Error, not enough memory allocated\n ");
+	    printf("\nError, not enough memory allocated\n ");
 	    closedir(userdir);
 	    exit(3);
 	}
+
+        printf("\n%s", tmpdirent->d_name);
+
 	user = readuser(name);
-	if (user == NULL)
+	if (user == NULL) {
 	    continue;
+	    printf("\nNull user.");
+        }
 	if (EQ(user->username, "Sysop"))
 	    continue;
 
