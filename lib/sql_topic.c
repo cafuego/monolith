@@ -41,7 +41,7 @@ mono_sql_t_create_topic( const topic_t * top)
 	return -1;
     }
     ret = mono_sql_query(&res, "INSERT INTO " T_TABLE
-	 " (topic_id,name,forum_id) " "VALUES ( %u, '%s', '%u')" 
+	 " (topic_id,forum_id,name) " "VALUES (%u,%u,'%s')" 
 	   ,top->topic_id, esc_name, top->forum_id);
 
     xfree(esc_name);
@@ -60,7 +60,7 @@ mono_sql_t_rename_topic( unsigned int topic_id, const char *newname )
 	return -1;
     }
     ret = mono_sql_query(&res, "UPDATE " T_TABLE
-	 " SET name='%s'", esc_name );
+	 " SET name='%s' WHERE topic_id=%u", esc_name, topic_id );
 
     mysql_free_result(res);
     xfree(esc_name);
