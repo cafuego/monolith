@@ -35,7 +35,7 @@ mono_sql_uf_unread_room(unsigned int usernum)
     MYSQL_ROW row;
     int ret = 0;
 
-    ret = mono_sql_query(&res, "SELECT forum_id FROM %s,%s WHERE %s.user_id=%d AND %s.id=%s.forum_id AND %s.lastseen < %s.highest",
+    ret = mono_sql_query(&res, "SELECT forum_id FROM %s,%s WHERE %s.user_id=%u AND %s.id=%s.forum_id AND %s.lastseen < %s.highest",
       F_TABLE, UF_TABLE, UF_TABLE, usernum, F_TABLE, UF_TABLE, UF_TABLE, F_TABLE );
 
     /*
@@ -67,7 +67,7 @@ mono_sql_uf_update_lastseen(unsigned int usernum, unsigned int forum)
     }
 
     row = mysql_fetch_row(res);
-    sscanf( row[0], "%d", &lastseen);
+    sscanf( row[0], "%u", &lastseen);
     (void) mysql_free_result(res);
 
     (void) mono_sql_query( &res, "UPDATE %s SET lastseen=%u WHERE forum_id=%u AND user_id=%u", UF_TABLE, lastseen, forum, usernum);
@@ -82,14 +82,14 @@ mono_sql_uf_get_unread(unsigned int forum, unsigned int lastseen)
     MYSQL_ROW row;
     int ret = 0;
 
-    ret = mono_sql_query(&res, "SELECT COUNT(*) FROM %s WHERE message_id>%d AND forum_id=%d", M_TABLE, lastseen, forum);
+    ret = mono_sql_query(&res, "SELECT COUNT(*) FROM %s WHERE message_id>%u AND forum_id=%u", M_TABLE, lastseen, forum);
     if (ret == -1) {
         (void) mysql_free_result(res);
         return -1;
     }
 
     row = mysql_fetch_row(res);
-    sscanf(row[0],"%d", &ret);
+    sscanf(row[0],"%u", &ret);
     (void) mysql_free_result(res);
 
     return ret;
@@ -286,7 +286,7 @@ mono_sql_uf_is_host(unsigned int usernumber, unsigned int forumnumber)
 	return FALSE;
     }
     row = mysql_fetch_row(res);
-    if (sscanf(row[0], "%d", &host) == -1)
+    if (sscanf(row[0], "%u", &host) == -1)
 	return FALSE;
     mysql_free_result(res);
     if (host == 0)
@@ -346,7 +346,7 @@ mono_sql_uf_remove_host(unsigned int usernumber, unsigned int forumnumber)
     int ret;
     MYSQL_RES *res;
 
-    ret = mono_sql_query(&res, "UPDATE " UF_TABLE " SET host='n' WHERE (user_id='%d' AND forum_id='%d')", usernumber, forumnumber);
+    ret = mono_sql_query(&res, "UPDATE " UF_TABLE " SET host='n' WHERE (user_id='%u' AND forum_id='%u')", usernumber, forumnumber);
 
     if (ret != 0) {
 	fprintf(stderr, "Some sort of error.\n");
@@ -362,7 +362,7 @@ mono_sql_uf_kill_forum(unsigned int forumnumber)
     int ret;
     MYSQL_RES *res;
 
-    ret = mono_sql_query(&res, "DELETE FROM " UF_TABLE " WHERE (forum_id='%d')", forumnumber);
+    ret = mono_sql_query(&res, "DELETE FROM " UF_TABLE " WHERE (forum_id='%u')", forumnumber);
 
     if (ret != 0) {
 	fprintf(stderr, "Some sort of error.\n");
@@ -378,7 +378,7 @@ mono_sql_uf_kill_user(unsigned int userid)
     int ret;
     MYSQL_RES *res;
 
-    ret = mono_sql_query(&res, "DELETE FROM " UF_TABLE " WHERE (user_id='%d')", userid);
+    ret = mono_sql_query(&res, "DELETE FROM " UF_TABLE " WHERE (user_id='%u')", userid);
 
     if (ret != 0) {
 	fprintf(stderr, "Some sort of error.\n");
@@ -511,7 +511,7 @@ mono_sql_uf_remove_invited(unsigned int usernumber, unsigned int forumnumber)
     int ret;
     MYSQL_RES *res;
 
-    ret = mono_sql_query(&res, "UPDATE " UF_TABLE " SET status='normal' WHERE (user_id='%d' AND forum_id='%d')", usernumber, forumnumber);
+    ret = mono_sql_query(&res, "UPDATE " UF_TABLE " SET status='normal' WHERE (user_id='%u' AND forum_id='%u')", usernumber, forumnumber);
 
     if (ret != 0) {
 	fprintf(stderr, "Some sort of error.\n");
@@ -643,7 +643,7 @@ mono_sql_uf_remove_kicked(unsigned int usernumber, unsigned int forumnumber)
     int ret;
     MYSQL_RES *res;
 
-    ret = mono_sql_query(&res, "UPDATE " UF_TABLE " SET status='normal' WHERE (user_id='%d' AND forum_id='%d')", usernumber, forumnumber);
+    ret = mono_sql_query(&res, "UPDATE " UF_TABLE " SET status='normal' WHERE (user_id='%u' AND forum_id='%u')", usernumber, forumnumber);
 
     if (ret != 0) {
 	fprintf(stderr, "Some sort of error.\n");
