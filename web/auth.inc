@@ -74,10 +74,8 @@
 
   function auth_invalid_userpass() {
 
-    global $PHP_AUTH_USER $PHP_AUTH_PW;
-
     echo "<h2 align=\"center\">Invalid Password</h2>\n";
-    echo "<p align=\"center\">The password you provided for $PHP_AUTH_USER is incorrect.</p>\n";
+    echo "<p align=\"center\">The password you provided is incorrect.</p>\n";
     echo "<p align=\"center\">Please click <a href=\"http://". getenv("SERVER_NAME") ."/bbs/\">here</a> and log on using<br>\n";
     echo "                    your login and password.</p>\n";
     echo "<p align=\"center\">Alternatively, wait 10 seconds and you will<br>\n";
