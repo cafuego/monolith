@@ -12,4 +12,6 @@
 #define L_FLAGNAME	10
 #define L_REASON	10
 
+#define L_LANG 20 /* locale language length */
+
 #define QUADDIR BBSDIR "save/quads/"

@@ -247,6 +247,7 @@ typedef struct {	/* User record */
     char RGphone[RGphoneLEN + 1];	/* The User's phone number      */
     char RGemail[RGemailLEN + 1];	/* The User's email address     */
     char RGurl[RGurlLEN + 1];	/* the user's home page  		*/
+    char lang[L_LANG + 1]; /* user's lcoale */
     int hidden_info;		/* what parts of the address are hidden */
 } user_t, user_type;
 
