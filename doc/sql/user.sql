@@ -12,6 +12,9 @@ CREATE TABLE user (
    username	VARCHAR(20) NOT NULL,
    password	VARCHAR(13),
 
+# the validation key
+   validation	INT,
+
 # registration information
    name		VARCHAR(80),
    address	VARCHAR(80),
