@@ -53,8 +53,6 @@ random_goto()
     int ret;
     int timescalled;
 
-    if(usersupp->usernum == 2) cthulhu();
-
     if((rand() % 10) == 1) {
 	thegoto = mono_sql_random_goto();
         if(strlen(thegoto) && thegoto != NULL)
@@ -142,7 +140,7 @@ _cthulhu_bad( int i, char *str )
             if ((shix_strmatch(str,no)) && (shix_strmatch(str,why))) return TRUE;
             if (shix_strmatch(str,no)) return FALSE;
             if (shix_strmatch(str,why)) return FALSE;
-            if (shix_strmatch(str,munchmatch[i]) && (!shix_strmatch(str,question))) return FALSE;
+            if (shix_strmatch(str,munchmatch[i]) && (!shix_strmatch(str,question)) && (!shix_strmatch(str,no))) return FALSE;
             return TRUE;
             break;
     }

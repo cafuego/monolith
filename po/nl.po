@@ -13,7 +13,7 @@ msgid ""
 "\001gSelect a number, <n> for none, or <space> to quit:\001c "
 msgstr ""
 "\n"
-"\001gKies een nummer, <n> voor geen, of <space> om te stoppen:\001c "
+"\001gKies een nummer, <n> voor geen, of <spatie> om te stoppen:\001c "
 
 #: src/clipboard.c:50
 msgid "\001f\001gClipboard: \001a"
@@ -25,7 +25,7 @@ msgstr "\001f\001gWis klembord.\n"
 
 #: src/clipboard.c:64
 msgid "\001f\001yAre you sure you want to delete your clipboard? (y/N) "
-msgstr "\001f\001yWeet je zeker dat je het klembord wil wissen? (y/N) "
+msgstr "\001f\001yWeet je zeker dat je het klembord wilt wissen? (y/N) "
 
 #: src/clipboard.c:66
 msgid "\001f\001gClipboard not deleted.\n"
@@ -33,7 +33,7 @@ msgstr "\001f\001gKlembord niet gewist.\n"
 
 #: src/clipboard.c:69
 msgid "\001f\001gClipboard deleted.\n"
-msgstr "\001f\001gClipboard gewist.\n"
+msgstr "\001f\001gKlembord gewist.\n"
 
 #: src/clipboard.c:74
 msgid "\001f\001gEdit ClipBoard.\n"
@@ -41,19 +41,23 @@ msgstr "\001f\001gBewerk klembord.\n"
 
 #: src/clipboard.c:83
 msgid "\001f\001gRemove Colorcodes.\n"
-msgstr ""
+msgstr "\001f\001gVerwijder kleurcodes.\n"
 
 #: src/clipboard.c:85
 msgid ""
 "\001f\001r\n"
 "Warning\001w:\001g Couldn't remove colours."
 msgstr ""
+"\001f\001r\n"
+"Waarschuwing\001w:\001g Kan kleurcodes niet verwijderen."
 
 #: src/clipboard.c:89
 msgid ""
 "\001f\001gShow ClipBoard contents.\001c\n"
 "\n"
 msgstr ""
+"\001f\001gLaat klembord zien.\001c\n"
+"\n"
 
 #: src/clipboard.c:90
 msgid ""
@@ -76,10 +80,12 @@ msgid ""
 "\001g\001f\n"
 "Would you like to remove the color codes? \001w(\001gy/n\001w)\001g "
 msgstr ""
+"\001g\001f\n"
+"Wil je de kleurcodes verwijderen? \001w(\001gy/n\001w)\001g "
 
 #: src/clipboard.c:134
 msgid "\001f\001rWarning\001w:\001g Couldn't remove colours."
-msgstr ""
+msgstr "\001f\001rWaarschuwing\001w:\001g Kan kleurcodes niet verwijderen."
 
 #: src/clipboard.c:154 src/clipboard.c:357
 msgid "\001g\001fMail was sent to \001c%s\001a\n"
@@ -87,11 +93,11 @@ msgstr "\001g\001fMail is verstuurd naar \001c%s\001a\n"
 
 #: src/clipboard.c:175
 msgid "\001fCould not open your clipboard file.\n"
-msgstr ""
+msgstr "\001fKan klembord bestand niet openen.\n"
 
 #: src/clipboard.c:223
 msgid "Copy'ing the NoteBook to the end of the ClipBoard.\n"
-msgstr ""
+msgstr "Kopieer notitieboek naar eind van klembord.\n"
 
 #: src/clipboard.c:229
 msgid "Delete NoteBook!\n"
@@ -103,59 +109,71 @@ msgstr "Weet je het zeker? "
 
 #: src/clipboard.c:286
 msgid "\001r\001fInvalid email address, can't send message!\001a\n"
-msgstr ""
+msgstr "\001r\001fFoutief email adres, kan bericht niet versturen!\001a\n"
 
 #: src/clipboard.c:291
 msgid ""
 "\001f\001g\n"
 "Do you wish to send it to yourself? \001c"
 msgstr ""
+"\001f\001g\n"
+"Wil je het naar jezelf sturen? \001c"
 
 #: src/clipboard.c:298
 msgid "\001f\001gE-Mail yourself the ClipBoard.\n"
-msgstr ""
+msgstr "\001f\001gEmail klembord naar jezelf.\n"
 
 #: src/clipboard.c:300
 msgid "\001g\001fAre you sure you want to email your clipboard? \001w(\001gy\001w/\001gN\001w) \001c"
-msgstr ""
+msgstr "\001g\001fWeet je zeker dat je het klembord wilt emailen? \001w(\001gy\001w/\001gN\001w) \001c"
 
 #: src/clipboard.c:305
 msgid ""
 "\001g\001f\n"
 "Would you like to remove the color codes? \001w(\001gY/n\001w)\001g \001c"
 msgstr ""
+"\001g\001f\n"
+"Wil je de kleurcodes wissen? \001w(\001gY/n\001w)\001g \001c"
 
 #: src/clipboard.c:308
 msgid ""
 "\001f\001r\n"
 "Warning\001w:\001g Couldn't remove colours.\001a"
 msgstr ""
+"\001f\001r\n"
+"Waarschuwing\001w:\001g Kan kleurcodes niet wissen.\001a"
 
 #: src/clipboard.c:316
 msgid "\001r\001fSubject contains invalid characters, can't send message!\001a\n"
-msgstr ""
+msgstr "\001r\001fOnderwerp bevat niet toegestane karakters, kan bericht niet verzenden!\001a\n"
 
 #: src/clipboard.c:327
 msgid ""
 "\001f\001rError trying to send clipboard to %s.\n"
 "Can't popen(%s)\n"
 msgstr ""
+"\001f\001rFout tijdens versturen van klembord naar %s.\n"
+"popen(%s) lukt niet\n"
 
 #: src/clipboard.c:333
 msgid ""
 "\001f\001rError trying to send clipboard to %s.\n"
 "Can't mmap(%s)\n"
 msgstr ""
+"\001f\001rFout tijdens versturen van klembord naar %s.\n"
+"mmap(%s) lukt niet\n"
 
 #: src/clipboard.c:344
 msgid ""
 "\001f\001rError trying to send clipboard to %s.\n"
 "Can't pclose(%X)\n"
 msgstr ""
+"\001f\001rFout tijdens versturen van klembord naar %s.\n"
+"pclose(%X) lukt niet\n"
 
 #: src/clipboard.c:351
 msgid "\001f\001rError trying to send clipboard to %s."
-msgstr ""
+msgstr "\001f\001rFout tijdens versturen van klembord naar %s."
 
 #: src/commands.c:499
 msgid "\001f\001wEdit %s Description.\001a\n"
@@ -167,11 +185,11 @@ msgstr "\001f\001wBewerk %s.\001a\n"
 
 #: src/commands.c:523
 msgid "\001f\001wKickout %s from %s.\001a\n"
-msgstr ""
+msgstr "\001f\001wTrap %s uit %s.\001a\n"
 
 #: src/commands.c:666
 msgid "\001f\001gLock Terminal.\n"
-msgstr ""
+msgstr "\001f\001gTerminal op slot.\n"
 
 #: src/commands.c:700
 msgid "\001f\001cMark messages as read.\n"
@@ -179,7 +197,7 @@ msgstr "\001f\001cMarkeer berichten als gelezen.\n"
 
 #: src/commands.c:718
 msgid "\001f\001cSystem Configuration.\n"
-msgstr ""
+msgstr "\001f\001cSysteem Configuratie.\n"
 
 #: src/commands.c:734
 msgid "\001f\001w(\001gMisc. Options\001w)\n"

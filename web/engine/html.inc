@@ -20,6 +20,9 @@ function html_print_title($username, $location)
     //
     switch (html_check_priv($action, $username, $quad)) {
 
+	case -2:	// Cursed!
+	    print "<title>$username@Monolith BBS: Bad, bad $username - Permission denied.</title>\n";
+	    return 1;
 	case -1:
 	    print "<title>Unknown user: Log in first.</title>\n";
 	    return 1;
@@ -193,8 +196,11 @@ html_check_priv($action, $username, $forum_id)
 
     // Username exists? BRIAN BAN!!
     //
-    if ($username == "" || $username == NULL || strtolower($username) == "pabo wakataeo")
+    if ($username == "" || $username == NULL)
 	return -1;
+
+    if( strtolower($username) == "pabo wakataeo")
+        return -2;
 
     MYSQL_CONNECT("localhost", "root", "") OR DIE("Unable to connect to SQL server");
     @mysql_select_db("bbs") or die("Unable to select database");
