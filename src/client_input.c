@@ -305,7 +305,7 @@ get_buffer(FILE * fp, int how, int *lines)
 							 * if the user did 
 							 * not save it 
 							 */
-	    cprintf("\007\nSorry, but you _have_ to write this message.\n\n");
+	    cprintf("\1f\1rYou MUST write this %s!\n\n", config.message);
 	    continue;
 	}
 	break;

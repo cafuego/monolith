@@ -146,7 +146,7 @@ enter_message(unsigned int forum, int mode, unsigned long banner_flag, const cha
         _tmpstr[0] = toupper(_tmpstr[0]);
 
 	if (abort == -1 || !filesize)
-	    cprintf("\1f\1rI refuse to save an empty %s.\n", config.message_pl);
+	    cprintf("\1f\1rI refuse to save an empty %s.\n", config.message);
 	else if (abort == -2)
 	    cprintf("\1f\1r%s entry aborted.\n", _tmpstr);
 	xfree(header);
@@ -452,7 +452,6 @@ get_content(int mode)
 	case 'A':
 	default:
 	    fclose(fp);
-	    unlink(temp);
 	    return -2;
     }
 
