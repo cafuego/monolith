@@ -320,31 +320,31 @@ increment(int extraflag)
 		cprintf("\01f\01w -- \01gmore \01w--\01a");
 
 	    (void) fflush(stdout);
-	    c = get_single_quiet("GNQSWcvx \r\n\030");
+	    c = get_single_quiet("0123456789GNQSWcvx \r\n\030");
 
 	    IFTWIT {
-		if (strchr("cvx\030", c)) {
+		if (strchr("0123456789cvx\030", c)) {
 		    more(TWITMSG, 1);
 		    c = '\0';
 		}
 	    }
 	    else
 	    IFUNVALID {
-		if (strchr("cvx\030", c)) {
+		if (strchr("0123456789cvx\030", c)) {
 		    more(UNVALIDMSG, 0);
 		    c = '\0';
 		}
 	    }
 	    else
 	    IFDEGRADED {
-		if (strchr("cvx\030", c)) {
+		if (strchr("0123456789cvx\030", c)) {
 		    more(DEGRADEDMSG, 0);
 		    c = '\0';
 		}
 	    }
 	    else
 	    IFGUEST {
-		if (strchr("vx\030", c)) {
+		if (strchr("0123456789vx\030", c)) {
 		    more(GUESTMSG, 1);
 		    c = '\0';
 		}
@@ -376,6 +376,20 @@ increment(int extraflag)
 		    nox = 1;
 		    express(0);
 		    break;
+
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                case '0':
+                    nox = 1;
+                    express(c - 38);
+                    break;
 
 		case '\030':	/* read X-Log                            */
 		    cprintf("\n\01f\01gRead X-Log.\01a\n");
