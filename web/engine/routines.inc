@@ -380,7 +380,7 @@ function colorize($doing) {
 function errorsound() {
 
     echo "\n    <!-- error sound -->\n";
-    echo "    <embed src=\"/bbs/sound/error.au\" autoplay=\"true\" autostart=\"true\" hidden=\"false\" loop=\"false\" bgcolor=\"#000\">\n";
+    echo "    <embed src=\"/bbs/sound/error.au\" height=\"0\" width=\"0\" autoplay=\"true\" autostart=\"true\" hidden=\"false\" loop=\"false\" bgcolor=\"#000\">\n";
     echo "    </embed>\n\n";
 
 }
@@ -432,7 +432,7 @@ function errorimage( $text ) {
 
     echo "<div align=\"center\">\n";
     echo "<center>\n";
-    echo "<img align=\"center\" src=\"/bbs/image.phtml/$font,$size,red/$imgtext/\" alt=\"[ image: $text ]\">\n";
+    echo "<img src=\"/bbs/image.phtml/$font,$size,red/$imgtext/\" alt=\"[ image: $text ]\">\n";
     echo "</center>\n";
     echo "</div>\n";
 
