@@ -35,13 +35,8 @@
 #include "server.h"
 #undef extern
 
-#define Q_CLIENTUSER    1	/* i am a client-user                   */
-
-unsigned int maxallow, my_position;
 char hostname[255];
 char username[L_USERNAME + 1];
-int successful_pre_login = 0;
-pid_t mypid;
 FILE *netofp, *netifp;
 struct sockaddr_in acc_addr;
 char *l_user[] = {
@@ -56,14 +51,12 @@ main(int argc, char **argv)
     unsigned char inpstr[80];
     int len;
     FILE *fp;
-    char badness = 0, host[50], temp[85], tmpallow[3];
+    char badness = 0, host[50], temp[85];
 
     set_invocation_name(argv[0]);
     mono_setuid("guest");
 
-    printf("\r");
-    printf("Welcome to %s.\n\rRunning %s\n", BBSNAME, BBS_VERSION);
-
+    printf("\rWelcome to %s.\n\rRunning %s\n", BBSNAME, BBS_VERSION);
     fflush(stdout);
 
     chdir(BBSDIR);
@@ -75,19 +68,6 @@ main(int argc, char **argv)
 	sleep(5);
 	logoff(0);
     }
-    mypid = getpid();
-
-    /* use ALLOWFILE to determine maximum number of users, else
-     * set a default from sysconfig.h */
-
-    fp = xfopen(ALLOWFILE, "r", FALSE);
-    if (fp != NULL) {
-	fgets(tmpallow, 3, fp);
-	sscanf(tmpallow, "%d", &maxallow);
-	fclose(fp);
-    } else
-	maxallow = MAXUSERS;
-
     get_hostname();
 
     /* check to see if we're coming from a blacklisted host */
@@ -108,7 +88,6 @@ main(int argc, char **argv)
 	}
 	fclose(fp);
     }
-    mono_connect_shm();
 
     while (1) {
 	bzero(&inpstr, sizeof(inpstr));
@@ -140,7 +119,6 @@ void
 ok_let_in()
 {
 
-    mono_detach_shm();
     execl(BBSEXECUTABLE, BBSEXECUTABLE, hostname, username, 0);
     logoff(0);
 }
@@ -185,161 +163,6 @@ get_hostname()
     return;
 }
 
-void
-mono_login()
-{
-    char pwtest[20];
-    char testuser[23];
-    user_t *user;
-    int i = 0;
-
-    if (successful_pre_login == 1) {
-	printf("You can only login once.\n");
-	return;
-    }
-    successful_pre_login = 0;
-
-    (void)srand( 42 );
-    i = rand() % 7;
-    switch(i) {
-      case 1:
-      case 2:
-      case 3:
-      case 4:
-        printf("\r%s: ", l_user[i]);
-        break;
-      default:
-        printf("\r%s: ", l_user[0]);
-        break;
-    }
-
-
-    fflush(stdout);
-    strcpy(testuser, get_name());
-
-    if (!strlen(testuser))
-	return;
-
-    printf("\rPassword: ");
-    fflush(stdout);
-    getline(pwtest, -19, 0);
-
-    if ((user = readuser(testuser)) == 0) {
-	printf("Incorrect login.\n");	/* no such user...      */
-	strcpy(testuser, "");
-	return;
-    }
-    if ( mono_sql_u_check_passwd( user->usernum, pwtest ) == TRUE ) {
-	successful_pre_login = 1;
-	printf("\nYou are now logged in.\n\n");
-	strcpy(username, testuser);
-
-    } else {
-	printf("Incorrect login.\n");
-	strcpy(testuser, "");
-    }
-
-    xfree(user);
-}
-
-/*************************************************
-* get_name()
-*************************************************/
-
-char *
-get_name()
-{
-
-    static char pbuf[21];
-    int a;
-
-    for (a = 0; a < 21; a++)
-	pbuf[a] = 0;
-
-    putc(IAC, netofp);
-    putc(G_NAME, netofp);
-    putc(2, netofp);
-    putc(0, netofp);		/* these three 0's are the sync_byte... */
-    putc(0, netofp);
-    putc(0, netofp);
-    fflush(netofp);
-
-    getblock();
-
-    for (a = 0; a < 21 && pbuf[a - 1] != '\n'; a++)
-	pbuf[a] = netget();
-
-    pbuf[a - 1] = '\0';
-
-    return pbuf;
-}
-
-/*************************************************
-* getline()
-*************************************************/
-
-void
-getline(char *string, int lim, int frog)
-{
-    /* char *string;                  Pointer to string buffer             
-     * int lim;                       Maximum length; if negative, no-show */
-
-    char *str;
-
-    str = string;
-
-    putc(IAC, netofp);		/* send "get string"-command to the CLient */
-    putc(G_STR, netofp);
-    putc(lim, netofp);
-    putc(0, netofp);		/* substitute for sync_byte             */
-    putc(0, netofp);
-    putc(0, netofp);
-    fflush(netofp);
-
-    getblock();			/* wait for the CLient to send out BLOCK */
-
-
-    *(str++) = netget();	/* get first character */
-
-    while (*str != '\n')
-	*(str++) = netget();
-    *str = '\0';
-
-}
-
-/*************************************************
-* getblock()
-*************************************************/
-int
-getblock()
-{
-
-    int a = 0, b;
-
-    for (;;) {
-	b = a;
-	a = netget();
-	if (b == IAC && a == BLOCK)
-	    return 1;
-    }
-}
-
-
-
-/*************************************************
-* netget()
-*************************************************/
-int
-netget()
-{
-
-    int a;
-
-    if ((a = getc(netifp)) == EOF)
-	logoff(0);
-
-    return a;
-}
 
 /*************************************************
 * logoff()
@@ -350,6 +173,5 @@ logoff(int womble)
 {
     fclose(netofp);
     fclose(netifp);
-    mono_detach_shm();
     exit(0);
 }
