@@ -245,7 +245,6 @@ mono_sql_write_profile(unsigned int user_id, const char * profile )
 {   
     int i;
     MYSQL_RES *res;
-    MYSQL_ROW row;
     char *p2;
 
     i = escape_string( profile, &p2 );
@@ -258,6 +257,40 @@ mono_sql_write_profile(unsigned int user_id, const char * profile )
     i = mono_sql_query(&res, "UPDATE " U_TABLE " set profile='%s' WHERE id=%u", p2, user_id);
 
     xfree( p2 );
+
+    if (i == -1) {
+	fprintf(stderr, "No results from query.\n");
+        return -1;
+    }   
+
+    if (mysql_num_rows(res) != 1) {
+	return -1;
+    }
+
+    mono_sql_u_free_result(res);
+    return 0;
+}
+
+int
+mono_sql_u_update_registration( unsigned int user_id,
+		const char *name,
+		const char *address,
+		const char *zip,
+		const char *state,
+		const char *country
+) {
+
+    int i;
+    MYSQL_RES *res;
+
+    i = mono_sql_query(&res, "UPDATE " U_TABLE 
+                " set name='%s', "
+		"   address='%s', "
+		"   zip='%s', "
+		"   state='%s', "
+		"   country='%s', "
+		"   phone='%s'"
+		" WHERE id=%u", name, address, zip, state, country, user_id );
 
     if (i == -1) {
 	fprintf(stderr, "No results from query.\n");
