@@ -1766,14 +1766,16 @@ notify_ql(char *to_user, char *quadname, int nopost)
     FILE *fp;
     post_t mesg;
     char filename[120], *p;
-    int no_of_lines = 6;
+    int no_of_lines = 7;
 
     filename[0] = '\0';
     mesg.type = MES_SYSOP;
     strcpy(mesg.author, "Sysop");
     time(&mesg.date);
 
-    strcpy(mesg.subject, quadname);
+    log_it("quadlizard", "Mailing %s that %s has not had any new posts in the past %d days.", to_user, quadname, nopost);
+
+    sprintf(mesg.subject, "%s", quadname);
 
     sprintf(filename, "%s%s%ld", getuserdir(to_user), "/mail/", 
 				 get_new_mail_number(to_user));
@@ -1792,7 +1794,14 @@ notify_ql(char *to_user, char *quadname, int nopost)
 
 /* body of post */
 
-    fprintf(fp, "\n\1a\1cHi %s,\n\nYour quadrant, %s, has not had any new posts for \1f\1r%d\1a\1c days.\nPerhaps you should make a post and get users interested again.\n", to_user, nopost);
+    fprintf(fp, "%s%s%s%s%s%d%s",
+        "\n\1a\1cHi ",
+        to_user,
+        "\n\nYour quadrant, ",
+        quadname,
+        ", has not had any new\nposts for \1f\1r",
+        nopost,
+        "\1a\1c days. Perhaps you should make\na post to get users interested again.\n" );
 
 /* end of post */
     fprintf(fp, "\n%c", 0);
