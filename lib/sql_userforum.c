@@ -589,7 +589,7 @@ mono_sql_uf_new_user(unsigned int user_id)
 	    printf("\nInsert error");
     }
     mysql_free_result(res);
-    return;
+    return 0;
 }
 
 
