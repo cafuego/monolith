@@ -457,6 +457,7 @@ int
 mono_connect_shm()
 {
     int shmid = 0;
+    int readonly = FALSE;
     FILE *fp;
     char bing[10];
 
@@ -464,14 +465,19 @@ mono_connect_shm()
 	fprintf(stderr, "Incorrect euid for IPC connect.\n");
 	fflush(stderr);
 	log_it("shmlog", "Attempted connect with euid %d.", geteuid());
-	exit(EXIT_FAILURE);
+	readonly = TRUE;
+/*	exit(EXIT_FAILURE); */
     }
     if (fexists(SHMKEY) == TRUE) {
 	fp = xfopen(SHMKEY, "r", TRUE);
 	fgets(bing, 9, fp);
 	shmid = atoi(bing);
 	fclose(fp);
-	shm = (bigbtmp_t *) shmat(shmid, 0, 0);
+        if ( readonly == TRUE ) {
+	    shm = (bigbtmp_t *) shmat(shmid, 0, SHM_RDONLY );
+        } else {
+    	    shm = (bigbtmp_t *) shmat(shmid, 0, 0);
+        }
 	if (-1 == (int) shm) {
 	    fprintf(stderr, "Couldn't connect to Monolith IPC Services.\n");
 	    fflush(stderr);
