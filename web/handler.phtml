@@ -86,12 +86,12 @@
         case "i":
             $hiddenarg = "";
             if(!$name) $hiddenarg .= "name";
-            if( (!$address)
+            if( (!$address))
                 if(strlen($hiddenarg))
                     $hiddenarg .= ",address";
                 else
                     $hiddenarg .= "address";
-            if( (!$city)
+            if( (!$city))
                 if(strlen($hiddenarg))
                     $hiddenarg .= ",city";
                 else
