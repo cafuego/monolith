@@ -279,12 +279,43 @@ msgstr ""
 msgid "\001f\001pSubscribe to channel: \001a"
 msgstr ""
 
+#: src/usertools.c:644
+msgid "\001f\001cUser's localtime:\001g %A \001w(\001g%H:%M\001w) (%Z)\001a\n"
+msgstr ""
+
+#: src/usertools.c:651
+msgid "\001f\001yAideline:%s\n"
+msgstr ""
+
+#. IS NOT ONLINE
+#: src/usertools.c:688
+msgid "\001f\001cLast on \001g%s "
+msgstr ""
+
+#: src/usertools.c:689
+msgid "\001cto \001g%s \001p"
+msgstr ""
+
 #: src/usertools.c:713
 msgid "Birthday: \001g"
 msgstr "Verjaardag: \001g"
 
 #: src/usertools.c:720
 msgid "\001f\001cConfiguration\001w: \001g%s \001cMonoholic Rating\001w: \001g"
+msgstr ""
+
+#: src/usertools.c:723
+msgid "\001f\001cUsernum\001w: \001g%d \001cFirst login\001w: \001g%s\n"
+msgstr ""
+
+#: src/usertools.c:724
+msgid "\001f\001cLogins\001w: \001g%-5d \001cPosts: \001g%-5d \001cOnlinetime: \001g%2ld:%2.2ld   \001cPriv: \001g%5d  \001cX's: \001g%5ld \n"
+msgstr ""
+
+#: src/usertools.c:729
+msgid ""
+"First login: \001g%s\001c\n"
+"Logins: \001g%-5d \001cPosts: \001g%-5d \001cOnlinetime: \001g%2ld:%2.2ld \001cX's: \001g%5ld \n"
 msgstr ""
 
 #: src/usertools.c:739
