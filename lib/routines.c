@@ -185,9 +185,6 @@ void
 xfree(void *pointer)
 {
 
-    fprintf(stderr, "\n\rTrying to free %u bytes at 0x%p\n", sizeof(pointer), pointer);
-    fflush(stderr);
-
     if (pointer == NULL)
 	return;
 

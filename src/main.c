@@ -447,7 +447,7 @@ main(int argc, char *argv[])
 		done = TRUE;
 	    } else {
 		if (strcasecmp(username, "Guest") != 0) {
-		    if( (done = enter_passwd(username)) == TRUE ) {
+		    if( (done = enter_passwd(username)) == TRUE )
 		        usersupp = readuser(username);
 		} else {	/* is guest */
 		    if (check_user("Guest")) {

@@ -107,8 +107,6 @@ mono_sql_u_check_passwd( unsigned int user_id, const char *passwd )
     if ( (ret = mysql_num_rows(res)) != 1 ) {
 	fprintf(stderr, "The infamous \"Not enough results Error\"\n\r");
         fflush(stderr);
-        fprintf(stderr, "\n\rGot %d rows from \"SELECT password FROM " U_TABLE " WHERE id=%u\"\n\r", ret, user_id);
-        fflush(stderr);
         mono_sql_u_free_result(res);
         return FALSE;
     }
@@ -116,8 +114,6 @@ mono_sql_u_check_passwd( unsigned int user_id, const char *passwd )
 
     if ( strlen( row[0] ) < 3 ) {
 	fprintf(stderr, "Error getting results.\n");
-        fflush(stderr);
-        fprintf(stderr, "\n\rLength for \"%s\" is %d\n", row[0], strlen(row[0]));
         fflush(stderr);
         mono_sql_u_free_result(res);
         return FALSE;
