@@ -1026,10 +1026,19 @@ read_menu(long number, int direction)
 		    yell_menu();
 		    break;
 
-		case 'z':
-		case 'Z':
+		case 'z':  /* ugly, probably shouldn't be allowed at long */
+		case 'Z':  /* prompt */
 		    cprintf("\1f\1gZap %s.\1a\n", config.forum);
 		    forget();
+		    direction = 1;
+		    start = get_read_start_number(0, direction);
+		    if (start == -6666)
+			return;	
+		    if (start < 0)
+		        start = 0;
+		    current = start - 1;
+		    set_read_bounds(&temp_lowest, &temp_highest);
+		    read_position_modified = TRUE;
 		    break;
 
 		case 12:	/* <ctrl-l> */
