@@ -12,7 +12,7 @@
 #include <time.h>
 #include <strings.h>
 #include <sys/types.h>
-#include <unistd.h>
+#include <unistd.h> 
 #include <dirent.h>
 
 #include <mysql.h>
@@ -86,7 +86,7 @@ int category;
 /* General room topics, used for sorting rooms */
 char *categories[] =
 {
-  "BBS Issues", "Art and Culture", "Discussion", "Computers and Internet",
+  "Admin", "BBS Issues", "Art and Culture", "Discussion", "Computers and Internet",
   "Languages", "Recreation", "Recreation - Chatting", "Recreation - Silly",
   "Support"
 };
@@ -1310,9 +1310,9 @@ show_room_list ()
   printf("<p><a name=\"top\"></p><p align=\"center\">\n");
 
 
-  for(k = 0; k < 9; k++ ) {
+  for(k = 0; k < 10; k++ ) {
       printf("<a onMouseover=\"window.status ='View rooms in the %s category.'; return true\" href=\"#%s\">%s</a>", categories[k], categories[k], categories[k]);
-  	  if(k % 3 == 2)
+  	  if(k % 5 == 4)
   	    printf("<br>\n");
   	  else
   	    printf(" | \n");
@@ -1325,16 +1325,33 @@ show_room_list ()
   /* loop for each category and print a table heading */
   
   
-  for(k = 0; k < 9; k++ ) {
+  for(k = 0; k < 10; k++ ) {
   
     printf("<tr><th colspan=\"2\" align=\"left\"><a name=\"%s\"></a><p class=\"subject\"><font color=\"yellow\" face=\"Helvetica\"><b>%s</b></font></p></th></tr>\n", categories[k], categories[k] );
   
     for (i = 0; i < MAXQUADS; i++) {
+
+      if ( (i > 0 && i < 10) || i == 13 ) 
+          continue;
+
       quickroom_s = read_quad (i);
 
-      if ( (EQ(quickroom_s.category, categories[k])) && (quickroom_s.name[0] != '\0' &&
-	  (!(quickroom_s.flags & QR_PRIVATE) || !(quickroom_s.flags & QR_INUSE)) &&
-	  (i == 0 || (i > 10 && i != 13)))) {
+      if ( ! EQ( quickroom_s.category, categories[k] ) )
+          continue;
+
+      if ( quickroom_s.name[0] == '\0' )
+          continue;
+
+      if ( ! ( quickroom_s.flags & QR_INUSE ) )
+          continue;
+
+   /*   if ( quickroom_s.flags & QR_PRIVATE ) 
+           continue; */
+
+      if (may_read_room ( *usersupp, quickroom_s, i) == 0)
+           continue;
+
+           {
 	    if (j++ % 2 == 0) {
 	      if (j == 1) {
 		    printf ("<tr>\n");
