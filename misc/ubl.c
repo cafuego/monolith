@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
-#include <string.h>
+#include <strings.h>
 #include <sys/file.h>
 #include <sys/types.h>
 #include <time.h>
@@ -71,12 +71,12 @@ main(int argc, char *argv[] )
 {
     set_invocation_name(argv[0]);
     chdir(BBSDIR);
-    mono_sql_connect();
 
     /* read the necessary data */
     mono_connect_shm();
+
+    mono_sql_connect();
     read_all_users();
-    mono_detach_shm();
     read_all_rooms();
 
     /* update lists */
@@ -95,6 +95,7 @@ main(int argc, char *argv[] )
     xfree(all_users);
     xfree(all_rooms);
     mono_sql_detach();
+    mono_detach_shm();
     return EXIT_SUCCESS;
 }
 
@@ -230,14 +231,11 @@ read_all_rooms()
 {
     unsigned int i;
 
-    mono_connect_shm();
-
     all_rooms = xmalloc(MAXQUADS * sizeof(room_t));
 
     for (i = 0; i < MAXQUADS; i++) {
         read_forum( i, &(all_rooms[i]) );
     }
-    mono_detach_shm();
     return;
 };
 
@@ -589,7 +587,7 @@ post_ubl_results()
 
     FILE *fp;
     message_header_t header;
-    char filename[L_FILENAME + 1];
+    char filename[L_FILE + 1];
 
     memset(&header, 0, sizeof(message_header_t));
     header.banner_type = SYSTEM_BANNER;
@@ -599,9 +597,7 @@ post_ubl_results()
     header.f_id = SYSOP_FORUM;
     strcpy(header.subject, "UBL results.");
 
-    mono_connect_shm();
     header.m_id = get_new_message_id(SYSOP_FORUM);
-    mono_detach_shm();
 
     sprintf(filename, FORUMDIR "/%u/%u.h", header.f_id, header.m_id);
     fp = xfopen(filename, "w", FALSE);

@@ -20,20 +20,10 @@ main()
 {
     unsigned int i;
     int ret;
-
-    mono_sql_connect();
     mono_connect_shm();
-
     for (i = 0; i < MAXQUADS; i++) {
-
-      ret=   mono_sql_f_write_quad( i, &shm->rooms[i] );
-      if ( ret == -1 ) {
-          fprintf( stderr," error!\n" );
-          break;
-      }
-
+       printf("%u: %lu\n", i, shm->rooms[i].highest );
     }
-    mono_sql_detach();
     mono_detach_shm();
 
     return 0;
