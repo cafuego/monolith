@@ -86,14 +86,18 @@
         case "i":
             $hiddenarg = "";
             if(!$name) $hiddenarg .= "name";
-            if((!$address) && strlen($hiddenarg))
-                $hiddenarg .= ",address";
-            else
-                $hiddenarg .= "address";
-            if((!$city) && strlen($hiddenarg))
-                $hiddenarg .= ",city";
-            else
-                $hiddenarg .= "city";
+            if( (!$address)
+                if(strlen($hiddenarg))
+                    $hiddenarg .= ",address";
+                else
+                    $hiddenarg .= "address";
+            if( (!$city)
+                if(strlen($hiddenarg))
+                    $hiddenarg .= ",city";
+                else
+                    $hiddenarg .= "city";
+
+
             echo "String sofar: $hiddenarg<br>\n";
             if($website) echo "Website: $website<br>\n";
 
