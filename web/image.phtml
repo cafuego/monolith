@@ -4,9 +4,10 @@
 
     $url_array=explode("/",$REQUEST_URI);
 
-    $font = "/usr/bbs/www/bbs/font/Arialblack_I.ttf";
-    $text = rawurldecode($url_array[3]);
+    // $font = "/usr/bbs/www/bbs/font/Arialblack_I0.ttf";
     // $text = "Bing!";
+    $font = "/usr/bbs/www/bbs/font/". $url_array[3] .".ttf";
+    $text = rawurldecode($url_array[4]);
 
     $im = imagecreate( 500, 50 );
     $black = ImageColorAllocate( $im, 0, 0, 0 );
