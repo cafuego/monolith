@@ -239,9 +239,8 @@ function html_print_foot($username, $starttime, $location) {
     echo "</tr>\n";
     echo "<tr>\n";
     echo "  <td>\n";
-    echo "    <p class=\"footer\" style=\"text-align: right;\">&copy; The Monolith Community 1999 -\n";
-    echo "      Generated: ". gmdate("l, d F Y H:i:s", time()) ." GMT.<br>\n";
-    echo "      Send email to <a class=\"red\" href=\"mailto:webmaster@monolith.student.utwente.nl\">webmaster@monolith.student.utwente.nl</a> for suggestions and comments.</p>\n";
+    echo "    <p class=\"footer\" style=\"text-align: right;\">Send email to <a class=\"red\" href=\"mailto:webmaster@monolith.student.utwente.nl\" ". mouseover("Send suggestions or comments to the webmaster via email") .">webmaster@monolith.student.utwente.nl</a> for suggestions and comments.<br>\n";
+    echo "      &copy; The Monolith Community 1999 - Generated: ". gmdate("l, d F Y H:i:s", time()) ." GMT.<br>\n";
     echo "  </td>\n";
     echo "  <td>\n";
     echo "    <img align=\"left\" src=\"/bbs/pix/logo.jpg\" height=\"32\" width=\"32\" alt=\"Logo\">\n";
