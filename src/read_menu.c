@@ -107,7 +107,8 @@ short_prompt(void)
 		if (usersupp->priv & (PRIV_WIZARD | PRIV_SYSOP)) {
 		    cprintf("\1f\1wAdmin cmd: \1a");
 		    sysop_menu();
-		} else if (is_ql(who_am_i(NULL), quickroom)) {
+/*		} else if (is_ql(who_am_i(NULL), quickroom)) { */
+		} else if ( mono_sql_uf_is_host( usersupp->usernum, curr_rm ) ) {
 		    cprintf(ROOMAIDETITLE " cmd: \1a");
 		    roomaide_menu();
 		} else {

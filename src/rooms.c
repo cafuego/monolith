@@ -179,7 +179,9 @@ i_may_write_forum(const unsigned int forum)
 
     /* only sysops and ql's in readonly quad */
     if ((quad.flags & QR_READONLY) && (usersupp->priv < PRIV_SYSOP) &&
-	is_ql(who_am_i(NULL), quad)) {
+/*	is_ql(who_am_i(NULL), quad) */
+        mono_sql_uf_is_host( usersupp->usernum, forum )
+    ) {
 	return 0;
     } else {
 	return i_may_read_forum(forum);
