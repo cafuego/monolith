@@ -195,7 +195,7 @@ enter_passwd(user_t * user)
     char pwtest[20];
     static int failures;
 
-    cprintf("\rPassword: ");
+    cprintf("\r%s's Password: ", user->username);
     (void) getline(pwtest, -19, 1);
 
     if (strlen(pwtest) == 0) {

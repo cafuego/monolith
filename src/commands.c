@@ -584,9 +584,9 @@ emperor_menu()
 	    cprintf("\1f\1wAdmin cmd: " WIZARDTITLE " cmd: \1a");
 	}
 
-	cmd = get_single_quiet("bBFrRP*\r\b ?");
+	cmd = get_single_quiet("bBFrPQR*\r\b ?");
 
-	if (strchr("bBDEUPp", cmd))
+	if (strchr("bBDEUPQp", cmd))
 	    nox = 1;
 
 	switch (cmd) {
@@ -605,6 +605,12 @@ emperor_menu()
 		cprintf("\1f\1wPost as %s\n", config.wizard);
 		enter_message(curr_rm, EDIT_NORMAL, EMP_BANNER, NULL);
 		break;
+
+           case 'Q':
+                cprintf("\1f\1rFix quickroom info? (y\n) \1c");
+                if( yesno() == YES )
+                    (void) mono_sql_f_fix_quickroom();
+ 		break;
 
 	    case 'R':
 		cprintf("\1f\1bReset a %s.  \1rTemporarily Disabled.\n%s", config.forum,
