@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <mysql.h>
 
+#include "routines.h"
 #include "monolith.h"
 #include "monosql.h"
 #include "sql_utils.h"
