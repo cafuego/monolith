@@ -1,7 +1,7 @@
 <?php
 
-    include("config.inc");
-    require('auth.inc');
+    include("config.inc.phtml");
+    require('auth.inc.phtml');
 
     // Save execution start time.
     //
@@ -26,7 +26,7 @@
     //
     $username = $PHP_AUTH_USER;
 
-    require('engine/html.inc');
+    require('engine/html.inc.phtml');
 
     if (html_print_title($username, $REQUEST_URI))
         html_do_login($username);
@@ -35,7 +35,7 @@
 
     // Pick url open into commands and assign values.
     //
-    require("engine/routines.inc");
+    require("engine/routines.inc.phtml");
     $url_array = explode("/", $REQUEST_URI);
     $action = $url_array[3];	// What action?
     

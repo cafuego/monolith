@@ -588,11 +588,11 @@ AC_OUTPUT(cgi/Makefile lib/Makefile daemons/Makefile src/Makefile \
 
 dnl Create PHP include file with MYSQL settings.
 dnl
-PHP_CONFIG_FILE=web/config.inc
+PHP_CONFIG_FILE=web/config.inc.phtml
 echo "creating $PHP_CONFIG_FILE"
 echo "<?php" > $PHP_CONFIG_FILE
 echo >> $PHP_CONFIG_FILE
-echo "/* config.inc.  Generated automatically by configure.  */" >> $PHP_CONFIG_FILE
+echo "/* config.inc.phtml  Generated automatically by configure.  */" >> $PHP_CONFIG_FILE
 echo >> $PHP_CONFIG_FILE
 echo "\$BBSNAME        = \"$with_name\";" >> $PHP_CONFIG_FILE
 echo >> $PHP_CONFIG_FILE

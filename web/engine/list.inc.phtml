@@ -62,17 +62,17 @@ function list_quads($username, $listunread)
 	    PRINT "    <p align=\"left\">$id.\n";
 	    PRINT "  </td>\n";
 	    PRINT "  <td align=\"left\">\n";
-	    if ($listunread)
+	    if ($listunread > 0 )
 		echo "    <p align=\"left\"><a href=\"/bbs/index.phtml/n/$id\" ".mouseover("List unread messages in $js_name")."><font color=\"#ffff00\">$name</font></a>\n";
 	    else
 		echo "    <p align=\"left\"><a href=\"/bbs/index.phtml/m/$id\" ".mouseover("List all messages in $js_name")."><font color=\"#ffff00\">$name</font></a>\n";
 	    PRINT "  </td>\n";
 	    PRINT "  <td align=\"left\">\n";
-	    if ($unread == NULL || $unread <= 0)
+	    if ($unread == NULL || $unread <= 0) {
 		PRINT "    <p align=\"left\">(<font color=\"#00cc00\">$total messages</font>)<br>\n";
-	    else {
+	    } else {
 		if ($unread > $total)
-		    $unread = $total;
+		   $unread = $total;
 		PRINT "    <p align=\"left\">(<font color=\"#00cc00\">$total messages,</font> <a href=\"/bbs/index.phtml/n/$id\" ".mouseover("List unread messages in $js_name").">$unread unread</a>)<br>\n";
 	    }
 	    PRINT "  </td>\n";

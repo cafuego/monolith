@@ -1,6 +1,7 @@
 # $Id$
 
 enginedir = $(prefix)/www/bbs/engine
-engine_DATA = html.inc list.inc quad.inc routines.inc post.inc read.inc \
-  express.inc who.inc profile.inc image.inc config.inc
+engine_DATA = html.inc.phtml list.inc.phtml quad.inc.phtml routines.inc.phtml \
+	post.inc.phtml read.inc.phtml express.inc.phtml who.inc.phtml \
+	profile.inc.phtml image.inc.phtml config.inc.phtml
 

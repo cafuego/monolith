@@ -1,7 +1,7 @@
 <?php
 
-    require('config.inc');
-    require('auth.inc');
+    require('config.inc.phtml');
+    require('auth.inc.phtml');
 
     $starttime = microtime();
 
@@ -20,8 +20,8 @@
     echo "<meta http-equiv=\"Cache-Control\" content=\"no-cache, must-revalidate\">\n";
     echo "<meta http-equiv=\"Pragma\" content=\"no-cache\">\n";
 
-    require ('engine/routines.inc');
-    require ('engine/html.inc');
+    require ('engine/routines.inc.phtml');
+    require ('engine/html.inc.phtml');
 
     $handler = rawurldecode($handler);
     switch($handler) {
