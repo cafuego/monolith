@@ -97,7 +97,7 @@ msgstr "Wis notitieboek!\n"
 
 #: src/clipboard.c:230
 msgid "Are you sure? "
-msgstr ""
+msgstr "Weet je het zeker? "
 
 #: src/clipboard.c:286
 msgid "\001r\001fInvalid email address, can't send message!\001a\n"
@@ -227,7 +227,7 @@ msgstr "\001f\001gOntvanger\001w: \001c"
 
 #: src/express.c:688
 msgid "\001f\001gSend %s %s \001w(\001p%s\001w): \001c"
-msgstr ""
+msgstr "\001f\001gStuur %s %s \001w(\001p%s\001w): \001c"
 
 #: src/express.c:691
 msgid "\001f\001gSend %s %s\001w: \001c"
@@ -257,11 +257,11 @@ msgstr ""
 
 #: src/express.c:767
 msgid "\001f\001rThat %s is not online via the web.\001a\n"
-msgstr ""
+msgstr "\001f\001rDie %s is niet ingelogd via het web.\001a\n"
 
 #: src/express.c:780
 msgid "\001f\001rThat user is not online.\001a\n"
-msgstr ""
+msgstr "\001f\001rDie gebruiker is niet ingelogd.\001a\n"
 
 #: src/express.c:780 src/usertools.c:134
 msgid "\001f\001rNo such user.\001a\n"
@@ -327,15 +327,15 @@ msgstr ""
 
 #: src/express.c:1015
 msgid "\001f\001wYour %s %s are %sabled\001w.\001a"
-msgstr ""
+msgstr "\001f\001wYour %s %s are %sabled\001w.\001a"
 
 #: src/express.c:1033
 msgid "\001f\001gThese %s %s were held for you while you were busy:\001a\n"
-msgstr ""
+msgstr "\001f\001gDeze %s %s zijn ontvangen terwijl je bezig was:\001a\n"
 
 #: src/express.c:1196 src/express.c:1203
 msgid "\001f\001g%s %s received by \001y%s\001g.\n"
-msgstr ""
+msgstr "\001f\001g%s %s ontvangen door \001y%s\001g.\n"
 
 #: src/express.c:1198
 msgid "\001f\001y%s\001g is marked as \001clocked\001g though.\001a\n"
@@ -391,7 +391,7 @@ msgstr "\001f\001y%s \001gis \001rbezig\001g"
 
 #: src/express.c:1268
 msgid " and will receive your %s when done.\001a\n"
-msgstr ""
+msgstr " en zal je %s ontvangen wanneer deze klaar is.\001a\n"
 
 #: src/express.c:1272
 msgid "\001f\001gOops, \001y%s\001g is not making sense.\n"
@@ -537,6 +537,9 @@ msgid ""
 "\001f\001b*** \001gFeeling from %s \001gat \001w(\001g%02d:%02d\001w) \001b***\001a\n"
 "%s\001a"
 msgstr ""
+"\n"
+"\001f\001b*** \001gGevoel van %s \001gom \001w(\001g%02d:%02d\001w) \001b***\001a\n"
+"%s\001a"
 
 #: src/express.c:1401
 msgid ""
@@ -606,7 +609,7 @@ msgstr ""
 
 #: src/express.c:1490
 msgid "\001f\001gYou're now asking \001c%s\001g a BBS-related Question!\001a\n"
-msgstr ""
+msgstr "\001f\001gJe kunt nu \001c%s\001g een BBS gerelateerde vraag stellen.\001a\n"
 
 #: src/express.c:1496
 msgid "\001f\001rYou're now sending a broadcast!\001a\n"
@@ -614,11 +617,11 @@ msgstr ""
 
 #: src/express.c:1499
 msgid "\001rWarning: you are still marked as \001caway\001r.\001a\n"
-msgstr ""
+msgstr "\001rWaarschuwing: je bent nog steeds gemarkeerd als \001cafwezig\001r.\001a\n"
 
 #: src/express.c:1517
 msgid "\001f\001gSend Feeling %s.\001a\n"
-msgstr ""
+msgstr "\001f\001gStuur Gevoel %s.\001a\n"
 
 #: src/express.c:1519
 msgid "\001f\001gPress \001w<\001r?\001w>\001g for a list of available feelings.\001a\n"
