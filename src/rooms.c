@@ -1606,9 +1606,8 @@ low_traffic_quad_list(void)
 		            continue;
 		        else
                             if (check_user(scratch.qls[j])) {
-		                qlPtr = readuser(scratch.qls[j]);
-                                (void) notify_ql(qlPtr->username, scratch.name, (int) (timenow - post.date) / 86400 );
-		                fprintf(mesg_fp, "    \1f\1gMailed QL[%d]: %s.\1a\n",j, qlPtr->username);
+                                (void) notify_ql(scratch.qls[j], scratch.name, (int) ((timenow - post.date) / 86400) );
+		                fprintf(mesg_fp, "    \1f\1gMailed QL[%d]: %s.\1a\n",j, scratch.qls[j]);
                             }
                     }
                 } else {
