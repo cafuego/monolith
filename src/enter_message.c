@@ -21,18 +21,24 @@
 #include "display_message.h"
 
 static int get_alias(room_t *quad, message_t *message);
+static int get_priv(message_t *message, int flag);
 static int get_subject(message_t *message);
-static int get_content(message_t *message);
+static int get_content(message_t *message, int flag);
 static int fill_buffer(char **content);
 
+#ifndef DEBUG_SQL_MES
+  #define DEBUG_SQL_MES
+#endif
+
 /*
- * 	0: normal new message.
- *	1: reply to message.
- *	2: 
+ * 	1: normal message.
+ *	2: upload message.
+ *	3: editor message.
+ *	4: titled message.
  */
 
 int
-enter_message(int flag, unsigned int forum)
+enter_message(unsigned int forum, unsigned int flag)
 {
     room_t *quad;
     message_t *message;
@@ -52,7 +58,10 @@ enter_message(int flag, unsigned int forum)
     message->forum = forum;
     message->author = usersupp->usernum;
     message->content = NULL;
+    message->deleted = 'n';
 
+    (void) get_priv(message, flag);
+    if(flag == 4) flag =1;
     (void) get_alias(quad, message);
 
     /*
@@ -60,7 +69,6 @@ enter_message(int flag, unsigned int forum)
      * proper input selection. Nice idea, coz quite often when the BBS
      * lags, it takes forever to re-display the header.
      */
-    cprintf("\n");
     (void) display_header(message);
 
     /*
@@ -68,17 +76,17 @@ enter_message(int flag, unsigned int forum)
      */
     (void) get_subject(message);
 
-    switch( get_content(message)) {
+    switch( get_content(message, flag)) {
 
         case -1: /* Empty post */
-            cprintf("\1f\1rWe don't save empty %s!\n", config.message_pl);
+            cprintf("\1f\1rEmpty %s not saved!\n", config.message_pl);
             xfree(message->content);
             xfree(message);
             xfree(quad);
             return -1;
 
         case -2: /* <A>bort */
-            cprintf("\1f\1rAborting yer %s eh!\n", config.message);
+            cprintf("\1f\1r%s aborted.\n", config.message);
             xfree(message->content);
             xfree(message);
             xfree(quad);
@@ -102,6 +110,28 @@ enter_message(int flag, unsigned int forum)
 }
 
 static int
+get_priv(message_t *message, int flag)
+{
+
+    if(flag != 4)
+        strcpy(message->priv, "normal");
+    else {
+        if(usersupp->priv & PRIV_WIZARD) {
+            strcpy(message->priv, "emp");
+        } else if(usersupp->priv & PRIV_SYSOP) {
+            strcpy(message->priv, "sysop");
+        } else if(usersupp->priv & PRIV_TECHNICIAN) {
+            strcpy(message->priv, "tech");
+        } else if(usersupp->priv & PRIV_ROOMAIDE) {
+            strcpy(message->priv, "host");
+        } else {
+            strcpy(message->priv, "normal");
+        }
+    }
+    return 0;
+}
+
+static int
 get_alias(room_t *quad, message_t *message)
 {
 
@@ -117,9 +147,9 @@ get_alias(room_t *quad, message_t *message)
                 } while ( (check_user(message->alias) == TRUE) && (!(EQ(message->alias, usersupp->username))) );
             }
             if(strlen(message->alias))
-                message->type = MES_AN2;
+                sprintf( message->type, "alias");
             else {
-                message->type = MES_ANON;
+                sprintf( message->type, "anon");
             }
         }
     }
@@ -146,8 +176,14 @@ get_subject(message_t *message)
 
 #define POST_LINE_LENGTH	200
 
+/*
+ * mode = 1: normal message.
+ * mode = 2: upload message.
+ * mode = 3: editor message.
+ */
+
 static int
-get_content(message_t *message)
+get_content(message_t *message, int mode)
 {
     FILE *fp;
     int lines = 0;
@@ -157,7 +193,7 @@ get_content(message_t *message)
     if( usersupp->config_flags & CO_NEATMESSAGES )
         cprintf("\n\1a\1c");
 
-    switch(get_buffer(fp, 1, &lines)) {
+    switch(get_buffer(fp, mode, &lines)) {
 
         case 's':
         case 'S':
@@ -204,7 +240,6 @@ fill_buffer(char **content)
          log_it("sqlpost", "Can't mmap() temp file %s!", temp);
          return -1;
      }
-     
 
      /*
       * Reserve memory for the post content.
@@ -215,7 +250,6 @@ fill_buffer(char **content)
          return -1;
      }
 
-     cprintf("\n\nContent: %s\n\n", post); fflush(stdout);
      /*
       * Copy post content into mem.
       */
@@ -223,6 +257,7 @@ fill_buffer(char **content)
          log_it("sqlpost", "memcpy() of message content failed!");
          return -1;
      }
+
      /*
       * The Terminator; he said he'd be back!
       */

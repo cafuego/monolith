@@ -32,6 +32,8 @@ static int format_title(message_t *message, char **string );
 static int format_subject(message_t *message, char **string );
 static int format_content(message_t *message, char **string );
 static int format_footer(unsigned int forum, message_t *message, char **string );
+static int get_message_type( const char *type );
+static int get_message_priv( const char *priv );
 
 void
 display_message(unsigned int num, unsigned int forum)
@@ -39,7 +41,7 @@ display_message(unsigned int num, unsigned int forum)
     message_t message;
     char *string = NULL;
 
-    memset(&message, 0, sizeof(message_t));
+    memset( &message, 0, sizeof(message_t) );
 
     switch (mono_sql_mes_retrieve(num, forum, &message)) {
 
@@ -62,6 +64,7 @@ display_message(unsigned int num, unsigned int forum)
             return;
 
     }
+
     string = format_message( &message, forum );
     xfree(message.content);
 
@@ -78,6 +81,7 @@ display_message(unsigned int num, unsigned int forum)
 #endif
 
     xfree(string);
+    fflush(stdout);
 
     return;
 }
@@ -134,6 +138,7 @@ format_header( message_t *message, char **string )
      * Takes up 2-3 lines for a post header, but looks prettier.
      * Small header is Ye Olde Format. (1 line).
      */
+
     if(usersupp->config_flags & CO_EXPANDHEADER) {
         (void) format_date(LOCALE_DEFAULT, message, string);
         (void) format_username(message, string);
@@ -198,6 +203,13 @@ format_username(message_t *message, char **string)
 
     char fmt_username[100];
     char tmp_username[L_USERNAME+1];
+    int type = 0, priv = 0;
+
+    /*
+     * Convert type and priv to something useful.
+     */
+    type = get_message_type(message->type);
+    priv = get_message_priv(message->priv);
 
     if( (mono_sql_u_id2name(message->author, tmp_username)) == -1 ) {
         if(usersupp->config_flags & CO_EXPANDHEADER)
@@ -206,7 +218,7 @@ format_username(message_t *message, char **string)
             sprintf(fmt_username, "\n\1f\1gFrom \1rDeleted %s\1a", config.user );
     } else {
 
-    switch(message->type) {
+    switch(type) {
 
         case MES_ANON:
             if(usersupp->config_flags & CO_EXPANDHEADER)
@@ -230,7 +242,7 @@ format_username(message_t *message, char **string)
             break;
   
         default:
-            switch(message->type) {
+            switch(priv) {
                case MES_WIZARD:
                     if(usersupp->config_flags & CO_EXPANDHEADER)
                         sprintf(fmt_username, "\n\1f\1gFrom\1w: \1w%s\1a", tmp_username );
@@ -285,8 +297,11 @@ format_title(message_t *message, char **string)
 {
 
     char fmt_title[100];
+    int priv = 0;
 
-    switch(message->priv) {
+    priv = get_message_priv(message->priv);
+
+    switch(priv) {
         case MES_WIZARD:
             sprintf(fmt_title, " \1f\1w( %s )\1a", config.wizard );
             break;
@@ -309,6 +324,7 @@ format_title(message_t *message, char **string)
 
     }
     fmt_title[strlen(fmt_title)] = '\0';
+    cprintf("DEBUG: %s\n", fmt_title);
 
     *string = (char *)xrealloc( *string, strlen(*string)+strlen(fmt_title) );
     strcat( *string, fmt_title );
@@ -409,6 +425,34 @@ format_footer(unsigned int forum, message_t *message, char **string )
 
     return 0;
 }
+
+static int
+get_message_type( const char *type )
+{
+    if( EQ(type, "anon"))
+        return MES_ANON;
+    else if( EQ(type, "alias"))
+        return MES_AN2;
+    else
+        return MES_NORMAL;
+}
+
+static int
+get_message_priv( const char *priv )
+{
+    if( EQ(priv, "emp"))
+        return MES_WIZARD;
+    else if( EQ(priv, "sysop"))
+        return MES_SYSOP;
+    else if( EQ(priv, "tech"))
+        return MES_TECHNICIAN;
+    else if( EQ(priv, "host"))
+        return MES_ROOMAIDE;
+    else if( EQ(priv, "normal"))
+        return MES_NORMAL;
+    else
+        return MES_NORMAL;
+}
 /* eof */
 
 void
@@ -416,8 +460,6 @@ showmessages()
 {
     mlist_t *list = NULL;
    
-    enter_message(1,1);
-
     (void) mono_sql_mes_list_forum(1,0,&list);
 
     while(list != NULL) {
