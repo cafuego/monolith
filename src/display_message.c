@@ -277,9 +277,9 @@ format_username(message_t *message, char **string)
                case MES_NORMAL:
                default:
                     if(usersupp->config_flags & CO_EXPANDHEADER)
-                        sprintf(fmt_username, "\n\1f\1gFrom\1w: \1y%s\1a", tmp_username );
+                        sprintf(fmt_username, "\n\1f\1gFrom\1w: \1y\1n%s\1N\1a", tmp_username );
                     else
-                        sprintf(fmt_username, "\1f\1gFrom \1y%s\1a", tmp_username );
+                        sprintf(fmt_username, "\1f\1gFrom \1y\1n%s\1N\1a", tmp_username );
                     break;
             }
             break;
