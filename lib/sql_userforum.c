@@ -92,7 +92,7 @@ mono_sql_uf_add_entry(unsigned int user_id, unsigned int forum_id)
     /* make this into an sql query that also checks if room & user exist */
     ret = mono_sql_query(&res, 
         "SELECT user_id,username FROM userforum"
-        "WHERE forum_id=%u AND u.user_id=%u", forum_id, user_id );
+        "WHERE forum_id=%u AND user_id=%u", forum_id, user_id );
     mysql_free_result(res);
 
     if (ret != 0) {
@@ -115,7 +115,7 @@ mono_sql_uf_list_hosts_by_forum(unsigned int forumnumber, userlist_t **p )
     ret = mono_sql_query(&res, 
           "SELECT u.id,u.username " 
           "FROM user u,userforum uf "
-          "WHERE forum_id=%u AND uf.user_id=u.user_id AND host='y'"
+          "WHERE forum_id=%u AND uf.user_id=u.id AND host='y'"
         , forumnumber);
 
     if (ret == -1) {
@@ -137,8 +137,6 @@ mono_sql_uf_list_hosts_by_forum(unsigned int forumnumber, userlist_t **p )
         strcpy( e.name, row[1] ); 
         add_to_userlist( e, p );
 
-	fprintf( stderr, "host usernumber: %u\n", user_id);
-	/* do something ! */
     }
     mysql_free_result(res);
     return 0;
@@ -173,7 +171,6 @@ mono_sql_uf_list_hosts_by_user(unsigned int usernumber, forumlist_t **p )
         /* strcpy( e.forumname, row[1] ); */
         add_to_forumlist( e, p );
 
-	printf("host forumnumber: %u\n", forum_id);
 	/* do something ! */
     }
     mysql_free_result(res);
@@ -279,7 +276,7 @@ mono_sql_uf_list_invited_by_forum(unsigned int forumnumber, userlist_t **p )
     ret = mono_sql_query(&res, 
           "SELECT u.id,u.username " 
           "FROM user u,userforum uf "
-          "WHERE forum_id=%u AND uf.user_id=u.user_id AND status='invited'"
+          "WHERE forum_id=%u AND uf.user_id=u.id AND status='invited'"
         , forumnumber);
 
     if (ret == -1) {
@@ -301,7 +298,6 @@ mono_sql_uf_list_invited_by_forum(unsigned int forumnumber, userlist_t **p )
         strcpy( e.name, row[1] ); 
         add_to_userlist( e, p );
 
-	printf("debug: host usernumber: %u\n", user_id);
     }
     mysql_free_result(res);
     return 0;
@@ -337,7 +333,6 @@ mono_sql_uf_list_invited_by_user(unsigned int usernumber, forumlist_t **p )
         /* strcpy( e.forumname, row[1] ); */
         add_to_forumlist( e, p );
 
-	printf("invited forumnumber: %u\n", forum_id);
 	/* do something ! */
     }
     mysql_free_result(res);
@@ -417,16 +412,12 @@ mono_sql_uf_list_kicked_by_forum(unsigned int forumnumber, userlist_t **p )
           "WHERE forum_id=%u AND uf.user_id=u.id AND status='kicked'"
         , forumnumber);
 
-    printf( "done query" );fflush(stdout);
-
     if (ret == -1) {
-        printf( "no results" );fflush(stdout);
 	return -1;
     }
     rows = mysql_num_rows(res);
    
     *p = NULL;
-    printf( "got results" );fflush(stdout);
 
     for (i = 0; i < rows; i++) {
 	row = mysql_fetch_row(res);
@@ -435,8 +426,6 @@ mono_sql_uf_list_kicked_by_forum(unsigned int forumnumber, userlist_t **p )
 
 	if (sscanf(row[0], "%u", &user_id) == -1)
 	    continue;
-
-	fprintf( stderr, "debug: kicked usernumber: %u\n", user_id);
 
         e.usernum = user_id;
         strcpy( e.name, row[1] ); 
@@ -476,7 +465,6 @@ mono_sql_uf_list_kicked_by_user(unsigned int usernumber, forumlist_t **p )
         /* strcpy( e.forumname, row[1] ); */
         add_to_forumlist( e, p );
 
-	printf("kicked forumnumber: %u\n", forum_id);
 	/* do something ! */
     }
     mysql_free_result(res);
