@@ -145,10 +145,12 @@ enter_message(unsigned int forum, int mode, unsigned long banner_flag, const cha
         strcpy(_tmpstr, config.message);
         _tmpstr[0] = toupper(_tmpstr[0]);
 
-	if (abort == -1 || !filesize)
+	if (abort == -1)
 	    cprintf("\1f\1rI refuse to save an empty %s.\n", config.message);
 	else if (abort == -2)
 	    cprintf("\1f\1r%s entry aborted.\n", _tmpstr);
+        else if (!filesize)
+	    cprintf("\1f\1rI refuse to save an empty %s.\n", config.message);
 	xfree(header);
 	dest_userlist(recipient_list);
 	if (fexists(temp))
