@@ -1,4 +1,4 @@
 # $Id$
 
-SUBDIRS = feelings loginscreens
+SUBDIRS = feelings loginscreens etc
 
