@@ -78,11 +78,11 @@ function read_message($username, $quad, $current, $direction) {
                 // Don't let guests be able to post.
                 //
                 echo "<div align=\"center\">\n";
-                if($m_id != $highest)
+                if($m_id != $highest) {
                     addbutton("Read Next", "/bbs/index.phtml/r/$quad/$m_id/n");
-                else
-                    addbutton("No more unread messages", "");
-                addbutton("Read Previous", "/bbs/index.phtml/r/$quad/$m_id/p");
+                    addbutton("Read Previous", "/bbs/index.phtml/r/$quad/$m_id/p");
+                } else
+                    addbutton("Read Previous (no more unread messages)", "/bbs/index.phtml/r/$quad/$m_id/p");
                 // if( $username != "Guest" ) {
                 //    addbutton("        ", "");
                 //    addbutton("Reply to this message", "/bbs/index.phtml/f/$quad/$m_id");
