@@ -1,20 +1,11 @@
 <?php
 
-    // Header( "Content-type: image/gif" );
+    Header( "Content-type: image/gif" );
 
     $url_array=explode("/",$REQUEST_URI);
 
-    echo "$REQUEST_URI<br>\n";
-    echo "$url_array[0]<br>\n";
-    echo "$url_array[1]<br>\n";
-    echo "$url_array[2]<br>\n";
-    echo "$url_array[3]<br>\n";
-    echo "$url_array[4]<br>\n";
-    echo "$url_array[5]<br>\n";
-    echo "$url_array[6]<br>\n";
-    exit;
-    // $font = sprintf("/usr/bbs/www/bbs/font/%s.ttf", url_array[3] );
-    // $text = rawurldecode($url_array[4]);
+    sprintf( $font, "/usr/bbs/www/bbs/font/%s.ttf", url_array[2] );
+    $text = rawurldecode($url_array[3]);
 
     $im = imagecreate( 500, 30 );
     $black = ImageColorAllocate( $im, 0, 0, 0 );
