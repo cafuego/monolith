@@ -11,9 +11,11 @@ function read_message($username, $quad, $current, $direction) {
     switch(check_priv($username,$quad)) {
 
         case -1:
+            errorsound();
             errorimage( "You are not currently logged in. Log in first!" );
             return;
         case 0:
+            errorsound();
             errorimage( "You do not have the privileges to view this message" );
             return;
         default:
@@ -120,12 +122,15 @@ function read_message($username, $quad, $current, $direction) {
                     default:
                         break;
                 }
+                errorsound();
                 errorimage( "Message $current not found!" );
             }
         } else {
+            errorsound();
             errorimage( "Don't know which message to read!" );
         }
     } else {
+        errorsound();
         errorimage( "Don't know which quadrant to read!" );
     }
 }

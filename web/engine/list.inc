@@ -11,6 +11,7 @@ function list_quads($username, $listunread) {
     switch(check_priv($username,0)) {
 
         case -1:
+            errorsound();
             errorimage( "You are not currently logged in. Log in first!" );
             return;
         default:
@@ -81,8 +82,10 @@ function list_quads($username, $listunread) {
         PRINT "</table>\n";
     } else {
         if($listunread)
+            errorsound();
             errorimage( "No unread messages!" );
         else
+            errorsound();
             errorimage( "No quadrants found!" );
     }
 }

@@ -460,7 +460,6 @@ function main_menu($username, $current_url) {
     switch ($action) {
 
         case "a":	// PHP info.
-            errorsound();
             echo "<pre>\n" . phpinfo() . "</pre>\n";
             break;
 

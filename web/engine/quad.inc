@@ -11,9 +11,11 @@ function list_messages($username, $quad, $listunread) {
     switch(check_priv($username,$quad)) {
 
         case -1:
+            errorsound();
             errorimage( "You are not currently logged in. Log in first!" );
             return;
         case 0:
+            errorsound();
             errorimage( "You do not have the privileges to view this quadrant!" );
             return;
         default:
@@ -43,10 +45,13 @@ function list_messages($username, $quad, $listunread) {
     $number = MYSQL_NUMROWS($result);
     if ($number) {
         if($listunread)
-            if($number != 1)
+            if($number != 1) {
+                errorsound();
                 addimage( "Listing $number unread messages in $forum" );
-            else
+            } else {
+                errorsound();
                 errorimage( "No unread messages, listing 1 old message!" );
+            }
         else
             if($number != 1)
                 addimage( "Listing $number messages in $forum" );
@@ -90,10 +95,13 @@ function list_messages($username, $quad, $listunread) {
         }
         echo "</table>\n";
     } else {
-        if($listunread)
+        if($listunread) {
+            errorsound();
             errorimage( "No unread messages found!" );
-        else
+        } else {
+            errorsound();
             errorimage( "No messages found!" );
+        }
     }
 }
 

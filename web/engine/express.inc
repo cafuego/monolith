@@ -13,10 +13,12 @@ function express_message($username, $recipient, $interface, $location) {
     // Guests aren't allowed to X.
     //
     if( $username == "Guest" ) {
+        errorsound();
         errorimage( "Guests are not allowed to send eXpress messages!" );
         return;
     }
     if ($recipient == "Guest" ) {
+        errorsound();
         errorimage( "You cannot send eXpress messages to guests!" );
         return;
     }
@@ -26,18 +28,23 @@ function express_message($username, $recipient, $interface, $location) {
     switch(check_friend($username,$recipient)) {
 
         case -4:
+            errorsound();
             errorimage( "$recipient has web express messages disabled!" );
             return;
         case -3:
+            errorsound();
             errorimage( "$recipient is not currently online!" );
             return;
         case -2:
+            errorsound();
             errorimage( "$recipient is not an exisiting user!" );
             return;
         case -1:
+            errorsound();
             errorimage( "You are not currently logged in. Log in first!" );
             return;
         case 0:
+            errorsound();
             errorimage( "You are not allowed to send $recipient messages" );
             return;
         default:
