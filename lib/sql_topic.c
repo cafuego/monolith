@@ -28,23 +28,23 @@
 #undef extern
 
 int
-mono_sql_t_new_topic(unsigned int topic_id, topic_t * top)
+mono_sql_t_create_topic( const topic_t * top)
 {
     int ret;
     MYSQL_RES *res;
     char *esc_name = NULL;
+   
+    ret = escape_string(top->name, &esc_name);
 
-    if (escape_string(top->name, &esc_name) != 0) {
-	printf("could not escape topicname (#%u).\n", topic_id);
+    if ( ret ) {
+	printf("could not escape topicname (#%u).\n", top->topic_id);
 	return -1;
     }
     ret = mono_sql_query(&res, "INSERT INTO " T_TABLE
-	 " (topic_id,name,forum) " "VALUES ( %u, '%s', '%u'" 
-	   ,topic_id, esc_name, top->forum);
+	 " (topic_id,name,forum_id) " "VALUES ( %u, '%s', '%u')" 
+	   ,top->topic_id, esc_name, top->forum_id);
 
     xfree(esc_name);
-    mysql_free_result(res);
-
     return ret;
 }
 
