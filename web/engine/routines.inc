@@ -297,13 +297,13 @@ function colorize($doing) {
 
     // Fix fg colours.
     //
-    $doing = strtr($doing, "\1w", "<font color=\"#ffffff\">");	// White.
-    $doing = strtr($doing, "\1y", "<font color=\"#ffff00\">");	// Yellow.
-    $doing = strtr($doing, "\1g", "<font color=\"#00ff00\">");	// Green.
-    $doing = strtr($doing, "\1c", "<font color=\"#00ffff\">");	// Cyan.
-    $doing = strtr($doing, "\1b", "<font color=\"#0000ff\">");	// Blue.
-    $doing = strtr($doing, "\1p", "<font color=\"#ff00ff\">");	// Purple.
-    $doing = strtr($doing, "\1r", "<font color=\"#ff0000\">");	// Red.
+    $doing = strtr($doing, "\1w", "</font><font color=\"#ffffff\">");	// White.
+    $doing = strtr($doing, "\1y", "</font><font color=\"#ffff00\">");	// Yellow.
+    $doing = strtr($doing, "\1g", "</font><font color=\"#00ff00\">");	// Green.
+    $doing = strtr($doing, "\1c", "</font><font color=\"#00ffff\">");	// Cyan.
+    $doing = strtr($doing, "\1b", "</font><font color=\"#0000ff\">");	// Blue.
+    $doing = strtr($doing, "\1p", "</font><font color=\"#ff00ff\">");	// Purple.
+    $doing = strtr($doing, "\1r", "</font><font color=\"#ff0000\">");	// Red.
 
     return $doing;
 }
