@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
+#include <fcntl.h>
 #include <stdio.h>
 #include <ctype.h>
 #include <time.h>
@@ -49,21 +50,82 @@
 
 
 /*************************************************
-* rewritten to basically be a wrapper for more_string()
+* more()
+*
+* Put a file out to the screen, stopping every 24
+* lines.  Like the unix more utility. 
+*
+* Useable commands from the -- more (25%) --:
+*
+*  <space>     scroll forward one page
+*  <b>         scroll back one page
+*  <return>    scroll forward one line
+*  <backspace> scroll back one line
+*  <q>         quit
 *************************************************/
 
 int
 more(const char *filename, int color)
 {
-    char *message = NULL;
 
-    if( (message = map_file(filename)) == NULL) {
-        fprintf(stdout, "Could not open a file, error has been logged.\n");
-        return -1;
+    FILE *f;
+    unsigned int count;
+    int inc, fs_res, a;
+    int screenlength;
+    char work[121];
+
+    if (!usersupp)
+	screenlength = 24;
+    else
+	screenlength = usersupp->screenlength;
+
+    cprintf("\n");
+
+    if ((f = xfopen(filename, "r", FALSE)) == NULL) {
+	return -1;
     }
-    (void) more_string(message);
-    (void) xfree(message);
+    line_total = file_line_len(f);
+    line_count = 0;
+    curr_line = 2;
 
+    while (!feof(f)) {
+	if (fgets(work, 120, f))
+	    cprintf("%s", work);
+	else
+	    continue;
+
+	inc = increment(0);
+
+	if (inc == 1) {
+	    cprintf("\n");
+	    (void) fclose(f);
+	    return 1;
+	}
+	if (inc == -1 || inc == -2) {
+	    count = 0;
+	    fs_res = 0;
+
+	    while (fs_res == 0 &&
+		   ((inc == -1 && count < 2 * screenlength - 3) ||
+		    (inc == -2 && count < screenlength))) {
+		fs_res = fseek(f, -2, SEEK_CUR);	/*
+							 * seek 2 back 
+							 */
+		a = getc(f);
+
+		if (fs_res != 0) {
+		    line_count = 0;
+		    fseek(f, 0, SEEK_SET);
+		    (void) putchar('\007');
+		}
+		if (a == '\n')
+		    count++;
+	    }
+	}
+    }
+
+    (void) fflush(stdout);
+    (void) fclose(f);
     return 1;
 }
 
@@ -243,13 +305,11 @@ increment(int extraflag)
 	cprintf("%c%c", IAC, MORE_M);
 #endif
 
-#ifdef NOT_ENABLED_DUE_TO_RECURSIVE_CALLS
 	c = 'W';
 
 	while (c == 'W' || c == 'x') {
 
 	    are_there_held_xs();	/* a held-xs's in the more prompt */
-#endif
 
 	    IFANSI
 		cprintf("7");	/* store the colors and attributes      */
@@ -260,7 +320,6 @@ increment(int extraflag)
 		cprintf("\01f\01w -- \01gmore \01w--\01a");
 
 	    (void) fflush(stdout);
-#ifdef NOT_ENABLED_DUE_TO_RECURSIVE_CALLS
 	    c = get_single_quiet("GNQSWcvx \r\n\030");
 
 	    IFTWIT {
@@ -347,7 +406,6 @@ increment(int extraflag)
 		    return (1);
 	    }
 	}
-#endif
 
 #ifdef CLIENTSRC
 	cprintf("%c%c", IAC, MORE_M);
