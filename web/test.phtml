@@ -24,6 +24,8 @@ connect_db();
 $username = getenv("REMOTE_USER");
 $usernum = get_usernum($username);
 
+putenv("REMOTE_USER=$username");
+
 echo "<p>$username/$usernum<br>\n";
 
 if(
