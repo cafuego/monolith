@@ -11,7 +11,7 @@ function list_quads($username) {
     switch(check_priv($username,0)) {
 
         case -1:
-            PRINT "<h3 align=\"center\">You are not currently logged in. Log in first.</h3>\n";
+            errorimage( "You are not currently logged in. Log in first!" );
             return;
         default:
             break;
@@ -25,7 +25,8 @@ function list_quads($username) {
     $number = MYSQL_NUMROWS($result);
     if($number) {
 
-        PRINT "<h3 align=\"center\">Listing $number unzapped Quadrants.</h3>\n";
+        addimage( "Listing $number available Quadrants" );
+
         PRINT "<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\" align=\"center\">\n";
         $i = 0;
 
@@ -61,7 +62,7 @@ function list_quads($username) {
 
         PRINT "</table>\n";
     } else {
-        PRINT "<h3 align=\"center\">No quadrants found.</h3>\n";
+        errorimage( "No quadrants found!" );
     }
 }
 

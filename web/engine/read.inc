@@ -104,7 +104,7 @@ function read_message($username, $quad, $current, $direction) {
                     default:
                         break;
                 }
-                print "<h3 align=\"center\">Message $current not found.</h3>\n";
+                errorimage( "Message $current not found!" );
             }
         } else {
             print "<h3 align=\"center\">Don't know which message to read.</h3>\n";

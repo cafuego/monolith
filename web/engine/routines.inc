@@ -335,6 +335,8 @@ function addimage( $text ) {
 
 function errorimage( $text ) {
 
+    $text = rawurlencode($text);
+
     echo "<div align=\"center\">\n";
     echo "<img src=\"/bbs/image.phtml/Tahoma_B,24,red/$text/\" alt=\"[ image: ". rawurldecode($text) ." ]\">\n";
     echo "</div>\n";

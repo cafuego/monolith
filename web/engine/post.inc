@@ -11,16 +11,16 @@ function enter_message($username, $quad, $current, $action) {
     switch(check_priv($username,$quad)) {
 
         case -1:
-            PRINT "<h3 align=\"center\">You are not currently logged in. Log in first.</h3>\n";
+            errorimage( "You are not currently logged in. Log in first!" );
+            return;
         case 0:
-            PRINT "<h3 align=\"center\">You do not have the privileges to view this message.</h3>\n";
+            errorimage( "You do not have the privileges to view this message" );
             return;
         default:
             break;
     }
 
-    PRINT "<h3 align=\"center\">Sorry, but this isn't working quite yet.</h3>\n";
-    PRINT "<h3 align=\"center\">Try again in a few days' time.</h3>\n";
+    errorimage( "Sorry, but this isn't working quite yet" );
     return;
 
     if( $action == "f" )
@@ -40,7 +40,7 @@ function post_reply($username,$quad,$current) {
     $number = MYSQL_NUMROWS($result);
 
     if( !($number)) {
-        PRINT "<h3 align=\"center\">Error: Unable to fetch original message from database!</h3>\n";
+        errorimage( "Error: Unable to fetch original message from database!" );
         exit;
     }
 
@@ -68,7 +68,7 @@ function post_reply($username,$quad,$current) {
 
     // Show message.
     //
-    PRINT "<h3 align=\"center\">Replying to message $m_id in $forum</h3>\n<p> </p>\n";
+    addimage( "Replying to message $m_id in $forum" );
     PRINT "<div style=\"margin-left: 150;\">\n";
     PRINT "<p class=\"reply\"><font color=\"#00CC00\">Original from</font> $user <font color=\"#00CC00\">on</font> <font color=\"#00CC00\">$date CET</font></p>\n";
     PRINT "<pre><font color=\"#00ffff\">$content</font></pre>\n";
@@ -112,7 +112,7 @@ function post_new($username,$quad) {
     $number = MYSQL_NUMROWS($result);
 
     if( !($number)) {
-        PRINT "<h3 align=\"center\">Error: Unable to get quadrant details!</h3>\n";
+        errorimage( "Error: Unable to get quadrant details!" );
         exit;
     }
 
@@ -121,7 +121,7 @@ function post_new($username,$quad) {
     $forum = mysql_result($result,0,"name");
     $now = mysql_result($result,0,"now");
 
-    PRINT "<h3 align=\"center\">Entering new message in $forum</h3>\n<p> </p>\n";
+    addimage( "Entering new message in $forum" );
     PRINT "<div style=\"margin-left: 150;\">\n";
 
     // Reply form.

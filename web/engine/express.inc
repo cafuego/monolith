@@ -13,11 +13,11 @@ function express_message($username, $recipient, $interface, $location) {
     // Guests aren't allowed to X.
     //
     if( $username == "Guest" ) {
-        print "<h3 align=\"center\">Guests are not allowed to send eXpress messages.</h3>\n";
+        errorimage( "Guests are not allowed to send eXpress messages!" );
         return;
     }
     if ($recipient == "Guest" ) {
-        print "<h3 align=\"center\">You cannot send eXpress messages to guests.</h3>\n";
+        errorimage( "You cannot send eXpress messages to guests!" );
         return;
     }
 
@@ -26,25 +26,25 @@ function express_message($username, $recipient, $interface, $location) {
     switch(check_friend($username,$recipient)) {
 
         case -4:
-            print "<h3 align=\"center\">$recipient has web express messages disabled.</h3>\n";
+            errorimage( "$recipient has web express messages disabled!" );
             return;
         case -3:
-            print "<h3 align=\"center\">$recipient is not currently online.</h3>\n";
+            errorimage( "$recipient is not currently online!" );
             return;
         case -2:
-            print "<h3 align=\"center\">$recipient is not an exisiting user.</h3>\n";
+            errorimage( "$recipient is not an exisiting user!" );
             return;
         case -1:
-            print "<h3 align=\"center\">You are not currently logged in. Log in first.</h3>\n";
+            errorimage( "You are not currently logged in. Log in first!" );
             return;
         case 0:
-            print "<h3 align=\"center\">You are not allowed to send $recipient messages.</h3>\n";
+            errorimage( "You are not allowed to send $recipient messages" );
             return;
         default:
             break;
     }
 
-    print "<h3 align=\"center\">Sending an eXpress message to $recipient@$interface</h3>\n";
+    addimage( "Sending an eXpress message to $recipient@$interface" );
 
     PRINT "<div style=\"margin-left: 150;\">\n";
 

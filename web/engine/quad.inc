@@ -11,10 +11,10 @@ function list_messages($username, $quad) {
     switch(check_priv($username,$quad)) {
 
         case -1:
-            PRINT "<h3 align=\"center\">You are not currently logged in. Log in first.</h3>\n";
+            errorimage( "You are not currently logged in. Log in first!" );
             return;
         case 0:
-            PRINT "<h3 align=\"center\">You do not have the privileges to view this quadrant.</h3>\n";
+            errorimage( "You do not have the privileges to view this quadrant!" );
             return;
         default:
             break;
@@ -38,7 +38,7 @@ function list_messages($username, $quad) {
     $result = MYSQL_QUERY("SELECT m.message_id AS m_id,u.username AS username,m.flag AS flag,m.alias AS alias,m.subject AS subject,DATE_FORMAT(m.date,'%W, %e %M %Y %H:%i:%S') as date FROM message AS m LEFT JOIN user AS u ON u.id=m.author WHERE m.forum_id=$quad ORDER BY message_id,subject");
     $number = MYSQL_NUMROWS($result);
     if ($number) {
-        PRINT "<h3 align=\"center\">Listing $number messages in $forum</h3>\n<p> </p>\n";
+        addimage( "Listing $number messages in $forum" );
         PRINT "<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\" align=\"center\">\n";
         $i = 0;
         while ($i < $number) {
@@ -70,7 +70,7 @@ function list_messages($username, $quad) {
         }
         PRINT "</table>\n";
     } else {
-        PRINT "<h3 align=\"center\">No messages found.</h3>\n";
+        errorimage( "No messages found!" );
     }
 }
 

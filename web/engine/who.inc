@@ -27,12 +27,9 @@ function show_wholist($username,$location) {
     $number = MYSQL_NUMROWS($result);
     if ($number) {
         if($number > 1)
-            $text = "Listing $number users online";
+            addimage( "Listing $number users online" );
         else
-            $text = "Listing 1 user online";
-        $text = rawurlencode($text);
-
-        addimage( $text );
+            addimage( "Listing 1 user online" );
 
         print "<table border=\"0\" cellpadding=\"4\" cellspacing=\"2\" align=\"center\">\n";
         print "<tr>\n";

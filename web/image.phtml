@@ -13,6 +13,7 @@
     $font_info = explode(",", $url_array[3]);
     $font = "/usr/bbs/www/bbs/font/". $font_info[0] .".ttf";
     $size = $font_info[1];
+    $colour = $font_info[2];
 
     // Then, get the string to display.
     //
@@ -25,31 +26,42 @@
     $width = abs( $bounds[4] ) + 10;
     $height = abs( $bounds[5] ) + 10;
 
-    if( 0 ) {
-    echo "<p>0: $bounds[0]\n";
-    echo "<p>1: $bounds[1]\n";
-    echo "<p>2: $bounds[2]\n";
-    echo "<p>3: $bounds[3]\n";
-    echo "<p>4: $bounds[4]\n";
-    echo "<p>5: $bounds[5]\n";
-    echo "<p>6: $bounds[6]\n";
-    echo "<p>7: $bounds[7]\n";
-
-    echo "<p> ";
-    echo "<p>H: $height\n";
-    echo "<p>W: $width\n";
-
-    }
-
     // Create the image and set fore and background colours.
     //
     $im = imagecreate( $width, $height );
-    $black = ImageColorAllocate( $im, 0, 0, 0 );
-    $white = ImageColorAllocate( $im, 255, 255, 255 );
+    $background = ImageColorAllocate( $im, 0, 0, 0 );
+
+    switch($colour) {
+        case "yellow":
+            $foreground = ImageColorAllocate( $im, 255, 255, 0 );
+            break;
+        case "green":
+            $foreground = ImageColorAllocate( $im, 0, 255, 0 );
+            break;
+        case "cyan":
+            $foreground = ImageColorAllocate( $im, 0, 255, 255 );
+            break;
+        case "blue":
+            $foreground = ImageColorAllocate( $im, 0, 0, 255 );
+            break;
+        case "purple":
+            $foreground = ImageColorAllocate( $im, 255, 0, 255 );
+            break;
+        case "red":
+            $foreground = ImageColorAllocate( $im, 255, 0, 0 );
+            break;
+        case "grey":
+            $foreground = ImageColorAllocate( $im, 128, 128, 128 );
+            break;
+        case "white":
+        default:
+            $foreground = ImageColorAllocate( $im, 255, 255, 255 );
+            break;
+    }
 
     // Draw the string onto the image.
     //
-    ImageTTFText( $im, $size, 0, 5, $height-10, $white, $font, $text );
+    ImageTTFText( $im, $size, 0, 5, $height-10, $foreground, $font, $text );
 
     // Dump output :)
     //
