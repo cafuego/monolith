@@ -170,6 +170,7 @@ function mes_link_urls( $text ) {
     eregi("http://.* ", $text, $url_list);
 
     if(isset($url_list)) {
+        $url = first($url_list);
         do {
             echo "<a href=\"$url\">$url</a>\n";
         } while($url = next($url_list));
