@@ -248,6 +248,8 @@ print_system_config()
      * Show MySQL server info if present.
      */
     MYSQL mysql;
+    int total = 0, mine = 0;
+    float percent = 0;
     (void) mysql_get_server_info(&mysql);
 #endif
 
@@ -348,7 +350,11 @@ print_system_config()
     cprintf("\n\1wMySQL Server %-16s :\1g %s\n",
 	    mono_mysql_server_info(), mono_mysql_host_info());
     (void) fflush(stdout);
-    cprintf("\1wMessages currently in database:\1g %d (%d posted by you)\n", mono_sql_mes_count(0), mono_sql_mes_count(usersupp->usernum));
+    total = mono_sql_mes_count(0);
+    mine = mono_sql_mes_count(usersupp->usernum);
+    percent = ((float)mine/(float)total) * 100;
+    cprintf("\1wMessages currently in database:\1g %d, %d posted by you ", total, mine);
+    printf("(%.2f%%)\n", percent);
 #endif
 
     cprintf("\n\1wLast compiled                 : %s\n\1f", printdate(buf.st_mtime, 0));
