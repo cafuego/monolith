@@ -800,10 +800,15 @@ mono_sql_u_update_doing( unsigned int user_id, const char *doing )
 
     int i;
     MYSQL_RES *res;
+	char *p;
+
+    i = escape_string( doing, &p );
 
     i = mono_sql_query(&res, "UPDATE " U_TABLE 
         " set doing='%s' "
-	" WHERE id=%u", doing, user_id );
+	" WHERE id=%u", p, user_id );
+
+    xfree( p );
 
     if (i == -1) {
 	fprintf(stderr, "No results from query.\n");
