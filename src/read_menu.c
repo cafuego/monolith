@@ -14,7 +14,7 @@
 #include <unistd.h>
 
 #ifdef USE_MYSQL
-  #include MYSQL_HEADER
+#include MYSQL_HEADER
 #endif
 
 #ifdef ENABLE_NLS
@@ -74,20 +74,7 @@ void
 new_message_system(void)
 {
 
-
-#ifdef CONVERT_STUFF_YET_AGAIN_ARGH_COMMA_ARGH
-//    int j;
-    //    for (j = 0; j < MAXQUADS; j++) {
-    //      cprintf("\nquad %d\n", j);
-    //      convert_message_base(j);
-    //   }
-    //   logoff(0);
-
-#else
-
     short_prompt();
-
-#endif
 
 }
 
@@ -96,8 +83,6 @@ short_prompt(void)
 {
     char tempstr[40];
     int t;
-    struct tm *tp = NULL;
-    time_t now;
     int cmd = 0;
 
     for (;;) {
@@ -119,9 +104,6 @@ short_prompt(void)
 	    mono_add_loggedin(usersupp);
 	    cprintf("\1f\1gokay, there ya go!\n");
 	}
-	time(&now);
-	tp = localtime(&now);
-
 	switch (cmd) {
 
 	    case 0:
@@ -151,7 +133,7 @@ short_prompt(void)
 		break;
 
 	    case 'b':
-		cprintf("\1f\1gRead messages backwards.\1a\n");
+		cprintf(_("\1f\1gRead messages backwards.\1a\n"));
 		long_prompt(0, -1);
 		break;
 
@@ -172,12 +154,12 @@ short_prompt(void)
 		break;
 
 	    case 'd':
-		cprintf("\1f\1pSubscribe to %s: \1a", config.chatmode);
+		cprintf(_("\1f\1pSubscribe to %s: \1a"), config.chatmode);
 		chat_subscribe();
 		break;
 
 	    case 'e':
-		cprintf("\1f\1gEnter message.\1a\n");
+		cprintf(_("\1f\1gEnter message.\1a\n"));
 		enter_message(curr_rm, EDIT_NORMAL, NO_BANNER, NULL);
 		break;
 
@@ -194,12 +176,12 @@ short_prompt(void)
 		break;
 
 	    case 'f':
-		cprintf("\1f\1gRead messages forward.\1a\n");
+		cprintf(_("\1f\1gRead messages forward.\1a\n"));
 		long_prompt(0, 1);
 		break;
 
 	    case 'F':
-		cprintf("\1f\1gYour friends online.\1a\n");
+		cprintf(_("\1f\1gYour friends online.\1a\n"));
 		friends_online();
 		break;
 
@@ -229,12 +211,12 @@ short_prompt(void)
 
 	    case 'H':
 		nox = TRUE;
-		cprintf("\1f\1gHelpfiles.\1a\n");
+		cprintf(_("\1f\1gHelpfiles.\1a\n"));
 		help_topics();
 		break;
 
 	    case 'i':
-		cprintf("\1f\1g%s Info.\1a\n", config.forum);
+		cprintf(_("\1f\1g%s Info.\1a\n"), config.forum);
 		display_message(curr_rm, 0, DISPLAY_INFO);
 		break;
 
@@ -250,7 +232,7 @@ short_prompt(void)
 		break;
 
 	    case 'j':
-		cprintf("\1f\1gJump to %s name/number: \1a", config.forum);
+		cprintf(_("\1f\1gJump to %s name/number: \1a"), config.forum);
 		fflush(stdout);
 		ungoto_message_id(usersupp->lastseen[curr_rm]);
 		ungoto_forum_id(curr_rm);
@@ -390,12 +372,12 @@ short_prompt(void)
 		show_online(3);
 		break;
 
-            case '^':		/* <ctrl-w> */
-	        nox = 1;
-	        cprintf("\1f\1gSend \1pWeb \1g%s %s.\1a\n", config.express, config.x_message);
-                express(-4);
-                break;
-                
+	    case '^':		/* <ctrl-w> */
+		nox = 1;
+		cprintf(_("\1f\1gSend \1pWeb \1g%s %s.\1a\n"), config.express, config.x_message);
+		express(-4);
+		break;
+
 	    case '!':
 		nox = 1;
 		feeling();	/* the feeling menu */
@@ -405,12 +387,19 @@ short_prompt(void)
 		nox = 1;
 		cprintf(_("\1f\1gSend %s %s.\1a\n"), config.express, config.x_message);
 		express(0);
-		if (((int) rand() % 500000) == 42) {
-		    cprintf("\1f\1b\n*** \1g%s %s from \1yThe House Spirit \1gto \1y%s \1gat \1w(\1g%02d:%02d\1w) \1b***\1a\n", config.express, config.x_message, usersupp->username, tp->tm_hour, tp->tm_min);
-		    cprintf("\1a\1c>*chomp* *chomp*\n>Your %s %s tasted great!\n", config.express, config.x_message);
-		} else if (((int) rand() % 500000) == 42) {
-		    cprintf("\1f\1b\n*** \1g%s %s from \1yCthulhu \1gto \1y%s \1gat \1w(\1g%02d:%02d\1w) \1b***\1a\n", config.express, config.x_message, usersupp->username, tp->tm_hour, tp->tm_min);
-		    cprintf("\1a\1c>Feed me!\1a\n");
+		{
+		    time_t now;
+		    struct tm *tp = NULL;
+		    time(&now);
+		    tp = localtime(&now);
+
+		    if (((int) rand() % 500000) == 42) {
+			cprintf("\1f\1b\n*** \1g%s %s from \1yThe House Spirit \1gto \1y%s \1gat \1w(\1g%02d:%02d\1w) \1b***\1a\n", config.express, config.x_message, usersupp->username, tp->tm_hour, tp->tm_min);
+			cprintf("\1a\1c>*chomp* *chomp*\n>Your %s %s tasted great!\n", config.express, config.x_message);
+		    } else if (((int) rand() % 500000) == 42) {
+			cprintf("\1f\1b\n*** \1g%s %s from \1yCthulhu \1gto \1y%s \1gat \1w(\1g%02d:%02d\1w) \1b***\1a\n", config.express, config.x_message, usersupp->username, tp->tm_hour, tp->tm_min);
+			cprintf("\1a\1c>Feed me!\1a\n");
+		    }
 		}
 		break;
 
@@ -419,18 +408,18 @@ short_prompt(void)
 		break;
 
 	    case 030:		/* <ctrl-x> */
-		cprintf("\1f\1gRead %s-Log.\1a\n", config.express);
+		cprintf(_("\1f\1gRead %s-Log.\1a\n"), config.express);
 		old_express();
 		break;
 
 	    case 'Y':
-		cprintf("\1f\1gYell-menu.\1a \n");
+		cprintf(_("\1f\1gYell-menu.\1a \n"));
 		nox = TRUE;
 		yell_menu();
 		break;
 
 	    case 'Z':
-		cprintf("\1f\1gZap %s.\1a\n", config.forum);
+		cprintf(_("\1f\1gZap %s.\1a\n"), config.forum);
 		forget();
 		break;
 
@@ -449,25 +438,25 @@ short_prompt(void)
 		break;
 
 	    case '-':
-		cprintf("\1f\1gJump a number of %s back from the Last Read %s.\1a\n", config.message_pl, config.message);
-		cprintf("\1f\1gHow many %s back shall I jump?\1c ", config.message_pl);
+		cprintf(_("\1f\1gJump a number of %s back from the Last Read %s.\1a\n"), config.message_pl, config.message);
+		cprintf(_("\1f\1gHow many %s back shall I jump?\1c "), config.message_pl);
 		fflush(stdout);
 		getline(tempstr, 4, 1);
 		t = atoi(tempstr);
 		if (t <= 0)
-		    cprintf("\1f\1rThat is not a valid entry.\1a\n");
+		    cprintf(_("\1f\1rThat is not a valid entry.\1a\n"));
 		else
 		    long_prompt(-t, 1);
 		break;
 
 	    case '_':
-		cprintf("\1f\1rJump a number of %s back from the Last %s in this %s.\1a\n", config.message_pl, config.message, config.forum);
-		cprintf("\1f\1gHow many %s back shall I jump?\1c ", config.message_pl);
+		cprintf(_("\1f\1rJump a number of %s back from the Last %s in this %s.\1a\n"), config.message_pl, config.message, config.forum);
+		cprintf(_("\1f\1gHow many %s back shall I jump?\1c "), config.message_pl);
 		fflush(stdout);
 		getline(tempstr, 4, 1);
 		t = atoi(tempstr);
 		if (t <= 0)
-		    cprintf("\1f\1rThat is not a valid entry.\1a\n");
+		    cprintf(_("\1f\1rThat is not a valid entry.\1a\n"));
 		else {
 		    leave_n_unread_posts(curr_rm, t);
 		    long_prompt(0, 1);
@@ -497,13 +486,13 @@ short_prompt(void)
 		break;
 
 	    case '&':
-		cprintf("\1f\1gRandom Quote!\n");
+		cprintf(_("\1f\1gRandom Quote!\n"));
 		sprintf(tempstr, "%s/quote%d", QUOTEDIR, ((int) random() % 60) + 1);
 		more(tempstr, 1);
 		break;
 
 	    case '$':
-		cprintf("\1a\1f\1gDonator List.\1a\n");
+		cprintf(_("\1a\1f\1gDonator List.\1a\n"));
 		more(DONATORLIST, 1);
 		cprintf("\n");
 		break;
@@ -543,12 +532,12 @@ short_prompt(void)
 		break;
 
 	    case '<':
-		cprintf("\1f\1gChange your Friends-list.\1a\n\n");
+		cprintf(_("\1f\1gChange your Friends-list.\1a\n\n"));
 		menu_friend(FRIEND);
 		break;
 
 	    case '>':
-		cprintf("\1f\1gChange your Enemylist.\1a\n\n");
+		cprintf(_("\1f\1gChange your Enemylist.\1a\n\n"));
 		menu_friend(ENEMY);
 		break;
 
@@ -557,7 +546,7 @@ short_prompt(void)
 		break;
 
 	    case '/':
-		cprintf("\1f\1gList all commands.\1a\n");
+		cprintf(_("\1f\1gList all commands.\1a\n"));
 		more(MENUDIR "/menu_commands", 1);
 		break;
 
@@ -598,8 +587,8 @@ long_prompt(long number, int direction)
 	if (current > usersupp->lastseen[curr_rm])
 	    usersupp->lastseen[curr_rm] = current;	/* update lastseen */
 /*
-            mono_sql_ut_update_lastseen( usersupp->usernum, curr_rm, 0, current );
-*/
+ * mono_sql_ut_update_lastseen( usersupp->usernum, curr_rm, 0, current );
+ */
 
 	if (read_command == 0)
 	    continue;
@@ -702,11 +691,11 @@ long_prompt(long number, int direction)
 		    break;
 
 		case 'E':
-                    if((usersupp->priv >= PRIV_SYSOP) && (curr_rm == 2)) {
-                        cprintf("\1f\1rEdit \1y%s\1r.\1a\n", profile_default);
-                        useradmin( profile_default );
-                        break;
-                    }
+		    if ((usersupp->priv >= PRIV_SYSOP) && (curr_rm == 2)) {
+			cprintf("\1f\1rEdit \1y%s\1r.\1a\n", profile_default);
+			useradmin(profile_default);
+			break;
+		    }
 		    cprintf("\1f\1gEnter Editor-%s.\1a\n", config.message);
 		    direction = 1;
 		    status_bar_off();
@@ -888,26 +877,26 @@ long_prompt(long number, int direction)
 		    break;
 
 		case 'W':
-		    cprintf("\1f\1gShort Wholist.\1a\n");
+		    cprintf(_("\1f\1gShort Wholist.\1a\n"));
 		    show_online(3);
 		    cprintf("\n");
 		    break;
 
 		case 'w':
-		    cprintf("\1f\1gWhich aliens are online?\1a\n");
+		    cprintf(_("\1f\1gWhich aliens are online?\1a\n"));
 		    show_online(1);
 		    cprintf("\n");
 		    break;
 
-                case '^':		/* <ctrl-w> */
-	            nox = 1;
-	            cprintf("\1f\1gSend \1pWeb \1g%s %s.\1a\n", config.express, config.x_message);
-                    express(-4);
-                    break;
+		case '^':	/* <ctrl-w> */
+		    nox = 1;
+		    cprintf(_("\1f\1gSend \1pWeb \1g%s %s.\1a\n"), config.express, config.x_message);
+		    express(-4);
+		    break;
 
 		case 'x':
 		    nox = TRUE;
-		    cprintf("\1f\1gSend %s %s.\1a\n", config.express, config.x_message);
+		    cprintf(_("\1f\1gSend %s %s.\1a\n"), config.express, config.x_message);
 		    express(0);
 		    break;
 
@@ -973,12 +962,12 @@ long_prompt(long number, int direction)
 		    break;
 
 		case '<':
-		    cprintf("\1f\1gChange your Friends-list.\1a\n\n");
+		    cprintf(_("\1f\1gChange your Friends-list.\1a\n\n"));
 		    menu_friend(FRIEND);
 		    break;
 
 		case '>':
-		    cprintf("\1f\1gChange your Enemylist.\1a\n\n");
+		    cprintf(_("\1f\1gChange your Enemylist.\1a\n\n"));
 		    menu_friend(ENEMY);
 		    break;
 
@@ -1014,7 +1003,7 @@ get_read_start_number(const long read_number, const int read_direction)
     long start_at;
     room_t scratch;
 
-    read_forum( curr_rm, &scratch );
+    read_forum(curr_rm, &scratch);
 
     /* mail uses the userfile, NOT the quickroom */
     if (curr_rm == 1) {
@@ -1065,7 +1054,7 @@ numeric_read(const long current_post)
     if (curr_rm == MAIL_FORUM)
 	highest_id = usersupp->mailnum;
     else {
-        read_forum( curr_rm, &quad );
+	read_forum(curr_rm, &quad);
 	highest_id = quad.highest;
 	lowest_id = quad.lowest;
     }
@@ -1088,7 +1077,7 @@ set_read_bounds(long *lower_bound, long *upper_bound)
 {
     room_t quad;
 
-    read_forum( curr_rm, &quad );
+    read_forum(curr_rm, &quad);
     if (curr_rm == MAIL_FORUM) {
 	*lower_bound = 0;
 	*upper_bound = usersupp->mailnum;
@@ -1185,7 +1174,7 @@ display_short_prompt(void)
     static int last_prompt_forum = -1;
 
     if (curr_rm != last_prompt_forum) {
-        read_forum( curr_rm, &quad );
+	read_forum(curr_rm, &quad);
 	last_prompt_forum = curr_rm;
     }
     if (curr_rm == MAIL_FORUM) {
@@ -1222,17 +1211,19 @@ bingle(unsigned int forum)
     int i = 0;
 
     if (forum == 1)
-        return;
+	return;
     quad = readquad(forum);
 
-    if(!(quad.flags & QR_INUSE ))
-        return;
+    if (!(quad.flags & QR_INUSE))
+	return;
 
-    cprintf("\rWorking on %d.%s...", forum, quad.name); fflush(stdout);
+    cprintf("\rWorking on %d.%s...", forum, quad.name);
+    fflush(stdout);
     for (i = quad.lowest; i <= quad.highest; i++) {
-       (void)copy_message_to_sql(forum,i);
+	(void) copy_message_to_sql(forum, i);
     }
-    cprintf(" done.\n"); fflush(stdout);
+    cprintf(" done.\n");
+    fflush(stdout);
 
 }
 
@@ -1258,4 +1249,4 @@ copy_message_to_sql(unsigned int forum, unsigned int message)
     return;
 }
 #endif
-/*eof*/
+/*eof */
