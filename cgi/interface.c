@@ -346,12 +346,15 @@ main (int argc, char **argv)
   /* this translates the arguments to the room and message number */
   parse_input ();
 
+#ifdef QUAD_ENABLED
   if (post != NULL)
     show_posted ();
   else
+#endif
     switch (action)
       {
 
+#ifdef QUAD_ENABLED
       case ACT_INFO:
 	show_info ();
 	break;
@@ -359,14 +362,17 @@ main (int argc, char **argv)
       case ACT_READ:
 	show_message ();
 	break;
+#endif
 
       case ACT_PROFILE:
 	show_profile ();
 	break;
 
+#ifdef QUAD_ENABLED
       case ACT_POST:
 	make_post ();
 	break;
+#endif
 
       case ACT_WHOLIST:
 	show_wholist ();
@@ -376,14 +382,16 @@ main (int argc, char **argv)
         make_html_statusbar();
         break;
     
+#ifdef QUAD_ENABLED
       case ACT_ROOMLIST:
 	show_room_list ();
 	break;
+#endif
 
       case ACT_USERLIST:
 	show_userlist ();
 	break;
-  }
+}
 
   mono_detach_shm ();
   mono_sql_detach();
@@ -444,7 +452,7 @@ make_html_statusbar ()
   printf ("<center><p class=\"control\">\n");
   printf ("<b><a onMouseover=\"window.status ='Go back to the Monolith Community homepage.'; return true\" href=\"/\" target=\"_top\">home</a></b> | \n");
   printf ("<b><a onMouseover=\"window.status ='View the current wholist.'; return true\" href=\"/cgi-bin/interface?a=w\" target=\"main_window\">wholist</a></b> | \n");
-  printf ("<b><a onMouseover=\"window.status ='View the full list of available rooms.'; return true\" href=\"/cgi-bin/interface?a=roomlist\" target=\"main_window\">quadrants</a></b> | \n");
+  printf ("<b><a onMouseover=\"window.status ='View the full list of available rooms.'; return true\" href=\"/bbs/index.phtml\" target=\"main_window\">quadrants</a></b> | \n");
   printf ("<b><a onMouseover=\"window.status ='Profile a user.'; return true\" href=\"/bbs/users/profile.html\" target=\"main_window\">profile</a></b> | \n");
   printf ("<b><a onMouseover=\"window.status ='View the online helpfiles.'; return true\" href=\"/bbs/info/help/\" target=\"main_window\">help</a></b>\n");
   printf ("</p></center>\n");
@@ -542,6 +550,8 @@ make_html_name (const char *name)
   sprintf (html, "<a onMouseover=\"window.status ='Profile user %s.'; return true\" class=\"username\" href=\"/cgi-bin/interface?action=profile&profname=%s\">%s</a> ", name, filename, name);
   return html;
 }
+
+#ifdef QUADS_ENABLED
 
 void
 show_posted ()
@@ -780,6 +790,8 @@ show_info ()
   fclose (fp);
   make_html_foot ();
 }
+
+#endif
 
 
 void
@@ -1133,6 +1145,8 @@ print_user_stats (user_t * structure)
       printf ("</b></td></tr>\n" );
     }
 
+
+#ifdef QUAD_ENABLED
   /* Modified:
    * Now prints Quad names which link to quad info, which (I hope)
    * links to reading. Quads are no longer printed if viewing user
@@ -1155,6 +1169,7 @@ print_user_stats (user_t * structure)
 	}
       printf ("</b></td></tr>\n");
     }
+#endif
   /* sigh, there's no way i can check this:
    * if ( structure->on_line ) 
    * printf( "ONLINE for %d:%2.2d from %s<BR>\n" , timecall / 60, 
@@ -1295,6 +1310,8 @@ show_userlist ()
 }
 
 
+#ifdef QUAD_ENABLED
+
 void
 show_room_list ()
 {
@@ -1377,6 +1394,8 @@ show_room_list ()
   make_html_foot ();
   return;
 }
+
+#endif
 
 char *
 format_roomname( char * name, char *format )
