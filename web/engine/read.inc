@@ -1,0 +1,106 @@
+<?
+
+function read_message($username, $quad, $current, $direction) {
+
+    // Check user priv.
+    //
+    switch(check_priv($username,$quad)) {
+
+        case -1:
+            PRINT "<h3 align=\"center\">You are not currently logged in. Log in first.</h3>\n";
+        case 0:
+            PRINT "<h3 align=\"center\">You do not have the privileges to view this message.</h3>\n";
+            return;
+        default:
+            break;
+    }
+
+    connect_db();
+
+    if( ($quad > -1) && ($quad < 150)) {
+        if ($current) {
+
+            switch ($direction) {
+
+                case "p":
+                    $query_string = "SELECT m.message_id AS m_id,m.forum_id AS f_id,m.topic_id,m.author AS a_id,u.username AS username,m.flag AS flag,m.alias AS alias,m.subject AS subject,m.content AS content,DATE_FORMAT(m.date,'%W, %e %M %Y %H:%i:%S') AS date,f.name AS forum FROM message AS m LEFT JOIN user AS u ON u.id=m.author LEFT JOIN forum AS f ON f.id=m.forum_id WHERE forum_id=$quad AND m.message_id<$current ORDER BY m.message_id DESC";
+                    break;
+
+                case "n":
+                    $query_string = "SELECT m.message_id AS m_id,m.forum_id AS f_id,m.topic_id,m.author AS a_id,u.username AS username,m.flag AS flag,m.alias AS alias,m.subject AS subject,m.content AS content,DATE_FORMAT(m.date,'%W, %e %M %Y %H:%i:%S') AS date,f.name AS forum FROM message AS m LEFT JOIN user AS u ON u.id=m.author LEFT JOIN forum AS f ON f.id=m.forum_id WHERE forum_id=$quad AND m.message_id>$current ORDER BY m.message_id ASC";
+                    break;
+
+                default:
+                    $query_string = "SELECT m.message_id AS m_id,m.forum_id AS f_id,m.topic_id,m.author AS a_id,u.username AS username,m.flag AS flag,m.alias AS alias,m.subject AS subject,m.content AS content,DATE_FORMAT(m.date,'%W, %e %M %Y %H:%i:%S') AS date,f.name AS forum FROM message AS m LEFT JOIN user AS u ON u.id=m.author LEFT JOIN forum AS f ON f.id=m.forum_id WHERE forum_id=$quad AND m.message_id=$current";
+                    break;
+
+            }
+
+            $result = MYSQL_QUERY($query_string);
+            $number = MYSQL_NUMROWS($result);
+
+            if($number) {
+
+                // Fetch data and format.
+                //
+                $m_id = mysql_result($result,0,"m_id");
+                $f_id = mysql_result($result,0,"f_id");
+                $a_id = mysql_result($result,0,"a_id");
+                $user = mysql_result($result,0,"username");
+                $alias = mysql_result($result,0,"alias");
+                $flag = mysql_result($result,0,"flag");
+                $subject = mysql_result($result,0,"subject");
+                $content = mysql_result($result,0,"content");
+                $date = mysql_result($result,0,"date");
+                $forum = mysql_result($result,0,"forum");
+                $alias = htmlspecialchars($alias);
+                $subject = htmlspecialchars($subject);
+                $content = htmlspecialchars($content);
+                $forum = htmlspecialchars($forum);
+                $user = format_username($username,$user,$alias,$flag);
+                $subject = format_subject($subject);
+
+                // Show message.
+                //
+                PRINT "<h3 align=\"center\">Listing message $m_id in $forum</h3>\n<p> </p>\n";
+                PRINT "<div style=\"margin-left: 150;\">\n";
+                PRINT "<p align=\"left\"><font color=\"#00CC00\">From</font> $user <font color=\"#00CC00\">on</font> <font color=\"#00CC00\">$date CET</font><br><font color=\"#FFFF00\">Subject</font>: <font color=\"#FFFF00\">$subject</font></p>\n";
+                PRINT "<font color=\"#00CCCC\"><pre>$content</pre></font>\n";
+                PRINT "<p align=\"left\"><font color=\"#FFFFFF\">$f_id.</font><font color=\"#00CC00\">$forum message #$m_id</font>&gt;</p>\n";
+                PRINT "</div>\n";
+                PRINT "<p> </p>\n";
+
+                PRINT "<p align=\"center\" style=\"font: 10pt helvetica;\"><a href=\"/bbs/index.phtml/f/$quad/$m_id\">Reply</a> | \n";
+                PRINT "<a href=\"/bbs/index.phtml/e/$quad/$m_id\">New message</a> | \n";
+                PRINT "<a href=\"/bbs/index.phtml/r/$quad/$m_id/n\">Read Next</a> | \n";
+                PRINT "<a href=\"/bbs/index.phtml/r/$quad/$m_id/p\">Read Previous</a> | \n";
+                PRINT "<a href=\"/bbs/index.phtml/l/$quad\">Message Index</a> | \n";
+                PRINT "<a href=\"/bbs/\">Quadrant Index</a></p>\n";
+
+                // Update lastseen!
+                //
+                $usernum = get_usernum($username);
+                $result = MYSQL_QUERY("UPDATE usertopic SET lastread=$current WHERE forum_id=$f_id AND user_id=$usernum");
+
+            } else {
+                switch ($direction) {
+                    case "p":
+                        $current--;
+                        break;
+                    case "n":
+                        $current++;
+                        break;
+                    default:
+                        break;
+                }
+                PRINT "<h3 align=\"center\">Message $current not found.</h3>\n";
+            }
+        } else {
+            PRINT "<h3 align=\"center\">Don't know which message to read.</h3>\n";
+        }
+    } else {
+        PRINT "<h3 align=\"center\">Don't know which quadrant to read.</h3>\n";
+    }
+}
+
+?>
