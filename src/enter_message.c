@@ -72,7 +72,7 @@ enter_message(unsigned int forum, int mode, unsigned long banner_flag, const cha
     quad = read_quad(forum);
 
     /* priv checking */
-    if ((quad.flags & QR_READONLY) && ((usersupp->priv < PRIV_SYSOP) || (!(is_ql(usersupp->username, quad))))) {
+    if ((quad.flags & QR_READONLY) && (usersupp->priv < PRIV_SYSOP)) {
 	if (((int) rand() % 2) == 1)
 	    cprintf("\1f\1rThe pod bay door remains closed.\1a\n");
 	else
