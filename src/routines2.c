@@ -37,10 +37,6 @@
 #include "ext.h"
 #include "telnet.h"
 
-#define extern
-#include "routines2.h"
-#undef extern
-
 #include "commands.h"
 #include "express.h"
 #include "main.h"
@@ -48,6 +44,10 @@
 #include "inter.h"
 #include "usertools.h"
 #include "wholist.h"
+
+#define extern
+#include "routines2.h"
+#undef extern
 
 
 /*************************************************
