@@ -55,27 +55,28 @@ function express_message($username, $recipient, $interface, $location)
 
     // Reply form.
     //
-    PRINT "<form action=\"/bbs/sendx.phtml\" method=\"post\">\n";
+    echo "<form action=\"/bbs/handler.phtml\" method=\"post\">\n";
 
     // Hidden but required info for reply.
     //
-    PRINT "<input type=\"hidden\" name=\"recipient\" value=\"$recipient\">\n";
-    PRINT "<input type=\"hidden\" name=\"sender\" value=\"$username\">\n";
-    PRINT "<input type=\"hidden\" name=\"interface\" value=\"$interface\">\n";
-    PRINT "<input type=\"hidden\" name=\"location\" value=\"$location\">\n";
+    echo "<input type=\"hidden\" name=\"handler\" value=\"x\">\n";
+    echo "<input type=\"hidden\" name=\"recipient\" value=\"$recipient\">\n";
+    echo "<input type=\"hidden\" name=\"sender\" value=\"$username\">\n";
+    echo "<input type=\"hidden\" name=\"interface\" value=\"$interface\">\n";
+    echo "<input type=\"hidden\" name=\"location\" value=\"$location\">\n";
 
     // Show formatted header.
     //
     $now = strftime("%H:%M", time());
-    PRINT "<p align=\"left\"><font color=\"#00CC00\">eXpress Message from</font> <font color=\"#ffff00\">$username@web</font> <font color=\"#00cc00\">to</font> <font color=\"#ffff00\">$recipient@$interface</font> <font color=\"#00cc00\">at</font> (<font color=\"#00cc00\">$now</font>)</p>\n";
-    PRINT "<textarea rows=\"6\" cols=\"60\" name=\"message\" style=\"font: 10pt Helvetica\"></textarea>\n";
+    echo "<p align=\"left\"><font color=\"#00CC00\">eXpress Message from</font> <font color=\"#ffff00\">$username@web</font> <font color=\"#00cc00\">to</font> <font color=\"#ffff00\">$recipient@$interface</font> <font color=\"#00cc00\">at</font> (<font color=\"#00cc00\">$now</font>)</p>\n";
+    echo "<textarea rows=\"6\" cols=\"60\" name=\"message\" style=\"font: 10pt Helvetica\"></textarea>\n";
 
     // Form buttons.
     //
-    PRINT "<br><input type=\"submit\" value=\"Send X!\">\n";
-    PRINT "<input type=\"reset\" value=\"Clear\">\n";
+    echo "<br><input type=\"submit\" value=\"Send X!\">\n";
+    echo "<input type=\"reset\" value=\"Clear\">\n";
 
-    PRINT "</form>\n";
+    echo "</form>\n";
 
 }
 

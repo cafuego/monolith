@@ -1,0 +1,159 @@
+<?php
+
+    $starttime = microtime();
+
+    // Print header.
+    //
+    echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n";
+    echo "<html lang=\"en\">\n";
+    echo "<head>\n\n";
+    echo "<meta name=\"Generator\" content=\"PHP ".phpversion()."\">\n";
+    echo "<meta name=\"Process-id\" content=\"".getmypid()."\">\n";
+    echo "<meta name=\"Location\" content=\"$REQUEST_URI\">\n";
+    echo "<meta name=\"Rcsid\" content=\"\$Id$\">\n\n";
+    echo "<meta http-equiv=\"Expires\" content=\"".gmdate("l, d F Y H:i:s")." GMT\">\n";
+    echo "<meta http-equiv=\"Last-Modified\" content=\"".gmdate("l, d F Y H:i:s")." GMT\">\n";
+    echo "<meta http-equiv=\"Cache-Control\" content=\"no-cache, must-revalidate\">\n";
+    echo "<meta http-equiv=\"Pragma\" content=\"no-cache\">\n";
+
+    require ("engine/routines.inc");
+    require ('engine/html.inc');
+
+    // Get username and print off proper title.
+    //
+    switch($handler) {
+
+        // Store picture in profile.
+        case "p":
+            $username = rawurldecode($username);
+            $usernum = get_usernum($username);
+            if($userfile_name != null && $userfile_name != "" && valid_image($userfile_type) )
+                echo "<title>$username@Monolith BBS: Saving image '$userfile_name' into profile</title>\n";
+            else
+                echo "<title>$username@Monolith BBS: Can't save image into profile</title>\n";
+            break;
+
+        // Send eXpress message.
+        case "x":
+            $username = rawurldecode($sender);
+            $recipient = rawurldecode($recipient);
+            $u_id = get_usernum($username);
+            $r_id = get_usernum($recipient);
+            $interface = rawurldecode($interface);
+            $message = rawurldecode($message);
+            $message = htmlspecialchars($message);
+            $message = strtr($message, "'", "\\'");
+            $location = rawurldecode($location);
+            $location = strtr($location, "-", "/");
+            echo "<meta http-equiv=\"Refresh\" content=\"5; url=http://monolith.student.utwente.nl$location\">\n";
+            echo "<title>$username@Monolith BBS: Sending eXpress message to $recipient@$interface</title>\n";
+            break;
+    }
+
+    echo "<link rev=\"made\" href=\"mailto:webmaster@monolith.student.utwente.nl\">\n";
+    echo "<link rel=\"StyleSheet\" href=\"/bbs/style/global.css\" type=\"text/css\">\n";
+    // echo "<script src=\"/bbs/script/global.js\" type=\"application/x-javascript\"></script>\n";
+    echo "<script language=\"JavaScript\">\n";
+    echo "<!--\n";
+    echo "function setStatus( text ) {\n";
+    echo "    window.status = text;\n";
+    echo "    return true;\n";
+    echo "}\n";
+    echo "// -->\n";
+    echo "</script>\n";
+
+    // Header end and body start.
+    //
+    echo "</head>\n";
+    echo "<body bgcolor=\"#000000\" text=\"#FFFFFF\" style=\"margin-left: 0; margin-top: 0;\">\n\n";
+
+    switch($handler) {
+
+        // Save profile image.
+        case "p":
+
+            if($userfile == null || $userfile == "" || (valid($userfile_type) == 0)) {
+                if ($userfile != null && $userfile != "") {
+                    // Remove tempfile.
+                    unlink($userfile);
+                    errorsound();
+                    errorimage("Cannot cope with a file of type $userfile_type");
+                    errorimage("The image must be GIF, JPEG or PNG.");
+                } else {
+                    errorsound();
+                    errorimage("Image was not sucessfully uploaded");
+                }
+                addbutton("Try again", "/bbs/index.phtml/c", "Try uploading an image again");
+            } else {
+                if (!file_exists($userfile)) {
+                    errorsound();
+                    errorimage("The file was not successfully uploaded");
+                    addbutton("Try again", "/bbs/index.phtml/c", "Try uploading this image again");
+                } else {
+                    if($userfile_size > 20000) {
+                        // Remove tempfile.
+                        unlink($userfile);
+                        errorsound();
+                        errorimage("The file you uploaded is larger than the allowed 20 Kb");
+                        addbutton("Try a smaller image", "/bbs/index.phtml/c", "Try uploading a smaller image");
+                    } else {
+                        // If we get to here, we can actually save the image.
+                        // Open the file and read the contents into a variable.
+                        $fp = fopen($userfile, "r");
+                        $contents = fread($fp, filesize($userfile));
+                        fclose($fp);
+                        // Remove tempfile.
+                        unlink($userfile);
+                        // Encode into something MySQL can deal with.
+                        $contents = rawurlencode($contents);
+                        $result = mysql_query("UPDATE user SET content_type='$userfile_type' WHERE id=$usernum");
+                        if($result != true) {
+                            errorsound();
+                            errorimage("Could not save image type into database");
+                            addbutton("Try again", "/bbs/index.phtml/c", "Try again");
+                        } else {
+                            $result = mysql_query("UPDATE user SET picture='$contents' WHERE id=$usernum");
+                            if($result != true) {
+                                errorsound();
+                                errorimage("Could not save image into database");
+                                addbutton("Try again", "/bbs/index.phtml/c", "Try again");
+                            } else {
+                                // So now it should be saved.
+                                echo "<div align=\"left\">\n";
+                                echo "<table border=\"0\" cellpadding=\"5\" cellspacing=\"5\">\n";
+                                echo "  <tr>\n";
+                                echo "    <td width=\"120\" align=\"left\" valign=\"top\">\n";
+                                html_print_buttons($username, $REQUEST_URI);
+                                echo "    </td>\n";
+                                echo "    <td align=\"center\" valign=\"top\" width=\"500\">\n";
+                                addimage("Image successfully saved into $username's Profile");
+                                echo "    </td>\n";
+                                echo "  </tr>\n";
+                                echo "</table>\n";
+                                echo "</div>\n";
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+
+        // Send eXpress message.
+        case "x":
+            connect_db();
+
+            $result = MYSQL_QUERY("INSERT INTO webx (sender,recipient,message,date,status,i_sender,i_recipient) VALUES ($u_id,$r_id,'$message',NOW(),'unread','web','$interface')");
+            if ($result == true )
+                addimage( "eXpress message to $recipient@$interface was successfully saved" );
+            else {
+                errorimage( "eXpress message to $recipient@$interface could not be saved due to an error!" );
+                echo "<h2 align=\"center\">". mysql_error() ."</h2>\n";
+            }
+
+            addimage( "You will be taken back in 5 seconds." );
+            break;
+    }
+
+    html_print_foot($username, $starttime, "");
+    
+?>

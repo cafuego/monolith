@@ -295,7 +295,12 @@ html_print_buttons($username, $location)
     echo "".addbutton("Monolith", "/bbs/index.phtml/q", "Log off and go to our main page")."<br>\n";
     echo "".addbutton("Main Page", "/bbs/index.phtml/", "Go to the main page")."<br>\n";
     echo "".addbutton(" ", "", "")."<br>\n";
-    echo "".addbutton("Check Xes", "$location", "Check for new eXpress messages")."<br>\n";
+    
+    // Don't call a reload if we just submitted data via a form.
+    //
+    if ($url_array[2] != "handler.phtml")
+        echo "".addbutton("Check Xes", "$location", "Check for new eXpress messages")."<br>\n";
+
     echo "".addbutton("Old X Log", "/bbs/index.phtml/o", "View your old eXpress messages")."<br>\n";
     echo "".addbutton("Wholist", "/bbs/index.phtml/w", "View who's online right now")."<br>\n";
     echo "".addbutton("Quadrants", "/bbs/index.phtml/l", "List all available quadrants")."<br>\n";

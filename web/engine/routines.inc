@@ -597,14 +597,17 @@ main_menu($username, $current_url)
     switch ($action) {
 
 	case "a":		// PHP info.
-
 	    echo "<pre>\n".phpinfo()."</pre>\n";
+	    break;
+
+	case "c":		// Followup (reply).
+	    require('engine/config.inc');
+	    configure($username);
 	    break;
 
 	case "e":		// Enter (new).
 
 	case "f":		// Followup (reply).
-
 	    require('engine/post.inc');
 	    enter_message($username, $quad, $message, $action);
 	    break;
@@ -662,6 +665,18 @@ main_menu($username, $current_url)
 	    break;
 
     }
+}
+
+function valid_image( $file_type ) {
+    if($file_type == "image/gif")
+        return 1;
+    if($file_type == "image/jpeg")
+        return 1;
+    if($file_type == "image/jpg")
+        return 1;
+    if($file_type == "image/png")
+        return 1;
+    return 0;
 }
 
 ?>
