@@ -115,8 +115,10 @@ function html_do_login($username) {
     $result = MYSQL_QUERY("SELECT stamp FROM online WHERE user_id=$usernum AND interface='web'");
     $number = MYSQL_NUMROWS($result);
 
-    if(!($number))
+    if(!($number)) {
+        html_loginsound();
         $result = MYSQL_QUERY("INSERT INTO online (user_id,interface,doing,date) VALUES ($usernum,'web','<font color=\"#ffff00\">Surfing the web in style!</font>',NOW())");
+    }
    
 }
 
@@ -285,6 +287,12 @@ function html_print_buttons($username, $location) {
     echo "". addbutton(" ", "") ."<br>\n";
     echo "". addbutton(" ", "") ."<br>\n";
     echo "". addbutton("Log out", "/bbs/index.phtml/q") ."<br>\n";
+}
+
+function html_loginsound() {
+
+    echo "\n    <embed src=\"/bbs/sound/ok.aiff\" type=\"audio/x-aiff\" height=\"0\" width=\"0\" autoplay=\"true\" autostart=\"true\" hidden=\"false\" loop=\"false\" bgcolor=\"#000\">\n";
+    echo "    </embed>\n\n";
 }
 
 ?>

@@ -396,7 +396,6 @@ function suresound() {
     echo "    </embed>\n\n";
 }
 
-
 function addimage( $text ) {
 
     // To change all images in one go.
