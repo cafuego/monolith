@@ -12,6 +12,8 @@ msgid ""
 "\n"
 "\001gSelect a number, <n> for none, or <space> to quit:\001c "
 msgstr ""
+"\n"
+"\001gKies een nummer, <n> voor geen, of <space> om te stoppen:\001c "
 
 #: src/clipboard.c:50
 msgid "\001f\001gClipboard: \001a"
@@ -221,13 +223,15 @@ msgstr ""
 
 #: src/express.c:618
 msgid "\001f\001rThere's no X-Friend in slot #%d.\001a"
-msgstr ""
+msgstr "\001f\001rEr is geen vriend met nummer #%d.\001a"
 
 #: src/express.c:622
 msgid ""
 "\n"
 "\001f\001gSend Quick %s %s to \001y%s\001g.\001a\n"
 msgstr ""
+"\n"
+"\001f\001gStuur een snelle %s %s naar \001y%s\001g.\001a\n"
 
 #: src/express.c:650 src/express.c:665
 msgid "\001f\001gRecipient \001w(\001y%s\001w): \001c"
@@ -277,7 +281,7 @@ msgstr "\001f\001rDie gebruiker is niet ingelogd.\001a\n"
 
 #: src/express.c:780 src/usertools.c:135
 msgid "\001f\001rNo such user.\001a\n"
-msgstr ""
+msgstr "\001f\001rDeze gebruiker bestaat niet.\001a\n"
 
 #: src/express.c:787
 msgid "\001f\001rYou cannot send messages to degraded users.\001a\n"
@@ -714,7 +718,7 @@ msgstr ""
 
 #: src/main.c:206
 msgid "No such user.\n"
-msgstr ""
+msgstr "\001f\001rDeze gebruiker bestaat niet.\001a\n"
 
 #: src/main.c:225 src/main.c:326
 msgid "Incorrect login.\n"
@@ -1083,7 +1087,7 @@ msgstr "\001gJe bent geen %s!"
 
 #: src/usertools.c:887
 msgid "\001f\001gAre you sure you want to edit your profile? \001w(\001gy\001w/\001gn\001w) \001c"
-msgstr ""
+msgstr "\001f\001gWeet je zeker dat je je profiel wil bewerken? \001w(\001gy\001w/\001gn\001w) \001c"
 
 #: src/usertools.c:898
 msgid "\001f\001rUnable to fopen() profile file!\n"
