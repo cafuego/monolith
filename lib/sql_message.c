@@ -34,22 +34,18 @@
 #include "sql_message.h"
 
 static int _mono_sql_mes_add_num_to_list(mlist_t entry, mlist_t ** list);
-static void _mono_sql_mes_save(const char *tmpfile, const char *filename);
-static char * _mono_sql_mes_make_file(unsigned int forum, unsigned int num);
 
 int
 mono_sql_mes_add(message_t *message, unsigned int forum, const char *tmpfile)
 {
     MYSQL_RES *res;
     int ret = 0;
-    char *alias = NULL, *subject = NULL, message_file[100];
+    char *alias = NULL, *subject = NULL;
 
     if( (message->num = mono_sql_f_get_new_message_id(forum)) == 0)
         return -1;
 
-    strcpy(message_file, _mono_sql_mes_make_file(forum, message->num));
-    strcpy(message->content, message_file);
-    (void) _mono_sql_mes_save(tmpfile, message_file);
+    (void) copy(tmpfile, mono_sql_mes_make_file(forum, message->num));
 
     (void) escape_string(message->alias, &alias);
     (void) escape_string(message->subject, &subject);
@@ -61,9 +57,9 @@ mono_sql_mes_add(message_t *message, unsigned int forum, const char *tmpfile)
      */
     message->date = time(0);
 
-    ret = mono_sql_query(&res, "INSERT INTO " M_TABLE " (message_id,topic_id,forum_id,author,alias,subject,date,content,type,priv,deleted) VALUES (%u,%u,%u,%u,'%s','%s',FROM_UNIXTIME(%u),'%s','%s','%s','%c')",
+    ret = mono_sql_query(&res, "INSERT INTO " M_TABLE " (message_id,topic_id,forum_id,author,alias,subject,date,type,priv,deleted) VALUES (%u,%u,%u,%u,'%s','%s',FROM_UNIXTIME(%u),'%s','%s','%c')",
         message->num, message->topic, message->forum, message->author,
-        alias, subject, message->date, message->content, message->type,
+        alias, subject, message->date, message->type,
         message->priv, message->deleted );
 
     (void) mysql_free_result(res);
@@ -74,20 +70,13 @@ mono_sql_mes_add(message_t *message, unsigned int forum, const char *tmpfile)
 
 }
 
-static char *
-_mono_sql_mes_make_file(unsigned int forum, unsigned int number)
+char *
+mono_sql_mes_make_file(unsigned int forum, unsigned int number)
 {
     static char filename[100];
 
     (void) snprintf(filename, 100, FILEDIR "/forum.%u/message.%u", forum, number);
     return filename;
-}
-
-static void
-_mono_sql_mes_save(const char *tmpfile, const char *filename)
-{
-    (void)copy(tmpfile, filename);
-    return;
 }
 
 int
@@ -125,7 +114,7 @@ mono_sql_mes_retrieve(unsigned int id, unsigned int forum, message_t *data)
     message_t message;
     int ret = 0;
 
-    ret = mono_sql_query(&res, "SELECT message_id,topic_id,forum_id,author,alias,subject,UNIX_TIMESTAMP(date),content,type,priv,deleted,score FROM " M_TABLE " WHERE message_id=%u AND forum_id=%u", id, forum);
+    ret = mono_sql_query(&res, "SELECT message_id,topic_id,forum_id,author,alias,subject,UNIX_TIMESTAMP(date),type,priv,deleted,score FROM " M_TABLE " WHERE message_id=%u AND forum_id=%u", id, forum);
 
     if (ret == -1) {
  	(void) mysql_free_result(res);
@@ -164,18 +153,13 @@ mono_sql_mes_retrieve(unsigned int id, unsigned int forum, message_t *data)
     sscanf( row[6], "%lu", &message.date);
 
     /*
-     * Content
-     */
-    sprintf(message.content, row[7]);
-
-    /*
      * And more admin info.
      */
-    sscanf( row[8], "%s", message.type);
-    sscanf( row[9], "%s", message.priv);
-    sscanf( row[10], "%c", &message.deleted);
+    sscanf( row[7], "%s", message.type);
+    sscanf( row[8], "%s", message.priv);
+    sscanf( row[9], "%c", &message.deleted);
 
-    sscanf( row[11], "%d", &message.score);
+    sscanf( row[10], "%d", &message.score);
 
     (void) mysql_free_result(res);
 

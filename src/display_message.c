@@ -378,60 +378,55 @@ format_subject(message_t *message, char **string)
 
 }
 
+/*
+ * Note that the return values in here aren't used yes.. but they should.
+ */
 static int
 format_content(message_t *message, char **string )
 {
 
     char *content = NULL;
+    char message_file[100];
     int fd = -1;
     struct stat buf;
 
-    /*
-     * Empty lines around content?
-     */
+    /* Find message filename. */
+    sprintf( message_file, "%s", mono_sql_mes_make_file(message->forum, message->num));
+
+    /* Empty lines around content? */
     if( usersupp->config_flags & CO_NEATMESSAGES ) {
         *string = (char *)xrealloc( *string, strlen(*string)+strlen("\n") );
         strcat( *string, "\n" );
     }
 
-    /*
-     * Set content colour.
-     */
+    /* Set content colour, based on score (TODO) */
     *string = (char *)xrealloc( *string, strlen(*string)+strlen("\1a\1x") );
     if( message->score > 2 )
         strcat( *string, "\1a\1w" );
     else
         strcat( *string, "\1a\1c" );
 
-     /*
-      * Open temp file.
-      */
-     if( (fd = open(message->content, O_RDONLY)) == -1) {
-         log_it("sqlpost", "Can't open() message file %s!", temp);
+     /* Open temp file. */
+     if( (fd = open(message_file, O_RDONLY)) == -1) {
+         log_it("sqlpost", "Can't open() message file %s!", message_file);
          return -1;
      }
 
-     /*
-      * Determine file size.
-      */
+     /* Determine file size. */
      fstat(fd, &buf);
 
-     /*
-      * mmap() message file.
-      */ 
+     /* mmap() message file. */ 
 #ifdef HAVE_MAP_FAILED
      if( (content = mmap(content, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED ) { 
 #else
      if( (content = mmap(content, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == ((__ptr_t) -1) ) { 
 #endif
-         log_it("sqlpost", "Can't mmap() message file %s!", message->content);
+         log_it("sqlpost", "Can't mmap() message file %s!", message_file);
          return -1;
      }
 
 
-    /*
-     * Append actual message content.
-     */
+    /* Append actual message content. */
     *string = (char *)xrealloc( *string, strlen(*string)+strlen(content) );
     strcat( *string, content );
 
@@ -440,11 +435,11 @@ format_content(message_t *message, char **string )
         strcat( *string, "\n" );
     }
 
-    /*
-     * And close, destroy, kill etc.
-     */
+    /* And close, destroy, kill etc. */
     if( (munmap(content, buf.st_size)) == -1) {
-        log_it("sqlpost", "Can't munmap() message file %s!", message->content);
+        /* Should we exit the BBS nastily or just keep going coz
+         * we have the message anyways? */
+        log_it("sqlpost", "Can't munmap() message file %s!", message_file);
     }
     close(fd);
 

@@ -65,7 +65,6 @@ typedef struct {
     char alias[L_USERNAME+1];
     char subject[L_SUBJECT];
     time_t date;
-    char content[100];
     char type[8];
     char priv[8];
     char deleted;
