@@ -641,14 +641,14 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
 	    time(&now);
 	    tp = localtime(&now);
  	    strftime(datestr, sizeof(datestr) - 1,
-                 "\1f\1cUser's localtime:\1g %A \1w(\1g%H:%M\1w) (%Z)\1a\n", tp);
+                 _("\1f\1cUser's localtime:\1g %A \1w(\1g%H:%M\1w) (%Z)\1a\n"), tp);
 	    cprintf("%s", datestr);
 	    strcpy(str, usersupp->timezone);
 	    set_timezone(str);
         }
 
     if ((viewing_user->priv >= PRIV_SYSOP) && (strlen(user->aideline) > 0))
-	cprintf("\1f\1yAideline:%s\n", user->aideline);
+	cprintf(_("\1f\1yAideline:%s\n"), user->aideline);
 #ifdef OLD
     if (user->flags & US_ROOMAIDE) {
 	for (a = 0; a < 5; a++)
@@ -685,8 +685,8 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
     } else
 	/* IS NOT ONLINE */
     {
-	cprintf("\1f\1cLast on \1g%s ", printdate(user->laston_from, 1));
-	cprintf("\1cto \1g%s \1p", printdate(user->laston_to, 2));
+	cprintf(_("\1f\1cLast on \1g%s "), printdate(user->laston_from, 1));
+	cprintf(_("\1cto \1g%s \1p"), printdate(user->laston_to, 2));
 	if ((a = (timecall / 60 / 24)))
 	    cprintf("(\1y%d\1p day%s ago)\1c", a, (a == 1) ? "" : "s");
 	else
@@ -720,13 +720,13 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
         cprintf(_("\1f\1cConfiguration\1w: \1g%s \1cMonoholic Rating\1w: \1g"), frog.bbsname);
         printf("%.3f",_get_monoholic_rating(user));
         cprintf("\n");
-	cprintf("\1f\1cUsernum\1w: \1g%d \1cFirst login\1w: \1g%s\n",user->usernum, printdate(user->firstcall, 1) );
-        cprintf("\1f\1cLogins\1w: \1g%-5d \1cPosts: \1g%-5d \1cOnlinetime: \1g%2ld:%2.2ld   \1cPriv: \1g%5d  \1cX's: \1g%5ld \n",
+	cprintf(_("\1f\1cUsernum\1w: \1g%d \1cFirst login\1w: \1g%s\n"),user->usernum, printdate(user->firstcall, 1) );
+        cprintf(_("\1f\1cLogins\1w: \1g%-5d \1cPosts: \1g%-5d \1cOnlinetime: \1g%2ld:%2.2ld   \1cPriv: \1g%5d  \1cX's: \1g%5ld \n"),
 		user->timescalled,
 		user->posted, user->online / 60, user->online % 60,
 		user->priv, user->x_s);
     } else if (control) {	/* you profile yourself */
-	cprintf("First login: \1g%s\1c\nLogins: \1g%-5d \1cPosts: \1g%-5d \1cOnlinetime: \1g%2ld:%2.2ld \1cX's: \1g%5ld \n",
+	cprintf(_("First login: \1g%s\1c\nLogins: \1g%-5d \1cPosts: \1g%-5d \1cOnlinetime: \1g%2ld:%2.2ld \1cX's: \1g%5ld \n"),
 		printdate(user->firstcall, 1), user->timescalled,
 	     user->posted, user->online / 60, user->online % 60, user->x_s);
     } else			/* other people profile */
