@@ -4,10 +4,23 @@
  * sql_goto.c - Reads random goto from the goto database.
  */
 
+#ifdef HAVE_CONFIG_H
+  #include <config.h>
+#endif
+
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <mysql.h>
+
+#ifdef HAVE_MYSQL_H
+  #undef HAVE_MYSQL_MYSQL_H
+  #include <mysql.h>
+#else
+  #ifdef HAVE_MYSQL_MYSQL_H
+    #undef HAVE_MYSQL_H
+    #include <mysql/mysql.h>
+  #endif
+#endif
 
 #include "monolith.h"
 
