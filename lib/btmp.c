@@ -106,6 +106,8 @@ mono_add_loggedin(const user_t * user)
     if (!shm)
 	return -1;
 
+    shm->login_count++;
+
     memset(&newb, 0, sizeof(btmp_t));
     strcpy(newb.username, user->username);
     newb.logintime = time(NULL);
@@ -516,6 +518,8 @@ _mono_initialize_shm()
     shm->status = 0;
     shm->first = -1;
     shm->user_count = 0;
+    shm->login_count = 0;
+    shm->boot_time = time(NULL);
 
     /* Initialize holodeck room names and types */
     _mono_initialize_holodeck();
