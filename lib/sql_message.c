@@ -91,7 +91,7 @@ mono_sql_mes_mark_deleted(unsigned int id, unsigned int forum)
     MYSQL_RES *res;
     int ret = 0;
 
-    ret = mono_sql_query(&res, "UPDATE " M_TABLE " SET deleted='y' WHERE message_id=%d AND forum_id=%d", id, forum );
+    ret = mono_sql_query(&res, "UPDATE " M_TABLE " SET deleted='y' WHERE message_id=%u AND forum_id=%u", id, forum );
 
     (void) mysql_free_result(res);
 
@@ -105,7 +105,7 @@ mono_sql_mes_remove(unsigned int id, unsigned int forum)
     MYSQL_RES *res;
     int ret = 0;
 
-    ret = mono_sql_query(&res, "DELETE FROM " M_TABLE " WHERE message_id=%d AND forum_id=%d", id, forum);
+    ret = mono_sql_query(&res, "DELETE FROM " M_TABLE " WHERE message_id=%u AND forum_id=%u", id, forum);
     (void) mysql_free_result(res);
 
     return ret;
@@ -189,7 +189,7 @@ mono_sql_mes_list_forum(unsigned int forum, unsigned int start, mlist_t ** list)
     int ret = 0, rows = 0, i = 0;
     mlist_t entry;
 
-    ret = mono_sql_query(&res, "SELECT (message_id) FROM " M_TABLE " WHERE forum_id=%d AND message_id>=%d ORDER BY message_id", forum, start);
+    ret = mono_sql_query(&res, "SELECT (message_id) FROM " M_TABLE " WHERE forum_id=%u AND message_id>=%u ORDER BY message_id", forum, start);
 
     if (ret == -1) {
 	(void) mysql_free_result(res);
@@ -227,7 +227,7 @@ mono_sql_mes_list_topic(unsigned int topic, unsigned int start, mlist_t ** list)
     int ret = 0, rows = 0, i = 0;
     mlist_t entry;
 
-    ret = mono_sql_query(&res, "SELECT FROM " M_TABLE " WHERE topic_id=%d AND message_id>=%d ORDER BY message_id", topic, start);
+    ret = mono_sql_query(&res, "SELECT FROM " M_TABLE " WHERE topic_id=%u AND message_id>=%u ORDER BY message_id", topic, start);
 
     if (ret == -1) {
 	(void) mysql_free_result(res);
