@@ -21,13 +21,13 @@ function html_print_title($username, $location)
     switch (html_check_priv($action, $username, $quad)) {
 
 	case -2:	// Cursed!
-	    print "<title>$username@Monolith BBS: Bad, bad $username - Permission denied.</title>\n";
+	    print "<title>$username@$BBSNAME BBS: Bad, bad $username - Permission denied.</title>\n";
 	    return 1;
 	case -1:
 	    print "<title>Unknown user: Log in first.</title>\n";
 	    return 1;
 	case 0:
-	    print "<title>$username@Monolith BBS: Bad, bad $username - Permission denied.</title>\n";
+	    print "<title>$username@$BBSNAME BBS: Bad, bad $username - Permission denied.</title>\n";
 	    return 1;
 	default:
 	    break;
@@ -39,59 +39,59 @@ function html_print_title($username, $location)
     switch ($action) {
 
 	case "c":
-	    print "<title>$username@Monolith BBS: Account configuration</title>\n";
+	    print "<title>$username@$BBSNAME BBS: Account configuration</title>\n";
 	    break;
 	case "e":
 	    $name = html_get_quadname($username, $quad);
-	    print "<title>$username@Monolith BBS: Entering message in $name</title>\n";
+	    print "<title>$username@$BBSNAME BBS: Entering message in $name</title>\n";
 	    break;
 	case "f":
 	    $name = html_get_quadname($username, $quad);
-	    print "<title>$username@Monolith BBS: Replying to message in $name</title>\n";
+	    print "<title>$username@$BBSNAME BBS: Replying to message in $name</title>\n";
 	    break;
 	case "l":
-	    print "<title>$username@Monolith BBS: Listing available quadrants</title>\n";
+	    print "<title>$username@$BBSNAME BBS: Listing available quadrants</title>\n";
 	    break;
 	case "m":
 	    $name = html_get_quadname($username, $quad);
-	    print "<title>$username@Monolith BBS: Listing messages in $name</title>\n";
+	    print "<title>$username@$BBSNAME BBS: Listing messages in $name</title>\n";
 	    break;
 	case "n":
 	    $name = html_get_quadname($username, $quad);
-	    print "<title>$username@Monolith BBS: Listing unread messages in $name</title>\n";
+	    print "<title>$username@$BBSNAME BBS: Listing unread messages in $name</title>\n";
 	    break;
 	case "o":
-	    print "<title>$username@Monolith BBS: Listing old eXpress messages</title>\n";
+	    print "<title>$username@$BBSNAME BBS: Listing old eXpress messages</title>\n";
 	    break;
 	case "p":
-	    print "<title>$username@Monolith BBS: Profiling ". urldecode($victim) ."</title>\n";
+	    print "<title>$username@$BBSNAME BBS: Profiling ". urldecode($victim) ."</title>\n";
 	    break;
 	case "q":
-	    print "<title>$username@Monolith BBS: Logging out</title>\n";
+	    print "<title>$username@$BBSNAME BBS: Logging out</title>\n";
 	    break;
 	case "r":
 	    $name = html_get_quadname($username, $quad);
-	    print "<title>$username@Monolith BBS: Reading message in $name</title>\n";
+	    print "<title>$username@$BBSNAME BBS: Reading message in $name</title>\n";
 	    break;
 	case "u":
-	    print "<title>$username@Monolith BBS: Listing quadrants with unread messages</title>\n";
+	    print "<title>$username@$BBSNAME BBS: Listing quadrants with unread messages</title>\n";
 	    break;
 	case "w":
 	    // Stop auto-update if there are new x-es.
 	    //
 	    if (html_are_there_xs($username)) {
-		print "<title>$username@Monolith BBS: Looking at the Wholist [New X, not updating!]</title>\n";
+		print "<title>$username@$BBSNAME BBS: Looking at the Wholist [New X, not updating!]</title>\n";
 	    } else {
-		print "<meta http-equiv=\"Refresh\" content=\"60; url=http://monolith.student.utwente.nl/bbs/index.phtml/w/\">\n";
-		print "<title>$username@Monolith BBS: Looking at the Wholist [Updating every minute]</title>\n";
+		print "<meta http-equiv=\"Refresh\" content=\"60; url=http://$BBSNAME.student.utwente.nl/bbs/index.phtml/w/\">\n";
+		print "<title>$username@$BBSNAME BBS: Looking at the Wholist [Updating every minute]</title>\n";
 	    }
 	    break;
 	case "x":
 	    $quad = rawurldecode($quad);
-	    print "<title>$username@Monolith BBS: Sending eXpress message to $quad@$interface</title>\n";
+	    print "<title>$username@$BBSNAME BBS: Sending eXpress message to $quad@$interface</title>\n";
 	    break;
 	default:
-	    print "<title>$username@Monolith BBS: Logged in</title>\n";
+	    print "<title>$username@$BBSNAME BBS: Logged in</title>\n";
 	    break;
     }
 
@@ -107,8 +107,8 @@ function
 html_get_usernum($username)
 {
 
-    MYSQL_CONNECT("localhost", "root", "") OR DIE("Unable to connect to SQL server");
-    @mysql_select_db("bbs") or die("Unable to select database");
+    MYSQL_CONNECT($MYSQL_SERVER, $MYSQL_USER, $MYSQL_PASS) OR DIE("Unable to connect to SQL server");
+    @mysql_select_db($MYSQL_DATABASE) or die("Unable to select database");
 
     $result = MYSQL_QUERY("SELECT id FROM user WHERE username='$username'");
     $number = MYSQL_NUMROWS($result);
@@ -126,8 +126,8 @@ html_do_login($username)
 
     $usernum = html_get_usernum($username);
 
-    MYSQL_CONNECT("localhost", "root", "") OR DIE("Unable to connect to SQL server");
-    @mysql_select_db("bbs") or die("Unable to select database");
+    MYSQL_CONNECT($MYSQL_SERVER, $MYSQL_USER, $MYSQL_PASS) OR DIE("Unable to connect to SQL server");
+    @mysql_select_db($MYSQL_DATABASE) or die("Unable to select database");
 
     $result = MYSQL_QUERY("SELECT stamp FROM online WHERE user_id=$usernum AND interface='web'");
     $number = MYSQL_NUMROWS($result);
@@ -145,8 +145,8 @@ html_do_logout($username, $hostname)
 
     $usernum = html_get_usernum($username);
 
-    MYSQL_CONNECT("localhost", "root", "") OR DIE("Unable to connect to SQL server");
-    @mysql_select_db("bbs") or die("Unable to select database");
+    MYSQL_CONNECT($MYSQL_SERVER, $MYSQL_USER, $MYSQL_PASS) OR DIE("Unable to connect to SQL server");
+    @mysql_select_db($MYSQL_DATABASE) or die("Unable to select database");
 
     $result = MYSQL_QUERY("SELECT stamp AS login,(NOW()-stamp) AS online,NOW() AS logout FROM online WHERE user_id=$usernum AND interface='web'");
     $login = mysql_result($result, 0, "login");
@@ -158,7 +158,7 @@ html_do_logout($username, $hostname)
     $result = MYSQL_QUERY("INSERT INTO login (user_id,login,logout,host) VALUES($usernum,FROM_UNIXTIME($login),FROM_UNIXTIME($logout),SEC_TO_TIME($online),'$hostname')");
     $result = MYSQL_QUERY("UPDATE user SET login_count=login_count+1 WHERE id=$usernum");
 
-    print "<meta http-equiv=\"Refresh\" content=\"10; url=http://monolith.student.utwente.nl/\">\n";
+    print "<meta http-equiv=\"Refresh\" content=\"10; url=http://$BBSNAME.student.utwente.nl/\">\n";
 
 }
 
@@ -166,8 +166,8 @@ function
 html_get_quadname($username, $quad)
 {
 
-    MYSQL_CONNECT("localhost", "root", "") OR DIE("Unable to connect to SQL server");
-    @mysql_select_db("bbs") or die("Unable to select database");
+    MYSQL_CONNECT($MYSQL_SERVER, $MYSQL_USER, $MYSQL_PASS) OR DIE("Unable to connect to SQL server");
+    @mysql_select_db($MYSQL_DATABASE) or die("Unable to select database");
 
     $result = MYSQL_QUERY("SELECT name FROM forum WHERE id=$quad");
     $number = MYSQL_NUMROWS($result);
@@ -202,8 +202,8 @@ html_check_priv($action, $username, $forum_id)
     if( strtolower($username) == "pabo wakataeo")
         return -2;
 
-    MYSQL_CONNECT("localhost", "root", "") OR DIE("Unable to connect to SQL server");
-    @mysql_select_db("bbs") or die("Unable to select database");
+    MYSQL_CONNECT($MYSQL_SERVER, $MYSQL_USER, $MYSQL_PASS) OR DIE("Unable to connect to SQL server");
+    @mysql_select_db($MYSQL_DATABASE) or die("Unable to select database");
 
     // Get user number.
     //
@@ -262,13 +262,13 @@ html_print_foot($username, $starttime, $location)
     echo "<table border=\"0\" cellspacing=\"3\" align=\"center\">\n";
     echo "<tr>\n";
     echo "  <td colspan=\"2\">\n";
-    echo "    <p class=\"footer\">All messages posted to Monolith BBS are copyrighted to their authors, unless stated otherwise.</p>\n";
+    echo "    <p class=\"footer\">All messages posted to $BBSNAME BBS are copyrighted to their authors, unless stated otherwise.</p>\n";
     echo "  </td>\n";
     echo "</tr>\n";
     echo "<tr>\n";
     echo "  <td>\n";
-    echo "    <p class=\"footer\" style=\"text-align: right;\">Send email to <a class=\"red\" href=\"mailto:webmaster@monolith.student.utwente.nl\" ".mouseover("Send suggestions or comments to the webmaster via email").">webmaster@monolith.student.utwente.nl</a> for suggestions and comments.<br>\n";
-    echo "      &copy; The Monolith Community 1999 - Generated: ".gmdate("l, d F Y H:i:s", time())." GMT.<br>\n";
+    echo "    <p class=\"footer\" style=\"text-align: right;\">&copy; The $BBSNAME Community 1999-2000 - Generated: ".gmdate("l, d F Y H:i:s", time())." GMT.<br>\n";
+    echo "      Send email to <a class=\"red\" href=\"mailto:webmaster@$BBSNAME.student.utwente.nl\" ".mouseover("Send suggestions or comments to the webmaster via email").">webmaster@$BBSNAME.student.utwente.nl</a> for suggestions and comments.<br>\n";
     echo "  </td>\n";
     echo "  <td>\n";
     echo "    <img align=\"left\" src=\"/bbs/pix/logo.jpg\" height=\"32\" width=\"32\" alt=\"Logo\">\n";
@@ -289,8 +289,8 @@ html_are_there_xs($username)
 {
 
     $user_id = html_get_usernum($username);
-    MYSQL_CONNECT("localhost", "root", "") OR DIE("Unable to connect to SQL server");
-    @mysql_select_db("bbs") or die("Unable to select database");
+    MYSQL_CONNECT($MYSQL_SERVER, $MYSQL_USER, $MYSQL_PASS) OR DIE("Unable to connect to SQL server");
+    @mysql_select_db($MYSQL_DATABASE) or die("Unable to select database");
     $result = MYSQL_QUERY("SELECT w.id AS id,u.username AS user,w.sender AS sender,w.i_sender AS i_sender,w.recipient AS recipient,w.message AS message,DATE_FORMAT(w.date, '%H:%i') AS date FROM webx AS w LEFT JOIN user AS u ON u.id=w.sender WHERE w.recipient=$user_id AND w.status='unread' AND w.i_recipient='web' ORDER BY w.date ASC");
     return MYSQL_NUMROWS($result);
 
@@ -307,7 +307,7 @@ html_print_buttons($username, $location)
     if ($url_array[3] == "q")
 	return;
 
-    echo "".addbutton("Monolith", "/bbs/index.phtml/q", "Log off and go to our main page")."<br>\n";
+    echo "".addbutton("$BBSNAME", "/bbs/index.phtml/q", "Log off and go to our main page")."<br>\n";
     echo "".addbutton("Main Page", "/bbs/index.phtml/", "Go to the main page")."<br>\n";
     echo "".addbutton(" ", "", "")."<br>\n";
 

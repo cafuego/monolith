@@ -11,7 +11,7 @@
     $user_id = $url_array[1];    // What action?
     
     // Connect to the database.
-    MYSQL_CONNECT("localhost", "root", "") OR DIE("");
+    MYSQL_CONNECT("localhost", "bbs", "") OR DIE("");
     @mysql_select_db("bbs") or die("");
 
     // Fetch the encoded image data.

@@ -1,5 +1,8 @@
 <?php
 
+    require('config.inc');
+    require('auth.inc');
+
     // Print header; caching info etc.
     //
     echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n";
@@ -17,7 +20,7 @@
     echo "<meta http-equiv=\"Refresh\" content=\"0; url=http://monolith.student.utwente.nl/bbs/index.phtml/p/". urlencode($victim) ."/\">\n";
 
     $username = getenv("REMOTE_USER");
-    echo "<title>$username@Monolith BBS: Profiling " .urldecode($victim) ."</title>\n";
+    echo "<title>$username@$BBSNAME BBS: Profiling " .urldecode($victim) ."</title>\n";
 
     // Include StyleSheet and JavaScript.
     //

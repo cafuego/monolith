@@ -1,6 +1,10 @@
 <?php
 
+    require('config.inc');
+    require('auth.inc');
+
     $starttime = microtime();
+
 
     // Print header.
     //
@@ -26,7 +30,7 @@
         //
         case "i":
             $username = rawurldecode($username);
-            echo "<title>$username@Monolith BBS: Updating account details</title>\n";
+            echo "<title>$username@$BBSNAME BBS: Updating account details</title>\n";
             break;
 
         // Store picture in profile.
@@ -34,9 +38,9 @@
             $username = rawurldecode($username);
             $usernum = get_usernum($username);
             if($userfile_name != null && $userfile_name != "" && valid_image($userfile_type) )
-                echo "<title>$username@Monolith BBS: Saving image '$userfile_name' into profile</title>\n";
+                echo "<title>$username@$BBSNAME BBS: Saving image '$userfile_name' into profile</title>\n";
             else
-                echo "<title>$username@Monolith BBS: Can't save image into profile</title>\n";
+                echo "<title>$username@$BBSNAME BBS: Can't save image into profile</title>\n";
             break;
 
         // Send eXpress message.
@@ -52,13 +56,13 @@
             $location = rawurldecode($location);
             $location = strtr($location, "-", "/");
             echo "<meta http-equiv=\"Refresh\" content=\"5; url=http://monolith.student.utwente.nl$location\">\n";
-            echo "<title>$username@Monolith BBS: Sending eXpress message to $recipient@$interface</title>\n";
+            echo "<title>$username@$BBSNAME BBS: Sending eXpress message to $recipient@$interface</title>\n";
             break;
 
         // Ummm... what?
         default:
             $username = rawurldecode($username);
-            echo "<title>$username@Monolith BBS: Discovering unexplored bugs</title>\n";
+            echo "<title>$username@$BBSNAME BBS: Discovering unexplored bugs</title>\n";
             break;
     }
 

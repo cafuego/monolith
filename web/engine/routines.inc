@@ -11,12 +11,8 @@ function
 connect_db()
 {
 
-    $hostname = "localhost";
-    $username = "root";
-    $password = "";
-    $db = "bbs";
-    @mysql_connect($hostname, $username, $password) OR DIE("Unable to connect to sql server.");
-    @mysql_select_db("$db") or die("Unable to select database");
+    @mysql_connect($MYSQL_HOST, $MYSQL_USER, $MYSQL_PASS) OR DIE("Unable to connect to sql server.");
+    @mysql_select_db($MYSQL_DATABASE) or die("Unable to select database");
 }
 
 function close_db()
@@ -266,7 +262,7 @@ main_screen($username)
 	$time = mysql_result($result, 0, "time");
 	$hostname = mysql_result($result, 0, "host");
     }
-    addimage("Hello, $username. Welcome to Monolith BBS");
+    addimage("Hello, $username. Welcome to $BBSNAME BBS");
 
     if ($number && (strtolower($username) != "guest"))
 	echo "<p class=\"footer\">Your last login was on $date at $time CET from host '$hostname'.</p>\n";
@@ -279,7 +275,7 @@ main_screen($username)
     echo "  <param name=\"BGCOLOR\" value=\"#000000\">\n";
     echo "  <embed src=\"/bbs/flash/mono.swf\" pluginspage=\"http://www.macromedia.com/shockwave/download/\" type=\"application/x-shockwave-flash\" width=\"400\" height=\"300\" align=\"middle\" loop=\"false\" border=\"0\" bgcolor=\"#000000\">\n";
     echo "    <noembed>\n";
-    echo "      <img align=\"center\" src=\"/bbs/pix/monolith.jpg\" width=\"300\" height =\"300\" alt=\"[ image: Monolith BBS Logo ]\"></p>\n";
+    echo "      <img align=\"center\" src=\"/bbs/pix/monolith.jpg\" width=\"300\" height =\"300\" alt=\"[ image: $BBSNAME BBS Logo ]\"></p>\n";
     echo "    </noembed>\n";
     echo "  </embed> \n";
     echo "</object>\n";
