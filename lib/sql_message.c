@@ -324,7 +324,7 @@ mono_sql_mes_search_forum(int forum, const char *string, sr_list_t **list)
     if(forum >= 0)
         ret = mono_sql_query( &res,
             "SELECT " 
-                "m.message_id,m.forum_id,f.name,t.name," 
+                "m.message_id,m.forum_id,f.name," 
                 "u.username,m.alias,m.subject,m.flag " 
             "FROM " M_TABLE " AS m " 
                 "LEFT JOIN " U_TABLE " AS u ON u.id=m.author " 
@@ -338,7 +338,7 @@ mono_sql_mes_search_forum(int forum, const char *string, sr_list_t **list)
     else
         ret = mono_sql_query( &res,
             "SELECT " 
-                "m.message_id,m.forum_id,f.name,t.name," 
+                "m.message_id,m.forum_id,f.name," 
                 "u.username,m.alias,m.subject,m.flag " 
             "FROM " M_TABLE " AS m " 
                 "LEFT JOIN " U_TABLE " AS u ON u.id=m.author " 

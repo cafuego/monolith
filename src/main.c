@@ -615,7 +615,9 @@ user_terminate()
 
     /* add stuff here to check if someone is x-ing you */
     if (mono_find_x_ing(who_am_i(NULL), xer) == 0) {
-	cprintf("\n\n\1g\1f%s \1yis still sending an X to you.\1a", xer);
+	cprintf("\n\n\1g\1f%s \1yis still sending you an %s %s.\n\1a", xer, config.express, config.x_message);
+        cprintf("\1f\1gHit any key to continue...\1a");
+        inkey();
     }
     while (cmd != 'n' || cmd != 'y' || cmd != 'm') {
 
