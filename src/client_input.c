@@ -508,6 +508,7 @@ real_netget()
     char buf[2];
 #endif
     int i = -1;
+    int err_ctr = 0;
 #ifdef DITWERKNIET
     while (i < 0) {
 	ret = read(0, buf, 1);
@@ -521,9 +522,15 @@ real_netget()
     do {
 	i = fgetc(stdin);
 	if (i == EOF) {
-	    if (errno == EINTR)
+	    if (errno == EINTR) {
+
+/* hack to try and catch runaway clients */
+		err_ctr++;
+		if (err_ctr > 1000)
+		    logoff(ULOG_NORMAL);
+
 		continue;
-	    else
+	    } else
 		logoff(ULOG_NORMAL);
         }
     } while (i < 0);
