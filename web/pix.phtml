@@ -1,0 +1,11 @@
+<?
+
+    Header("Content-type: image/gif");
+    
+    require('engine/routines.inc');
+    connect_db();
+    $result = mysql_query("select picture from user where id=1151");
+    $data = mysql_result($result, 0, "picture");
+    echo "$data";
+
+}
