@@ -602,7 +602,7 @@ main_menu($username, $current_url)
 
 	case "c":		// Followup (reply).
 	    require('engine/config.inc');
-	    configure($username);
+	    config_account($username);
 	    break;
 
 	case "e":		// Enter (new).

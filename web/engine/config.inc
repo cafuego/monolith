@@ -1,6 +1,6 @@
 <?
 
-function config( $username ) {
+function config_account( $username ) {
 
     echo "<form enctype=\"multipart/form-data\" action=\"/bbs/handler.phtml\" method=\"post\"\n";
     echo "  <input type=\"hidden\" name=\"handler\" value=\"p\">\n";
