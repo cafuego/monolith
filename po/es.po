@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Date: 1999-09-19 15:30:30+0200\n"
-"From: Michel Oosterhof,IBM,079-3224013,0297-540540 <michel@monolith>\n"
-"Content-Type: text/plain; charset=\n"
+"Date: 1999-07-28 15:19:23+0200\n"
+"From: Sunburst <Sunburst@Monolith>\n"
+"Content-Type: text/plain; charset=latin1\n"
 "Xgettext-Options: --default-domain=monolith --directory=.. --add-comments --keyword=_ --keyword=N_ --files-from=./POTFILES.in\n"
 "Files: ./src/menu.c ./src/bbsconfig.c ./src/chat.c ./src/client_input.c ./src/clipboard.c ./src/commands.c ./src/config.c ./src/cprintf.c ./src/display_message.c ./src/enter_message.c ./src/express.c ./src/friends.c ./src/fun.c ./src/help.c ./src/inter.c ./src/key.c ./src/main.c ./src/messages.c ./src/newuser.c ./src/normal_input.c ./src/qc.c ./src/read_menu.c ./src/registration.c ./src/rooms.c ./src/routines2.c ./src/statusbar.c ./src/uadmin.c ./src/usertools.c ./src/vote.c ./src/wholist.c\n"
 
@@ -11,14 +11,16 @@ msgid ""
 "\n"
 "\001gSelect a number, <n> for none, or <space> to quit:\001c "
 msgstr ""
+"\n"
+"\001gSeleccione un numero, <n> para nada, o <espacio> dejar:\001c "
 
 #: src/clipboard.c:50
 msgid "\001f\001gClipboard: \001a"
-msgstr ""
+msgstr "\001f\001gSujetapapeles: \001a "
 
 #: src/clipboard.c:63
 msgid "\001f\001gDelete ClipBoard.\n"
-msgstr ""
+msgstr "\001f\001gBorrar el Sujetapapeles.\n"
 
 #: src/clipboard.c:64
 msgid "\001f\001yAre you sure you want to delete your clipboard? (y/N) "
@@ -26,45 +28,51 @@ msgstr ""
 
 #: src/clipboard.c:66
 msgid "\001f\001gClipboard not deleted.\n"
-msgstr ""
+msgstr "\001f\001gEl sujetapapeles no fue borrado.\n"
 
 #: src/clipboard.c:69
 msgid "\001f\001gClipboard deleted.\n"
-msgstr ""
+msgstr "\001f\001gEl sujetapapeles fue borrado.\n "
 
 #: src/clipboard.c:74
 msgid "\001f\001gEdit ClipBoard.\n"
-msgstr ""
+msgstr "\001f\001gEdite el sujetapapeles.\n"
 
 #: src/clipboard.c:83
 msgid "\001f\001gRemove Colorcodes.\n"
-msgstr ""
+msgstr "\001f\001gQuitar los códigos para color."
 
 #: src/clipboard.c:85
 msgid ""
 "\001f\001r\n"
 "Warning\001w:\001g Couldn't remove colours."
 msgstr ""
+"\001f\001r\n"
+"Aviso\001w:\001g No pudo quitar los colores."
 
 #: src/clipboard.c:89
 msgid ""
 "\001f\001gShow ClipBoard contents.\001c\n"
 "\n"
 msgstr ""
+"\001f\001gMuestre los contentos del sujetapapeles.\001c\n"
+"\n"
 
 #: src/clipboard.c:90
 msgid ""
 "\001w----- CLIPBOARD -----\n"
 "\001g"
 msgstr ""
+"\001w----- SUJETAPAPELES -----\n"
+"\001g"
 
 #: src/clipboard.c:92
 msgid "\001f\001w----- CLIPBOARD -----\n"
-msgstr ""
+msgstr "\001f\001w----- SUJETAPAPELES -----\n "
 
 #: src/clipboard.c:98
 msgid "\001f\001gQuit.\n"
-msgstr ""
+msgstr "\001f\001gQuite.\n "
 
 #: src/clipboard.c:131
 msgid ""
@@ -74,41 +82,43 @@ msgstr ""
 
 #: src/clipboard.c:134
 msgid "\001f\001rWarning\001w:\001g Couldn't remove colours."
-msgstr ""
+msgstr "\001f\001rAviso\001w:\001g No pudo quitar los colores."
 
 #: src/clipboard.c:154 src/clipboard.c:357
 msgid "\001g\001fMail was sent to \001c%s\001a\n"
-msgstr ""
+msgstr "\001g\001fEl correo se mandó a \001c%s\001a\n"
 
 #: src/clipboard.c:175
 msgid "\001fCould not open your clipboard file.\n"
-msgstr ""
+msgstr "\001fNo pudo abrir su legajo de sujetapapeles.\n"
 
 #: src/clipboard.c:223
 msgid "Copy'ing the NoteBook to the end of the ClipBoard.\n"
-msgstr ""
+msgstr "Copiando el cuaderno al fin del sujetapapeles"
 
 #: src/clipboard.c:229
 msgid "Delete NoteBook!\n"
-msgstr ""
+msgstr "¡Borrar el cuaderno!\n"
 
 #: src/clipboard.c:230
 msgid "Are you sure? "
-msgstr ""
+msgstr "¿Está seguro? "
 
 #: src/clipboard.c:286
 msgid "\001r\001fInvalid email address, can't send message!\001a\n"
-msgstr ""
+msgstr "\001r\001f¡Drección e-mail inválida; no se pudo mandar el mensaje!\001a\n "
 
 #: src/clipboard.c:291
 msgid ""
 "\001f\001g\n"
 "Do you wish to send it to yourself? \001c"
 msgstr ""
+"\001f\001g\n"
+"Quiere mandarlo a Ud. mismo? \001c"
 
 #: src/clipboard.c:298
 msgid "\001f\001gE-Mail yourself the ClipBoard.\n"
-msgstr ""
+msgstr "\001f\001gE-Mail el cuaderno a Ud. mismo.\n "
 
 #: src/clipboard.c:300
 msgid "\001g\001fAre you sure you want to email your clipboard? \001w(\001gy\001w/\001gN\001w) \001c"
@@ -125,32 +135,40 @@ msgid ""
 "\001f\001r\n"
 "Warning\001w:\001g Couldn't remove colours.\001a"
 msgstr ""
+"\001f\001r\n"
+"Aviso\001w:\001g No pudo quitar los colores.\001a"
 
 #: src/clipboard.c:316
 msgid "\001r\001fSubject contains invalid characters, can't send message!\001a\n"
-msgstr ""
+msgstr "\001r\001fEl subjeto contiene unos carácteros inválidos; no se pudo mandar el mensaje!\001a\n"
 
 #: src/clipboard.c:327
 msgid ""
 "\001f\001rError trying to send clipboard to %s.\n"
 "Can't popen(%s)\n"
 msgstr ""
+"\001f\001rUn error ocurre cuando trate de mandar el sujetapapeles a %s.\n"
+"No pudo popen(%s)\n"
 
 #: src/clipboard.c:333
 msgid ""
 "\001f\001rError trying to send clipboard to %s.\n"
 "Can't mmap(%s)\n"
 msgstr ""
+"\001f\001rUn error ocurre cuando trate de mandar el sujetapapeles a %s.\n"
+"No pudo mmap(%s)\n"
 
 #: src/clipboard.c:344
 msgid ""
 "\001f\001rError trying to send clipboard to %s.\n"
 "Can't pclose(%X)\n"
 msgstr ""
+"\001f\001rUn error ocurre cuando trate de mandar el sujetapapeles a %s.\n"
+"No pudo pclose(%s)\n"
 
 #: src/clipboard.c:351
 msgid "\001f\001rError trying to send clipboard to %s."
-msgstr ""
+msgstr "\001f\001rUn error ocurre cuando trate de mandar el sujetapapeles a %s."
 
 #: src/commands.c:499
 msgid "\001f\001wEdit %s Description.\001a\n"
@@ -170,7 +188,7 @@ msgstr ""
 
 #: src/commands.c:700
 msgid "\001f\001cMark messages as read.\n"
-msgstr ""
+msgstr "\001f\001cMarque los mensajes: leídos.\n "
 
 #: src/commands.c:718
 msgid "\001f\001cSystem Configuration.\n"
@@ -178,7 +196,7 @@ msgstr ""
 
 #: src/commands.c:734
 msgid "\001f\001w(\001gMisc. Options\001w)\n"
-msgstr ""
+msgstr "\001f\001w(\001gOpciones Misceláneos\001w)\n "
 
 #: src/express.c:113
 msgid "\001f\001gSuccessfully saved \001pWeb\001g %s %s for \001y%s.\001a\n"
@@ -202,7 +220,7 @@ msgstr ""
 
 #: src/express.c:217 src/express.c:1235 src/express.c:1240
 msgid "\001f\001g%s %s received by \001y%s\001g.\001a\n"
-msgstr ""
+msgstr "\001f\001g%s %s recibió por \001y%s\001g.\001a\n "
 
 #: src/express.c:440
 msgid "\001d** \001bAn X from \001r%s\001b has arrived. \001d** "
@@ -228,33 +246,35 @@ msgstr ""
 
 #: src/express.c:650 src/express.c:665
 msgid "\001f\001gRecipient \001w(\001y%s\001w): \001c"
-msgstr ""
+msgstr "\001f\001gRecipiente \001w(\001y%s\001w): \001c "
 
 #: src/express.c:653 src/express.c:668
 msgid "\001f\001gRecipient\001w: \001c"
-msgstr ""
+msgstr "\001f\001gRecipiente\001w: \001c "
 
 #: src/express.c:688
 msgid "\001f\001gSend %s %s \001w(\001p%s\001w): \001c"
-msgstr ""
+msgstr "\001f\001gMande %s %s \001w(\001p%s\001w): \001c "
 
 #: src/express.c:691
 msgid "\001f\001gSend %s %s\001w: \001c"
-msgstr ""
+msgstr "\001f\001gMande %s %s\001w: \001c "
 
 #: src/express.c:709
 msgid "\001r\001fNo such %s %s.\001a\n"
-msgstr ""
+msgstr "\001r\001fNo hay un %s %s.\001a\n "
 
 #: src/express.c:716
 msgid "\001r\001gYou're not listening to %s \001p%s\001g.\n"
-msgstr ""
+msgstr "\001r\001gNo está escuchando %s \001p%s\001g.\n "
 
 #: src/express.c:742
 msgid ""
 "\001rYou cannot send %s to Guests.\n"
 "\001a"
 msgstr ""
+"\001rNo se puede mandar a los huéspdedos.\n"
+"\001a"
 
 #: src/express.c:750
 msgid "\001f\001rYou have disabled InterBBS options.\001a\n"
@@ -278,7 +298,7 @@ msgstr ""
 
 #: src/express.c:787
 msgid "\001f\001rYou cannot send messages to degraded users.\001a\n"
-msgstr ""
+msgstr "\001f\001rNo se puede mandar mensajes a un usario que está degradado.\001a\n "
 
 #: src/express.c:795
 msgid ""
@@ -288,13 +308,15 @@ msgstr ""
 
 #: src/express.c:804
 msgid "\001f\001gSorry, you are \001rX-disabled\001g right now, and you cannot"
-msgstr ""
+msgstr "\001f\001gLo siento, pero está \001rX-disabled\001g aquí, y no se puede"
 
 #: src/express.c:805
 msgid ""
 " X users that are not\n"
 "on your X-friends-list.\001a\n"
 msgstr ""
+" X usarios que no están\n"
+"en su lista de X-amigos.\001a\n"
 
 #: src/express.c:818
 msgid ""
@@ -332,7 +354,7 @@ msgstr ""
 
 #: src/express.c:941
 msgid "\001f\001rThere are no %s %s in your log.\001a\n"
-msgstr ""
+msgstr "\001f\001rNo hay %s %s en su cuaderno de X's.\001a\n "
 
 #: src/express.c:1015
 msgid "\001f\001wYour %s %s are %sabled\001w.\001a"
@@ -340,11 +362,11 @@ msgstr ""
 
 #: src/express.c:1033
 msgid "\001f\001gThese %s %s were held for you while you were busy:\001a\n"
-msgstr ""
+msgstr "\001f\001gEstes %s %s few reteniendo para Ud.  mientras estuvo ocupado:\001a\n"
 
 #: src/express.c:1196 src/express.c:1203
 msgid "\001f\001g%s %s received by \001y%s\001g.\n"
-msgstr ""
+msgstr "\001f\001g%s %s recibió por \001y%s\001g.\n "
 
 #: src/express.c:1198
 msgid "\001f\001y%s\001g is marked as \001clocked\001g though.\001a\n"
@@ -356,29 +378,31 @@ msgstr ""
 
 #: src/express.c:1210
 msgid "\001f\001gOops! Something went wrong.\n"
-msgstr ""
+msgstr "\001f\001g¡Oops! Algo mal pasó.\n "
 
 #: src/express.c:1211
 msgid "\001y%s\001g did \001rnot\001g receive your %s %s.\001a\n"
-msgstr ""
+msgstr "\001y%s\001g \001rno\001g recibió su %s %s.\001a\n "
 
 #: src/express.c:1216
 msgid ""
 "\001f\001y%s \001gis not busy.\n"
 "\001a"
 msgstr ""
+"\001f\001y%s \001gno está ocupado.\n"
+"\001a"
 
 #: src/express.c:1220
 msgid "\001f\001y%s\001g does not wish to receive that %s.\001a\n"
-msgstr ""
+msgstr "\001f\001y%s\001g no le desaría recibirlo %s.\001a\n "
 
 #: src/express.c:1247
 msgid "\001f\001gSorry, \001y%s \001ghas \001rX-disabled\001g you!!!\001a\n"
-msgstr ""
+msgstr "\001f\001g¡¡¡Lo siento, pero \001y%s \001gtiene \001rX-disabled\001g Ud.!!!\001a\n"
 
 #: src/express.c:1252
 msgid "\001f\001gOops! \001y%s\001g's buffer is full.\n"
-msgstr ""
+msgstr "\001f\001g¡Oops! La amortiguador de\001y%s\001g está llena.\n "
 
 #: src/express.c:1253
 msgid "Your %s was /1rnot/1g received, try re-sending it in a moment.\001a\n"
@@ -631,29 +655,29 @@ msgid ""
 "\001f\001gYou have \001y%d \001gnew \001pWeb \001g%s %s \001w(\001gHit \001w<\001r^\001w> \001gto reply\001w)\001a\n"
 msgstr ""
 
-#: src/fun.c:63 src/fun.c:71 src/fun.c:73
+#: src/fun.c:61 src/fun.c:69 src/fun.c:71
 msgid "\001f\001gNo unread %s.\001a"
 msgstr ""
 
-#: src/fun.c:119
+#: src/fun.c:117
 msgid ""
 "\n"
 "\001gI love you too! ;)\n"
 msgstr ""
 
-#: src/fun.c:121
+#: src/fun.c:119
 msgid ""
 "\n"
 "\001y*whine* Coz I need one! )~:\n"
 msgstr ""
 
-#: src/fun.c:123
+#: src/fun.c:121
 msgid ""
 "\n"
 "\001g*pout*  ):\n"
 msgstr ""
 
-#: src/fun.c:125
+#: src/fun.c:123
 msgid ""
 "\n"
 "\001g*buurrRp*  (:\n"
@@ -691,7 +715,7 @@ msgstr ""
 msgid "No such user.\n"
 msgstr ""
 
-#: src/main.c:224 src/main.c:325
+#: src/main.c:224 src/main.c:326
 msgid "Incorrect login.\n"
 msgstr ""
 
@@ -720,34 +744,34 @@ msgid "The passwords you typed didn't match.  Please try again.\n"
 msgstr ""
 
 #. loop until we get a real username
-#: src/main.c:306
+#: src/main.c:307
 msgid ""
 "\n"
 "Username: "
 msgstr ""
 
-#: src/main.c:310
+#: src/main.c:311
 msgid "Enter \"Off\" to quit or \"New\" to enter as a new user.\n"
 msgstr ""
 
-#: src/main.c:323
+#: src/main.c:324
 msgid "%s's Password: "
 msgstr ""
 
-#: src/main.c:553
+#: src/main.c:557
 msgid ""
 "\n"
 "*** Registration is required. ***\n"
 "\n"
 msgstr ""
 
-#: src/main.c:557
+#: src/main.c:561
 msgid ""
 "\001f\001yNow \001w<\001ry\001w>\001yell to the admin to be granted full access.\n"
 "\n"
 msgstr ""
 
-#: src/main.c:656
+#: src/main.c:660
 msgid ""
 "\n"
 "\n"
@@ -755,51 +779,51 @@ msgid ""
 "\001a"
 msgstr ""
 
-#: src/main.c:657
+#: src/main.c:661
 msgid "\001f\001gHit any key to continue...\001a"
 msgstr ""
 
-#: src/main.c:662
+#: src/main.c:666
 msgid ""
 "\n"
 "\001f\001gAre you sure you want to leave %s? \001w(\001gy\001w/\001gn\001w/\001gm\001w/\001g?\001w)\001g "
 msgstr ""
 
-#: src/main.c:667
+#: src/main.c:671
 msgid "\001f\001gHelp.\001a\n"
 msgstr ""
 
-#: src/main.c:672
+#: src/main.c:676
 msgid "\001f\001gYes.\n"
 msgstr ""
 
-#: src/main.c:676
+#: src/main.c:680
 msgid "\001f\001gNo.\n"
 msgstr ""
 
-#: src/main.c:779
+#: src/main.c:783
 msgid ""
 "\n"
 "\001a\001f\001gWelcome to %s, \001g%s! \001gThis is your \001w#%d \001glogin.\n"
 msgstr ""
 
-#: src/main.c:783
+#: src/main.c:787
 msgid "\001f\001gLast login: %s \001g\001ffrom \001r%-16.16s\n"
 msgstr ""
 
-#: src/main.c:803
+#: src/main.c:807
 msgid "\001f\001gYour friends online\001w:\001a\n"
 msgstr ""
 
-#: src/main.c:842
+#: src/main.c:846
 msgid "\001f\001gYou have a new private %s in \001pMail>\n"
 msgstr ""
 
-#: src/main.c:844
+#: src/main.c:848
 msgid "\001f\001gYou have \001r%d \001gnew private %s in \001pMail>\n"
 msgstr ""
 
-#: src/main.c:846
+#: src/main.c:850
 msgid "\001f\001gYou have \001rno\001g new Mail %s.\001a\n"
 msgstr ""
 
@@ -1326,3 +1350,26 @@ msgid ""
 "\001f\001g%-19s  \001pFlags  \001g%-17s \001pTime \001g%-28s\n"
 "\001w"
 msgstr ""
+# msgid ""
+# "\001g\001f\n"
+# "Would you like to remove the color codes?  \001w(\001gY/n\001w)\001g \001c"
+# msgstr ""
+# "\001g\001f\n"
+# "¿Le gustaría quitar los códigos de color?  \001w(\001gY/n\001w)\001g \001c"
+# 
+# msgid "\001f\001yAre you sure you want to delete your clipboard? (y/N)"
+# msgstr "\001f\001y¿Está seguro que quiere borrar su sujetapapeles?"
+# 
+# msgid "\001g\001fAre you sure you want to email your clipboard?  \001w(\001gy\001w/\001gN\001w) \001c"
+# msgstr "\001g\001f¿Está seguro que quiere e-mail su sujetapapeles?  \001w(\001gy\001w/\001gN\001w) \001c"
+# 
+# msgid ""
+# "\001g\001f\n"
+# "Would you like to remove the color codes?  \001w(\001gy/n\001w)\001g "
+# msgstr ""
+# "\001g\001f\n"
+# "¿Gustaria quitar los códigos para color?  \001w(\001gy/n\001w)\001g "
+# 
+# msgid "Language not supported.\n"
+# msgstr "La lengua no está apoyando.\n"
+# 

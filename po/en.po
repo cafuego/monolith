@@ -632,29 +632,29 @@ msgid ""
 "\001f\001gYou have \001y%d \001gnew \001pWeb \001g%s %s \001w(\001gHit \001w<\001r^\001w> \001gto reply\001w)\001a\n"
 msgstr ""
 
-#: src/fun.c:63 src/fun.c:71 src/fun.c:73
+#: src/fun.c:61 src/fun.c:69 src/fun.c:71
 msgid "\001f\001gNo unread %s.\001a"
 msgstr ""
 
-#: src/fun.c:119
+#: src/fun.c:117
 msgid ""
 "\n"
 "\001gI love you too! ;)\n"
 msgstr ""
 
-#: src/fun.c:121
+#: src/fun.c:119
 msgid ""
 "\n"
 "\001y*whine* Coz I need one! )~:\n"
 msgstr ""
 
-#: src/fun.c:123
+#: src/fun.c:121
 msgid ""
 "\n"
 "\001g*pout*  ):\n"
 msgstr ""
 
-#: src/fun.c:125
+#: src/fun.c:123
 msgid ""
 "\n"
 "\001g*buurrRp*  (:\n"
@@ -692,7 +692,7 @@ msgstr ""
 msgid "No such user.\n"
 msgstr ""
 
-#: src/main.c:224 src/main.c:325
+#: src/main.c:224 src/main.c:326
 msgid "Incorrect login.\n"
 msgstr ""
 
@@ -721,34 +721,34 @@ msgid "The passwords you typed didn't match.  Please try again.\n"
 msgstr ""
 
 #. loop until we get a real username
-#: src/main.c:306
+#: src/main.c:307
 msgid ""
 "\n"
 "Username: "
 msgstr ""
 
-#: src/main.c:310
+#: src/main.c:311
 msgid "Enter \"Off\" to quit or \"New\" to enter as a new user.\n"
 msgstr ""
 
-#: src/main.c:323
+#: src/main.c:324
 msgid "%s's Password: "
 msgstr ""
 
-#: src/main.c:553
+#: src/main.c:557
 msgid ""
 "\n"
 "*** Registration is required. ***\n"
 "\n"
 msgstr ""
 
-#: src/main.c:557
+#: src/main.c:561
 msgid ""
 "\001f\001yNow \001w<\001ry\001w>\001yell to the admin to be granted full access.\n"
 "\n"
 msgstr ""
 
-#: src/main.c:656
+#: src/main.c:660
 msgid ""
 "\n"
 "\n"
@@ -756,51 +756,51 @@ msgid ""
 "\001a"
 msgstr ""
 
-#: src/main.c:657
+#: src/main.c:661
 msgid "\001f\001gHit any key to continue...\001a"
 msgstr ""
 
-#: src/main.c:662
+#: src/main.c:666
 msgid ""
 "\n"
 "\001f\001gAre you sure you want to leave %s? \001w(\001gy\001w/\001gn\001w/\001gm\001w/\001g?\001w)\001g "
 msgstr ""
 
-#: src/main.c:667
+#: src/main.c:671
 msgid "\001f\001gHelp.\001a\n"
 msgstr ""
 
-#: src/main.c:672
+#: src/main.c:676
 msgid "\001f\001gYes.\n"
 msgstr ""
 
-#: src/main.c:676
+#: src/main.c:680
 msgid "\001f\001gNo.\n"
 msgstr ""
 
-#: src/main.c:779
+#: src/main.c:783
 msgid ""
 "\n"
 "\001a\001f\001gWelcome to %s, \001g%s! \001gThis is your \001w#%d \001glogin.\n"
 msgstr ""
 
-#: src/main.c:783
+#: src/main.c:787
 msgid "\001f\001gLast login: %s \001g\001ffrom \001r%-16.16s\n"
 msgstr ""
 
-#: src/main.c:803
+#: src/main.c:807
 msgid "\001f\001gYour friends online\001w:\001a\n"
 msgstr ""
 
-#: src/main.c:842
+#: src/main.c:846
 msgid "\001f\001gYou have a new private %s in \001pMail>\n"
 msgstr ""
 
-#: src/main.c:844
+#: src/main.c:848
 msgid "\001f\001gYou have \001r%d \001gnew private %s in \001pMail>\n"
 msgstr ""
 
-#: src/main.c:846
+#: src/main.c:850
 msgid "\001f\001gYou have \001rno\001g new Mail %s.\001a\n"
 msgstr ""
 
