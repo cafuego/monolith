@@ -1,20 +1,19 @@
 # hosts <-> users
 # M to N relationship between rooms & users
 
-DROP TABLE usertopic;
+#DROP TABLE usertopic;
 
 CREATE TABLE usertopic (
 
-# number of forum & user
-   forum_id	INT UNSIGNED NOT NULL,
+# number of topic & user
    user_id	INT UNSIGNED NOT NULL,
-   topic_id	INT USNIGNED NOT NULL,
+   topic_id	INT UNSIGNED NOT NULL,
 
 # last post read by this user.
-   lastread	INT UNSIGNED DEFAULT 0
+   lastread	INT UNSIGNED DEFAULT 0,
 
 # timestamp
    stamp        TIMESTAMP,
 
-   PRIMARY KEY( forum_id, user_id, topic_id )
+   PRIMARY KEY( user_id, topic_id )
 )
