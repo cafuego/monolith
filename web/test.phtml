@@ -18,6 +18,7 @@
         echo "  <input type=\"submit\" value=\"Upload File\">\n";
         echo "</form>\n";
     } else {
+        echo "File: `$userfile' ($userfile_type - ". filesize($userfile) ." bytes)\n";
         if( file_exists($userfile) ) {
             connect_db();
             $fp = fopen($userfile);
