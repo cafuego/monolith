@@ -25,9 +25,8 @@
 #endif
 
 #include "monolith.h"
-#include "libmono.h"
 #include "routines.h"
-#include "monosql.h"
+#include "libquad.h"
 #include "sql_utils.h"
 #include "sql_llist.h"
 #include "sql_convert.h"
@@ -35,10 +34,12 @@
 #include "sql_topic.h"
 #include "sql_user.h"
 #include "sql_userforum.h"
-#ifdef USE_RATING
-  #include "sql_rating.h"
-#endif
 #include "sql_message.h"
+
+#ifdef USE_RATING
+#include "sql_rating.h"
+#endif
+
 
 static void _mono_sql_mes_cleanup(unsigned int forum);
 
