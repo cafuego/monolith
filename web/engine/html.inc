@@ -101,7 +101,7 @@ function html_do_login($username) {
     $result = MYSQL_QUERY("SELECT stamp FROM online WHERE user_id=$usernum AND interface='web'");
     $number = MYSQL_NUMROWS($result);
 
-    if($number)
+    if(!($number))
         $result = MYSQL_QUERY("INSERT INTO online (user_id,interface,doing) VALUES ($usernum,'web','<font color=\"#ffff00\">Surfing the web</font>')");
    
 }

@@ -7,7 +7,7 @@ libyawc_a_SOURCES = btmp.c libcache.c libdexi.c \
   routines.c userfile.c sql_utils.c sql_user.c sql_userforum.c sql_useruser.c \
   sql_mail.c sql_topic.c sql_config.c sql_forum.c sql_goto.c sql_login.c \
   sql_usertopic.c sql_message.c sql_rating.c sql_llist.c sql_convert.c \
-  sql_online.c
+  sql_online.c sql_web.c
 
 LDADD = -L/usr/local/mysql/lib -lmysqlclient 
 CFLAGS = -O3 -Wall -g

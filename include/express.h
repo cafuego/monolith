@@ -10,6 +10,7 @@
 #define OR_EMOTE        '0' /* catchx() express()  -  this is an emote       */
 #define OR_SHIX         'M' /* etc */
 #define OR_INTER        'i' /* inter bbs x */
+#define OR_WEB	        'W' /* web x */
 
 /* broadcast overrides */
 #define OR_IMPORTANT    'I'
@@ -67,6 +68,7 @@
 #define EMOTE     (X_PARAM == 2)
 #define NCHAT     (X_PARAM == 3)
 #define NSILC     (X_PARAM == 7)
+#define WEB  	  (X_PARAM == -4)
 
 /* prototypes	*/
 extern void single_catchx( int sig );

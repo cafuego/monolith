@@ -450,6 +450,7 @@ catchx(int key)
  *               -1 -> X to the person who sent you the last x
  *               -2 -> BroadCast
  *               -3 -> Important Broadcast (emp only)
+ *               -4 -> web X.
  */
 void
 express(int X_PARAM)
@@ -610,6 +611,17 @@ get_xmessage_destination(char *xmg_dest, const int X_PARAM, char *override)
 	    /* question */
 	} else if (QUESTION) {
 	    strcpy(xmg_dest, get_guide_name(xmg_dest));
+
+	    /* web X */
+        } else if (WEB) {
+	    if (strlen(x_default)) {
+		cprintf("\1f\1gRecipient \1w(\1y%s\1w): \1c", x_default);
+		strcpy(xmg_dest, x_default);
+	    } else
+		cprintf("\1f\1gRecipient\1w: \1c");
+	    strcpy( namePtr, get_name(5)); /* was assignment */
+	    strcpy(xmg_dest, namePtr);
+            *override = OR_WEB;
 
 	    /* normal/feeling */
 	} else if (NORMAL || FEEL || EMOTE) {
