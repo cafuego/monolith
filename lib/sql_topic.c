@@ -22,7 +22,8 @@
 #include "monolith.h"
 #include "monosql.h"
 #include "sql_utils.h"
-#include "sql_forumtopic.h"
+// #include "sql_forumtopic.h"
+#define FT_TABLE	"forumtopic"
 
 #define extern
 #include "sql_topic.h"
