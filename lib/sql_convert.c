@@ -53,13 +53,7 @@ mono_sql_convert_row_to_mes(MYSQL_ROW row)
     sscanf(row[0], "%u", &message->m_id);
     sscanf(row[1], "%u", &message->f_id);
     sscanf(row[2], "%u", &message->t_id);
-
-#ifdef WEIRD_TYPE_CONVERSION_IS_KOSHER
-    sscanf(row[3], "%u", &message->author); 
-#else
-    snprintf(message->author, L_USERNAME, "%s", row[3]); 
-#endif
-
+    sscanf(row[3], "%u", &message->a_id);
     snprintf(message->author, L_USERNAME, "%s", row[4]);
     snprintf(message->alias, L_USERNAME, "%s", row[5]);
     snprintf(message->subject, L_SUBJECT, "%s", row[6]);
