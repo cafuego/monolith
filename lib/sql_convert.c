@@ -195,7 +195,7 @@ mono_sql_convert_row_to_wx(MYSQL_ROW row)
     sscanf(row[0], "%u", &x->id);
     snprintf(x->sender, L_USERNAME, "%s", row[1]);
     x->message = (char *) xmalloc( strlen(row[2]) + 1 );
-    snprintf(x->message, strlen(row[7]), "%s", row[2]);
+    snprintf(x->message, strlen(row[2]), "%s", row[2]);
     sscanf(row[3], "%lu", &x->date);
 
     return x;
