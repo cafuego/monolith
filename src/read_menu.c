@@ -23,22 +23,14 @@
 
 #include "monolith.h"
 #include "libmono.h"
+#include "ext.h"
 
 #include "commands.h"
 #include "input.h"
-#include "ext.h"
-#include "sql_config.h"
-#include "sql_rating.h"
 #include "routines2.h"
-#include "msg_file.h"
 #include "chat.h"
 #include "clipboard.h"
 #include "friends.h"
-
-#define extern
-#include "read_menu.h"
-#undef extern
-
 #include "display_message.h"
 #include "express.h"
 #include "inter.h"
@@ -53,6 +45,10 @@
 #include "messages.h"
 #include "usertools.h"
 #include "uadmin.h"
+
+#define extern
+#include "read_menu.h"
+#undef extern
 
 /* ---------------------------------------------------- */
 

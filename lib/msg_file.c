@@ -11,9 +11,10 @@
 #include <dirent.h>
 
 #include "monolith.h"
-#include "libmono.h"
-#include "libcache.h"
-#include "sql_message.h"
+#include "libfriends.h"
+#include "routines.h"
+#include "libquad.h"
+#include "sql_user.h"
 
 #define extern
 #include "msg_file.h"

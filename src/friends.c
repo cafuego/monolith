@@ -22,8 +22,6 @@
 
 #include "monolith.h"
 #include "libmono.h"
-#include "libcache.h"
-#include "sql_useruser.h"
 
 #include "ext.h"
 #include "input.h"
