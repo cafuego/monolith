@@ -1,12 +1,12 @@
 /* $Id$ */
 /* This file contains all global variables */
 
-extern char	hname[255];		/* host user's calling from	*/
+extern char	hname[L_HOSTNAME];		/* host user's calling from	*/
 extern char	skipping[MAXQUADS];	/* which rooms are skipped	*/
 extern int	last_skipped_rm;        /* room # of last skipped rm    */
-extern char	temp[60];		/* Name of general temp file	*/
-extern char	tmpname[60];
-extern char	CLIPFILE[60];		/* ClipBoard-file		*/
+extern char	temp[L_FILE];	/* Name of general temp file	*/
+extern char	tmpname[L_FILE];
+extern char	CLIPFILE[L_FILE];		/* ClipBoard-file		*/
 extern volatile char	nox;		/* 1 -> no x's, 0 -> x's allowed*/
 
 extern time_t	login_time;		/* time of login */

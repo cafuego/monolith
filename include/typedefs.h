@@ -193,7 +193,7 @@ typedef struct {
     char user[12];
     char user_pl[14];
     char username[12];
-    char doing[20];
+    char doing[L_DOING];
     char location[16];
     char chatmode[20];
     char chatroom[20];
@@ -244,11 +244,11 @@ typedef struct {	/* User record */
     time_t laston_to;		/* time when the user logged off        */
     date_t birthday; 		/* birthday */
     long online;		/* total time the user has been online  */
-    char doing[40];		/* The User's Doing-field               */
+    char doing[L_DOING];		/* The User's Doing-field               */
     char xtrapflag[70];		/* The User's Extra "Title-thing"       */
     char aideline[162];		/* The User's Aideline                  */
     char lasthost[80];		/* utmp name of last host on from       */
-    char timezone[40];		/* timezone */
+    char timezone[80];		/* timezone */
     char awaymsg[100];		/* away message */
     char RGname[RGnameLEN + 1];	/* The User's real full name            */
     char RGaddr[RGaddrLEN + 1];	/* The User's address                   */
@@ -290,7 +290,7 @@ typedef struct btmp {
     char remote[L_HOSTNAME + 1];	/* user's country		*/
     char ip_address[L_HOSTNAME + 1];	/* user's ip number/name	*/
     char awaymsg[100];			/* away message */
-    char doing[31];		/* user's doing                         */
+    char doing[L_DOING];		/* user's doing                         */
 
     char curr_room[41];		/* room the user is in right now        */
     char x_ing_to[L_USERNAME+L_BBSNAME+1]; /* the user this user is x-ing */
@@ -352,6 +352,14 @@ typedef struct {
 } channel_t;
 
 typedef struct {
+    char host[L_USERNAME + 1];
+    char user[L_USERNAME + 1];
+    char pass[L_USERNAME + 1];
+    char base[L_USERNAME + 1];
+    char sock[L_USERNAME + 1];
+} mysql_t;
+
+typedef struct {
     unsigned int user_count;
     unsigned int login_count;
     time_t boot_time;
@@ -369,6 +377,8 @@ typedef struct {
     struct quickroom rooms[MAXQUADS];
 
     long status;
+
+    mysql_t mysql;
 
 } bigbtmp_t;
 

@@ -57,8 +57,8 @@
 #define MOD_COPY	2
 #define MOD_EDIT	4
 #define L_BANNER	60
-#define L_FILENAME	120
 #define L_RECIPIENT	100
+#define L_FILENAME	128
 
 typedef struct {
    char author[L_USERNAME + 1];

@@ -75,5 +75,3 @@
 
 /* michel got these from the 1.3f client: */
 #define POST_MARK 11
-
-

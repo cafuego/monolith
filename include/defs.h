@@ -25,14 +25,18 @@
 #define PURGEDAY	90	/* purge inactive users			*/
 #define SP		32	/* char: space				*/
 #define TAB		9	/* tab is 9 in ascii			*/
-#define TIMEOUT		24	/* timeout&hangup after X mins		*/
-#define TIMEOUTCLIENT	39	/* timeout for all client-users		*/
+#define TIMEOUT		39	/* timeout&hangup after X mins		*/
+#define TIMEOUTCLIENT	59	/* timeout for all client-users		*/
 #define TRUE		1
 #define X_LENGTH	7	/* length in lines of x-message		*/
 #define XLIMIT		60	/* how many X's to store in the XLog	*/
 #define X_MARGIN	85	/* 80 characters / row plus some extra	*/
 #define X_BUFFER	X_MARGIN * X_LENGTH
 #define YES		1
+
+#define L_FILE		255	/* max length of various filenames */
+
+#define L_DOING		40	/* max length of 'doing' field */
 
 	/********************/
 

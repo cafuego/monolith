@@ -24,4 +24,6 @@ extern int escape_string(const char *old_string, char **new_string);
 extern char * mono_mysql_server_info( void );
 extern char * mono_mysql_host_info( void );
 
+extern int mono_sql_test_connection(mysql_t *);
+
 /* eof */

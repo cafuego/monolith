@@ -15,6 +15,7 @@ extern void execute_unix_command( const char * );
 extern void print_system_config( void );
 extern int print_birthday(date_t bday);
 extern void modify_birthday(date_t * bday);
+extern void configure_sql(void);
 extern int qc_get_pos_int(const char, int);
 extern char * m_strcat(char *, const char *);
 #ifdef CLIENTSRC
