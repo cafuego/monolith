@@ -971,7 +971,7 @@ msgstr "\001f\001gBekijk een %s.\001a\n"
 
 #: src/read_menu.c:302
 msgid "\001f\001rAsk a Question.\001a\n"
-msgstr ""
+msgstr "\001f\001rStel een vraag.\001a\n"
 
 #: src/read_menu.c:312
 msgid "\001f\001gRead %s reverse.\001a\n"
@@ -983,7 +983,7 @@ msgstr ""
 
 #: src/read_menu.c:324
 msgid "\001f\001gSearch %s\n"
-msgstr ""
+msgstr "\001f\001gZoek %s\n"
 
 #: src/read_menu.c:335
 msgid "\001f\001gDate: \001w%s\001a"
@@ -1017,7 +1017,7 @@ msgstr ""
 
 #: src/read_menu.c:412
 msgid "\001f\001gYell-menu.\001a \n"
-msgstr ""
+msgstr "\001f\001gSchreeuw-menu.\001a \n"
 
 #: src/read_menu.c:418
 msgid "\001f\001gZap %s.\001a\n"
@@ -1041,7 +1041,7 @@ msgstr ""
 
 #: src/read_menu.c:485
 msgid "\001f\001gRandom Quote!\n"
-msgstr ""
+msgstr "\001f\001gWillekeurig citaat!\n"
 
 #: src/read_menu.c:491
 msgid "\001a\001f\001gDonator List.\001a\n"
@@ -1060,10 +1060,12 @@ msgid ""
 "\001f\001gChange your Enemylist.\001a\n"
 "\n"
 msgstr ""
+"\001f\001gVeranderd je vijanden-lijst.\001a\n"
+"\n"
 
 #: src/read_menu.c:545
 msgid "\001f\001gList all commands.\001a\n"
-msgstr ""
+msgstr "\001f\001gLijst van alle commandos.\001a\n"
 
 #: src/read_menu.c:883
 msgid "\001f\001gWhich aliens are online?\001a\n"
@@ -1210,7 +1212,7 @@ msgstr "\001gJe huidige url is: \001y`%s'\n"
 
 #: src/usertools.c:1034
 msgid "\001gDo you want to change this? \001w(\001gy\001w/\001gn\001w)\001c "
-msgstr ""
+msgstr "\001gWil je dit veranderen? \001w(\001gy\001w/\001gn\001w)\001c "
 
 #: src/usertools.c:1036
 msgid "\001f\001gEnter the new url\001w: \001chttp://"
@@ -1319,7 +1321,7 @@ msgstr ""
 
 #: src/usertools.c:1303
 msgid "\001f\001rThat is an existing user!\001a\n"
-msgstr ""
+msgstr "\001f\001rDit is een bestaande gebruiker!\001a\n"
 
 #: src/usertools.c:1342
 msgid "\001f\001cToggle hidden info.\001a\n"
@@ -1422,10 +1424,12 @@ msgid ""
 "\n"
 "\001g\001fYou are all alone online at \001y%02d:%02d\001g local time.\n"
 msgstr ""
+"\n"
+"\001g\001fJe bent helemaal alleen om \001y%02d:%02d\001g.\n"
 
 #: src/wholist.c:115
 msgid "\001f\001gHey! What do you think you are doing here?\001a\n"
-msgstr ""
+msgstr "\001f\001gHee! Wat denk je dat je aan het doen bent?\001a\n"
 
 #: src/wholist.c:119 src/wholist.c:123
 msgid ""
@@ -1433,7 +1437,7 @@ msgid ""
 "\001g\001fThere are \001y%u\001g %s online at \001y%02d:%02d\001g local time.\n"
 msgstr ""
 "\n"
-"\001g\001fEr zijn \001y%u\001g %s gebruikers aanwezig om \001y%02d:%02d\001g lokale tijd.\n"
+"\001g\001fEr zijn \001y%u\001g %s aanwezig om \001y%02d:%02d\001g lokale tijd.\n"
 
 #: src/wholist.c:128
 msgid ""
@@ -1448,3 +1452,5 @@ msgid ""
 "\001f\001g%-19s  \001pFlags  \001g%-17s \001pTime \001g%-28s\n"
 "\001w"
 msgstr ""
+"\001f\001g%-19s  \001pVlaggen\001g%-17s \001pTijd \001g%-28s\n"
+"\001w"
