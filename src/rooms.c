@@ -1347,6 +1347,11 @@ get_room_name(const char *quad_name)
     }
     for (i = 0; i < MAXQUADS; i++) {
 	scratch = readquad(i);
+	if ( scratch.flags & QR_GUESSNAME ) { 
+         	if ( EQ( scratch.name, quad_name ) ) {
+          		return i;
+         	}
+	}
 	if (strstr(scratch.name, quad_name) != NULL) {
 	    if (i_may_read_forum(i)) {
 		return i;
