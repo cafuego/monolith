@@ -59,8 +59,8 @@ function html_print_title($username, $location) {
             if( html_are_there_xs($username) ) {
                 print "<title>$username@Monolith BBS: Looking at the Wholist [New X, not updating!]</title>\n";
             } else {
-                print "<title>$username@Monolith BBS: Looking at the Wholist [Updating every minute]</title>\n";
                 print "<meta http-equiv=\"Refresh\" content=\"60; url=http://monolith.yawc.net/bbs/index.phtml/w/\">\n";
+                print "<title>$username@Monolith BBS: Looking at the Wholist [Updating every minute]</title>\n";
             }
             break;
         case "x":
@@ -74,8 +74,6 @@ function html_print_title($username, $location) {
 
     // Make sure we don't cache any of this.
     //
-    echo "<meta http-equiv=\"Pragma\" content=\"no-cache\">\n";
-    echo "<meta http-equiv=\"Expires\" content=\"". gmdate("l, d F Y H:i:s") ." GMT\">\n";
 
     return ($action != "q") ? 1 : 0;
 
