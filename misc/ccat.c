@@ -4,6 +4,13 @@
 #include "config.h"
 #endif
 
+#ifdef HAVE_GETTEXT
+#include <libintl.h>
+#define _(String) gettext (String)
+#else
+#define _(String) (String)
+#endif
+
 #include <ctype.h>
 #include <stdarg.h>
 #include <stdio.h>
@@ -34,21 +41,28 @@ main(int argc, char *argv[])
     char buf[BUFSIZE];
     long lines = 0;
 
-    if (argc < 2) {
-	fprintf(stderr, "Usage: %s [-v] [-h] [file]\n", argv[0]);
-	return 1;
-    }
-    if (strcmp(argv[1], "-v") == 0) {
-	cprintf("\1f\1rC\1yC\1bA\1pT\1a version 1.0 - based on YAWC cprintf()\n", argv[0]);
-	return 0;
-    }
-    if (strcmp(argv[1], "-h") == 0) {
-	fprintf(stderr, "Usage: %s [-v] [-h] file\n", argv[0]);
-	return 0;
-    }
-    if ((fp = fopen(argv[1], "r")) == NULL) {
-	fprintf(stderr, "%s: %s: %s\n", argv[0], argv[1], strerror(errno));
-	return 1;
+/*
+ * if (argc < 2) {
+ * fprintf(stderr, _("Usage: %s [-v] [-h] [file]\n"), argv[0]);
+ * return 1;
+ * }
+ */
+
+    if (argc == 1) {
+	fp = stdin;
+    } else {
+	if (strcmp(argv[1], "-v") == 0) {
+	    cprintf(_("\1f\1rC\1yC\1bA\1pT\1a version 1.0 - based on YAWC cprintf()\n"), argv[0]);
+	    return 0;
+	}
+	if (strcmp(argv[1], "-h") == 0) {
+	    fprintf(stderr, _("Usage: %s [-v] [-h] file\n"), argv[0]);
+	    return 0;
+	}
+	if ((fp = fopen(argv[1], "r")) == NULL) {
+	    fprintf(stderr, "%s: %s: %s\n", argv[0], argv[1], strerror(errno));
+	    return 1;
+	}
     }
     while (fgets(buf, BUFSIZE, fp) != NULL) {
 	buf[strlen(buf) - 1] = '\0';
@@ -57,9 +71,9 @@ main(int argc, char *argv[])
     }
 
     if (CURRCOL != 'a' && CURRCOL != '\0') {
-	fprintf( stderr, "[Warning: File ends in colour `%s'. Please fix this\n", getcolour(CURRCOL));
+	fprintf(stderr, _("[Warning: File ends in colour `%s'. Please fix this\n"), getcolour(CURRCOL));
     }
-    fprintf( stderr, "[%s: %ld line%s]\n", argv[1], lines, (lines == 1) ? "" : "s");
+/*    fprintf(stderr, _("[%s: %ld line%s]\n"), argv[1], lines, (lines == 1) ? "" : "s"); */
     fclose(fp);
     return 0;
 
@@ -242,25 +256,25 @@ skip_atoi(const char **s)
 }
 
 #define ZEROPAD 1		/*
-				 * * * * * * * * pad with zero  
+				 * * * * * * * * * pad with zero  
 				 */
 #define SIGN    2		/*
-				 * * * * * * * * unsigned/signed long  
+				 * * * * * * * * * unsigned/signed long  
 				 */
 #define PLUS    4		/*
-				 * * * * * * * * show plus  
+				 * * * * * * * * * show plus  
 				 */
 #define SPACE   8		/*
-				 * * * * * * * * space if plus  
+				 * * * * * * * * * space if plus  
 				 */
 #define LEFT    16		/*
-				 * * * * * * * * left justified  
+				 * * * * * * * * * left justified  
 				 */
 #define SPECIAL 32		/*
-				 * * * * * * * * 0x  
+				 * * * * * * * * * 0x  
 				 */
 #define LARGE   64		/*
-				 * * * * * * * * use 'ABCDEF' instead of 'abcdef'  
+				 * * * * * * * * * use 'ABCDEF' instead of 'abcdef'  
 				 */
 
 #define do_div(n,base) ({ \
@@ -318,7 +332,7 @@ number(long num, int base, int size, int precision
 	    bing(' ');
     if (sign)
 	bing(sign);
-    if (type & SPECIAL)  {
+    if (type & SPECIAL) {
 	if (base == 8) {
 	    bing('0');
 	} else if (base == 16) {
