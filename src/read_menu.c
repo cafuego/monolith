@@ -133,7 +133,7 @@ short_prompt(void)
 		    cprintf(ROOMAIDETITLE " cmd: \1a");
 		    roomaide_menu();
 		} else {
-		    cprintf("\1f\1rI'm sorry Dave, but I cannot do that.\1a");
+		    cprintf("\1f\1rI'm sorry Dave, but I can't do that.\1a");
 		}
 		break;
 
@@ -294,12 +294,12 @@ short_prompt(void)
 
 
 	    case '\016':	/* umm this is ctrl-n, not ctrl-d */
-		cprintf("\1f\1rCtrl\1w-\1rN\1w-\1gEnter message.\1a\n");
+		cprintf("\1f\1rCtrl\1w-\1rN\1w-\1gEnter %s.\1a\n", config.message);
 		enter_message(curr_rm, EDIT_CTRLD, NO_BANNER, NULL);
 		break;
 
 	    case 'O':
-		cprintf("\1f\1gRead old messages.\1a\n");
+		cprintf("\1f\1gRead old %s.\1a\n", config.message_pl);
 		long_prompt(0, -1);
 		break;
 
@@ -321,7 +321,7 @@ short_prompt(void)
 		break;
 
 	    case 'r':
-		cprintf("\1f\1gRead messages reverse.\1a\n");
+		cprintf("\1f\1gRead %s reverse.\1a\n", config.message_pl);
 		long_prompt(0, -1);
 		break;
 
@@ -348,7 +348,7 @@ short_prompt(void)
 		break;
 
 	    case 'U':
-		cprintf("\1f\1gUngoto.\1a");
+		cprintf("\1f\1gUngoto. \1w(\1gbuggy\1w)\1a");
 		fflush(stdout);
 		ungoto();
 		break;
@@ -364,7 +364,7 @@ short_prompt(void)
 		break;
 
 	    case ',':		/* Holodeck Wholist */
-		cprintf("\1f\1gChannel Wholist.\n");
+		cprintf("\1f\1g%s Wholist.\n", config.chatmode);
 		show_online(2);
 		break;
 
@@ -387,10 +387,10 @@ short_prompt(void)
 		nox = 1;
 		cprintf("\1f\1gSend %s %s.\1a\n", config.express, config.x_message);
 		express(0);
-		if (((int) random() % 500000) == 42) {
+		if (((int) rand() % 500000) == 42) {
 		    cprintf("\1f\1b\n*** \1g%s %s from \1yThe House Spirit \1gto \1y%s \1gat \1w(\1g%02d:%02d\1w) \1b***\1a\n", config.express, config.x_message, usersupp->username, tp->tm_hour, tp->tm_min);
 		    cprintf("\1a\1c>*chomp* *chomp*\n>Your %s %s tasted great!\n", config.express, config.x_message);
-		} else if (((int) random() % 500000) == 42) {
+		} else if (((int) rand() % 500000) == 42) {
 		    cprintf("\1f\1b\n*** \1g%s %s from \1yCthulhu \1gto \1y%s \1gat \1w(\1g%02d:%02d\1w) \1b***\1a\n", config.express, config.x_message, usersupp->username, tp->tm_hour, tp->tm_min);
 		    cprintf("\1a\1c>Feed me!\1a\n");
 		}
@@ -401,7 +401,7 @@ short_prompt(void)
 		break;
 
 	    case 030:		/* <ctrl-x> */
-		cprintf("\1f\1gRead X-Log.\1a\n");
+		cprintf("\1f\1gRead %s-Log.\1a\n", config.express);
 		old_express();
 		break;
 
@@ -431,8 +431,8 @@ short_prompt(void)
 		break;
 
 	    case '-':
-		cprintf("\1f\1gJump a number of posts back from the Last Read post.\1a\n");
-		cprintf("\1f\1gHow many messages back shall I jump?\1a ");
+		cprintf("\1f\1gJump a number of %s back from the Last Read %s.\1a\n", config.message_pl, config.message);
+		cprintf("\1f\1gHow many %s back shall I jump?\1c ", config.message_pl);
 		fflush(stdout);
 		getline(tempstr, 4, 1);
 		t = atoi(tempstr);
@@ -443,8 +443,8 @@ short_prompt(void)
 		break;
 
 	    case '_':
-		cprintf("\1f\1rJump a number of posts back from the Last Post in this quad.\1a\n");
-		cprintf("\1f\1gHow many messages back shall I jump?\1a ");
+		cprintf("\1f\1rJump a number of %s back from the Last %s in this %s.\1a\n", config.message_pl, config.message, config.forum);
+		cprintf("\1f\1gHow many %s back shall I jump?\1c ", config.message_pl);
 		fflush(stdout);
 		getline(tempstr, 4, 1);
 		t = atoi(tempstr);
@@ -516,7 +516,7 @@ short_prompt(void)
 		break;
 
 	    case '"':
-		cprintf("\1f\1rQuote %s %ss.\1a\n", config.express, config.x_message);
+		cprintf("\1f\1rQuote %s %s.\1a\n", config.express, config.x_message_pl);
 		quoted_Xmsgs();
 		break;
 
