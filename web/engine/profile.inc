@@ -29,10 +29,11 @@ function profile_user($username, $victim) {
     } else {
         addimage("$victim's Profile");
 
-        $result = mysql_query("SELECT content_type FROM user WHERE id=$victim_id");
+        $result = mysql_query("SELECT content_type,profile FROM user WHERE id=$victim_id");
         $number = MYSQL_NUMROWS($result);
         if ($number) {
             $content_type = mysql_result($result, 0, "content_type");
+            $profile = mysql_result($result, 0, "profile");
             if (valid_image( $content_type )) {
                 if( $content_type == "image/gif")
                     echo "<img align=\"center\" src=\"/bbs/pix/gif.php3?$victim_id\">\n";
@@ -43,17 +44,11 @@ function profile_user($username, $victim) {
                 else
                     errorimage("Image is in unsupported format!");
             }
+            $profile = colorize($profile);
+            echo "<pre><font color=\"#00ffff\">$profile</font></pre>\n";
+        } else {
+            errorimage("Can't find $victim's profile!");
         }
-
-        // Get the profile text up.
-        $profile_filename = "/usr/bbs/save/users/". strtolower( ereg_replace(" ", "_", $victim) ) ."/profile";
-        $fp = fopen($profile_filename, "r");
-        $profile = fread($fp, filesize($profile_filename));
-        fclose($fp);
-
-        $profile = colorize($profile);
-        echo "<pre><font color=\"#00ffff\">$profile</font></pre>\n";
-
     }
 }
 

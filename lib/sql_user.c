@@ -258,14 +258,14 @@ mono_sql_write_profile(unsigned int user_id, const char * profile )
 
     xfree( p2 );
 
-    if (i == -1) {
-	fprintf(stderr, "No results from query.\n");
-        return -1;
-    }   
+//    if (i == -1) {
+//	  fprintf(stderr, "No results from query.\n");
+//        return -1;
+//    }   
 
-    if (mysql_num_rows(res) != 1) {
-	return -1;
-    }
+//    if (mysql_num_rows(res) != 1) {
+//	return -1;
+//    }
 
     // mono_sql_u_free_result(res);
     return 0;
