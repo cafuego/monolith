@@ -430,7 +430,7 @@ format_author(message_header_t * header, char *header_string)
 
 	if (header->banner_type & NO_BANNER || !strlen(authorstring))
 	    snprintf(authorstring, sizeof(authorstring) - 1,
-		     "\1f\1gfrom \1y%s\1a", header->author);
+		     "\1f\1gfrom \1y\1n%s\1N\1a", header->author);
     } else {
 
 	if (header->banner_type & ANON_BANNER)
@@ -485,7 +485,7 @@ format_author(message_header_t * header, char *header_string)
 
 	if (header->banner_type & NO_BANNER || !strlen(authorstring))
 	    snprintf(authorstring, sizeof(authorstring) - 1,
-		     "\1f\1gFrom%s \1y%s\1a",
+		     "\1f\1gFrom%s \1y\1n%s\1N\1a",
 		   (usersupp->config_flags & CO_EXPANDHEADER) ? "\1w:" : "",
 		     header->author);
     }
