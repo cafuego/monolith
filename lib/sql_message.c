@@ -69,11 +69,11 @@ mono_sql_mes_add(message_t *message)
      */
     message->date = time(0);
 
-    ret = mono_sql_query(&res, "INSERT INTO " M_TABLE " (message_id," \
-       "forum_id,topic_id,author,alias,subject,content,date,flag," \
-       "r_message_id,r_forum_id,r_topic_id,r_author,r_alias," \
-       "m_message_id,m_forum_id,m_topic_id,m_author,m_date,m_reason,deleted) " \
-       "VALUES (%u,%u,%u,%u,'%s','%s','%s',FROM_UNIXTIME(%u),'%s'," \
+    ret = mono_sql_query(&res, "INSERT INTO " M_TABLE " (message_id," 
+       "forum_id,topic_id,author,alias,subject,content,date,flag," 
+       "r_message_id,r_forum_id,r_topic_id,r_author,r_alias," 
+       "m_message_id,m_forum_id,m_topic_id,m_author,m_date,m_reason,deleted) " 
+       "VALUES (%u,%u,%u,%u,'%s','%s','%s',FROM_UNIXTIME(%u),'%s'," 
        "%u,%u,%u,%u,'%s',%u,%u,%u,%u,FROM_UNIXTIME(%u),'%s','n')",
             message->m_id, message->f_id, message->t_id, message->a_id,
             alias, subject, content, message->date, message->flag,
@@ -139,21 +139,21 @@ mono_sql_mes_retrieve(unsigned int id, unsigned int forum, message_t *data)
     message_t *message;
     int ret = 0;
 
-    ret = mono_sql_query(&res, "SELECT m.message_id,m.forum_id,m.topic_id," \
-        "m.author,u.username,m.alias,m.subject,m.content,UNIX_TIMESTAMP(m.date)," \
-        "m.flag,f.name,t.name,m.r_message_id,m.r_forum_id,m.r_topic_id," \
-        "m.r_author,ur.username,m.r_alias,fr.name,tr.name,m.m_message_id," \
-        "m.m_forum_id,m.m_topic_id,m.m_author,um.username,UNIX_TIMESTAMP(m.m_date)," \
-        "fm.name,tm.name,m.m_reason FROM " M_TABLE " AS m " \
-        "LEFT JOIN " U_TABLE " AS u ON u.id=m.author " \
-        "LEFT JOIN " U_TABLE " AS ur ON ur.id=m.r_author " \
-        "LEFT JOIN " U_TABLE " AS um ON um.id=m.m_author " \
-        "LEFT JOIN " F_TABLE " AS f ON f.id=m.forum_id " \
-        "LEFT JOIN " F_TABLE " AS fr ON fr.id=m.r_forum_id " \
-        "LEFT JOIN " F_TABLE " AS fm ON f.id=m.m_forum_id " \
-        "LEFT JOIN " T_TABLE " AS t ON t.topic_id=m.topic_id " \
-        "LEFT JOIN " T_TABLE " AS tr ON tr.topic_id=m.r_topic_id " \
-        "LEFT JOIN " T_TABLE " AS tm ON tm.topic_id=m.m_topic_id " \
+    ret = mono_sql_query(&res, "SELECT m.message_id,m.forum_id,m.topic_id," 
+        "m.author,u.username,m.alias,m.subject,m.content,UNIX_TIMESTAMP(m.date)," 
+        "m.flag,f.name,t.name,m.r_message_id,m.r_forum_id,m.r_topic_id," 
+        "m.r_author,ur.username,m.r_alias,fr.name,tr.name,m.m_message_id," 
+        "m.m_forum_id,m.m_topic_id,m.m_author,um.username,UNIX_TIMESTAMP(m.m_date)," 
+        "fm.name,tm.name,m.m_reason FROM " M_TABLE " AS m " 
+        "LEFT JOIN " U_TABLE " AS u ON u.id=m.author " 
+        "LEFT JOIN " U_TABLE " AS ur ON ur.id=m.r_author " 
+        "LEFT JOIN " U_TABLE " AS um ON um.id=m.m_author "
+        "LEFT JOIN " F_TABLE " AS f ON f.id=m.forum_id " 
+        "LEFT JOIN " F_TABLE " AS fr ON fr.id=m.r_forum_id " 
+        "LEFT JOIN " F_TABLE " AS fm ON f.id=m.m_forum_id " 
+        "LEFT JOIN " T_TABLE " AS t ON t.topic_id=m.topic_id " 
+        "LEFT JOIN " T_TABLE " AS tr ON tr.topic_id=m.r_topic_id " 
+        "LEFT JOIN " T_TABLE " AS tm ON tm.topic_id=m.m_topic_id " 
         "WHERE m.forum_id=%u AND m.message_id=%u", forum, id );
 
 #ifdef OLD_SHIT
@@ -197,21 +197,21 @@ mono_sql_mes_list_forum(unsigned int forum, unsigned int start, mlist_t ** list)
     /*
      * Coolest query in the BBS sofar :)
      */
-    ret = mono_sql_query(&res, "SELECT m.message_id,m.forum_id,m.topic_id," \
-        "m.author,u.username,m.alias,m.subject,m.content,UNIX_TIMESTAMP(m.date)," \
-        "m.flag,f.name,t.name,m.r_message_id,m.r_forum_id,m.r_topic_id," \
-        "m.r_author,ur.username,m.r_alias,fr.name,tr.name,m.m_message_id," \
-        "m.m_forum_id,m.m_topic_id,m.m_author,um.username,UNIX_TIMESTAMP(m.m_date)," \
-        "fm.name,tm.name,m.m_reason FROM " M_TABLE " AS m " \
-        "LEFT JOIN " U_TABLE " AS u ON u.id=m.author " \
-        "LEFT JOIN " U_TABLE " AS ur ON ur.id=m.r_author " \
-        "LEFT JOIN " U_TABLE " AS um ON um.id=m.m_author " \
-        "LEFT JOIN " F_TABLE " AS f ON f.id=m.forum_id " \
-        "LEFT JOIN " F_TABLE " AS fr ON fr.id=m.r_forum_id " \
-        "LEFT JOIN " F_TABLE " AS fm ON f.id=m.m_forum_id " \
-        "LEFT JOIN " T_TABLE " AS t ON t.topic_id=m.topic_id " \
-        "LEFT JOIN " T_TABLE " AS tr ON tr.topic_id=m.r_topic_id " \
-        "LEFT JOIN " T_TABLE " AS tm ON tm.topic_id=m.m_topic_id " \
+    ret = mono_sql_query(&res, "SELECT m.message_id,m.forum_id,m.topic_id," 
+        "m.author,u.username,m.alias,m.subject,m.content,UNIX_TIMESTAMP(m.date)," 
+        "m.flag,f.name,t.name,m.r_message_id,m.r_forum_id,m.r_topic_id," 
+        "m.r_author,ur.username,m.r_alias,fr.name,tr.name,m.m_message_id," 
+        "m.m_forum_id,m.m_topic_id,m.m_author,um.username,UNIX_TIMESTAMP(m.m_date)," 
+        "fm.name,tm.name,m.m_reason FROM " M_TABLE " AS m " 
+        "LEFT JOIN " U_TABLE " AS u ON u.id=m.author " 
+        "LEFT JOIN " U_TABLE " AS ur ON ur.id=m.r_author " 
+        "LEFT JOIN " U_TABLE " AS um ON um.id=m.m_author " 
+        "LEFT JOIN " F_TABLE " AS f ON f.id=m.forum_id " 
+        "LEFT JOIN " F_TABLE " AS fr ON fr.id=m.r_forum_id " 
+        "LEFT JOIN " F_TABLE " AS fm ON f.id=m.m_forum_id " 
+        "LEFT JOIN " T_TABLE " AS t ON t.topic_id=m.topic_id " 
+        "LEFT JOIN " T_TABLE " AS tr ON tr.topic_id=m.r_topic_id " 
+        "LEFT JOIN " T_TABLE " AS tm ON tm.topic_id=m.m_topic_id " 
         "WHERE m.forum_id=%u AND m.message_id>%u ", forum, start );
 
 #ifdef OLD_SHIT
@@ -263,21 +263,21 @@ mono_sql_mes_list_topic(unsigned int topic, unsigned int start, mlist_t ** list)
     /*
      * Second coolest query in the BBS sofar.
      */
-    ret = mono_sql_query(&res, "SELECT m.message_id,m.forum_id,m.topic_id," \
-        "m.author,u.username,m.alias,m.subject,m.content,UNIX_TIMESTAMP(m.date)," \
-        "m.flag,f.name,t.name,m.r_message_id,m.r_forum_id,m.r_topic_id," \
-        "m.r_author,ur.username,m.r_alias,fr.name,tr.name,m.m_message_id," \
-        "m.m_forum_id,m.m_topic_id,m.m_author,um.username,UNIX_TIMESTAMP(m.m_date)," \
-        "fm.name,tm.name,m.m_reason FROM " M_TABLE " AS m " \
-        "LEFT JOIN " U_TABLE " AS u ON u.id=m.author " \
-        "LEFT JOIN " U_TABLE " AS ur ON ur.id=m.r_author " \
-        "LEFT JOIN " U_TABLE " AS um ON um.id=m.m_author " \
-        "LEFT JOIN " F_TABLE " AS f ON f.id=m.forum_id " \
-        "LEFT JOIN " F_TABLE " AS fr ON fr.id=m.r_forum_id " \
-        "LEFT JOIN " F_TABLE " AS fm ON f.id=m.m_forum_id " \
-        "LEFT JOIN " T_TABLE " AS t ON t.topic_id=m.topic_id " \
-        "LEFT JOIN " T_TABLE " AS tr ON tr.topic_id=m.r_topic_id " \
-        "LEFT JOIN " T_TABLE " AS tm ON tm.topic_id=m.m_topic_id " \
+    ret = mono_sql_query(&res, "SELECT m.message_id,m.forum_id,m.topic_id," 
+        "m.author,u.username,m.alias,m.subject,m.content,UNIX_TIMESTAMP(m.date)," 
+        "m.flag,f.name,t.name,m.r_message_id,m.r_forum_id,m.r_topic_id," 
+        "m.r_author,ur.username,m.r_alias,fr.name,tr.name,m.m_message_id," 
+        "m.m_forum_id,m.m_topic_id,m.m_author,um.username,UNIX_TIMESTAMP(m.m_date)," 
+        "fm.name,tm.name,m.m_reason FROM " M_TABLE " AS m " 
+        "LEFT JOIN " U_TABLE " AS u ON u.id=m.author " 
+        "LEFT JOIN " U_TABLE " AS ur ON ur.id=m.r_author " 
+        "LEFT JOIN " U_TABLE " AS um ON um.id=m.m_author " 
+        "LEFT JOIN " F_TABLE " AS f ON f.id=m.forum_id " 
+        "LEFT JOIN " F_TABLE " AS fr ON fr.id=m.r_forum_id " 
+        "LEFT JOIN " F_TABLE " AS fm ON f.id=m.m_forum_id " 
+        "LEFT JOIN " T_TABLE " AS t ON t.topic_id=m.topic_id " 
+        "LEFT JOIN " T_TABLE " AS tr ON tr.topic_id=m.r_topic_id " 
+        "LEFT JOIN " T_TABLE " AS tm ON tm.topic_id=m.m_topic_id " 
         "WHERE m.topic_id=%u AND m.message_id>%u", topic, start );
 
 #ifdef OLD_SHIT
@@ -323,30 +323,30 @@ mono_sql_mes_search_forum(int forum, const char *string, sr_list_t **list)
 
     if(forum >= 0)
         ret = mono_sql_query( &res,
-            "SELECT " \
-                "m.message_id,m.forum_id,m.topic_id,f.name,t.name," \
-                "u.username,m.alias,m.subject,m.flag " \
-            "FROM " M_TABLE " AS m " \
-                "LEFT JOIN " U_TABLE " AS u ON u.id=m.author " \
-                "LEFT JOIN " F_TABLE " AS f ON f.id=m.forum_id " \
-                "LEFT JOIN " T_TABLE " AS t ON m.topic_id=t.topic_id " \
-            "WHERE " \
-                "(m.content REGEXP '%s' OR m.subject REGEXP '%s') " \
-                "AND m.forum_id=%u " \
-                "GROUP BY m.message_id " \
+            "SELECT " 
+                "m.message_id,m.forum_id,m.topic_id,f.name,t.name," 
+                "u.username,m.alias,m.subject,m.flag " 
+            "FROM " M_TABLE " AS m " 
+                "LEFT JOIN " U_TABLE " AS u ON u.id=m.author " 
+                "LEFT JOIN " F_TABLE " AS f ON f.id=m.forum_id " 
+                "LEFT JOIN " T_TABLE " AS t ON m.topic_id=t.topic_id " 
+            "WHERE " 
+                "(m.content REGEXP '%s' OR m.subject REGEXP '%s') " 
+                "AND m.forum_id=%u " 
+                "GROUP BY m.message_id " 
             "ORDER BY m.forum_id, m.message_id",
                 needle, needle, forum );
     else
         ret = mono_sql_query( &res,
-            "SELECT " \
-                "m.message_id,m.forum_id,m.topic_id,f.name,t.name," \
-                "u.username,m.alias,m.subject,m.flag " \
-            "FROM " M_TABLE " AS m " \
-                "LEFT JOIN " U_TABLE " AS u ON u.id=m.author " \
-                "LEFT JOIN " F_TABLE " AS f ON f.id=m.forum_id " \
-                "LEFT JOIN " T_TABLE " AS t ON m.topic_id=t.topic_id " \
-            "WHERE " \
-                "m.content REGEXP '%s' OR m.subject REGEXP '%s' " \
+            "SELECT " 
+                "m.message_id,m.forum_id,m.topic_id,f.name,t.name," 
+                "u.username,m.alias,m.subject,m.flag " 
+            "FROM " M_TABLE " AS m " 
+                "LEFT JOIN " U_TABLE " AS u ON u.id=m.author " 
+                "LEFT JOIN " F_TABLE " AS f ON f.id=m.forum_id " 
+                "LEFT JOIN " T_TABLE " AS t ON m.topic_id=t.topic_id " 
+            "WHERE " 
+                "m.content REGEXP '%s' OR m.subject REGEXP '%s' " 
             "ORDER BY m.forum_id, m.message_id",
                 needle, needle );
 

@@ -270,7 +270,7 @@ mono_change_online(const char *user, const char *tmp_string, int ch)
 #endif /* ALLX */
 
 		case 11:
-		    sscanf(tmp_string, "%ud", &(p->chat));
+		    sscanf(tmp_string, "%d", &(p->chat));
 /*                  p->chat = atoi(tmp_string); */
 		    break;
 

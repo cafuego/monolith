@@ -38,8 +38,8 @@ mono_sql_express_add(unsigned int user_id, express_t *x)
 
     (void) escape_string(x->message, &message);
 
-    ret = mono_sql_query(&res, "INSERT INTO " X_TABLE " " \
-       "(id,user_id,date,sender,recipient,message,sender_priv,override,ack) " \
+    ret = mono_sql_query(&res, "INSERT INTO " X_TABLE " " 
+       "(id,user_id,date,sender,recipient,message,sender_priv,override,ack) " 
        "VALUES (0,%u,FROM_UNIXTIME(%u),'%s','%s','%s',%u,%d,%d)",
        user_id,x->time,x->sender,x->recipient,message,x->sender_priv,
        x->override,x->ack);
@@ -66,7 +66,7 @@ mono_sql_express_list_xlog(unsigned int user_id, xlist_t **list)
     /*
      * Coolest query in the BBS sofar :)
      */
-    ret = mono_sql_query(&res, "SELECT date,sender,recipient,message," \
+    ret = mono_sql_query(&res, "SELECT date,sender,recipient,message," 
         "sender_priv,override,ack FROM " X_TABLE " WHERE user_id=%u", user_id );
 
     if (ret == -1) {
