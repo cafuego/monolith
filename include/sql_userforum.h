@@ -20,4 +20,6 @@ extern int mono_sql_uf_remove_kicked(unsigned int , unsigned int );
 extern int mono_sql_uf_new_user(unsigned int);
 extern int dest_userlist(userlist_t * );
 
+extern int mono_sql_uf_update_lastseen(unsigned int usernum, unsigned int forum);
+
 #define UF_TABLE "userforum"

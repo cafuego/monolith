@@ -66,11 +66,10 @@ typedef struct {
     char subject[L_SUBJECT];
     time_t date;
     char *content;
-    unsigned int type;
-    unsigned int priv;
-    unsigned int deleted;
+    char type[8];
+    char priv[8];
+    char deleted;
 } message_t;
-    
 
 typedef struct xfriend friend_t;
 struct xfriend {
