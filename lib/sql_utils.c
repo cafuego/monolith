@@ -36,7 +36,7 @@ static MYSQL mp;
 static int connected = FALSE;
 static int logqueries = TRUE;
 
-static int query_size(char *format, va_list arg);
+static int query_length(const char *format, va_list arg);
 
 int
 mono_sql_connect()
@@ -89,7 +89,7 @@ mono_sql_query(MYSQL_RES ** result, const char *format,...)
 
     /* determine length, including varargs */
     va_start(ptr, format);
-    length = query_size(format, ptr);
+    length = query_length(format, ptr);
     va_end(ptr);
 
     query = (char *) xmalloc( length * sizeof(char) );
@@ -260,7 +260,7 @@ time_to_date(time_t time, char *datetime)
 #endif
 
 static int
-query_size(char *format, va_list arg)
+query_length(const char *format, va_list arg)
 {
     int d, length = 0;
     char c, *s, tmp[20];

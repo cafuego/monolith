@@ -28,6 +28,8 @@
 #include "routines.h"
 #include "monosql.h"
 #include "sql_utils.h"
+#include "sql_llist.h"
+#include "sql_convert.h"
 #include "sql_forum.h"
 #include "sql_topic.h"
 #include "sql_user.h"
@@ -36,9 +38,6 @@
   #include "sql_rating.h"
 #endif
 #include "sql_message.h"
-
-static int _mono_sql_mes_add_mes_to_list(mlist_t entry, mlist_t ** list);
-static message_t * _mono_sql_mes_row_to_mes(MYSQL_ROW row);
 
 int
 mono_sql_mes_add(message_t *message)
@@ -163,7 +162,7 @@ mono_sql_mes_retrieve(unsigned int id, unsigned int forum, message_t *data)
 	return -3;
     }
     row = mysql_fetch_row(res);
-    message = _mono_sql_mes_row_to_mes(row);
+    message = mono_sql_convert_row_to_mes(row);
     (void) mysql_free_result(res);
 
     *data = *message;
@@ -228,11 +227,11 @@ mono_sql_mes_list_forum(unsigned int forum, unsigned int start, mlist_t ** list)
 	/*
          * Get message and add to list.
          */
-        if( (entry.message = _mono_sql_mes_row_to_mes(row)) == NULL ) {
+        if( (entry.message = mono_sql_convert_row_to_mes(row)) == NULL ) {
             continue;
         }
 
-	if( _mono_sql_mes_add_mes_to_list(entry, list) == -1 ) {
+	if( mono_sql_ll_add_mlist_to_list(entry, list) == -1 ) {
 	    continue;
         }
     }
@@ -294,10 +293,10 @@ mono_sql_mes_list_topic(unsigned int topic, unsigned int start, mlist_t ** list)
 	/*
          * Get message and add to list.
          */
-        if( (entry.message = _mono_sql_mes_row_to_mes(row)) == NULL ) {
+        if( (entry.message = mono_sql_convert_row_to_mes(row)) == NULL ) {
             break;
         }
-	if (_mono_sql_mes_add_mes_to_list(entry, list) == -1)
+	if (mono_sql_ll_add_mlist_to_list(entry, list) == -1)
 	    break;
     }
     mysql_free_result(res);
@@ -305,121 +304,48 @@ mono_sql_mes_list_topic(unsigned int topic, unsigned int start, mlist_t ** list)
 
 }
 
-/*
- * Add an entry to the message linked list.
- * Provide support for going in both directions.
- *
- * God, I HATE linked lists.
- */
-static int
-_mono_sql_mes_add_mes_to_list(mlist_t entry, mlist_t ** list)
+int
+mono_sql_mes_search_forum(int forum, const char *needle, sr_list_t **list)
 {
+    MYSQL_RES *res;
+    MYSQL_ROW row;
+    int ret = 0, rows = 0, i = 0;
+    sr_list_t entry;
 
-    mlist_t *p, *q;
+    if(forum >= 0)
+        ret = mono_sql_query( &res, "SELECT m.message_id,m.forum_id,m.topic_id,f.name,u.username,m.subject,AVG(r.score) FROM %s AS m LEFT JOIN %s AS u ON u.id=m.author LEFT JOIN %s AS f ON f.id=m.forum_id, %s AS R WHERE m.message_id IN(r.message_id) AND m.forum_id IN (r.forum_id) AND M.forum_ud=%d AND m.content REGEXP '%s' OR m.subject REGEXP '%s' GROUP BY m.forum_id,m.message_id",
+            M_TABLE, U_TABLE, F_TABLE, R_TABLE, forum, needle, needle );
+    else
+        ret = mono_sql_query( &res, "SELECT m.message_id,m.forum_id,m.topic_id,f.name,u.username,m.subject,AVG(r.score) FROM %s AS m LEFT JOIN %s AS u ON u.id=m.author LEFT JOIN %s AS f ON f.id=m.forum_id, %s AS R WHERE m.message_id IN(r.message_id) AND m.forum_id IN (r.forum_id) AND m.content REGEXP '%s' OR m.subject REGEXP '%s' GROUP BY m.message_id",
+            M_TABLE, U_TABLE, F_TABLE, R_TABLE, needle, needle );
 
-    /*
-     * Note mono_sql_free_list()
-     */
-    p = (mlist_t *) xmalloc(sizeof(mlist_t));
-    if (p == NULL)
-	return -1;
-
-    *p = entry;
-    p->next = NULL;
-    p->prev = NULL;
-
-    q = *list;
-    if (q == NULL) {
-	*list = p;
-    } else {
-	while (q->next != NULL)
-	    q = q->next;
-	q->next = p;
-        p->prev = q;
+    if (ret == -1) {
+        (void) mysql_free_result(res);
+        return -1;
     }
-    return 0;
-}
 
-void
-mono_sql_mes_free_list(mlist_t *list)
-{
-
-    mlist_t *ref;
-
-    while (list != NULL) {
-        ref = list->next;
-        (void) xfree(list->message->content);
-        (void) xfree(list->message);
-        (void) xfree(list);
-        list = ref;
+    if ((rows = mysql_num_rows(res)) == 0) {
+        (void) mysql_free_result(res);
+        return 0;
     }
-    return;
+
+    for (i = 0; i < rows; i++) {
+        row = mysql_fetch_row(res);
+        if (row == NULL)
+            break;
+        /*
+         * Get result and add to list.
+         */
+        if( (entry.result = mono_sql_convert_row_to_sr(row)) == NULL ) {
+            continue;
+        }
+
+        if( mono_sql_ll_add_srlist_to_list(entry, list) == -1) {
+            continue;
+        }
+    }
+    (void) mysql_free_result(res);
+    return rows;
 }
-
-message_t *
-_mono_sql_mes_row_to_mes(MYSQL_ROW row)
-{
-    message_t *message = NULL;
-
-    message = (message_t *) xmalloc(sizeof(message_t));
-    memset(message, 0, sizeof(message_t));
-
-    /*
-     * Actual message.
-     */
-    sscanf(row[0], "%u", &message->m_id);
-    sscanf(row[1], "%u", &message->f_id);
-    sscanf(row[2], "%u", &message->t_id);
-    sscanf(row[3], "%u", &message->author);
-    snprintf(message->author, L_USERNAME, "%s", row[4]);
-    snprintf(message->alias, L_USERNAME, "%s", row[5]);
-    snprintf(message->subject, L_SUBJECT, "%s", row[6]);
-
-    message->content = (char *) xmalloc( strlen(row[7]) + 1 );
-    snprintf(message->content, strlen(row[7]), "%s", row[7]);
-
-    sscanf(row[8], "%lu", &message->date);
-    sscanf(row[9], "%f", &message->score);
-    snprintf(message->flag, L_FLAGNAME, "%s",  row[10]);
-    snprintf(message->forum_name, L_QUADNAME, "%s", row[11]);
-    snprintf(message->topic_name, L_TOPICNAME, "%s", row[12]);
-
-    /*
-     * Reply info.
-     */
-    sscanf(row[13], "%u", &message->reply_m_id);
-    sscanf(row[14], "%u", &message->reply_f_id);
-    sscanf(row[15], "%u", &message->reply_t_id);
-    sscanf(row[16], "%u", &message->reply_a_id);
-    snprintf(message->reply_author, L_USERNAME, "%s", row[17]);
-    snprintf(message->reply_alias, L_USERNAME, "%s", row[18]);
-    snprintf(message->reply_forum_name, L_QUADNAME, "%s", row[19]);
-    snprintf(message->reply_topic_name, L_TOPICNAME, "%s", row[20]);
-
-    /*
-     * Modify info.
-     */
-    sscanf(row[21], "%u", &message->orig_m_id);
-    sscanf(row[22], "%u", &message->orig_f_id);
-    sscanf(row[23], "%u", &message->orig_t_id);
-    sscanf(row[24], "%u", &message->orig_a_id);
-    snprintf(message->orig_author, L_USERNAME, "%s", row[25]);
-    sscanf(row[26], "%lu", &message->orig_date);
-    snprintf(message->orig_forum, L_QUADNAME, "%s", row[27]);
-    snprintf(message->orig_topic, L_TOPICNAME, "%s", row[28]);
-    snprintf(message->mod_reason, L_REASON, "%s", row[29]);
-
-    return message;
-}
-
-/*
-mono_sql_mes_search()
-{
-
-    mono_sql_query( &res, "SELECT m.message_id AS id,f.name AS forum,u.username AS username,m.subject AS subject FROM %s AS m LEFT JOIN %s AS u ON u.id=m.author LEFT JOIN %s AS f ON f.id=m.forum_id WHERE m.content REGEXP '%s' OR m.subject REGEXP '%s' ORDER BY m.forum_id,m.message_id",
-        M_TABLE, U_TABLE, F_TABLE, string, string );
-
-}
-*/
 
 /* eof */

@@ -14,6 +14,10 @@
 #include "libmono.h"
 #include "msg_file.h"
 
+static char * get_flag(unsigned long mod_banner);
+static char * get_reason(int mod_reason);
+
+
 int
 write_message_header(const char *header_filename, message_header_t *header)
 {
@@ -246,7 +250,7 @@ int message_delete(const unsigned int from_forum, const unsigned int message_id)
  * and move.  
  */
 void
-save_to_sql(const message_header_t const *header, const char *filename)
+save_to_sql(const message_header_t *header, const char *filename)
 {
     message_t *message = NULL;
 

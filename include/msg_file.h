@@ -110,7 +110,7 @@ extern int message_move(const unsigned int, const unsigned int,
 			const unsigned int, const char *);
 extern int message_delete(const unsigned int, const unsigned int);
 extern void init_message_header(message_header_t *); 
-extern void save_to_sql(const message_header_t const *, const char *);
+extern void save_to_sql(const message_header_t *, const char *);
 
 #ifdef OHH_SHIT_WE_HAVE_TO_CONVERT_AGAIN_ARRRRRRGH
 extern int convert_message_base(int);

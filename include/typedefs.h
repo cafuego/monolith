@@ -48,23 +48,20 @@ struct forumlist {
     forumlist_t *next;
 };
 
-/*
- * The message struct. These are filled by SQL query.
- */
 typedef struct {
    unsigned int m_id;			/* messsage number in forum */
    unsigned int f_id;			/* forum number */
    unsigned int t_id;			/* topic number */
    unsigned int a_id;			/* author's usernum */
-   char author[L_USERNAME + 1];		/* author's username */
+   char author[L_USERNAME + 1];		/* author's username */		/* X */
    char alias[L_USERNAME + 1];		/* alias */
    char subject[L_SUBJECT + 1];		/* subject */
    char *content;			/* complete message content */
    time_t date;				/* date posted */
-   float score;				/* average message rating */
+   float score;				/* average message rating */	/* X */
    char flag[L_FLAGNAME + 1];		/* merger of type & priv */
-   char forum_name[L_QUADNAME + 1];	/* name of forum */
-   char topic_name[L_TOPICNAME + 1];	/* name of topic */
+   char forum_name[L_QUADNAME + 1];	/* name of forum */		/* X */
+   char topic_name[L_TOPICNAME + 1];	/* name of topic */		/* X */
 
    /*
     * Reply info.
@@ -73,10 +70,10 @@ typedef struct {
    unsigned int reply_f_id;		/* forum number replied to */
    unsigned int reply_t_id;		/* topic number replied to */
    unsigned int reply_a_id;		/* usernum replied to */
-   char reply_author[L_USERNAME + 1];	/* username replied to */
+   char reply_author[L_USERNAME + 1];	/* username replied to */	/* X */
    char reply_alias[L_USERNAME + 1];	/* alias replied to */
-   char reply_forum_name[L_QUADNAME + 1];	/* replied to quad name */
-   char reply_topic_name[L_TOPICNAME + 1];	/* replied to topic name */
+   char reply_forum_name[L_QUADNAME + 1];	/* replied to quad name    X */
+   char reply_topic_name[L_TOPICNAME + 1];	/* replied to topic name   X */
 
    /*
     * Modification info.
@@ -85,20 +82,47 @@ typedef struct {
    unsigned int orig_f_id;		/* original forum number */
    unsigned int orig_t_id;		/* original topic number */
    unsigned int orig_a_id;		/* original author's usernum */
-   char orig_author[L_USERNAME + 1];	/* original author's username */
+   char orig_author[L_USERNAME + 1];	/* original author's username      X */
    time_t orig_date;			/* original posting date */
-   char orig_forum[L_QUADNAME + 1];	/* original forum name */
-   char orig_topic[L_TOPICNAME + 1];	/* original topic name */
+   char orig_forum[L_QUADNAME + 1];	/* original forum name */	/* X */
+   char orig_topic[L_TOPICNAME + 1];	/* original topic name */	/* X */
    char mod_reason[L_REASON + 1];	/* reason for modification */
 } message_t;
 
-/* a linked list with messages. To be used when reading
-   messages in a forum. */
+/*
+ * a linked list with messages. To be used when reading
+ * messages in a forum.
+ */
 typedef struct mlist mlist_t;
 struct mlist {
     mlist_t *next;
     mlist_t *prev;
     message_t *message;
+};
+
+/*
+ * Search result.
+ */
+typedef struct sr {
+    unsigned int m_id;
+    unsigned int f_id;
+    unsigned int t_id;
+    char forum[L_QUADNAME + 1];
+    char topic[L_TOPICNAME + 1];
+    char author[L_USERNAME + 1];
+    char subject[L_SUBJECT + 1];
+    float score;
+} sr_t;
+
+/*
+ * a linked list with search results. To be returned by
+ * a search() call.
+ */
+typedef struct sr_list sr_list_t;
+struct sr_list {
+    sr_list_t *next;
+    sr_list_t *prev;
+    sr_t *result;
 };
 
 typedef struct xfriend friend_t;
