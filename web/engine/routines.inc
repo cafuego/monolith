@@ -591,7 +591,8 @@ main_menu($username, $current_url)
 	    echo "<pre>\n".phpinfo()."</pre>\n";
 	    break;
 
-	case "c":		// Followup (reply).
+	case "c":		// Configure account.
+	    require('engine/classes/user.class');
 	    require('engine/config.inc');
 	    config_account($username);
 	    break;

@@ -97,6 +97,7 @@ class user_t {
             echo "<tr><td>Webpage:</td><td><a href=\"$this->url\" target=\"_new\"".mouseover("View $this->username's home page.").">$this->url</a></td></tr>\n";
         echo "</table>\n";
         echo "<br clear=\"all\">\n";
+        echo "<p align=\"left\">\n";
         return;
     }
 

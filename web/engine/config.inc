@@ -9,6 +9,12 @@ function config_account( $username ) {
         return;
     }
 
+    $user = new user_t;
+    if( ($user->init($username)) == false ) {
+        errorimage("I can't load your user data!");
+        return;
+    }
+
     addimage("Account Configuration for $username");
 
     echo "<p align=\"left\">You can add an image to your profile by uploading it to the BBS.\n";
@@ -25,21 +31,9 @@ function config_account( $username ) {
     echo "  <input type=\"submit\" value=\"Upload File\">\n";
     echo "</form>\n";
 
-    $result = mysql_query("SELECT content_type FROM user WHERE id=$usernum");
-    $number = MYSQL_NUMROWS($result);
-    if ($number) {
-        echo "<p align=\"left\">This is the image that is currently in your profile:<p align=\"center\">&nbsp;\n";
+    echo "<p align=\"left\">This is the image that is currently in your profile:<p align=\"center\">&nbsp;\n";
+    $user->add_image();
 
-        $content_type = mysql_result($result, 0, "content_type");
-        if ($content_type == "image/gif")
-            echo "<img align=\"center\" src=\"/bbs/pix/gif.php3?$usernum\">\n";
-        else if ($content_type == "image/jpg" || $content_type == "image/jpeg" || $content_type == "image/pjpeg")
-            echo "<img align=\"center\" src=\"/bbs/pix/jpeg.php3?$usernum\">\n";
-        else if ($content_type == "image/png")
-            echo "<img align=\"center\" src=\"/bbs/pix/png.php3?$usernum\">\n";
-        else
-            errorimage("Image is in unsupported format!");
-    }
 }
 
 ?>
