@@ -692,7 +692,11 @@ logoff(int code)
         (void) exit(0);
     }
 
-    (void) mono_sql_onl_remove( usersupp->usernum );	/* remove from sql */
+#ifdef PORT
+    (void) mono_sql_onl_remove( usersupp->usernum, "telnet" );	/* remove from sql */
+#else
+    (void) mono_sql_onl_remove( usersupp->usernum, "client" );	/* remove from sql */
+#endif
 
     if (shm) {
 	(void) dump_quickroom();

@@ -98,8 +98,12 @@ function html_do_login($username) {
     MYSQL_CONNECT("localhost", "root", "")  OR DIE("Unable to connect to SQL server");
     @mysql_select_db("bbs") or die( "Unable to select database");
 
-    $result = MYSQL_QUERY("INSERT INTO online (user_id,interface,doing) VALUES ($usernum,'web','<font color=\"#ffff00\">Surfing the web</font>')");
+    $result = MYSQL_QUERY("SELECT stamp FROM online WHERE user_id=$usernum AND interface='web'");
+    $number = MYSQL_NUMROWS($result);
 
+    if($number)
+        $result = MYSQL_QUERY("INSERT INTO online (user_id,interface,doing) VALUES ($usernum,'web','<font color=\"#ffff00\">Surfing the web</font>')");
+   
 }
 
 

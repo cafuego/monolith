@@ -58,14 +58,14 @@ mono_sql_onl_add(unsigned int user_id, const char *interface, const char *doing)
 }
 
 int
-mono_sql_onl_remove(unsigned int user_id)
+mono_sql_onl_remove(unsigned int user_id, const char *interface)
 {
 
     int ret;
     MYSQL_RES *res;
 
     ret = mono_sql_query(&res, "DELETE FROM " ONLINE_TABLE 
-     " WHERE user_id=%u", user_id);
+     " WHERE user_id=%u AND interface='%s'", user_id, interface);
 
     if (ret == -1)
 	return FALSE;
