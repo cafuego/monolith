@@ -67,8 +67,14 @@ display_message(message_t *message)
                 cprintf("\1f\1rDeleted %s.\1a\n", config.message);
             return;
         } else {
-            if(usersupp->config_flags & CO_DELETEDINFO)
+            /*
+             * For admins, the whole message is shown if DELETEDINFO is
+             * not set.
+             */
+            if(!usersupp->config_flags & CO_DELETEDINFO) {
                 cprintf("\1f\1rDeleted %s.\1a\n", config.message);
+                return;
+            }
         }
     }
 
