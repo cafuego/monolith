@@ -354,8 +354,13 @@ print_system_config()
     (void) xfree(kernel_name);
 #endif
 
+#ifdef HAVE_SVN
+    cprintf("\1wSubversion                    :\1g %s \1w(\1grevision %d\1w)\n", SVN_URL, SVN_REVISION);
+    cprintf("\1wLast changed                  :\1g %s\n", SVN_DATE);
+#endif
+
 #ifdef USE_MYSQL
-    cprintf("\n\1wMySQL Server %-16s :\1g %s\n",
+    cprintf("\n\1wMySQL %-23s :\1g %s\n",
 	    mono_mysql_server_info(), mono_mysql_host_info());
     (void) fflush(stdout);
     total = mono_sql_mes_count(0);

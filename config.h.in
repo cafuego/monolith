@@ -345,6 +345,9 @@
 /* My name is Linux Torvalds and I pronounce Linux as Linux */
 #undef LINUX
 
+/* Is subversion installed? */
+#undef HAVE_SVN
+
 /* Name of package */
 #undef PACKAGE
 
@@ -399,7 +402,7 @@
 /* My SQL, Your SQL */
 #undef USE_MYSQL
 
-/* Ratiosn */
+/* Ratings */
 #undef USE_RATING
 
 /* Version number of package */

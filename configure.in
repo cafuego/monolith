@@ -532,7 +532,7 @@ dnl
 echo -n "checking whether to enable ratings..."
 if test "x$with_rating" = "xyes"; then
   echo " yes"
-  AC_DEFINE(USE_RATING, [], [Ratiosn])
+  AC_DEFINE(USE_RATING, [], [Ratings])
 else
   echo " no"
 fi
@@ -576,6 +576,19 @@ else
       echo " no"
     fi
   fi
+fi
+
+dnl Do some SVN defining (because we can!)
+dnl
+AC_PATH_PROG(svn_path, svn, no)
+if test "x$svn_path" != "xno" ; then
+  AC_DEFINE(HAVE_SVN)
+  SVN_URL=`svn info | grep URL | awk  -F ': ' '{print $2}'`
+  SVN_REVISION=`svn info | grep Revision | awk -F ': ' '{print $2}'`
+  SVN_DATE=`svn info | grep "Changed Date" | awk -F ': ' '{print $2}'`
+  AC_SUBST(SVN_URL)
+  AC_SUBST(SVN_REVISION)
+  AC_SUBST(SVN_DATE)
 fi
 
 AC_OUTPUT(cgi/Makefile lib/Makefile daemons/Makefile src/Makefile \
