@@ -2,6 +2,10 @@
 .version
 config.cache
 config.log
+config.status
 aclocal.m4
 config.h
+Makefile
+Makefile.in
 build-defs.h
+configure

@@ -1,0 +1,13 @@
+de.gmo
+de.mo
+en.gmo
+en.mo
+es.gmo
+fr.gmo
+fr.mo
+nl.gmo
+nl.mo
+POTFILES
+Makefile
+Makefile.in
+monolith.pot
