@@ -12,10 +12,6 @@
 #include <unistd.h>
 #include <stdarg.h>
 
-#ifdef HAVE_CRYPT_H
-#include <crypt.h>
-#endif
-
 #include <mysql.h>
 
 #include "monolith.h"
@@ -286,7 +282,9 @@ edit_field(user_t * user, int fieldnum)
 	case 'P':
 	    cprintf("New Password: ");
 	    getline(ny, 18, 1);
-	    strcpy(user->password, crypt(ny, CRYPTKEY));
+/*	    strcpy(user->password, crypt(ny, CRYPTKEY)); */
+            set_password( user, ny);
+            mono_sql_u_set_passwd( user->usernum, ny );
 	    uadmin_need_rewrite = TRUE;
 	    log_sysop_action("changed %s's password."
 			     ,user->username);
