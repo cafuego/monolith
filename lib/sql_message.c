@@ -324,7 +324,8 @@ mono_sql_mes_search_forum(int forum, const char *string, sr_list_t ** list)
 			     "LEFT JOIN " U_TABLE " AS u ON u.id=m.author "
 			     "LEFT JOIN " F_TABLE " AS f ON f.id=m.forum_id "
 			     "WHERE "
-			 "(m.content REGEXP '%s' OR m.subject REGEXP '%s') "
+			 "(m.content LIKE '%%%s%%' OR m.subject LIKE '%%%s%%' "
+			 "OR m.content REGEXP '%s' OR m.subject REGEXP '%s') "
 			     "AND m.forum_id=%u AND m.deleted='n'"
 			     "GROUP BY m.message_id "
 			     "ORDER BY m.forum_id, m.message_id",
@@ -338,7 +339,8 @@ mono_sql_mes_search_forum(int forum, const char *string, sr_list_t ** list)
 			     "LEFT JOIN " U_TABLE " AS u ON u.id=m.author "
 			     "LEFT JOIN " F_TABLE " AS f ON f.id=m.forum_id "
 			     "WHERE "
-			   "m.content REGEXP '%s' OR m.subject REGEXP '%s' "
+			   "(m.content LIKE '%%%s%%' OR m.subject LIKE '%%%s%%') "
+			   "OR m.content REGEXP '%s' OR m.subject REGEXP '%s') "
 			     "AND m.deleted='n' ",
 			     "GROUP BY m.forum_id ",
 			     "ORDER BY m.forum_id, m.message_id",
