@@ -230,9 +230,10 @@
             connect_db();
 
             $result = MYSQL_QUERY("INSERT INTO webx (sender,recipient,message,date,status,i_sender,i_recipient) VALUES ($u_id,$r_id,'$message',NOW(),'unread','web','$interface')");
-            if ($result == true )
+            if ($result == true ) {
                 addimage( "eXpress message to $recipient@$interface was successfully saved" );
-            else {
+                $result =  MYSQL_QUERY("UPDATE user SET x_count=x_count+1 WHERE id=$u_id");
+            } else {
                 errorimage( "eXpress message to $recipient@$interface could not be saved due to an error!" );
                 echo "<h2 align=\"center\">". mysql_error() ."</h2>\n";
             }

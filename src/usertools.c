@@ -596,7 +596,7 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
     FILE *fp;
     char work[L_USERNAME + strlen(USERDIR) + 10];
     register char cmd = '\0';
-    int control = 0;
+    int control = 0, timescalled = 0, posted = 0, x_s = 0;
     time_t timecall, curtime;
     unsigned int a;
     btmp_t *record;
@@ -723,18 +723,24 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
 
     if (viewing_user->priv >= PRIV_SYSOP) {	/* a sysop profiles */
 	(void) mono_sql_read_config(user->configuration, &frog);
+        (void) mono_sql_u_get_login_count(user->usernum, &timescalled);
+        (void) mono_sql_u_get_post_count(user->usernum, &posted);
+        (void) mono_sql_u_get_x_count(user->usernum, &x_s);
+
 	cprintf(_("\1f\1cConfiguration\1w: \1g%s \1cMonoholic Rating\1w: \1g"), frog.bbsname);
 	printf("%.3f", _get_monoholic_rating(user));
 	cprintf("\n");
 	cprintf(_("\1f\1cUsernum\1w: \1g%d \1cFirst login\1w: \1g%s\n"), user->usernum, printdate(user->firstcall, 1));
 	cprintf(_("\1f\1cLogins\1w: \1g%-5d \1cPosts: \1g%-5d \1cOnlinetime: \1g%2ld:%2.2ld   \1cPriv: \1g%5d  \1cX's: \1g%5ld \n"),
-		user->timescalled,
-		user->posted, user->online / 60, user->online % 60,
-		user->priv, user->x_s);
+		timescalled, posted, user->online / 60, user->online % 60,
+		user->priv, x_s);
     } else if (control) {	/* you profile yourself */
+        (void) mono_sql_u_get_login_count(user->usernum, &timescalled);
+        (void) mono_sql_u_get_post_count(user->usernum, &posted);
+        (void) mono_sql_u_get_x_count(user->usernum, &x_s);
 	cprintf(_("First login: \1g%s\1c\nLogins: \1g%-5d \1cPosts: \1g%-5d \1cOnlinetime: \1g%2ld:%2.2ld \1cX's: \1g%5ld \n"),
-		printdate(user->firstcall, 1), user->timescalled,
-	     user->posted, user->online / 60, user->online % 60, user->x_s);
+		printdate(user->firstcall, 1), timescalled,
+	     user->online / 60, user->online % 60, x_s);
     } else			/* other people profile */
 	cprintf("\n");
 
@@ -762,7 +768,7 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
     if (file_line_len(fp) > (viewing_user->screenlength - 15)) {
 	fclose(fp);
 	cprintf(_("\n\1a\1f\1gPress \1w<\1rSPACE\1w>\1g to continue or \1w<\1rs\1w>\1g to skip... \1a"));
-	cmd = get_single_quiet(" s");
+	cmd = get_single_quiet(" sq");
 	switch (cmd) {
 	    case ' ':
 		more(work, TRUE);
@@ -770,6 +776,7 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
 		break;
 
 	    case 's':
+	    case 'q':
 
 	}
     } else {

@@ -152,7 +152,8 @@ html_do_logout($username, $hostname)
 
     $result = MYSQL_QUERY("DELETE FROM online WHERE user_id=$usernum AND interface='web'");
     $result = MYSQL_QUERY("DELETE FROM webx WHERE (recipient=$usernum AND i_recipient='web') OR (sender=$usernum AND i_sender='web'");
-    $result = MYSQL_QUERY("INSERT INTO login (user_id,login,logout,host) VALUES($user_id,FROM_UNIXTIME($login),FROM_UNIXTIME($logout),SEC_TO_TIME($online),'$hostname')");
+    $result = MYSQL_QUERY("INSERT INTO login (user_id,login,logout,host) VALUES($usernum,FROM_UNIXTIME($login),FROM_UNIXTIME($logout),SEC_TO_TIME($online),'$hostname')");
+    $result = MYSQL_QUERY("UPDATE user SET login_count=login_count+1 WHERE id=$usernum");
 
     print "<meta http-equiv=\"Refresh\" content=\"10; url=http://monolith.student.utwente.nl/\">\n";
 
