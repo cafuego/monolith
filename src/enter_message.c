@@ -74,9 +74,11 @@ enter_message(unsigned int forum, int mode, unsigned long banner_flag, const cha
     /* priv checking */
     if ((quad.flags & QR_READONLY) && (usersupp->priv < PRIV_SYSOP)) {
 	if (((int) rand() % 2) == 1)
+	    cprintf("\1f\1rYou cannot enter %s in read-only %s.\1a\n", config.message_pl, config.forum_pl);
+	else if (((int) rand() % 2) == 1)
 	    cprintf("\1f\1rThe pod bay door remains closed.\1a\n");
-	else
-	    cprintf("\1f\1gYou cannot enter %s in read-only %s.\1a\n", config.message_pl, config.forum_pl);
+        else
+            cprintf("\1f\1rThe door slams in your face and you hear voices.\1a\n");
 	return 0;
     }
     header = (message_header_t *) xmalloc(sizeof(message_header_t));
