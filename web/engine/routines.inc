@@ -181,7 +181,7 @@ function format_subject($subject) {
 
 function do_logout($username) {
 
-    print "<h3 align=\"center\">$username was logged out</h3>\n";
+    errorimage( "$username was logged out" );
     print "<h3 align=\"center\">In 10 seconds you will be taken to Monoliths main page.</h3>\n";
     print "<h3 align=\"center\"><a href=\"/bbs/\">Log back in</a></h3>\n";
 
@@ -203,7 +203,8 @@ function main_screen($username) {
         $hostname = mysql_result($result,0,"host");
     }
 
-    print "<h2 align=\"center\">Hello, $username. Welcome to Monolith BBS.</h2>\n";
+    addimage( "Hello, $username. Welcome to Monolith BBS" );
+
     if($number && ($username != "Guest"))
         print "<p class=\"footer\">Your last login was on $date at $time CET from host '$hostname'.</p>\n";
     else
@@ -222,9 +223,11 @@ function list_x_messages($username,$location) {
     $number = MYSQL_NUMROWS($result);
     if ($number) {
         if(number == 1)
-            print "<h3 align=\"center\">You have $number eXpress message</h3>\n<p> </p>\n";
+            addimage( "You have 1 new eXpress message" );
         else
-            print "<table border=\"0\" cellpadding=\"2\" cellspacing=\"4\" align=\"center\">\n";
+            addimage( "You have $number new eXpress messages" );
+
+        print "<table border=\"0\" cellpadding=\"2\" cellspacing=\"4\" align=\"center\">\n";
         $i = 0;
         while ($i < $number) {
 

@@ -80,7 +80,7 @@ function show_wholist($username,$location) {
         }
         print "</table>\n";
     } else {
-        addimage "Noone is online";
+        addimage( "Noone is online" );
     }
 }
 
