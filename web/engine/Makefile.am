@@ -1,5 +1,5 @@
 # $Id$
 
-webir = $(prefix)/www/bbs/engine
-feelings_DATA = html.inc list.inc quad.inc routines.inc post.inc read.inc
+enginedir = $(prefix)/www/bbs/engine
+engine_DATA = html.inc list.inc quad.inc routines.inc post.inc read.inc
 
