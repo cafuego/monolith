@@ -4,16 +4,6 @@
 #include "config.h"
 #endif
 
-#ifdef HAVE_MYSQL_H
-  #undef HAVE_MYSQL_MYSQL_H
-  #include <mysql.h>
-#else
-  #ifdef HAVE_MYSQL_MYSQL_H
-    #undef HAVE_MYSQL_H
-    #include <mysql/mysql.h>
-  #endif
-#endif
-
 extern int mono_sql_query(MYSQL_RES ** result, const char *format,...);
 
 extern int mono_sql_connect(void);
