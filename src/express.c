@@ -3,6 +3,7 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+#include <build-defs.h>
 
 #include <stdio.h>
 #include <string.h>
@@ -1682,8 +1683,19 @@ show_web_xes(wx_list_t *list)
 {
 
     struct tm *tp;
+    x_str *Sendxs = NULL;
 
     while(list != NULL) {
+
+        Sendxs = (x_str *) xmalloc( sizeof(x_str) );
+        Sendxs->override = OR_WEB;
+        Sendxs->time = list->x->date;
+        sprintf(Sendxs->sender, "%s@Web", list->x->sender);
+        sprintf(Sendxs->recipient, "%s", usersupp->username);
+        sprintf(Sendxs->message, "%s", list->x->message);
+        add_x_to_personal_xlog(SENDX, Sendxs, Sendxs->override);
+        xfree( Sendxs );
+
         tp = localtime(&(list->x->date));
 	if (usersupp->flags & US_BEEP)
 	    putchar('\007');
