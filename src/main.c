@@ -408,7 +408,7 @@ main(int argc, char *argv[])
     /* add here the random hello messages */
     srand(time(NULL));
     (void) sprintf(hellomsg, HELLODIR "/hello%d", ((int) random() % 7) + 1);
-    (void) more(hellomsg, 1);
+    (void) more(hellomsg,1);
 
     fflush(stdout);
     usersupp->screenlength = 24;

@@ -310,7 +310,7 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
     unsigned int a;
     btmp_t *record;
     forumlist_t *p = NULL;
-
+    config_t frog;
 
     if ((EQ(user->username, "Guest")) && (usersupp->priv < PRIV_SYSOP)) {
 	cprintf("\n\1f\1gThe Guest User.\n\1a");
@@ -375,8 +375,8 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
     if ((viewing_user->priv >= PRIV_SYSOP) && (strlen(user->aideline) > 0))
 	cprintf("\1f\1yAideline:%s\n", user->aideline);
     if (viewing_user->priv >= PRIV_SYSOP) {
-	if (user->configuration >= 0 && user->configuration < MAXCONFIGS)
-	    cprintf("\1f\1gConfiguration\1w: \1y%s\n", shm->config[user->configuration].bbsname);
+        (void) mono_sql_read_config(user->configuration, &frog);
+        cprintf("\1f\1gConfiguration\1w: \1y%s\n", frog.bbsname);
     }
 #ifdef OLD
     if (user->flags & US_ROOMAIDE) {
@@ -1001,6 +1001,7 @@ change_alias()
     return 0;
 }
 
+#ifdef OLD_SHIT
 void
 mono_show_config(unsigned int num)
 {
@@ -1032,6 +1033,7 @@ mono_show_config(unsigned int num)
     return;
 
 }
+#endif
 
 /*  config options statics: */
 void

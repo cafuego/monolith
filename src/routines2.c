@@ -7,6 +7,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/mman.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -50,82 +51,79 @@
 
 
 /*************************************************
-* more()
-*
-* Put a file out to the screen, stopping every 24
-* lines.  Like the unix more utility. 
-*
-* Useable commands from the -- more (25%) --:
-*
-*  <space>     scroll forward one page
-*  <b>         scroll back one page
-*  <return>    scroll forward one line
-*  <backspace> scroll back one line
-*  <q>         quit
+* rewritten to basically be a wrapper for more_string()
 *************************************************/
 
 int
 more(const char *filename, int color)
 {
+    char *tmpbuf = NULL, *message = NULL;
+    struct stat buf;
+    int fd = -1;
 
-    FILE *f;
-    unsigned int count;
-    int inc, fs_res, a;
-    int screenlength;
-    char work[121];
-
-    if (!usersupp)
-	screenlength = 24;
-    else
-	screenlength = usersupp->screenlength;
-
-    cprintf("\n");
-
-    if ((f = xfopen(filename, "r", FALSE)) == NULL) {
-	return -1;
-    }
-    line_total = file_line_len(f);
-    line_count = 0;
-    curr_line = 2;
-
-    while (!feof(f)) {
-	if (fgets(work, 120, f))
-	    cprintf("%s", work);
-	else
-	    continue;
-
-	inc = increment(0);
-
-	if (inc == 1) {
-	    cprintf("\n");
-	    (void) fclose(f);
-	    return 1;
-	}
-	if (inc == -1 || inc == -2) {
-	    count = 0;
-	    fs_res = 0;
-
-	    while (fs_res == 0 &&
-		   ((inc == -1 && count < 2 * screenlength - 3) ||
-		    (inc == -2 && count < screenlength))) {
-		fs_res = fseek(f, -2, SEEK_CUR);	/*
-							 * seek 2 back 
-							 */
-		a = getc(f);
-
-		if (fs_res != 0) {
-		    line_count = 0;
-		    fseek(f, 0, SEEK_SET);
-		    (void) putchar('\007');
-		}
-		if (a == '\n')
-		    count++;
-	    }
-	}
+    /*
+     * Open file.
+     */
+    if( (fd = open(filename, O_RDONLY)) == -1) {
+        (void) log_it("errors", "Cannot open() file: %s, mode: O_RDONLY", filename );
+        (void) fprintf(stderr, "Could not open a file, error has been logged.\n");
+        return -1;
     }
 
-    (void) fflush(stdout);
-    (void) fclose(f);
+    /*
+     * Determine file size.
+     */
+    if( (fstat(fd, &buf)) == -1) {
+        (void) close(fd);
+        (void) log_it("errors", "Cannot fstat() file: %s", filename );
+        (void) fprintf(stderr, "Could not open a file, error has been logged.\n");
+        return -1;
+    }
+
+    /*
+     * mmap() file.
+     */ 
+#ifdef HAVE_MAP_FAILED
+    if( (tmpbuf = mmap(tmpbuf, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED ) { 
+#else
+    if( (tmpbuf = mmap(tmpbuf, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == ((__ptr_t) -1) ) { 
+#endif
+        (void) close(fd);
+        log_it("errors", "Can't mmap() file %s!", filename);
+        (void) fprintf(stderr, "Could not open a file, error has been logged.\n");
+        return -1;
+    }
+    if( (tmpbuf == NULL) || (strlen(tmpbuf) < 1) ) {
+        (void) close(fd);
+        log_it("errors", "Bad mmap(): %s.", filename);
+        log_it("errors", "File size was %lu bytes.", buf.st_size);
+        (void) fprintf(stderr, "Could not open a file, error has been logged.\n");
+        return -1;
+    }
+
+    /*
+     * Copy buffer contents into `message'.
+     */
+    message = (char *) xmalloc( strlen(tmpbuf) );
+    (void) memset(message, 0, strlen(tmpbuf) );
+    snprintf(message, strlen(tmpbuf), "%s", tmpbuf );
+
+    /*
+     * Kill buffer and close file.
+     */
+    if( (munmap(tmpbuf, buf.st_size)) == -1) {
+        log_it("errors", "Can't munmap() file %s!", filename);
+        (void) fprintf(stderr, "Could not open a file, error has been logged.\n");
+        (void) xfree(tmpbuf);
+    }
+    (void) close(fd);
+
+    /*
+     * Show contents.
+     */
+    (void) more_string(message);
+    xfree(message);
+
     return 1;
 }
 
