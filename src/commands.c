@@ -93,7 +93,11 @@ sysop_menu()
 
             case 'A':
 		/* michel test */
+		cprintf( "This is a Euro symbol: ¤\n" );
+		cprintf( "This is a Cent symbol: ¢\n" );
+/*
 		mono_sql_ut_update_lastseen( usersupp->usernum, curr_rm, 0 );
+*/
  		break;
 
 
