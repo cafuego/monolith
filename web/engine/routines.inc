@@ -232,10 +232,34 @@ function list_x_messages($username) {
             $i++;
         }
         print "</table>\n";
-
-
     }
 
+    // See if messages were read and trash if yes.
+    //
+    $result = MYSQL_QUERY("SELECT w.id AS id,u.username AS user,DATE_FORMAT(w.stamp, '%H:%i') AS date FROM webx AS w LEFT JOIN user AS u ON u.id=w.recipient WHERE w.sender=$user_id AND w.status='read' ORDER BY w.stamp ASC");
+    $number = MYSQL_NUMROWS($result);
+    if ($number) {
+        print "<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\" align=\"center\">\n";
+        $i = 0;
+        while ($i < $number) {
+
+            $id = mysql_result($result,$i,"id");
+            $user = mysql_result($result,$i,"user");
+            $date = mysql_result($result,$i,"date");
+
+            $bing = MYSQL_QUERY("DELETE FROM webx WHERE id=$id");
+
+            print "<tr>\n";
+            print "  <td align=\"left\">\n";
+            print "    <p align=\"left\"><font color=\"#00cc00\">Message to <a href=\"/bbs/index.phtml/x/$user/\">$user</a> at </font>(<font color=\"#00cc00\">$date</font>)\n";
+            print "  </td>\n";
+            print "</tr>\n";
+
+            $i++;
+        }
+        print "</table>\n";
+
+    }
 }
 
 ?>
