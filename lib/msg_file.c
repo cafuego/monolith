@@ -23,6 +23,7 @@
 #include "log.h"
 #include "routines.h"
 #include "sql_message.h"
+#include "sql_user.h"
 
 #define extern
 #include "msg_file.h"
