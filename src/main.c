@@ -366,6 +366,12 @@ main(int argc, char *argv[])
     mono_setuid("guest");
     chdir(BBSDIR);
 
+#ifdef ENABLE_NLS
+       setlocale (LC_ALL, "");
+       bindtextdomain ( PACKAGE, "/usr/bbs/share/locale");
+       textdomain ( PACKAGE );
+#endif
+
     if (getuid() != BBSUID && getgid() != BBSGID) {
 	cprintf("You need BBS uid to start this program.\n");
 	exit(0);
