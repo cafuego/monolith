@@ -41,8 +41,6 @@ mono_sql_web_send_x(unsigned int sender, unsigned int recipient, const char *mes
 
     (void) escape_string(message, &fmt_message );
 
-    printf("Starting query!\n"); fflush(stdout);
-
     ret = mono_sql_query(&res, "INSERT INTO " WEB_X_TABLE 
      " (sender,recipient,message,date,status) VALUES (%u,%u,'%s',NOW(),'unread')"
      , sender,recipient,message);
