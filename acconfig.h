@@ -24,3 +24,5 @@
 #undef SUPERHERO
 #undef USE_MYSQL
 #undef USE_RATING
+#undef VERSION
+#undef PACKAGE
