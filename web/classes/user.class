@@ -87,7 +87,7 @@ class user_t {
             echo " $this->zip\n";
         if( ! (strstr( $this->hiddeninfo, "country" )))
             echo "<br>\n$this->country";
-        if( ! (strstr( $this->hiddeninfo, "phone" )))
+        if( (!(strstr( $this->hiddeninfo, "phone" ))) && strlen($this->phone)))
             echo "<br>\nPhone: $this->phone";
         if( ! (strstr( $this->hiddeninfo, "email" )))
             echo "<br>\nEmail: <a href=\"mailto:$this->email\">$this->email</a>";
