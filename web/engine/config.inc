@@ -4,6 +4,11 @@ function config_account( $username ) {
 
     $usernum = get_usernum($username);
 
+    if($username == "Guest") {
+        errorimage("Permission denied");
+        return;
+    }
+
     addimage("Account Configuration for $username");
 
     echo "<p align=\"left\">You can add an image to your profile by uploading it to the BBS.\n";
