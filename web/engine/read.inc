@@ -103,8 +103,10 @@ function read_message($username, $quad, $current, $direction) {
                     if($number) {
                         $forum_id = mysql_result($result,0,"forum_id");
                         $forum_name = mysql_result($result,0,"forum_name");
-                        $forum_unread = mysql_result($result,0,"forum_unread");
-                        addbutton("Next quadrant with unread messages", "/bbs/index.phtml/n/$id", "Read next quadrant with unread messages ($forum_name)");
+                        if($number != 1)
+                            addbutton("Next quadrant with unread messages", "/bbs/index.phtml/n/$id", "Read next quadrant, $forum_name, with unread messages ($number forums left)");
+                        else
+                            addbutton("Next quadrant with unread messages", "/bbs/index.phtml/n/$id", "Read next quadrant, $forum_name, with unread messages (last forum)");
                     } else {
                         addbutton("No unread messages left on the BBS", "", "");
                     }
