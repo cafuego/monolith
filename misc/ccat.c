@@ -4,14 +4,6 @@
 #include "config.h"
 #endif
 
-#ifdef HAVE_GETTEXT
-#include <libintl.h>
-#define _(String) gettext (String)
-#else
-#define _(String) (String)
-#endif
-
-
 #include <ctype.h>
 #include <stdarg.h>
 #include <stdio.h>
@@ -21,6 +13,14 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <getopt.h>
+
+#ifdef HAVE_GETTEXT
+#include <libintl.h>
+#include <locale.h>
+#define _(String) gettext (String)
+#else
+#define _(String) (String)
+#endif
 
 #define BUFSIZE 1024
 
@@ -54,6 +54,16 @@ main(int argc, char *argv[])
     int h = 0, v = 0;
     int optc;
     int lose = 0;
+
+
+
+#ifdef HAVE_GETTEXT
+       setlocale (LC_ALL, "nl");
+       bindtextdomain ("ccat", "/usr/bbs/locale");
+       textdomain ("ccat");
+#endif
+
+
 
     progname = argv[0];
 
