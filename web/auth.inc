@@ -85,9 +85,6 @@
     echo "</body>\n";
     echo "</html>\n";
 
-    unset($PHP_AUTH_USER);
-    unset($PHP_AUTH_PW);
-
     return;
   }
 

@@ -109,6 +109,8 @@ function
 html_get_usernum($username)
 {
 
+    global $MYSQL_SERVER, $MYSQL_USER, $MYSQL_PASS, $MYSQL_DATABASE;
+
     MYSQL_CONNECT($MYSQL_SERVER, $MYSQL_USER, $MYSQL_PASS) OR DIE("Unable to connect to SQL server");
     @mysql_select_db($MYSQL_DATABASE) or die("Unable to select database");
 
@@ -125,6 +127,8 @@ html_get_usernum($username)
 function 
 html_do_login($username)
 {
+
+    global $MYSQL_SERVER, $MYSQL_USER, $MYSQL_PASS, $MYSQL_DATABASE;
 
     $usernum = html_get_usernum($username);
 
@@ -144,6 +148,8 @@ html_do_login($username)
 function 
 html_do_logout($username, $hostname)
 {
+
+    global $MYSQL_SERVER, $MYSQL_USER, $MYSQL_PASS, $MYSQL_DATABASE;
 
     $usernum = html_get_usernum($username);
 
@@ -168,6 +174,8 @@ function
 html_get_quadname($username, $quad)
 {
 
+    global $MYSQL_SERVER, $MYSQL_USER, $MYSQL_PASS, $MYSQL_DATABASE;
+
     MYSQL_CONNECT($MYSQL_SERVER, $MYSQL_USER, $MYSQL_PASS) OR DIE("Unable to connect to SQL server");
     @mysql_select_db($MYSQL_DATABASE) or die("Unable to select database");
 
@@ -183,7 +191,7 @@ html_get_quadname($username, $quad)
 function 
 html_check_priv($action, $username, $forum_id)
 {
-
+    global $MYSQL_SERVER, $MYSQL_USER, $MYSQL_PASS, $MYSQL_DATABASE;
 
     if (!($action))
 	return 1;
@@ -289,6 +297,8 @@ html_print_foot($username, $starttime, $location)
 function 
 html_are_there_xs($username)
 {
+
+    global $MYSQL_SERVER, $MYSQL_USER, $MYSQL_PASS, $MYSQL_DATABASE;
 
     $user_id = html_get_usernum($username);
     MYSQL_CONNECT($MYSQL_SERVER, $MYSQL_USER, $MYSQL_PASS) OR DIE("Unable to connect to SQL server");
