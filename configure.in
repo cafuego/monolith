@@ -289,7 +289,7 @@ if test "$no_create" != "yes" ; then
 
   dnl Update or create version stamp, but only if it' not
   dnl automagically running.
-  /bin/sh ./mkversion-sh $mysql_app
+  /bin/sh ./mkversion-sh
 
   dnl Linux newbie stuff.
   dnl

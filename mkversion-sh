@@ -8,14 +8,6 @@
 # Also, this should trap ctrl-c and whatnot and create the version regardless
 # of being interrupted.
 
-# We're called with the mysql base dir as arg 1.
-# Check if this is the case, else exit.
-#
-if [ "x$1" = "x" ]; then
-   echo "$0: Need MySQL base directory as argument."
-   exit 1;
-fi
-
 # File thats tores the actual defines for use in the BBS.
 #
 VERSIONFILE=include/version.h
@@ -28,7 +20,7 @@ BUILD_DIR=`pwd`
 # If exists, read in, add one and save. If doesn't exist, set version to 1
 # and create the file for next time.
 #
-if [ -f .version ]; then
+if [ -f ".version" ]; then
     echo "updating $VERSIONFILE"
     typeset -i bbs_version=`/bin/cat .version`
     bbs_version=$bbs_version+1
@@ -41,16 +33,11 @@ fi
 #
 echo $bbs_version > .version
 
-# Nasty call to MySQL which is prolly absolutely not cross-platform to
-# get the MySQL version. (If it is installed) and re-create version.h
-#
-MYSQL=$1
-if [ "x$MYSQL" = "x" ]; then 
-    echo -e "#define BBS_VERSION\t\"Mono 2.061 #$bbs_version - `uname -m` `uname -s` `uname -r`\"" > $VERSIONFILE
-else
-    SQLVERSION="MySQL `$MYSQL --version | awk '{print $5}' | awk -F',' '{print $1}'`"
-    echo -e "#define BBS_VERSION\t\"Mono 2.061 #$bbs_version - `uname -m` `uname -s` `uname -r` - $SQLVERSION\"" > $VERSIONFILE
-fi
+echo "#ifdef USE_MYSQL" > $VERSIONFILE
+echo -e "  #define BBS_VERSION\t\"Mono 2.061 #$bbs_version - `uname -m` `uname -s` `uname -r` - MySQL \" MYSQL_SERVER_VERSION" >> $VERSIONFILE
+echo "#else" >> $VERSIONFILE
+echo -e "  #define BBS_VERSION\t\"Mono 2.061 #$bbs_version - `uname -m` `uname -s` `uname -r`\"" >> $VERSIONFILE
+echo "#endif" >> $VERSIONFILE
 
 # Add build base dir and version as integer.
 #
