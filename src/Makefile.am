@@ -1,8 +1,10 @@
 bin_PROGRAMS = yawc_port yawc_client
-CFLAGS=-O3 -Wall -g -I../include
+CFLAGS=-O3 -Wall -g 
+
+INCLUDES += -I../include
 
 #ifdef USE_MYSQL
-  CFLAGS+=$(MYSQL_INCLUDE)
+  INCLUDES += $(MYSQL_INCLUDE)
 #endif
 
 yawc_port_SOURCES = clipboard.c key.c fun.c friends.c chat.c help.c menu.c \
