@@ -49,7 +49,6 @@ static void cthulhu( void );
 void
 random_goto()
 {
-
     char *thegoto;
     int ret;
     int timescalled;

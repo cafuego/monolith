@@ -29,3 +29,4 @@ extern regexp * regcomp( char *exp);
 extern int regexec( regexp *prog, char *string);
 
 extern int shix_strmatch(char *, char *);
+extern int shix_valid( char * );

@@ -53,6 +53,9 @@
 #include "sql_userforum.h"
 #include "sql_rating.h"
 #include "sql_llist.h"
+
+#include "libshix.h"
+
 void
 search()
 {
@@ -486,15 +489,16 @@ search_via_sql(unsigned int forum)
     getline(needle, 30, FALSE);
     needle[strlen(needle)] = '\0';
 
-    if (needle[0] == '*' || needle[0] == '?') {
-	cprintf("\1f\1rIllegal character '%c' at start of search string.\1a\n", needle[0]);
-	return;
-    }
     if (!(strlen(needle))) {
-	cprintf("\1f\1rCan't search for nothing...\1a\n");
+	cprintf(_("\1f\1rERROR: Can't search for nothing...\1a\n"));
 	return;
     }
-    cprintf("\1f\1r\1eSearching...");
+    if (!(shix_valid( needle ))) {
+	cprintf(_("\1f\1rERROR: '\1y%s\1r' is not a valid search pattern...\1a\n"), needle);
+	return;
+    }
+
+    cprintf(_("\1f\1r\1eSearching..."));
     fflush(stdout);
 
     (void) gettimeofday(&tv_start, &tz);
@@ -505,7 +509,7 @@ search_via_sql(unsigned int forum)
 
     if (count == -1) {
 	cprintf("\r\1a\1f\1rSearching... An error occurred after ");
-	printf("%.4f", (float) working / 1000000);
+	printf("%.3f", (float) working / 1000000);
 	cprintf(" seconds.\n");
 	mono_sql_ll_free_sr_list(list);
 	return;
@@ -522,7 +526,7 @@ search_via_sql(unsigned int forum)
     p = (char *) xmalloc(SEARCH_RES_LEN * (count + 5));
     strcpy(p, "");
 
-    sprintf(line, "\n\1f\1g\nFound \1y%d \1gmatch%s in %.6f seconds. Listing by %s and %s number.\n\n", count, (count != 1) ? "es" : "", (float) working / 1000000, config.forum, config.message);
+    sprintf(line, "\n\1f\1g\nFound \1y%d \1gmatch%s in %.3f seconds. Listing by %s and %s number.\n\n", count, (count != 1) ? "es" : "", (float) working / 1000000, config.forum, config.message);
     strcat(p, line);
 
     sprintf(line, "\1f\1g%-18s     \1y%-25s      \1gId \1y%-22s\n\1w--------------------------------------------------------------------------------\n", config.user, config.forum, "Subject");

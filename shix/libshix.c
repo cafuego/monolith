@@ -106,6 +106,7 @@ shix_strmatch( char *input, char *match )
     regexp *expr = NULL;
 
     expr = regcomp(match);
+
     if( regexec(expr, input) != 0 ) {
         xfree(expr);
 #ifdef DEBUG
@@ -120,4 +121,34 @@ shix_strmatch( char *input, char *match )
     fflush(stdout);
 #endif
     return FALSE;
+}
+
+/*
+ * Check if input is a valid regular expression.
+ */
+int
+shix_valid( char *input)
+{
+    regexp *expr = NULL;
+    regexp *expr1 = NULL;
+    regexp *expr2 = NULL;
+
+    expr = regcomp("^[*?]");
+    if(regexec(expr,input)) {
+        xfree(expr);
+        return FALSE;
+    }
+    xfree(expr);
+
+    expr1 = regcomp("^.*\\[.*$");
+    expr2 = regcomp("^.*\\].*$");
+    if(regexec(expr1,input) && (!regexec(expr2,input))) {
+        xfree(expr1);
+        xfree(expr2);
+        return FALSE;
+    }
+    xfree(expr1);
+    xfree(expr2);
+
+    return TRUE;
 }
