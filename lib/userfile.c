@@ -54,29 +54,6 @@ check_user(const char *name)
 }
 
 #ifdef USED
-/* returns TRUE is password is correct, FALSE otherwise */
-int
-check_password(const user_t * user, const char *password)
-{
-    char salt[3];
-
-    if (!user || !password || !strlen(password))
-	return FALSE;
-
-    strncpy( salt, user->password, 2 );
-    salt[2] = '\0';
-
-#ifdef DEBUG
-    printf( "debug: salt: %s", salt ); 
-#endif
-
-    if (strcmp(crypt(password, salt), user->password) == 0)
-	return TRUE;
-    else
-	return FALSE;
-}
-#endif
-
 /* accepts usre and plaintext passwd and stores it encrypted */
 /* returns -1 on error */
 int
@@ -87,6 +64,7 @@ set_password(user_t * user, const char *password)
     strcpy(user->password, crypt(password, CRYPTKEY));
     return 0;
 }
+#endif
 
 /*************************************************
 * readuser()
