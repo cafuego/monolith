@@ -1,13 +1,15 @@
 # Topics
 # sub-areas inside forums.
 
-# DROP TABLE topics;
+DROP TABLE topics;
 
 CREATE TABLE topics (
 
 # topic name/number
    forum_id	INT UNSIGNED NOT NULL,
    topic_id	INT UNSIGNED NOT NULL,
+
+   highest 	INT UNSIGNED DEFAULT 0,
 
    name		VARCHAR(40) NOT NULL,
 
