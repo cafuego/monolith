@@ -706,7 +706,6 @@ mono_remove_ghosts()
 	mono_errno = E_NOSHM;
 	return -1;
     }
-    mono_lock_shm(WHO_LOCK);
     p = q = shm->first;
     while (p != -1) {
 	if (kill(shm->wholist[p].pid, 0) == -1) {
@@ -722,7 +721,6 @@ mono_remove_ghosts()
 	p = shm->wholist[p].next;
     }
     (void) mono_fix_usercount();
-    mono_lock_shm(WHO_UNLOCK);
     return 0;
 }
 
