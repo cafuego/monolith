@@ -36,6 +36,7 @@
 #include "messages.h"
 #include "newuser.h"
 #include "registration.h"
+#include "rooms.h"
 #include "routines2.h"
 #include "statusbar.h"
 #include "uadmin.h"
@@ -239,7 +240,7 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
     FILE *fp;
     char work[L_USERNAME + strlen(USERDIR) + 10];
     register char cmd = '\0';
-    int control = 0, found_RA_rooms = 0;
+    int control = 0;
     time_t timecall, curtime;
     unsigned int a;
     btmp_t *record;
