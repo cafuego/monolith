@@ -502,7 +502,7 @@ format_banner(message_header_t * header, char *header_string)
 		 "\1f\1w ( \1g%s \1w) \1a", header->banner);
     }
     if (header->banner_type & MAIL_BANNER) {
-	strcat(mesg_banner, "\1f\1gto \1y");
+	strcat(mesg_banner, " \1f\1gto \1y");
 	strcat(mesg_banner, header->recipient);
 	strcat(mesg_banner, "\1a");
     }
