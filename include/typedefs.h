@@ -259,6 +259,17 @@ typedef struct {
     char message[X_BUFFER];	/* the whole x-message          */
 } express_t, x_str, *x_struct;
 
+/*
+ * a linked list with messages. To be used when reading
+ * messages in a forum.
+ */
+typedef struct xlist xlist_t;
+struct xlist {
+    xlist_t *next;
+    xlist_t *prev;
+    express_t *x;
+};
+
 /****************************************************************************/
 
 #define L_CATEGORY	59
