@@ -230,6 +230,104 @@ int message_delete(const unsigned int from_forum, const unsigned int message_id)
     return ret;
 }
 
+void
+save_to_sql(message_header_t *header, char *filename)
+{
+    message_t *message = NULL;
+
+    message = (message_t *)xcalloc( 1, sizeof(message_t) );
+    message->f_id = header->f_id;
+    message->t_id = 0;
+    message->a_id = usersupp->usernum;
+    sprintf(message->alias, "%s", header->alias);
+    sprintf(message->subject, "%s", header->subject);
+    sprintf(message->flag, "%s", get_flag(header->banner_type));
+    message->reply_m_id = header->reply_m_id;
+    message->reply_f_id = header->reply_f_id;
+    message->reply_t_id = header->reply_t_id;
+    (void) mono_cached_sql_u_name2id( header->reply_to_author, &message->reply_a_id );
+    strcpy(message->reply_alias, "" );
+    message->orig_m_id = header->orig_m_id;
+    message->orig_f_id = header->orig_f_id;
+    message->orig_t_id = header->orig_t_id;
+    (void) mono_cached_sql_u_name2id( header->modified_by, &message->orig_a_id );
+    message->orig_date = header->orig_date;
+    sprintf(message->mod_reason, "%s", get_reason(header->mod_type));
+    if( (message->content = map_file(filename)) == NULL ) {
+        printf("SQL DEBUG: Unable to save %s to SQL (content is missing)\n", config.message );
+        printf("   Error has been logged, don't bother reporting it.\n" );
+        xfree(message->content);
+        xfree(message);
+        return;
+    }
+    if( (mono_sql_mes_add(message)) == -1) {
+        printf("SQL DEBUG: Unable to save %s to SQL (query fuckswed up)\n", config.message );
+        printf("   Error has been logged, don't bother reporting it.\n" );
+    }
+
+    xfree(message->content);
+    xfree(message);
+    return;
+}
+
+static char *
+get_flag(unsigned long mod_banner)
+{
+
+    switch(mod_banner) {
+        case AUTOMAIL_BANNER:
+        case SYSTEM_BANNER:
+            return "auto";
+            break;
+        case EMP_BANNER:
+            return "emp";
+            break;
+        case SYSOP_BANNER:
+            return "sysop";
+            break;
+        case ADMIN_BANNER:
+            return "admin";
+            break;
+        case TECH_BANNER:
+            return "echo";
+            break;
+        case QL_BANNER:
+            return "roomaide";
+            break;
+        case FORCED_BANNER:
+            return "forced";
+            break;
+        case YELL_BANNER:
+            return "yell";
+            break;
+        case ANON_BANNER:
+            return "anon";
+            break;
+        case NO_BANNER:
+        default:
+            return "normal";
+            break;
+    }
+}
+
+static char *
+get_reason(int mod_reason)
+{
+    switch(mod_reason) {
+
+        case MOD_MOVE:
+            return "moved";
+            break;
+
+        case MOD_COPY:
+           return "copied";
+           break;
+
+        default:
+            return "";
+            break;
+    }
+}
 
 size_t
 get_filesize(const char *filename)

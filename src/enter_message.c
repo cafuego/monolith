@@ -214,25 +214,6 @@ save_new_message(message_header_t * header, unsigned int forum)
     return 0;
 }
 
-static char *
-get_reason(int mod_reason)
-{
-    switch(mod_reason) {
-
-        case MOD_MOVE:
-            return "moved";
-            break;
-
-        case MOD_COPY:
-           return "copied";
-           break;
-
-        default:
-            return "";
-            break;
-    }
-}
-
 int
 save_new_mail(message_header_t * header, userlist_t ** recipient_list)
 {
