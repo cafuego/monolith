@@ -10,7 +10,7 @@ CREATE TABLE userforum (
    user_id	INT UNSIGNED NOT NULL,
 
 # is host, or not
-   host		ENUM( 'y','n' ) DEFAULT 'n',
+   host		ENUM( 'y','n' ) NOT NULL DEFAULT 'n',
 
 # xs status
    status	ENUM( 'invited', 'kicked', 'normal' ) DEFAULT 'normal',
@@ -24,6 +24,7 @@ CREATE TABLE userforum (
 # timestamp
    stamp        TIMESTAMP,
 
-   PRIMARY KEY( forum_id, user_id )
+   PRIMARY KEY( forum_id, user_id ),
+   INDEX( forum_id, user_id, host )
 
 )
