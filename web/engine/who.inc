@@ -63,7 +63,7 @@ function show_wholist($username, $location)
 	    echo "    <p align=\"left\"><a href=\"/bbs/index.phtml/x/$url_user/$interface/$location\" ".mouseover("Send an eXpress message to $user").">$user</a>\n";
 	    echo "  </td>\n";
 	    echo "  <td align=\"left\">\n";
-	    echo "    <p align=\"left\"> <a href=\"/bbs/index.phtml/p/$url_user\">P</a> \n";
+	    echo "    <p align=\"left\"> <a href=\"/bbs/index.phtml/p/$url_user\"".mouseover("Profile $user").">P</a> \n";
 	    echo "  </td>\n";
 	    echo "  <td align=\"left\">\n";
 	    echo "    <p align=\"left\"><font color=\"#00cc00\">$doing</font>\n";

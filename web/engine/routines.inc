@@ -179,7 +179,7 @@ format_user($user)
     return "<font color=\"#ff0000\">Deleted User</font>";
   }
   $url_user = rawurlencode($user);
-  return "<font color=\"#ffff00\"><a href=\"/bbs/index.phtml/p/$url_user\">$user</a></font>";
+  return "<font color=\"#ffff00\"><a href=\"/bbs/index.phtml/p/$url_user\"".mouseover("Profile $user").">$user</a></font>";
 }
 
 function
