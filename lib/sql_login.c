@@ -36,8 +36,8 @@ mono_sql_log_logout(unsigned int user_id, time_t login, time_t logout, const cha
     MYSQL_RES *res;
 
     ret = mono_sql_query(&res, "INSERT INTO " LOGIN_TABLE 
-     " (user_id,login,logout,host,reason) VALUES (%u,FROM_UNIXTIME('%u'),FROM_UNIXTIME('%u'),'%s',%d)"
-     , user_id, login, logout, host, reason);
+     " (user_id,login,logout,online,host,reason) VALUES (%u,FROM_UNIXTIME(%u),FROM_UNIXTIME(%u),SEC_TO_TIME(%u),'%s',%d)"
+     , user_id, login, logout, (logout-login), host, reason);
 
     if (ret == -1)
 	return FALSE;
