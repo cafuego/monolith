@@ -435,10 +435,9 @@ search_via_sql( unsigned int forum )
         if(yesno_default(YES) == NO)
             forum = -1;
     }
-        if(forum==1) {
-            cprintf("\1f\1rCan't search Mail yet, sorry.\n");
-            return;
-        }
+    if(forum==1) {
+        cprintf("\1f\1rCan't search Mail yet, sorry.\n");
+        return;
     }
 
     cprintf("\n\1f\1gFind \1w(\1gmax 30 chars\1w): \1c");
