@@ -1,11 +1,20 @@
 #!/bin/sh
-echo "Creating version.h..."
+
+if [ -f .version ]; then
+    echo "updating include/version.h"
+    typeset -i bbs_version=`/bin/cat .version`
+    bbs_version=$bbs_version+1
+else
+    echo "creating include/version.h"
+    typeset -i bbs_version=1
+fi
+echo $bbs_version > .version
 
 MYSQL=x`which mysql`
 if [ $MYSQL = x ]; then 
-     echo "#define VERSION	\"Mono 2.061 - `uname -m` `uname -s` `uname -r`\"" > include/version.h
+     echo "#define VERSION	\"Mono 2.061 (#$bbs_version) - `uname -m` `uname -s` `uname -r`\"" > include/version.h
 else
     MYSQL="`which mysql` --version"
     SQLVERSION="MySQL `$MYSQL | awk '{print $5}' | awk -F',' '{print $1}'`"
-     echo "#define VERSION	\"Mono 2.061 - `uname -m` `uname -s` `uname -r` - $SQLVERSION\"" > include/version.h
+     echo "#define VERSION	\"Mono 2.061 (#$bbs_version) - `uname -m` `uname -s` `uname -r` - $SQLVERSION\"" > include/version.h
 fi
