@@ -74,7 +74,7 @@ function list_messages($username, $quad, $listunread) {
                 echo "    <p align=\"right\" class=\"green\"><font color=\"#ff0000\">New:</font> $m_id\n";
             echo "  </td>\n";
             echo "  <td align=\"left\" valign=\"top\">\n";
-            echo "    <p align=\"left\"><font color=\"#00cc00\">Posted on $date CET</font>\n";
+            echo "    <p align=\"left\"><font color=\"#00cc00\">Posted on $date CET</font><br>\n";
             echo "     <a href=\"/bbs/index.phtml/r/$quad/$m_id\">$subject</a> <font color=\"#00cc00\">by</font> $user\n";
             echo "  </td>\n";
             echo "</tr>\n";
