@@ -273,7 +273,7 @@ msgstr ""
 msgid "\001f\001rThat user is not online.\001a\n"
 msgstr ""
 
-#: src/express.c:780 src/usertools.c:130
+#: src/express.c:780 src/usertools.c:135
 msgid "\001f\001rNo such user.\001a\n"
 msgstr ""
 
@@ -632,8 +632,32 @@ msgid ""
 "\001f\001gYou have \001y%d \001gnew \001pWeb \001g%s %s \001w(\001gHit \001w<\001r^\001w> \001gto reply\001w)\001a\n"
 msgstr ""
 
-#: src/fun.c:62 src/fun.c:79
+#: src/fun.c:63 src/fun.c:71 src/fun.c:73
 msgid "\001f\001gNo unread %s.\001a"
+msgstr ""
+
+#: src/fun.c:119
+msgid ""
+"\n"
+"\001gI love you too! ;)\n"
+msgstr ""
+
+#: src/fun.c:121
+msgid ""
+"\n"
+"\001y*whine* Coz I need one! )~:\n"
+msgstr ""
+
+#: src/fun.c:123
+msgid ""
+"\n"
+"\001g*pout*  ):\n"
+msgstr ""
+
+#: src/fun.c:125
+msgid ""
+"\n"
+"\001g*buurrRp*  (:\n"
 msgstr ""
 
 #: src/key.c:108
@@ -658,56 +682,56 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/main.c:165
+#: src/main.c:167
 msgid ""
 "OH NO!!!!!!! A SEGFAULT!!!!!\n"
 " "
 msgstr ""
 
-#: src/main.c:204
+#: src/main.c:206
 msgid "No such user.\n"
 msgstr ""
 
-#: src/main.c:223 src/main.c:327
+#: src/main.c:225 src/main.c:326
 msgid "Incorrect login.\n"
 msgstr ""
 
-#: src/main.c:241
+#: src/main.c:243
 msgid "\001f\001gPlease enter your \001rcurrent\001g password: "
 msgstr ""
 
-#: src/main.c:250
+#: src/main.c:252
 msgid "Password changed.\n"
 msgstr ""
 
-#: src/main.c:252
+#: src/main.c:254
 msgid "Password unchanged.\n"
 msgstr ""
 
-#: src/main.c:272
+#: src/main.c:274
 msgid "Please enter a password: "
 msgstr ""
 
-#: src/main.c:279
+#: src/main.c:278
 msgid "Please enter it again: "
 msgstr ""
 
-#: src/main.c:283
+#: src/main.c:282
 msgid "The passwords you typed didn't match.  Please try again.\n"
 msgstr ""
 
 #. loop until we get a real username
-#: src/main.c:308
+#: src/main.c:307
 msgid ""
 "\n"
 "Username: "
 msgstr ""
 
-#: src/main.c:312
+#: src/main.c:311
 msgid "Enter \"Off\" to quit or \"New\" to enter as a new user.\n"
 msgstr ""
 
-#: src/main.c:325
+#: src/main.c:324
 msgid "%s's Password: "
 msgstr ""
 
@@ -724,7 +748,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/main.c:654
+#: src/main.c:657
 msgid ""
 "\n"
 "\n"
@@ -732,198 +756,221 @@ msgid ""
 "\001a"
 msgstr ""
 
-#: src/main.c:655
+#: src/main.c:658
 msgid "\001f\001gHit any key to continue...\001a"
 msgstr ""
 
-#: src/main.c:660
+#: src/main.c:663
 msgid ""
 "\n"
 "\001f\001gAre you sure you want to leave %s? \001w(\001gy\001w/\001gn\001w/\001gm\001w/\001g?\001w)\001g "
 msgstr ""
 
-#: src/main.c:665
+#: src/main.c:668
 msgid "\001f\001gHelp.\001a\n"
 msgstr ""
 
-#: src/main.c:670
+#: src/main.c:673
 msgid "\001f\001gYes.\n"
 msgstr ""
 
-#: src/main.c:674
+#: src/main.c:677
 msgid "\001f\001gNo.\n"
 msgstr ""
 
-#: src/main.c:775
+#: src/main.c:780
 msgid ""
 "\n"
 "\001a\001f\001gWelcome to %s, \001g%s! \001gThis is your \001w#%d \001glogin.\n"
 msgstr ""
 
-#: src/main.c:779
+#: src/main.c:784
 msgid "\001f\001gLast login: %s \001g\001ffrom \001r%-16.16s\n"
 msgstr ""
 
-#: src/main.c:799
+#: src/main.c:804
 msgid "\001f\001gYour friends online\001w:\001a\n"
 msgstr ""
 
-#: src/main.c:838
+#: src/main.c:843
 msgid "\001f\001gYou have a new private %s in \001pMail>\n"
 msgstr ""
 
-#: src/main.c:840
+#: src/main.c:845
 msgid "\001f\001gYou have \001r%d \001gnew private %s in \001pMail>\n"
 msgstr ""
 
-#: src/main.c:842
+#: src/main.c:847
 msgid "\001f\001gYou have \001rno\001g new Mail %s.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:128
+#: src/messages.c:493
+msgid "\001f\001rERROR: Can't search for nothing...\001a\n"
+msgstr ""
+
+#: src/messages.c:497
+msgid "\001f\001rERROR: '\001y%s\001r' is not a valid search pattern...\001a\n"
+msgstr ""
+
+#: src/messages.c:501
+msgid "\001f\001r\001eSearching..."
+msgstr ""
+
+#: src/read_menu.c:129
 msgid "\001f\001gRead messages backwards.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:149
+#: src/read_menu.c:150
 msgid "\001f\001pSubscribe to %s: \001a"
 msgstr ""
 
-#: src/read_menu.c:154
+#: src/read_menu.c:155
 msgid "\001f\001gEnter message.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:171
+#: src/read_menu.c:172
 msgid "\001f\001gRead messages forward.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:176
+#: src/read_menu.c:177
 msgid "\001f\001gYour friends online.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:206
+#: src/read_menu.c:207
 msgid "\001f\001gHelpfiles.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:211
+#: src/read_menu.c:212
 msgid "\001f\001g%s Info.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:227
+#: src/read_menu.c:228
 msgid "\001f\001gJump to %s name/number: \001a"
 msgstr ""
 
-#: src/read_menu.c:236
+#: src/read_menu.c:237
 msgid "\001f\001gAll %s\001w:\n"
 msgstr ""
 
-#: src/read_menu.c:241
+#: src/read_menu.c:242
 msgid "\001f\001gKnown %s.\n"
 msgstr ""
 
-#: src/read_menu.c:257
+#: src/read_menu.c:258
 msgid "\001f\001gLogout.\001a"
 msgstr ""
 
-#: src/read_menu.c:294
+#: src/read_menu.c:295
 msgid "\001f\001gProfile an %s.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:300
+#: src/read_menu.c:301
 msgid "\001f\001rAsk a Question.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:310
+#: src/read_menu.c:311
 msgid "\001f\001gRead %s reverse.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:315
+#: src/read_menu.c:316
 msgid "\001f\001gInterBBS Wholist.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:322
+#: src/read_menu.c:323
 msgid "\001f\001gSearch %s\n"
 msgstr ""
 
-#: src/read_menu.c:333
+#: src/read_menu.c:334
 msgid "\001f\001gDate: \001w%s\001a"
 msgstr ""
 
-#. Holodeck Wholist
-#: src/read_menu.c:353
+#: src/read_menu.c:354
 msgid "\001f\001g%s Wholist.\n"
 msgstr ""
 
-#: src/read_menu.c:358
+#: src/read_menu.c:359
 msgid "\001f\001gWhich %s are online?\001a\n"
 msgstr ""
 
-#: src/read_menu.c:363 src/read_menu.c:872
+#: src/read_menu.c:364 src/read_menu.c:874
 msgid "\001f\001gShort Wholist.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:369 src/read_menu.c:885
+#: src/read_menu.c:370 src/read_menu.c:887
 msgid "\001f\001gSend \001pWeb \001g%s %s.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:380 src/read_menu.c:891
+#: src/read_menu.c:381 src/read_menu.c:893
 msgid "\001f\001gSend %s %s.\001a\n"
 msgstr ""
 
 #. <ctrl-x>
-#: src/read_menu.c:403
+#: src/read_menu.c:404
 msgid "\001f\001gRead %s-Log.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:408
+#: src/read_menu.c:409
 msgid "\001f\001gYell-menu.\001a \n"
 msgstr ""
 
-#: src/read_menu.c:414
+#: src/read_menu.c:415
 msgid "\001f\001gZap %s.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:433
+#: src/read_menu.c:434
 msgid "\001f\001gJump a number of %s back from the Last Read %s.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:434 src/read_menu.c:446
+#: src/read_menu.c:435 src/read_menu.c:447 src/read_menu.c:926
 msgid "\001f\001gHow many %s back shall I jump?\001c "
 msgstr ""
 
-#: src/read_menu.c:439 src/read_menu.c:451
+#: src/read_menu.c:440 src/read_menu.c:452 src/read_menu.c:931 src/read_menu.c:946
 msgid "\001f\001rThat is not a valid entry.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:445
+#: src/read_menu.c:446
 msgid "\001f\001rJump a number of %s back from the Last %s in this %s.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:481
+#: src/read_menu.c:482
 msgid "\001f\001gRandom Quote!\n"
 msgstr ""
 
-#: src/read_menu.c:487
+#: src/read_menu.c:488
 msgid "\001a\001f\001gDonator List.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:527 src/read_menu.c:957
+#: src/read_menu.c:528 src/read_menu.c:989
 msgid ""
 "\001f\001gChange your Friends-list.\001a\n"
 "\n"
 msgstr ""
 
-#: src/read_menu.c:532 src/read_menu.c:962
+#: src/read_menu.c:533 src/read_menu.c:994
 msgid ""
 "\001f\001gChange your Enemylist.\001a\n"
 "\n"
 msgstr ""
 
-#: src/read_menu.c:541
+#: src/read_menu.c:542
 msgid "\001f\001gList all commands.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:878
+#: src/read_menu.c:880
 msgid "\001f\001gWhich aliens are online?\001a\n"
+msgstr ""
+
+#: src/read_menu.c:925
+msgid "\001f\001gJump a number of %s back from the current %s.\001a\n"
+msgstr ""
+
+#: src/read_menu.c:940
+msgid "\001f\001gJump a number of %s forward from the current %s.\001a\n"
+msgstr ""
+
+#: src/read_menu.c:941
+msgid "\001f\001gHow many %s forward shall I jump?\001c "
 msgstr ""
 
 #. read X-Log
@@ -933,208 +980,266 @@ msgid ""
 "\001f\001gRead X-Log.\001a\n"
 msgstr ""
 
-#: src/usertools.c:91
+#: src/usertools.c:95
 msgid "\001f\001gProfile user \001w(\001y%s\001w): \001c"
 msgstr ""
 
-#: src/usertools.c:93
+#: src/usertools.c:97
 msgid "\001g\001fProfile user\001w: \001c"
 msgstr ""
 
-#: src/usertools.c:105
+#: src/usertools.c:109
 msgid "\001r\001fNot a valid InterBBS name.\n"
 msgstr ""
 
-#: src/usertools.c:532
+#: src/usertools.c:550
 msgid "\001f\001pSubscribe to channel: \001a"
 msgstr ""
 
-#: src/usertools.c:636
+#: src/usertools.c:654
 msgid "\001f\001cUser's localtime:\001g %A \001w(\001g%H:%M\001w) (%Z)\001a\n"
 msgstr ""
 
-#: src/usertools.c:642
+#: src/usertools.c:660
 msgid "\001f\001yAideline:%s\n"
 msgstr ""
 
-#. IS NOT ONLINE
-#: src/usertools.c:676
+#: src/usertools.c:694
 msgid "\001f\001cLast on \001g%s "
 msgstr ""
 
-#: src/usertools.c:677
+#: src/usertools.c:695
 msgid "\001cto \001g%s \001p"
 msgstr ""
 
-#: src/usertools.c:701
+#: src/usertools.c:719
 msgid "Birthday: \001g"
 msgstr ""
 
-#: src/usertools.c:708
+#: src/usertools.c:730
 msgid "\001f\001cConfiguration\001w: \001g%s \001cMonoholic Rating\001w: \001g"
 msgstr ""
 
-#: src/usertools.c:711
+#: src/usertools.c:733
 msgid "\001f\001cUsernum\001w: \001g%d \001cFirst login\001w: \001g%s\n"
 msgstr ""
 
-#: src/usertools.c:712
+#: src/usertools.c:734
 msgid "\001f\001cLogins\001w: \001g%-5d \001cPosts: \001g%-5d \001cOnlinetime: \001g%2ld:%2.2ld   \001cPriv: \001g%5d  \001cX's: \001g%5ld \n"
 msgstr ""
 
-#: src/usertools.c:717
+#: src/usertools.c:741
 msgid ""
 "First login: \001g%s\001c\n"
 "Logins: \001g%-5d \001cPosts: \001g%-5d \001cOnlinetime: \001g%2ld:%2.2ld \001cX's: \001g%5ld \n"
 msgstr ""
 
-#: src/usertools.c:727
+#: src/usertools.c:751
 msgid "\001g*** is available to help others ***\n"
 msgstr ""
 
-#: src/usertools.c:746
+#: src/usertools.c:770
 msgid ""
 "\n"
 "\001a\001f\001gPress \001w<\001rSPACE\001w>\001g to continue or \001w<\001rs\001w>\001g to skip... \001a"
 msgstr ""
 
-#: src/usertools.c:781
+#: src/usertools.c:806
 msgid "\001gYou're not a %s!"
 msgstr ""
 
-#: src/usertools.c:862
-msgid "Are you sure you want to edit your profile? (y/n) "
+#: src/usertools.c:887
+msgid "\001f\001gAre you sure you want to edit your profile? \001w(\001gy\001w/\001gn\001w) \001c"
 msgstr ""
 
-#: src/usertools.c:873
+#: src/usertools.c:898
 msgid "\001f\001rUnable to fopen() profile file!\n"
 msgstr ""
 
-#: src/usertools.c:879
+#: src/usertools.c:904
 msgid "\001f\001rUnble to fetch profile from database!\n"
 msgstr ""
 
-#: src/usertools.c:897 src/usertools.c:951
+#: src/usertools.c:922 src/usertools.c:976
 msgid "\001f\001rUnable to mmap() profile file contents!\n"
 msgstr ""
 
-#: src/usertools.c:903 src/usertools.c:957
+#: src/usertools.c:928 src/usertools.c:982
 msgid "\001f\001rUnable to store profile in database!\n"
 msgstr ""
 
-#: src/usertools.c:921
+#: src/usertools.c:946
 msgid "Are you sure you want to change your profile? (y/n) "
 msgstr ""
 
-#: src/usertools.c:925
+#: src/usertools.c:950
 msgid ""
 "\001yYou now have seven lines to create a nice profile of yourself.\001g\n"
 "\n"
 msgstr ""
 
-#: src/usertools.c:968
+#: src/usertools.c:993
 msgid "\001f\001gChange birthday/date.\n"
 msgstr ""
 
-#: src/usertools.c:976
+#: src/usertools.c:1001
 msgid "\001gYour current %s is: \001y`%s\001a'\n"
 msgstr ""
 
-#: src/usertools.c:977
+#: src/usertools.c:1002 src/usertools.c:2226
 msgid "\001f\001gDo you want to change this? \001w(\001gy\001w/\001gn\001w)\001c "
 msgstr ""
 
-#: src/usertools.c:993
+#: src/usertools.c:1018
 msgid "\001f\001gChange address.\n"
 msgstr ""
 
-#: src/usertools.c:1008
+#: src/usertools.c:1033
 msgid "\001gYour current url is: \001y`%s'\n"
 msgstr ""
 
-#: src/usertools.c:1009
+#: src/usertools.c:1034
 msgid "\001gDo you want to change this? \001w(\001gy\001w/\001gn\001w)\001c "
 msgstr ""
 
-#: src/usertools.c:1011
+#: src/usertools.c:1036
 msgid "\001f\001gEnter the new url\001w: \001chttp://"
 msgstr ""
 
-#: src/usertools.c:1015
+#: src/usertools.c:1040
 msgid "\001f\001gURL not set.\n"
 msgstr ""
 
-#: src/usertools.c:1043
+#. disable x's in q_menu
+#: src/usertools.c:1068
 msgid ""
 "\n"
 "\001f\001gPress \001w<\001rh\001w>\001g to access the helpfiles.\n"
 msgstr ""
 
-#: src/usertools.c:1044
+#: src/usertools.c:1069
 msgid ""
 "\n"
 "\001gPress \001w<\001rc\001w>\001g for help on commands.\n"
 msgstr ""
 
-#: src/usertools.c:1045
+#: src/usertools.c:1070
 msgid "\001gPress \001w<\001r?\001w>\001g to get a list of commands.\n"
 msgstr ""
 
-#: src/usertools.c:1046
+#: src/usertools.c:1071
 msgid ""
 "\001gPress \001w<\001rshift-Q\001w>\001g to ask a Question.\n"
 "\n"
 msgstr ""
 
-#: src/usertools.c:1047
+#: src/usertools.c:1072
 msgid ""
 "\001gPress \001w<\001rq\001w>\001g to exit this menu.\n"
 "\n"
 msgstr ""
 
-#: src/usertools.c:1048
+#: src/usertools.c:1073
 msgid "\001gChoice\001w:\001g "
 msgstr ""
 
-#: src/usertools.c:1144
+#: src/usertools.c:1169
 msgid "\001f\001wYou are now marked as \001gAWAY\001w.\n"
 msgstr ""
 
-#: src/usertools.c:1146
+#: src/usertools.c:1171
 msgid "\001gDefault away message: \001y%s\001a\n"
 msgstr ""
 
-#: src/usertools.c:1147
+#: src/usertools.c:1172
 msgid "\001f\001gNew Away message: \001c"
 msgstr ""
 
-#: src/usertools.c:1156
+#: src/usertools.c:1181
 msgid "\001f\001wYou are \001rno longer\001w marked as \001gAWAY\001w.\001a"
 msgstr ""
 
-#: src/wholist.c:91
+#: src/usertools.c:2215
+msgid "\001f\001gEnter ICQ Number.\n"
+msgstr ""
+
+#: src/usertools.c:2222
+msgid "\001f\001gYou have not set an ICQ Number.\n"
+msgstr ""
+
+#: src/usertools.c:2223
+msgid "\001f\001gWould you like to set one now? \001w(\001gy\001w/\001gn\001w)\001c "
+msgstr ""
+
+#: src/usertools.c:2225
+msgid "\001f\001gYour current ICQ Number is \001y%ul\001g\n"
+msgstr ""
+
+#: src/usertools.c:2229
+msgid "\001gEnter your ICQ number\001w: \001f\001c"
+msgstr ""
+
+#: src/usertools.c:2236
+msgid "\001f\001rSorry, that is not a valid ICQ number.\n"
+msgstr ""
+
+#: src/usertools.c:2240
+msgid "\001f\001rSomething went wrong saving your ICQ Number.\n"
+msgstr ""
+
+#: src/usertools.c:2242
+msgid "\001f\001gYour ICQ Number was saved.\n"
+msgstr ""
+
+#: src/usertools.c:2253
+msgid "\001f\001gEnter ICQ Password.\n"
+msgstr ""
+
+#: src/usertools.c:2259
+msgid "\001f\001gDo you want to change your ICQ Password? \001w(\001gy\001w/\001gn\001w)\001c "
+msgstr ""
+
+#: src/usertools.c:2263
+msgid ""
+"\001f\001w(\001gThis password is stored in encrypted form\001w)\n"
+"\n"
+msgstr ""
+
+#: src/usertools.c:2266
+msgid "\001f\001gPlease enter your ICQ Password\001w (\001gMax. 64 characters\001w): \001c"
+msgstr ""
+
+#: src/usertools.c:2275
+msgid "\001f\001rSomething went wrong saving your ICQ Password.\n"
+msgstr ""
+
+#: src/usertools.c:2277
+msgid "\001f\001gYour ICQ Password was saved.\n"
+msgstr ""
+
+#: src/wholist.c:113
 msgid ""
 "\n"
 "\001g\001fYou are all alone online at \001y%02d:%02d\001g local time.\n"
 msgstr ""
 
-#: src/wholist.c:93
+#: src/wholist.c:115
 msgid "\001f\001gHey! What do you think you are doing here?\001a\n"
 msgstr ""
 
-#: src/wholist.c:96
+#: src/wholist.c:119 src/wholist.c:123
 msgid ""
 "\n"
 "\001g\001fThere are \001y%u\001g %s online at \001y%02d:%02d\001g local time.\n"
 msgstr ""
 
-#: src/wholist.c:100
+#: src/wholist.c:128
 msgid ""
 "\n"
 "\001g\001fThere are \001y%ud\001g %s online \001c( \001y%ud \001cqueued ) \001gat \001y%02d:%02d\001g local time.\n"
 msgstr ""
 
-#: src/wholist.c:111
+#: src/wholist.c:143
 msgid ""
 "\001f\001g%-19s  \001pFlags  \001g%-17s \001pTime \001g%-28s\n"
 "\001w"
