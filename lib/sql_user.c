@@ -89,29 +89,36 @@ mono_sql_u_check_passwd( unsigned int user_id, const char *passwd )
     MYSQL_RES *res;
     MYSQL_ROW row;
     int ret;
-    char cryp[14];
     char salt[2];
+    char typed[14];
 
-    strncpy( salt, passwd, 2 );
-    salt[2] = '\0';
+    ret = mono_sql_query(&res, "SELECT password FROM " U_TABLE " WHERE id=%u", user_id);
 
-    ret = mono_sql_query(&res, "SELECT password FROM " U_TABLE " WHERE id=%u", cryp);
-
-    strcpy( cryp, crypt( passwd, salt ) );
-
-    if ( ret == -1) {
-	fprintf(stderr, "No results from query.\n");
-	return FALSE;
-    }
-    if (mysql_num_rows(res) != 1) {
+    if ( ret == -1 ) {
+	fprintf(stderr, "Query Error.\n");
         return FALSE;
     }
 
+    if ( mysql_num_rows(res) != 1 ) {
+	fprintf(stderr, "Not enough results Error.\n");
+        return FALSE;
+    }
     row = mysql_fetch_row(res);
 
-    ret = strcmp( row[0], crypt( passwd, salt ) );
+    if ( strlen( row[0] ) < 3 ) {
+	fprintf(stderr, "Error getting results.\n");
+        return FALSE;
+    }
 
-    mysql_free_result(res);
+    strncpy( salt, row[0], 2 );
+    salt[2] = '\0';
+
+    strcpy( typed, crypt( passwd, salt ) );
+    ret = strcmp( row[0], typed );
+
+/* michel: putting this free statement here gives a segfaul.t
+     don't know why, but it should really be here */
+/*    mysql_free_result(res); */
 
     if ( ret == 0 ) return TRUE;
     return FALSE;
