@@ -664,7 +664,7 @@ read_regis(const user_t * user, int override)
 
     strcpy(p, "\1a\1g");
 
-    if (strlen(user->RGname) > 0) {
+    if (strlen(name) > 0) {
 	strcpy(line, "");
 	if (!(user->hidden_info & H_REALNAME))
 	    (void) sprintf(line, "\1f%s\n", name); 
@@ -673,7 +673,7 @@ read_regis(const user_t * user, int override)
 	strcat(p, "\1a\1g");
 	strcat(p, line);
     }
-    if (strlen(user->RGaddr) > 0) {
+    if (strlen(address) > 0) {
 	strcpy(line, "");
 	if (!(user->hidden_info & H_ADDRESS))
 	    (void) sprintf(line, "\1f%s\n", address);
@@ -682,7 +682,7 @@ read_regis(const user_t * user, int override)
 	strcat(p, "\1a\1g");
 	strcat(p, line);
     }
-    if (strlen(user->RGzip) > 0 || strlen(user->RGcity) > 0) {
+    if (strlen(zip) > 0 || strlen(city) > 0) {
 	strcpy(line, "");
 	if (!(user->hidden_info & H_CITY))
 	    (void) sprintf(line, "\1f%s %s, ", zip, city);
@@ -691,7 +691,7 @@ read_regis(const user_t * user, int override)
 	strcat(line, "\1a\1g");
 	strcat(p, line);
     }
-    if (strlen(user->RGstate) > 0) {
+    if (strlen(state) > 0) {
 	strcpy(line, "");
 	if (!(user->hidden_info & H_COUNTRY))
 	    (void) sprintf(line, "\1f%s, ", state);
@@ -700,7 +700,7 @@ read_regis(const user_t * user, int override)
 	strcat(line, "\1a\1g");
 	strcat(p, line);
     }
-    if (strlen(user->RGcountry) > 0) {
+    if (strlen(country) > 0) {
 	strcpy(line, "");
 	if (!(user->hidden_info & H_COUNTRY))
 	    (void) sprintf(line, "\1f%s\n", country);
@@ -711,7 +711,7 @@ read_regis(const user_t * user, int override)
     } else
 	strcat(p, "\n");
 
-    if (strlen(user->RGphone) > 0) {
+    if (strlen(phone) > 0) {
 	strcpy(line, "");
 	if (!(user->hidden_info & H_PHONE))
 	    (void) sprintf(line, "\1fPhone:\1g %s  ", phone);
@@ -720,25 +720,21 @@ read_regis(const user_t * user, int override)
 	strcat(line, "\1a\1g");
 	strcat(p, line);
     }
-    if (strlen(user->RGemail) > 0) {
+    if (strlen(email) > 0) {
 	strcpy(line, "");
 	if (!(user->hidden_info & H_EMAIL)) {
-/*	    (void) sprintf(line, "\1fEmail:\1g %s\n", user->RGemail); */
 	    (void) sprintf(line, "\1fEmail:\1g %s\n", email);
         } else if (override == TRUE) {
-/*	    (void) sprintf(line, "Email:\1g (%s)\n", user->RGemail); */
 	    (void) sprintf(line, "Email:\1g (%s)\n", email);
         }
 	strcat(line, "\1a\1g");
 	strcat(p, line);
     }
-    if (strlen(user->RGurl) > 0) {
+    if (strlen(url) > 0) {
 	strcpy(line, "");
 	if (!(user->hidden_info & H_URL)) {
-/*	    (void) sprintf(line, "\1fURL  :\1g %s\n", user->RGurl); */
 	    (void) sprintf(line, "\1fURL  :\1g %s\n", url);
 	} else if (override == TRUE) {
-/*	    (void) sprintf(line, "URL  :\1g (%s)\n", user->RGurl); */
 	    (void) sprintf(line, "URL  :\1g (%s)\n", url);
         }
 	strcat(line, "\1a\1g");
