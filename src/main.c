@@ -583,7 +583,9 @@ main(int argc, char *argv[])
     writeuser(usersupp, 0);
 
     mono_remove_ghosts();
+
     mono_add_loggedin(usersupp);	/* put user to into sharedmem */
+
 #ifdef PORT
     mono_sql_onl_add(usersupp->usernum, "telnet", usersupp->doing);
 #else
