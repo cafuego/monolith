@@ -30,6 +30,7 @@ Peter Lieverdink <peter@creativecontingencies.com>
    - bbs config system
    - sql portion of message system
    - message rating system
+   - PHP/MySQL web interface
 
 Russell Crandall <russ@monolith.yawc.net>
   Responsible for:

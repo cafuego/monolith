@@ -1,0 +1,13 @@
+How to set up a web site to access the BBS.
+
+This file explains how you can set up a web site to access your BBS via
+any web browser. Before you start, you need to have a few things installed
+on your system:
+
+* Apache web server
+* MySQL database system
+* PHP (as web server module) with MySQL support.
+* mod_auth_mysql for Apache
+
+
+$Id$

@@ -50,4 +50,7 @@ bbs on the normal telnet port.
 * Add something to your startupfiles that removes etc/geheugensleutel
   after each reboot
 
+* Documentation on how to set up a web interface for your BBS can be found
+  in doc/README.web
+
 $Id$

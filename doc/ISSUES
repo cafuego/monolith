@@ -1,3 +1,4 @@
 "Issues" with the current code. 
 
 - myqsl is not detected by ./configure  -- FIXED
+- php/mod_php is not detected by ./configure
