@@ -383,10 +383,11 @@ function addimage( $text ) {
     // Image parser only knows basics tho!
     //
     $colour = "white";
-    $text = rawurlencode($text);
+    $imgtext = strtr($text, "/", "\\");
+    $imgtext = rawurlencode($imgtext);
 
     echo "<div align=\"center\">\n";
-    echo "<img align=\"center\" src=\"/bbs/image.phtml/Tahoma_B,18,$colour/$text/\" alt=\"[ image: ". rawurldecode($text) ." ]\">\n";
+    echo "<img align=\"center\" src=\"/bbs/image.phtml/Tahoma_B,18,$colour/$imgtext/\" alt=\"[ image: $text ]\">\n";
     echo "</div>\n";
 
 }
@@ -397,7 +398,8 @@ function addbutton( $text, $url ) {
     // Image parser only knows basics tho!
     //
     $colour = "yellow";
-    $imgtext = rawurlencode($text);
+    $imgtext = strtr($text, "/", "\\");
+    $imgtext = rawurlencode($imgtext);
 
     if($url != "")
     echo "<a href=\"$url\"><img src=\"/bbs/image.phtml/Arialblack_I,12,$colour/$imgtext/\" alt=\"[ button: $text ]\" border=\"0\"></a>\n";
@@ -409,7 +411,8 @@ function addbutton( $text, $url ) {
 
 function errorimage( $text ) {
 
-    $imgtext = rawurlencode($text);
+    $imgtext = strtr($text, "/", "\\");
+    $imgtext = rawurlencode($imgtext);
 
     echo "<div align=\"center\">\n";
     echo "<img align=\"center\" src=\"/bbs/image.phtml/Tahoma_B,18,red/$imgtext/\" alt=\"[ image: $text ]\">\n";

@@ -18,6 +18,7 @@
     // Then, get the string to display.
     //
     $text = rawurldecode($url_array[4]);
+    $text = strtr($text, "\\", "/");
 
     // Now, determine the image size we need. The image we are
     // going to create will have 2 pixels border on each side.
