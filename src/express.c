@@ -141,8 +141,13 @@ sendx(char *to, const char *send_string, char override)
     strcpy(xmessage.message, send_string);
     time(&xmessage.time);
 
-    if(IS_WEB) {
-        add_x_to_personal_xlog(SENDX, &xmessage, override);
+    if( IS_WEB ) {
+        cprintf("Trying to save... "); fflush(stdout);
+        Sendxs = (x_str *) xmalloc( sizeof(x_str) );
+        memcpy(Sendxs, &xmessage, sizeof(xmessage));
+	add_x_to_personal_xlog(SENDX, Sendxs, override);
+        xfree( Sendxs );
+        cprintf("ok!\n"); fflush(stdout);
         return;
     }
 
