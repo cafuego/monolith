@@ -1,0 +1,30 @@
+#!/bin/sh
+#
+# Extremely crude util for creating forum directories.
+# Creates dirs forum.0/ - forum.149/
+
+BBSDIR=`grep "define BBSDIR" ../include/sysconfig.h |awk '{print $3}'`
+FILEDIR=$BBSDIR/save/messages
+typeset -i n=0
+
+mkdir $BBSDIR/save
+mkdir $FILEDIR
+cd $FILEDIR
+rm -rf *
+
+echo Forum directories will be created in $FILEDIR
+
+echo -n Making forums
+
+while [ $n != 150 ]
+do
+    echo -n " $n"
+    FORUM=forum.$n
+    mkdir $FORUM
+    n=n+1
+done
+
+chown bbs.bbs . -R
+chmod go-rwx . -R
+echo "Your BBS now has 150 forums."
+cd -
