@@ -296,13 +296,7 @@ format_date(message_header_t * header, char *header_string)
 static char *
 format_info(message_header_t * header, char *header_string)
 {
-#define SQL_QL_LIST
-
-#ifdef SQL_QL_LIST
     userlist_t *p, *q;
-#else
-    int i;
-#endif
     room_t quad;
     char infostring[100], c;
 
@@ -336,7 +330,6 @@ format_info(message_header_t * header, char *header_string)
 	infostring[sizeof(infostring) - 1] = '\0';
     header_string = m_strcat(header_string, infostring);
 
-#ifdef SQL_QL_LIST
     if ((mono_sql_uf_list_hosts_by_forum(header->f_id, &p)) == -1)
 	header_string = m_strcat(header_string, "\1f\1r\nError loading hostlist in format_info()\n\1a");
     else {
@@ -359,21 +352,6 @@ format_info(message_header_t * header, char *header_string)
 	    dest_userlist(p);
 	}
     }
-#else
-    snprintf(infostring, sizeof(infostring) - 1,
-	     "\n\1f\1g%s%s", config.roomaide, "(s)\1w:\1r ");
-    header_string = m_strcat(header_string, infostring);
-    for (i = 0; i < NO_OF_QLS; i++) {
-	strcpy(infostring, "");
-	if (strlen(quad.qls[i]))
-	    sprintf(infostring, ", %s", quad.qls[i]);
-	else if (!i && !strlen(quad.qls[i]))
-	    strcpy(infostring, "Sysop");
-	if (strlen(infostring))
-	    header_string = m_strcat(header_string, infostring);
-    }
-
-#endif
 
     if ((snprintf(infostring, sizeof(infostring) - 1,
 		  "\n\1g%s Category\1w: \1y%s\1a\n\n",

@@ -10,7 +10,7 @@
 #include <signal.h>
 #include <stdio.h>
 #include <time.h>
-#include <unistd.h>	
+#include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
 #include <sys/file.h>
@@ -36,7 +36,7 @@
 #include "sql_message.h"
 #include "sql_userforum.h"
 #ifdef USE_RATING
-  #include "sql_rating.h"
+#include "sql_rating.h"
 #endif
 
 
@@ -63,9 +63,8 @@
 
 int need_rewrite;
 
-static void show_qls(void);
-static int print_hosts_simple( unsigned int forum_id );
-static void show_room_aides(void);  /* sql ql's version */
+static int print_hosts_simple(unsigned int forum_id);
+static void show_room_aides(void);	/* sql ql's version */
 
 static char *fish[] =
 {
@@ -79,10 +78,10 @@ static char *fish[] =
 /* WARNING! this is similar to read_quad() but not the same. This also
  * takes care of mail stuff */
 room_t
-readquad( unsigned int num)
+readquad(unsigned int num)
 {
     room_t scratch;
-    read_forum( num, &scratch );
+    read_forum(num, &scratch);
     if (num == 1) {
 	scratch.highest = usersupp->mailnum;
 	scratch.lowest = 0;
@@ -96,7 +95,7 @@ i_may_read_forum(const unsigned int forum)
 {
     room_t quad;
 
-    read_forum( forum, &quad );
+    read_forum(forum, &quad);
 
     if (forum == DOCKING_BAY_FORUM)
 	return 1;
@@ -108,12 +107,11 @@ i_may_read_forum(const unsigned int forum)
 	return 0;
 
     if (usersupp->priv & PRIV_TWIT) {
-	if (forum == CURSE_FORUM || forum == MAIL_FORUM) 
+	if (forum == CURSE_FORUM || forum == MAIL_FORUM)
 	    return 1;
 	else
 	    return 0;
     }
-
     if (usersupp->priv >= PRIV_WIZARD)
 	return 1;		/* emps can read anywhere */
 
@@ -139,21 +137,21 @@ i_may_read_forum(const unsigned int forum)
     else if ((forum == POLICY_FORUM) && !(usersupp->priv & PRIV_PREFERRED))
 	return 0;
 
-    else if ((forum == LOWER_ADMIN_FORUM) && 
-		!(usersupp->flags & (US_ROOMAIDE | US_GUIDE)))
+    else if ((forum == LOWER_ADMIN_FORUM) &&
+	     !(usersupp->flags & (US_ROOMAIDE | US_GUIDE)))
 	return 0;
 
     else if (!(quad.flags & QR_INUSE))
 	return 0;
 
-    else if (usersupp->generation[forum] == (-5))		/* kicked */
+    else if (usersupp->generation[forum] == (-5))	/* kicked */
 	return 0;
 
     else if (forum == CURSE_FORUM && (!(usersupp->priv & PRIV_TWIT)))
 	return 0;
 
-    else if ((quad.flags & QR_PRIVATE) && quad.generation != 
-		usersupp->generation[forum])
+    else if ((quad.flags & QR_PRIVATE) && quad.generation !=
+	     usersupp->generation[forum])
 	return 0;
 
     return 1;
@@ -164,9 +162,9 @@ i_may_write_forum(const unsigned int forum)
 {
     room_t quad;
 
-    read_forum( forum, &quad );
+    read_forum(forum, &quad);
 
-    if (forum >= MAXQUADS)  /* uhh-ohh */
+    if (forum >= MAXQUADS)	/* uhh-ohh */
 	return 0;
 
     /* only tech's and higher in the docking bay */
@@ -179,14 +177,14 @@ i_may_write_forum(const unsigned int forum)
 
     /* only sysops and ql's in readonly quad */
     if ((quad.flags & QR_READONLY) && (usersupp->priv < PRIV_SYSOP) &&
-/*	is_ql(who_am_i(NULL), quad) */
-        mono_sql_uf_is_host( usersupp->usernum, forum )
-    ) {
+/*      is_ql(who_am_i(NULL), quad) */
+	mono_sql_uf_is_host(usersupp->usernum, forum)
+	) {
 	return 0;
     } else {
 	return i_may_read_forum(forum);
     }
-}				
+}
 
 
 void
@@ -225,7 +223,7 @@ known_rooms_list(const user_t * user, int long_k_list)
     char room_type[8], line[200];
     room_t scratch;
     char *textPtr;
-    
+
 
 
     curr_line = 2;
@@ -398,7 +396,7 @@ do_kickout()
     unsigned int user_id;
     int not_done;
 
-    read_forum( curr_rm, &scratch );
+    read_forum(curr_rm, &scratch);
 
     cprintf("\n");
     if (!(scratch.flags & QR_PRIVATE))
@@ -431,17 +429,17 @@ do_kickout()
     log_sysop_action("kicked %s out of %s>.", the_user, quickroom.name);
 
     cprintf("\n\1f\1rYou now have to write a %s \1w(\1ryell\1w)\1r to the %s%s\1a\n", config.message, ADMINCOL, config.admin);
-    cprintf("\1f\1rabout the kickout: who, why, where, for how long.%s",		      "\n\n(Kickout Notification)\1a\n");
+    cprintf("\1f\1rabout the kickout: who, why, where, for how long.%s", "\n\n(Kickout Notification)\1a\n");
 
     not_done = enter_message(YELL_FORUM, EDIT_NORMAL, FORCED_BANNER, NULL);
 
     while (not_done) {
 	cprintf("\n\1rYou're required to enter this yell.\1a\n");
-        not_done = enter_message(YELL_FORUM, EDIT_NORMAL, FORCED_BANNER, NULL);
+	not_done = enter_message(YELL_FORUM, EDIT_NORMAL, FORCED_BANNER, NULL);
     }
     xfree(userP);
     return;
-    
+
 }
 
 /* zap all quadrants */
@@ -455,7 +453,7 @@ zap_all()
     cprintf("\1f\1gAre you \1rsure \1gyou want to zap (forget) \1rALL\1g %s? (y/N) \1c ", config.forum_pl);
     if (yesno_default(NO) == NO)
 	return;
-    
+
 
     for (i = 0; i < MAXQUADS; i++) {
 	if (i == 1)
@@ -515,50 +513,49 @@ killroom()
     if ((curr_rm < 11) && (usersupp->priv < PRIV_WIZARD)) {
 	cprintf("\1f\1gOnly a \1w%s\1g can delete this %s.\n", config.wizard, config.forum);
 	return;
-    } 
-
+    }
     if (curr_rm != CURSE_FORUM) {
-        cprintf("\n\1f\1rAre you \1w!SURE!\1r you want to Delete this %s??? (y/n)",
+	cprintf("\n\1f\1rAre you \1w!SURE!\1r you want to Delete this %s??? (y/n)",
 		config.forum);
-        if (yesno() == NO)
+	if (yesno() == NO)
 	    return;
 
 	quickroom.flags = 0;
-    	strcpy(temprmname, quickroom.name);
-    	strcpy(quickroom.name, "");
-    	if (quickroom.flags & QR_INUSE)
+	strcpy(temprmname, quickroom.name);
+	strcpy(quickroom.name, "");
+	if (quickroom.flags & QR_INUSE)
 	    quickroom.flags ^= QR_INUSE;
-    
+
 	for (i = 0; i < NO_OF_QLS; i++)
 	    strcpy(quickroom.qls[i], "");
 
-        cprintf("\1f\1rErase all %s in this %s%s", 
-		config.message_pl, config.forum, 
+	cprintf("\1f\1rErase all %s in this %s%s",
+		config.message_pl, config.forum,
 		"? \1w(\1rrecommended\1w) (\1rY\1w/\1rn\1w) \1c");
     } else
-        cprintf("\n\1f\1rAre you \1w!SURE!\1r you want Clean The Dungeon? (Y/n) ");
+	cprintf("\n\1f\1rAre you \1w!SURE!\1r you want Clean The Dungeon? (Y/n) ");
 
     if (yesno_default(YES) == YES) {
 	erase_all_messages(quickroom.highest);
 	quickroom.highest = quickroom.lowest = 0;
-        /*
-         * Trash posts from SQL table
-         */
-        cprintf("\1f\1rRemoving %s with forum_id \1y%u\1r from message table... \1a", config.message_pl, curr_rm);
-        if( (mono_sql_mes_erase_forum( curr_rm )) == 0)
-            cprintf("\1f\1gok.\1a\n");
-        else
-            cprintf("\1f\1rerror!\1a (logged)\n");
+	/*
+	 * Trash posts from SQL table
+	 */
+	cprintf("\1f\1rRemoving %s with forum_id \1y%u\1r from message table... \1a", config.message_pl, curr_rm);
+	if ((mono_sql_mes_erase_forum(curr_rm)) == 0)
+	    cprintf("\1f\1gok.\1a\n");
+	else
+	    cprintf("\1f\1rerror!\1a (logged)\n");
 
 #ifdef USE_RATING
-        /*
-         * Trash ratings from SQL table
-         */
-        cprintf("\1f\1rRemoving %s with forum_id \1y%u\1r from rating table... \1a", config.message_pl, curr_rm);
-        if( (mono_sql_rat_erase_forum( curr_rm )) == 0)
-            cprintf("\1f\1gok.\1a\n");
-        else
-            cprintf("\1f\1rerror!\1a(logged)\n");
+	/*
+	 * Trash ratings from SQL table
+	 */
+	cprintf("\1f\1rRemoving %s with forum_id \1y%u\1r from rating table... \1a", config.message_pl, curr_rm);
+	if ((mono_sql_rat_erase_forum(curr_rm)) == 0)
+	    cprintf("\1f\1gok.\1a\n");
+	else
+	    cprintf("\1f\1rerror!\1a(logged)\n");
 #endif
     } else if (curr_rm == CURSE_FORUM)
 	return;
@@ -571,7 +568,7 @@ killroom()
 	log_sysop_action("Cleaned the Dungeon.");
     else {
 	log_sysop_action("deleted %s: %d.%s>", config.forum, curr_rm, (strlen(temprmname)) ? temprmname : " (Quadrant had no name)");
-        _sql_qc_zero_forum_categories(curr_rm);
+	_sql_qc_zero_forum_categories(curr_rm);
     }
 
     curr_rm = 0;
@@ -633,7 +630,7 @@ create_room()
     if (command == '1') {	/* public room */
 	cprintf("\1rThe %s will be PUBLIC.\n\n", config.forum);
 	quickroom.flags &= ~QR_PRIVATE;
-    } else {	/* invite -- just private flag, guessname off */
+    } else {			/* invite -- just private flag, guessname off */
 	cprintf("\1rThe %s will be INVITE ONLY.\n\n", config.forum);
 	quickroom.flags |= QR_PRIVATE;
 	if (quickroom.generation >= 100)
@@ -641,7 +638,7 @@ create_room()
     }
 
     write_quad(quickroom, curr_rm);
-    gotocurr();	  /* takes care of self invite.. no matter, sysop anyways */
+    gotocurr();			/* takes care of self invite.. no matter, sysop anyways */
     log_sysop_action("created %s: %s> ", config.forum, quickroom.name);
 
     editroom();
@@ -655,7 +652,7 @@ erase_all_messages(long highest)
     long i;
     char filename[L_FILENAME + 1];
 
-    cprintf("\n\1f\1rErasing %s for %s \1y%d\1r from file system...", config.message_pl, config.forum, curr_rm );
+    cprintf("\n\1f\1rErasing %s for %s \1y%d\1r from file system...", config.message_pl, config.forum, curr_rm);
 
     for (i = 0; i <= highest; i++) {
 	message_header_filename(filename, curr_rm, i);
@@ -703,50 +700,37 @@ whoknows()
     room_t bing;
 
     bing = readquad(curr_rm);
-    i = mono_sql_uf_whoknows( curr_rm, &invited );
-    k = mono_sql_uf_kicked( curr_rm, &kicked );
+    i = mono_sql_uf_whoknows(curr_rm, &invited);
+    k = mono_sql_uf_kicked(curr_rm, &kicked);
 
-    switch(i) {
-        case -1:
-            cprintf("\n\1f\1rAn error occurred in the SQL query.\n");
-            break;
-        case 0:
-            cprintf("\n\1f\1rNo users currently know this %s.\n", config.forum);
-            break;
-        default:
-            cprintf("\n\1f\1g%d user%s can currently read \1y'%s'\1w:\n", i, (i==1) ? "" : "s", bing.name );
-            more_string(invited);
-            switch(k) {
-                case -1:
-                    cprintf("\n\1f\1rAn error occurred in the SQL query.\n");
-                    break;
-                case 0:
-                    cprintf("\n\1f\1rNo users have been kicked from this %s.\n", config.forum);
-                    break;
-                default:
-                    cprintf("\n\1f\1g%d user%s %s been kicked from \1y'%s'\1w:\n",
-                        k, (k == 1) ? "" : "s", (k == 1) ? "has": "have", bing.name );
-                    more_string(kicked);
-                    break;
-           }
+    switch (i) {
+	case -1:
+	    cprintf("\n\1f\1rAn error occurred in the SQL query.\n");
+	    break;
+	case 0:
+	    cprintf("\n\1f\1rNo users currently know this %s.\n", config.forum);
+	    break;
+	default:
+	    cprintf("\n\1f\1g%d user%s can currently read \1y'%s'\1w:\n", i, (i == 1) ? "" : "s", bing.name);
+	    more_string(invited);
+	    switch (k) {
+		case -1:
+		    cprintf("\n\1f\1rAn error occurred in the SQL query.\n");
+		    break;
+		case 0:
+		    cprintf("\n\1f\1rNo users have been kicked from this %s.\n", config.forum);
+		    break;
+		default:
+		    cprintf("\n\1f\1g%d user%s %s been kicked from \1y'%s'\1w:\n",
+			    k, (k == 1) ? "" : "s", (k == 1) ? "has" : "have", bing.name);
+		    more_string(kicked);
+		    break;
+	    }
     }
 
     xfree(invited);
     xfree(kicked);
     return;
-}
-
-
-/*
- * show roomaides with slot numbers for roomediting
- */
-void
-show_qls()
-{
-    int i;
-    for (i = 0; i < NO_OF_QLS; i++) {
-	cprintf("  \1f\1w[\1r%d\1w]\1r %s\1a\n", i + 1, quickroom.qls[i]);
-    }
 }
 
 /*************************************************
@@ -761,11 +745,11 @@ print_type()
     cprintf("\1f\1y    %s\1g, %s #%d.", quickroom.name, config.forum, curr_rm);
     cprintf("\n\n\1g\1f");
     cprintf("    Current highest %s number: \1c%ld\1g.\n",
-		config.message, quickroom.highest);
+	    config.message, quickroom.highest);
     cprintf("    Current lowest %s number: \1c%ld\1g.\n",
-		config.message, quickroom.lowest);
+	    config.message, quickroom.lowest);
     cprintf("    Maximum number of %s: \1c%d\1g.\n",
-		config.message_pl, quickroom.maxmsg);
+	    config.message_pl, quickroom.maxmsg);
     show_room_flags();
     cprintf("    ");
     show_room_aides();
@@ -876,7 +860,7 @@ editroom()
 	if (command == '\n' || command == '\r')
 	    done = TRUE;
 	else
-	    edit_room_field(&quickroom, curr_rm, command );
+	    edit_room_field(&quickroom, curr_rm, command);
     }				/* end while */
 
     if (need_rewrite == TRUE) {
@@ -898,19 +882,19 @@ editroom()
  */
 
 void
-edit_room_field(room_t * QRedit, unsigned int forum_id, int fieldnum )
+edit_room_field(room_t * QRedit, unsigned int forum_id, int fieldnum)
 {
-    int loop, slot, i, j = 0;
-    char *quad_name, cmd, name[L_USERNAME + 1];
+    int loop, i, j = 0;
+    char *quad_name;
 
     switch (fieldnum) {
 
 	case '1':
 	    cprintf("%s%s%s%s",
-		"\1rPlease keep length of name to under 36 characters.\n",
-	        "\1w                        ",
-		"|------------------------------------|\n",
-	    	"\1rEnter new quadrant name\1w: \1c");
+		  "\1rPlease keep length of name to under 36 characters.\n",
+		    "\1w                        ",
+		    "|------------------------------------|\n",
+		    "\1rEnter new quadrant name\1w: \1c");
 	    quad_name = get_name(3);
 	    if (strlen(quad_name) < 1) {
 		cprintf("\1gOk, name not changed.\n");
@@ -920,9 +904,9 @@ edit_room_field(room_t * QRedit, unsigned int forum_id, int fieldnum )
 		cprintf("\1rThat name is already taken, sorry.\n");
 	    } else {
 		log_sysop_action("changed %ss name into %s.",
-				QRedit->name, quad_name);
+				 QRedit->name, quad_name);
 		strcpy(QRedit->name, quad_name);
-                mono_sql_f_rename_forum( forum_id, quad_name );
+		mono_sql_f_rename_forum(forum_id, quad_name);
 		need_rewrite = TRUE;
 	    }
 	    break;
@@ -930,51 +914,9 @@ edit_room_field(room_t * QRedit, unsigned int forum_id, int fieldnum )
 /*--------------------------------------------------------------------*/
 
 	case '2':
-	    IFSYSOP {
-		show_qls();
-	    }
-	    else {
-		cprintf("\1rYou're not allowed to do that.\n");
-		break;
-	    }
-
-	    cprintf("\n\1f\1gSlot to edit \1w(<\1rEnter\1w> \1gto quit\1w): ");
-	    cmd = get_single("12345 \rq\n");
-
-	    if (cmd == '\r' || cmd == '\n' || cmd == ' ' || cmd == 'q')
-		break;
-
-	    slot = cmd - '1';	/* coz ql[0] is slot 1 ... duh */
-	    cprintf("\1gUsername\1w: \1c");
-	    strcpy(name, get_name(2));
-
-	/* empty field for QL[slot] -> remove QL */
-
-	    if (strlen(name) == 0) {
-		if (mono_sql_u_check_user(QRedit->qls[slot]) == FALSE)
-		    cprintf("\1rRemoving non-existant user as QL.\n");
-		else if (change_QL(curr_rm, QRedit->qls[slot], -1) == -1) {
-		    cprintf("\1rCould not remove %s as QL.\n", 
-				QRedit->qls[slot]);
-		    break;
-		}
-		strcpy(QRedit->qls[slot], "");
-		need_rewrite = TRUE;
-		break;
-	    }
-	    if (mono_sql_u_check_user(name) == FALSE) {
-		cprintf("\1rNo such user.\n");
-		break;
-	    }
-	    if (change_QL(curr_rm, name, 1) == -1) {
-		cprintf("\1rCould not set %s as QL in #%d.\n", 
-			name, curr_rm);
-		break;
-	    }
-	    strcpy(QRedit->qls[slot], name);
-	    show_qls();
-	    need_rewrite = TRUE;
+	    cprintf("\1rFunctionality has been removed, please use <a><r><h>\n");
 	    break;
+
 
 /*-------------------------------------------------------------------*/
 
@@ -1072,7 +1014,7 @@ edit_room_field(room_t * QRedit, unsigned int forum_id, int fieldnum )
 	case 'a':
 	case 'A':
 	    cprintf("\1rEnter the new maximum number of %s\1w(\1r%d\1w): \1c",
-			config.message_pl, QRedit->maxmsg);
+		    config.message_pl, QRedit->maxmsg);
 	    j = qc_get_pos_int('\0', 4);
 	    if (j < 10) {
 		cprintf("\1rDon't be daft! 10 %s is the minimum.\n",
@@ -1156,7 +1098,8 @@ edit_room_field(room_t * QRedit, unsigned int forum_id, int fieldnum )
 void
 look_into_quickroom(int degree)
 {
-    int round, total = 0, blank, a, z;
+    int round, total = 0, blank, a, ret;
+    userlist_t *p, *q;
     room_t scratch;
     user_t *tmpuser;
     time_t curtime;
@@ -1216,19 +1159,29 @@ look_into_quickroom(int degree)
 	    for (a = 0; a < blank; a++)
 		putchar(' ');
 
-	    for (z = 0; z < NO_OF_QLS; z++) {
-		if (strlen(scratch.qls[z]) > 0)
-		    cprintf("\1c %-20s \1g", scratch.qls[z]);
+	    /* do qls */
+	    ret = mono_sql_uf_list_hosts_by_forum(round, &p);
 
-		if (degree == 1) {
-/*                  if (mono_sql_u_check_user(scratch.qls[z]) != 1)
- * cprintf("\1r[ABSENT]"); */
-		} else {
-		    tmpuser = readuser(scratch.qls[z]);
-		    cprintf("%2ld days", ((curtime - tmpuser->laston_to) / 60 / 60 / 24));
-		    xfree(tmpuser);
+	    if (ret == -1) {
+		cprintf("\1f\1r\nError getting hosts.\n");
+	    } else {
+		q = p;
+		while (q) {
+		    cprintf("\1c %-20s \1g", q->name);
+		    if (degree == 1) {
+			tmpuser = readuser(q->name);
+			if (tmpuser == NULL) {
+			    cprintf("[Error]");
+			    break;
+			}
+			cprintf("%2ld days", ((curtime - tmpuser->laston_to) / 60 / 60 / 24));
+			xfree(tmpuser);
+		    }
+		    q = q->next;
 		}
+		dest_userlist(p);
 	    }
+
 	    cprintf("\n");
 	    if (increment(0) == 1)
 		break;
@@ -1315,8 +1268,7 @@ gotonext()
 	    usergoto(curr_rm, old_rm, 1);
 	    return;
 	}
-    } 
-
+    }
     if (last_skipped_rm > -1)	/* only count if we've skipped something */
 	for (i = 0; i < MAXQUADS; i++)
 	    if (skipping[i] == 1)
@@ -1345,7 +1297,7 @@ goto_next_skipped(const int num_skipped)
     for (i = 0; i < MAXQUADS; i++)
 	if (skipping[i] == 1) {
 	    if (num_skipped == 1) {
-		last_skipped_rm = -1; /* reset skip marker to "none skipped" */
+		last_skipped_rm = -1;	/* reset skip marker to "none skipped" */
 		return i;
 	    }
 	    if ((i <= last_skipped_rm) && (++skip_ctr < num_skipped))
@@ -1353,7 +1305,7 @@ goto_next_skipped(const int num_skipped)
 	    if ((skip_ctr < num_skipped) || (i != last_skipped_rm))
 		break;
 	    else {		/* "wrap" loop */
-		i = skip_ctr = last_skipped_rm = 0;  /* reset loop & counter */
+		i = skip_ctr = last_skipped_rm = 0;	/* reset loop & counter */
 		continue;	/* stuff, loop will then stop at lowest skipped */
 	    }
 	}
@@ -1437,14 +1389,14 @@ usergoto(int new_rm, int old_rm, int destructive_jump)
 	if (here.highest <= usersupp->lastseen[curr_rm]) {
 	    skipping[curr_rm] = 0;
 	    usersupp->lastseen[curr_rm] = here.highest;
-            mono_sql_ut_update_lastseen( usersupp->usernum, curr_rm, here.highest );
+	    mono_sql_ut_update_lastseen(usersupp->usernum, curr_rm, here.highest);
 	    display_short_prompt();
 	    cprintf("\1f\1w(\1g%ld %s\1w)\1a\n", here.highest - here.lowest, config.message_pl);
 	} else {
 	    if (usersupp->lastseen[curr_rm] < here.lowest) {
 		usersupp->lastseen[curr_rm] = here.lowest;
-                mono_sql_ut_update_lastseen( usersupp->usernum, curr_rm, here.lowest );
-            }
+		mono_sql_ut_update_lastseen(usersupp->usernum, curr_rm, here.lowest);
+	    }
 	    if (curr_rm && !skipping[curr_rm])	/* looks ugly at Docking Bay, don't bother */
 		cprintf("\1f\1gRead next %s with unread %s.\n", config.forum, config.message_pl);
 	    display_short_prompt();
@@ -1543,7 +1495,7 @@ check_messages(room_t room, int which)
 }
 
 int
-is_zapped(int room, const room_t *strukt )
+is_zapped(int room, const room_t * strukt)
 {
     return (usersupp->forget[room] == strukt->generation);
 }
@@ -1559,7 +1511,7 @@ void
 mark_as_read(int room)
 {
     usersupp->lastseen[room] = readquad(room).highest;
-    mono_sql_ut_update_lastseen( usersupp->usernum, room, usersupp->lastseen[room] );
+    mono_sql_ut_update_lastseen(usersupp->usernum, room, usersupp->lastseen[room]);
     return;
 }
 
@@ -1605,7 +1557,7 @@ print_userlist_list(userlist_t * p)
 }
 
 void
-print_forumlist_list(forumlist_t *p)
+print_forumlist_list(forumlist_t * p)
 {
     char line[100], *q;
 
@@ -1616,7 +1568,7 @@ print_forumlist_list(forumlist_t *p)
     while (p) {
 	sprintf(line, "\1w%3u.\1g%s\n", p->forum_id, p->name);
 	p = p->next;
-        strcat(q, line);
+	strcat(q, line);
     }
 
     more_string(q);
@@ -1625,27 +1577,27 @@ print_forumlist_list(forumlist_t *p)
 }
 
 int
-print_hosts_simple( unsigned int forum_id )
+print_hosts_simple(unsigned int forum_id)
 {
     userlist_t *p;
     int ret;
 
     ret = mono_sql_uf_list_hosts_by_forum(forum_id, &p);
-    
-    if ( ret == -1 ) {
-       cprintf( "Error, could not get list of hosts.\n" );
-       return -1;
-    }
 
-    cprintf( "\1g\1f" );
+    if (ret == -1) {
+	cprintf("Error, could not get list of hosts.\n");
+	return -1;
+    }
+    cprintf("\1g\1f");
 
     while (p) {
-        cprintf( "%s", p->name);
-        if ( p->next ) cprintf( ", " );
+	cprintf("%s", p->name);
+	if (p->next)
+	    cprintf(", ");
 	p = p->next;
     }
 
-    cprintf( "\1n" );
+    cprintf("\1n");
     dest_userlist(p);
     return 0;
 }
@@ -1678,10 +1630,10 @@ void
 edithosts_menu()
 {
 
-static void menu_hostedit_add(const unsigned int, const long, void *);
-static void menu_hostedit_remove(const unsigned int, const long, void *);
-static void menu_hostedit_list(const unsigned int, const long, void *);
-static void menu_hostedit_kill(const unsigned int, const long, void *);
+    static void menu_hostedit_add(const unsigned int, const long, void *);
+    static void menu_hostedit_remove(const unsigned int, const long, void *);
+    static void menu_hostedit_list(const unsigned int, const long, void *);
+    static void menu_hostedit_kill(const unsigned int, const long, void *);
     MENU_DECLARE;
 
     MENU_INIT;
@@ -1692,7 +1644,7 @@ static void menu_hostedit_kill(const unsigned int, const long, void *);
     MENU_ADDITEM(menu_hostedit_list, 1, 0, NULL, "ti", "List hosts", "l");
     MENU_ADDITEM(menu_hostedit_kill, 1, 0, NULL, "ti", "Remove all hosts", "k");
 
-        MENU_PROCESS_INTERNALS;
+    MENU_PROCESS_INTERNALS;
 
     for (;;) {
 	MENU_DISPLAY(2);
@@ -1701,7 +1653,7 @@ static void menu_hostedit_kill(const unsigned int, const long, void *);
 	    break;
 
     }
-	MENU_DESTROY;
+    MENU_DESTROY;
     return;
 }
 
@@ -1717,21 +1669,19 @@ menu_hostedit_add(const unsigned int ZZ, const long ZZZ, void *ZZZZ)
     name = get_name(1);
 
     if (strlen(name) == 0)
-        return; 
+	return;
 
     if (mono_cached_sql_u_name2id(name, &id2) == -1) {
-        cprintf("\1f\1rNo such user.\n");
-        return; 
+	cprintf("\1f\1rNo such user.\n");
+	return;
     }
-
-    if (mono_sql_uf_is_host( id2, curr_rm ) == TRUE) {
-        cprintf("\1f\1y%s \1gis already a host in #%d.\n", name, curr_rm );
-        return; 
+    if (mono_sql_uf_is_host(id2, curr_rm) == TRUE) {
+	cprintf("\1f\1y%s \1gis already a host in #%d.\n", name, curr_rm);
+	return;
     }
+    mono_sql_uf_add_host(id2, curr_rm);
 
-    mono_sql_uf_add_host( id2, curr_rm );
-
-    cprintf("\1f\1y%s \1ghas been added as a host to #%d.\n", name, curr_rm );
+    cprintf("\1f\1y%s \1ghas been added as a host to #%d.\n", name, curr_rm);
 
     return;
 }
@@ -1748,16 +1698,16 @@ menu_hostedit_remove(const unsigned int ZZ, const long ZZZ, void *ZZZZ)
     name = get_name(5);
 
     if (strlen(name) == 0)
-        return;
+	return;
 
     mono_cached_sql_u_name2id(name, &id2);
 
-    if (mono_sql_uf_is_host( id2, curr_rm ) == FALSE) {
-        cprintf("\1f\1y%s \1gis not a host in forum #%d.\n", name, curr_rm );
-        return;
+    if (mono_sql_uf_is_host(id2, curr_rm) == FALSE) {
+	cprintf("\1f\1y%s \1gis not a host in forum #%d.\n", name, curr_rm);
+	return;
     }
-    mono_sql_uf_remove_host( id2, curr_rm );
-    cprintf("\1f\1y%s \1ghas been removed as a host from forum #%d.\n", name, curr_rm );
+    mono_sql_uf_remove_host(id2, curr_rm);
+    cprintf("\1f\1y%s \1ghas been removed as a host from forum #%d.\n", name, curr_rm);
     return;
 
     return;
@@ -1788,8 +1738,8 @@ void
 show_room_aides()
 {
     cprintf("\1f\1g%s\1w: ", config.roomaide);
-    print_hosts_simple( curr_rm);
-    cprintf( "\n" );
+    print_hosts_simple(curr_rm);
+    cprintf("\n");
     cprintf("\1f\1g%s category\1w: \1y%s\1g.\n", config.forum, quickroom.category);
 }
 
@@ -1813,7 +1763,6 @@ we_can_post(const unsigned int forum)
 	    }
 	}
     }
-
     if (!i_may_write_forum(forum)) {
 	cprintf("\n\1f\1gYou are not allowed to post here.\1a\n");
 	return FALSE;
@@ -1834,14 +1783,14 @@ unread_room()
     room_t scratch;
 
     for (i = 0; i < MAXQUADS; i++) {
-        scratch = readquad(i);
-        if (i_may_read_forum(i)
-            && (skipping[i] == 0)
-            && (!is_zapped(i, &scratch))) {
-            if (check_messages(scratch, i) > 0) {
-                return i;
-            }
-        }
+	scratch = readquad(i);
+	if (i_may_read_forum(i)
+	    && (skipping[i] == 0)
+	    && (!is_zapped(i, &scratch))) {
+	    if (check_messages(scratch, i) > 0) {
+		return i;
+	    }
+	}
     }
     return 0;
 }
