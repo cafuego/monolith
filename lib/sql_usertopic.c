@@ -33,6 +33,11 @@ mono_sql_ut_update_lastseen( unsigned int user_id, unsigned int forum_id,
     int ret;
     MYSQL_RES *res;
 
+    if ( mono_sql_ut_query_lastseen( user_id, forum_id, topic_id, &ret ) == -1 ) {
+                if ( forum_id < MAXQUADS )
+                 mono_sql_ut_add_entry( user_id, forum_id, topic_id );
+      }
+
     /* make this into an sql query that also checks if room & user exist */
     ret = mono_sql_query(&res,
 			 "UPDATE " UT_TABLE " SET lastseen=%u "
