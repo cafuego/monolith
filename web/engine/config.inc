@@ -22,10 +22,10 @@ function config_account( $username ) {
     echo "<p align=\"left\">Select which parts of your address information you want to show to all users.\n";
     echo "  Simply check the box for each item you want to be <b>visible</b> and click on <b>Update</b>.\n";
 
-    echo "<p align=\"left\">\n";
     echo "<form action=\"/bbs/handler.phtml\" method=\"post\">\n";
     echo "  <input type=\"hidden\" name=\"handler\" value=\"h\">\n";
     echo "  <input type=\"hidden\" name=\"username\" value=\"$username\">\n";
+    echo "  <p align=\"left\">\n";
 
     if( strstr( $user->hiddeninfo, "name" ))
         echo "<br><input type=\"checkbox\" name=\"name\"> Real name: $user->realname\n";
