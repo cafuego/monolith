@@ -105,7 +105,7 @@ sysop_menu()
 
             case 'A':
 		/* michel test */
-		mono_sql_ut_update_lastseen( usersupp->usernum, curr_rm, 0, 0 );
+		mono_sql_ut_update_lastseen( usersupp->usernum, curr_rm, 0 );
  		break;
 
 
