@@ -46,6 +46,35 @@ function express_message($username, $recipient) {
 
     print "<h3 align=\"center\">Sending an eXpress message to $recipient</h3>\n";
     print "<h3 align=\"center\">.. but not quite yet. We're working on it, though.</h3>\n";
+    if($username != "Cafuego")
+    return;
+
+    // Show message.
+    //
+    PRINT "<div style=\"margin-left: 150;\">\n";
+
+    // Reply form.
+    //
+    PRINT "<form action=\"/bbs/sendx.phtml\" method=\"post\">\n";
+
+    // Hidden but required info for reply.
+    //
+    PRINT "<input type=\"hidden\" name=\"sender\" value=\"\$usernum\">\n";
+    PRINT "<input type=\"hidden\" name=\"recipient\" value=\"\$usernum\">\n";
+
+    // Show formatted header.
+    //
+    $now = strftime("%H:%M", time());
+    PRINT "<p align=\"left\"><font color=\"#00CC00\">From</font> <font color=\"#ffff00\">$username</font> to <font color=\"#ffff00\">$recp_name</font> <font color=\"#00cc00\">at</font> (<font color=\"#00cc00\">$now</font>)<br>\n";
+    PRINT "<textarea rows=\"6\" cols=\"70\" name=\"message\" style=\"font: 10pt Helvetica\">Enter your message here.</textarea>\n";
+
+    // Form buttons.
+    //
+    PRINT "<input type=\"submit\" value=\"Send X!\">\n";
+    PRINT "<input type=\"reset\" value=\"Clear\">\n";
+
+    PRINT "</form>\n";
+    PRINT "</div>\n";
 
 }
 
