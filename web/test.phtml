@@ -16,7 +16,7 @@
         exit;
     }
 
-    if($userfile) {
+    if($userfile == null || $userfile == "") {
         echo "<form enctype=\"multipart/form-data\" action=\"/bbs/test.phtml\" method=\"post\"\n";
         echo "  <input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"10000\">\n";
         echo "  Send this file: <input name=\"userfile\" type=\"file\">\n";
