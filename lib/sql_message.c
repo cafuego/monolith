@@ -127,17 +127,12 @@ mono_sql_mes_retrieve(unsigned int id, unsigned int forum, message_t *data)
     message_t *message;
     int ret = 0;
 
-    ret = mono_sql_query(&res,
-        "SELECT m.message_id,f.name AS forum,t.name AS topic,m.flag AS flag," \
-        "UNIX_TIMESTAMP(m.date) AS date,m.author AS author,m.alias AS alias," \
-        "m.subject AS subject,m.content AS content,m.deleted AS deleted," \
-        "AVG(r.score) AS score,m.r_message_id AS r_message_id," \
-        "fr.name AS r_forum,tr.name AS r_topic,m.r_flag AS r_flag," \
-        "UNIX_TIMESTAMP(m.r_date) AS r_date,ur.username,m.r_alias AS r_alias," \
-        "m.r_subject AS r_subject,m.m_message_id AS m_message_id," \
-        "fm.name AS m_forum,tm.name AS m_topic,m.m_flag AS m_flag," \
-        "UNIX_TIMESTAMP(m.m_date) AS m_date,um.username AS m_author," \
-        "m.m_reason AS m_reason FROM " M_TABLE " AS m " \
+    ret = mono_sql_query(&res, "SELECT m.message_id,m.forum_id,m.topic_id," \
+        "m.author,u.username,m.alias,m.subject,m.content,UNIX_TIMESTAMP(m.date)," \
+        "AVG(r.score),m.flag,f.name,t.name,m.r_message_id,m.r_forum_id,m.r_topic_id," \
+        "m.r_author,ur.username,m.r_alias,fr.name,tr.name,m.m_message_id," \
+        "m.m_forum_id,m.m_topic_id,m.m_author,um.username,UNIX_TIMESTAMP(m.m_date)," \
+        "fm.name,tm.name,m.m_reason FROM " M_TABLE " AS m " \
         "LEFT JOIN " U_TABLE " AS u ON u.id=m.author " \
         "LEFT JOIN " U_TABLE " AS ur ON ur.id=m.r_author " \
         "LEFT JOIN " U_TABLE " AS um ON um.id=m.m_author " \
@@ -148,8 +143,7 @@ mono_sql_mes_retrieve(unsigned int id, unsigned int forum, message_t *data)
         "LEFT JOIN " T_TABLE " AS tr ON tr.topic_id=m.r_topic_id " \
         "LEFT JOIN " T_TABLE " AS tm ON tm.topic_id=m.m_topic_id" \
         "," R_TABLE " AS r WHERE m.message_id IN(r.message_id) " \
-        "AND m.forum_id=%u AND m.message_id=%u GROUP BY m.message_id",
-            forum, id );
+        "AND m.forum_id=%u AND m.message_id=%u", forum, id );
 
 #ifdef OLD_SHIT
     ret = mono_sql_query(&res, "SELECT message_id,topic_id,m.forum_id,author,alias,subject,UNIX_TIMESTAMP(date),type,priv,deleted FROM " M_TABLE " WHERE m.message_id=%u AND m.forum_id=%u", id, forum);
