@@ -46,7 +46,7 @@ mono_sql_web_send_x(unsigned int sender, unsigned int recipient, const char *mes
 
     ret = mono_sql_query(&res, "INSERT INTO " WEB_X_TABLE 
      " (sender,recipient,message,date,status,i_recipient,i_sender) VALUES (%u,%u,'%s',NOW(),'unread','web','%s')"
-     , sender,recipient,message, interface);
+     , sender,recipient,fmt_message, interface);
 
     if (ret == -1) {
         xfree(fmt_message);

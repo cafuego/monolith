@@ -210,8 +210,8 @@ escape_string(const char *old_string, char **new_string)
     for (i = 0, j = 0; i < old_string_len; i++) {
 	switch (old_string[i]) {
 	    case '"':
-	    case '\\':
 	    case '\'':
+	    case '\\':
 		ns[j] = '\\';
 		j++;
 	}

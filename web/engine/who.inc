@@ -46,7 +46,7 @@ function show_wholist($username,$location) {
             $url_user = rawurlencode($user);
             $url_user = strtr($url_user, " ", "+");
 
-            if($doing == "(null)")
+            if($doing == "(null)" || $doing == NULL)
                 $doing == "";
 
             print "<tr>\n";
