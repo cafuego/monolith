@@ -99,11 +99,9 @@ purge_users()
 		||
 		(tmpuser->priv & PRIV_DELETED)	/* or delmarked */
 		||
-		(absenttime >= 90 * 24 * 60 * 60))	/* 90 days */
+		(absenttime >= 120 * 24 * 60 * 60))	/* 90 days */
 	       &&
 	       ((tmpuser->flags & US_PERM) == 0)	/* not US_PERM */
-	       &&
-	       (tmpuser->timescalled < 1000)
 	    ) {
 	    del_user(tmpuser->username);
 	    printf("deleted %s\n", tmpuser->username);
