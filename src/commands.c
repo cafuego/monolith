@@ -3,8 +3,7 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
-
-/* define SQL_CONFIGS */
+#include <build-defs.h>
 
 #define HAVE_FUN_C 1
 

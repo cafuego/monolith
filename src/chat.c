@@ -19,10 +19,19 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+#include <build-defs.h>
 
 #include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
+
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#include <locale.h>
+#define _(String) gettext (String)
+#else
+#define _(String) (String)
+#endif
 
 #include "monolith.h"
 #include "ext.h"
@@ -35,13 +44,6 @@
 #include "routines.h"
 #include "routines2.h"
 
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#include <locale.h>
-#define _(String) gettext (String)
-#else
-#define _(String) (String)
-#endif
 
 int
 is_chat_subscribed(int chat, const char *channel)
