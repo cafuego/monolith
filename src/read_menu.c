@@ -1224,7 +1224,8 @@ display_short_prompt(void)
     } else {
 	cprintf("\1a\n\1f\1w%d.\1%c%s\1w> ", curr_rm,
 		(quad.flags & QR_PRIVATE) ? 'r' :
-		(quad.flags & (QR_ANONONLY | QR_ANON2)) ? 'p' : 'y',
+		(quad.flags & (QR_ANONONLY | QR_ANON2)) ? 'p' :
+		(quad.flags & QR_GUESSNAME) ? 'c' : 'y',
 		quad.name);
     }
     fflush(stdout);

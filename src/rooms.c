@@ -154,6 +154,10 @@ i_may_read_forum(const unsigned int forum)
 	     usersupp->generation[forum])
 	return 0;
 
+    else if ((quad.flags & QR_GUESSNAME) && quad.generation !=
+	     usersupp->generation[forum])
+	return 0;
+
     return 1;
 }
 
@@ -260,6 +264,8 @@ known_rooms_list(const user_t * user, int long_k_list)
 		    sprintf(room_type, "%sA ", ANON_COL);
 		} else if (scratch.flags & QR_PRIVATE) {
 		    sprintf(room_type, " %sI", PRIVATE_COL);
+		} else if (scratch.flags & QR_GUESSNAME) {
+		    sprintf(room_type, " %sG", GUESSNAME_COL);
 		} else {
 		    sprintf(room_type, "  ");
 		}
@@ -765,6 +771,9 @@ show_room_flags()
     if (quickroom.flags & QR_PRIVATE)
 	cprintf(" \1rprivate");
 
+    if (quickroom.flags & QR_GUESSNAME )
+	cprintf(" %sguessname", GUESSNAME_COL );
+
     cprintf(" \1g%s.\n", config.forum);
 
     if (quickroom.flags & QR_READONLY)
@@ -902,8 +911,12 @@ edit_room_field(room_t * QRedit, unsigned int forum_id, int fieldnum)
 				 QRedit->name, quad_name);
 		strcpy(QRedit->name, quad_name);
 		mono_sql_f_rename_forum(forum_id, quad_name);
+		/* if we rename a guessname, up the generation no */
+	        if ( QRedit->flags & QR_GUESSNAME ) 
+		    QRedit->generation++;
 		need_rewrite = TRUE;
 	    }
+
 	    break;
 
 /*-------------------------------------------------------------------*/
