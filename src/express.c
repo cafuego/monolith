@@ -749,19 +749,21 @@ check_x_permissions(const char *x_recip_name, const int X_PARAM, char override)
 		    cprintf("\1f\1rNo such %s.\1a\n", config.user);
                     flush_input();
                     override = OR_NO_PERMS;
-                    break;
+                    return override;
                 }
                 if( mono_sql_onl_check_user(x_recip_name) == FALSE ) {
 		    cprintf("\1f\1rThat %s is not online via the web.\1a\n", config.user);
                     flush_input();
                     override = OR_NO_PERMS;
-                    break;
+                    return override;
                 }
+                override = OR_WEB;
+                return override;
             }
+
 /* read the btmp and get the destination record */
-            if(!WEB)
-	        x_recip_btmp = mono_read_btmp(x_recip_name);
-	    if (x_recip_btmp == NULL || (!WEB)) {
+            x_recip_btmp = mono_read_btmp(x_recip_name);
+	    if (x_recip_btmp == NULL) {
 		cprintf("%s", (check_user(x_recip_name) == TRUE) ?
 		 "\1f\1rThat user is not online.\1a\n" : "\1f\1rNo such user.\1a\n");
 		flush_input();
