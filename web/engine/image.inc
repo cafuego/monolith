@@ -2,7 +2,7 @@
 
 function pagetitle( $text, $fontfile ) {
 
-    Header( "Content-type: image/gif" );
+    // Header( "Content-type: image/gif" );
     $im = imagecreate( 500, 30 );
     $black = ImageColorAllocate( $im, 0, 0, 0 );
     $white = ImageColorAllocate( $im, 255, 255, 255 );
