@@ -18,11 +18,18 @@ extern int mono_sql_uf_is_kicked(unsigned int , unsigned int );
 extern int mono_sql_uf_add_kicked(unsigned int , unsigned int );
 extern int mono_sql_uf_remove_kicked(unsigned int , unsigned int );
 extern int mono_sql_uf_new_user(unsigned int);
+
 extern int dest_userlist(userlist_t * list);
+extern int add_to_userlist(userlist_t element, userlist_t ** list);
+
 extern int dest_forumlist(forumlist_t * list);
+extern int add_to_forumlist(forumlist_t element, forumlist_t ** list);
 
 extern int mono_sql_uf_unread_room(unsigned int usernum);
 extern int mono_sql_uf_update_lastseen(unsigned int usernum, unsigned int forum);
 extern int mono_sql_uf_get_unread(unsigned int forum, unsigned int lastseen);
+
+extern int mono_sql_uf_is_a_host(unsigned int usernumber);
+
 
 #define UF_TABLE "userforum"
