@@ -181,27 +181,36 @@ escape_string(const char *old_string, char **new_string)
     size_t old_string_len;
     char *ns;
 
-
     if (!old_string)
 	return -1;
 
     old_string_len = strlen(old_string);
-    if (old_string_len < 1)
-	return -1;
 
-    ns = (char *) xmalloc(old_string_len * 2);
+    if (old_string_len < 1) { /* empty string */
+        ns = (char *) xmalloc( sizeof( char ) );
+    } else {
+        ns = (char *) xmalloc(old_string_len * 2 * sizeof( char ) );
+    }
 
     if (ns == NULL)
 	return -1;
 
     for (i = 0, j = 0; i < old_string_len; i++) {
 	switch (old_string[i]) {
-	    case ',':
+/*	    case ',': you don't need to escape this, according ot he manual */
 	    case '"':
 	    case '\'':
 	    case '\\':
 		ns[j] = '\\';
 		j++;
+		break;
+/* this is only for binary data! 
+	    case 0:
+		ns[j] = '\\';
+		j++;
+		ns[j] = '0';
+		i++;j++;
+*/ 
 	}
 	ns[j] = old_string[i];
 	j++;
