@@ -42,11 +42,14 @@
 #include "sql_goto.h"
 #include "routines2.h"
 
+static char[] munchies = { "cookie", "petit four", "biscuit", "waffle" };
+
 void
 random_goto()
 {
 
     char *thegoto, april_fools[65];
+    int food = 0;
   
     if((rand() % 10) == 1) {
 	thegoto = mono_sql_random_goto();
@@ -57,9 +60,10 @@ random_goto()
 	xfree(thegoto);
 
     } else if ((rand() % 1000) == 666 && usersupp->timescalled > 99) { 
+        food = rand() % 4;
         strcpy(april_fools, "");
-        while ( strstr(april_fools, "cookie") == NULL) {
-            cprintf("\n\1w666.\1yCthulhu\1w> \1rGimme a cookie! \1w");
+        while ( strstr(april_fools, munchies[food]) == NULL) {
+            cprintf("\n\1w666.\1yCthulhu\1w> \1rGimme a %s! \1w", munchies[food]);
             getline(april_fools, 64, 1);
         }
         if((strstr(april_fools, "no ") == NULL) &&
