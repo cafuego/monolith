@@ -388,7 +388,7 @@ short_prompt(void)
 
             case '^':		/* <ctrl-w> */
 	        nox = 1;
-	        cprintf("\1f\1gSend Web %s %s.\1a\n", config.express, config.x_message);
+	        cprintf("\1f\1gSend \1pWeb \1g%s %s.\1a\n", config.express, config.x_message);
                 express(-4);
                 break;
                 

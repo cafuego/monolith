@@ -224,7 +224,7 @@ function list_x_messages($username) {
         if(number == 1)
             print "<h3 align=\"center\">You have $number eXpress message</h3>\n<p> </p>\n";
         else
-            print "<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\" align=\"center\" bgcolor=\"#333333\">\n";
+            print "<table border=\"0\" cellpadding=\"2\" cellspacing=\"4\" align=\"center\">\n";
         $i = 0;
         while ($i < $number) {
 
@@ -239,7 +239,7 @@ function list_x_messages($username) {
             $bing = MYSQL_QUERY("UPDATE webx SET status='read' WHERE id=$id");
 
             print "<tr>\n";
-            print "  <td align=\"left\">\n";
+            print "  <td align=\"left\" bgcolor=\"#333333\">\n";
             print "    <p align=\"left\"><font color=\"#00cc00\">eXpress Message from <a href=\"/bbs/index.phtml/x/$user/$i_sender\">$user@$i_sender</a> to <font color=\"#ffff00\">$username@web</font> at </font>(<font color=\"#00cc00\">$date</font>)\n";
             print "    <font color=\"#00cccc\"><pre>$message</pre></font>\n";
             print "  </td>\n";
