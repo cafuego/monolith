@@ -20,6 +20,14 @@
     $text = rawurldecode($url_array[4]);
     $text = strtr($text, "\\", "/");
 
+    // Fuck Xiao Zhong!!!
+    //
+    if( $size > 48 || $size < 4 ) {
+        $text = "You are a bad person and we don't like you.";
+        $size = 24;
+        $color = "green";
+    }
+
     // Now, determine the image size we need. The image we are
     // going to create will have 2 pixels border on each side.
     //
