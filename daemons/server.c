@@ -67,7 +67,7 @@ main(int argc, char **argv)
     mono_setuid("guest");
 
     printf("\r");
-    printf("Welcome to %s. (%s)\n", BBSNAME, VERSION);
+    printf("Welcome to %s. (%s)\n", BBSNAME, BBS_VERSION);
 
     fflush(stdout);
 
