@@ -728,6 +728,10 @@ check_x_permissions(const char *x_recip_name, const int X_PARAM, char override)
 		}
 /* recipient is x-enemy ? */
 	    if (is_vnemy_to || is_my_vnemy) {
+		if (strcmp(x_recip_name, mySysGuide) == 0) {
+		    xfree(mySysGuide);
+		    mySysGuide = NULL;
+		}    
 		if (is_my_vnemy)
 		    if (is_cached_friend(x_recip_name))
 			cprintf("\1f\1y\n%s is on both your friend and enemy lists, how odd..  (:\1a\n"
