@@ -116,5 +116,30 @@ mono_sql_onl_doing(const char* username, const char *doing)
     return TRUE;
 }
 
+int
+mono_sql_onl_check_user(const char *username)
+{
+
+    int ret;
+    MYSQL_RES *res;
+    unsigned int user_id = 0;
+
+    (void) mono_sql_u_name2id( username, &user_id );
+
+    ret = mono_sql_query(&res, "SELECT * FROM " ONLINE_TABLE 
+     " WHERE user_id=%u AND interface='web'", user_id);
+
+    if (ret == -1)
+	return FALSE;
+
+    if( mysql_num_rows(res) == 0 ) {
+        mono_sql_u_free_result(res);
+        return FALSE;
+    }
+
+    mono_sql_u_free_result(res);
+    return TRUE;
+
+}
 
 /* eof */

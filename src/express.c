@@ -43,6 +43,8 @@
 #include "statusbar.h"
 #include "usertools.h"
 
+#include "sql_online.h"
+
 char x_default[L_USERNAME + L_BBSNAME + 2];
 char chat_default[L_USERNAME + 1];
 express_t *xmsgb[XLIMIT];	/* the XLog */
@@ -719,13 +721,28 @@ check_x_permissions(const char *x_recip_name, const int X_PARAM, char override)
 	    }
 /* read the btmp and get the destination record */
 	    x_recip_btmp = mono_read_btmp(x_recip_name);
-	    if (x_recip_btmp == NULL) {
+	    if (x_recip_btmp == NULL && (!WEB)) {
 		cprintf("%s", (check_user(x_recip_name) == TRUE) ?
-		 "\1f\1rThat user is not online.\1a\n" : "No such user.\n");
+		 "\1f\1rThat user is not online.\1a\n" : "\1f\1rNo such user.\1a\n");
 		flush_input();
 		override = OR_NO_PERMS;
 		break;
 	    }
+/* (if web x) does user exist? */
+            if(WEB) {
+                if( check_user(x_recip_name) == FALSE ) {
+		    cprintf("\1f\1rNo such %s.\1a\n", config.user);
+                    flush_input();
+                    override = OR_NO_PERMS;
+                    break;
+                }
+                if( mono_sql_onl_check_user(x_recip_name) == FALSE ) {
+		    cprintf("\1f\1rThat %s is not online via the web.\1a\n", config.user);
+                    flush_input();
+                    override = OR_NO_PERMS;
+                    break;
+                }
+            }
 /* deleted/degraded recipient? */
 	    if (x_recip_btmp->priv & (PRIV_DELETED | PRIV_DEGRADED)) {
 		cprintf("\1f\1rYou cannot send messages to degraded users.\1a\n");
