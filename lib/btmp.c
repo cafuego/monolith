@@ -78,6 +78,24 @@ mono_return_pid(const char *name)
     return -1;
 }
 
+int
+mono_fix_usercount()
+{
+
+    int p = 0, users = 0;
+
+    mono_lock_shm(WHO_LOCK);
+    p = shm->first;
+    while (p != -1) {
+        users++;
+        p = shm->wholist[p].next;
+    }
+    shm->user_count = users;
+    mono_lock_shm(WHO_UNLOCK);
+
+    return users;
+}
+
 /* -------------------------------------------------------------------- */
 /* add_loggedin() this adds user `user' to the wholist */
 int
@@ -682,13 +700,17 @@ mono_remove_ghosts()
 {
     int p, q;
 
+    log_it("wholist", "Running mono_remove_ghosts()" );
+
     if (!shm) {
 	mono_errno = E_NOSHM;
 	return -1;
     }
+    mono_lock_shm(WHO_LOCK);
     p = q = shm->first;
     while (p != -1) {
 	if (kill(shm->wholist[p].pid, 0) == -1) {
+            log_it("wholist", "%s is a ghost user, autofixing.", shm->wholist[p].username );
 	    strcpy(shm->wholist[p].username, "");
 	    if (p == shm->first)
 		shm->first = shm->wholist[p].next;
@@ -699,6 +721,8 @@ mono_remove_ghosts()
 	q = p;
 	p = shm->wholist[p].next;
     }
+    (void) mono_fix_usercount();
+    mono_lock_shm(WHO_UNLOCK);
     return 0;
 }
 

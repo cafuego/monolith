@@ -94,6 +94,7 @@ short_prompt(void)
 	    cprintf("\1f\1rAYIEE!!! \1gHmmm... you're a ghost user at the moment.\n");
 	    cprintf("\1f\1gFixing that right now... ");
 	    mono_add_loggedin(usersupp);
+            (void) mono_fix_usercount();
 	    cprintf("\1f\1gokay, there ya go!\n");
 	}
 	switch (cmd) {
