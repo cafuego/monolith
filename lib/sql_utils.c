@@ -39,7 +39,7 @@ static int logqueries = TRUE;
 int
 mono_sql_connect()
 {
-    if (!(mysql_connect(&mp, "130.89.230.12", "cafuego", "k4ad&d00d"))) {
+    if (!(mysql_connect(&mp, "localhost", "root", NULL))) {
 	log_it("sql", "could not connect to server (%s) !\n", mysql_error(&mp));
 	return -1;
     }
