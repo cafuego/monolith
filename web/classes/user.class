@@ -80,8 +80,9 @@ class user_t {
             echo "<tr><td>Name:</td><td>$this->realname</td></tr>\n";
         if( (!(strstr( $this->hiddeninfo, "address" ))) && (strlen($this->address)))
             echo "<tr><td>Address:</td><td valign=\"top\">$this->address</td></tr>\n";
+        echo "<tr><td></td><td>\n";
         if( (!(strstr( $this->hiddeninfo, "city" ))) && (strlen($this->city)))
-            echo "<tr><td></td><td>$this->city";
+            echo "$this->city";
         if( (!(strstr( $this->hiddeninfo, "state" ))) && (strlen($this->state)))
             echo ", $this->state";
         if( (!(strstr( $this->hiddeninfo, "zip" ))) && (strlen($this->zip)))
