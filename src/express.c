@@ -1692,7 +1692,7 @@ show_web_xes(wx_list_t *list)
         Sendxs->time = list->x->date;
         sprintf(Sendxs->sender, "%s@Web", list->x->sender);
         sprintf(Sendxs->recipient, "%s", usersupp->username);
-        sprintf(Sendxs->message, "%s", list->x->message);
+        sprintf(Sendxs->message, "%s\n", list->x->message);
         add_x_to_personal_xlog(SENDX, Sendxs, Sendxs->override);
         xfree( Sendxs );
 
