@@ -352,8 +352,6 @@ _mono_sql_mes_row_to_mes(MYSQL_ROW row)
     message = (message_t *) xmalloc(sizeof(message_t));
     memset(message, 0, sizeof(message_t));
 
-    printf("DEBUG: Fetching message content..."); fflush(stdout);
-
     /*
      * Admin info
      */
@@ -391,8 +389,6 @@ _mono_sql_mes_row_to_mes(MYSQL_ROW row)
 #ifdef OLD_SHIT
     message->score = mono_sql_rat_get_rating(message->num, message->forum);
 #endif
-
-    printf(" done.\n"); fflush(stdout);
 
     return message;
 }
