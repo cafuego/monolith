@@ -414,4 +414,22 @@ _mono_sql_mes_cleanup(unsigned int forum)
     return;
 }
 
+int
+mono_sql_mes_erase_forum( unsigned int forum )
+{
+
+    MYSQL_RES *res;
+    int ret = 0;
+
+    ret = mono_sql_query(&res, "DELETE FROM %s WHERE forum_id=%u", M_TABLE, forum );
+    if (ret == -1) {
+        (void) mono_sql_u_free_result(res);
+        return -1;
+    }
+
+    (void) mono_sql_u_free_result(res);
+    return 0;
+}
+
+
 /* eof */
