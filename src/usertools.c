@@ -93,7 +93,7 @@ _timezone_menu(const unsigned int a, const long b, const char *c)
     MENU_ADDITEM(_tzones_america, 0, 0, "", "t", "America");
     MENU_ADDITEM(_tzones_antarctica, 0, 0, "", "t", "Antarctica");
     MENU_ADDITEM(_tzones_asia, 0, 0, "", "t", "Asia");
-    MENU_ADDITEM(_tzones_australlia, 0, 0, "", "t", "Australlia");
+    MENU_ADDITEM(_tzones_australlia, 0, 0, "", "t", "Australia");
     MENU_ADDITEM(_tzones_europe, 0, 0, "", "t", "Europe");
 
     strcpy(the_menu_format.menu_title, "\1f\1g\nTimezone Setup Menu:  Continent\n\n");
@@ -373,6 +373,7 @@ _tzones_australlia(const unsigned int a, const long b, const char *c)
     MENU_ADDITEM(_tz2str, 0, 0, ":Australlia/Canberra", "t", "Canberra");
     MENU_ADDITEM(_tz2str, 0, 0, ":Australlia/Darwin", "t", "Darwin");
     MENU_ADDITEM(_tz2str, 0, 0, ":Australlia/Hobart", "t", "Hobart");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Australlia/West", "t", "Kookynie");
     MENU_ADDITEM(_tz2str, 0, 0, ":Australlia/LHI", "t", "LHI");
     MENU_ADDITEM(_tz2str, 0, 0, ":Australlia/Lindeman", "t", "Lindeman");
     MENU_ADDITEM(_tz2str, 0, 0, ":Australlia/Lord_Howe", "t", "Lord Howe");
