@@ -422,13 +422,12 @@ mono_sql_mes_erase_forum( unsigned int forum )
     int ret = 0;
 
     ret = mono_sql_query(&res, "DELETE FROM %s WHERE forum_id=%u", M_TABLE, forum );
-    if (ret == -1) {
-        (void) mono_sql_u_free_result(res);
-        return -1;
+    if (ret != 0) {
+        (void) log_it("sqlerr", "Unable to erase messages from quad %d.", forum);
     }
 
     (void) mono_sql_u_free_result(res);
-    return 0;
+    return ret;
 }
 
 

@@ -29,6 +29,8 @@
   #endif
 #endif
 
+#include "monolith.h"
+#include "libmono.h"
 #include "sql_rating.h"
 #include "sql_utils.h"
 
@@ -97,4 +99,21 @@ mono_sql_rat_check_rating(unsigned int user_id, unsigned int message_id, unsigne
     (void) mono_sql_u_free_result(res);
     return 0;
 }
+
+int
+mono_sql_rat_erase_forum(unsigned int forum)
+{
+
+    MYSQL_RES *res;
+    int ret = 0;
+
+    ret = mono_sql_query(&res, "DELETE FROM %s WHERE forum_id=%u", R_TABLE, forum);
+
+    if(ret != 0)
+	(void) log_it("sqlerr", "Unable to delete ratings for quad %d.", forum );
+
+    (void) mono_sql_u_free_result(res);
+    return ret;
+}
+
 #endif /* USE_RATING */

@@ -32,6 +32,10 @@
 #include "sql_forum.h"
 #include "sql_message.h"
 #include "sql_userforum.h"
+#ifdef USE_RATING
+  #include "sql_rating.h"
+#endif
+
 
 #define extern
 #include "rooms.h"
@@ -537,16 +541,28 @@ killroom()
         /*
          * Trash posts from SQL table
          */
-        cprintf("\n\1f\1rRemoving %s with forum_id \1y%u\1r from message table... \1a", config.message_pl, curr_rm);
+        cprintf("\1f\1rRemoving %s with forum_id \1y%u\1r from message table... \1a", config.message_pl, curr_rm);
         if( (mono_sql_mes_erase_forum( curr_rm )) == 0)
             cprintf("\1f\1gok.\1a\n");
         else
-            cprintf("\1f\1rerror!\1a\n");
+            cprintf("\1f\1rerror!\1a (logged)\n");
+
+#ifdef USE_RATING
+        /*
+         * Trash ratings from SQL table
+         */
+        cprintf("\1f\1rRemoving %s with forum_id \1y%u\1r from rating table... \1a", config.message_pl, curr_rm);
+        if( (mono_sql_rat_erase_forum( curr_rm )) == 0)
+            cprintf("\1f\1gok.\1a\n");
+        else
+            cprintf("\1f\1rerror!\1a(logged)\n");
+#endif
     } else if (curr_rm == CURSE_FORUM)
 	return;
 
-    cprintf("\n\n\1f\1rResetting speedyforum... \1a");
+    cprintf("\1f\1rResetting speedyforum... ");
     write_quad(quickroom, curr_rm);
+    cprintf("\1gdone.\1a\n");
 
     if (curr_rm == CURSE_FORUM)
 	log_sysop_action("Cleaned the Dungeon.");
@@ -649,7 +665,7 @@ erase_all_messages(long highest)
 	if (!(i % 10))		/* show progress.. */
 	    cprintf(".");
     }
-    cprintf(" \1gdone.\1a");
+    cprintf(" \1gdone.\1a\n");
 }
 
 /*************************************************
