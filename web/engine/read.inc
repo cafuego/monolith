@@ -98,7 +98,7 @@ function read_message($username, $quad, $current, $direction) {
                 } else {
                     // Jump to next quad eh...
                     //
-                    $result = MYSQL_QUERY("SELECT ut.forum_id AS forum_id,f.name AS forum_name,,(t.highest-ut.lastread) AS forum_unread,uf.status AS status FROM usertopic as ut LEFT JOIN topics AS t ON ut.forum_id=t.forum_id LEFT JOIN message as m ON (m.forum_id=ut.forum_id) LEFT JOIN forum as f ON ut.forum_id=f.id LEFT JOIN userforum AS uf ON (uf.forum_id=ut.forum_id AND uf.user_id=ut.user_id) WHERE ut.user_id=$usernum AND uf.status='invited' AND ut.lastread < t.highest GROUP BY ut.forum_id ORDER BY ut.forum_id ASC;");
+                    $result = MYSQL_QUERY("SELECT ut.forum_id AS forum_id,f.name AS forum_name,(t.highest-ut.lastread) AS forum_unread,uf.status AS status FROM usertopic as ut LEFT JOIN topics AS t ON ut.forum_id=t.forum_id LEFT JOIN message as m ON (m.forum_id=ut.forum_id) LEFT JOIN forum as f ON ut.forum_id=f.id LEFT JOIN userforum AS uf ON (uf.forum_id=ut.forum_id AND uf.user_id=ut.user_id) WHERE ut.user_id=$usernum AND uf.status='invited' AND ut.lastread < t.highest GROUP BY ut.forum_id ORDER BY ut.forum_id ASC;");
                     $number = MYSQL_NUMROWS($result);
                     if($number) {
                         $forum_id = mysql_result($result,0,"forum_id");
