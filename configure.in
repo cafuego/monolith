@@ -3,33 +3,33 @@ dnl $Id$
 
 AC_INIT(monolith, 2.0)
 AC_CONFIG_AUX_DIR(auto)
-AC_CANONICAL_SYSTEM
 AC_CONFIG_SRCDIR(src/main.c)
 AM_INIT_AUTOMAKE
 
 AC_CONFIG_HEADERS(config.h)
 AC_PREFIX_DEFAULT(/usr/local/bbs)
 
-AC_ARG_WITH(name, [  --with-name=NAME        set the BBS name [default=Monolith]],,with_name=Monolith)
+AC_ARG_WITH(name,AC_HELP_STRING([--with-name=NAME],[set the BBS name [default=Monolith]]),,with_name=Monolith)
+
 AC_ARG_WITH(mysql, [  --with-mysql[=DIR]      use mysql database system  [default=yes]
                           This option requires mysql to be installed.
 
     When --with-mysql is specified, you may also specify the following MySQL
     options, which the BBS will use to connect to the MySQL Server:],,with_mysql=yes)
-AC_ARG_WITH(sql_host, [    --with-sql_host=HOST  Connect to this MySQL Server [default=localhost]],,with_sql_host=localhost)
-AC_ARG_WITH(sql_user, [    --with-sql_user=USER  Connect using this MySQL username [default=bbs]],,with_sql_user=bbs)
-AC_ARG_WITH(sql_pass, [    --with-sql_pass=PASS  Connect using this MySQL password [default=bing]],,with_sql_pass=bing)
-AC_ARG_WITH(sql_db, [    --with-sql_db=DB      Use this MySQL database [default=bbs]],,with_sql_db=bbs)
-AC_ARG_WITH(sql_sock, [    --with-sql_sock=SOCK  Connect via this socket [default=/var/run/mysqld/mysqld.sock]
-                          
-Additional --enable and --with options recognized:],,with_sql_sock=/var/run/mysqld/mysql.sock)
-AC_ARG_WITH(icq, [  --with-icq              use icq gateway system  [default=yes]
-                          (allows bbs users to talk to icq users)],,with_icq=yes)
-AC_ARG_WITH(rating, [  --with-rating           use message rating system  [default=no]
-                          (allows users to rate messages)],,with_rating=no)
-AC_ARG_WITH(hero, [  --with-hero             include superhero toy  [default=yes]
-                          (requires silly sysops)],,with_hero=yes)
-AC_ARG_WITH(overview, [  --with-overview         give overview after configuring  [default=no]],,with_overview=no)
+
+AC_ARG_WITH(sql_host,AC_HELP_STRING([--with-sql_host=HOST],[Connect to this MySQL Server (default=localhost)]),,with_sql_host=localhost)
+AC_ARG_WITH(sql_user,AC_HELP_STRING([--with-sql_user=USER],[Connect using this MySQL username (default=bbs)]),,with_sql_user=bbs)
+AC_ARG_WITH(sql_pass,AC_HELP_STRING([--with-sql_pass=PASS],[Connect using this MySQL password (default=bing)]),,with_sql_pass=bing)
+AC_ARG_WITH(sql_db,AC_HELP_STRING([--with-sql_db=DB],[Use this MySQL database (default=bbs)]),,with_sql_db=bbs)
+AC_ARG_WITH(sql_sock,AC_HELP_STRING([--with-sql_sock=SOCK],[Connect via this socket (default=/var/run/mysqld/mysqld.sock)]),,with_sql_sock=/var/run/mysqld/mysql.sock)
+
+AC_ARG_WITH(icq,AC_HELP_STRING([--with-icq],[use icq gateway system (default=yes)]),,with_icq=yes)
+
+AC_ARG_WITH(rating,AC_HELP_STRING([--with-rating],[use message rating system (default=no)]),,with_rating=no)
+
+AC_ARG_ENABLE(hero,AC_HELP_STRING([--disable-hero],[include superhero toy (default=yes)]),,with_hero=yes)
+
+AC_ARG_WITH(overview,AC_HELP_STRING([--with-overview],[give overview after configuring (default=no)]),,with_overview=no)
 
 if test "x$with_icq" != "xyes"; then
   with_icq=no
