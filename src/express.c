@@ -285,6 +285,7 @@ add_x_to_personal_xlog(char calling_function, x_str * xmessagePtr, char tempover
 
     xmsgb[insert_here]->override = tempoverride;
     usersupp->x_s++;
+    mono_sql_u_increase_x_count( usersupp->usernum );
 
     return;
 }

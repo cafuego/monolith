@@ -536,6 +536,7 @@ main(int argc, char *argv[])
     laston = usersupp->laston_from;
     usersupp->laston_from = time(&login_time);
     usersupp->timescalled++;
+    mono_sql_u_increase_login_count( usersupp->usernum );
     strcpy(previous_host, usersupp->lasthost);
     strncpy(usersupp->lasthost, hname, L_HOSTNAME);
     usersupp->lasthost[L_HOSTNAME] = '\0';

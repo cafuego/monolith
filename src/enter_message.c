@@ -235,14 +235,18 @@ save_new_message(message_header_t * header, unsigned int forum)
 
     time_function(TIME_START);
     save_to_sql(header, temp);
+
+#ifdef USED
     if (usersupp->priv >= PRIV_TECHNICIAN) {
 	cprintf("\n\1a\1wSQL time elapsed: ");
 	printf("%f\n", time_function(TIME_STOP));
     } else {
 	time_function(TIME_STOP);
     }
-
-    usersupp->posted++;
+#endif
+	time_function(TIME_STOP);
+    mono_sql_u_increase_post_count( usersupp->usernum );
+	usersupp->posted++;
 
     return 0;
 }
