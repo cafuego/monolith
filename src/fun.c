@@ -112,11 +112,12 @@ cthulhu()
             (food == 5) &&
             (shix_strmatch(april_fools, no) || shix_strmatch(april_fools, why))
         ) || (
-                (
-                   shix_strmatch(april_fools, why) &&
-                   ( shix_strmatch(april_fools, no) ||
-                     shix_strmatch(april_fools, no2))
-                ) ||
+            shix_strmatch(april_fools, why) &&
+            (
+                shix_strmatch(april_fools, no) ||
+                shix_strmatch(april_fools, no2)
+            )
+        ) || (
             !(shix_strmatch(april_fools, no2)) &&
             !(shix_strmatch(april_fools, no)) &&
             !(shix_strmatch(april_fools, why)) &&
