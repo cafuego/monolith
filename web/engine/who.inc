@@ -59,8 +59,8 @@ function show_wholist($username) {
             print "  <td align=\"right\">\n";
             print "    <p align=\"right\"><font color=\"#00cc00\">$online</font>\n";
             print "  </td>\n";
-            print "  <td align=\"left\">\n";
-            print "    <p align=\"left\"><font color=\"#ff00ff\">&nbsp;$interface&nbsp;</font>\n";
+            print "  <td align=\"right\">\n";
+            print "    <p align=\"right\"><font color=\"#ff00ff\">&nbsp;$interface&nbsp;</font>\n";
             print "  </td>\n";
             print "</tr>\n";
 

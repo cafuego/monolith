@@ -188,7 +188,7 @@ function main_screen($username) {
     }
 
     print "<h2 align=\"center\">Hello, $username. Welcome to Monolith BBS.</h2>\n";
-    if($number)
+    if($number && ($username != "Guest"))
         print "<p class=\"footer\">Your last login was on $date at $time CET from host '$hostname'.</p>\n";
     else
         print "<p class=\"footer\">Unable to retrieve your previous login details.</p>\n";
