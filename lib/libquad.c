@@ -95,17 +95,6 @@ change_QL(unsigned int quad_num, const char *QLname, int how)
 }
 
 int
-is_ql(const char *name, room_t quad)
-{
-    unsigned int i;
-
-    for (i = NO_OF_QLS; i; i--)
-	if (EQ(name, quad.qls[i - 1]))
-	    return TRUE;
-    return FALSE;
-}
-
-int
 read_forum( unsigned int no, room_t *forum ) 
 {
     if (!shm) {
