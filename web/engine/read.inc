@@ -90,8 +90,14 @@ function read_message($username, $quad, $current, $direction) {
                 echo "<p align=\"left\"><font color=\"#FFFFFF\">$f_id.</font><font color=\"#00CC00\">$forum</font> (<font color=\"#00CC00\">message $m_id of $highest</font>)&gt;</p>\n";
                 echo "<p>&nbsp;<br></p>\n";
 
-                // Don't let guests be able to post.
+                // Update lastseen!
                 //
+                if( $username != "Guest" ) {
+                    $result = MYSQL_QUERY("SELECT lastread FROM usertopic WHERE forum_id=$f_id AND user_id=$usernum");
+                    $lastread = mysql_result($result,0,"lastread");
+                    if($lastread < $m_id)
+                        $result = MYSQL_QUERY("UPDATE usertopic SET lastread=$m_id WHERE forum_id=$f_id AND user_id=$usernum");
+
                 echo "<div align=\"center\">\n";
                 if($m_id != $highest) {
                     addbutton("Read Next", "/bbs/index.phtml/r/$quad/$m_id/n", "Read the next message in $forum");
@@ -120,22 +126,14 @@ function read_message($username, $quad, $current, $direction) {
                     }
                 }
                 addbutton("Read Previous", "/bbs/index.phtml/r/$quad/$m_id/p", "Read the previous message in $forum");
+                // Don't let guests be able to post.
+                //
                 // if( $username != "Guest" ) {
                 //    addbutton("        ", "", "");
                 //    addbutton("Reply to this message", "/bbs/index.phtml/f/$quad/$m_id", "Reply to this message");
                 //    addbutton("Post new message", "/bbs/index.phtml/e/$quad/$m_id", "Post a new message in $forum");
                 //}
                 echo "</div>\n";
-
-                // Update lastseen!
-                //
-                if( $username != "Guest" ) {
-                    $result = MYSQL_QUERY("SELECT lastread FROM usertopic WHERE forum_id=$f_id AND user_id=$usernum");
-                    $lastread = mysql_result($result,0,"lastread");
-                    if($lastread < $m_id)
-                        $result = MYSQL_QUERY("UPDATE usertopic SET lastread=$m_id WHERE forum_id=$f_id AND user_id=$usernum");
-                }
-
             } else {
                 switch ($direction) {
                     case "p":
