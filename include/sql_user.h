@@ -29,6 +29,7 @@ extern int mono_sql_u_update_validation( unsigned int user_id, int validation );
 
 extern int mono_sql_u_get_email( unsigned int user_id, char *email );
 extern int mono_sql_u_get_url( unsigned int user_id, char *url );
+extern int mono_sql_u_get_hidden(unsigned int user_id, int *hiddeninfo);
 extern int mono_sql_u_get_validation( unsigned int user_id, int *validation );
 
 extern int mono_sql_u_update_x_count( unsigned int user_id, int x_count );
