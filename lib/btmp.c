@@ -576,7 +576,7 @@ mono_search_guide()
     if (total_sgnumber < 1)
 	return NULL;
 
-    sysguide_number = (time(0) % total_sgnumber);
+    sysguide_number = ((time(0) * rand()) % total_sgnumber);
 
     i = shm->first;
     while (i != -1) {

@@ -635,7 +635,6 @@ quad_lizard(message_header_t * header)
     header->f_id = SYSOP_FORUM;
 
     fp2 = xfopen(tmpname, "w", TRUE);
-    fprintf(fp2, "\n");
 
     for (i = 20; i < MAXQUADS; i++) {
 	quad = read_quad(i);
@@ -718,7 +717,6 @@ quad_lizard(message_header_t * header)
 	    fprintf(fp2, "\1f\1w%d.\1y%s\1w: \1yNo QL.\1a\n", i, quad.name);
 	}
     }
-    fprintf(fp2, "\n");
     fclose(fp2);
     if (fexists(temp))
 	unlink(temp);
