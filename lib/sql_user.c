@@ -527,7 +527,7 @@ mono_sql_u_update_validation(unsigned int user_id, int validation)
 }
 
 int
-mono_sql_u_get_validation(unsigned int user_id, int *validation)
+mono_sql_u_get_validation(unsigned int user_id, unsigned int *validation)
 {
     int i;
     int ret;
@@ -553,7 +553,7 @@ mono_sql_u_get_validation(unsigned int user_id, int *validation)
 }
 
 int
-mono_sql_u_update_x_count(unsigned int user_id, int x_count)
+mono_sql_u_update_x_count(unsigned int user_id, unsigned int x_count)
 {
 
     int i;
@@ -572,7 +572,7 @@ mono_sql_u_update_x_count(unsigned int user_id, int x_count)
 }
 
 int
-mono_sql_u_get_x_count(unsigned int user_id, int *x_count)
+mono_sql_u_get_x_count(unsigned int user_id, unsigned int *x_count)
 {
     int i;
     int ret;
@@ -617,7 +617,7 @@ mono_sql_u_increase_x_count(unsigned int user_id)
 
 
 int
-mono_sql_u_update_post_count(unsigned int user_id, int post_count)
+mono_sql_u_update_post_count(unsigned int user_id, unsigned int post_count)
 {
 
     int i;
@@ -636,7 +636,7 @@ mono_sql_u_update_post_count(unsigned int user_id, int post_count)
 }
 
 int
-mono_sql_u_get_post_count(unsigned int user_id, int *post_count)
+mono_sql_u_get_post_count(unsigned int user_id, unsigned int *post_count)
 {
     int i;
     int ret;
@@ -681,7 +681,7 @@ mono_sql_u_increase_post_count(unsigned int user_id)
 
 
 int
-mono_sql_u_update_login_count(unsigned int user_id, int login_count)
+mono_sql_u_update_login_count(unsigned int user_id, unsigned int login_count)
 {
 
     int i;
@@ -700,7 +700,7 @@ mono_sql_u_update_login_count(unsigned int user_id, int login_count)
 }
 
 int
-mono_sql_u_get_login_count(unsigned int user_id, int *login_count)
+mono_sql_u_get_login_count(unsigned int user_id, unsigned int *login_count)
 {
     int i;
     int ret;

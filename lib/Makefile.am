@@ -17,7 +17,7 @@ INCLUDES += $(MYSQL_INCLUDE)
 #endif
 
 lint:	${libyawc_a_SOURCES}
-	lclint -I/usr/local/include ${DEFS} ${INCLUDES} +posixstrictlib ${libyawc_a_SOURCES} -retvalint
+	lclint -I/usr/local/include ${DEFS} ${INCLUDES} +posixstrictlib ${libyawc_a_SOURCES} -retvalint -weak
 
 #-w -W -pedantic \
 #  -Wall -Waggregate-return -Wcast-align -Wcast-qual \
