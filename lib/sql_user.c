@@ -8,6 +8,7 @@
 #endif
 
 #include <stdio.h>
+#include <string.h>	/* for strncpy */
 #include <assert.h>
 #include <unistd.h>
 

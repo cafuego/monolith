@@ -25,7 +25,7 @@
 
 static MYSQL mp;
 static int connected = FALSE;
-static int logqueries = FALSE;
+static int logqueries = TRUE;
 
 int
 mono_sql_connect()

@@ -10,9 +10,8 @@
 
 #include "monolith.h"
 #include "monosql.h"
+#include "sql_mail.h"
 #include "sql_utils.h"
-
-#define MAIL_TABLE "mail"
 
 int
 mono_sql_add_mail()

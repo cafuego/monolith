@@ -19,13 +19,13 @@
 #include "sql_forum.h"
 
 int
-mono_sql_uf_update_lastseen(usernum, forum)
+mono_sql_uf_update_lastseen(unsigned int usernum, unsigned int forum)
 {
     MYSQL_RES *res;
     MYSQL_ROW row;
     int ret = 0, lastseen = 0;
 
-    ret = mono_sql_query( &res, "SELECT highest FROM %s WHERE id=%d", F_TABLE, forum);
+    ret = mono_sql_query( &res, "SELECT highest FROM %s WHERE id=%u", F_TABLE, forum);
     if(ret == -1) {
         (void) mysql_free_result(res);
         return -1;
@@ -35,7 +35,7 @@ mono_sql_uf_update_lastseen(usernum, forum)
     sscanf( row[0], "%d", &lastseen);
     (void) mysql_free_result(res);
 
-    (void) mono_sql_query( &res, "UPDATE %s SET lastseen=%d WHERE forum_id=%d AND user_id=%d", UF_TABLE, lastseen, forum, usernum);
+    (void) mono_sql_query( &res, "UPDATE %s SET lastseen=%u WHERE forum_id=%u AND user_id=%u", UF_TABLE, lastseen, forum, usernum);
     (void) mysql_free_result(res);
     return 0;
 }

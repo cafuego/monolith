@@ -34,13 +34,15 @@ mono_sql_mes_unread_room(unsigned int usernum)
     int ret = 0;
 
     ret = mono_sql_query(&res, "SELECT forum_id FROM %s,%s WHERE %s.user_id=%d AND %s.id=%s.forum_id AND %s.lastseen < %s.highest",
-        F_TABLE, UF_TABLE, UF_TABLE, F_TABLE, UF_TABLE, UF_TABLE, F_TABLE, usernum );
-    
+        F_TABLE, UF_TABLE, UF_TABLE, usernum, F_TABLE, UF_TABLE, UF_TABLE, F_TABLE );
+
     /*
      * No unread messages...
      */
-    if (mysql_num_rows(res) == 0)
-        return -1;
+    if (mysql_num_rows(res) == 0) {
+        (void) mysql_free_result(res);
+        return 0;
+    }
 
     row = mysql_fetch_row(res);
     sscanf(row[0],"%d", &ret);
@@ -77,7 +79,7 @@ mono_sql_mes_add(message_t *message, unsigned int forum)
     char *alias = NULL, *subject = NULL, *content = NULL;
 
     if( (message->num = mono_sql_f_get_new_message_id(forum)) == 0)
-        return 12;
+        return -1;
 
     (void) escape_string(message->alias, &alias);
     (void) escape_string(message->subject, &subject);
@@ -187,8 +189,8 @@ mono_sql_mes_retrieve(unsigned int id, unsigned int forum, message_t *data)
     /*
      * And more admin info.
      */
-    sscanf( row[8], "%s", &message.type);
-    sscanf( row[9], "%s", &message.priv);
+    sscanf( row[8], "%s", message.type);
+    sscanf( row[9], "%s", message.priv);
     sscanf( row[10], "%c", &message.deleted);
 
     (void) mysql_free_result(res);
