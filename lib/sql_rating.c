@@ -27,9 +27,12 @@
 #endif
 
 #include "monolith.h"
-#include "libmono.h"
-#include "sql_rating.h"
+#include "log.h"
 #include "sql_utils.h"
+
+#define extern
+#include "sql_rating.h"
+#undef extern
 
 int
 mono_sql_rat_add_rating(unsigned int user_id, unsigned int message_id, unsigned int forum_id, int rating)

@@ -20,9 +20,13 @@
 #endif
 
 #include "monolith.h"
-
-#include "libmono.h"
+#include "log.h"
+#include "routines.h"
 #include "sql_message.h"
+
+#define extern
+#include "msg_file.h"
+#undef extern
 
 static char * get_flag(unsigned long mod_banner);
 static char * get_reason(int mod_reason);
