@@ -279,6 +279,16 @@ mono_sql_u_update_registration( unsigned int user_id,
 
     int i;
     MYSQL_RES *res;
+    char *p1, *p2, *p3, *p4, *p5, *p6, *p7;
+
+    
+    i = escape_string( name, &p1 );
+    i = escape_string( address, &p2 );
+    i = escape_string( zip, &p3 );
+    i = escape_string( city, &p4 );
+    i = escape_string( state, &p5 );
+    i = escape_string( country, &p6 );
+    i = escape_string( phone, &p7 );
 
     i = mono_sql_query(&res, "UPDATE " U_TABLE 
         " set name='%s', "
@@ -288,7 +298,10 @@ mono_sql_u_update_registration( unsigned int user_id,
 	" state='%s', "
 	" country='%s', "
 	" phone='%s'"
-	" WHERE id=%u", name, address, zip, city, state, country, phone, user_id );
+	" WHERE id=%u", p1, p2, p3, p4, p5, p6, p7, user_id );
+
+    xfree( p1 ); xfree( p2 ); xfree( p3 ); xfree( p4 );
+    xfree( p5 ); xfree( p6 ); xfree( p7 );
 
     if (i == -1) {
 	fprintf(stderr, "No results from query.\n");
@@ -345,10 +358,15 @@ mono_sql_u_update_email( unsigned int user_id, const char *email )
 
     int i;
     MYSQL_RES *res;
+    char *p2;
+
+    i = escape_string( email, &p2 );
 
     i = mono_sql_query(&res, "UPDATE " U_TABLE 
         " set email='%s' "
-	" WHERE id=%u", email, user_id );
+	" WHERE id=%u", p2, user_id );
+
+    xfree( p2 );
 
     if (i == -1) {
 	fprintf(stderr, "No results from query.\n");
