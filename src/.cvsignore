@@ -1,5 +1,6 @@
 .deps
 bbsconfig.o
+c_client_input.o
 c_commands.o
 c_display_message.o
 c_express.o
@@ -9,9 +10,7 @@ c_routines2.o
 c_statusbar.o
 c_usertools.o
 chat.o
-client_input.o
 clipboard.o
-cprintf.o
 enter_message.o
 friends.o
 fun.o
@@ -22,17 +21,18 @@ menu.o
 newuser.o
 normal_input.o
 p_commands.o
+p_cprintf.o
 p_display_message.o
 p_express.o
 p_main.o
 p_messages.o
+p_routines2.o
 p_statusbar.o
 p_usertools.o
 qc.o
 read_menu.o
 registration.o
 rooms.o
-routines2.o
 uadmin.o
 vote.o
 wholist.o
