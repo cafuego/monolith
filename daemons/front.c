@@ -31,7 +31,7 @@
 #include "front.h"
 #undef extern
 
-char hname[L_HOSTNAME + 1], username[L_USERNAME + 1];
+char hname[255], username[L_USERNAME + 1];
 unsigned int maxallow;
 int my_position, successful_pre_login = 0, allowed_skip_queue = 0;
 pid_t mypid;
@@ -50,7 +50,7 @@ main(int argc, char **argv)
 {
 
     FILE *fp;
-    char host[60], badness = 0, temp[85], tmpallow[5];
+    char host[255], badness = 0, temp[85], tmpallow[5];
 
     set_invocation_name(argv[0]);
     mono_setuid("guest");
@@ -101,8 +101,9 @@ main(int argc, char **argv)
     get_hostname();
 
 #ifdef DEBUG
+    /* michel disabled this, because he doesn't understand what
+       it does, and doesn't think it works */
     printf("[Checking if from blacklisted host]\n");
-#endif
 
     fp = xfopen(LOCKOUTFILE, "r", FALSE);
     if (fp != NULL) {
@@ -114,6 +115,7 @@ main(int argc, char **argv)
 	}
 	fclose(fp);
     }
+#endif
     mono_connect_shm();
 
     if (shm->user_count >= maxallow) {	/* || shm->queue_count > 0) */
@@ -232,10 +234,9 @@ rewrite_queue(int echo)
 
 
     if (echo == 1) {		/* if we're putting myself in   */
-	strcpy(shm->queue[shm->queue_count].host, hname);
+	strncpy(shm->queue[shm->queue_count].host, hname, L_HOSTNAME);
 	shm->queue[shm->queue_count].pid = mypid;
 	shm->queue[shm->queue_count].flags = 0;
-
 	shm->queue_count += 1;
     }
     if (echo == 3) {		/* if we're jumping to the top  */
@@ -547,9 +548,9 @@ get_hostname()
     addr = inet_addr(site_num);
 
     if ((host = gethostbyaddr((char *) &addr, 4, AF_INET)) != NULL)
-	strncpy(hname, host->h_name, L_HOSTNAME);
+	strncpy(hname, host->h_name, 254 );
     else
-	strncpy(hname, site_num, L_HOSTNAME);
+	strncpy(hname, site_num, 254 );
 
     return;
 }
