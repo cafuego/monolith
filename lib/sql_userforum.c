@@ -27,7 +27,7 @@ add_to_userlist(userlist_t element, userlist_t ** list)
 
     p = (userlist_t *) xmalloc(sizeof(userlist_t));
     if (p == NULL)
-        return -1;
+	return -1;
 
     /* copy, and set as last element */
     *p = element;
@@ -35,26 +35,26 @@ add_to_userlist(userlist_t element, userlist_t ** list)
 
     /* find last element in list */
     q = *list;
-    if (q == NULL) {            /* empty list */
-        *list = p;              /* put that in as first element */
+    if (q == NULL) {		/* empty list */
+	*list = p;		/* put that in as first element */
     } else {
-        while (q->next != NULL)
-            q = q->next;
-        q->next = p;
+	while (q->next != NULL)
+	    q = q->next;
+	q->next = p;
     }
     return 0;
 }
 
 int
-dest_userlist( userlist_t *list ) 
+dest_userlist(userlist_t * list)
 {
     userlist_t *p, *q;
 
     p = list;
     while (p) {
-        q = p->next;
-        xfree(p);
-        p = q;
+	q = p->next;
+	xfree(p);
+	p = q;
     }
     return 0;
 }
@@ -66,7 +66,7 @@ add_to_forumlist(forumlist_t element, forumlist_t ** list)
 
     p = (forumlist_t *) xmalloc(sizeof(forumlist_t));
     if (p == NULL)
-        return -1;
+	return -1;
 
     /* copy, and set as last element */
     *p = element;
@@ -74,12 +74,12 @@ add_to_forumlist(forumlist_t element, forumlist_t ** list)
 
     /* find last element in list */
     q = *list;
-    if (q == NULL) {            /* empty list */
-        *list = p;              /* put that in as first element */
+    if (q == NULL) {		/* empty list */
+	*list = p;		/* put that in as first element */
     } else {
-        while (q->next != NULL)
-            q = q->next;
-        q->next = p;
+	while (q->next != NULL)
+	    q = q->next;
+	q->next = p;
     }
     return 0;
 }
@@ -90,9 +90,9 @@ mono_sql_uf_add_entry(unsigned int user_id, unsigned int forum_id)
     MYSQL_RES *res;
 
     /* make this into an sql query that also checks if room & user exist */
-    ret = mono_sql_query(&res, 
-        "SELECT user_id,username FROM userforum"
-        "WHERE forum_id=%u AND user_id=%u", forum_id, user_id );
+    ret = mono_sql_query(&res,
+			 "SELECT user_id,username FROM userforum"
+		     "WHERE forum_id=%u AND user_id=%u", forum_id, user_id);
     mysql_free_result(res);
 
     if (ret != 0) {
@@ -104,7 +104,7 @@ mono_sql_uf_add_entry(unsigned int user_id, unsigned int forum_id)
 }
 
 int
-mono_sql_uf_list_hosts_by_forum(unsigned int forumnumber, userlist_t **p )
+mono_sql_uf_list_hosts_by_forum(unsigned int forumnumber, userlist_t ** p)
 {
     int ret, rows, i;
     unsigned int user_id;
@@ -112,18 +112,18 @@ mono_sql_uf_list_hosts_by_forum(unsigned int forumnumber, userlist_t **p )
     MYSQL_RES *res;
     MYSQL_ROW row;
 
-    ret = mono_sql_query(&res, 
-          "SELECT u.id,u.username " 
-          "FROM user u,userforum uf "
-          "WHERE forum_id=%u AND uf.user_id=u.id AND host='y' "
-          "ORDER BY u.username"
-        , forumnumber);
+    ret = mono_sql_query(&res,
+			 "SELECT u.id,u.username "
+			 "FROM user u,userforum uf "
+		       "WHERE forum_id=%u AND uf.user_id=u.id AND host='y' "
+			 "ORDER BY u.username"
+			 ,forumnumber);
 
     if (ret == -1) {
 	return -1;
     }
     rows = mysql_num_rows(res);
-     
+
     *p = NULL;
 
     for (i = 0; i < rows; i++) {
@@ -133,10 +133,10 @@ mono_sql_uf_list_hosts_by_forum(unsigned int forumnumber, userlist_t **p )
 
 	if (sscanf(row[0], "%u", &user_id) == -1)
 	    continue;
-        
-        e.usernum = user_id;
-        strcpy( e.name, row[1] ); 
-        add_to_userlist( e, p );
+
+	e.usernum = user_id;
+	strcpy(e.name, row[1]);
+	add_to_userlist(e, p);
 
     }
     mysql_free_result(res);
@@ -144,7 +144,7 @@ mono_sql_uf_list_hosts_by_forum(unsigned int forumnumber, userlist_t **p )
 }
 
 int
-mono_sql_uf_list_hosts_by_user(unsigned int usernumber, forumlist_t **p )
+mono_sql_uf_list_hosts_by_user(unsigned int usernumber, forumlist_t ** p)
 {
     int ret, rows, i;
     unsigned int forum_id;
@@ -158,7 +158,7 @@ mono_sql_uf_list_hosts_by_user(unsigned int usernumber, forumlist_t **p )
 	return -1;
     }
     rows = mysql_num_rows(res);
-   
+
     *p = NULL;
 
     for (i = 0; i < rows; i++) {
@@ -168,9 +168,9 @@ mono_sql_uf_list_hosts_by_user(unsigned int usernumber, forumlist_t **p )
 	if (sscanf(row[0], "%u", &forum_id) == -1)
 	    continue;
 
-        e.forumnum = forum_id;
-        /* strcpy( e.forumname, row[1] ); */
-        add_to_forumlist( e, p );
+	e.forumnum = forum_id;
+	/* strcpy( e.forumname, row[1] ); */
+	add_to_forumlist(e, p);
 
 	/* do something ! */
     }
@@ -197,9 +197,39 @@ mono_sql_uf_is_host(unsigned int usernumber, unsigned int forumnumber)
 	return FALSE;
     }
     row = mysql_fetch_row(res);
-    if ( sscanf( row[0], "%d", &host ) == -1 ) return FALSE;
+    if (sscanf(row[0], "%d", &host) == -1)
+	return FALSE;
     mysql_free_result(res);
-    if ( host == 0 ) return FALSE;
+    if (host == 0)
+	return FALSE;
+    return TRUE;
+}
+
+
+int
+mono_sql_uf_is_a_host(unsigned int usernumber)
+{
+    int ret, rows, host;
+    MYSQL_RES *res;
+    MYSQL_ROW row;
+
+    ret = mono_sql_query(&res, "SELECT count(*) FROM " UF_TABLE " WHERE (user_id='%u' AND host='y')", usernumber);
+
+    if (ret == -1) {
+	fprintf(stderr, "Error in query.\n");
+	return FALSE;
+    }
+    rows = mysql_num_rows(res);
+    if (rows != 1) {
+	fprintf(stderr, "internal error\n");
+	return FALSE;
+    }
+    row = mysql_fetch_row(res);
+    if (sscanf(row[0], "%d", &host) == -1)
+	return FALSE;
+    mysql_free_result(res);
+    if (host == 0)
+	return FALSE;
     return TRUE;
 }
 
@@ -270,7 +300,7 @@ mono_sql_uf_kill_user(unsigned int userid)
 }
 
 int
-mono_sql_uf_list_invited_by_forum(unsigned int forumnumber, userlist_t **p )
+mono_sql_uf_list_invited_by_forum(unsigned int forumnumber, userlist_t ** p)
 {
     int ret, rows, i;
     unsigned int user_id;
@@ -278,18 +308,18 @@ mono_sql_uf_list_invited_by_forum(unsigned int forumnumber, userlist_t **p )
     MYSQL_RES *res;
     MYSQL_ROW row;
 
-    ret = mono_sql_query(&res, 
-          "SELECT u.id,u.username " 
-          "FROM user u,userforum uf "
-          "WHERE forum_id=%u AND uf.user_id=u.id AND status='invited' "
-          "ORDER BY u.username"
-        , forumnumber);
+    ret = mono_sql_query(&res,
+			 "SELECT u.id,u.username "
+			 "FROM user u,userforum uf "
+	       "WHERE forum_id=%u AND uf.user_id=u.id AND status='invited' "
+			 "ORDER BY u.username"
+			 ,forumnumber);
 
     if (ret == -1) {
 	return -1;
     }
     rows = mysql_num_rows(res);
-   
+
     *p = NULL;
 
     for (i = 0; i < rows; i++) {
@@ -300,9 +330,9 @@ mono_sql_uf_list_invited_by_forum(unsigned int forumnumber, userlist_t **p )
 	if (sscanf(row[0], "%u", &user_id) == -1)
 	    continue;
 
-        e.usernum = user_id;
-        strcpy( e.name, row[1] ); 
-        add_to_userlist( e, p );
+	e.usernum = user_id;
+	strcpy(e.name, row[1]);
+	add_to_userlist(e, p);
 
     }
     mysql_free_result(res);
@@ -310,7 +340,7 @@ mono_sql_uf_list_invited_by_forum(unsigned int forumnumber, userlist_t **p )
 }
 
 int
-mono_sql_uf_list_invited_by_user(unsigned int usernumber, forumlist_t **p )
+mono_sql_uf_list_invited_by_user(unsigned int usernumber, forumlist_t ** p)
 {
     int ret, rows, i;
     unsigned int forum_id;
@@ -325,7 +355,7 @@ mono_sql_uf_list_invited_by_user(unsigned int usernumber, forumlist_t **p )
 	return -1;
     }
     rows = mysql_num_rows(res);
-   
+
     *p = NULL;
 
     for (i = 0; i < rows; i++) {
@@ -335,9 +365,9 @@ mono_sql_uf_list_invited_by_user(unsigned int usernumber, forumlist_t **p )
 	if (sscanf(row[0], "%u", &forum_id) == -1)
 	    continue;
 
-        e.forumnum = forum_id;
-        /* strcpy( e.forumname, row[1] ); */
-        add_to_forumlist( e, p );
+	e.forumnum = forum_id;
+	/* strcpy( e.forumname, row[1] ); */
+	add_to_forumlist(e, p);
 
 	/* do something ! */
     }
@@ -404,7 +434,7 @@ mono_sql_uf_remove_invited(unsigned int usernumber, unsigned int forumnumber)
 
 
 int
-mono_sql_uf_list_kicked_by_forum(unsigned int forumnumber, userlist_t **p )
+mono_sql_uf_list_kicked_by_forum(unsigned int forumnumber, userlist_t ** p)
 {
     int ret, rows, i;
     unsigned int user_id;
@@ -412,18 +442,18 @@ mono_sql_uf_list_kicked_by_forum(unsigned int forumnumber, userlist_t **p )
     MYSQL_RES *res;
     MYSQL_ROW row;
 
-    ret = mono_sql_query(&res, 
-          "SELECT u.id,u.username " 
-          "FROM user u,userforum uf "
-          "WHERE forum_id=%u AND uf.user_id=u.id AND status='kicked' "
-	  "ORDER BY u.username"
-        , forumnumber);
+    ret = mono_sql_query(&res,
+			 "SELECT u.id,u.username "
+			 "FROM user u,userforum uf "
+		"WHERE forum_id=%u AND uf.user_id=u.id AND status='kicked' "
+			 "ORDER BY u.username"
+			 ,forumnumber);
 
     if (ret == -1) {
 	return -1;
     }
     rows = mysql_num_rows(res);
-   
+
     *p = NULL;
 
     for (i = 0; i < rows; i++) {
@@ -434,9 +464,9 @@ mono_sql_uf_list_kicked_by_forum(unsigned int forumnumber, userlist_t **p )
 	if (sscanf(row[0], "%u", &user_id) == -1)
 	    continue;
 
-        e.usernum = user_id;
-        strcpy( e.name, row[1] ); 
-        add_to_userlist( e, p );
+	e.usernum = user_id;
+	strcpy(e.name, row[1]);
+	add_to_userlist(e, p);
 
     }
     mysql_free_result(res);
@@ -444,7 +474,7 @@ mono_sql_uf_list_kicked_by_forum(unsigned int forumnumber, userlist_t **p )
 }
 
 int
-mono_sql_uf_list_kicked_by_user(unsigned int usernumber, forumlist_t **p )
+mono_sql_uf_list_kicked_by_user(unsigned int usernumber, forumlist_t ** p)
 {
     int ret, rows, i;
     unsigned int forum_id;
@@ -458,7 +488,7 @@ mono_sql_uf_list_kicked_by_user(unsigned int usernumber, forumlist_t **p )
 	return -1;
     }
     rows = mysql_num_rows(res);
-   
+
     *p = NULL;
 
     for (i = 0; i < rows; i++) {
@@ -468,9 +498,9 @@ mono_sql_uf_list_kicked_by_user(unsigned int usernumber, forumlist_t **p )
 	if (sscanf(row[0], "%u", &forum_id) == -1)
 	    continue;
 
-        e.forumnum = forum_id;
-        /* strcpy( e.forumname, row[1] ); */
-        add_to_forumlist( e, p );
+	e.forumnum = forum_id;
+	/* strcpy( e.forumname, row[1] ); */
+	add_to_forumlist(e, p);
 
 	/* do something ! */
     }
