@@ -130,9 +130,10 @@ new_user(const char *hostname)
     strcpy(username, usersupp->username);
     log_it("newuserlog", "Created user '%s' from host '%s'", usersupp->username, hname);
     writeuser(usersupp, 0);
-  mono_sql_u_update_registration( usersupp->usernum,
+    mono_sql_u_update_registration( usersupp->usernum,
         usersupp->RGname, usersupp->RGaddr, usersupp->RGzip, usersupp->RGcity,
         usersupp->RGstate, usersupp->RGcountry, usersupp->RGphone );
+    mono_sql_u_update_hidden( usersupp->usernum, usersupp->hidden_info );
     xfree(usersupp);
 
     cprintf("Press a key to continue.. \1a");

@@ -1324,6 +1324,7 @@ _hidden_info_menu(const unsigned int a, const long b, void *c)
 {
     cprintf("\1f\1cToggle hidden info.\1a\n");
     toggle_hidden_info(usersupp);
+    mono_sql_u_update_hidden( usersupp->usernum, usersupp->hidden_info );
 }
 
 void

@@ -52,6 +52,7 @@ enter_reginfo()
     mono_sql_u_update_registration( usersupp->usernum,
         usersupp->RGname, usersupp->RGaddr, usersupp->RGzip, usersupp->RGcity,
 	usersupp->RGstate, usersupp->RGcountry, usersupp->RGphone );
+	mono_sql_u_update_hidden( usersupp->usernum, usersupp->hidden_info );
     }
 }
 
@@ -253,7 +254,7 @@ toggle_hidden_info(user_t * user)
 
     if (!(user->flags & US_NOHIDE)) {
 	user->hidden_info = H_REALNAME | H_ADDRESS | H_CITY | H_COUNTRY
-	    | H_PHONE | H_EMAIL | H_URL | H_BIRTHDAY;
+	    | H_PHONE | H_EMAIL | H_URL | H_BIRTHDAY | H_ZIP;
 	user->flags ^= US_NOHIDE;
     }
     do {
@@ -281,7 +282,7 @@ toggle_hidden_info(user_t * user)
         cprintf("from \1r%s\1c\n", user->lasthost);
 
 	more(MENUDIR "/menu_hide_info", 1);
-	cmd = get_single_quiet("123456789anq? ");
+	cmd = get_single_quiet("1234567890anq? ");
 
 	switch (cmd) {
 	    case '1':
@@ -311,9 +312,12 @@ toggle_hidden_info(user_t * user)
 	    case '9':
 		user->flags ^= US_HIDDENHOST;
 		break;
+	    case '0':
+		user->hidden_info ^= H_ZIP;
+		break;
 	    case 'a':
 		user->hidden_info = H_REALNAME | H_ADDRESS | H_CITY | H_COUNTRY
-		    | H_PHONE | H_EMAIL | H_URL | H_BIRTHDAY;
+		    | H_PHONE | H_EMAIL | H_URL | H_BIRTHDAY | H_ZIP;
 		user->flags |= US_HIDDENHOST;
 		break;
 	    case 'n':
