@@ -72,6 +72,7 @@ dest_forumlist(forumlist_t * list)
     }
     return 0;
 }
+
 int
 add_to_forumlist(forumlist_t element, forumlist_t ** list)
 {
@@ -96,6 +97,7 @@ add_to_forumlist(forumlist_t element, forumlist_t ** list)
     }
     return 0;
 }
+
 int
 mono_sql_uf_add_entry(unsigned int user_id, unsigned int forum_id)
 {
@@ -163,7 +165,11 @@ mono_sql_uf_list_hosts_by_user(unsigned int usernumber, forumlist_t ** p)
     MYSQL_RES *res;
     MYSQL_ROW row;
 
-    ret = mono_sql_query(&res, "SELECT forum_id FROM " UF_TABLE " WHERE user_id=%u AND host='y'", usernumber);
+    ret = mono_sql_query(&res, "SELECT forum_id,forum.name "
+                               "FROM forum,userforum "
+                               "WHERE forum.id = userforum.forum_id "
+                                 "AND userforum.user_id=%u "
+                                 "AND userforum.host='y'", usernumber);
 
     if (ret == -1) {
 	return -1;
@@ -178,10 +184,8 @@ mono_sql_uf_list_hosts_by_user(unsigned int usernumber, forumlist_t ** p)
 	    break;
 	if (sscanf(row[0], "%u", &forum_id) == -1)
 	    continue;
-
-	e.forum_id = forum_id;
-	if (shm)
-	    strcpy(e.name, shm->rooms[forum_id].name);
+        e.forum_id = forum_id;
+        strcpy(e.name, row[1] );
 	add_to_forumlist(e, p);
     }
     mysql_free_result(res);

@@ -22,7 +22,7 @@ int
 mono_sql_f_write_quad(unsigned int num, room_t * const q)
 {
     printf("debug: writing quad %u\n", num);
-    mono_sql_f_remove_forum(num);
+    mono_sql_f_kill_forum(num);
     return mono_sql_f_add_old_forum(num, q);
 }
 
@@ -73,11 +73,12 @@ mono_sql_f_add_old_forum(unsigned int forum_id, room_t * const q)
 
     int ret;
     MYSQL_RES *res;
+    char *esc_name = NULL;
 
-    char *esc_name;
-
-    if (escape_string(q->name, &esc_name) != 0)
-	esc_name = q->name;
+    if (escape_string(q->name, &esc_name) != 0)  {
+        printf( "could not escape forumname (#%u).\n", forum_id );
+        return -1;
+    }
 
     ret = mono_sql_query(&res, "INSERT INTO " F_TABLE
 			 " (id,name,category_old,flags,highest,lowest,generation,roominfo,maxmsg) "
@@ -95,6 +96,29 @@ mono_sql_f_add_old_forum(unsigned int forum_id, room_t * const q)
 
 }
 
+int
+mono_sql_f_rename_forum( unsigned int forum_id, char *newname )
+{
+    int ret;
+    MYSQL_RES *res;
+    char *esc_name = NULL;
+
+    if (escape_string( newname, &esc_name) != 0)  {
+        printf( "could not escape forumname (#%u).\n", forum_id );
+        return -1;
+    }
+
+    ret = mono_sql_query(&res, "UPDATE " F_TABLE " SET name=%s WHERE id=%u" ,
+           esc_name, forum_id );
+
+    xfree(esc_name);
+    mysql_free_result(res);
+
+    if (ret != 0) {
+	return -1;
+    }
+    return 0;
+}
 
 int
 mono_sql_f_update_forum(unsigned int forum_id, const room_t * q)
@@ -119,7 +143,7 @@ mono_sql_f_update_forum(unsigned int forum_id, const room_t * q)
 
 }
 int
-mono_sql_f_remove_forum(int forum_id)
+mono_sql_f_kill_forum(int forum_id)
 {
 
     MYSQL_RES *res;
