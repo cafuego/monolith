@@ -79,13 +79,16 @@ static char *munchies[] = {
 static char *munchmatch[] = {
     "[Cc][Oo][Kk][Ii][Ee]", "[Pp][Ee][Tt][Ii][Tt] [Ff][Oo][Uu][Rr]",
     "[Bb][Ii][Ss][Cc][Uu][Ii][Tt]", "[Ww][Aa][Ff][Ff][Ll][Ee]",
-    "[Pp][Ii][Ee][Cc][Ee] [Oo][Ff] [Pp][Ii][Ee]", "[Kk][Ii][Ss][Ss]|[Ss][Mm][Oo][Oo][Cc][Hh]",
+    "[Pp][Ii][Ee][Cc][Ee] [Oo][Ff] [Pp][Ii][Ee]", "[Kk][Ii][Ss][Ss].*[^?]$|[Ss][Mm][Oo][Oo][Cc][Hh].*[^?]$",
     "[Bb][Ii][Ss][Cc][Oo][Tt][Tt][Ii]", "[Bb][Uu][Tt][Tt][Ee][Rr][Ff][Ii][Nn][Gg][Ee][Rr]"
 };
 
 static char *no = "[Nn][Oo][Tt. ]";
 static char *why = "[Ww][Hh][Yy][?. ]";
 
+/*
+ * Getting scarier by the hour today.
+ */
 static void
 cthulhu()
 {
@@ -94,16 +97,26 @@ cthulhu()
 
     food = rand() % 7;
     strcpy(april_fools, "");
+
+    /*
+     * Do some scary matching in the while() loop
+     * to make sure we get what we need. :)
+     */
     do {
         cprintf("\n\1w666.\1yCthulhu\1w> \1rGimme a %s! \1w", munchies[food]);
         getline(april_fools, 64, 1);
     } while( 
-        !(shix_strmatch(april_fools, no)) &&
-        !(shix_strmatch(april_fools, why)) &&
-        !(shix_strmatch(april_fools, munchmatch[food]))
+        (
+            (food == 5) &&
+            (shix_strmatch(april_fools, no) || shix_strmatch(april_fools, why))
+        ) || (
+            !(shix_strmatch(april_fools, no)) &&
+            !(shix_strmatch(april_fools, why)) &&
+            !(shix_strmatch(april_fools, munchmatch[food]))
+        )
     );
 
-    if( food == 5) 
+    if(food == 5) 
         cprintf(_("\n\1gI love you too! ;)\n"));
     else if( shix_strmatch(april_fools, no) )
         cprintf(_("\n\1g*pout*  ):\n"));
