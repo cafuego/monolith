@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Monolith 2.0\n"
 "Report-Msgid-Bugs-To: webmaster@monolith.cc.com.au\n"
-"POT-Creation-Date: 2005-03-24 16:58+0100\n"
+"POT-Creation-Date: 2005-03-26 14:59+0100\n"
 "PO-Revision-Date: 2005-03-21 HO:MI+ZONE\n"
 "Last-Translator: Michel Oosterhof <michel@monolith.cc.com.au>\n"
 "Language-Team: TAALTEAM <LL@monolith.cc.com.au>\n"
@@ -835,8 +835,8 @@ msgstr ""
 "fgJe hebt y%d gnieuwe pWeb g%s %s w(gToets w<r^w> gom te antwoordenw)a\n"
 
 #: src/fun.c:61 src/fun.c:69 src/fun.c:71
-#, c-format
-msgid "fgNo unread %s.a"
+#, fuzzy
+msgid "fgNo unread messages.a"
 msgstr "fgGeen ongelezen %s.a"
 
 #: src/fun.c:121
@@ -1042,12 +1042,12 @@ msgstr "fgJe hebt een nieuw priv %s in pMail>\n"
 
 #: src/main.c:864
 #, fuzzy, c-format
-msgid "fgYou have r%d gnew private %s in pMail>\n"
+msgid "fgYou have r%d gnew private messages in pMail>\n"
 msgstr "fgJe hebt r%d gnieuwe poststukken in pMail>\n"
 
 #: src/main.c:866
-#, fuzzy, c-format
-msgid "fgYou have rnog new Mail %s.a\n"
+#, fuzzy
+msgid "fgYou have rnog new Mail messages.a\n"
 msgstr "fgJe hebt rgeeng nieuwe poststukken.a\n"
 
 #: src/messages.c:500
@@ -1112,9 +1112,18 @@ msgstr "fgBekende %s.\n"
 msgid "fgLogout.a"
 msgstr "fgUitloggen.a"
 
+#: src/read_menu.c:286
+msgid "frCtrlw-rNw-gEnter message.a\n"
+msgstr ""
+
+#: src/read_menu.c:291
+#, fuzzy
+msgid "fgRead old messages.a\n"
+msgstr "fgLees berichten vooruit.a\n"
+
 #: src/read_menu.c:297
-#, c-format
-msgid "fgProfile an %s.a\n"
+#, fuzzy, c-format
+msgid "fgProfile a %s.a\n"
 msgstr "fgBekijk een %s.a\n"
 
 #: src/read_menu.c:303
@@ -1122,18 +1131,26 @@ msgid "frAsk a Question.a\n"
 msgstr "frStel een vraag.a\n"
 
 #: src/read_menu.c:313
-#, c-format
-msgid "fgRead %s reverse.a\n"
-msgstr ""
+#, fuzzy
+msgid "fgRead messages reverse.a\n"
+msgstr "fgLees berichten vooruit.a\n"
 
 #: src/read_menu.c:318
 msgid "fgInterBBS Wholist.a\n"
 msgstr ""
 
 #: src/read_menu.c:325
-#, c-format
-msgid "fgSearch %s\n"
+#, fuzzy
+msgid "fgSearch messages\n"
 msgstr "fgZoek %s\n"
+
+#: src/read_menu.c:330
+#, fuzzy, c-format
+msgid ""
+"fgSkipping this %s.\n"
+"\n"
+"a"
+msgstr "fgStuur %s %s.a\n"
 
 #: src/read_menu.c:336
 #, c-format
@@ -1146,8 +1163,8 @@ msgid "fg%s Wholist.\n"
 msgstr "fg%s Wie-lijst.\n"
 
 #: src/read_menu.c:363
-#, c-format
-msgid "fgWhich %s are online?a\n"
+#, fuzzy
+msgid "fgWho is online?a\n"
 msgstr "fgWelke %s zijn aanwezig?a\n"
 
 #: src/read_menu.c:368 src/read_menu.c:888
@@ -1179,13 +1196,11 @@ msgid "fgZap %s.a\n"
 msgstr "fgVergeet %s.a\n"
 
 #: src/read_menu.c:438
-#, c-format
-msgid "fgJump a number of %s back from the Last Read %s.a\n"
+msgid "fgJump a number of messages back from the Last Read Message.a\n"
 msgstr ""
 
 #: src/read_menu.c:439 src/read_menu.c:451 src/read_menu.c:940
-#, c-format
-msgid "fgHow many %s back shall I jump?c "
+msgid "fgHow many messages back shall I jump?c "
 msgstr ""
 
 #: src/read_menu.c:444 src/read_menu.c:456 src/read_menu.c:945
@@ -1195,7 +1210,7 @@ msgstr ""
 
 #: src/read_menu.c:450
 #, c-format
-msgid "frJump a number of %s back from the Last %s in this %s.a\n"
+msgid "frJump a number of messages back from the Last %s in this %s.a\n"
 msgstr ""
 
 #: src/read_menu.c:486
@@ -1226,23 +1241,70 @@ msgstr ""
 msgid "fgList all commands.a\n"
 msgstr "fgLijst van alle commandos.a\n"
 
+#: src/read_menu.c:775
+#, fuzzy, c-format
+msgid ""
+"fgKnown %sw:\n"
+"\n"
+msgstr "fgBekende %s.\n"
+
+#: src/read_menu.c:780
+#, fuzzy, c-format
+msgid ""
+"fgAll %sw:\n"
+"\n"
+msgstr "fgAlle %sw:\n"
+
+#: src/read_menu.c:859
+#, fuzzy
+msgid "fwSearch messages\n"
+msgstr "fgZoek %s\n"
+
 #: src/read_menu.c:894
 msgid "fgWhich aliens are online?a\n"
 msgstr "fgWelke gebruikers zijn online?a\n"
 
 #: src/read_menu.c:939
-#, c-format
-msgid "fgJump a number of %s back from the current %s.a\n"
+msgid "fgJump a number of messages back from the current message.a\n"
 msgstr ""
 
 #: src/read_menu.c:954
-#, c-format
-msgid "fgJump a number of %s forward from the current %s.a\n"
+msgid "fgJump a number of messages forward from the current message.a\n"
 msgstr ""
 
 #: src/read_menu.c:955
+#, fuzzy
+msgid "fgHow many messages forward shall I jump?c "
+msgstr "fgLees berichten vooruit.a\n"
+
+#: src/rooms.c:534
+msgid "frErase all messages in this forum? w(rrecommendedw) (rYw/rnw) c"
+msgstr ""
+
+#: src/rooms.c:1402
+#, fuzzy, c-format
+msgid "fw(g%ld messagesw)a\n"
+msgstr "fgLees berichten vooruit.a\n"
+
+#: src/rooms.c:1409
 #, c-format
-msgid "fgHow many %s forward shall I jump?c "
+msgid "fgRead next %s with unread messages.\n"
+msgstr ""
+
+#: src/rooms.c:1412
+msgid "fw (gpreviously skippedw)"
+msgstr ""
+
+#: src/rooms.c:1415
+#, c-format
+msgid ""
+"\n"
+"fw(g%ld messages, %ld unreadw)g  Read new messages.a\n"
+msgstr ""
+
+#: src/rooms.c:1418
+#, c-format
+msgid "fb*** gThe %sw<rIw>gnfo has changedb ***a\n"
 msgstr ""
 
 #: src/routines2.c:563
