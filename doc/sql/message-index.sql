@@ -8,7 +8,7 @@ CREATE TABLE message-index (
  
    sender	INT UNSIGNED NOT NULL,
    recipient	INT UNSIGNED NOT NULL,
-   type		ENUM( 'mail', 'post', 'x', 'chat' ),
+   type		ENUM( 'mail', 'post', 'broadcast', 'x', 'chat' ),
 
    message_id	INT UNSIGNED NOT NULL,
    flag		ENUM( 'normal','anon','alias','forced','yell','auto','roomaide','tech','sysop','emp','admin' ),
