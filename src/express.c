@@ -741,16 +741,9 @@ check_x_permissions(const char *x_recip_name, const int X_PARAM, char override)
 		override = OR_NO_PERMS;		/* this will cause the calling funx to return */
 		break;
 	    }
-/* read the btmp and get the destination record */
-	    x_recip_btmp = mono_read_btmp(x_recip_name);
-	    if (x_recip_btmp == NULL && (!WEB)) {
-		cprintf("%s", (check_user(x_recip_name) == TRUE) ?
-		 "\1f\1rThat user is not online.\1a\n" : "\1f\1rNo such user.\1a\n");
-		flush_input();
-		override = OR_NO_PERMS;
-		break;
-	    }
+
 /* (if web x) does user exist? */
+/* This must be checked before we try to read a btmp entry!!! */
             if(WEB) {
                 if( check_user(x_recip_name) == FALSE ) {
 		    cprintf("\1f\1rNo such %s.\1a\n", config.user);
@@ -765,6 +758,15 @@ check_x_permissions(const char *x_recip_name, const int X_PARAM, char override)
                     break;
                 }
             }
+/* read the btmp and get the destination record */
+	    x_recip_btmp = mono_read_btmp(x_recip_name);
+	    if (x_recip_btmp == NULL) {
+		cprintf("%s", (check_user(x_recip_name) == TRUE) ?
+		 "\1f\1rThat user is not online.\1a\n" : "\1f\1rNo such user.\1a\n");
+		flush_input();
+		override = OR_NO_PERMS;
+		break;
+	    }
 /* deleted/degraded recipient? */
 	    if (x_recip_btmp->priv & (PRIV_DELETED | PRIV_DEGRADED)) {
 		cprintf("\1f\1rYou cannot send messages to degraded users.\1a\n");
