@@ -284,53 +284,53 @@ function list_x_messages($username,$location) {
 function colorize($doing) {
 
     
-    echo "<!-- $doing -->\n";
+    echo "<!-- 1: $doing -->\n";
     $doing = QuoteMeta($doing);
-    echo "<!-- $doing -->\n";
+    echo "<!-- 2: $doing -->\n";
 
     // Convert to HTML colour codes.
     // 
-    $doing = strtr($doing, "f", "");
+    $doing = strtr($doing, "\1f", "");
     echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "a", "");
+    $doing = strtr($doing, "\1a", "");
     echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "d", "");
+    $doing = strtr($doing, "\1d", "");
     echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "D", "");
+    $doing = strtr($doing, "\1D", "");
     echo "<!-- $doing -->\n";
 
     // Remove bg colours.
     //
-    $doing = strtr($doing, "W", "");
+    $doing = strtr($doing, "\1W", "");
     echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "Y", "");
+    $doing = strtr($doing, "\1Y", "");
     echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "G", "");
+    $doing = strtr($doing, "\1G", "");
     echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "C", "");
+    $doing = strtr($doing, "\1C", "");
     echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "B", "");
+    $doing = strtr($doing, "\1B", "");
     echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "P", "");
+    $doing = strtr($doing, "\1P", "");
     echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "R", "");
+    $doing = strtr($doing, "\1R", "");
     echo "<!-- $doing -->\n";
 
     // Fix fg colours.
     //
-    $doing = strtr($doing, "w", "</font><font color=\"#ffffff\">");	// White.
+    $doing = strtr($doing, "\1w", "</font><font color=\"#ffffff\">");	// White.
     echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "y", "</font><font color=\"#ffff00\">");	// Yellow.
+    $doing = strtr($doing, "\1y", "</font><font color=\"#ffff00\">");	// Yellow.
     echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "g", "</font><font color=\"#00ff00\">");	// Green.
+    $doing = strtr($doing, "\1g", "</font><font color=\"#00ff00\">");	// Green.
     echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "c", "</font><font color=\"#00ffff\">");	// Cyan.
+    $doing = strtr($doing, "\1c", "</font><font color=\"#00ffff\">");	// Cyan.
     echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "b", "</font><font color=\"#0000ff\">");	// Blue.
+    $doing = strtr($doing, "\1b", "</font><font color=\"#0000ff\">");	// Blue.
     echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "p", "</font><font color=\"#ff00ff\">");	// Purple.
+    $doing = strtr($doing, "\1p", "</font><font color=\"#ff00ff\">");	// Purple.
     echo "<!-- $doing -->\n";
-    $doing = strtr($doing, "r", "</font><font color=\"#ff0000\">");	// Red.
+    $doing = strtr($doing, "\1r", "</font><font color=\"#ff0000\">");	// Red.
     echo "<!-- $doing -->\n";
 
     return $doing;

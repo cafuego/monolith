@@ -51,6 +51,7 @@ function show_wholist($username,$location) {
 
             if($interface != "web" ) {
                 $doing = htmlspecialchars($doing);
+                $doing = rawurlencode($doing);
                 $doing = colorize($doing);
             }
 
