@@ -130,7 +130,7 @@ read_all_users()
             continue;
         }
         if( (mono_sql_write_profile(user->usernum, profile)) == -1) {
-            fprintf(stdout, "Error: write_profile(%u, %X)\n", user->usernum, profile);
+            fprintf(stdout, "Error: write_profile(%u, %X)\n", user->usernum, *profile);
             fflush(stdout);
         }
         xfree(profile);
