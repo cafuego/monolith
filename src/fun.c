@@ -51,6 +51,8 @@ random_goto()
 {
 
     char *thegoto;
+    int ret;
+    int timescalled;
 
     if((rand() % 10) == 1) {
 	thegoto = mono_sql_random_goto();
@@ -60,8 +62,12 @@ random_goto()
             cprintf(_("\1f\1gNo unread %s.\1a"), config.message_pl );
 	xfree(thegoto);
 
-    } else if ((rand() % 1000) == 666 && usersupp->timescalled > 99) { 
-        cthulhu();
+    } else if ((rand() % 1000) == 666 ) {
+        ret = mono_sql_u_get_login_count( usersupp->usernum, &timescalled );
+        if ( ret == 0 && timescalled > 99 ) 
+            cthulhu();
+	else
+        cprintf(_("\1f\1gNo unread %s.\1a"), config.message_pl );
     } else
         cprintf(_("\1f\1gNo unread %s.\1a"), config.message_pl );
 
