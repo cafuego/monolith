@@ -72,17 +72,17 @@ function read_message($username, $quad, $current, $direction) {
                 addimage( "Reading message $m_id in $forum" );
                 print "<p align=\"left\"><font color=\"#00CC00\">From</font> $user <font color=\"#00CC00\">on</font> <font color=\"#00CC00\">$date CET</font><br><font color=\"#FFFF00\">Subject</font>: <font color=\"#FFFF00\">$subject</font></p>\n";
                 print "<pre><font color=\"#00ffff\">$content</font></pre>\n";
-                print "<p align=\"left\"><font color=\"#FFFFFF\">$f_id.</font><font color=\"#00CC00\">$forum message $m_id of $highest</font>&gt;</p>\n";
+                print "<p align=\"left\"><font color=\"#FFFFFF\">$f_id.</font><font color=\"#00CC00\">$forum</font> (<font color=\"#00CC00\">message $m_id of $highest</font>&gt;</p>\n";
                 print "<p>&nbsp;<br></p>\n";
 
                 // Don't let guests be able to post.
                 //
                 echo "<div align=\"center\">\n";
-                if($m_id != $highest) {
+                if($m_id != $highest)
                     addbutton("Read Next", "/bbs/index.phtml/r/$quad/$m_id/n");
-                    addbutton("Read Previous", "/bbs/index.phtml/r/$quad/$m_id/p");
-                } else
-                    addbutton("Read Previous (no more unread messages)", "/bbs/index.phtml/r/$quad/$m_id/p");
+                else
+                    addbutton("No unread messages", "");
+                addbutton("Read Previous", "/bbs/index.phtml/r/$quad/$m_id/p");
                 // if( $username != "Guest" ) {
                 //    addbutton("        ", "");
                 //    addbutton("Reply to this message", "/bbs/index.phtml/f/$quad/$m_id");
