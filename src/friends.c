@@ -181,7 +181,7 @@ menu_friend(int param)
 	    case 'q':
 		cprintf("\1f\1gQuit.\n");
 //		update_friends_cache();
-		start_user_cache();
+		start_user_cache(usersupp->usernum);
 		return;
 		break;
 

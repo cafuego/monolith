@@ -808,7 +808,7 @@ setup_express()
 	xmsgb[i] = NULL;
     xmsgp = XLIMIT;
     mono_find_xslot(usersupp->username)->override = OR_FREE;
-    start_user_cache();
+    start_user_cache(usersupp->usernum);
 //    update_friends_cache();
     return;
 }
