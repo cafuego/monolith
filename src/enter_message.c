@@ -55,6 +55,7 @@ static void set_wholist_posting_flag(unsigned long);
 static int get_mail_names(const int, userlist_t **, message_header_t *);
 static void get_autobanner_info(message_header_t *);
 static int get_automail_info(message_header_t *, userlist_t **);
+static void your_forum_is_boring_zzzz_form_letter(FILE *, char *, int);
 
 int
 enter_message(unsigned int forum, int mode, unsigned long banner_flag, const char *automail_name)
@@ -598,7 +599,7 @@ change_forum_info(void)
 /*
  * NOTE:  uses both temp files!  (temp and tmpname) due to recursive nature
  * of quad_lizard's call to enter_message for each your_forum_is_boring_zzzz() 
- * (see static decl below) 
+ * (see static decl above) 
  */
 
 void
@@ -613,16 +614,14 @@ quad_lizard(message_header_t * header)
     user_t *qlPtr = NULL;
     message_header_t last_message;
 
-    static void your_forum_is_boring_zzzz_form_letter(FILE *, char *, int);
-
     time(&timenow);
     log_it("quadlizard", "Starting up!");
 
-    cprintf("\n\1f\1rMail idle forum ql's?  (y/n) ");
-    mail_the_lamer_qls = yesno();
+    cprintf("\n\1f\1rMail idle %ss? \1w(\1ry\1w/\1rN\1w) \1c", config.roomaide);
+    mail_the_lamer_qls = yesno_default(NO);
 
-    strcpy(header->author, "Quad Lizard");
-    strcpy(header->subject, "\1rList of quad \"issues\"");
+    sprintf(header->author, "%s Lizard", config.forum);
+    sprintf(header->subject, "\1rList of %s 'issues'", config.forum);
     header->f_id = SYSOP_FORUM;
 
     fp2 = xfopen(tmpname, "w", TRUE);
