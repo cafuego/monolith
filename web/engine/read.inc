@@ -60,21 +60,18 @@ function read_message($username, $quad, $current, $direction) {
                 $alias = htmlspecialchars($alias);
                 $subject = htmlspecialchars($subject);
                 $content = htmlspecialchars($content);
+                $content = nl2br($content);
+                $content = colorize($content);
                 $forum = htmlspecialchars($forum);
                 $user = format_username($username,$user,$alias,$flag);
                 $subject = format_subject($subject);
-
-                // Fix (and colourize) content.
-                //
-                $content = nl2br($content);
-                $content = colorize($content);
 
                 // Show message.
                 //
                 print "<h3 align=\"center\">Listing message $m_id in $forum</h3>\n<p> </p>\n";
                 print "<div style=\"margin-left: 150;\">\n";
                 print "<p align=\"left\"><font color=\"#00CC00\">From</font> $user <font color=\"#00CC00\">on</font> <font color=\"#00CC00\">$date CET</font><br><font color=\"#FFFF00\">Subject</font>: <font color=\"#FFFF00\">$subject</font></p>\n";
-                print "<font color=\"#00CCCC\">$content</font>\n";
+                print "<p style=\"font: 12pt Courier;\"><font color=\"#00CCCC\">$content</font></p>\n";
                 print "<p align=\"left\"><font color=\"#FFFFFF\">$f_id.</font><font color=\"#00CC00\">$forum message #$m_id</font>&gt;</p>\n";
                 print "</div>\n";
                 print "<p> </p>\n";

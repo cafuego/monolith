@@ -61,6 +61,8 @@ function post_reply($username,$quad,$current) {
     $alias = htmlspecialchars($alias);
     $subject = htmlspecialchars($subject);
     $content = htmlspecialchars($content);
+    $content = nl2br($content);
+    $content = colorize($content);
     $forum = htmlspecialchars($forum);
     $user = format_username($username,$user,$alias,$flag);
     $subject = format_subject($subject);
@@ -70,7 +72,7 @@ function post_reply($username,$quad,$current) {
     PRINT "<h3 align=\"center\">Replying to message $m_id in $forum</h3>\n<p> </p>\n";
     PRINT "<div style=\"margin-left: 150;\">\n";
     PRINT "<p align=\"left\" class=\"reply\"><font color=\"#00CC00\">Original from</font> $user <font color=\"#00CC00\">on</font> <font color=\"#00CC00\">$date CET</font></p>\n";
-    PRINT "<font color=\"#00CCCC\"><pre class=\"reply\">$content</pre></font>\n";
+    PRINT "<p class=\"reply\"><font color=\"#00CCCC\">$content</font></p>\n";
     PRINT "<hr size=\"1\" width=\"400\">\n<br>\n";
 
     // Reply form.
