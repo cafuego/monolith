@@ -74,6 +74,8 @@ static void _set_date_display(const unsigned int, const long, const char *);
 static void _set_locale(const unsigned int, const long, const char *);
 static float _get_monoholic_rating(user_t *user);
 static char * _get_monoholic_flag(user_t *user);
+static void _print_priv_flags(user_t *user, forumlist_t *p);
+static void _print_user_flags(user_t *user);
 
 
 /* code */
@@ -327,54 +329,28 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
 
     mono_sql_uf_list_hosts_by_user(user->usernum, &p);
 
-    cprintf("\n\1y\1f%s\1g ", user->username);
+    /*
+     * Time to rearrange flags a wee bit...
+     * print monoholic/vanify flags right behind username and
+     * move actual flags to a line of their own (Except newbie flag).
+    *
+     * First off, print actual priv flags (if they exist)
+     */
+    (void) _print_priv_flags(user, p);
 
-#ifndef NO_MONOHOLIC_FLAG
-    cprintf("%s ", _get_monoholic_flag(user));
-#endif
+    /*
+     * print username.
+     */
+    cprintf("\1f\1y%s\1g ", user->username);
 
-    if (user->priv & PRIV_WIZARD)
-	cprintf("\1w(*** %s%s \1w***) ", WIZARDCOL, config.wizard);
-    else if (user->priv & PRIV_SYSOP)
-	cprintf("\1w(** %s%s \1w**) ", SYSOPCOL, config.sysop);
-    else if (user->priv & PRIV_TECHNICIAN)
-	cprintf("\1w(* %s%s \1w*) ", PROGRAMMERCOL, config.programmer);
-    else if (p != NULL)
-#ifdef OLD
-	else
-	if (user->flags & US_ROOMAIDE)
-#endif
-	    cprintf("\1w(* %s%s \1w*) ", ROOMAIDECOL, config.roomaide);
-    if (user->flags & US_GUIDE)
-	cprintf("\1w( %s%s \1w) ", GUIDECOL, config.guide);
-    if (user->priv & PRIV_NEWBIE)
-	cprintf("\1w- \1pNEW \1w- ", GUIDECOL, config.guide);
-    cprintf("\1f");
-    if (!(user->priv & PRIV_VALIDATED))
-	cprintf("\1y* Unvalidated * ");
-    if (user->priv & PRIV_DEGRADED)
-	cprintf("\1w[ \1rDegraded \1w] ");
-    if (user->priv & PRIV_TWIT)
-	cprintf("\1w[ \1rCURSED \1w] ");
-    if (user->priv & PRIV_DELETED)
-	cprintf("\1w[ \1rDeleted \1w] ");
-    if (user->xtrapflag)
-	cprintf("\1f%s", user->xtrapflag);
-    if (user->flags & US_COOL)
-	cprintf("\1f\1w*COOL AS ICE* ");
-    if (user->flags & US_DONATOR)
-	cprintf("\1g$ DONATOR $ ");
+    /*
+     * Now, print monoholic flag, customisable flags, user status flags...
+     */
+    (void) _print_user_flags(user);
 
-    IFSYSOP {
-	if (user->flags & US_LAG)
-	    cprintf("\1r[ \1wLAG \1r] ");
-    }
-    IFWIZARD {
-	if (user->flags & US_IAMBAD)
-	    cprintf("\1r[ \1wX-LOG\1r ] ");
-    }
-    cprintf("\n\1a\1g");
-
+    /*
+     * Continue with rest of profile...
+     */
     dis_regis(user, ((viewing_user->priv >= PRIV_SYSOP) || control));
 
     cprintf("\1f\1cFlying: %s\1a\n", user->doing);
@@ -1180,45 +1156,112 @@ _get_monoholic_flag(user_t *user)
     if((var < 1.8) || (user->timescalled < 666))
         return "";
     if(var < 1.8)
-        return "\1f\1w* \1yAspiring Monoholic \1w*";
+        return "\1f\1w* \1yAspiring Monoholic \1w* ";
     if(var < 2)
-        return "\1f\1w* \1yMonoholic \1w*";
+        return "\1f\1w* \1yMonoholic \1w* ";
     if(var < 2.5)
-        return "\1f\1w* \1gDetermined Monoholic \1w*";
+        return "\1f\1w* \1gDetermined Monoholic \1w* ";
     if(var < 3)
-        return "\1f\1w* \1gDedicated Monoholic \1w*";
+        return "\1f\1w* \1gDedicated Monoholic \1w* ";
     if(var < 3.5)
-        return "\1f\1w* \1gCommitted Monoholic \1w*";
+        return "\1f\1w* \1gCommitted Monoholic \1w* ";
     if(var < 4)
-        return "\1f\1w* \1gGreat Monoholic \1w*";
+        return "\1f\1w* \1gGreat Monoholic \1w* ";
     if(var < 5)
-        return "\1f\1w* \1gGrand Monoholic \1w*";
+        return "\1f\1w* \1gGrand Monoholic \1w* ";
     if(var < 6)
-        return "\1f\1w* \1gHigh Monoholic \1w*";
+        return "\1f\1w* \1gHigh Monoholic \1w* ";
     if(var < 7)
-        return "\1f\1w* \1gSupreme Monoholic \1w*";
+        return "\1f\1w* \1gSupreme Monoholic \1w* ";
     if(var < 8)
-        return "\1f\1w* \1bGreat High Monoholic \1w*";
+        return "\1f\1w* \1bGreat High Monoholic \1w* ";
     if(var < 9)
-        return "\1f\1w* \1bGrand High Monoholic \1w*";
+        return "\1f\1w* \1bGrand High Monoholic \1w* ";
     if(var < 10)
-        return "\1f\1w* \1bSupreme High Monoholic \1w*";
+        return "\1f\1w* \1bSupreme High Monoholic \1w* ";
     if(var < 11)
-        return "\1f\1w* \1bExalted Great Monoholic \1w*";
+        return "\1f\1w* \1bExalted Great Monoholic \1w* ";
     if(var < 12)
-        return "\1f\1w* \1bExalted Grand Monoholic \1w*";
+        return "\1f\1w* \1bExalted Grand Monoholic \1w* ";
     if(var < 13)
-        return "\1f\1w* \1bExalted High Monoholic \1w*";
+        return "\1f\1w* \1bExalted High Monoholic \1w* ";
     if(var < 14)
-        return "\1f\1w* \1bExalted Supreme Monoholic \1w*";
+        return "\1f\1w* \1bExalted Supreme Monoholic \1w* ";
     if(var < 15)
-        return "\1f\1w* \1pSupreme Exalted High Monoholic \1w*";
+        return "\1f\1w* \1pSupreme Exalted High Monoholic \1w* ";
     if(var < 16)
-        return "\1f\1w* \1pSupreme Exalted Great Monoholic \1w*";
+        return "\1f\1w* \1pSupreme Exalted Great Monoholic \1w* ";
     if(var < 17)
-        return "\1f\1w* \1pSupreme Exalted Grand Monoholic \1w*";
+        return "\1f\1w* \1pSupreme Exalted Grand Monoholic \1w* ";
     if(var < 18)
-        return "\1f\1w* \1pSupreme Exalted High Monoholic \1w*";
+        return "\1f\1w* \1pSupreme Exalted High Monoholic \1w* ";
     return "\1f\1w(* \1rPenultimate Monoholic \1w*)";
 
+}
+
+static void
+_print_priv_flags(user_t *user, forumlist_t *p)
+{
+    cprintf("\n");
+    if (user->priv & PRIV_WIZARD)
+	cprintf("\1f\1w(*** %s%s \1w***) ", WIZARDCOL, config.wizard);
+    else if (user->priv & PRIV_SYSOP)
+	cprintf("\1f\1w(** %s%s \1w**) ", SYSOPCOL, config.sysop);
+    else if (user->priv & PRIV_TECHNICIAN)
+	cprintf("1f\1w(* %s%s \1w*) ", PROGRAMMERCOL, config.programmer);
+#ifndef OLD
+    else if (p != NULL)
+#else
+    else if (user->flags & US_ROOMAIDE)
+#endif
+	cprintf("\1f\1w(* %s%s \1w*) ", ROOMAIDECOL, config.roomaide);
+    if (user->flags & US_GUIDE)
+	cprintf("\1f\1w( %s%s \1w) ", GUIDECOL, config.guide);
+    cprintf("\1f");
+    if (user->flags & US_COOL)
+	cprintf("\1f\1w*COOL AS ICE* ");
+    if (user->flags & US_DONATOR)
+	cprintf("\1g$ DONATOR $ ");
+    cprintf("\n\1f\1g");
+    return;
+}
+
+static void
+_print_user_flags(user_t *user)
+{
+
+#ifndef NO_MONOHOLIC_FLAG
+    cprintf("%s ", _get_monoholic_flag(user));
+#endif
+
+    if (user->priv & PRIV_NEWBIE)
+	cprintf("\1w- \1yNEW \1w- ", GUIDECOL, config.guide);
+
+    if (!(user->priv & PRIV_VALIDATED))
+	cprintf("\1w- \1yUnvalidated \1w- ");
+
+    if (user->priv & PRIV_DEGRADED)
+	cprintf("\1w[ \1rDegraded \1w] ");
+
+    if (user->priv & PRIV_TWIT)
+	cprintf("\1w[ \1rCURSED \1w] ");
+
+    if (user->priv & PRIV_DELETED)
+	cprintf("\1w[ \1rDeleted \1w] ");
+
+    IFSYSOP {
+	if (user->flags & US_LAG)
+	    cprintf("\1r[ \1wLAG \1r] ");
+    }
+
+    IFWIZARD {
+	if (user->flags & US_IAMBAD)
+	    cprintf("\1r[ \1wX-LOG\1r ] ");
+    }
+
+    if (user->xtrapflag)
+	cprintf("\1f%s", user->xtrapflag);
+
+    cprintf("\n\1a\1g");
+    return;
 }
