@@ -93,7 +93,7 @@ function check_friend($username, $friend) {
 
     // Get friend status (if online).
     //
-    $result = MYSQL_QUERY("SELECT status FROM online WHERE id=$friend_id");
+    $result = MYSQL_QUERY("SELECT status FROM online WHERE user_id=$friend_id");
     $number = MYSQL_NUMROWS($result);
     if ($number)
         $status = mysql_result($result,0,"status");
