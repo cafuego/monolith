@@ -29,6 +29,7 @@
 
 #include "main.h"
 #include "menu.h"
+#include "sql_user.h"
 #include "input.h"
 #include "log.h"
 #include "routines.h"
@@ -48,6 +49,9 @@ enter_reginfo()
 	change_info(usersupp, FALSE);
 	toggle_hidden_info(usersupp);
 	writeuser(usersupp, 0);
+    mono_sql_u_update_registration( usersupp->usernum,
+        usersupp->RGname, usersupp->RGaddr, usersupp->RGzip, usersupp->RGcity,
+	usersupp->RGstate, usersupp->RGcountry, usersupp->RGphone );
     }
 }
 

@@ -263,6 +263,9 @@ edit_field(user_t * user, int fieldnum)
 
 	case 'I':
 	    change_info(user, TRUE);
+  mono_sql_u_update_registration( user->usernum,
+        user->RGname, user->RGaddr, user->RGzip, user->RGcity,
+        user->RGstate, user->RGcountry, user->RGphone );
 	    log_sysop_action("modified address info for %s."
 			     ,user->username);
 	    uadmin_need_rewrite = TRUE;
