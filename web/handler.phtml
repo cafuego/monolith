@@ -16,8 +16,10 @@
     echo "<meta http-equiv=\"Cache-Control\" content=\"no-cache, must-revalidate\">\n";
     echo "<meta http-equiv=\"Pragma\" content=\"no-cache\">\n";
 
-    require ("engine/routines.inc");
+    require ('engine/routines.inc');
     require ('engine/html.inc');
+
+    echo "<!-- handler: '$handler' -->\n";
 
     // Get username and print off proper title.
     //
