@@ -252,7 +252,6 @@ save_new_message(message_header_t * header, unsigned int forum)
 time_function(TIME_STOP);
 #endif
     mono_sql_u_increase_post_count( usersupp->usernum );
-	usersupp->posted++;
 
     return 0;
 }

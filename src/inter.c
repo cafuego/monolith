@@ -265,7 +265,6 @@ remote_express(const char *recipient)
     x.override = OR_NORMAL;
     strcpy(x.message, send_string);
 
-    usersupp->x_s++;
     if (xmsgb[0])
 	xfree(xmsgb[0]);
 
