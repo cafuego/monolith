@@ -28,12 +28,19 @@ Peter Lieverdink <peter@creativecontingencies.com>
    - making coffee
    - shix system
    - bbs config system
-   - sql message system
+   - sql portion of message system
    - message rating system
 
 Russell Crandall <russ@monolith.yawc.net>
   Responsible for:
-   - quadcont system
-   - dynamic menu system
+   - quadrant rating system
+   - fuzzy logic account setup system
+   - dynamic menu generator system
+   - menus that use the menu generator
    - online help system
    - new account creation system
+   - filesystem (non sql) portion of message system.
+   - various admin tools (quadlizard, room create/delete, user namechange)
+   - sql caching
+   - cleaning up in general
+
