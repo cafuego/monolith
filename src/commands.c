@@ -741,7 +741,7 @@ sysop_menu()
 	    which_room("\1f\1wAdmin cmd: \1a");
 	}
 
-	cmd = get_single_quiet("ABCEFgGKMNOQTU\r\b ?");
+	cmd = get_single_quiet("ABCEFgGKMNORQTU\r\b ?");
 
 	if (strchr("BCEMRFgOP", cmd))
 	    nox = 1;		/* is busy, wants no x's */

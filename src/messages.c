@@ -1765,7 +1765,7 @@ new_read_menu(unsigned int forum, int direction)
     /*
      * If we can't list unread messages, exit.
      */
-    if( (mono_sql_mes_list_forum(forum, usersupp->lastseen, list)) == -1)
+    if( (mono_sql_mes_list_forum(forum, usersupp->lastseen[forum], list)) == -1)
         return;
 
     while( list != NULL ) {
