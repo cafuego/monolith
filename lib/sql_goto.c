@@ -31,22 +31,9 @@ mono_sql_random_goto(void)
 {
     MYSQL_RES *res;
     MYSQL_ROW row;
-    int num = 0;
     char *string;
 
-    (void) mono_sql_query(&res, "SELECT COUNT(*) FROM " GOTO_TABLE);
-    
-    if ((mysql_num_rows(res)) != 1) {
-	(void) mono_sql_u_free_result(res);
-	return NULL;
-    }
-
-    row = mysql_fetch_row(res);
-    num = atoi(row[0]);
-    (void) mono_sql_u_free_result(res);
-
-    (void) mono_sql_query(&res, "SELECT goto FROM " GOTO_TABLE " WHERE ID=%d", 
-		((rand() % num) + 1));
+    (void) mono_sql_query(&res, "SELECT goto FROM " GOTO_TABLE " ORDER BY RAND() LIMIT 1");
 
     if (mysql_num_rows(res) != 1) {
 	(void) mono_sql_u_free_result(res);

@@ -43,15 +43,7 @@ mono_sql_ll_add_mlist_to_list(mlist_t entry, mlist_t ** list)
     p->next = NULL;
     p->prev = NULL;
 
-    q = *list;
-    if (q == NULL) {
-	*list = p;
-    } else {
-	while (q->next != NULL)
-	    q = q->next;
-	q->next = p;
-        p->prev = q;
-    }
+    q = *list; if (q == NULL) { *list = p; } else { while (q->next != NULL) q = q->next; q->next = p; p->prev = q; }
     return 0;
 }
 

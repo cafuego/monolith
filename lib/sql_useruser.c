@@ -16,6 +16,7 @@
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <string.h>
 
 #ifdef USE_MYSQL
   #include MYSQL_HEADER
@@ -40,10 +41,10 @@ mono_sql_uu_read_list(unsigned int user_id, friend_t ** first, int flag)
     char status[10];
 
     if (flag & L_FRIEND) {
-	strcpy(status, "friend");
+	strncpy(status, "friend", 9);
     }
     if (flag & L_ENEMY) {
-	strcpy(status, "enemy");
+	strncpy(status, "enemy", 9);
     }
     i = mono_sql_query(&res, "SELECT friend_id,quickx,username FROM useruser,user  WHERE user_id=%u AND status='%s' AND friend_id=id AND iface='bbs' ORDER BY username", user_id, status);
 

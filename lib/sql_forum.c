@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #ifdef USE_MYSQL
   #include MYSQL_HEADER
@@ -74,6 +75,33 @@ mono_sql_f_read_quad(unsigned int num, room_t * room)
     return 0;
 }
 
+int
+mono_sql_f_get_highest(unsigned int num)
+{
+    int i, rows;
+    MYSQL_RES *res;
+    MYSQL_ROW row;
+
+    i = mono_sql_query(&res, "SELECT MAX(message_id) FROM message WHERE forum_id=%u", num);
+
+    if (i == -1) {
+	fprintf(stderr, "Error: no results from query\n");
+	mono_sql_u_free_result(res);
+	return -1;
+    }
+    rows = mysql_num_rows(res);
+    if (rows != 1) {
+	mono_sql_u_free_result(res);
+	return -1;
+    }
+    row = mysql_fetch_row(res);
+
+    /* sscanf error codes need to be checked ! */
+    sscanf(row[0], "%d", &i);
+    mono_sql_u_free_result(res);
+
+    return i;
+}
 
 int
 mono_sql_f_add_old_forum(unsigned int forum_id, room_t * const q)

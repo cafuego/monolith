@@ -85,42 +85,42 @@ read_message_header(const char *header_filename, message_header_t *header)
 char *
 info_filename(char * filename, unsigned int forum)
 {
-    snprintf(filename, L_FILENAME, FORUMDIR "/%u/info", forum);
+    snprintf(filename, L_FILE, FORUMDIR "/%u/info", forum);
     return filename;
 }
 
 char *
 info_header_filename(char * filename, unsigned int forum)
 {
-    snprintf(filename, L_FILENAME, FORUMDIR "/%u/info.h", forum);
+    snprintf(filename, L_FILE, FORUMDIR "/%u/info.h", forum);
     return filename;
 }
 
 char *
 message_filename(char * filename, unsigned int forum, unsigned int number)
 {
-    snprintf(filename, L_FILENAME, FORUMDIR "/%u/%u.t", forum, number);
+    snprintf(filename, L_FILE, FORUMDIR "/%u/%u.t", forum, number);
     return filename;
 }
 
 char *
 message_header_filename(char * filename, unsigned int forum, unsigned int number)
 {
-    snprintf(filename, L_FILENAME, FORUMDIR "/%u/%u.h", forum, number);
+    snprintf(filename, L_FILE, FORUMDIR "/%u/%u.h", forum, number);
     return filename;
 }
 
 char *
 mail_filename(char * filename, const char *name, const unsigned int number)
 {
-    snprintf(filename, L_FILENAME, "%s/mail/%u.t", getuserdir(name), number);
+    snprintf(filename, L_FILE, "%s/mail/%u.t", getuserdir(name), number);
     return filename;
 }
 
 char *
 mail_header_filename(char * filename, const char *name, const unsigned int number)
 {
-    snprintf(filename, L_FILENAME, "%s/mail/%u.h", getuserdir(name), number);
+    snprintf(filename, L_FILE, "%s/mail/%u.h", getuserdir(name), number);
     return filename;
 
 }
@@ -128,8 +128,8 @@ mail_header_filename(char * filename, const char *name, const unsigned int numbe
 int
 message_copy(const unsigned int from_forum, const unsigned int to_forum, const unsigned int message_id, const char *recipient_name, const unsigned int modification_type)
 {
-    char to_file[L_FILENAME + 1], from_file[L_FILENAME + 1];
-    char to_header_file[L_FILENAME + 1], from_header_file[L_FILENAME + 1];
+    char to_file[L_FILE + 1], from_file[L_FILE + 1];
+    char to_header_file[L_FILE + 1], from_header_file[L_FILE + 1];
     char to_name[L_USERNAME + 1];
     unsigned int new_message_id, success = 0;
     message_header_t *to_header = NULL;
@@ -239,7 +239,7 @@ int message_move(const unsigned int from_forum, const unsigned int to_forum, con
 
 int message_delete(const unsigned int from_forum, const unsigned int message_id)
 {
-    char from_file[L_FILENAME + 1], from_header[L_FILENAME + 1];
+    char from_file[L_FILE + 1], from_header[L_FILE + 1];
     int ret = 0;
 
     if (from_forum == MAIL_FORUM) {
@@ -468,7 +468,7 @@ convert_message_base(int forum)
     message_header_t * header;
     post_t post;
     FILE *postfile, *fp;
-    char filename[L_FILENAME + 1], infofile[L_FILENAME + 1];
+    char filename[L_FILE + 1], infofile[L_FILE + 1];
     char hugestring[100000];
     int i, j, lowest_message, highest_message;
 

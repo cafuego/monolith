@@ -109,11 +109,11 @@ mono_add_loggedin(const user_t * user)
     shm->login_count++;
 
     memset(&newb, 0, sizeof(btmp_t));
-    strcpy(newb.username, user->username);
+    strncpy(newb.username, user->username, L_USERNAME);
     newb.logintime = time(NULL);
     newb.chat = user->chat;
     newb.priv = user->priv;
-    strcpy(newb.doing, user->doing);
+    strncpy(newb.doing, user->doing, L_DOING);
     newb.pid = getpid();
 
     newb.flags = 0;
@@ -127,24 +127,24 @@ mono_add_loggedin(const user_t * user)
     if (user->flags & US_GUIDE)
 	newb.flags |= B_GUIDEFLAGGED;
 
-    strcpy(newb.curr_room, " * Hasn't left the Docking Bay yet *");
-    strcpy(newb.x_ing_to, "");
+    strncpy(newb.curr_room, " * Hasn't left the Docking Bay yet *", L_QUADNAME);
+    strncpy(newb.x_ing_to, "", L_USERNAME);
 
     if (user->hidden_info & H_COUNTRY) {
-	strncpy(newb.remote, HOSTNAME_IF_HIDDEN, 17);
+	strncpy(newb.remote, HOSTNAME_IF_HIDDEN, L_HOSTNAME);
     } else if (strlen(user->RGstate) && strlen(user->RGcountry)) {
-	snprintf(newb.remote, 20, "%s, %s", user->RGstate, user->RGcountry);
+	snprintf(newb.remote, L_HOSTNAME, "%s, %s", user->RGstate, user->RGcountry);
     } else if (strlen(user->RGstate)) {
-	snprintf(newb.remote, 20, "%s", user->RGstate);
+	snprintf(newb.remote, L_HOSTNAME, "%s", user->RGstate);
     } else {
-	snprintf(newb.remote, 20, "%s", user->RGcountry);
+	snprintf(newb.remote, L_HOSTNAME, "%s", user->RGcountry);
     }
 
     newb.remote[17] = '\0';
     if (user->flags & US_HIDDENHOST) {
-	strncpy(newb.ip_address, HOSTNAME_IF_HIDDEN, 17);
+	strncpy(newb.ip_address, HOSTNAME_IF_HIDDEN, L_HOSTNAME);
     } else {
-	strncpy(newb.ip_address, user->lasthost, 20);
+	strncpy(newb.ip_address, user->lasthost, L_HOSTNAME);
     }
     newb.ip_address[16] = '\0';
 
@@ -536,6 +536,12 @@ _mono_initialize_shm()
     }
     close(fd);
 
+    (void) strncpy(shm->mysql.host, MYSQL_SERVER, L_USERNAME); 
+    (void) strncpy(shm->mysql.user, MYSQL_USER, L_USERNAME); 
+    (void) strncpy(shm->mysql.pass, MYSQL_PASSWORD, L_USERNAME); 
+    (void) strncpy(shm->mysql.base, MYSQL_DATABASE, L_USERNAME); 
+    (void) strncpy(shm->mysql.sock, MYSQL_SOCKET, strlen(MYSQL_SOCKET) ); 
+
     return 0;
 }
 
@@ -652,7 +658,7 @@ _mono_add_to_linked_list(btmp_t user)
     (void) mono_lock_shm(WHO_UNLOCK);
 
     my_name = (char *) xmalloc(sizeof(char) * (L_USERNAME + 1));
-    strcpy(my_name, user.username);
+    strncpy(my_name, user.username, L_USERNAME);
     who_am_i(my_name);
     xfree(my_name);
     return 0;
@@ -665,7 +671,7 @@ who_am_i(const char * name)
     static int i_am_me = 0;
 
     if (!i_am_me) {  /* heh, not feeling like myself today.. */
-	strcpy(myname, name);
+	strncpy(myname, name, L_USERNAME);
 	i_am_me = 1;
     }
 
@@ -683,7 +689,7 @@ _mono_remove_from_linked_list(const char *user)
     p = q = shm->first;
     while (p != -1) {
 	if (EQ(shm->wholist[p].username, user)) {
-	    strcpy(shm->wholist[p].username, "");
+	    strncpy(shm->wholist[p].username, "", L_USERNAME);
 	    shm->user_count--;
 	    if (p == shm->first)
 		shm->first = shm->wholist[p].next;
@@ -714,7 +720,7 @@ mono_remove_ghosts()
     while (p != -1) {
 	if (kill(shm->wholist[p].pid, 0) == -1) {
             log_it("wholist", "%s is a ghost user, autofixing.", shm->wholist[p].username );
-	    strcpy(shm->wholist[p].username, "");
+	    strncpy(shm->wholist[p].username, "", L_USERNAME);
 	    if (p == shm->first)
 		shm->first = shm->wholist[p].next;
 	    else
@@ -742,7 +748,7 @@ _mono_initialize_holodeck()
     }
     while (fgets(buffer, 50, fp) != NULL) {
 	buffer[strlen(buffer) - 1] = '\0';
-	strcpy(shm->holodeck[i].name, strtok(buffer, "|"));
+	strncpy(shm->holodeck[i].name, strtok(buffer, "|"), L_QUADNAME);
 	if (i < 4)
 	    shm->holodeck[i].type = 'N';
 	else if (i == 7)
@@ -766,12 +772,12 @@ mono_find_x_ing(const char *name, char *xer)
     }
     (void) mono_lock_shm(WHO_LOCK);
 
-    strcpy(xer, "");
+    strncpy(xer, "", L_USERNAME);
 
     i = shm->first;
     while (i != -1) {
 	if (EQ(shm->wholist[i].x_ing_to, name) || EQ(shm->wholist[i].x_ing_to, "Everybody")) {
-	    strcpy(xer, shm->wholist[i].username);
+	    strncpy(xer, shm->wholist[i].username, L_USERNAME);
 	    break;
 	}
 	i = shm->wholist[i].next;

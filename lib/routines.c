@@ -67,19 +67,22 @@ time_function(const int action)
 }
 
 int
-set_timezone( const char *tz )
+set_timezone( const char *tmz )
 {
     int ret;
-    char str[50];
+    // char str[64];
 
-    if ( !tz || !strlen(tz) ) return -1;
+    if ( !tmz || !strlen(tmz) )
+        return -1;
 
-    ret = sprintf( str, "TZ=%s", tz );
-    if ( ret == -1 ) return -1;
+    // ret = sprintf( str, "TZ=%s", tz );
+    // if ( ret == -1 ) return -1;
+    // ret = putenv( str );
+    // if ( ret == -1 ) return -1;
 
-    ret = putenv( str );
-    if ( ret == -1 ) return -1;
+    ret =  setenv("TZ", tmz, 1);
     tzset();
+
     return ret;
 }
 
@@ -372,13 +375,13 @@ printdate(time_t timetoprint, int format)
 
     switch (format) {
 	case -1:
-	    (void) strftime(whole, sizeof(whole), "%A %d %b %Y %H:%M:%S %Z", tp);
+	    (void) strftime(whole, sizeof(whole), "%A %d %b %Y %H:%M:%S %Z (%z)", tp);
 	    break;
 	case 0:
-	    (void) strftime(whole, sizeof(whole), "\1f\1g%A %d %B %Y %X %Z\1a", tp);
+	    (void) strftime(whole, sizeof(whole), "\1f\1g%A %d %B %Y %X %Z (%z)\1a", tp);
 	    break;
 	case 1:
-	    (void) strftime(whole, sizeof(whole), "%d %b %Y %X %Z", tp);
+	    (void) strftime(whole, sizeof(whole), "%d %b %Y %X %Z (%z)", tp);
 	    break;
 	case 2:
 	    (void) strftime(whole, sizeof(whole), "%X", tp);
