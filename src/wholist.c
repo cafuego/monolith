@@ -167,18 +167,6 @@ wholist(int level, const user_t * user)
 				   ,((r->flags & B_POSTING) ? "\1y+" : ((xing) ? "\1yx" : ((chat) ? "\1pc" : " "))));
 
 		    q = line + strlen(line);
-/*                  j = -1;
- * if ( mono_cached_sql_u_name2id( r->username, &id2 ) == -1 ) {
- * if (is_cached_friend(r->username) {
- * j = -1;
- * } else {
- * if ( mono_sql_uu_user2quickx( user->usernum, id2, &j ) == -1 ){ 
- * printf( "\1r\1fError, could not get quickx number.\n" );
- * j = -1;
- * }                     
- * 
- * }
- */
 		    j = cached_name_to_x(r->username);
 
 		    if ((user != NULL) && (j >= 0)) {
@@ -210,7 +198,7 @@ wholist(int level, const user_t * user)
 				   ,idling / 60, idling % 60);
 		} else {
 		    q = line + strlen(line);
-		    (void) sprintf(q, "\1g\1f%s\1a\n", r->doing);
+		    (void) sprintf(q, "\1g\1f%s\1D\1a\n", r->doing);
 		}
 		break;
 
