@@ -1,4 +1,5 @@
 .deps
+.version
 config.cache
 config.log
 aclocal.m4

@@ -178,43 +178,52 @@ AC_OUTPUT(cgi/Makefile lib/Makefile daemons/Makefile src/Makefile \
      web/sound/Makefile web/flash/Makefile po/Makefile.in intl/Makefile \
      Makefile)
 
-/bin/sh ./mkversion-sh
+dnl Only do this if we're not called from the makefile.
+dnl
+if test "$no_create" != "yes" ; then
 
-if test "x$with_overview" = "xyes"; then
-  dnl Give users a quick overview.
+  dnl Update or create version stamp, but only if it' not
+  dnl automagically running.
+  /bin/sh ./mkversion-sh
+
+  dnl Linux newbie stuff.
+  dnl
+  if test "x$with_overview" = "xyes"; then
+    dnl Give users a quick overview.
+    echo
+    echo -n "Please hit return to continue..."
+    read ans
+    clear
+    
+    echo "----------------------------------------------------------------------"
+    echo "        You have set up your BBS with the following features:"
+    echo "----------------------------------------------------------------------"
+    echo
+    echo "  * MySQL is installed and will be used."
+    if test "x$with_rating" = "xyes"; then
+      echo "  * Rating system is enabled."
+    else
+      echo "  * Rating system is disabled."
+    fi
+    if test "x$with_hero" = "xyes"; then
+      echo "  * Superheroes can be generated."
+    else
+      echo "  * Superheroes can not be generated."
+    fi
+    if test "x$os" = "xlinux" ; then
+      echo "  * Extended system info is available."
+    else
+      echo "  * Extended system info is not available."
+    fi
+  fi
   echo
-  echo -n "Please hit return to continue..."
-  read ans
-  clear
-  
-  echo "----------------------------------------------------------------------"
-  echo "        You have set up your BBS with the following features:"
+  if test "x$with_overview" = "xno"; then
+    echo "----------------------------------------------------------------------"
+  fi
+  echo "Just run make and sit back whilst the BBS is compiled. After"
+  echo "compilation is finished, refer to the README file for details on"
+  echo "how to install the BBS on your machine. Note that you will need"
+  echo "root access to do this."
   echo "----------------------------------------------------------------------"
   echo
-  echo "  * MySQL is installed and will be used."
-  if test "x$with_rating" = "xyes"; then
-    echo "  * Rating system is enabled."
-  else
-    echo "  * Rating system is disabled."
-  fi
-  if test "x$with_hero" = "xyes"; then
-    echo "  * Superheroes can be generated."
-  else
-    echo "  * Superheroes can not be generated."
-  fi
-  if test "x$os" = "xlinux" ; then
-    echo "  * Extended system info is available."
-  else
-    echo "  * Extended system info is not available."
-  fi
 fi
-echo
-if test "x$with_overview" = "xno"; then
-  echo "----------------------------------------------------------------------"
-fi
-echo "Just run make and sit back whilst the BBS is compiled. After"
-echo "compilation is finished, refer to the README file for details on"
-echo "how to install the BBS on your machine. Note that you will need"
-echo "root access to do this."
-echo "----------------------------------------------------------------------"
-echo
