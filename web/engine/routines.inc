@@ -288,30 +288,30 @@ function colorize($doing) {
 
     // Convert to HTML colour codes.
     // 
-    $doing = strtr($doing, "%01f", " ");
+    $doing = strtr($doing, "%%01f", " ");
     echo "<p>$doing\n";
-    $doing = strtr($doing, "%01a", " ");
+    $doing = strtr($doing, "%%01a", " ");
     echo "<p>$doing\n"; 
-    $doing = strtr($doing, "%01d", " ");
+    $doing = strtr($doing, "%%01d", " ");
     echo "<p>$doing\n";
-    $doing = strtr($doing, "%01D", " ");
+    $doing = strtr($doing, "%%01D", " ");
     echo "<p>$doing\n";
 
     // Remove bg colours.
     //
-    $doing = strtr($doing, "%01W", " ");
+    $doing = strtr($doing, "%%01W", " ");
     echo "<p>$doing\n";
-    $doing = strtr($doing, "%01Y", " ");
+    $doing = strtr($doing, "%%01Y", " ");
     echo "<p>$doing\n";
-    $doing = strtr($doing, "%01G", " ");
+    $doing = strtr($doing, "%%01G", " ");
     echo "<p>$doing\n";
-    $doing = strtr($doing, "%01C", " ");
+    $doing = strtr($doing, "%%01C", " ");
     echo "<p>$doing\n";
-    $doing = strtr($doing, "%01B", " ");
+    $doing = strtr($doing, "%%01B", " ");
     echo "<p>$doing\n";
-    $doing = strtr($doing, "%01P", " ");
+    $doing = strtr($doing, "%%01P", " ");
     echo "<p>$doing\n";
-    $doing = strtr($doing, "%01R", " ");
+    $doing = strtr($doing, "%%01R", " ");
     echo "<p>$doing\n";
 
     // Fix fg colours.
