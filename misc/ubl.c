@@ -227,7 +227,7 @@ read_all_rooms()
     all_rooms = xmalloc(MAXQUADS * sizeof(room_t));
 
     for (i = 0; i < MAXQUADS; i++) {
-	all_rooms[i] = read_quad(i);
+        read_forum( i, &(all_rooms[i]) );
     }
     mono_detach_shm();
     return;
