@@ -320,7 +320,7 @@ mono_sql_mes_search_forum(int forum, const char *string, sr_list_t **list)
     (void) escape_string(string, &needle);
 
     if(forum >= 0)
-        ret = mono_sql_query( &res, "SELECT m.message_id,m.forum_id,m.topic_id,f.name,t.name,u.username,m.alias,m.subject,m.flag,AVG(r.score) FROM %s AS m LEFT JOIN %s AS u ON u.id=m.author LEFT JOIN %s AS f ON f.id=m.forum_id LEFT JOIN %s AS t ON m.topic_id=t.topic_id, %s AS r WHERE (m.message_id IN(r.message_id) AND m.forum_id IN (r.forum_id) AND m.content REGEXP '%s' OR m.subject REGEXP '%s') AND (m.forum_id=%u) GROUP BY m.message_id ORDER BY m.forum_id, m.message_id",
+        ret = mono_sql_query( &res, "SELECT m.message_id,m.forum_id,m.topic_id,f.name,t.name,u.username,m.alias,m.subject,m.flag,AVG(r.score) FROM %s AS m LEFT JOIN %s AS u ON u.id=m.author LEFT JOIN %s AS f ON f.id=m.forum_id LEFT JOIN %s AS t ON m.topic_id=t.topic_id, %s AS r WHERE ((m.message_id IN(r.message_id) AND m.forum_id IN (r.forum_id) AND (m.content REGEXP '%s' OR m.subject REGEXP '%s')) AND (m.forum_id=%u)) GROUP BY m.message_id ORDER BY m.forum_id, m.message_id",
             M_TABLE, U_TABLE, F_TABLE, T_TABLE, R_TABLE, needle, needle, forum );
     else
         ret = mono_sql_query( &res, "SELECT m.message_id,m.forum_id,m.topic_id,f.name,t.name,u.username,m.alias,m.subject,m.flag,AVG(r.score) FROM %s AS m LEFT JOIN %s AS u ON u.id=m.author LEFT JOIN %s AS f ON f.id=m.forum_id LEFT JOIN %s AS t ON m.topic_id=t.topic_id, %s AS r WHERE m.message_id IN(r.message_id) AND m.forum_id IN (r.forum_id) AND m.content REGEXP '%s' OR m.subject REGEXP '%s' GROUP BY m.message_id ORDER BY m.forum_id,m.message_id",
