@@ -431,10 +431,10 @@ search_via_sql( unsigned int forum )
     tz.tz_dsttime = 0;
 
     IFSYSOP {    
-        cprintf("\1f\1gSearch all %s in the BBS? \1w(\1gy\1w/\1gN\1w) \1c", config.message_pl);
-        if(yesno_default(NO) == YES)
+        cprintf("\1f\1gSearch only this %s? \1w(\1gY\1w/\1gn\1w) \1c", config.forum);
+        if(yesno_default(YES) == NO)
             forum = -1;
-    } else {
+    }
         if(forum==1) {
             cprintf("\1f\1rCan't search Mail yet, sorry.\n");
             return;
