@@ -61,59 +61,7 @@ is_my_friend(const char *person)
 {
     return is_cached_friend(person);
 }
-/*
-void
-update_friends_cache(void)
-{
-    if (friend_cache != NULL)
-        dest_friends_list(friend_cache);
-	
-    mono_sql_uu_read_list(usersupp->usernum, &friend_cache, L_FRIEND);
-}
 
-int
-is_cached_friend(const char *name)
-{
-    friend_t *p;
-
-    p = friend_cache;
-    while(p) {
-        if (strlen(p->name))
-	    if (!strcasecmp(name, p->name))
-	        return 1;
-	p = p->next;
-    }
-    return 0;
-}
-
-char *
-cached_x_to_name(const int slot)
-{
-    friend_t *p;
-    
-    p = friend_cache;
-    while(p) {
-        if (p->quickx == slot)
-            return (strlen(p->name)) ? p->name : "";
-        p = p->next;
-    }
-    return "";
-}
-
-int
-cached_name_to_x(const char * bobs_name)
-{
-    friend_t *p;
-    
-    p = friend_cache;
-    while(p) {
-	if (!strcasecmp(p->name, bobs_name))
-	    return p->quickx;
-	p = p->next;
-    }
-    return -1;
-}
-*/
 void
 friends_online()
 {
