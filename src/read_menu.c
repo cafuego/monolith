@@ -622,7 +622,7 @@ long_prompt(long number, int direction)
 
 	    not_my_post = strcmp(usersupp->username, message_reply_name(NULL));
 
-	    read_command = get_single_quiet("1234567890 aAbBcCdDeEfFgGhHiIjJlkKLpPrRqQmMnNsStTvVWwxXyYzZ?!#\006\005\014\018\022\030<>%\":~,.*");
+	    read_command = get_single_quiet("1234567890 aAbBcCdDeEfFgGhHiIjJlkKLpPrRqQmMnNsStTvVWwxXyYzZ?!#\006\005\014\018\022\030<>%\":~,.*^");
 
 	    read_command = validate_read_command(read_command);		/* priv check */
 
@@ -703,6 +703,7 @@ long_prompt(long number, int direction)
 
 		case 'E':
                     if((usersupp->priv >= PRIV_SYSOP) && (curr_rm == 2)) {
+                        cprintf("\1f\1rEdit \1y%s\1r.\1a\n", profile_default);
                         useradmin( profile_default );
                         break;
                     }
@@ -895,6 +896,12 @@ long_prompt(long number, int direction)
 		    show_online(1);
 		    cprintf("\n");
 		    break;
+
+                case '^':		/* <ctrl-w> */
+	            nox = 1;
+	            cprintf("\1f\1gSend \1pWeb \1g%s %s.\1a\n", config.express, config.x_message);
+                    express(-4);
+                    break;
 
 		case 'x':
 		    nox = TRUE;
@@ -1095,7 +1102,7 @@ validate_read_command(int read_command)
 {
     IFTWIT
     {				/* make nasty users repent for what they have done */
-	if (strchr("1234567890!AcCdDeEIMrRqQxXvVwWzZ\005\030!%:~.*&(+\'", read_command))
+	if (strchr("1234567890!AcCdDeEIMrRqQ^xXvVwWzZ\005\030!%:~.*&(+\'", read_command))
 	    if (!((curr_rm == 13) && (strchr("eE", read_command)))) {
 		more(TWITMSG, 1);
 		read_command = -1;
@@ -1104,7 +1111,7 @@ validate_read_command(int read_command)
     else
     IFGUEST
     {				/* more bofh functions, different message */
-	if (strchr("1234567890!cCdDeEIMmrRqQvVxXyYzZ(%\"\006\005\030!<>:~.*", read_command)) {
+	if (strchr("1234567890!cCdDeEIMmrRqQvV^xXyYzZ(%\"\006\005\030!<>:~.*", read_command)) {
 	    more(GUESTMSG, 1);
 	    read_command = -1;
 	}
@@ -1112,7 +1119,7 @@ validate_read_command(int read_command)
     else
     IFUNVALID
     {				/* no x related functions for unvalidated users */
-	if (strchr("1234567890AcdDeEIrRxXvV+\005\030\014!:~.*", read_command)) {
+	if (strchr("1234567890AcdDeEIrR^xXvV+\005\030\014!:~.*", read_command)) {
 	    more(UNVALIDMSG, 0);
 	    read_command = -1;
 	}
@@ -1120,7 +1127,7 @@ validate_read_command(int read_command)
     else
     IFDEGRADED
     {				/* remove some functions degraded users have */
-	if (strchr("1234567890AcdDeEIrRvVxX(+\005\030!:~.\'*", read_command)) {
+	if (strchr("1234567890AcdDeEIrRvV^xX(+\005\030!:~.\'*", read_command)) {
 	    more(DEGRADEDMSG, 0);
 	    read_command = -1;
 	}
