@@ -211,7 +211,7 @@ copy_message_wrapper(const unsigned int current_post, const int is_not_my_post, 
 	    break;
     }
 
-//    xfree(to_name);
+    xfree(to_name);
     return 0;
 }
 

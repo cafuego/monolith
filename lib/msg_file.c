@@ -167,13 +167,12 @@ message_copy(const unsigned int from_forum, const unsigned int to_forum, const u
 	    to_header->banner_type |= MAIL_BANNER;
 	    strcpy(to_header->recipient, to_name);
 	}
-#ifdef THIS_CODE_DOESNT_SEGFAULT_COPY_AND_MOVE_ANYMORE_AND_HANG_TRASH
+
 #ifndef ADDED_BY_PETER_FOR_TESTING
-        if (to_forum != MAIL_FORUM && from_forum != MAIL_FORUM ) {
+        if (to_forum != MAIL_FORUM ) {
 	    unsigned long temp_banner;
 
-/* added this to get rid of segfaults copying mails -russ 
-   but it didn't work. */
+/* added this to get rid of potential issues copying mails.  */
 
 	    if (to_header->banner_type & MAIL_BANNER) { 
 		temp_banner = to_header->banner_type;
@@ -184,7 +183,7 @@ message_copy(const unsigned int from_forum, const unsigned int to_forum, const u
 		(void) save_to_sql(to_header, from_file);
 	}
 #endif
-#endif
+
 
 	if ((write_message_header(to_header_file, to_header)) == -1) {
 	    xfree(to_header);
