@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Monolith 2.0\n"
 "Report-Msgid-Bugs-To: webmaster@monolith.cc.com.au\n"
-"POT-Creation-Date: 2005-03-21 22:47+0100\n"
+"POT-Creation-Date: 2005-03-24 16:58+0100\n"
 "PO-Revision-Date: 2005-03-21 HO:MI+ZONE\n"
 "Last-Translator: Michel Oosterhof <michel@monolith.cc.com.au>\n"
 "Language-Team: TAALTEAM <LL@monolith.cc.com.au>\n"
@@ -604,31 +604,41 @@ msgstr ""
 "fr*** pBELANGRIJKE MEDEDELING van wn%sN r***\n"
 "w%sa"
 
-#: src/express.c:1348
-#, c-format
-msgid "fb*** gYour friend %sg just logged %s w(g%02d:%02dw) b***a\n"
-msgstr "fb*** gJe vriend %sg is net %s gelogd w(g%02d:%02dw) b***a\n"
+#: src/express.c:1349
+#, fuzzy, c-format
+msgid "fb*** gYour friend %sg just logged gon w(g%02d:%02dw) b***a\n"
+msgstr "fb*** gJe vriend %sg is net ingelogd w(g%02d:%02dw) b***a\n"
 
-#: src/express.c:1350
-#, c-format
-msgid "fb*** %sg just logged %s w(g%02d:%02dw) b***a\n"
-msgstr "fb*** %sg is net %s gelogd w(g%02d:%02dw) b***a\n"
+#: src/express.c:1351
+#, fuzzy, c-format
+msgid "fb*** gYour friend %sg just logged roff w(g%02d:%02dw) b***a\n"
+msgstr "fb*** gJe vriend %sg is net uitgelogd w(g%02d:%02dw) b***a\n"
 
 #: src/express.c:1355
+#, fuzzy, c-format
+msgid "fb*** %sg just logged gon w(g%02d:%02dw) b***a\n"
+msgstr "fb*** %sg is net %s gelogd w(g%02d:%02dw) b***a\n"
+
+#: src/express.c:1357
+#, fuzzy, c-format
+msgid "fb*** %sg just logged roff w(g%02d:%02dw) b***a\n"
+msgstr "fb*** %sg is net %s gelogd w(g%02d:%02dw) b***a\n"
+
+#: src/express.c:1364
 #, c-format
 msgid ""
 "fb*** gYour friend %sg has been logged off w(g%02d:%02dw) b***\n"
 "a\n"
 msgstr ""
 
-#: src/express.c:1357
+#: src/express.c:1366
 #, c-format
 msgid ""
 "fb*** %sg has been logged off w(g%02d:%02dw) b***\n"
 "a\n"
 msgstr ""
 
-#: src/express.c:1361
+#: src/express.c:1370
 #, c-format
 msgid ""
 "\n"
@@ -639,14 +649,14 @@ msgstr ""
 "fr* wHet Huisspook fluistert: r*\n"
 "ac%s"
 
-#: src/express.c:1365
+#: src/express.c:1374
 #, c-format
 msgid ""
 "\n"
 "%s\n"
 msgstr ""
 
-#: src/express.c:1369
+#: src/express.c:1378
 #, c-format
 msgid ""
 "\n"
@@ -657,7 +667,7 @@ msgstr ""
 "fr***w Cthulhu fluistert: r***a\n"
 "c%s"
 
-#: src/express.c:1373
+#: src/express.c:1382
 #, c-format
 msgid ""
 "\n"
@@ -668,7 +678,7 @@ msgstr ""
 "fb*** g%s %s van w( %s%s w) yn%sN gom w(g%02d:%02dw) b***a\n"
 "c%s"
 
-#: src/express.c:1379 src/express.c:1385
+#: src/express.c:1388 src/express.c:1394
 #, c-format
 msgid ""
 "\n"
@@ -679,7 +689,7 @@ msgstr ""
 "fb*** g%s %s van w( %s%s w) n%sN gom w(g%02d:%02dw) b***a\n"
 "c%s"
 
-#: src/express.c:1391
+#: src/express.c:1400
 #, c-format
 msgid ""
 "\n"
@@ -690,7 +700,7 @@ msgstr ""
 "fr????? gHULP VERZOEK van yn%sN gom w(g%02d:%02dw) r?????a\n"
 "c%s"
 
-#: src/express.c:1397
+#: src/express.c:1406
 #, c-format
 msgid ""
 "\n"
@@ -701,7 +711,7 @@ msgstr ""
 "fb*** gGevoel van %s gom w(g%02d:%02dw) b***a\n"
 "%sa"
 
-#: src/express.c:1401
+#: src/express.c:1410
 #, c-format
 msgid ""
 "\n"
@@ -712,7 +722,7 @@ msgstr ""
 "fb*** pWebg %s %s van %s gnaar y%s gom w(g%02d:%02dw) b***a\n"
 "c%s"
 
-#: src/express.c:1407
+#: src/express.c:1416
 #, c-format
 msgid ""
 "\n"
@@ -723,12 +733,12 @@ msgstr ""
 "fb*** g%s %s van %s gnaar y%s gom w(g%02d:%02dw) b***a\n"
 "c%s"
 
-#: src/express.c:1422
+#: src/express.c:1431
 #, c-format
 msgid "frYou cannot send %s %s.a\n"
 msgstr "frJe kunt geen %s %s versturen.a\n"
 
-#: src/express.c:1440
+#: src/express.c:1449
 #, c-format
 msgid ""
 "frYour %s is no longer online.\n"
@@ -737,37 +747,37 @@ msgstr ""
 "frJe %s is niet meer online.\n"
 "Op zoek naar een nieuwe...a\n"
 
-#: src/express.c:1442
+#: src/express.c:1451
 #, c-format
 msgid "frYour %s has his/her messages disabled.a\n"
 msgstr "frJe %s heeft zijn/haar messages uit staan.a\n"
 
-#: src/express.c:1443 src/express.c:1448
+#: src/express.c:1452 src/express.c:1457
 msgid "frSearching for a new one...a\n"
 msgstr "frOp zoek naar een nieuwe...a\n"
 
-#: src/express.c:1447
+#: src/express.c:1456
 #, c-format
 msgid "frYour %s is no longer marked as %s.a\n"
 msgstr "frJe %s is niet meer gemerkt als %s.a\n"
 
-#: src/express.c:1456
+#: src/express.c:1465
 #, c-format
 msgid "fgThere are no %s online right now...a\n"
 msgstr "fgEr zijn momenteel geen %s online...a\n"
 
-#: src/express.c:1457
+#: src/express.c:1466
 msgid "fgYou could try to find the answer in the help files.a\n"
 msgstr ""
 "fgJe zou kunnen proberen het antwoord in de help bestanden te vinden.a\n"
 
-#: src/express.c:1458
+#: src/express.c:1467
 msgid ""
 "fgPress w<r?w>g to see all commands, or w<rhw>g to access the helpfiles.\n"
 msgstr ""
 "fgToets w<r?w>g voor alle commandos, of w<rhw>g voor de help bestanden.\n"
 
-#: src/express.c:1468
+#: src/express.c:1477
 #, c-format
 msgid ""
 "fgYou are asking a %s a Question, and therefore\n"
@@ -776,7 +786,7 @@ msgstr ""
 "fgJe stelt %s een Vraag, en daarom\n"
 " a"
 
-#: src/express.c:1484
+#: src/express.c:1493
 #, c-format
 msgid ""
 "fgYou are now sending an emote.\n"
@@ -785,37 +795,37 @@ msgstr ""
 "fgJe stuurt nu een Emotie.\n"
 "b*** y%s g"
 
-#: src/express.c:1490
+#: src/express.c:1499
 #, c-format
 msgid "fgYou're now asking c%sg a BBS-related Question!a\n"
 msgstr "fgJe kunt nu c%sg een BBS gerelateerde vraag stellen.a\n"
 
-#: src/express.c:1496
+#: src/express.c:1505
 msgid "frYou're now sending a broadcast!a\n"
 msgstr "frJe kunt nu een mededeling versturen!a\n"
 
-#: src/express.c:1499
+#: src/express.c:1508
 msgid "rWarning: you are still marked as cawayr.a\n"
 msgstr "rWaarschuwing: je bent nog steeds gemarkeerd als cafwezigr.a\n"
 
-#: src/express.c:1517
+#: src/express.c:1526
 #, c-format
 msgid "fgSend Feeling %s.a\n"
 msgstr "fgStuur Gevoel %s.a\n"
 
-#: src/express.c:1519
+#: src/express.c:1528
 msgid "fgPress w<r?w>g for a list of available feelings.a\n"
 msgstr "fgToets w<r?w>g voor een lijst van beschikbare gevoelens.a\n"
 
-#: src/express.c:1521
+#: src/express.c:1530
 msgid "fgYou're cool. Press w<rfw>g to send the cFREEZEg feeling.a\n"
 msgstr "fgJe bent koel. Toets w<rfw>g om het cBEVRIESg gevoel te verzenden.a\n"
 
-#: src/express.c:1664
+#: src/express.c:1673
 msgid "frAn error occurrect trying to retrieve pweb rx-es.\n"
 msgstr "frEr ging iets fout tijdens het ophalen van pweb rx-es.\n"
 
-#: src/express.c:1666
+#: src/express.c:1675
 #, c-format
 msgid ""
 "\n"
@@ -953,7 +963,7 @@ msgstr ""
 msgid "%s's Password: "
 msgstr "%s's Wachtwoord: "
 
-#: src/main.c:567
+#: src/main.c:568
 msgid ""
 "\n"
 "*** Registration is required. ***\n"
@@ -963,13 +973,13 @@ msgstr ""
 "*** Registratie is vereist. ***\n"
 "\n"
 
-#: src/main.c:571
+#: src/main.c:572
 msgid ""
 "fyNow w<ryw>yell to the admin to be granted full access.\n"
 "\n"
 msgstr ""
 
-#: src/main.c:672
+#: src/main.c:673
 #, c-format
 msgid ""
 "\n"
@@ -982,11 +992,11 @@ msgstr ""
 "gf%s yis is nog bezig je een %s %s te sturen.\n"
 "a"
 
-#: src/main.c:673
+#: src/main.c:674
 msgid "fgHit any key to continue...a"
 msgstr "fgDruk om een toets om door te gaan...a"
 
-#: src/main.c:678
+#: src/main.c:679
 #, c-format
 msgid ""
 "\n"
@@ -995,19 +1005,19 @@ msgstr ""
 "\n"
 "fgWeet je zeker dat je %s wilt verlaten? w(gyw/gnw/gmw/g?w)g "
 
-#: src/main.c:683
+#: src/main.c:684
 msgid "fgHelp.a\n"
 msgstr ""
 
-#: src/main.c:688
+#: src/main.c:689
 msgid "fgYes.\n"
 msgstr "fgJa.\n"
 
-#: src/main.c:692
+#: src/main.c:693
 msgid "fgNo.\n"
 msgstr "fgNee.\n"
 
-#: src/main.c:795
+#: src/main.c:796
 #, c-format
 msgid ""
 "\n"
@@ -1016,26 +1026,26 @@ msgstr ""
 "\n"
 "afgWelkom op %s, g%s! gDit is je w%de glogin.\n"
 
-#: src/main.c:799
+#: src/main.c:800
 #, c-format
 msgid "fgLast login: %s gffrom r%-16.16s\n"
 msgstr "fgLaatste login: %s gfvanaf r%-16.16s\n"
 
-#: src/main.c:821
+#: src/main.c:822
 msgid "fgYour friends onlinew:a\n"
 msgstr "fgJe aanwezige vriendenw:a\n"
 
-#: src/main.c:861
+#: src/main.c:862
 #, c-format
 msgid "fgYou have a new private %s in pMail>\n"
 msgstr "fgJe hebt een nieuw priv %s in pMail>\n"
 
-#: src/main.c:863
+#: src/main.c:864
 #, fuzzy, c-format
 msgid "fgYou have r%d gnew private %s in pMail>\n"
 msgstr "fgJe hebt r%d gnieuwe poststukken in pMail>\n"
 
-#: src/main.c:865
+#: src/main.c:866
 #, fuzzy, c-format
 msgid "fgYou have rnog new Mail %s.a\n"
 msgstr "fgJe hebt rgeeng nieuwe poststukken.a\n"
