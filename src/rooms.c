@@ -30,6 +30,7 @@
 #include "ext.h"
 #include "setup.h"
 #include "sql_forum.h"
+#include "sql_message.h"
 #include "sql_userforum.h"
 
 #define extern
@@ -505,7 +506,7 @@ killroom()
     quickroom = readquad(curr_rm);
 
     if ((curr_rm < 11) && (usersupp->priv < PRIV_WIZARD)) {
-	cprintf("\1gOnly an " WIZARDTITLE "\1g can delete this %s.\n", config.forum);
+	cprintf("\1f\1gOnly a \1w%s\1g can delete this %s.\n", config.wizard, config.forum);
 	return;
     } 
 
@@ -533,6 +534,14 @@ killroom()
     if (yesno_default(YES) == YES) {
 	erase_all_messages(quickroom.highest);
 	quickroom.highest = quickroom.lowest = 0;
+        /*
+         * Trash posts from SQL table
+         */
+        cprintf("\n\1f\1rRemoving %s with forum_id \1y%u\1r from message table... \1a", config.message_pl, curr_rm);
+        if( (mono_sql_mes_erase_forum( curr_rm )) == 0)
+            cprintf("\1f\1gok.\1a\n");
+        else
+            cprintf("\1f\1rerror!\1a\n");
     } else if (curr_rm == CURSE_FORUM)
 	return;
 
@@ -542,7 +551,7 @@ killroom()
     if (curr_rm == CURSE_FORUM)
 	log_sysop_action("Cleaned the Dungeon.");
     else {
-	log_sysop_action("deleted %s: %s>", config.forum, temprmname);
+	log_sysop_action("deleted %s: %d.%s>", config.forum, curr_rm, (strlen(temprmname)) ? temprmname : " (Quadrant had no name)");
         _sql_qc_zero_forum_categories(curr_rm);
     }
 
@@ -627,7 +636,7 @@ erase_all_messages(long highest)
     long i;
     char filename[L_FILENAME + 1];
 
-    cprintf("\n\1f\1rErasing\1w");
+    cprintf("\n\1f\1rErasing %s for %s \1y%d\1r from file system...", config.message_pl, config.forum, curr_rm );
 
     for (i = 0; i <= highest; i++) {
 	message_header_filename(filename, curr_rm, i);
@@ -640,7 +649,7 @@ erase_all_messages(long highest)
 	if (!(i % 10))		/* show progress.. */
 	    cprintf(".");
     }
-    cprintf("\n\1rdone.\1a");
+    cprintf(" \1gdone.\1a");
 }
 
 /*************************************************
