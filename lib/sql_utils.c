@@ -174,9 +174,12 @@ escape_string(const char *old_string, char **new_string)
     size_t old_string_len;
     char *ns;
 
-    old_string_len = strlen(old_string);
 
-    if (!old_string || old_string_len < 1)
+    if (!old_string)
+	return -1;
+
+    old_string_len = strlen(old_string);
+    if (old_string_len < 1)
 	return -1;
 
     ns = (char *) xmalloc(old_string_len * 2);
