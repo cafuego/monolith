@@ -337,6 +337,8 @@ typedef struct {
     time_t date;			/* time of posting */
     char alias[L_USERNAME+1];		/* alias, if applicable */
        /* NOTE!  post.type is cast to an int in messages.c */     
+       /* Why? The original was a char and that was an issue, no need to
+          cast it now... */
     long type;				/* type of post */
     char recipient[400];		/* recipient of mail */
     int lines;				/* number of lines in message */
