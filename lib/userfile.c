@@ -37,9 +37,7 @@
 
 /*************************************************
 * check_user()
-* Searches in the userdir and sees if the username
-* exists. If the name is in the userdir, then a
-* TRUE is returned.
+* DEPRICATED: uses mono_sql_u_check_user()
 *************************************************/
 
 int
@@ -479,16 +477,19 @@ del_user(const char *name)
 {
     char work2[61];
     unsigned int user_id;
+    int ret;
 
-    mono_sql_u_name2id(name, &user_id);
-    del_sql_user(user_id);
+    /* do this first, delete commands won't matter if the table
+       does not exit */
+    ret = mono_sql_u_name2id(name, &user_id);
+    if ( ret == 0 )
+       del_sql_user(user_id);
 
     if (!check_user(name)) {
 	mono_errno = E_NOUSER;
 	return -1;
     }
     (void) sprintf(work2, "rm -rf %s", getuserdir(name));
-
 
     if (system(work2) == 0)
 	return 0;
@@ -510,11 +511,11 @@ rename_user(const char *from, const char *to)
 {
     user_t *user;
 
-    if (check_user(from) == FALSE) {
+    if (mono_sql_u_check_user(from) == FALSE) {
 	mono_errno = E_NOUSER;
 	return -1;
     }
-    if (check_user(to) == TRUE)
+    if (mono_sql_u_check_user(to) == TRUE)
 	return -1;
 
     user = readuser(from);
@@ -532,7 +533,7 @@ write_profile(const char *name, char *profile)
     FILE *fp;
     char work[61];
 
-    if (!check_user(name)) {
+    if (!mono_sql_u_check_user(name)) {
 	mono_errno = E_NOUSER;
 	return -1;
     }
@@ -555,6 +556,11 @@ read_profile(const char *name)
     int fd;
     char *p, work[61];
     struct stat buf;
+
+    if (!mono_sql_u_check_user(name)) {
+	mono_errno = E_NOUSER;
+	return NULL;
+    }
 
     (void) sprintf(work, "%s/profile", getuserdir(name));
 

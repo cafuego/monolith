@@ -209,4 +209,36 @@ mono_sql_u_name2id(const char *username, unsigned int *userid)
 
 }
 
+int
+mono_sql_read_profile(unsigned int user_id, char ** profile )
+{   
+    char *p, work[61];
+    struct stat buf;
+    int i;
+    MYSQL_RES *res;
+    MYSQL_ROW row;
+
+    i = mono_sql_query(&res, "SELECT proflie FROM " U_TABLE " WHERE id=%u", user_id);
+
+    if (i == -1) {
+	fprintf(stderr, "No results from query.\n");
+        return -1;
+    }   
+
+    if (mysql_num_rows(res) != 1) {
+	return -1;
+    }
+
+
+    /* copy entire proflie into 'p' here *
+    row = mysql_fetch_row(res);
+
+    *profile = (char *) xmalloc( strlen(row[0]) * sizeof(char) );
+
+    strcpy( *profile, row[0] );
+
+    mono_sql_u_free_result(res);
+    return 0;
+}
+
 /* eof */

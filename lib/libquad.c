@@ -45,7 +45,7 @@ change_QL(unsigned int quad_num, const char *QLname, int how)
 	mono_errno = E_NOQUAD;
 	return -1;
     }
-    if (check_user(QLname) == FALSE && how == 1) {
+    if (mono_sql_u_check_user(QLname) == FALSE && how == 1) {
 	mono_errno = E_NOUSER;
 	return -1;
     }
@@ -275,7 +275,7 @@ kickout(const char *user, unsigned int room)
     user_t *userP;
     room_t scratch;
 
-    if (check_user(user) == FALSE) {
+    if (mono_sql_u_check_user(user) == FALSE) {
 	mono_errno = E_NOUSER;
 	return -1;
     }
@@ -328,7 +328,7 @@ invite(const char *name, unsigned int room)
     user_t *user;
     room_t scratch;
 
-    if (check_user(name) == FALSE)
+    if (mono_sql_u_check_user(name) == FALSE)
 	return -1;
     if ( (room > MAXQUADS) )
 	return -1;
