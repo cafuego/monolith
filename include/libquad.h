@@ -2,7 +2,6 @@
 
 /* prototypes */
 extern int change_QL(unsigned int, const char *, int);
-extern room_t read_quad(unsigned int);
 extern int read_forum( unsigned int, room_t * );
 extern int write_forum( unsigned int, room_t * );
 extern int write_quad(room_t, int);
