@@ -15,6 +15,7 @@ $usernum = get_usernum($username);
 echo "<p>$username/$usernum<br>\n";
 
 if ($userfile == null || $userfile == "") {
+    echo "<p>Accepted types: GIF, JPEG and PNG.<br>\n";
     echo "<form enctype=\"multipart/form-data\" action=\"/bbs/test.phtml\" method=\"post\"\n";
     echo "  <input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"10000\">\n";
     echo "  <input type=\"hidden\" name=\"USER_ID\" value=\"$usernum\">\n";

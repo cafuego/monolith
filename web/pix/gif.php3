@@ -3,15 +3,12 @@
     // URRGLY! But it *does* work.
 
     // Create the content-type header.
-    // Header("Content-type: image/gif");
+    Header("Content-type: image/gif");
 
     // Find out for which user we do this.
     //
     $url_array = explode("?", $REQUEST_URI);
     $user_id = $url_array[1];    // What action?
-    echo $url_array[0];
-    echo $url_array[1];
-    echo $url_array[2];
     
     // Connect to the database.
     MYSQL_CONNECT("localhost", "root", "") OR DIE("");
