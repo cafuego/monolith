@@ -18,10 +18,13 @@ char *getenv();
 #include <time.h>
 #include <unistd.h>
 
+#include <mysql.h>
+
 #include "monolith.h"
 #include "libmono.h"
 #include "registration.h"
 #include "cgi.h"
+
 
 typedef struct {
     char name[128];
