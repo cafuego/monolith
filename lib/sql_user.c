@@ -543,4 +543,207 @@ mono_sql_u_get_validation( unsigned int user_id, int *validation )
     return 0;
 }
 
+int
+mono_sql_u_update_x_count( unsigned int user_id, int x_count )
+{
+
+    int i;
+    MYSQL_RES *res;
+
+    i = mono_sql_query(&res, "UPDATE " U_TABLE 
+        " set x_count='%ud' "
+	" WHERE id=%u", x_count, user_id );
+
+    if (i == -1) {
+	fprintf(stderr, "No results from query.\n");
+        return -1;
+    }   
+
+    mono_sql_u_free_result(res);
+    return 0;
+}
+
+int
+mono_sql_u_get_x_count( unsigned int user_id, int *x_count )
+{
+    int i;
+    int ret;
+    MYSQL_RES *res;
+    MYSQL_ROW row;
+
+    i = mono_sql_query(&res, "SELECT x_count FROM " U_TABLE 
+	" WHERE id=%u", user_id );
+
+    if (i == -1) {
+        fprintf(stderr, "No results from query.\n");
+        return -1;
+    }
+
+    if (mysql_num_rows(res) != 1) {
+        return -1;
+    }
+
+    row = mysql_fetch_row(res);
+
+    ret = sscanf( row[0], "%ud", x_count );
+    mono_sql_u_free_result(res);
+
+    return 0;
+}
+
+int
+mono_sql_u_increase_x_count( unsigned int user_id )
+{
+    int i;
+    int ret;
+    MYSQL_RES *res;
+    MYSQL_ROW row;
+
+    i = mono_sql_query(&res, "UPDATE " U_TABLE
+	" set x_count=x_count+1 WHERE id=%u", user_id );
+
+    if (i == -1) {
+        fprintf(stderr, "No results from query.\n");
+        return -1;
+    }
+
+    return 0;
+}
+
+
+int
+mono_sql_u_update_post_count( unsigned int user_id, int post_count )
+{
+
+    int i;
+    MYSQL_RES *res;
+
+    i = mono_sql_query(&res, "UPDATE " U_TABLE 
+        " set post_count='%ud' "
+	" WHERE id=%u", post_count, user_id );
+
+    if (i == -1) {
+	fprintf(stderr, "No results from query.\n");
+        return -1;
+    }   
+
+    mono_sql_u_free_result(res);
+    return 0;
+}
+
+int
+mono_sql_u_get_post_count( unsigned int user_id, int *post_count )
+{
+    int i;
+    int ret;
+    MYSQL_RES *res;
+    MYSQL_ROW row;
+
+    i = mono_sql_query(&res, "SELECT post_count FROM " U_TABLE 
+	" WHERE id=%u", user_id );
+
+    if (i == -1) {
+        fprintf(stderr, "No results from query.\n");
+        return -1;
+    }
+
+    if (mysql_num_rows(res) != 1) {
+        return -1;
+    }
+
+    row = mysql_fetch_row(res);
+
+    ret = sscanf( row[0], "%ud", post_count );
+    mono_sql_u_free_result(res);
+
+    return 0;
+}
+
+int
+mono_sql_u_increase_post_count( unsigned int user_id )
+{
+    int i;
+    int ret;
+    MYSQL_RES *res;
+    MYSQL_ROW row;
+
+    i = mono_sql_query(&res, "UPDATE " U_TABLE
+	" set post_count=post_count+1 WHERE id=%u", user_id );
+
+    if (i == -1) {
+        fprintf(stderr, "No results from query.\n");
+        return -1;
+    }
+
+    return 0;
+}
+
+
+int
+mono_sql_u_update_login_count( unsigned int user_id, int login_count )
+{
+
+    int i;
+    MYSQL_RES *res;
+
+    i = mono_sql_query(&res, "UPDATE " U_TABLE 
+        " set login_count='%ud' "
+	" WHERE id=%u", login_count, user_id );
+
+    if (i == -1) {
+	fprintf(stderr, "No results from query.\n");
+        return -1;
+    }   
+
+    mono_sql_u_free_result(res);
+    return 0;
+}
+
+int
+mono_sql_u_get_login_count( unsigned int user_id, int *login_count )
+{
+    int i;
+    int ret;
+    MYSQL_RES *res;
+    MYSQL_ROW row;
+
+    i = mono_sql_query(&res, "SELECT login_count FROM " U_TABLE 
+	" WHERE id=%u", user_id );
+
+    if (i == -1) {
+        fprintf(stderr, "No results from query.\n");
+        return -1;
+    }
+
+    if (mysql_num_rows(res) != 1) {
+        return -1;
+    }
+
+    row = mysql_fetch_row(res);
+
+    ret = sscanf( row[0], "%ud", login_count );
+    mono_sql_u_free_result(res);
+
+    return 0;
+}
+
+int
+mono_sql_u_increase_login_count( unsigned int user_id )
+{
+    int i;
+    int ret;
+    MYSQL_RES *res;
+    MYSQL_ROW row;
+
+    i = mono_sql_query(&res, "UPDATE " U_TABLE
+	" set login_count=login_count+1 WHERE id=%u", user_id );
+
+    if (i == -1) {
+        fprintf(stderr, "No results from query.\n");
+        return -1;
+    }
+
+    return 0;
+}
+
 /* eof */
