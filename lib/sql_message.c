@@ -54,10 +54,11 @@ mono_sql_mes_add(message_t *message, unsigned int forum)
     char *alias = NULL, *subject = NULL, *content = NULL;
   
     if( (message->num = mono_sql_f_get_new_message_id(forum)) == 0)
-        return -1;
+        return 12;
 
     (void) escape_string(message->alias, &alias);
     (void) escape_string(message->subject, &subject);
+    (void) escape_string(message->content, &content);
 
     /*
      * We add the date here, so it really is the date the message was
@@ -65,20 +66,13 @@ mono_sql_mes_add(message_t *message, unsigned int forum)
      */
     message->date = time(0);
 
-    ret = mono_sql_query(&res, "INSERT INTO " M_TABLE " (message_id,topic_id,forum_id,author,alias,subject,date,type,priv,deleted) VALUES (%u,%u,%u,%u,'%s','%s',FROM_UNIXTIME(%u),%d,%d,'n')",
+    ret = mono_sql_query(&res, "INSERT INTO " M_TABLE " (message_id,topic_id,forum_id,author,alias,subject,date,content,type,priv,deleted) VALUES (%u,%u,%u,%u,'%s','%s',FROM_UNIXTIME(%u),%d,%d,'n')",
         message->num, message->topic, message->forum, message->author,
-        alias, subject, message->date, message->type, message->priv );
+        alias, subject, message->date, content, message->type, message->priv );
 
     (void) mysql_free_result(res);
     xfree(alias);
     xfree(subject);
-
-    /*
-     * Add the content now, so we have a bigger content
-     * length due to the fixed size of the query.
-     */
-    (void) escape_string(message->content, &content);
-    ret = mono_sql_query(&res, "UPDATE " M_TABLE " SET content='%s' WHERE message_id=%d AND forum_id=%d", content, message->num, message->forum );
     xfree(content);
 
     return ret;
@@ -115,15 +109,15 @@ int
 mono_sql_mes_retrieve(unsigned int id, unsigned int forum, message_t *data)
 {
 
-    MYSQL_RES *res;
+    MYSQL_RES *res = NULL;
     MYSQL_ROW row;
     message_t message;
     int ret = 0;
 
-    ret = mono_sql_query(&res, "SELECT * FROM " M_TABLE " WHERE message_id=%d AND forum_id=%d", id, forum);
+    ret = mono_sql_query(&res, "SELECT message_id,topic_id,forum_id,author,alias,subject,UNIX_TIMESTAMP(date),content,type,priv,deleted FROM " M_TABLE " WHERE message_id=%d AND forum_id=%d", id, forum);
 
     if (ret == -1) {
-	(void) mysql_free_result(res);
+ 	(void) mysql_free_result(res);
 	return -1;
     }
     if (mysql_num_rows(res) == 0) {
@@ -139,6 +133,7 @@ mono_sql_mes_retrieve(unsigned int id, unsigned int forum, message_t *data)
     /*
      * Determine size.
      */
+
     memset(&message, 0, sizeof(message_t));
     message.content = (char *) xmalloc(strlen(row[7]));
     memset(message.content, 0, sizeof(message.content));
@@ -147,6 +142,7 @@ mono_sql_mes_retrieve(unsigned int id, unsigned int forum, message_t *data)
      * Admin info
      */
     message.num = atoi(row[0]);
+    sscanf( row[0], "%d", &message.num);
     message.topic = atoi(row[1]);
     message.forum = atoi(row[2]);
 
@@ -156,8 +152,7 @@ mono_sql_mes_retrieve(unsigned int id, unsigned int forum, message_t *data)
     message.author = atoi(row[3]);
     sprintf(message.alias, row[4]);
     sprintf(message.subject, row[5]);
-
-    (void) datetime_to_time(row[6], &message.date);
+    sscanf( row[6], "%lu", &message.date);
 
     /*
      * Message content
@@ -191,7 +186,7 @@ mono_sql_mes_list_forum(unsigned int forum, unsigned int start, mlist_t ** list)
     int ret = 0, rows = 0, i = 0;
     mlist_t entry;
 
-    ret = mono_sql_query(&res, "SELECT (message_id) FROM " M_TABLE " WHERE forum_id=%d AND message_id>=%d AND deleted=0 ORDER BY message_id", forum, start);
+    ret = mono_sql_query(&res, "SELECT (message_id) FROM " M_TABLE " WHERE forum_id=%d AND message_id>=%d ORDER BY message_id", forum, start);
 
     if (ret == -1) {
 	(void) mysql_free_result(res);
@@ -230,7 +225,7 @@ mono_sql_mes_list_topic(unsigned int topic, unsigned int start, mlist_t ** list)
     int ret = 0, rows = 0, i = 0;
     mlist_t entry;
 
-    ret = mono_sql_query(&res, "SELECT FROM " M_TABLE " WHERE topic_id=%d AND message_id>=%d AND deleted=0 ORDER BY message_id", topic, start);
+    ret = mono_sql_query(&res, "SELECT FROM " M_TABLE " WHERE topic_id=%d AND message_id>=%d ORDER BY message_id", topic, start);
 
     if (ret == -1) {
 	(void) mysql_free_result(res);
