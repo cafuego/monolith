@@ -46,7 +46,7 @@
     $message = rawurldecode($message);
     $message = htmlspecialchars($message);
     $message = nl2br($message);
-    $message = strtr($message "'" "\\'");
+    $message = strtr($message, "'", "\\'");
 
     list_x_messages($username);
 
