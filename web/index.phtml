@@ -9,9 +9,10 @@
     echo "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n";
     echo "<html lang=\"en\">\n";
     echo "<head>\n\n";
-    echo "<meta name=\"Generator\" content=\"". phpversion() ." [uid: ". getmyuid() ." (". get_current_user() ."); pid: ". getmypid() ."]\">\n";
-    echo "<meta name=\"Rcsid\" content=\"\$Id$\">\n";
+    echo "<meta name=\"Generator\" content=\"PHP ". phpversion() ."\">\n";
+    echo "<meta name=\"Process-id\" content=\"". getmypid() ."\">\n";
     echo "<meta name=\"Location\" content=\"$REQUEST_URI\">\n\n";
+    echo "<meta name=\"Rcsid\" content=\"\$Id$\">\n";
     echo "<meta http-equiv=\"Expires\" content=\"" . gmdate("l, d F Y H:i:s") ." CET\">\n";
     echo "<meta http-equiv=\"Last-Modified\" content=\"" . gmdate("l, d F Y H:i:s") ." CET\">\n";
     echo "<meta http-equiv=\"Cache-Control\" content=\"no-cache, must-revalidate\">\n";
