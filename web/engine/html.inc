@@ -266,15 +266,15 @@ function html_print_buttons($username, $location) {
     if($url_array[3] == "q")
         return;
 
-    echo "<a href=\"/\">". addbutton("Monolith") ."</a><br>\n";
-    echo "<a href=\"/bbs/index.phtml/\">". addbutton("Main Page") ."</a><br>\n";
-    echo "<p>&nbsp;</p>\n";
-    echo "<a href=\"$location\">". addbutton("Check X Messages") ."</a><br>\n";
-    echo "<a href=\"/bbs/index.phtml/w\">". addbutton("View Wholist") ."</a><br>\n";
-    echo "<a href=\"/bbs/index.phtml/l\">". addbutton("All Quadrants") ."</a><br>\n";
-    echo "<a href=\"/bbs/index.phtml/u\">". addbutton("Unread Messages") ."</a><br>\n";
-    echo "<p>&nbsp;</p>\n";
-    echo "<a href=\"/bbs/index.phtml/q\">". addbutton( "Log out" ) ."</a><br>\n";
+    addbutton("Monolith", "/");
+    addbutton("Main Page", "/bbs/index.phtml/");
+    addbutton(" ", "");
+    addbutton("X Messages", "$location");
+    addbutton("Wholist", "/bbs/index.phtml/w");
+    addbutton("Unread", "/bbs/index.phtml/u");
+    addbutton("Quadrants", "/bbs/index.phtml/l");
+    addbutton(" ", "");
+    addbutton("Log out", "/bbs/index.phtml/q");
 }
 
 ?>

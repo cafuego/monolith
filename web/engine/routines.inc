@@ -334,15 +334,15 @@ function addimage( $text ) {
 
 }
 
-function addbutton( $text ) {
+function addbutton( $text, $url ) {
 
     // To change all images in one go.
     // Image parser only knows basics tho!
     //
     $colour = "yellow";
-    $text = rawurlencode($text);
+    $imgtext = rawurlencode($text);
 
-    return "<img src=\"/bbs/image.phtml/Arial_I,18,$colour/$text/\" alt=\"[ button: $text ]\" border=\"0\">\n";
+    echo "<a href=\"$url\"><img src=\"/bbs/image.phtml/Arial_I,12,$colour/$text/\" alt=\"[ button: $text ]\" border=\"0\"></a><br>\n";
 
 }
 
