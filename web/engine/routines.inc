@@ -139,7 +139,7 @@ function format_username($username,$user, $alias, $flag) {
     if( $flag == "anon" ) {
         $usernum = get_usernum($username);
         $author = get_usernum($user);
-        if ($user== $author)
+        if ($usernum== $author)
             return format_alias($alias,1);
         else
             return format_alias($alias,0);
