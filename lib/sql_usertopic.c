@@ -54,7 +54,7 @@ mono_sql_ut_kill_topic(unsigned int topicnumber)
     int ret;
     MYSQL_RES *res;
 
-    ret = mono_sql_query(&res, "DELETE FROM " UT_TABLE " WHERE (topic_id='%d')", topicnumber);
+    ret = mono_sql_query(&res, "DELETE FROM " UT_TABLE " WHERE (topic_id='%u')", topicnumber);
 
     if (ret != 0) {
 	fprintf(stderr, "Some sort of error.\n");
@@ -70,7 +70,7 @@ mono_sql_ut_kill_user(unsigned int userid)
     int ret;
     MYSQL_RES *res;
 
-    ret = mono_sql_query(&res, "DELETE FROM " UT_TABLE " WHERE (user_id='%d')", userid);
+    ret = mono_sql_query(&res, "DELETE FROM " UT_TABLE " WHERE (user_id='%u')", userid);
 
     if (ret != 0) {
 	fprintf(stderr, "Some sort of error.\n");

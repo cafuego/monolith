@@ -22,7 +22,9 @@
 #include "monosql.h"
 #include "sql_utils.h"
 
-#define T_TABLE "topic"
+#define extern
+#include "sql_topic.h"
+#undef extern
 
 int
 mono_sql_t_new_topic(unsigned int topic_id, topic_t * top)
