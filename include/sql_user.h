@@ -25,10 +25,11 @@ extern int mono_sql_write_profile(unsigned int user_id, const char * profile );
 extern int mono_sql_u_update_email( unsigned int user_id, const char *email );
 extern int mono_sql_u_update_url( unsigned int user_id, const char *url );
 extern int mono_sql_u_update_hidden( unsigned int user_id, int hiddeninfo );
+extern int mono_sql_u_update_validation( unsigned int user_id, int validation );
 
 extern int mono_sql_u_get_email( unsigned int user_id, char *email );
 extern int mono_sql_u_get_url( unsigned int user_id, char *url );
-extern int mono_sql_u_get_hidden( unsigned int user_id, int *hiddeninfo );
+extern int mono_sql_u_get_validation( unsigned int user_id, int *validation );
 
 #define U_TABLE	"user"
 /* eof */
