@@ -46,15 +46,15 @@ function html_print_title($username, $location) {
             $name = html_get_quadname($username,$quad);
             print "<title>$username@Monolith BBS: Listing messages in $name</title>\n";
             break;
-        case "n":
-            print "<title>$username@Monolith BBS: Listing quadrants with unread messages</title>\n";
-            break;
         case "q":
             print "<title>$username@Monolith BBS: Logging out</title>\n";
             break;
         case "r":
             $name = html_get_quadname($username,$quad);
             print "<title>$username@Monolith BBS: Reading message in $name</title>\n";
+            break;
+        case "u":
+            print "<title>$username@Monolith BBS: Listing quadrants with unread messages</title>\n";
             break;
         case "w":
             // Stop auto-update if there are new x-es.

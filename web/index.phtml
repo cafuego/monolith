@@ -93,11 +93,6 @@
             list_messages($username,$quad);
             break;
 
-        case "n":
-            require ('engine/list.inc');
-            list_quads($username, 1);
-            break;
-
         case "q":
             do_logout($username);
             break;
@@ -105,6 +100,11 @@
         case "r":
             require ('engine/read.inc');
             read_message($username,$quad,$message,$direction);
+            break;
+
+        case "u":
+            require ('engine/list.inc');
+            list_quads($username, 1);
             break;
 
         case "w":
