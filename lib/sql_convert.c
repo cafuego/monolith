@@ -121,4 +121,30 @@ mono_sql_convert_row_to_sr(MYSQL_ROW row)
 
     return result;
 }
+
+/*
+ * Convert MYSQL_ROW to express_t.
+ */
+express_t *
+mono_sql_convert_row_to_x(MYSQL_ROW row)
+{
+    express_t *x = NULL;
+
+    x = (express_t *) xmalloc(sizeof(express_t));
+
+    if(x == NULL)
+        return NULL;
+
+    memset(x, 0, sizeof(express_t));
+
+    sscanf(row[0], "%lu", &x->time);
+    snprintf(x->sender, L_USERNAME+L_BBSNAME+2, "%s", row[1]);
+    snprintf(x->recipient, L_USERNAME+L_BBSNAME+2, "%s", row[2]);
+    snprintf(x->message, X_BUFFER, "%s", row[3]);
+    sscanf(row[4], "%u", &x->sender_priv);
+    sscanf(row[5], "%d", &x->override);
+    sscanf(row[6], "%d", &x->ack);
+
+    return x;
+}
 /* eof */
