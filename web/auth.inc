@@ -34,7 +34,7 @@
     echo "<meta http-equiv=\"Last-Modified\" content=\"".gmdate("l, d F Y H:i:s")." GMT\">\n";
     echo "<meta http-equiv=\"Cache-Control\" content=\"no-cache, must-revalidate\">\n";
     echo "<meta http-equiv=\"Pragma\" content=\"no-cache\">\n";
-    echo "<meta http-equiv=\"Refresh\" content=\"10; url=http://". getenv("$SERVER_NAME") ."/bbs/\">\n";
+    echo "<meta http-equiv=\"Refresh\" content=\"10; url=http://". getenv("SERVER_NAME") ."/bbs/\">\n";
     echo "<link rev=\"made\" href=\"mailto:webmaster@monolith.student.utwente.nl\">\n";
     echo "<link rel=\"StyleSheet\" href=\"/bbs/style/global.css\" type=\"text/css\">\n";
     echo "<script language=\"JavaScript\">\n";
@@ -55,7 +55,7 @@
 
     echo "<h2 align=\"center\">Access Denied</h2>\n";
     echo "<p align=\"center\">You need to log on before using this site.</p>\n";
-    echo "<p align=\"center\">Please click <a href=\"http://". getenv("$SERVER_NAME") ."/bbs/\">here</a> and log on using<br>\n";
+    echo "<p align=\"center\">Please click <a href=\"http://". getenv("SERVER_NAME") ."/bbs/\">here</a> and log on using<br>\n";
     echo "                    your login and password.</p>\n";
     echo "<p align=\"center\">Alternatively, wait 10 seconds and you will<br>\n";
     echo "                    be taken to the login screen automatically.</p>\n";
@@ -69,7 +69,7 @@
 
     echo "<h2 align=\"center\">Invalid Password</h2>\n";
     echo "<p align=\"center\">The password you provided for $PHP_AUTH_USER is incorrect.</p>\n";
-    echo "<p align=\"center\">Please click <a href=\"http://". getenv("$SERVER_NAME") ."/bbs/\">here</a> and log on using<br>\n";
+    echo "<p align=\"center\">Please click <a href=\"http://". getenv("SERVER_NAME") ."/bbs/\">here</a> and log on using<br>\n";
     echo "                    your login and password.</p>\n";
     echo "<p align=\"center\">Alternatively, wait 10 seconds and you will<br>\n";
     echo "                    be taken to the login screen automatically.</p>\n";
