@@ -9,4 +9,6 @@ extern int mono_sql_f_name2id(const char *forumname, unsigned int *forumid);
 extern int mono_sql_f_partname2id(const char *forumname, unsigned int *forumid);
 extern int mono_sql_f_update_forum(unsigned int forum_id, const room_t * q);
 
+extern void mono_sql_f_fix_quickroom(void);
+
 #define F_TABLE "forum"

@@ -35,8 +35,9 @@ static MYSQL mp;
 static int connected = FALSE;
 static int logqueries = FALSE;
 
-#
+#ifdef Q_BUG_FIXED
 static unsigned int query_length(const char *format, va_list arg);
+#endif
 
 int
 mono_sql_connect()
