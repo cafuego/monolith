@@ -626,7 +626,7 @@ format_mod_line(message_header_t * header, char *header_string)
 	snprintf(mod_line, sizeof(mod_line) - 1,
 		 "\1f\1gOriginally posted\1w: %s \1w[\1r%s: %s\1w]\1a\n",
 		 datestring, (usersupp->config_flags & CO_EXPANDHEADER) ? "Edited" : "E",
-		 header->modified_by);
+                 ( header->banner_type & ANON_BANNER ) ? "\1bAnonymous" : header->modified_by );
     else
 	strcpy(mod_line, "\1f\1rUnknown mod_type!\1a\n");
 
