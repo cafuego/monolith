@@ -29,6 +29,7 @@
             $result = mysql_query("UPDATE user SET content_type='$userfile_type' WHERE id=$usernum");
         }
         echo "<p>Hopefully saved your file \"$userfile_name\" ($userfile_size bytes) into the database.\n";
+        echo "<br>\n<br>$contents\n";
     }
 
 ?>
