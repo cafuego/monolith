@@ -507,32 +507,44 @@ killroom()
     if ((curr_rm < 11) && (usersupp->priv < PRIV_WIZARD)) {
 	cprintf("\1gOnly an " WIZARDTITLE "\1g can delete this %s.\n", config.forum);
 	return;
-    }
-    cprintf("\n\1f\1rAre you \1w!SURE!\1r you want to Delete this %s??? (y/n)", config.forum);
-    if (yesno() == NO)
-	return;
+    } 
 
-    quickroom.flags = 0;
-    strcpy(temprmname, quickroom.name);
-    strcpy(quickroom.name, "");
-    if (quickroom.flags & QR_INUSE)
-	quickroom.flags ^= QR_INUSE;
+    if (curr_rm != CURSE_FORUM) {
+        cprintf("\n\1f\1rAre you \1w!SURE!\1r you want to Delete this %s??? (y/n)",
+		config.forum);
+        if (yesno() == NO)
+	    return;
 
-    cprintf("\1f\1rErase all %s in this %s? \1w(\1rrecommended\1w) (\1rY\1w/\1rn\1w) \1c", config.message_pl, config.forum);
+	quickroom.flags = 0;
+    	strcpy(temprmname, quickroom.name);
+    	strcpy(quickroom.name, "");
+    	if (quickroom.flags & QR_INUSE)
+	    quickroom.flags ^= QR_INUSE;
+    
+	for (i = 0; i < NO_OF_QLS; i++)
+	    strcpy(quickroom.qls[i], "");
+
+        cprintf("\1f\1rErase all %s in this %s%s", 
+		config.message_pl, config.forum, 
+		"? \1w(\1rrecommended\1w) (\1rY\1w/\1rn\1w) \1c");
+    } else
+        cprintf("\n\1f\1rAre you \1w!SURE!\1r you want Clean The Dungeon? (Y/n) ");
+
     if (yesno_default(YES) == YES) {
 	erase_all_messages(quickroom.highest);
 	quickroom.highest = quickroom.lowest = 0;
-    }
-
-    for (i = 0; i < NO_OF_QLS; i++)
-	strcpy(quickroom.qls[i], "");
+    } else if (curr_rm == CURSE_FORUM)
+	return;
 
     cprintf("\n\n\1f\1rResetting speedyforum... \1a");
     write_quad(quickroom, curr_rm);
 
-    log_sysop_action("deleted %s: %s>", config.forum, temprmname);
-
-    _sql_qc_zero_forum_categories(curr_rm);
+    if (curr_rm == CURSE_FORUM)
+	log_sysop_action("Cleaned the Dungeon.");
+    else {
+	log_sysop_action("deleted %s: %s>", config.forum, temprmname);
+        _sql_qc_zero_forum_categories(curr_rm);
+    }
 
     curr_rm = 0;
     gotocurr();

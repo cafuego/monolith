@@ -509,7 +509,7 @@ get_mail_names(const int reply, userlist_t ** name_list, message_header_t * head
 		    continue;
 	    }
 	if (is_enemy(mailname, who_am_i(NULL))) {
-	    cprintf("\1f\1rYou are not allowed to mail \1g%s\1a\n", mailname);
+	    cprintf("\1f\1rYou are not allowed to mail \1g%s.\1a\n", mailname);
 	    if (usersupp->priv >= PRIV_SYSOP) {
 		cprintf("\n\1f\1p%s has you enemy-listed. Override? (y/n)", mailname);
 		if (yesno() == YES)

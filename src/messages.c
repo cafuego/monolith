@@ -132,16 +132,23 @@ copy_message_wrapper(const unsigned int current_post, const int is_not_my_post, 
 		   || usersupp->priv >= PRIV_SYSOP || curr_rm == MAIL_FORUM))
 	return -1;
 
-    cprintf("\1f\1g%s %s.\n", (copy) ? "Copy" : "Move", config.message);
-    cprintf("Enter destination %s name/number: \1c", config.forum);
-    strcpy(tempstr, get_name(3));
-    to_quad = get_room_name(tempstr);
+    if (copy && curr_rm == MAIL_FORUM && usersupp->priv < PRIV_SYSOP) {
+	cprintf("\n\1f\1gCC (forward) this Mail %s? \1w(\1gy\1w/\1gn\1w) \1c",
+		 config.message);
+	to_quad = MAIL_FORUM;
+    } else {
+        cprintf("\1f\1g%s %s.\n", (copy) ? "Copy" : "Move", config.message);
+        cprintf("Enter destination %s name/number: \1c", config.forum);
+        strcpy(tempstr, get_name(3));
+        to_quad = get_room_name(tempstr);
 
-    if (to_quad < 0) {
-	if (to_quad == -1)
-	    cprintf("\1f\1rNo such %s.\1a\n", config.forum);
-	return -1;
+        if (to_quad < 0) {
+	    if (to_quad == -1)
+	        cprintf("\1f\1rNo such %s.\1a\n", config.forum);
+	    return -1;
+        }
     }
+
     read_forum( to_quad, &scratch );
 
     if (usersupp->priv >= PRIV_SYSOP) {
@@ -154,7 +161,7 @@ copy_message_wrapper(const unsigned int current_post, const int is_not_my_post, 
 	    return -1;
 	}
     } else if (!i_may_write_forum(to_quad)
-	       || to_quad == YELL_FORUM || to_quad == MAIL_FORUM) {
+	       || to_quad == YELL_FORUM || (to_quad == MAIL_FORUM && !copy)) {
 	cprintf("You're not allowed to %s the %s there.\n",
 		(copy) ? "copy" : "move", config.message);
 	return -1;
@@ -172,8 +179,9 @@ copy_message_wrapper(const unsigned int current_post, const int is_not_my_post, 
 	    return -1;
 	}
     }
-    cprintf("\1f\1g%s this %s to `\1y%s\1g'? \1w(\1gy\1w/\1gn\1w)\1c ",
-	    (copy) ? "Copy" : "Move", config.message, scratch.name);
+    if (!(to_quad == MAIL_FORUM && copy && usersupp->priv < PRIV_SYSOP))
+        cprintf("\1f\1g%s this %s to `\1y%s\1g'? \1w(\1gy\1w/\1gn\1w)\1c ",
+		(copy) ? "Copy" : "Move", config.message, scratch.name);
     if (yesno() == NO)
 	return 0;
 
@@ -181,7 +189,7 @@ copy_message_wrapper(const unsigned int current_post, const int is_not_my_post, 
 
 	if (to_quad == MAIL_FORUM) {
 
-	    cprintf("\n\1f\1yRecipient: \1c");
+	    cprintf("\1f\1yRecipient: \1c");
 	    strcpy(to_name, get_name(2));
 	    if (!strlen(to_name)) {
 		if (!copy && count)
@@ -190,7 +198,19 @@ copy_message_wrapper(const unsigned int current_post, const int is_not_my_post, 
 	    } else if (check_user(to_name) == FALSE) {
 		cprintf("\nNo such user..");
 		continue;
+	    } else if (is_enemy(to_name, who_am_i(NULL))) {
+                cprintf("\1f\1rYou are not allowed to CC to \1g%s.\1a\n", to_name);
+                if (usersupp->priv >= PRIV_SYSOP) {
+                    cprintf("\n\1f\1p%s has you enemy-listed. Override? (y/n)", to_name);
+                    if (yesno() == YES)
+                        log_sysop_action("Overrode the X-Enemy-list and CC'd %s.",
+					 to_name);
+                    else
+                        continue;
+                } else
+                    continue;
 	    }
+
 	    fail = message_copy(curr_rm, to_quad, current_post,
 				to_name, (copy) ? MOD_COPY : MOD_MOVE);
 
@@ -198,10 +218,13 @@ copy_message_wrapper(const unsigned int current_post, const int is_not_my_post, 
 	    fail = message_copy(curr_rm, to_quad, current_post, "", MOD_COPY);
 	else
 	    fail = message_move(curr_rm, to_quad, current_post, "");
-	if (fail == 0)
-	    cprintf("\n\1f\1gThe %s has been %s.\1a\n\n",
+	if (fail == 0) {
+	    if (to_quad != MAIL_FORUM)
+	        cprintf("\n\1f\1gThe %s has been %s.\1a\n\n",
 		    config.message, (copy) ? "copied" : "moved");
-	else
+            else 
+		cprintf("\1f\1gDone.. \1yNext ");
+	} else
 	    cprintf("\1f\1rOops, couldn't %s the %s.\1a\n",
 		    config.message, (copy) ? "copy" : "move");
 	if (to_quad != MAIL_FORUM)
@@ -222,7 +245,7 @@ delete_message_wrapper(const unsigned int current_post, const int is_not_my_post
 	|| (curr_rm == MAIL_FORUM)) {
 
 	cprintf("\1f\1rDelete.\1a\n");
-	cprintf("\1f\1gAre you sure you want to delete this %s? \1w(\1gy\1w/\1gn\1w)\1a", config.message);
+	cprintf("\1f\1gAre you sure you want to delete this %s? \1w(\1gy\1w/\1gn\1w) \1a", config.message);
 	if (yesno() == FALSE)
 	    return 0;
 
