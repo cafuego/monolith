@@ -487,7 +487,7 @@ main(int argc, char *argv[])
 
 	sprintf(env, "LANGUAGE=%s", usersupp->lang);
 	ret = putenv(env);
-	IFSYSOP cprintf("%s\n",env);
+	IFSYSOP cprintf("Locale: %s\n",env);
         if ( ret == -1 ) {
            cprintf( "Could not set locale.\n" );
         }

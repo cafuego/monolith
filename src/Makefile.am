@@ -17,13 +17,13 @@ yawc_client_SOURCES = clipboard.c key.c fun.c friends.c chat.c help.c menu.c \
 
 yawc_port_LDADD = p_commands.o p_express.o p_main.o p_messages.o p_cprintf.o \
   p_routines2.o p_statusbar.o p_usertools.o p_display_message.o \
-  $(MYSQL_LIB) -L../lib -L../shix -lyawc -lm -lshix -lintl \
-  -lmysqlclient
+  $(MYSQL_LIB) -L../lib -L../shix -lyawc -lm -lshix \
+  -lmysqlclient @INTLLIBS@
 
 yawc_client_LDADD = c_commands.o c_client_input.o c_express.o c_main.o \
   c_messages.o c_routines2.o c_statusbar.o c_usertools.o c_display_message.o \
-  $(MYSQL_LIB) -L../lib -L../shix -lyawc -lm -lshix -lintl \
-  -lmysqlclient
+  $(MYSQL_LIB) -L../lib -L../shix -lyawc -lm -lshix \
+  -lmysqlclient @INTLLIBS@
 
 c_commands.o: commands.c
 	$(COMPILE) \
