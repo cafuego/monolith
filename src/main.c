@@ -158,6 +158,11 @@ segfault(int sig)
     sig++;
     sleep(1);
     cprintf("OH NO!!!!!!! A SEGFAULT!!!!!\n ");
+    /*
+     * Well, it _might_ work... if not, I'll fiddle with ye
+     * code for cleaning up a previous login.
+     */
+    (void) mono_sql_detach();
     logoff(ULOG_PROBLEM);
     return;
 }
