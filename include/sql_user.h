@@ -30,19 +30,19 @@ extern int mono_sql_u_update_validation( unsigned int user_id, int validation );
 extern int mono_sql_u_get_email( unsigned int user_id, char *email );
 extern int mono_sql_u_get_url( unsigned int user_id, char *url );
 extern int mono_sql_u_get_hidden(unsigned int user_id, int *hiddeninfo);
-extern int mono_sql_u_get_validation( unsigned int user_id, int *validation );
+extern int mono_sql_u_get_validation( unsigned int user_id, unsigned int *validation );
 
-extern int mono_sql_u_update_x_count( unsigned int user_id, int x_count );
+extern int mono_sql_u_update_x_count( unsigned int user_id, unsigned int x_count );
 extern int mono_sql_u_increase_x_count( unsigned int user_id );
-extern int mono_sql_u_get_x_count( unsigned int user_id, int *x_count );
+extern int mono_sql_u_get_x_count( unsigned int user_id, unsigned int *x_count );
 
-extern int mono_sql_u_update_post_count( unsigned int user_id, int post_count );
+extern int mono_sql_u_update_post_count( unsigned int user_id, unsigned int post_count );
 extern int mono_sql_u_increase_post_count( unsigned int user_id );
-extern int mono_sql_u_get_post_count( unsigned int user_id, int *post_count );
+extern int mono_sql_u_get_post_count( unsigned int user_id, unsigned int *post_count );
 
-extern int mono_sql_u_update_login_count( unsigned int user_id, int login_count );
+extern int mono_sql_u_update_login_count( unsigned int user_id, unsigned int login_count );
 extern int mono_sql_u_increase_login_count( unsigned int user_id );
-extern int mono_sql_u_get_login_count( unsigned int user_id, int *login_count );
+extern int mono_sql_u_get_login_count( unsigned int user_id, unsigned int *login_count );
 
 
 extern int mono_sql_u_update_awaymsg( unsigned int user_id, const char *awaymsg );

@@ -351,20 +351,6 @@ typedef struct {
     char type;
 } channel_t;
 
-/* the quad type is supposed to be a replacement for the quickroom */
-typedef struct {
-    char name[L_QUADNAME + 1];	/* name of quadrant */
-    char ql[L_USERNAME + 1][NO_OF_QLS];		/* name of qls */
-    unsigned int number;	/* number of the room */
-    unsigned long type;		/* type of room */
-    unsigned long post_type;	/* type of allowed posts */
-    unsigned long allowed;	/* who are allowed in room? */
-    unsigned int maxposts;	/* max number of posts */
-    unsigned int lastpost;	/* last posted */
-    unsigned int generation;	/* generation number */
-    unsigned int roominfo;	/* roominfo check */
-} mono_quad_t;
-
 typedef struct {
     unsigned int user_count;
     int first; /* array index to first user in wholist */
