@@ -176,6 +176,23 @@ escape_string(const char *old_string, char **new_string)
     return 0;
 }
 
+/*
+ * Small funcs for use in print_system_info()
+ */
+
+char *
+mono_mysql_server_info()
+{
+    return mysql_get_server_info(&mp);
+}
+
+char *
+mono_mysql_host_info()
+{
+    return mysql_get_host_info(&mp);
+}
+
+
 #ifdef MICHELS_TIME_FUNCS
 /* convert MySQL date format to UNIX time_t */
 /* YYYY-MM-DD -> long : */
