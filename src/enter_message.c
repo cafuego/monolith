@@ -496,7 +496,7 @@ get_mail_names(const int reply, userlist_t ** name_list, message_header_t * head
 	if (reply) {
 	    strcpy(mailname, message_reply_name(NULL));
 	} else {
-	    if ((!name_list) || (!strlen((*name_list)->name))) {
+	    if ((!name_list) || (!(*name_list)->name)) {
 		cprintf("\1f\1yRecipient\1w:\1c ");
 	    } else {
 		cprintf("\1f\1gPress \1w<\1renter\1w>\1g to finish.\n");

@@ -24,6 +24,7 @@
 #undef LINUX
 #undef SUPERHERO
 #undef USE_MYSQL
+#undef USE_ICQ
 #undef USE_RATING
 
 /* Has Sendmail */
