@@ -7,6 +7,7 @@
 #define EMPEROR_FORUM		4
 #define GARBAGE_FORUM		5
 #define LOWER_ADMIN_FORUM	6
+#define POLICY_FORUM		7
 #define QL_FORUM		8
 #define QUOTED_X_FORUM		9
 #define CURSE_FORUM		13

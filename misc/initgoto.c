@@ -17,17 +17,21 @@
 #endif
 #endif
 
+#ifdef 0
+
 #include "monolith.h"
 #include "libmono.h"
 #include "routines.h"
 #include "monosql.h"
+
+#endif
 
 #define BUFSIZE		3000
 
 int
 main( int argc, char *argv[])
 {
-
+#ifdef 0
     FILE *fp;
     MYSQL_RES *res;
     char buffer[BUFSIZE];
@@ -56,5 +60,7 @@ main( int argc, char *argv[])
     (void) mono_sql_detach();
     fclose(fp);
     return TRUE;
-
+#else
+return 1;
+#endif
 }

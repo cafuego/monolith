@@ -50,6 +50,7 @@
 #include "sql_config.h"
 #include "sql_login.h"
 #include "sql_useruser.h"
+#include "read_menu.h"
 #include "registration.h"
 #include "rooms.h"
 #include "routines2.h"
@@ -362,6 +363,7 @@ main(int argc, char *argv[])
     }
     if (argc < 2) {
 	cprintf("Usage: %s <hostname> [<username>].\n\n", argv[0]);
+	strcpy(hname, "localhost");
 	exit(0);
     }
     strncpy(hname, argv[1], 79);
@@ -598,7 +600,7 @@ main(int argc, char *argv[])
     more( BBSDIR "share/try_client", TRUE);
 #endif
 
-    main_menu();
+    short_prompt();
     logoff(ULOG_NORMAL);
     return 0;
 }

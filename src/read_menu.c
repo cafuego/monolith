@@ -53,7 +53,6 @@
 /* ---------------------------------------------------- */
 
 static long get_read_start_number(const long, const int);
-static void short_prompt(void);
 static void long_prompt(long, int);
 static long numeric_read(const long);
 static int set_read_bounds(long *, long *);

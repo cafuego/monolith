@@ -92,16 +92,34 @@ read_all_users()
 	if (user == NULL) {
 	    continue;
 	    printf("\nNull user.");
-        }
-	if (EQ(user->username, "Sysop"))
+        } else
+	   printf("%s\n", user->username);
+	if (EQ(user->username, "Sysop") || EQ(user->username, "Guest"))
 	    continue;
 
 /****************************/
 /* do something useful here */
 /****************************/
 
+#ifdef CONVERT_PASSWORDS_2_SQL
   	ret = mono_sql_query( &res, "UPDATE user SET password='%s' WHERE id=%u",
              user->password, user->usernum );
+#endif
+
+#define STRIP_ALL_PREFERRED_FLAGS
+
+#ifdef STRIP_ALL_PREFERRED_FLAGS
+	if (!(user->priv & PRIV_SYSOP || user->priv & PRIV_WIZARD))  
+	    if (user->priv & PRIV_PREFERRED) {
+	        user->priv -= PRIV_PREFERRED;
+                writeuser(user, 0);
+	    }
+
+#endif
+
+/*-x-x-x-x-x-x-x-x-x-x-x-x-*-x*/
+/* done doing anything useful */
+/*-x-x-x-x-x-x-x-x-x-x-x-x-*-x*/
 
 	xfree(user);
 	i++;

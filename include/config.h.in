@@ -131,3 +131,5 @@
 
 /* Define if you have the proc-animal patch installed */
 #undef HAVE_ANIMAL
+ 
+#undef SUPERHERO

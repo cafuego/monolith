@@ -1,5 +1,5 @@
 bin_PROGRAMS = yawc_port yawc_client
-CFLAGS = -O3 -Wall 
+CFLAGS = -O3 -Wall -g
 
 yawc_port_SOURCES = clipboard.c friends.c chat.c fun.c help.c menu.c \
   normal_input.c newuser.c registration.c key.c inter.c vote.c \

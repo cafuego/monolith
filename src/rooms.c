@@ -138,6 +138,9 @@ i_may_read_forum(const unsigned int forum)
     else if ((forum == HT_FORUM) && !(usersupp->flags & US_GUIDE))
 	return 0;
 
+    else if ((forum == POLICY_FORUM) && !(usersupp->priv & PRIV_PREFERRED))
+	return 0;
+
     else if ((forum == LOWER_ADMIN_FORUM) && 
 		!(usersupp->flags & (US_ROOMAIDE | US_GUIDE)))
 	return 0;

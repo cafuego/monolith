@@ -1,7 +1,7 @@
 # global x log.
 
 # Do not drop, contains live data!
-DROP TABLE express;
+ DROP TABLE express;
 
 CREATE TABLE express (
 

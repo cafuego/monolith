@@ -351,6 +351,21 @@ catchx(int key)
 	    }
         }
     }
+
+	if (!IS_BROADCAST)	/* file log this x? */
+	    if (usersupp->flags & US_IAMBAD) {
+		char filename[L_FILENAME + 1];
+		FILE *f;
+
+		strcpy(filename, "");
+		sprintf(filename, "%s/xlog", getuserdir(who_am_i(NULL)));
+		if ((f = fopen(filename, "a")) != NULL) {
+		    fprintf(f, "\n***** Message from %s to %s at %s%s",
+			    Catchxs->sender, usersupp->username,
+			     date(), Catchxs->message);
+		    fclose(f);
+		}
+	    }
 /* SHIX */
     if ((usersupp->flags & US_SHIX) && (!friendb) && (shix(Catchxs->message) == TRUE)) {
 	Catchxs->ack = ACK_SHIX;
@@ -512,13 +527,10 @@ express(int X_PARAM)
 	    mono_change_online(who_am_i(NULL), "", 15);
 	    return;
 	}
-	if (!BROADCAST)		/* xlog this x? */
-	    if ((isbad(to)) || (usersupp->flags & US_IAMBAD)) {
+	if (!BROADCAST)		/* file log this x? */
+	    if (usersupp->flags & US_IAMBAD) {
 		strcpy(filename, "");
-		if (usersupp->flags & US_IAMBAD)
-		    sprintf(filename, "%s/xlog", getuserdir(who_am_i(NULL)));
-		else
-		    sprintf(filename, "%s/xlog", getuserdir(to));
+		sprintf(filename, "%s/xlog", getuserdir(who_am_i(NULL)));
 		if ((f = fopen(filename, "a")) != NULL) {
 		    fprintf(f, "\n***** Message from %s to %s at %s%s",
 			    usersupp->username, to, date(), send_string);
