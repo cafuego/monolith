@@ -298,7 +298,6 @@ purge_mail_quad(void)
 
     mail_total = count_mail_messages();
 
-return;
     if (mail_total == -1)
 	return;
 
