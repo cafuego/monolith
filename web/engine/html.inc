@@ -224,7 +224,6 @@ function html_print_foot($username, $starttime, $location) {
 
     }
 
-    echo "<hr size=\"1\" width=\"400\" align=\"center\">\n";
     echo "<table border=\"0\" cellspacing=\"3\" align=\"center\">\n";
     echo "<tr>\n";
     echo "  <td colspan=\"2\">\n";

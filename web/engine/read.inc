@@ -76,12 +76,13 @@ function read_message($username, $quad, $current, $direction) {
 
                 // Don't let guests be able to post.
                 //
-                print "<p align=\"center\" style=\"font: 10pt helvetica;\">\n";
-                print "<a href=\"/bbs/index.phtml/r/$quad/$m_id/n\">Read Next</a> | \n";
-                print "<a href=\"/bbs/index.phtml/r/$quad/$m_id/p\">Read Previous</a>\n";
+                echo "<div align=\"center\">\n";
+                addbutton("Read Next", "/bbs/index.phtml/r/$quad/$m_id/n");
+                addbutton("Read Previous", "/bbs/index.phtml/r/$quad/$m_id/p");
                 if( $username != "Guest" ) {
-                    print "| <a href=\"/bbs/index.phtml/f/$quad/$m_id\">Reply</a> | \n";
-                    print "<a href=\"/bbs/index.phtml/e/$quad/$m_id\">New message</a>\n";
+                    addbutton("        ", null);
+                    addbutton("Reply to this message", "/bbs/index.phtml/f/$quad/$m_id");
+                    addbutton("Post new message", "/bbs/index.phtml/e/$quad/$m_id");
                 }
 
                 // Update lastseen!
