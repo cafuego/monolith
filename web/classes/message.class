@@ -37,14 +37,19 @@
     //
     function init( $forum_id, $message_id ) {
 
-        connect_db();
+        $hostname = "130.89.230.12";
+        $username = "cafuego";
+        $password = "k4ad&d00d";
+        $db = "bbs";
+        @mysql_connect($hostname, $username, $password) OR DIE("Unable to connect to
+        @mysql_select_db("$db") or die("Unable to select database");
 
         $query = "SELECT m.message_id,m.forum_id,m.topic_id,m.author,u.username";
-        $query .= "  ,m.alias,m.subject,m.content,UNIX_TIMESTAMP(m.date),m.flag";
-        $query .= "  ,f.name,t.name,m.r_message_id,m.r_forum_id,m.r_topic_id";
+        $query .= "  ,m.alias,m.subject,m.content,UNIX_TIMESTAMP(m.date)";
+        $query .= ",m.flag,f.name,t.name,m.r_message_id,m.r_forum_id,m.r_topic_id";
         $query .= "  ,m.r_author,ur.username,m.r_alias,fr.name,tr.name,m.m_message_id";
         $query .= "  ,m.m_forum_id,m.m_topic_id,m.m_author,um.username";
-        $query .= "  ,UNIX_TIMESTAMP(m.m_date),fm.name,tm.name,m.m_reason ";
+        $query .= "  ,UNIX_TIMESTAMP(m.date),fm.name,tm.name,m.m_reason ";
         $query .= "FROM M_TABLE AS m";
         $query .= "  LEFT JOIN " U_TABLE " AS u ON u.id=m.author";
         $query .= "  LEFT JOIN " U_TABLE " AS ur ON ur.id=m.r_author";
@@ -65,9 +70,9 @@
             $this->topic_id = row[2];
             $this->author_id = row[3];
             $this->author = row[4];
-            $this->alias = htmlentities( row[5] );
-            $this->subject = htmlentities( row[6] );
-            $this->content = htmlentities( row[7] );
+            $this->alias = row[5];
+            $this->subject = row[6];
+            $this->content = row[7];
             $this->date = row[8];
             $this->message_flag = row[9];
             $this->forum_name = row[10];
@@ -77,7 +82,7 @@
             $this->reply_t_id = row[14];
             $this->reply_a_id = row[15];
             $this->reply_author = row[16];
-            $this->reply_alias = htmlentities( row[17] );
+            $this->reply_alias = row[17];
             $this->reply_forum_name = row[18];
             $this->reply_topic_name = row[19];
             $this->orig_m_id = row[20];
@@ -98,6 +103,96 @@
     // Displays the currently loaded message in proper format.
     //
     function display() {
+
+        $user = $this->format_username( $this->author, $this->alias, $this->message_flag );
+        $subject = htmlentities( $this->subject );
+        $forum_name = htmlentities( $this->forum_name );
+        $this->content = htmlentities( $this->content );
     
+        echo "<p align=\"left\"><font color=\"#00CC00\">From</font> $user";
+
+        // Only show date if it's not anonymous.
+        //
+        if ($this->message_flag != "anon")
+            echo " <font color=\"#00CC00\">on</font> <font color=\"#00CC00\">". gmdate("l, d F Y H:i:s", $this->date) ." GMT</font><br>\n";
+        else
+            echo "<br>\n";
+        echo "<font color=\"#FFFF00\">Subject</font>: <font color=\"#FFFF00\">$subject</font></p>\n";
+        echo "<pre><font color=\"#00ffff\">". $this->colourise( $content ) ."</font></pre>\n";
+        echo "<p align=\"left\"><font color=\"#FFFFFF\">$forum_id.</font><font color=\"#00CC00\">$forum_name</font> (<font color=\"#0cc00\">Message #$this->message_id</font>)&gt\n";
+        echo "<p>&nbsp;<br></p>\n";
+        return;
     }
+
+
+    // Return a formatted username or aliasname string.
+    //
+    function format_username( $username, $alias, $flag ) {
+
+        if( $flag == "anon" ) {
+            if ($alias == "" || $alias == "(null)")
+                return "<font color=\"#0000ff\">Anonymous User</font>";
+            else
+	        return "<font color=\"#0000ff\">Anon</font> &quot;<font color=\"#0000ff\">$alias</font>&quot;";
+        }
+
+        if( $username == "" || $username == "NULL" )
+            return "<font color=\"#ff0000\">Deleted User</font>";
+
+        return "<font color=\"#ffff00\"><a href=\"/bbs/index.phtml/p/". rawurlencode( $username ) ."\"".$this->mouseover("Profile $username").">$username</a></font>";
+    }
+
+    // Returns an onMouseOver statement for including in links.
+    //
+    function mouseover($text) {
+
+        // Remove \'s and ''s.
+        //
+        $text = strtr($text, "\\", "\\\\");
+        $text = strtr($text, "'", "\\'");
+
+        return "onMouseover=\"return setStatus('$text');\" onMouseOut=\"return setStatus('');\"";
+    }
+
+    // Converts BBS color codes in a given string to web <font color> tags.
+    //
+    function colourise( $text ) {
+
+        // Make escape chars usable.
+        //
+        $text = rawurlencode( $text );
+
+        // Remove misc codes.
+        //
+        $text = ereg_replace( "%01a", "", $text );	// Reset.
+        $text = ereg_replace( "%01f", "", $text );	// Bold.
+        $text = ereg_replace( "%01d", "", $text );	// Dark.
+        $text = ereg_replace( "%01D", "", $text );	// Dark bg.
+        $text = ereg_replace( "%01n", "", $text );	// Start user.
+        $text = ereg_replace( "%01N", "", $text );	// End user.
+
+        // Remove bg colours.
+        //
+        $text = ereg_replace( "%01W", "", $text );	// White.
+        $text = ereg_replace( "%01Y", "", $text );	// Yellow.
+        $text = ereg_replace( "%01G", "", $text );	// Green.
+        $text = ereg_replace( "%01C", "", $text );	// Cyan.
+        $text = ereg_replace( "%01B", "", $text );	// Blue.
+        $text = ereg_replace( "%01P", "", $text );	// Purple.
+        $text = ereg_replace( "%01R", "", $text );	// Red.
+
+        // Fix fg colours.
+        //
+        $text = ereg_replace( "%01w", "</font><font color=\"#ffffff\">", $text );	// White.
+        $text = ereg_replace( "%01y", "</font><font color=\"#ffff00\">", $text );	// Yellow.
+        $text = ereg_replace( "%01g", "</font><font color=\"#00ff00\">", $text );	// Green.
+        $text = ereg_replace( "%01c", "</font><font color=\"#00ffff\">", $text );	// Cyan.
+        $text = ereg_replace( "%01b", "</font><font color=\"#0000ff\">", $text );	// Blue.
+        $text = ereg_replace( "%01p", "</font><font color=\"#ff00ff\">", $text );	// Purple.
+        $text = ereg_replace( "%01r", "</font><font color=\"#ff0000\">", $text );	// Red.
+
+        return rawurldecode( $text );
+    }
+
+
 }
