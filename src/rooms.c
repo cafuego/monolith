@@ -1597,8 +1597,7 @@ low_traffic_quad_list(void)
 #ifdef NO_POSTS_FOR_30_DAYS
 	    if (post.date <= (timenow - 2592000)) {
 #else /* 15 days */
-	    /* if (post.date <= (timenow - 1296000)) { */
-            if (1) {
+	    if (post.date <= (timenow - 1296000)) {
 #endif
 		if (counted) {
 		    fprintf(mesg_fp, "\1f\1w%d.\1g%s\1w: \1gLast post \1w%d\1g days ago.\1a\n", i, scratch.name, (int) (timenow - post.date) / 86400);
