@@ -10,6 +10,7 @@
 #define H_EMAIL        32
 #define H_URL          64 
 #define H_BIRTHDAY    128
+#define H_ZIP	      256
 
 /* prototypes */
 extern void dis_regis( const user_type *userdata, int override );
