@@ -674,7 +674,7 @@ misc_menu()
  		getline( usersupp->lang, L_LANG, 1 );
                { char env[L_LANG];
               extern int  _nl_msg_cat_cntr;
-                sprintf( env, "LANGUAGE=%s", usersupp->lang );
+                sprintf( env, "LANG=%s", usersupp->lang );
               putenv( env );
               ++_nl_msg_cat_cntr;
             }
