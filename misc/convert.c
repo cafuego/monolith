@@ -98,6 +98,11 @@ read_all_users()
 	if (EQ(user->username, "Sysop") || EQ(user->username, "Guest"))
 	    continue;
 
+
+	mono_sql_u_update_url( user->usernum, user->RGurl );
+	mono_sql_u_update_email(user->usernum, user->RGemail );
+	mono_sql_u_update_hidden(user->usernum,user->hidden_info );
+
 /****************************/
 /* do something useful here */
 /****************************/
