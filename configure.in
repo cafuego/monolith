@@ -5,7 +5,7 @@ AC_INIT(src/main.c)
 
 AC_CANONICAL_SYSTEM
 
-AM_INIT_AUTOMAKE(monolith, 1.0)
+AM_INIT_AUTOMAKE(bod, 1.0)
 AM_CONFIG_HEADER(config.h)
 AC_PREFIX_DEFAULT(/usr/bbs)
 
@@ -508,12 +508,12 @@ echo "<?php" > $PHP_CONFIG_FILE
 echo >> $PHP_CONFIG_FILE
 echo "/* config.inc.  Generated automatically by configure.  */" >> $PHP_CONFIG_FILE
 echo >> $PHP_CONFIG_FILE
-echo "\$BBSNAME        = \"$with_name\"" >> $PHP_CONFIG_FILE
+echo "\$BBSNAME        = \"$with_name\";" >> $PHP_CONFIG_FILE
 echo >> $PHP_CONFIG_FILE
-echo "\$MYSQL_SERVER   = \"$MYSQL_SERVER\"" >> $PHP_CONFIG_FILE
-echo "\$MYSQL_USER     = \"$MYSQL_USER\"" >> $PHP_CONFIG_FILE
-echo "\$MYSQL_PASS     = \"$MYSQL_PASS\"" >> $PHP_CONFIG_FILE
-echo "\$MYSQL_DATABASE = \"$MYSQL_DATABASE\"" >> $PHP_CONFIG_FILE
+echo "\$MYSQL_SERVER   = \"$MYSQL_SERVER\";" >> $PHP_CONFIG_FILE
+echo "\$MYSQL_USER     = \"$MYSQL_USER\";" >> $PHP_CONFIG_FILE
+echo "\$MYSQL_PASS     = \"$MYSQL_PASS\";" >> $PHP_CONFIG_FILE
+echo "\$MYSQL_DATABASE = \"$MYSQL_DATABASE\";" >> $PHP_CONFIG_FILE
 echo >> $PHP_CONFIG_FILE
 echo "?>" >> $PHP_CONFIG_FILE
 

@@ -1,21 +1,5 @@
 <?php
 
-  // Check if we have a username, check password if we do.
-  //
-  if(!isset($PHP_AUTH_USER)) {
-    Header("HTTP/1.0 401 Unauthorized");
-    auth_head();
-    auth_permission_denied();
-    exit;
-  } else {
-    if(!(auth_verify_password( $PHP_AUTH_USER, $PHP_AUTH_PW )))
-      Header("HTTP/1.0 401 Unauthorized");
-      auth_head();
-      auth_invalid_userpass();
-      exit;
-    }
-  }
-
   function auth_verify_password( $username, $password ) {
 
     @mysql_connect($MYSQL_SERVER, $MYSQL_USER, $MYSQL_PASS) or die("Unable to connect to MySQL server");
@@ -95,6 +79,21 @@
     return;
   }
 
+  // Check if we have a username, check password if we do.
+  //
+  if(!isset($PHP_AUTH_USER)) {
+    Header("HTTP/1.0 401 Unauthorized");
+    auth_head();
+    auth_permission_denied();
+    exit;
+  } else {
+    if(!(auth_verify_password( $PHP_AUTH_USER, $PHP_AUTH_PW )))
+      Header("HTTP/1.0 401 Unauthorized");
+      auth_head();
+      auth_invalid_userpass();
+      exit;
+    }
+  }
 
 ?>
 
