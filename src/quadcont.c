@@ -686,69 +686,12 @@ qc_show_results(const int *eval)
 int 
 qc_mail_results(const int *eval)
 {
-    FILE *fp;
-    post_t mesg;
-    room_t scratch;
-    char filename[80];
-    char who_wants_some[L_USERNAME + 1];	/* duh, user dirs are all lowercase, convert! */
-    int i, items_left, no_of_lines = 1;		/* start at 1 line, for trailing whitespace */
 
-    mesg.type = MES_SYSTEM;
-    strcpy(mesg.author, "Monolith QEV");
-    time(&mesg.date);
-    strcpy(mesg.subject, "Quadrant Evaluation Results.");
+#ifndef QC_CONVERTED_TO_NEW_MESSAGE_CODE
 
-    /* convert name to lowercase! */
-    strcpy(who_wants_some, usersupp->username);
-    items_left = strlen(who_wants_some);
-    for (i = 0; i < items_left; i++) {
-	if (isupper(who_wants_some[i]))
-	    who_wants_some[i] = tolower(who_wants_some[i]);
-        if (who_wants_some[i] == ' ')
-	    who_wants_some[i] = '_';
-    }
+    cprintf("\n\1f\1rThis function has been temporarily disabled.\n");
 
-    sprintf(filename, BBSDIR "save/users/%s/mail/%ld", who_wants_some, get_new_mail_number(usersupp->username));
-
-    if ((fp = xfopen(filename, "a", FALSE)) == NULL)
-	return 0;
-/* count lines */
-    items_left = 0;
-    for (i = 0; i < MAXQUADS; i++) {
-	if (eval[i] == -1) {
-	    scratch = readquad(i);
-	    if (usersupp->forget[i] != scratch.generation) {
-		if (!items_left)
-		    no_of_lines += 3;	/* allow for description and whitespace */
-		no_of_lines++;
-		items_left++;
-	    }
-	}
-    }
-    items_left = 0;
-    for (i = 0; i < MAXQUADS; i++) {
-	if (eval[i] > 0) {
-	    scratch = readquad(i);
-	    if (usersupp->forget[i] == scratch.generation) {
-		if (!items_left)
-		    no_of_lines += 3;
-		no_of_lines++;
-		items_left++;
-	    }
-	}
-    }
-
-/* write file header */
-
-    fprintf(fp, "%c%c%c", 255, (int) mesg.type, 0);	/* note:  Cast here! */
-    fprintf(fp, "L%3d%c", no_of_lines, 0);	/* number of lines */
-    fprintf(fp, "T%ld%c", mesg.date, 0);
-    fprintf(fp, "A%s%c", mesg.author, 0);
-    fprintf(fp, "S%s%c", mesg.subject, 0);
-    putc('M', fp);
-
-/* body of post */
-    items_left = 0;
+#else
     for (i = 0; i < MAXQUADS; i++) {
 	if (eval[i] == -1) {
 	    scratch = readquad(i);
@@ -773,10 +716,8 @@ qc_mail_results(const int *eval)
 	}
     }
 
+#endif
 
-/* end of post */
-    fprintf(fp, "\n%c", 0);
-    fclose(fp);
     return 1;
 }
 
@@ -1517,13 +1458,14 @@ qc_evaluate_quads(const qc_thingme * user_input, int newuser, const user_t * use
 
     qc_thingme *temp_read;
     room_t scratch;
+
     for (i = 0; i < MAXQUADS; i++) {
 	kazam[i] = -5;
 	if ((i < 10) || (i == 148))
 	    continue;		/* Admin quads make no sense here anyways.. */
 	/* skip other user useless stuff */
 	scratch = readquad(i);
-	if ((!may_read_room(*user, scratch, i)) ||
+	if ((!i_may_read_forum(scratch, i)) ||
 	    (!(scratch.flags & QR_INUSE)))
 	    continue;
 	if ((scratch.flags & QR_PRIVATE) && (usersupp->priv < PRIV_SYSOP))

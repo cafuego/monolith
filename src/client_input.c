@@ -110,6 +110,7 @@ getline(char *string, int lim, int nocol)
     char *str;
     int cnt;
 
+    nox = 1;
     strcpy(string, "");
 
     str = string;
@@ -415,7 +416,7 @@ editor_edit(const char *fname)
     getfile(fname);
 
     idletime = 0;
-    mono_change_online(usersupp->username, "", 3);
+    mono_change_online(who_am_i(NULL), "", 3);
 
     status_bar_on();
     return 1;
@@ -501,12 +502,12 @@ getblock()
 int
 real_netget()
 {
+    
 #ifdef DITWERKTNIET
     size_t ret;
     char buf[2];
 #endif
     int i = -1;
-
 #ifdef DITWERKNIET
     while (i < 0) {
 	ret = read(0, buf, 1);
@@ -573,7 +574,7 @@ void
 unidle(int how)
 {
     if (idletime >= 2)
-	mono_change_online(usersupp->username, "", 3);	/* remove idleflag from wholist */
+	mono_change_online(who_am_i(NULL), "", 3);	/* remove idleflag from wholist */
 
     idletime = 0;		/* user is active again */
 

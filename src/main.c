@@ -44,6 +44,7 @@
 #include "friends.h"
 #include "fun.h"
 #include "key.h"
+#include "msg_file.h"
 #include "messages.h"
 #include "quadcont.h"
 #include "statusbar.h"
@@ -83,10 +84,10 @@ sleeping(int sig)
 	idletime++;
 
     if (idletime == 2)
-	(void) mono_change_online(usersupp->username, "", 6);
+	(void) mono_change_online(who_am_i(NULL), "", 6);
 
     if (idletime == 5)		/* if been idle for 5 minutes, put in wholist */
-	(void) mono_change_online(usersupp->username, "", 2);
+	(void) mono_change_online(who_am_i(NULL), "", 2);
 
 #ifndef CLIENTSRC
 
@@ -147,7 +148,7 @@ updateself(int sig)
     }
     xfree(usersupp);
     usersupp = user;
-    (void) mono_change_online(usersupp->username, "", 1);
+    (void) mono_change_online(who_am_i(NULL), "", 1);
     start_user_cache(usersupp->usernum);
     signal(SIGUSR2, updateself);
     return;
@@ -157,6 +158,7 @@ RETSIGTYPE
 segfault(int sig)
 {
     sig++;
+    sleep(1);
     cprintf("OH NO!!!!!!! A SEGFAULT!!!!!\n ");
     logoff(ULOG_PROBLEM);
     return;
@@ -335,7 +337,7 @@ main(int argc, char *argv[])
     int a;			/* misc                         */
     int newbie;			/* newbieflag, TRUE if newuser  */
     int done = FALSE;		/* True when finished login     */
-    char hellomsg[40];
+    char hellomsg[40], *my_name = NULL;
     time_t laston;
     pid_t pid;
 
@@ -444,7 +446,10 @@ main(int argc, char *argv[])
 	}
     }
 
-    mono_setuid(usersupp->username);
+    my_name = (char *) xmalloc(sizeof(char) * (L_USERNAME + 1));
+    strcpy(my_name, usersupp->username);
+
+    mono_setuid(my_name);
     connecting_flag = 0;
 
 #ifdef OLD
@@ -471,17 +476,17 @@ main(int argc, char *argv[])
 
     IFGUEST;
     else
-    if ((pid = mono_return_pid(usersupp->username)) != -1) {
+    if ((pid = mono_return_pid(my_name)) != -1) {
 	kill(pid, SIGTERM);
 	cprintf("\n\1f\1rCleaning up previous login: \1w");
-	while ((pid = mono_return_pid(usersupp->username)) != -1) {
+	while ((pid = mono_return_pid(my_name)) != -1) {
 	    sleep(1);
 	    cprintf(".");
 	}
 	cprintf("  \1r\007Done.\n");
     }
 
-    sprintf(CLIPFILE, "%s/clipboard", getuserdir(usersupp->username));
+    sprintf(CLIPFILE, "%s/clipboard", getuserdir(my_name));
 
     if (!fexists(CLIPFILE)) {
 	(void) close(creat(CLIPFILE, 0660));	/* create the file */
@@ -546,6 +551,7 @@ main(int argc, char *argv[])
     mono_add_loggedin(usersupp);	/* put user to into sharedmem */
     setup_express();		/* setup express stuff */
 
+    xfree(my_name);  /* not needed, who_am_i() in btmp.c knows who i am now */
 
     /* FROM THIS POINT ON, THE USER IS LOGGED IN, AND IN THE WHOLIST. */
     /* -------------------------------------------------------------- */
@@ -561,7 +567,6 @@ main(int argc, char *argv[])
 	change_express(1);
     }
     check_profile_updated();		/* set wholist flag? */
-
     nox = 0;
 
     /* yes! let's tell friends of mine that i'm logged on! */
@@ -585,7 +590,6 @@ main(int argc, char *argv[])
 
     mono_sql_uu_clear_list( usersupp->usernum );
     }
-    read_menu(0, 1);            /* read new messages */
 
 #ifndef CLIENTSRC
     more( BBSDIR "share/try_client", TRUE);
@@ -608,7 +612,7 @@ user_terminate()
     char xer[L_USERNAME + 1];
 
     /* add stuff here to check if someone is x-ing you */
-    if (mono_find_x_ing(usersupp->username, xer) == 0) {
+    if (mono_find_x_ing(who_am_i(NULL), xer) == 0) {
 	cprintf("\n\n\1g\1f%s \1yis still sending an X to you.\1a", xer);
     }
     while (cmd != 'n' || cmd != 'y' || cmd != 'm') {
@@ -664,7 +668,8 @@ logoff(int code)
     char quote[40];
 
 #ifdef MAIL_QUOTA
-    purge_mail_quad();
+    if (!code)
+        purge_mail_quad();
 #endif
     
     if ( connecting_flag ) {
@@ -678,7 +683,7 @@ logoff(int code)
 	(void) dump_quickroom();
 	(void) log_user(usersupp, hname, code);
 	(void) mono_sql_log_logout( usersupp->usernum, login_time, time(0), hname, code );
-	(void) mono_remove_loggedin(usersupp->username);	/* remove user from wholist     */
+	(void) mono_remove_loggedin(who_am_i(NULL));	/* remove user from wholist     */
 
 	/* say goodbye */
 	if (code == ULOG_NORMAL) {
@@ -740,7 +745,7 @@ print_login_banner(time_t laston)
 	    ,(shm->user_count == 1) ? config.user : config.user_pl, date());
 
 /*----------- Personal loginfiles ----------------------------------- */
-    sprintf(filename, "%s/loginmsg", getuserdir(usersupp->username));
+    sprintf(filename, "%s/loginmsg", getuserdir(who_am_i(NULL)));
 
     if (fexists(filename)) {
 	(void) more(filename, TRUE);
@@ -761,13 +766,19 @@ void
 mailcheck()
 {
 
-    int b;
+    int b, count;
     float percent;	
+    
+    if EQ(who_am_i(NULL), "Guest")
+	return;
 
-    percent = ((100.0 * count_mail_messages()) / (100.0 * MAX_USER_MAILS));
+    count = count_mail_messages();
+
+    percent = ((100.0 * count) / (100.0 * MAX_USER_MAILS));
     b = (int) (100 * percent);
 
-    cprintf("\n\1f\1gYour Mail quad is at %s%d \1gpercent capacity.\n", 
+    if (count > 0)
+        cprintf("\n\1f\1gYour Mail quad is at %s%d \1gpercent capacity.\n", 
 	((b < 80) ? "" : ((b < 95) ? "\1y" : "\1r")), b); 
 
     b = usersupp->mailnum - usersupp->lastseen[1];

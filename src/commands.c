@@ -28,701 +28,30 @@
 
 #include "monolith.h"
 #include "libmono.h"
-
-#include "telnet.h"
 #include "ext.h"
-#include "libcache.h"
+
+#include "bbsconfig.h"
+#include "input.h"
+#include "key.h"  
+#include "msg_file.h"
+#include "registration.h"
+#include "read_menu.h"
+#include "rooms.h"
 #include "setup.h"
-#include "sql_config.h"
-#include "sql_userforum.h"
+#include "telnet.h"
 
 #define extern
 #include "commands.h"
 #undef extern
 
-#include "bbsconfig.h"
-#include "clipboard.h"
-#include "express.h"
-#include "inter.h"
-#include "input.h"
-#include "friends.h"
-#include "fun.h"
-#include "chat.h"
-#include "main.h"
-#include "menu.h"
-#include "help.h"
-#include "key.h"
-#include "rooms.h"
-#include "messages.h"
-#include "sql_goto.h"
-#include "statusbar.h"
-#include "usertools.h"
-#include "registration.h"
-#include "routines2.h"
-#include "uadmin.h"
-#include "quadcont.h"
-
-static void userlists(void);
-static void lock_terminal(void);
-static void unlock_terminal(void);
-
-#define NUMBER_COLOR 'w'
-
-void
-which_room(const char *plus)
-{
-    if (strcmp(quickroom.name, "Mail") == 0) {
-	cprintf("\1a\n\1f\1%c%d.\1%c%s's %s\1w> %s", NUMBER_COLOR, curr_rm,
-		(quickroom.flags & QR_PRIVATE) ? 'r' :
-		(quickroom.flags & (QR_ANONONLY | QR_ANON2)) ? 'p' : 'g',
-		usersupp->username,
-		quickroom.name, plus);
-    } else {
-	cprintf("\1a\n\1f\1%c%d.\1%c%s\1w> %s", NUMBER_COLOR, curr_rm,
-		(quickroom.flags & QR_PRIVATE) ? 'r' :
-		(quickroom.flags & (QR_ANONONLY | QR_ANON2)) ? 'p' : 'y',
-		quickroom.name, plus);
-    }
-    if (!(usersupp->flags & US_NOCMDHELP) && !(strlen(plus))) {
-	cprintf("\n%s\n", SHORT_HELPPROMPT);
-	cprintf("\1f\1gEnter command\1w ->\1c ");
-    }
-    fflush(stdout);
-}
-
-/*************************************************
-* main_menu()
-*************************************************/
 
 void
 main_menu()
 {
-    char tempstr[40];
-    int t;
-    struct tm *tp = NULL;
-    time_t now;
-    int cmd = 0;
+    new_message_system();
 
-    for (;;) {
-
-#ifdef DEBUG_MEMORY_LEAK
-/*      cprintf("\n\1a\1wMemory Debug: %d objects, Total xmalloc() calls: %lu \1a", allocated_ctr, allocated_total); */
-#endif
-
-	are_there_held_xs();	/* HERE! in main menu, mark as not busy */
-	which_room("");
-#ifdef SUPERHERO
-	cmd = get_single_quiet("~aAbBcCdefEFGHiIjJkKlLMNOPQqrRsSTUvVwWxXYZ0123456789!<>-_+:#.,*\"@`$&a([]% /?\005\006\011\014\016\022\030\'");
-#else
-	cmd = get_single_quiet("~aAbBcCdefEFGHiIjJkKlLMNOPQqrRsSTUvVwWxXYZ0123456789!<>-_+:#.,*\"@$&a([]% /?\005\006\011\014\016\022\030\'");
-#endif
-
-	cmd = validate_read_command(cmd);	/* priv check */
-
-	if (mono_return_pid(usersupp->username) == -1) {
-	    cprintf("\1f\1rAYIEE!!! \1gHmmm... you're a ghost user at the moment.\n");
-	    cprintf("\1f\1gFixing that right now... ");
-	    mono_add_loggedin(usersupp);
-	    cprintf("\1f\1gokay, there ya go!\n");
-	}
-	time(&now);
-	tp = localtime(&now);
-
-	switch (cmd) {
-
-	    case 0:
-	    case -1:
-		break;
-
-	    case 'a':
-		if (usersupp->priv & (PRIV_WIZARD | PRIV_SYSOP)) {
-		    cprintf("\1f\1wAdmin cmd: \1a");
-		    sysop_menu();
-		} else if (is_ql(usersupp->username, quickroom)) {
-		    cprintf(ROOMAIDETITLE " cmd: \1a");
-		    roomaide_menu();
-		} else {
-		    cprintf("\1f\1rI'm sorry Dave, but I cannot do that.\1a");
-		}
-		break;
-
-	    case 'A':
-		toggle_away();
-		break;
-
-	    case '~':
-	    case ':':
-		cprintf("\1f\1gEmote.\1a\n");
-		express(2);
-		break;
-
-	    case 'b':
-		cprintf("\1f\1gRead messages backwards.\1a\n");
-		read_menu(0, -1);
-		break;
-
-	    case 'B':
-		toggle_beeps();
-		break;
-
-	    case 'c':
-		nox = 1;
-		cprintf("\1gPress \1w<\1rshift-c\1w>\1g to access the config menu.\n");
-		express(3);
-		break;
-
-	    case 'C':
-		cprintf("\1f\1gConfig: \1a");
-		config_menu();
-		writeuser(usersupp, 0);
-		break;
-
-	    case 'd':
-		cprintf("\1f\1pSubscribe to %s: \1a", config.chatmode);
-		chat_subscribe();
-		break;
-
-	    case 'e':
-		cprintf("\1f\1gEnter message.\1a\n");
-		entmsg(MES_NORMAL, EDIT_NORMAL);
-		break;
-
-	    case 'E':
-		cprintf("\1f\1gEnter Editor-message.\1a\n");
-		status_bar_off();
-		entmsg(MES_NORMAL, EDIT_EDITOR);
-		status_bar_on();
-		break;
-
-	    case 005:		/* <ctrl-e> */
-		nox = 1;
-		enter_message_with_title();
-		break;
-
-	    case 'f':
-		cprintf("\1f\1gRead messages forward.\1a\n");
-		read_menu(0, 1);
-		break;
-
-	    case 'F':
-		  cprintf("\1f\1gYour friends online.\1a\n");
-	  	  friends_online();
-	  	  break;
-
-	    case 006: {
-		 char *argh;
-
-		 if (1 /* usersupp->priv >= PRIV_TECHNICIAN */) {
-
-		     cprintf("\1f\1gCache debug: \n");
-		     argh = show_user_cache();
-		    more_string(argh);
-		    xfree(argh);
-		 } else {
-		     cprintf("\1f\1gYour friends online.\1a\n");
-		     friends_online();
-		 }
-		 break;
-	    }
-
-	    case 'G':
-		cmdflags &= ~C_ROOMLOCK;
-		skipping[curr_rm] = 0;
-		storeug(curr_rm);
-		mark_as_read(curr_rm);
-		writeuser(usersupp, 0);
-		gotonext();
-		break;
-
-	    case 'H':
-		nox = TRUE;
-		cprintf("\1f\1gHelpfiles.\1a\n");
-		help_topics();
-		break;
-
-	    case 'i':
-		cprintf("\1f\1g%s Info.\1a\n", config.forum_pl);
-		show_desc(curr_rm);
-		break;
-
-	    case 'I':
-		toggle_interbbs();
-		break;
-
-	    case 'J':
-		cprintf("\1f\1rJump:\nNon Destructive Jump to %s name/number: \1a", config.forum);
-		fflush(stdout);
-		skipping[curr_rm] = 0;
-		jump(0);
-		break;
-
-	    case 'j':
-		cprintf("\1f\1gJump to %s name/number: \1a", config.forum);
-		fflush(stdout);
-		skipping[curr_rm] = 0;
-		jump(1);
-		break;
-
-	    case 'K':
-		cprintf("\1f\1gAll %ss\1w:\n", config.forum);
-		show_known_rooms(0);
-		break;
-
-	    case 'k':
-		cprintf("\1f\1gKnown %s.\n", config.forum_pl);
-		show_known_rooms(1);
-		break;
-
-	    case 12:		/* <ctrl-l> */
-	    case 18:		/* <ctrl-r> */
-		cprintf("c");
-		fflush(stdout);
-		break;
-
-	    case 'L':
-		cprintf("\1f\1g%s with unread %s.\n", config.forum_pl, config.message_pl);
-		show_known_rooms(2);
-		break;
-
-	    case 'l':
-		cprintf("\1f\1gLogout.\1a");
-		if (user_terminate() == TRUE)
-		    return;
-		break;
-
-	    case 'M':
-		cprintf("\1f\1gMisc: \1a");
-		fflush(stdout);
-		nox = 1;
-		misc_menu();
-		continue;
-
-	    case 'N':		/* second parm of no_new_posts_here is direction, which is   */
-	    case 32:		/* understood to be forward in main menu, although undefined */
-		if (no_new_posts_here(read_quad(curr_rm).highest, 1, usersupp->lastseen[curr_rm])) {
-		    if (cmdflags & C_ROOMLOCK)
-			random_goto();
-		    else {
-			gotonext();
-		    }
-		}
-		read_menu(0, 1);
-		break;
-
-
-	    case '\016':	/* umm this is ctrl-n, not ctrl-d */
-		cprintf("\1f\1rCtrl\1w-\1rN\1w-\1gEnter message.\1a\n");
-		entmsg(MES_NORMAL, EDIT_CTRLD);
-		break;
-
-	    case 'O':
-		cprintf("\1f\1gRead old messages.\1a\n");
-		read_menu(0, -1);
-		break;
-
-	    case 'P':
-		nox = 1;
-		cprintf("\1f\1gProfile an %s.\1a\n", config.user);
-		profile_user();
-		break;
-
-	    case 'Q':
-		nox = 1;
-		cprintf("\1f\1rAsk a Question.\1a\n");
-		express(1);
-		break;
-
-	    case 'q':
-		nox = 1;
-		q_menu();
-		break;
-
-	    case 'r':
-		cprintf("\1f\1gRead messages reverse.\1a\n");
-		read_menu(0, -1);
-		break;
-
-	    case 'R':
-		cprintf("\1f\1gInterBBS Wholist.\1a\n");
-		nox = 1;
-		menu_inter();
-		break;
-
-	    case 'S':
-		cprintf("\1f\1gSearch.\n");
-		search();
-		break;
-
-	    case 's':
-		cprintf("\1f\1gSkipping this %s.\n\n\1a", config.forum);
-		cmdflags &= ~C_ROOMLOCK;
-		skiproom();
-		break;
-
-	    case 'T':
-		cprintf("\1f\1gDate: \1w%s \1f\1w(\1gCET\1w)\1a", printdate(time(0), 0));
-		break;
-
-	    case 'U':
-		cprintf("\1f\1gUngoto.\1a");
-		fflush(stdout);
-		ungoto();
-		break;
-
-	    case 'v':
-		nox = 1;
-		express(-1);
-		break;
-
-	    case 'V':
-		cprintf("\1f\1gVote.\n");
-		voting_booth();
-		break;
-
-	    case ',':		/* Holodeck Wholist */
-		cprintf("\1f\1gChannel Wholist.\n");
-		show_online(2);
-		break;
-
-	    case 'w':
-		cprintf("\1f\1gWhich %s are online?\1a\n", config.user_pl);
-		show_online(1);
-		break;
-
-	    case 'W':
-		cprintf("\1f\1gShort Wholist.\1a\n");
-		show_online(3);
-		break;
-
-	    case '!':
-		nox = 1;
-		feeling();	/* the feeling menu */
-		break;
-
-	    case 'x':
-		nox = 1;
-		cprintf("\1f\1gSend %s %s.\1a\n", config.express, config.x_message);
-		express(0);
-		if (((int) random() % 500000) == 42) {
-		    cprintf("\1f\1b\n*** \1g%s %s from \1yThe House Spirit \1gto \1y%s \1gat \1w(\1g%02d:%02d\1w) \1b***\1a\n", config.express, config.x_message, usersupp->username, tp->tm_hour, tp->tm_min);
-		    cprintf("\1a\1c>*chomp* *chomp*\n>Your %s %s tasted great!\n", config.express, config.x_message);
-		} else if (((int) random() % 500000) == 42) {
-		    cprintf("\1f\1b\n*** \1g%s %s from \1yCthulhu \1gto \1y%s \1gat \1w(\1g%02d:%02d\1w) \1b***\1a\n", config.express, config.x_message, usersupp->username, tp->tm_hour, tp->tm_min);
-		    cprintf("\1a\1c>Feed me!\1a\n");
-		}
-		break;
-
-	    case 'X':
-		change_express(0);
-		break;
-
-	    case 030:		/* <ctrl-x> */
-		cprintf("\1f\1gRead X-Log.\1a\n");
-		old_express();
-		break;
-
-	    case 'Y':
-		cprintf("\1f\1gYell-menu.\1a \n");
-		nox = TRUE;
-		yell_menu();
-		break;
-
-	    case 'Z':
-		cprintf("\1f\1gZap %s.\1a\n", config.forum);
-		forget();
-		break;
-
-	    case '0':
-	    case '1':
-	    case '2':
-	    case '3':
-	    case '4':
-	    case '5':
-	    case '6':
-	    case '7':
-	    case '8':
-	    case '9':
-		nox = 1;
-		express(cmd - 38);
-		break;
-
-	    case '-':
-		cprintf("\1f\1gJump a number of posts back from the Last Read post.\1a\n");
-		cprintf("\1f\1gHow many messages back shall I jump?\1a ");
-		fflush(stdout);
-		getline(tempstr, 4, 1);
-		t = atoi(tempstr);
-		if (t <= 0)
-		    cprintf("\1f\1rThat is not a valid entry.\1a\n");
-		else
-		    read_menu(-t, 1);
-		break;
-
-	    case '_':
-		cprintf("\1f\1rJump a number of posts back from the Last Post in this quad.\1a\n");
-		cprintf("\1f\1gHow many messages back shall I jump?\1a ");
-		fflush(stdout);
-		getline(tempstr, 4, 1);
-		t = atoi(tempstr);
-		if (t <= 0)
-		    cprintf("\1f\1rThat is not a valid entry.\1a\n");
-		else {
-		    leave_n_unread_posts(curr_rm, t);
-		    read_menu(0, 1);
-		}
-		break;
-
-
-	    case '+':
-		nox = 1;
-		roll_the_bones();
-		break;
-
-	    case '.':
-		if (usersupp->priv & (PRIV_WIZARD | PRIV_SYSOP))
-		    send_silc();
-		break;
-
-	    case '*':
-		nox = 1;
-		clip_board();
-		break;
-
-	    case '@':
-		IFNSYSOP break;
-		cprintf("\n");
-		more(ADMINLIST, 1);
-		break;
-
-	    case '&':
-		cprintf("\1f\1gRandom Quote!\n");
-		sprintf(tempstr, "%s/quote%d", QUOTEDIR, ((int) random() % 60) + 1);
-		more(tempstr, 1);
-		break;
-
-	    case '$':
-		cprintf("\1a\1f\1gDonator List.\1a\n");
-		more(DONATORLIST, 1);
-		cprintf("\n");
-		break;
-
-#ifdef SUPERHERO
-	    case '`':
-		cprintf("\1a\1f\1gGenerate Superhero.\1a\1n");
-		crap(3, "", 0);
-		cprintf("\n");
-		break;
-#endif
-
-	    case '\'':
-		nox = 1;
-		literature_menu();
-		break;
-
-	    case '(':
-#ifdef QC_ENABLE
-		nox = TRUE;
-		qc_user_menu(0);
-#endif
-		break;
-
-	    case ']':
-		fflush(stdout);
-		crap(1, "zippy", 0);
-		break;
-
-	    case '"':
-		cprintf("\1f\1rQuote %s %ss.\1a\n", config.express, config.x_message);
-		quoted_Xmsgs();
-		break;
-
-	    case '%':
-		change_atho(0);
-		break;
-
-	    case '<':
-		cprintf("\1f\1gChange your Friends-list.\1a\n\n");
-		menu_friend(FRIEND);
-		break;
-
-	    case '>':
-		cprintf("\1f\1gChange your Enemylist.\1a\n\n");
-		menu_friend(ENEMY);
-		break;
-
-	    case '?':
-//		cprintf("\1f\1rHelp!\1a\n");
-//		more(MENUDIR "/menu_main", 1);
-		online_help('s');
-		break;
-
-	    case '/':
-		cprintf("\1f\1gList all commands.\1a\n");
-		more(MENUDIR "/menu_commands", 1);
-		break;
-
-	    case '#':
-		if ((t = numeric_read(-1)) > 0)		/* use -1 as there's no current */
-		    read_menu(t, 1);	/* post in main menu */
-		break;
-	}
-    }				/* for (;;) */
 }
 
-/*************************************************
- * 
- * feeling() - turn it into a menu.... 
- * 
- *************************************************/
-
-void
-feeling()
-{
-
-    register char cmd = '\0';
-
-    cprintf("\1f\1gSend Feeling %s.\1a\n", config.x_message);
-    if (usersupp->flags & US_EXPERT)
-	cprintf("\1f\1gPress \1w<\1r?\1w>\1g for a list of available feelings.\1a\n");
-    if ((usersupp->flags & US_COOL) || (usersupp->priv & (PRIV_SYSOP | PRIV_WIZARD)))
-	cprintf("\1f\1gYou're cool. Press \1w<\1rf\1w>\1g to send the \1cFREEZE\1g feeling.\1a\n");
-
-    while ((cmd != SP) && (cmd != 13)) {
-	which_room("\1f\1gFeeling: \1a");
-	IFNEXPERT
-	{
-	    cprintf("\1f\1gFeeling Options.\1a\n");
-	    more(MENUDIR "/menu_feelings", 1);
-	    which_room("\1f\1gFeeling: \1a");
-	}
-
-	cmd = get_single_quiet("12abcdefFgGhHiklmnoOpPrRstTuwzZ\r ?");
-
-	if (cmd != '?')
-	    cprintf("\1f\1c%c\n", cmd);
-
-	switch (cmd) {
-	    case ' ':
-	    case 13:
-		return;
-
-	    case '?':
-		cprintf("\1f\1gFeeling Options.\1a");
-		more(MENUDIR "/menu_feelings", 1);
-		break;
-
-/* Peter put all feeling under a specific letter instead of a number */
-
-	    case 'e':
-		express(20);
-		break;
-	    case 'w':
-		express(21);
-		break;
-	    case 'z':
-		express(22);
-		break;
-	    case 'h':
-		express(23);
-		break;
-	    case 'l':
-		express(24);
-		break;
-	    case 'r':
-		express(25);
-		break;
-	    case 's':
-		express(26);
-		break;
-	    case 'u':
-		express(27);
-		break;
-	    case 'b':
-		express(28);
-		break;
-	    case 'm':
-		express(29);
-		break;
-	    case 'o':
-		express(30);
-		break;
-	    case 'f':
-		if (usersupp->flags & US_COOL)
-		    express(31);
-		break;
-	    case 'i':
-		express(32);
-		break;
-	    case 'k':
-		express(33);
-		break;
-	    case 't':
-		express(34);
-		break;
-	    case 'g':
-		express(35);
-		break;
-
-	    case '1':
-		express(36);
-		break;
-
-	    case '2':
-		express(37);
-		break;
-
-	    case 'p':
-		express(38);
-		break;
-	    case 'a':
-		express(39);
-		break;
-
-	    case 'R':
-		express(40);
-		break;
-
-	    case 'd':
-		express(41);
-		break;
-	    case 'G':
-		express(42);
-		break;
-	    case 'P':
-		express(43);
-		break;
-	    case 'O':
-		express(44);
-		break;
-	    case 'n':
-		express(45);
-		break;
-	    case 'c':
-		express(46);
-		break;
-	    case 'Z':
-		express(47);
-		break;
-	    case 'T':
-		express(48);
-		break;
-	    case 'H':
-		express(49);
-		break;
-	    case 'F':
-		express(50);
-		break;
-
-	    default:
-		cprintf("\1f\1rSomething went wrong here...\1a\n");
-		return;
-	}
-    }
-}
-
-/*
- * sysop_menu()
- */
 void
 sysop_menu()
 {
@@ -738,25 +67,16 @@ sysop_menu()
 	{
 	    cprintf("\1f\1wHelp\1a\n");
 	    more(MENUDIR "/menu_admin", 1);
-	    which_room("\1f\1wAdmin cmd: \1a");
+	    display_short_prompt();
+	    cprintf("\1f\1wAdmin cmd: \1a");
 	}
 
 	cmd = get_single_quiet("ABCEFgGKMNORQTU\r\b ?");
 
-	if (strchr("BCEMRFgOP", cmd))
+	if (strchr("BCERFgOP", cmd))
 	    nox = 1;		/* is busy, wants no x's */
 
 	switch (cmd) {
-
-	    case 'M':
-		cprintf("\1f\1rEnter SQL %s in %s 140 \1w(\1rbreak code\1w)\n", config.message, config.forum);
-		enter_message(140, 1);
-		break;
-
-            case 'A':
-		cprintf("\1f\1rRead SQL %s in %s 140\1w (\1rbreak code\1w)\n", config.message_pl, config.forum);
-                new_read_menu(140,0);
-                break;
 
 	    case 'B':
 		cprintf("\1f\1rMake a broadcast.\1a\n");
@@ -778,18 +98,23 @@ sysop_menu()
 		    continue;
 		}
 
-#ifdef FILE_POST
-	    case 'F':
-		cprintf("\1f\1wPost a file in this room.\1a\n");
-		cprintf("\1f\1wFilename:\1a ");
-		fflush(stdout);
-		getline(tempstr, 50, 1);
-		if (!fexists(tempstr))
-		    break;
-		post_file(tempstr, "", "", MES_NORMAL);
-#endif
-		break;
+	    case 'F': {
+		char filename[L_FILENAME + 1];
 
+		cprintf("\1f\1wPost a file in this room. Specify absolute pathname.\n");
+		cprintf("Filename:\1a ");
+		fflush(stdout);
+		getline(filename, 80, 1);
+		if (!fexists(filename)) {
+		    cprintf("\n\n\1f\1rCouldn't locate file %s", filename);
+		    break;
+		}
+		if (fexists(temp))
+		    unlink(temp);
+		copy(filename, temp);
+		enter_message(curr_rm, EDIT_NOEDIT, FILE_POST_BANNER, NULL);
+		break;
+	    }
             case 'g':
 		cprintf("\1f\1rAdd a random goto.\1a");
                 add_goto();
@@ -816,10 +141,6 @@ sysop_menu()
 		sysoproom_menu();
 		continue;
 
-	    case 'T':
-		nox = 1;
-	       break;;
-
 	    case 'U':
 		cprintf("\1f\1r%s cmd: \1a", config.user);
 		sysopuser_menu();
@@ -839,7 +160,8 @@ sysop_menu()
 		back(11);
 		return;
 	}
-	which_room("\1f\1wAdmin cmd: \1a");
+	display_short_prompt();
+	cprintf("\1f\1wAdmin cmd: \1a");
     }
 }
 
@@ -857,7 +179,8 @@ bbsconfig_menu()
         {
             cprintf("\1f\1wHelp\1a\n");
             more(MENUDIR "/menu_bbsconfig", 1);
-            which_room("\1f\1wAdmin cmd: \1pConfig cmd: \1c");
+	    display_short_prompt();
+            cprintf("\1f\1wAdmin cmd: \1pConfig cmd: \1c");
         }
 
         cmd = get_single_quiet("CDEQ ?\r\b ?");
@@ -891,14 +214,11 @@ bbsconfig_menu()
                 back(23);
                 return;
         }
-        which_room("\1f\1wAdmin cmd: \1pConfig cmd: \1c");
+	display_short_prompt();
+        cprintf("\1f\1wAdmin cmd: \1pConfig cmd: \1c");
     }
     return;
 }
-
-/*************************************************
-* sysoproom_menu()
-*************************************************/
 
 void
 sysoproom_menu()
@@ -911,7 +231,8 @@ sysoproom_menu()
 	{
 	    cprintf("\1f\1w(\1rRoom Options\1w)\1a\n");
 	    more(MENUDIR "/menu_room", 1);
-	    which_room("\1f\1pAdmin cmd: \1rRoom cmd: \1a");
+	    display_short_prompt();
+	    cprintf("\1f\1pAdmin cmd: \1rRoom cmd: \1a");
 	}
 
 	cmd = get_single_quiet("CDEHiILkKNPTWZQG\r\b ?");
@@ -928,7 +249,7 @@ sysoproom_menu()
 
 	    case 'D':
 		cprintf("\1f\1rChange %s Description.\1a\n", config.forum);
-		change_roominfo();
+		change_forum_info();
 		break;
 
 	    case 'E':
@@ -938,7 +259,7 @@ sysoproom_menu()
 
 	    case 'G':
 		cprintf("\1f\1rGenerate low-traffic %s post.\1a\n", config.forum);
-		low_traffic_quad_list();
+		enter_message(SYSOP_FORUM, EDIT_NOEDIT, QUADLIZARD_BANNER, NULL);
 		break;
 
 	    case 'H':
@@ -961,7 +282,7 @@ sysoproom_menu()
 		break;
 
             case 'K': 
-	kickout_menu();
+		kickout_menu();
                 break;
             
 
@@ -977,7 +298,7 @@ sysoproom_menu()
 
 	    case 'P':
 		cprintf("\1f\1rPost as " ROOMAIDETITLE ".\1a\n");
-		entmsg(MES_ROOMAIDE, EDIT_NORMAL);
+		enter_message(curr_rm, EDIT_NORMAL, QL_BANNER, NULL);
 		break;
 
 	    case 'Q':
@@ -1011,15 +332,12 @@ sysoproom_menu()
 		back(14);
 		return;
 	}
-	which_room("\1f\1wAdmin cmd: \1rQuadrant cmd: \1a");
+	display_short_prompt();
+	cprintf("\1f\1wAdmin cmd: \1rQuadrant cmd: \1a");
     }
     return;
 }
 
-
-/*************************************************
-* sysopuser_menu()
-*************************************************/
 
 void
 sysopuser_menu()
@@ -1035,7 +353,8 @@ sysopuser_menu()
 	{
 	    cprintf("\1f\1w(\1wUser Options\1w)\1a\n");
 	    more(MENUDIR "/menu_user", 1);
-	    which_room("\1f\1wAdmin cmd: \1rUser cmd: \1a");
+	    display_short_prompt();
+	    cprintf("\1f\1wAdmin cmd: \1rUser cmd: \1a");
 	}
 
 	cmd = get_single_quiet("EkKLnv\r\b ?");
@@ -1079,7 +398,7 @@ sysopuser_menu()
 
 	    case 'L':
 		cprintf("\1f\1rHave a perv at the Userlists.\1a\n");
-		userlists();
+		userlist_menu();
 		break;
 
 	    case 'v':
@@ -1106,7 +425,8 @@ sysopuser_menu()
 		return;
 	}
 
-	which_room("\1f\1wAdmin cmd: \1rUser cmd: \1a");
+	    display_short_prompt();
+	cprintf("\1f\1wAdmin cmd: \1rUser cmd: \1a");
 
     }
 }
@@ -1127,7 +447,8 @@ roomaide_menu()
 	if (usersupp->flags & US_ADMINHELP) {
 	    cprintf("\1f\1w(" ROOMAIDETITLE " Options\1w)\1a\n");
 	    more(QUADRANT "/index", 1);
-	    which_room(ROOMAIDETITLE " cmd: \1a");
+	    display_short_prompt();
+	    cprintf(ROOMAIDETITLE " cmd: \1a");
 	}
 	cmd = get_single_quiet("DEiIkKNPRTW\r\b ?");
 
@@ -1138,7 +459,7 @@ roomaide_menu()
 
 	    case 'D':
 		cprintf("\1f\1wEdit %s Description.\1a\n", config.forum);
-		change_roominfo();
+		change_forum_info();
 		break;
 
 	    case 'E':
@@ -1156,7 +477,7 @@ roomaide_menu()
 		break;
 
             case 'I': 
-	invite_menu();
+		invite_menu();
                 break;
             
 
@@ -1169,7 +490,7 @@ roomaide_menu()
 
             case 'K': 
 	         kickout_menu();
- break;
+		 break;
 
 	    case 'N':
 		cprintf("\1f\1wNotebook-utility.\1a\n");
@@ -1182,7 +503,7 @@ roomaide_menu()
 		cprintf("\1f\1wPost as " ROOMAIDETITLE ".\1a\n");
 		if (usersupp->flags & US_ADMINHELP)
 		    more(QUADRANT "/post", 1);
-		entmsg(MES_ROOMAIDE, EDIT_NORMAL);
+		enter_message(curr_rm, EDIT_NORMAL, QL_BANNER, NULL);	
 		break;
 
 	    case 'T':
@@ -1206,7 +527,8 @@ roomaide_menu()
 		back(strlen(ROOMAIDETITLE) + 13);
 		return;
 	}
-	which_room(ROOMAIDETITLE " cmd: \1a");
+	    display_short_prompt();
+	cprintf(ROOMAIDETITLE " cmd: \1a");
 
     }
 }
@@ -1228,7 +550,8 @@ emperor_menu()
 	{
 	    cprintf("\1f\1w(" WIZARDTITLE " Options\1p)\1a\n");
 	    more(MENUDIR "/menu_emp", 1);
-	    which_room("\1f\1wAdmin cmd: " WIZARDTITLE " cmd: \1a");
+	    display_short_prompt();
+	    cprintf("\1f\1wAdmin cmd: " WIZARDTITLE " cmd: \1a");
 	}
 
 	cmd = get_single_quiet("bBFrR*\r\b ?");
@@ -1248,14 +571,9 @@ emperor_menu()
 		emergency_boot_all_users();
 		break;
 
-	    case 'r':
-		cprintf("\1f\1w%s switching!\1a\n", config.forum);
-		move_rooms();
-		break;
-
 	    case 'R':
-		cprintf("\1f\1bReset a %s.\1a\n", config.forum);
-		reset_room();
+		cprintf("\1f\1bReset a %s.  \1rTemporarily Disabled.\n%s", config.forum,
+			"Use <a>dmin <r>oom, and set lowest and highest to 0.\n\1a");
 		break;
 
 	    case '?':
@@ -1268,7 +586,8 @@ emperor_menu()
 		return;
 	}
 
-	which_room("\1f\1wAdmin cmd: Emperor cmd: \1a");
+	    display_short_prompt();
+	cprintf("\1f\1wAdmin cmd: Emperor cmd: \1a");
     }
 }
 
@@ -1294,7 +613,8 @@ config_menu()
 	{
 	    cprintf("(Config Options)\n");
 	    more(MENUDIR "/menu_config", 1);
-	    which_room("\1gConfig: \1w\1f");
+	    display_short_prompt();
+	    cprintf("\1gConfig: \1w\1f");
 	}
 
 	cmd = get_single_quiet("AabBCcDEFHiIKLMOPsSTWY\r\b ?/");
@@ -1445,7 +765,7 @@ config_menu()
 		break;
 
 	    case 'W':
-		cprintf("fgChange WWW url.\n");
+		cprintf(", NULLf, NULLgChange WWW url.\n");
 		change_url();
 		break;
 
@@ -1462,7 +782,8 @@ config_menu()
 		back(8);
 		return;
 	}
-	which_room("\1gConfig: \1w\1f");
+	    display_short_prompt();
+	cprintf("\1gConfig: \1w\1f");
     }
 }
 
@@ -1478,7 +799,8 @@ misc_menu()
 	{
 	    cprintf("(Miscellaneous Options)\n");
 	    more(MENUDIR "/menu_misc", 1);
-	    which_room("\1gMisc: \1w");
+	    display_short_prompt();
+	    cprintf("\1gMisc: \1w");
 	}
 
 	cmd = get_single_quiet("lLmMrsxz\r\b ?/");
@@ -1492,9 +814,14 @@ misc_menu()
                 break;
 
 	    case 'm':
+		if (usersupp->priv & PRIV_ALLUNVALIDATED)
+		    break;
+	        if (!(usersupp->priv & PRIV_VALIDATED))
+		    break;
+
 		nox = 1;
 		cprintf("\1f\1cMail Direct.\n");
-		direct_mail();
+		enter_message(MAIL_FORUM, EDIT_NORMAL, NO_BANNER, NULL);
 		break;
 
 	    case 'M':
@@ -1522,7 +849,7 @@ misc_menu()
 
 	    case 'x':
 		cprintf("\1f\1cReset Lastseen in this %s.\n", config.forum);
-		reset_lastseen();
+		reset_lastseen_message();
 		break;
 
 	    case 'z':
@@ -1544,17 +871,15 @@ misc_menu()
 		back(6);
 		return;
 	}
-	which_room("\1f\1gMisc: \1c");
+	    display_short_prompt();
+	cprintf("\1f\1gMisc: \1c");
 
     }
 }
 
-/*************************************************
-* userlists()
-*************************************************/
 
-static void
-userlists()
+void
+userlist_menu()
 {
     int cmd;
 
@@ -1596,11 +921,12 @@ userlists()
 
 }
 
-static void
-lock_terminal()
+
+void
+lock_terminal(void)
 {
     cmdflags ^= C_LOCK;
-    mono_change_online(usersupp->username, " ", 17);
+    mono_change_online(who_am_i(NULL), " ", 17);
     cprintf("c");
     fflush(stdout);
     cprintf("\n\1f\1w[ \1gTerminal locked for \1y%s@%s \1w]", usersupp->username, config.bbsname );
@@ -1608,12 +934,12 @@ lock_terminal()
     inkey();
     unlock_terminal();
     cmdflags ^= C_LOCK;
-    mono_change_online(usersupp->username, " ", 17);
+    mono_change_online(who_am_i(NULL), " ", 17);
     return;
 }
 
-static void
-unlock_terminal()
+void
+unlock_terminal(void)
 {
     char pwtest[20];
     unsigned int done = FALSE, failures = 0;
@@ -1651,3 +977,70 @@ unlock_terminal()
 
     return;
 }
+
+void
+yell_menu(void)
+{
+    register char cmd = '\0';
+
+    static void check_passwd(void);
+
+    cprintf("\n\1f\1gPress \1w<\1rd\1w>\1g to delete your account.\1a\n");
+    cprintf("\1f\1gPress \1w<\1rY\1w>\1g to send a Yell to the Administrators.\1a\n");
+    cprintf("\1f\1gPress \1w<\1rq\1w>\1g to quit...\1a\n\n");
+    cprintf("\1f\1gChoice\1w: \1r");
+
+    cmd = get_single_quiet("dqY ");
+    switch (cmd) {
+
+	case 'Y':
+	    cprintf("\1f\1g1\1w: \1gYell.\1a\n");
+	    enter_yell();
+	    break;
+
+	case 'd':
+	    cprintf("\1f\1g2\1w: \1gDo you \1rreally\1g want to delete your account? ");
+	    if (yesno() == NO) {
+		cprintf("\1f\1gAccount deletion aborted.\1a\n");
+		yell_menu();
+		return;
+	    }
+	    check_passwd();
+	    break;
+
+	case ' ':
+	case 'q':
+	    cprintf("\1f\1gQuit.\1a");
+	    break;
+    }
+    cprintf("\n");
+    return;
+}
+
+static void
+check_passwd(void)
+{
+    char pwtest[20];
+
+    cprintf("\r\1f\1gPlease enter your password\1w: \1g");
+    getline(pwtest, -19, 1);
+
+    if (strlen(pwtest) < 1) {
+	cprintf("\1f\1rAccount deletion aborted.\1a");
+	yell_menu();
+	return;
+    }
+    if (mono_sql_u_check_passwd(usersupp->usernum, pwtest) == TRUE) {
+	usersupp->priv ^= PRIV_DELETED;
+	writeuser(usersupp, 0);
+	more("share/messages/deleted_goodbye", 1);
+	cprintf("\1f\1g\nPress any key to log off...\1a");
+	inkey();
+	logoff(0);
+    } else {
+	cprintf("\1f\1rIncorrect Code.\1a\n");
+	yell_menu();
+    }
+    return;
+}
+

@@ -37,6 +37,8 @@
 #undef extern
 
 #include "btmp.h"
+#include "msg_file.h"
+#include "display_message.h"
 #include "fun.h"
 #include "input.h"
 #include "log.h"
@@ -45,8 +47,10 @@
 #include "libquad.h"
 #include "menu.h"
 #include "routines.h"
+#include "read_menu.h"  // display_short_prompt()
 #include "commands.h"
 #include "routines2.h"
+#include "enter_message.h"
 #include "userfile.h"
 #include "quadcont.h"
 
@@ -57,6 +61,7 @@ void menu_hostedit_remove(const unsigned int, const long, const char *);
 void menu_hostedit_list(const unsigned int, const long, const char *);
 void menu_hostedit_kill(const unsigned int, const long, const char *);
 
+static void show_qls(void);
 static int print_hosts_simple( unsigned int forum_id );
 
 static char *fish[] =
@@ -83,6 +88,92 @@ readquad(int num)
     return scratch;
 }
 
+int
+i_may_read_forum(const room_t quad, const unsigned int forum)
+{
+    if (forum == DOCKING_BAY_FORUM)
+	return 1;
+
+    if (forum >= MAXQUADS)	/* Uhh-ohh.. */
+	return 0;
+
+    if (usersupp->priv & PRIV_DELETED)
+	return 0;
+
+    if (usersupp->priv & PRIV_TWIT) {
+	if (forum == CURSE_FORUM || forum == MAIL_FORUM) 
+	    return 1;
+	else
+	    return 0;
+    }
+
+    if (usersupp->priv >= PRIV_WIZARD)
+	return 1;		/* emps can read anywhere */
+
+    else if (forum == GARBAGE_FORUM || forum == EMPEROR_FORUM)
+	return 0;		/* only emps in Garbage & Emps */
+
+    else if (usersupp->priv >= PRIV_SYSOP)
+	return 1;
+
+    else if (forum == YELL_FORUM || forum == SYSOP_FORUM)
+	return 0;		/* Only Sysops and higher */
+
+    /* don't allow guest in mail */
+    if (forum == MAIL_FORUM && EQ(usersupp->username, "Guest"))
+	return 0;
+
+    else if ((forum == QL_FORUM) && !(usersupp->flags & US_ROOMAIDE))
+	return 0;
+
+    else if ((forum == HT_FORUM) && !(usersupp->flags & US_GUIDE))
+	return 0;
+
+    else if ((forum == LOWER_ADMIN_FORUM) && 
+		!(usersupp->flags & (US_ROOMAIDE | US_GUIDE)))
+	return 0;
+
+    else if (!(quad.flags & QR_INUSE))
+	return 0;
+
+    else if (usersupp->generation[forum] == (-5))		/* kicked */
+	return 0;
+
+    else if (forum == CURSE_FORUM && (!(usersupp->priv & PRIV_TWIT)))
+	return 0;
+
+    else if ((quad.flags & QR_PRIVATE) && quad.generation != 
+		usersupp->generation[forum])
+	return 0;
+
+    return 1;
+}
+
+int
+i_may_write_forum(const room_t quad, const unsigned int forum)
+{
+
+    if (forum >= MAXQUADS)  /* uhh-ohh */
+	return 0;
+
+    /* only tech's and higher in the docking bay */
+    if (forum == DOCKING_BAY_FORUM && usersupp->priv < PRIV_TECHNICIAN)
+	return 0;
+
+    /* everyone in Yells> and Garbage> */
+    if (forum == GARBAGE_FORUM || forum == YELL_FORUM)
+	return 1;
+
+    /* only sysops and ql's in readonly quad */
+    if ((quad.flags & QR_READONLY) && (usersupp->priv < PRIV_SYSOP) &&
+	is_ql(who_am_i(NULL), quad)) {
+	return 0;
+    } else {
+	return i_may_read_forum(quad, forum);
+    }
+}				
+
+
 /*
  * storeug()
  */
@@ -92,20 +183,6 @@ storeug(int old_room)
 {
     ugnum = (curr_rm) ? old_room : 0;
     uglsn = (ugnum) ? usersupp->lastseen[ugnum] : 0;
-}
-
-/*
- * ungoto()
- */
-
-void
-ungoto()
-{
-    if (!ugnum)
-	return;
-    curr_rm = ugnum;
-    gotocurr();
-    usersupp->lastseen[curr_rm] = uglsn;
 }
 
 void
@@ -144,11 +221,11 @@ known_rooms_list(const user_t * user, int long_k_list)
     char room_type[8], line[200];
     room_t scratch;
     char *textPtr;
+    
 
 
     curr_line = 2;
     line_total = -1;		/* don't want any percentages at the -- more -- */
-
 
     textPtr = (char *) xmalloc(200 * (MAXQUADS + CATEGORIES));
     strcpy(textPtr, "");
@@ -164,7 +241,7 @@ known_rooms_list(const user_t * user, int long_k_list)
 
 	    /* match all these conditions no matter what function
 	     */
-	    if (!may_read_room(*user, scratch, quad_num))
+	    if (!i_may_read_forum(scratch, quad_num))
 		continue;
 	    if (!(scratch.flags & QR_INUSE))
 		continue;
@@ -231,7 +308,7 @@ unread_rooms_list(const user_t * user)
     for (i = 0; i < MAXQUADS; i++) {
 	scratch = readquad(i);
 
-	if (!may_read_room(*user, scratch, i))
+	if (!i_may_read_forum(scratch, i))
 	    continue;
 	if (!(scratch.flags & QR_INUSE))
 	    continue;
@@ -314,9 +391,8 @@ do_kickout()
     char *the_user = NULL;
     user_t *userP;		/* changed varname: PR */
     room_t scratch;
-    char filename[40];
     unsigned int user_id;
-    int fail;
+    int not_done;
 
     scratch = read_quad(curr_rm);
 
@@ -324,7 +400,7 @@ do_kickout()
     if (!(scratch.flags & QR_PRIVATE))
 	cprintf("\1f\1rRemember that this is a \1gPublic \1r%s!\n\n", config.forum);
 
-    cprintf("\1f\1rAlien to kickout from \1g%s\1w>\1r: \1a", scratch.name);
+    cprintf("\1f\1rAlien to kickout from \1g%s\1w>: \1c", scratch.name);
     nox = 1;
     the_user = get_name(2);
     if (the_user[0] == 0)
@@ -336,7 +412,7 @@ do_kickout()
     }
     userP = readuser(the_user);
     if (userP->priv & PRIV_WIZARD) {
-	cprintf("\n\1f\1rYou can not kickout an " WIZARDTITLE "\1r!!!\1a\n\n");
+	cprintf("\n\1f\1rYou can't kickout " WIZARDTITLE "s\1r!!!\1a\n\n");
 	log_sysop_action("tried to kick %s out of %s>", userP->username, scratch.name);
 	xfree(userP);
 	return;
@@ -349,21 +425,19 @@ do_kickout()
     mono_sql_uf_add_kicked(user_id, curr_rm);
 
     log_sysop_action("kicked %s out of %s>.", the_user, quickroom.name);
-    sprintf(filename, "%sB", temp);
 
-    cprintf("\n\1f\1rYou are now forced to write a %s \1w(\1ryell\1w)\1r to the %s%s\1a\n", config.message, ADMINCOL, config.admin);
-    cprintf("\1f\1rabout the kickout: who, why, when, where, for how long...\1a\n\n");
+    cprintf("\n\1f\1rYou now have to write a %s \1w(\1ryell\1w)\1r to the %s%s\1a\n", config.message, ADMINCOL, config.admin);
+    cprintf("\1f\1rabout the kickout: who, why, where, for how long.%s",		      "\n\n(Kickout Notification)\1a\n");
 
-    fail = make_message(filename, "", MES_FORCED, 1);
+    not_done = enter_message(YELL_FORUM, EDIT_NORMAL, FORCED_BANNER, NULL);
 
-    if (fail) {
-	xfree(userP);
-	return;
+    while (not_done) {
+	cprintf("\n\1rYou're required to enter this yell.\1a\n");
+        not_done = enter_message(YELL_FORUM, EDIT_NORMAL, FORCED_BANNER, NULL);
     }
-    save_message(filename, 2, "Sysop");
-    save_message(filename, 1, usersupp->username);
-    unlink(filename);
+    xfree(userP);
     return;
+    
 }
 
 /* zap all quadrants */
@@ -377,12 +451,13 @@ zap_all()
     cprintf("\1f\1gAre you \1rsure \1gyou want to zap (forget) \1rALL\1g %s? (y/N) \1c ", config.forum_pl);
     if (yesno_default(NO) == NO)
 	return;
+    
 
     for (i = 0; i < MAXQUADS; i++) {
 	if (i == 1)
 	    continue;		/* mail */
 	room = readquad(i);
-	if (may_read_room(*usersupp, room, i) && !(room.flags & QR_NOZAP)) {
+	if (i_may_read_forum(room, i) && !(room.flags & QR_NOZAP)) {
 	    usersupp->forget[i] = room.generation;
 	    usersupp->generation[i] = -1;
 	}
@@ -421,11 +496,12 @@ forget()
 
 /*
  * killroom()
+ * <a>dmin <r>oom <z>ap command: delete the current room
  */
 
 void
 killroom()
-{				/* <a>dmin <r>oom <z>ap command: delete the current room */
+{
 
     int i;
     char temprmname[50];
@@ -447,9 +523,11 @@ killroom()
     if (quickroom.flags & QR_INUSE)
 	quickroom.flags ^= QR_INUSE;
 
-    cprintf("\1rClear \1w(\1rerase\1w)\1r all messages? (y/n) ");
-    if (yesno() == YES)
+    cprintf("\1rClear \1w(\1rerase\1w)\1r all messages? (recommended) (y/n) ");
+    if (yesno() == YES) {
 	erase_all_messages(quickroom.highest);
+	quickroom.highest = quickroom.lowest = 0;
+    }
 
     for (i = 0; i < NO_OF_QLS; i++)
 	strcpy(quickroom.qls[i], "");
@@ -479,10 +557,16 @@ create_room()
 
     for (number = 0; number < MAXQUADS; number++)
 	if (!(readquad(number).flags & QR_INUSE)) {
-	    cprintf("\n\1f\1gFound unused quadrant at quad #\1w%d\1g\n", number);
-	    cprintf("\1rStop\1g searching for an unused quad? \1w(\1ry\1w/\1rn\1w): \1c");
+	    cprintf("%s%d%s%s",
+		    "\n\1f\1gFound unused quadrant at quad #\1w",
+		     number,
+	            "\n\1rStop\1g searching for an unused quad?",
+		    " \1w(\1ry\1w/\1rn\1w): \1c");
 	    if (yesno() == YES) {
-		cprintf("\n\1gInstall at quad number %d>? \1w(\1ry\1w/\1rn\1w): \1c", number);
+		cprintf("%s%d%s",
+			"\n\1gInstall at quad number ",
+			number, 
+			"? \1w(\1ry\1w/\1rn\1w): \1c");
 		if (yesno() == NO)
 		    return;
 		else
@@ -494,9 +578,10 @@ create_room()
 	cprintf("\1rNo unused %s was found.\n", config.forum);
 	return;
     }
-    cprintf("\1f\1rPlease keep the length of the name under 36 characters.\n");
-    cprintf("                      |------------------------------------|\n");
-    cprintf("\1f\1gName for new quadrant\1w: \1c");
+    cprintf("%s%s%s",
+	"\1f\1rPlease keep the length of the name under 36 characters.\n",
+    	"                      |------------------------------------|\n",
+        "\1f\1gName for new quadrant\1w: \1c");
     quad_name = get_name(3);
 
     if (strlen(quad_name) == 0)
@@ -515,25 +600,28 @@ create_room()
     quickroom.maxmsg = 100;
     quickroom.flags = QR_INUSE;
 
-    cprintf("\1f\1g%s Type: \1w<\1y1\1w> \1gPublic \1w<\1y2\1w> \1rPrivate : \1c", config.forum);
+    cprintf("\1f\1g%s%s ",
+	    config.forum,
+	    "Type: \1w<\1y1\1w> \1gPublic \1w<\1y2\1w> \1rPrivate : \1c");
+
     command = get_single("12");
 
     if (command == '1') {	/* public room */
 	cprintf("\1rThe %s will be PUBLIC.\n\n", config.forum);
 	quickroom.flags &= ~QR_PRIVATE;
-    }
-    if (command == '2') {	/* invite -- just private flag, guessname off */
+    } else {	/* invite -- just private flag, guessname off */
 	cprintf("\1rThe %s will be INVITE ONLY.\n\n", config.forum);
 	quickroom.flags |= QR_PRIVATE;
 	if (quickroom.generation >= 100)
 	    quickroom.generation = 10;
     }
+
     write_quad(quickroom, curr_rm);
-    gotocurr();			/* takes care of self invite.. no matter, sysop anyways */
+    gotocurr();	  /* takes care of self invite.. no matter, sysop anyways */
     log_sysop_action("created %s: %s> ", config.forum, quickroom.name);
 
     editroom();
-    change_roominfo();
+    change_forum_info();
     qc_edit_room();
 }
 
@@ -541,12 +629,18 @@ void
 erase_all_messages(long highest)
 {
     long i;
+    char filename[L_FILENAME + 1];
 
     cprintf("\n\1f\1rErasing\1w");
 
     for (i = 0; i <= highest; i++) {
-	if (fexists(post_to_file(curr_rm, i, "")))
-	    unlink(post_to_file(curr_rm, i, ""));
+	message_header_filename(filename, curr_rm, i);
+	if (fexists(filename)) {
+	    unlink(filename);
+	    message_filename(filename, curr_rm, i);
+	    if (fexists(filename))
+		unlink(filename);
+	}
 	if (!(i % 10))		/* show progress.. */
 	    cprintf(".");
     }
@@ -566,7 +660,7 @@ gotocurr()
     quickroom = readquad(curr_rm);
 
     if (prev_rm != curr_rm)
-	mono_change_online(usersupp->username, quickroom.name, 5);
+	mono_change_online(who_am_i(NULL), quickroom.name, 5);
     prev_rm = curr_rm;
 
     return;
@@ -587,81 +681,6 @@ whoknows()
     cprintf("\n");
 }
 
-/*************************************************
-* change_roominfo()
-*************************************************/
-
-void
-change_roominfo()
-{
-    char rmdesc[80];
-    int cmd;
-    room_t scratch;
-    post_t header;
-
-    strcpy(header.author, usersupp->username);
-    header.date = time(NULL);
-    header.type = MES_DESC;
-
-    scratch = readquad(curr_rm);
-
-    if (scratch.flags & QR_DESCRIBED)
-	show_desc(curr_rm);
-    else
-	cprintf("\1f\1rThere is no description available yet.\1a\n");
-
-    cprintf("\1f\1gChoice: \1w<\1re\1w>\1gnter normally, \1w<\1rE\1w>\1gditor-edit, \1w<\1rI\1w>\1gnsert ClipBoard, \1w<\1rU\1w>\1gpload \1w->\1a");
-    cmd = get_single("eEIQU \r\n");
-
-    if (strchr("Q \r\n", cmd))
-	return;
-
-    sprintf(rmdesc, QUADDIR "/%d/description", curr_rm);
-
-    switch (cmd) {
-	case 'e':		/* normal so called <e>ditor    */
-	    cprintf("\n\1f\1rEnter %s Info.\n", config.forum);
-	    cprintf("There is no editing functionality so type carefully!\n");
-	    cprintf("Press return on a blank line to end.\1a\n\n");
-	    msgform(rmdesc, 7);
-	    if (make_message(rmdesc, "", MES_DESC, 1) == 2)
-		make_auto_message(rmdesc, tmpname, header);
-	    break;
-
-	case 'E':		/* <E>ditor                     */
-	    cprintf("\1f\1rEdit %s Info.\1a\n", config.forum);
-	    msgform(rmdesc, 7);
-	    editor_edit(tmpname);
-	    make_auto_message(rmdesc, tmpname, header);
-	    break;
-
-	    /* fix from flint */
-	case 'I':		/* copy the contents of the ClipBoard to the RoomInfo */
-	    msgform(rmdesc, 7);
-	    make_auto_message(rmdesc, CLIPFILE, header);
-	    break;
-    }
-
-    scratch = readquad(curr_rm);
-    scratch.roominfo++;
-    scratch.flags |= QR_DESCRIBED;	/* set the flag */
-    write_quad(scratch, curr_rm);
-    log_sysop_action("changed %sInfo for %s>", config.forum, scratch.name);
-    return;
-}
-
-/*************************************************
-* show_room_aide()
-*************************************************/
-
-void
-show_room_aides()
-{
-    cprintf("\1f\1g%s\1w: ", config.roomaide);
-    print_hosts_simple( curr_rm);
-    cprintf( "\n" );
-    cprintf("\1f\1g%s category\1w: \1y%s\1g.\n", config.forum, quickroom.category);
-}
 
 /*
  * show roomaides with slot numbers for roomediting
@@ -674,18 +693,6 @@ show_qls()
 	cprintf("  \1f\1w[\1r%d\1w]\1r %s\1a\n", i + 1, quickroom.qls[i]);
     }
 }
-/*************************************************
-* show_desc()
-*************************************************/
-
-void
-show_desc(int room)
-{
-    char roominfofile[80];
-    sprintf(roominfofile, QUADDIR "/%d/description", room);
-    msgform(roominfofile, 0);
-    return;
-}
 
 /*************************************************
 * print_type()
@@ -696,11 +703,14 @@ print_type()
 {
     quickroom = readquad(curr_rm);
 
-    cprintf("\1f\1y    %s\1g, %s #%d.\n", quickroom.name, config.forum, curr_rm);
-    cprintf("\n");
-    cprintf("\1f\1g    Current highest %s number: \1c%ld\1g.\n", config.message, quickroom.highest);
-    cprintf("\1f\1g    Current lowest %s number: \1c%ld\1g.\n", config.message, quickroom.lowest);
-    cprintf("\1f\1g    Maximum number of %s: \1c%d\1g.\n", config.message_pl, quickroom.maxmsg);
+    cprintf("\1f\1y    %s\1g, %s #%d.", quickroom.name, config.forum, curr_rm);
+    cprintf("\n\n\1g\1f");
+    cprintf("    Current highest %s number: \1c%ld\1g.\n",
+		config.message, quickroom.highest);
+    cprintf("    Current lowest %s number: \1c%ld\1g.\n",
+		config.message, quickroom.lowest);
+    cprintf("    Maximum number of %s: \1c%d\1g.\n",
+		config.message_pl, quickroom.maxmsg);
     show_room_flags();
     cprintf("    ");
     show_room_aides();
@@ -713,28 +723,28 @@ print_type()
 void
 show_room_flags()
 {
-    cprintf("\1f\1g    This is currently a\1a");
+    cprintf("\1f\1g    This is currently a");
 
     if ((quickroom.flags & QR_PRIVATE) == 0)
-	cprintf(" \1f\1gpublic\1a");
+	cprintf(" \1gpublic");
 
     if (quickroom.flags & QR_PRIVATE)
-	cprintf("\1f \1rprivate\1a");
+	cprintf(" \1rprivate");
 
-    cprintf("\1f \1g%s.\1a\n", config.forum);
+    cprintf(" \1g%s.\n", config.forum);
 
     if (quickroom.flags & QR_READONLY)
-	cprintf("  \1f\1rRead only %s.\1a\n", config.forum);
+	cprintf("  \1rRead only %s.\n", config.forum);
 
-    cprintf("  \1f\1g  Subjectlines are \1a");
+    cprintf("  \1g  Subjectlines are ");
     if ((quickroom.flags & QR_SUBJECTLINE) == 0)
-	cprintf("\1f\1rnot \1a");
-    cprintf("\1f\1gallowed.\1a\n");
+	cprintf("\1rnot ");
+    cprintf("\1gallowed.\n");
 
-    cprintf("  \1f\1g  %s described status \1a", config.forum);
+    cprintf("  \1g  %s described status ", config.forum);
     if ((quickroom.flags & QR_DESCRIBED) == 0)
-	cprintf("\1f\1rnot \1a");
-    cprintf("\1f\1gset.\1a\n");
+	cprintf("\1rnot ");
+    cprintf("\1gset.\n\1a");
 
     if (quickroom.flags & QR_ANONONLY)
 	cprintf("\1f\1p    Anonymous-only %s.\1a\n", config.forum);
@@ -750,7 +760,8 @@ editroom()
 
     /* don't mung Lobby>, Mail> or Yells> if you're 'only' Sysop */
     if ((curr_rm <= 5) && (usersupp->priv < PRIV_WIZARD)) {
-	cprintf("\1f\1rNope. Only %ss can edit this %s.\1a\n", config.wizard, config.forum);
+	cprintf("\1f\1rNope. Only %ss can edit this %s.\1a\n",
+		config.wizard, config.forum);
 	return;
     }
     need_rewrite = done = FALSE;
@@ -840,9 +851,11 @@ edit_room_field(room_t * QRedit, unsigned int forum_id, int fieldnum )
     switch (fieldnum) {
 
 	case '1':
-	    cprintf("\1rPlease keep the length of the name under 36 characters.\n");
-	    cprintf("\1w                        |------------------------------------|\n");
-	    cprintf("\1rEnter new quadrant name\1w: \1c", config.forum);
+	    cprintf("%s%s%s%s",
+		"\1rPlease keep length of name to under 36 characters.\n",
+	        "\1w                        ",
+		"|------------------------------------|\n",
+	    	"\1rEnter new quadrant name\1w: \1c");
 	    quad_name = get_name(3);
 	    if (strlen(quad_name) < 1) {
 		cprintf("\1gOk, name not changed.\n");
@@ -851,7 +864,8 @@ edit_room_field(room_t * QRedit, unsigned int forum_id, int fieldnum )
 	    if (get_room_number(quad_name) != -1) {
 		cprintf("\1rThat name is already taken, sorry.\n");
 	    } else {
-		log_sysop_action("changed %ss name into %s.", QRedit->name, quad_name);
+		log_sysop_action("changed %ss name into %s.",
+				QRedit->name, quad_name);
 		strcpy(QRedit->name, quad_name);
                 mono_sql_f_rename_forum( forum_id, quad_name );
 		need_rewrite = TRUE;
@@ -869,7 +883,7 @@ edit_room_field(room_t * QRedit, unsigned int forum_id, int fieldnum )
 		break;
 	    }
 
-	    cprintf("\n\1f\1gSlot to change \1w(\1y<\1rEnter\1y> \1gto quit\1w): ");
+	    cprintf("\n\1f\1gSlot to edit \1w(<\1rEnter\1w> \1gto quit\1w): ");
 	    cmd = get_single("12345 \rq\n");
 
 	    if (cmd == '\r' || cmd == '\n' || cmd == ' ' || cmd == 'q')
@@ -879,11 +893,14 @@ edit_room_field(room_t * QRedit, unsigned int forum_id, int fieldnum )
 	    cprintf("\1gUsername\1w: \1c");
 	    strcpy(name, get_name(2));
 
-	    if (strlen(name) == 0) {	/* empty field for QL[slot] -> remove QL */
+	/* empty field for QL[slot] -> remove QL */
+
+	    if (strlen(name) == 0) {
 		if (check_user(QRedit->qls[slot]) == FALSE)
-		    cprintf("\1rRemoving non-existant user as %s.\n", config.roomaide);
-		else if (change_QL(curr_rm, QRedit->qls[slot], -1) == -1) {	/* remove QL flag */
-		    cprintf("\1rCould not remove %s as %s.\n", QRedit->qls[slot], config.roomaide);
+		    cprintf("\1rRemoving non-existant user as QL.\n");
+		else if (change_QL(curr_rm, QRedit->qls[slot], -1) == -1) {
+		    cprintf("\1rCould not remove %s as QL.\n", 
+				QRedit->qls[slot]);
 		    break;
 		}
 		strcpy(QRedit->qls[slot], "");
@@ -895,7 +912,8 @@ edit_room_field(room_t * QRedit, unsigned int forum_id, int fieldnum )
 		break;
 	    }
 	    if (change_QL(curr_rm, name, 1) == -1) {
-		cprintf("\1rCould not set %s as %s in #%d.\n", name, config.roomaide, curr_rm);
+		cprintf("\1rCould not set %s as QL in #%d.\n", 
+			name, curr_rm);
 		break;
 	    }
 	    strcpy(QRedit->qls[slot], name);
@@ -911,18 +929,18 @@ edit_room_field(room_t * QRedit, unsigned int forum_id, int fieldnum )
 	    loop = get_single("12");
 
 	    if (loop == '1') {
-		cprintf("\1gThe %s will be PUBLIC.\n\n", config.forum);
+		cprintf("\1g%s set to PUBLIC.\n\n", config.forum);
 		QRedit->flags &= ~QR_PRIVATE;
 	    } else if (loop == '2') {
-		cprintf("\1rThe %s will be INVITE ONLY.\n\n", config.forum);
+		cprintf("\1r%s set to INVITE ONLY.\n\n", config.forum);
 		QRedit->flags |= QR_PRIVATE;
 		cprintf("Kick out all users? ");
 		if (yesno() == YES) {
 		    QRedit->generation++;
 		    if (QRedit->generation == 100)
 			QRedit->generation = 10;
-		    if (invite(usersupp->username, curr_rm) == -1)
-			cprintf("Hrm.. Something went wrong inviting yourself.\n");
+		    if (invite(who_am_i(NULL), curr_rm) == -1)
+			cprintf("Error inviting yourself.\n");
 		}
 	    }
 	    need_rewrite = TRUE;
@@ -998,13 +1016,16 @@ edit_room_field(room_t * QRedit, unsigned int forum_id, int fieldnum )
 
 	case 'a':
 	case 'A':
-	    cprintf("\1rEnter the new maximum number of %s\1w(\1r%d\1w): \1c", config.message_pl, QRedit->maxmsg);
+	    cprintf("\1rEnter the new maximum number of %s\1w(\1r%d\1w): \1c",
+			config.message_pl, QRedit->maxmsg);
 	    j = qc_get_pos_int('\0', 4);
 	    if (j < 10) {
-		cprintf("\1rDon't be daft! 10 %s is the minimum.\n", config.message_pl);
+		cprintf("\1rDon't be daft! 10 %s is the minimum.\n",
+			config.message_pl);
 		break;
 	    } else if (j > 1000) {
-		cprintf("\1rDon't be daft! 1000 %s is the maximum.\n", config.message_pl);
+		cprintf("\1rDon't be daft! 1000 %s is the maximum.\n",
+			config.message_pl);
 		break;
 	    } else {
 		QRedit->maxmsg = j;
@@ -1104,7 +1125,7 @@ look_into_quickroom(int degree)
 	scratch = readquad(round);
 
 	if ((scratch.highest >= 0) && (scratch.flags & QR_INUSE) &&
-	    (may_read_room(*usersupp, scratch, round) || degree == 1)) {
+	    (i_may_read_forum(scratch, round) || degree == 1)) {
 	    blank = 0;
 	    cprintf("\1w%3d \1y%-30.30s \1r%6ld ", round, scratch.name,
 		    scratch.highest);
@@ -1202,53 +1223,11 @@ reset_room()
     return;
 }
 
-/*************************************************
-*
-* move_rooms()				(07-04-95)
-*
-*************************************************/
-
 void
 move_rooms()
 {
-    int roomone, roomtwo;
-    room_t QRone, QRtwo;
-    char tempstr[5];
-
-
-    cprintf("Temporarily disabled.\n");
+    cprintf("\nThis function has been Disabled.. makes too big a mess.\n");
     return;
-
-    cprintf("\nRemember that this room-moving will cause old kicked-out users\nto be kicked from another room that they were intended to be kicked from.\nEverybody who has zapped one of the rooms will also have wrong room zapped.\n");
-
-    cprintf("Number of room to move: ");
-    getline(tempstr, 3, 1);
-    if ((roomone = atoi(tempstr)) < 1 || roomone > MAXQUADS)
-	return;
-
-    cprintf("Number of room to switch place with: ");
-    getline(tempstr, 3, 1);
-    if ((roomtwo = atoi(tempstr)) < 1 || roomtwo > MAXQUADS)
-	return;
-
-    QRone = readquad(roomone);
-    QRtwo = readquad(roomtwo);
-
-    cprintf("\nNow, are you really sure you want to have \n\n%d.%s>\n\nand\n\n%d.%s>\n\nmove positions with each other? ", roomone, QRone.name, roomtwo, QRtwo.name);
-    if (yesno() == YES)
-	return;
-
-    system("cp save/quickroom quickroom.bak");	/* to have a backup */
-
-#ifdef ZUT
-    if (saveqroom(roomtwo, &QRone) == 0 || saveqroom(roomone, &QRtwo) == 0) {
-	cprintf("\007\1rOOPS! Big error so I have to restore it like it was before.\n");
-	rename("quickroom.bak", "save/quickroom");
-	system("mv quickroom.bak save/quickroom");
-	return;
-    }
-#endif
-    cprintf("\nDone.\n");
 }
 
 
@@ -1313,15 +1292,15 @@ goto_next_skipped(const int num_skipped)
     for (i = 0; i < MAXQUADS; i++)
 	if (skipping[i] == 1) {
 	    if (num_skipped == 1) {
-		last_skipped_rm = -1;	/* reset skip marker to "none skipped" */
+		last_skipped_rm = -1; /* reset skip marker to "none skipped" */
 		return i;
 	    }
 	    if ((i <= last_skipped_rm) && (++skip_ctr < num_skipped))
 		continue;
 	    if ((skip_ctr < num_skipped) || (i != last_skipped_rm))
 		break;
-	    else {		/* if (i == last_skipped_rm) *//* "wrap" loop */
-		i = skip_ctr = last_skipped_rm = 0;	/* reset loop & counter */
+	    else {		/* "wrap" loop */
+		i = skip_ctr = last_skipped_rm = 0;  /* reset loop & counter */
 		continue;	/* stuff, loop will then stop at lowest skipped */
 	    }
 	}
@@ -1351,13 +1330,13 @@ get_room_name(const char *quad_name)
 	if (i < 0 || i >= MAXQUADS)
 	    return -1;
 	scratch = readquad(i);
-	if (may_read_room(*usersupp, scratch, i))
+	if (i_may_read_forum(scratch, i))
 	    return i;
     }
     for (i = 0; i < MAXQUADS; i++) {
 	scratch = readquad(i);
 	if (strstr(scratch.name, quad_name) != NULL) {
-	    if (may_read_room(*usersupp, scratch, i)) {
+	    if (i_may_read_forum(scratch, i)) {
 		return i;
 	    }
 	}
@@ -1406,14 +1385,14 @@ usergoto(int new_rm, int old_rm, int destructive_jump)
 	if (here.highest <= usersupp->lastseen[curr_rm]) {
 	    skipping[curr_rm] = 0;
 	    usersupp->lastseen[curr_rm] = here.highest;
-	    which_room("");
+	    display_short_prompt();
 	    cprintf("\1f\1w(\1g%ld %s\1w)\1a\n", here.highest - here.lowest, config.message_pl);
 	} else {
 	    if (usersupp->lastseen[curr_rm] < here.lowest)
 		usersupp->lastseen[curr_rm] = here.lowest;
 	    if (curr_rm && !skipping[curr_rm])	/* looks ugly at Docking Bay, don't bother */
 		cprintf("\1f\1gRead next %s with unread %s.\n", config.forum, config.message_pl);
-	    which_room("");
+	    display_short_prompt();
 	    if (skipping[curr_rm]) {
 		cprintf("\1f\1w (\1gpreviously skipped\1w)");
 		skipping[curr_rm] = 0;
@@ -1432,7 +1411,7 @@ usergoto(int new_rm, int old_rm, int destructive_jump)
 
     if (usersupp->generation[curr_rm] != quickroom.generation) {
 	/* print the desc if the room has regenerated. */
-	show_desc(curr_rm);
+	display_message(curr_rm, 0, DISPLAY_INFO);
 	usersupp->generation[curr_rm] = quickroom.generation;
     }
     unseen = here.maxmsg - (here.highest - usersupp->lastseen[curr_rm]);
@@ -1542,129 +1521,6 @@ leave_n_unread_posts(int room, int n_unread)
     return;
 }
 
-void
-low_traffic_quad_list(void)
-{
-    post_t post, mesg;
-    FILE *fp, *mesg_fp = NULL;
-    int i, counted, ql_ctr, line_ctr = 2, mail_qls = 0;
-    long j;
-    char tempstr[80];
-    room_t scratch;
-    time_t timenow;
-    user_t *qlPtr = NULL;
-
-    time(&timenow);
-
-    log_it("quadlizard", "Starting up!");
-
-    cprintf("\n\1f\1gDo you want the Lizard to send a notification mail to %ss\nof %s that have not had any traffic for over 2 weeks? \1w(\1gy\1w/\1gN\1w) \1c"
-        ,config.roomaide, config.forum_pl);
-    if(yesno_default(NO) == YES)
-        mail_qls = 1;
-
-    for (counted = 0; counted <= 1; counted++) {
-	if (counted) {
-	    mesg.type = MES_NORMAL;
-	    strcpy(mesg.author, "\1pQuad Lizard");
-	    time(&mesg.date);
-	    strcpy(mesg.subject, "\1rList of quad \"issues\".");
-	    sprintf(tempstr, BBSDIR "save/quads/3/%ld", get_new_post_number(3));
-
-	    mesg_fp = xfopen(tempstr, "a", FALSE);
-	    if (mesg_fp == NULL)
-		return;
-
-	    fprintf(mesg_fp, "%c%c%c", 255, (int) mesg.type, 0);
-	    fprintf(mesg_fp, "L%3d%c", line_ctr, 0);
-	    fprintf(mesg_fp, "T%ld%c", mesg.date, 0);
-	    fprintf(mesg_fp, "A%s%c", mesg.author, 0);
-	    fprintf(mesg_fp, "S%s%c", mesg.subject, 0);
-
-	    putc('M', mesg_fp);
-	    fprintf(mesg_fp, "\n");
-	}
-	for (i = 20; i < MAXQUADS; i++) {
-	    scratch = readquad(i);
-	    if (!((scratch.flags & QR_INUSE) && (scratch.highest)))
-		continue;
-	    /* last post is old? */
-	    for (j = scratch.highest; j > scratch.lowest; j--) {
-		sprintf(tempstr, BBSDIR "save/quads/%d/%ld", i, j);
-		if (!fexists(tempstr))
-		    continue;
-
-		fp = xfopen(tempstr, "r", FALSE);
-		strcpy(tempstr, "");
-		read_post_header(fp, &post);
-		fclose(fp);
-		break;
-	    }
-#ifdef NO_POSTS_FOR_30_DAYS
-	    if (post.date <= (timenow - 2592000)) {
-#else /* 15 days */
-	    if (post.date <= (timenow - 1296000)) {
-#endif
-		if (counted) {
-		    fprintf(mesg_fp, "\1f\1w%d.\1g%s\1w: \1gLast post \1w%d\1g days ago.\1a\n", i, scratch.name, (int) (timenow - post.date) / 86400);
-                    if(mail_qls) {
-	                for (j = 0; j < NO_OF_QLS; j++) {
-		            if ((strlen(scratch.qls[j]) <= 0) || (strcmp(scratch.qls[j], "Sysop") == 0))
-		                continue;
-		            else
-                                if (check_user(scratch.qls[j])) {
-                                    (void) notify_ql(scratch.qls[j], scratch.name, (int) ((timenow - post.date) / 86400) );
-		                    fprintf(mesg_fp, "    \1f\1gNotified QL %d, \1y%s\1g, via mail.\1a\n",j, scratch.qls[j]);
-                                }
-                        }
-                    }
-                } else {
-		    line_ctr++;
-                }
-	    }
-	    /* QL absentee, missing, screwed, etc. */
-
-	    if (strcmp(scratch.category, "Admin") == 0)
-		continue;
-	    ql_ctr = 0;
-	    for (j = 0; j < NO_OF_QLS; j++) {
-		if ((strlen(scratch.qls[j]) <= 0) || (strcmp(scratch.qls[j], "Sysop") == 0))
-		    continue;
-		else if (check_user(scratch.qls[j]) != 1) {
-		    if (counted)
-			fprintf(mesg_fp, "\1f\1w%d.\1r%s\1w: \1rQL slot #\1w%ld: \1rUser \1r%s \1rdoesn't exist.  \1w(\1r!\1w)\1a\n", i, scratch.name, j + 1, scratch.qls[j]);
-		    else
-			line_ctr++;
-		    continue;
-		} else {
-		    qlPtr = readuser(scratch.qls[j]);
-		    ql_ctr++;
-		}
-		if (timenow - qlPtr->laston_to > 2592000) {
-		    if (counted)
-			fprintf(mesg_fp, "\1f\1w%d.\1y%s\1w: \1gQL #\1w%ld\1y %s\1g absent \1w%d\1g days.\1a\n", i, scratch.name, j + 1, scratch.qls[j], (int) (timenow - qlPtr->laston_to) / 86400);
-		    else
-			line_ctr++;
-		}
-		if ((!(qlPtr->flags & US_ROOMAIDE)) && (qlPtr->priv < PRIV_SYSOP)) {
-		    if (counted)
-			fprintf(mesg_fp, "\1f\1w%d.\1r%s\1w: \1rQL #\1w%ld \1r%s\1r has no QL flag.  \1w(\1r!\1w)\1a\n", i, scratch.name, j + 1, scratch.qls[j]);
-		    else
-			line_ctr++;
-		}
-		xfree(qlPtr);
-	    }
-	    if (!ql_ctr) {
-		if (counted)
-		    fprintf(mesg_fp, "\1f\1w%d.\1y%s\1w: \1yNo QL.\1a\n", i, scratch.name);
-		else
-		    line_ctr++;
-	    }
-	}
-    }
-    fprintf(mesg_fp, "\n%c", 0);
-    fclose(mesg_fp);
-}
 
 void
 print_userlist_list(userlist_t * p)
@@ -1867,4 +1723,79 @@ menu_hostedit_list(const unsigned int ZZ, const long ZZZ, const char *ZZZZ)
     return;
 }
 
+void
+show_room_aides()
+{
+    cprintf("\1f\1g%s\1w: ", config.roomaide);
+    print_hosts_simple( curr_rm);
+    cprintf( "\n" );
+    cprintf("\1f\1g%s category\1w: \1y%s\1g.\n", config.forum, quickroom.category);
+}
+
+int
+we_can_post(const unsigned int forum)
+{
+    room_t quad;
+
+    /* priv check for guests and cursed handled in validate_read_command() */
+    /* if we are in the docking bay, the user must be Sysop (or Technician) */
+    if (forum == 0) {
+	cprintf("\1f\1r\nOpen the door please, HAL.");
+	fflush(stdout);
+	sleep(1);
+	if (usersupp->priv < PRIV_TECHNICIAN) {
+	    cprintf("\n\1f\1rI'm sorry Dave, but I can't do that.\n");
+	    return FALSE;
+	} else {
+	    cprintf("\n\1f\1rAre you sure you want me to open the \1yDocking Bay\1w>\1r doors, Dave? \1a");
+	    if (yesno_default(FALSE) == FALSE) {
+		cprintf("\1f\1r\nGood-bye, Dave.\n\1a");
+		return FALSE;
+	    }
+	}
+    }
+
+    quad = read_quad(forum);
+    if (!i_may_write_forum(quad, forum)) {
+	cprintf("\n\1f\1gYou are not allowed to post here.\1a\n");
+	return FALSE;
+    }
+    return TRUE;
+}
+
+/*************************************************
+* unread_room()
+* this functions finds a room with unread messages
+* and it returns its number
+*************************************************/
+int
+unread_room()
+{
+
+    int i;
+    room_t scratch;
+
+    for (i = 0; i < MAXQUADS; i++) {
+        scratch = readquad(i);
+        if (i_may_read_forum(scratch, i)
+            && (skipping[i] == 0)
+            && (!is_zapped(i, &scratch))) {
+            if (check_messages(scratch, i) > 0) {
+                return i;
+            }
+        }
+    }
+    return 0;
+}
+
+
+int
+new_quadinfo()
+{
+    if ((quickroom.roominfo != usersupp->roominfo[curr_rm]) && (curr_rm != 2 || curr_rm != 5)) {
+	usersupp->roominfo[curr_rm] = quickroom.roominfo;
+	return TRUE;
+    }
+    return FALSE;
+}
 /* eof */

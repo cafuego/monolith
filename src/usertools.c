@@ -57,11 +57,12 @@ char profile_default[L_USERNAME + L_BBSNAME + 2] = "";
 #define UID_MathFox 23
 #define PR_DEBUG (usersupp->usernum == UID_MathFox)
 
+/* static vars */
+
+static char *_locale[] = { "European", "American" };
+
 /* static prototypes */
 
-static void check_passwd(void);
-
-   /* config options statics */
 static void set_usersupp_flag(const unsigned int, const long, const char *);
 static void set_usersupp_config_flag(const unsigned int, const long, const char *);
 static void hidden_info_menu(const unsigned int, const long, const char *);
@@ -147,28 +148,37 @@ menu_message(void)
 	strcpy(tempstr, "");
 	sprintf(tempstr, "Empty lines around %s", config.message_pl);
 	MENU_ADDITEM(set_usersupp_config_flag, CO_NEATMESSAGES, 0, tempstr,
-	     "tiv", tempstr, "1", (usersupp->config_flags & CO_NEATMESSAGES) ? "1" : "0");
+	     "tv", tempstr, (usersupp->config_flags & CO_NEATMESSAGES) ? "1" : "0");
 
 	strcpy(tempstr, "");
 	sprintf(tempstr, "Expanded %s headers", config.message);
 	MENU_ADDITEM(set_usersupp_config_flag, CO_EXPANDHEADER, 0, tempstr,
-	     "tiv", tempstr, "2", (usersupp->config_flags & CO_EXPANDHEADER) ? "1" : "0");
+	     "tv", tempstr, (usersupp->config_flags & CO_EXPANDHEADER) ? "1" : "0");
 
 	strcpy(tempstr, "");
+
+	sprintf(tempstr, "Display \1y%s\1g date", 
+		(usersupp->config_flags & CO_LONGDATE) ? "long" : "short");
+	MENU_ADDITEM(_set_date_display, 0, 0, "", "t", tempstr);
+
         if( usersupp-> priv < PRIV_SYSOP )
             sprintf(tempstr, "Notify on deleted %s", config.message_pl);
         else
             sprintf(tempstr, "Display deleted %s", config.message_pl);
 	MENU_ADDITEM(set_usersupp_config_flag, CO_DELETEDINFO, 0, tempstr,
-	     "tiv", tempstr, "3", (usersupp->config_flags & CO_DELETEDINFO) ? "1" : "0");
+	     "tv", tempstr, (usersupp->config_flags & CO_DELETEDINFO) ? "1" : "0");
 
 	strcpy(tempstr, "");
-	sprintf(tempstr, "Display \1y%s\1g date", (usersupp->config_flags & CO_LONGDATE) ? "long" : "short");
-	MENU_ADDITEM(_set_date_display, 0, 0, "", "ti", tempstr, "4");
+	sprintf(tempstr, "Monolith-Style %s headers", config.message);
+	MENU_ADDITEM(set_usersupp_config_flag, CO_MONOHEADER, 0, 
+	   tempstr, "tv", tempstr,
+	   (usersupp->config_flags & CO_MONOHEADER) ? "1" : "0");
 
-	strcpy(tempstr, "");
 	sprintf(tempstr, "\1y%s\1g date format", _locale[_get_locale(usersupp->config_flags)]);
-	MENU_ADDITEM(_set_locale, 0, 0, "", "ti", tempstr, "5");
+	MENU_ADDITEM(_set_locale, 0, 0, "", "t", tempstr);
+
+	the_menu_format.auto_columnize = 1;
+	the_menu_format.gen_1_idx = 1;
 
 	MENU_PROCESS_INTERNALS;
 	MENU_DISPLAY(2);
@@ -511,7 +521,7 @@ change_atho(int i)
 	cprintf("\1gYou're not a %s!", GUIDE);
 	return;
     }
-    tmpbtmp = mono_read_btmp(usersupp->username);
+    tmpbtmp = mono_read_btmp(who_am_i(NULL));
 
     if (tmpbtmp == NULL)
 	return;
@@ -519,12 +529,12 @@ change_atho(int i)
     if ((tmpbtmp->flags & B_GUIDEFLAGGED) && (i == 0 || i == -1)) {
 	if (usersupp->flags & US_ADMINHELP)
 	    more(HELPTERM "/toggle_off", 1);
-	mono_change_online(usersupp->username, "", -7);		/* deguideflagize */
+	mono_change_online(who_am_i(NULL), "", -7);		/* deguideflagize */
 	change = -1;
     } else if ((!(tmpbtmp->flags & B_GUIDEFLAGGED)) && (i == 0 || i == 1)) {
 	if (usersupp->flags & US_ADMINHELP)
 	    more(HELPTERM "/toggle_on", 1);
-	mono_change_online(usersupp->username, "", 7);	/* guideflagize */
+	mono_change_online(who_am_i(NULL), "", 7);	/* guideflagize */
 	change = 1;
     }
     if (change != 0) {
@@ -641,7 +651,7 @@ change_flying(void)
 	getline(usersupp->doing, 28, 0);
 	usersupp->doing[28] = '\0';
 	writeuser(usersupp, 0);
-	mono_change_online(usersupp->username, usersupp->doing, 14);
+	mono_change_online(who_am_i(NULL), usersupp->doing, 14);
 	cprintf("\1a");
     }
     return;
@@ -669,79 +679,6 @@ change_url(void)
 
 	writeuser(usersupp, 0);
 	cprintf("\1a");
-    }
-    return;
-}
-/**************************************************
-* yell_menu()
-**************************************************/
-
-void
-yell_menu(void)
-{
-
-    register char cmd = '\0';
-
-    cprintf("\n\1f\1gPress \1w<\1rd\1w>\1g to delete your account.\1a\n");
-    cprintf("\1f\1gPress \1w<\1rY\1w>\1g to send a Yell to the Administrators.\1a\n");
-    cprintf("\1f\1gPress \1w<\1rq\1w>\1g to quit...\1a\n\n");
-    cprintf("\1f\1gChoice\1w: \1r");
-
-    cmd = get_single_quiet("dqY ");
-    switch (cmd) {
-
-	case 'Y':
-	    cprintf("\1f\1g1\1w: \1gYell.\1a\n");
-	    yell();
-	    break;
-
-	case 'd':
-	    cprintf("\1f\1g2\1w: \1gDo you \1rreally\1g want to delete your account? ");
-	    if (yesno() == NO) {
-		cprintf("\1f\1gAccount deletion aborted.\1a\n");
-		yell_menu();
-		return;
-	    }
-	    check_passwd();
-	    break;
-
-	case ' ':
-	case 'q':
-	    cprintf("\1f\1gQuit.\1a");
-	    break;
-    }
-    cprintf("\n");
-    return;
-}
-
-/**********************************************
-* check_passwd()
-***********************************************/
-
-static void
-check_passwd(void)
-{
-    char pwtest[20];
-
-    cprintf("\r\1f\1gPlease enter your password\1w: \1g");
-    getline(pwtest, -19, 1);
-
-    if (strlen(pwtest) < 1) {
-	cprintf("\1f\1rAccount deletion aborted.\1a");
-	yell_menu();
-	return;
-    }
-    if (mono_sql_u_check_passwd(usersupp->usernum, pwtest) == TRUE) {
-	usersupp->priv ^= PRIV_DELETED;
-	writeuser(usersupp, 0);
-/*** nasty message that tells you not to come back... ***/
-	more("share/messages/deleted_goodbye", 1);
-	cprintf("\1f\1g\nPress any key to log off...\1a");
-	inkey();
-	logoff(0);
-    } else {
-	cprintf("\1f\1rIncorrect Code.\1a\n");
-	yell_menu();
     }
     return;
 }
@@ -851,7 +788,7 @@ toggle_away(void)
     btmp_t *user;
     char away[100];
 
-    mono_change_online(usersupp->username, " ", 13);	/* toggle away */
+    mono_change_online(who_am_i(NULL), " ", 13);	/* toggle away */
     cmdflags ^= C_AWAY;
     user = mono_read_btmp(username);	/* find out what's the toggle is */
 
@@ -866,11 +803,11 @@ toggle_away(void)
 	getline(away, 99, TRUE);
 	if (strlen(away))
 	    strcpy(usersupp->awaymsg, away);
-	mono_change_online(usersupp->username, usersupp->awaymsg, 16);
+	mono_change_online(who_am_i(NULL), usersupp->awaymsg, 16);
 	change_atho(-1);
     } else {
 	cprintf("\1f\1wYou are \1rno longer\1w marked as \1gAWAY\1w.\1a");
-	mono_change_online(usersupp->username, "", 16);
+	mono_change_online(who_am_i(NULL), "", 16);
     }
     xfree(user);
     return;

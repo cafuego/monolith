@@ -30,12 +30,15 @@
 #include "libshix.h"
 
 #include "setup.h"
+#include "msg_file.h"
 #include "chat.h"
+#include "enter_message.h"
 #include "express.h"
 #include "inter.h"
 #include "input.h"
 #include "friends.h"
 #include "messages.h"
+#include "read_menu.h"
 #include "uadmin.h"
 #include "rooms.h"
 #include "routines2.h"
@@ -99,7 +102,7 @@ sendx(char *to, const char *send_string, char override)
 	if (Sendxs == NULL || tuser == NULL) {
 	    cprintf("\1f\1y%s \1glogged off before you finished typing.\1a\n", to);
             /* ask user if perhaps mail to the user that logged off... */
-            x_to_mail(send_string, to);
+            x_message_to_mail(send_string, to);
 	    return;
 	}
     }
@@ -270,7 +273,7 @@ catchx(int key)
     if (key == 9)
 	Catchxs = &(shm->broadcast);
     else
-	Catchxs = mono_find_xslot(usersupp->username);
+	Catchxs = mono_find_xslot(who_am_i(NULL));
 
     override = Catchxs->override;
 
@@ -447,7 +450,7 @@ express(int X_PARAM)
     if (override == OR_NO_PERMS)
 	return;
 
-    mono_change_online(usersupp->username, to, 15);
+    mono_change_online(who_am_i(NULL), to, 15);
 
     display_express_prompt(X_PARAM);
 
@@ -456,7 +459,7 @@ express(int X_PARAM)
     if (EMOTE) {
 	getline(send_string, 74 - strlen(usersupp->username), FALSE);
 	if (strlen(send_string) == 0) {
-	    mono_change_online(usersupp->username, "", 15);
+	    mono_change_online(who_am_i(NULL), "", 15);
 	    return;
 	}
     } else if (!FEEL) {
@@ -464,7 +467,7 @@ express(int X_PARAM)
 	    case 'A':
 		cprintf("\1f\1r\1g%s %s \1raborted.\1a\n", config.express, config.x_message);
 		if (!(QUESTION || BROADCAST)) {
-		    mono_change_online(usersupp->username, "", 15);
+		    mono_change_online(who_am_i(NULL), "", 15);
 		    return;
 		}
 	    case OR_PING:
@@ -472,7 +475,7 @@ express(int X_PARAM)
 		    cprintf("\1f\1gAborting message.\n");
 		else
 		    ping(to);
-		mono_change_online(usersupp->username, "", 15);
+		mono_change_online(who_am_i(NULL), "", 15);
 		return;
 
 	    case OR_T_TECH:
@@ -498,14 +501,14 @@ express(int X_PARAM)
 	if (!strlen(send_string)) {
 	    if (!BROADCAST)
 		ping(to);
-	    mono_change_online(usersupp->username, "", 15);
+	    mono_change_online(who_am_i(NULL), "", 15);
 	    return;
 	}
 	if (!BROADCAST)		/* xlog this x? */
 	    if ((isbad(to)) || (usersupp->flags & US_IAMBAD)) {
 		strcpy(filename, "");
 		if (usersupp->flags & US_IAMBAD)
-		    sprintf(filename, "%s/xlog", getuserdir(usersupp->username));
+		    sprintf(filename, "%s/xlog", getuserdir(who_am_i(NULL)));
 		else
 		    sprintf(filename, "%s/xlog", getuserdir(to));
 		if ((f = fopen(filename, "a")) != NULL) {
@@ -530,7 +533,7 @@ express(int X_PARAM)
 	    f = xfopen(filename, "r", FALSE);
 	    if (f == NULL) {
 		cprintf("\1r\1fCould not open feeling file.\n");
-		mono_change_online(usersupp->username, "", 15);
+		mono_change_online(who_am_i(NULL), "", 15);
 		return;
 	    }
 	    while (fgets(buffer, 120, f))
@@ -540,7 +543,7 @@ express(int X_PARAM)
 	sendx(to, send_string, override);
     }
 
-    mono_change_online(usersupp->username, "", 15);
+    mono_change_online(who_am_i(NULL), "", 15);
 }
 
 
@@ -558,8 +561,6 @@ get_xmessage_destination(char *xmg_dest, const int X_PARAM, char *override)
     if (!BROADCAST) {
 	if (QUICKX) {
 
-//	    mono_sql_uu_quickx2user( usersupp->usernum, X_PARAM-10, &id2 );
-//	    mono_sql_u_id2name( id2, namePtr );
 	    strcpy(namePtr, cached_x_to_name(X_PARAM-10));
 	    if (!strlen( namePtr )) {
 		cprintf("\1f\1rThere's no X-Friend in slot #%d.\1a", X_PARAM - 10);
@@ -667,7 +668,7 @@ check_x_permissions(const char *x_recip_name, const int X_PARAM, char override)
 
     for (;;) {
 	if (!BROADCAST) {
-	    is_vnemy_to = is_enemy(x_recip_name, usersupp->username);
+	    is_vnemy_to = is_enemy(x_recip_name, who_am_i(NULL));
 	    is_my_vnemy = is_my_enemy(x_recip_name);
 
 	    if (EQ("guest", x_recip_name)) {
@@ -815,7 +816,7 @@ setup_express()
     for (i = 0; i < XLIMIT; i++)
 	xmsgb[i] = NULL;
     xmsgp = XLIMIT;
-    mono_find_xslot(usersupp->username)->override = OR_FREE;
+    mono_find_xslot(who_am_i(NULL))->override = OR_FREE;
     start_user_cache(usersupp->usernum);
 //    update_friends_cache();
     return;
@@ -905,16 +906,16 @@ change_express(int how)
 {
     btmp_t *my_btmp;
 
-    my_btmp = mono_read_btmp(usersupp->username);
+    my_btmp = mono_read_btmp(who_am_i(NULL));
     if (my_btmp == NULL) {
 	cprintf("ack!  Can't load a spare copy of myself.\n");
 	return;
     }
     if ((!(my_btmp->flags & B_XDISABLED) && !how) || how < 0) {
-	mono_change_online(usersupp->username, "", 9);
+	mono_change_online(who_am_i(NULL), "", 9);
 	cmdflags |= C_XDISABLED;
     } else if (((my_btmp->flags & B_XDISABLED) && !how) || how > 0) {
-	mono_change_online(usersupp->username, "", -9);
+	mono_change_online(who_am_i(NULL), "", -9);
 	cmdflags &= ~C_XDISABLED;
     } else
 	cprintf("oopsie.. ? changing-problems...\n");
@@ -1016,17 +1017,15 @@ quoted_Xmsgs()
 {
     char quoteduser[L_BBSNAME + L_USERNAME + 2];
     char rbbs[L_BBSNAME + 1], ruser[L_USERNAME + 1];
-    int channel, i, hold_rm, matches = 0, flag = 0;
+    int channel, i, matches = 0, flag = 0;
     FILE *fp;
-    char quoted_file[40];
-    post_t post;
 
-    cprintf("\1f\1c\n\
-This function quotes all of the express messages in your xlog sent to and \
-from a\ncertain harassing user, and sends them to the Sysops so that they can take\n\
-proper actions against the villain, and to have evidence for the harassing.\n");
+    cprintf("\1f\1c\n\%s%s%s%s",
+	"This function quotes all of the express messages in your xlog ",
+	"sent to and from a\ncertain harassing user, and sends them to the ",
+	"Sysops so that they can take\nproper actions, and serve as the ",
+	"evidence of the harassment.\n\n\1gUsername/Channel: \1c");
 
-    cprintf("\n\1f\1gUsername/Channel: \1c");
     strcpy(quoteduser, get_name(5));
     if (strlen(quoteduser) == 0)
 	return;
@@ -1050,27 +1049,27 @@ proper actions against the villain, and to have evidence for the harassing.\n");
 	}
     }
 
-    memset(&post, 0, sizeof(post));
-
-    cprintf("\1f\1gQuote conversation with `\1y%s\1g' to the Admin? \1w(\1gy\1w/\1gn\1w)\1c ", quoteduser);
+    cprintf("%s%s\1g' to the Admin? \1w(\1gy\1w/\1gn\1w)\1c ", 
+		"\1f\1gQuote conversation with `\1y", quoteduser);
 
     if (yesno() == NO) {
 	cprintf("\1f\1gOkay, not quoting the conversation.\1a\n");
 	return;
     }
-    sprintf(quoted_file, "%s%ud", temp, getpid());
-
-    if ((fp = fopen(quoted_file, "w")) == NULL) {
-	cprintf("\1f\1gThe x-es were \1rNOT \1gsent to the Admin due to an error.\n");
-	cprintf("Please try again if you still want to quote the conversation.\n\1a");
+    if ((fp = fopen(temp, "w")) == NULL) {
+	cprintf("%s%s%s",
+	"\1f\1gThe x-es were \1rNOT \1gsent to the Admin due to", 
+		" an error.\nPlease try again if you still want to",
+		" quote the conversation.\n\1a");
 	return;
     }
     for (i = 0; i < XLIMIT; i++) {
 	if (!(xmsgb[i]))
 	    continue;
 
-	if ((EQ(xmsgb[i]->sender, quoteduser)) || (EQ(xmsgb[i]->recipient, quoteduser))) {
-	    (void) fprintf(fp, "%s", format_express(xmsgb[i]));
+	if ((EQ(xmsgb[i]->sender, quoteduser)) || 
+		(EQ(xmsgb[i]->recipient, quoteduser))) {
+	    fprintf(fp, "%s", format_express(xmsgb[i]));
 	    matches++;
 	}
     }
@@ -1079,28 +1078,14 @@ proper actions against the villain, and to have evidence for the harassing.\n");
     if (matches == 0) {
 	cprintf("\1ySorry, there were no X'msgs from %s in your XLog... \n",
 		quoteduser);
-	unlink(quoted_file);
+	unlink(temp);
 	return;
     }
-    hold_rm = curr_rm;
-    curr_rm = 9;
-    gotocurr();
 
-    sprintf(quickroom.name, " \1gQUOTED X'S from \1y%s\1g to \1y%s\1g.", quoteduser, usersupp->username);
+    enter_message(QUOTED_X_FORUM, EDIT_NOEDIT, FILE_POST_BANNER, NULL);
 
-    strcpy(post.author, usersupp->username);
-    sprintf(post.subject, "Quoted X's from %s", quoteduser);
-    post.type = MES_NORMAL;
-    post.quad = 9;		/* room for quoted x's */
-    time(&post.date);
-
-    post_file(quoted_file, post);
-
-    curr_rm = hold_rm;
-    gotocurr();
-
-    cprintf("\1f\1gA log of your conversation with \1y%s\1g has been sent to the admin.\n", quoteduser);
-    unlink(quoted_file);
+    cprintf("\1f\1gA log of your conversation with \1y%s\1g has been sent%s",
+	    quoteduser,  " to the admin.\n");
     return;
 }
 
@@ -1414,4 +1399,154 @@ display_express_prompt(const int X_PARAM)
     if (!(FEEL || EMOTE))
 	cprintf("\1a\1c");
 }
+
+/*************************************************
+ * 
+ * feeling() - turn it into a menu.... 
+ * 
+ *************************************************/
+
+void
+feeling()
+{
+
+    register char cmd = '\0';
+
+    cprintf("\1f\1gSend Feeling %s.\1a\n", config.x_message);
+    if (usersupp->flags & US_EXPERT)
+	cprintf("\1f\1gPress \1w<\1r?\1w>\1g for a list of available feelings.\1a\n");
+    if ((usersupp->flags & US_COOL) || (usersupp->priv & (PRIV_SYSOP | PRIV_WIZARD)))
+	cprintf("\1f\1gYou're cool. Press \1w<\1rf\1w>\1g to send the \1cFREEZE\1g feeling.\1a\n");
+
+    while ((cmd != SP) && (cmd != 13)) {
+	IFNEXPERT
+	{
+	    cprintf("\1f\1gFeeling Options.\1a\n");
+	    more(MENUDIR "/menu_feelings", 1);
+	}
+	cprintf("\n\1f\1gFeeling: \1a");
+	cmd = get_single_quiet("12abcdefFgGhHiklmnoOpPrRstTuwzZ\r ?");
+
+	if (cmd != '?')
+	    cprintf("\1f\1c%c\n", cmd);
+
+	switch (cmd) {
+	    case ' ':
+	    case 13:
+		return;
+
+	    case '?':
+		cprintf("\1f\1gFeeling Options.\1a");
+		more(MENUDIR "/menu_feelings", 1);
+		break;
+
+/* Peter put all feeling under a specific letter instead of a number */
+
+	    case 'e':
+		express(20);
+		break;
+	    case 'w':
+		express(21);
+		break;
+	    case 'z':
+		express(22);
+		break;
+	    case 'h':
+		express(23);
+		break;
+	    case 'l':
+		express(24);
+		break;
+	    case 'r':
+		express(25);
+		break;
+	    case 's':
+		express(26);
+		break;
+	    case 'u':
+		express(27);
+		break;
+	    case 'b':
+		express(28);
+		break;
+	    case 'm':
+		express(29);
+		break;
+	    case 'o':
+		express(30);
+		break;
+	    case 'f':
+		if (usersupp->flags & US_COOL)
+		    express(31);
+		break;
+	    case 'i':
+		express(32);
+		break;
+	    case 'k':
+		express(33);
+		break;
+	    case 't':
+		express(34);
+		break;
+	    case 'g':
+		express(35);
+		break;
+
+	    case '1':
+		express(36);
+		break;
+
+	    case '2':
+		express(37);
+		break;
+
+	    case 'p':
+		express(38);
+		break;
+	    case 'a':
+		express(39);
+		break;
+
+	    case 'R':
+		express(40);
+		break;
+
+	    case 'd':
+		express(41);
+		break;
+	    case 'G':
+		express(42);
+		break;
+	    case 'P':
+		express(43);
+		break;
+	    case 'O':
+		express(44);
+		break;
+	    case 'n':
+		express(45);
+		break;
+	    case 'c':
+		express(46);
+		break;
+	    case 'Z':
+		express(47);
+		break;
+	    case 'T':
+		express(48);
+		break;
+	    case 'H':
+		express(49);
+		break;
+	    case 'F':
+		express(50);
+		break;
+
+	    default:
+		cprintf("\1f\1rSomething went wrong here...\1a\n");
+		return;
+	}
+    }
+}
+
 /* eof */

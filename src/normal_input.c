@@ -140,7 +140,7 @@ get_name(int quit_priv)
 		    qkr = read_quad(a);
 		    if ((qkr.flags & QR_INUSE)
 			&& strncmp(pbuf, qkr.name, pblen) == 0
-			&& may_read_room(*usersupp, quickroom, a)
+			&& i_may_read_forum(qkr, a)
 			) {
 			back(strlen(pbuf));
 			strcpy(pbuf, qkr.name);
@@ -841,7 +841,7 @@ editor_edit(const char *fname)
     sttybbs(0);
 
     idletime = 0;
-    mono_change_online(usersupp->username, "", 3);
+    mono_change_online(who_am_i(NULL), "", 3);
 
     return ((editor_exit == 256) ? 1 : (editor_exit == 0) ? 0 : -1);
     /* returns 1 at saved msg, 0 at aborted, -1 at problems */
@@ -901,7 +901,7 @@ inkey()
     j = i;
 
     if (idletime >= 2)
-	mono_change_online(usersupp->username, "", 3);	/* remove idleflag from wholist */
+	mono_change_online(who_am_i(NULL), "", 3);	/* remove idleflag from wholist */
 
     /* the LAG flag!! *evilgrin* */
     if (usersupp->flags & US_LAG)

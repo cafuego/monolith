@@ -26,7 +26,8 @@
 #include "ext.h"
 
 #include "clipboard.h"
-#include "commands.h"
+// #include "commands.h"
+#include "read_menu.h"
 #include "express.h"
 #include "input.h"
 #include "routines2.h"
@@ -45,11 +46,14 @@ clip_board()
     char work[L_USERNAME + RGemailLEN + 85];
 
     while (cmd != 'Q' && cmd != ' ' && cmd != '\r') {
-	which_room("\01f\01gClipboard: \01a");
+	display_short_prompt();
+
+	cprintf("\01f\01gClipboard: \01a");
 	IFNEXPERT
 	{
 	    more(MENUDIR "/menu_clipboard", 1);
-	    which_room("\01f\01gClipboard: \01a");
+	    display_short_prompt();
+	    cprintf("\01f\01gClipboard: \01a");
 	}
 
 	cmd = get_single_quiet("DEMRS?Q \r");
