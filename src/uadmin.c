@@ -25,17 +25,15 @@
 #include "monolith.h"
 #include "libmono.h"
 #include "ext.h"
-#include "sql_user.h"
-
-#define extern
-#include "uadmin.h"
-#undef extern
-
 #include "friends.h"
 #include "input.h"
 #include "registration.h"
 #include "routines2.h"
 #include "usertools.h"
+
+#define extern
+#include "uadmin.h"
+#undef extern
 
 static void edit_field(user_t * userdata, int fieldnum);
 static int mode_string(char *, user_t *);
@@ -466,7 +464,8 @@ namechange(void)
 {
     char newname[L_USERNAME + 1], oldname[L_USERNAME + 1];
     char command[200];
-    int num, i;
+    unsigned int num;
+    int i;
     user_t *new_userfile = NULL, *old_userfile = NULL;
     btmp_t *btmp_ptr;
     pid_t kick_pid;
