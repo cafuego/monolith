@@ -406,51 +406,52 @@ msgstr ""
 msgid "\001f\001gURL not set.\n"
 msgstr ""
 
-#: src/usertools.c:1048
+#. disable x's in q_menu
+#: src/usertools.c:1050
 msgid ""
 "\n"
 "\001f\001gPress \001w<\001rh\001w>\001g to access the helpfiles.\n"
 msgstr ""
 
-#: src/usertools.c:1049
+#: src/usertools.c:1051
 msgid ""
 "\n"
 "\001gPress \001w<\001rc\001w>\001g for help on commands.\n"
 msgstr ""
 
-#: src/usertools.c:1050
+#: src/usertools.c:1052
 msgid "\001gPress \001w<\001r?\001w>\001g to get a list of commands.\n"
 msgstr ""
 
-#: src/usertools.c:1051
+#: src/usertools.c:1053
 msgid ""
 "\001gPress \001w<\001rshift-Q\001w>\001g to ask a Question.\n"
 "\n"
 msgstr ""
 
-#: src/usertools.c:1052
+#: src/usertools.c:1054
 msgid ""
 "\001gPress \001w<\001rq\001w>\001g to exit this menu.\n"
 "\n"
 msgstr ""
 
-#: src/usertools.c:1053
+#: src/usertools.c:1055
 msgid "\001gChoice\001w:\001g "
 msgstr ""
 
-#: src/usertools.c:1149
+#: src/usertools.c:1151
 msgid "\001f\001wYou are now marked as \001gAWAY\001w.\n"
 msgstr ""
 
-#: src/usertools.c:1151
+#: src/usertools.c:1153
 msgid "\001gDefault away message: \001y%s\001a\n"
 msgstr ""
 
-#: src/usertools.c:1152
+#: src/usertools.c:1154
 msgid "\001f\001gNew Away message: \001c"
 msgstr ""
 
-#: src/usertools.c:1159
+#: src/usertools.c:1161
 msgid "\001f\001wYou are \001rno longer\001w marked as \001gAWAY\001w.\001a"
 msgstr ""
 

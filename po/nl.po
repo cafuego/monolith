@@ -89,7 +89,7 @@ msgstr ""
 
 #: src/clipboard.c:357
 msgid "\001g\001fMail was sent to \001c%s\001a\n"
-msgstr ""
+msgstr "\001g\001fMail is verstuurd naar \001c%s\001a\n"
 
 #: src/commands.c:659
 msgid "\001f\001gLock Terminal.\n"
@@ -326,7 +326,7 @@ msgstr ""
 
 #: src/usertools.c:718
 msgid "\001f\001cUsernum\001w: \001g%d \001cFirst login\001w: \001g%s\n"
-msgstr ""
+msgstr "\001f\001cGebruikersnummer\001w: \001g%d \001cEerste login\001w: \001g%s\n"
 
 #: src/usertools.c:719
 msgid "\001f\001cLogins\001w: \001g%-5d \001cPosts: \001g%-5d \001cOnlinetime: \001g%2ld:%2.2ld   \001cPriv: \001g%5d  \001cX's: \001g%5ld \n"
@@ -338,6 +338,8 @@ msgid ""
 "First login: \001g%s\001c\n"
 "Logins: \001g%-5d \001cPosts: \001g%-5d \001cOnlinetime: \001g%2ld:%2.2ld \001cX's: \001g%5ld \n"
 msgstr ""
+"Eerste login: \001g%s\001c\n"
+"Logins: \001g%-5d \001cPosts: \001g%-5d \001cOnlinetime: \001g%2ld:%2.2ld \001cX's: \001g%5ld \n"
 
 #: src/usertools.c:734
 msgid "\001g*** is available to help others ***\n"
@@ -401,7 +403,7 @@ msgstr "\001f\001gVerander adres.\n"
 
 #: src/usertools.c:1015
 msgid "\001gYour current url is: \001y`%s'\n"
-msgstr ""
+msgstr "\001gJe huidige url is: \001y`%s'\n"
 
 #: src/usertools.c:1016
 msgid "\001gDo you want to change this? \001w(\001gy\001w/\001gn\001w)\001c "
@@ -415,51 +417,58 @@ msgstr ""
 msgid "\001f\001gURL not set.\n"
 msgstr ""
 
-#: src/usertools.c:1048
+#. disable x's in q_menu
+#: src/usertools.c:1050
 msgid ""
 "\n"
 "\001f\001gPress \001w<\001rh\001w>\001g to access the helpfiles.\n"
 msgstr ""
 
-#: src/usertools.c:1049
+#: src/usertools.c:1051
 msgid ""
 "\n"
 "\001gPress \001w<\001rc\001w>\001g for help on commands.\n"
 msgstr ""
+"\n"
+"\001gToets \001w<\001rc\001w>\001g voor help over de commando's.\n"
 
-#: src/usertools.c:1050
+#: src/usertools.c:1052
 msgid "\001gPress \001w<\001r?\001w>\001g to get a list of commands.\n"
-msgstr ""
+msgstr "\001gToets \001w<\001r?\001w>\001g voor een lijst met commando's.\n"
 
-#: src/usertools.c:1051
+#: src/usertools.c:1053
 msgid ""
 "\001gPress \001w<\001rshift-Q\001w>\001g to ask a Question.\n"
 "\n"
 msgstr ""
+"\001gToets \001w<\001rshift-Q\001w>\001g om een vraag te stellen.\n"
+"\n"
 
-#: src/usertools.c:1052
+#: src/usertools.c:1054
 msgid ""
 "\001gPress \001w<\001rq\001w>\001g to exit this menu.\n"
 "\n"
 msgstr ""
+"\001gToets \001w<\001rq\001w>\001g om dit menu te verlaten.\n"
+"\n"
 
-#: src/usertools.c:1053
+#: src/usertools.c:1055
 msgid "\001gChoice\001w:\001g "
 msgstr ""
 
-#: src/usertools.c:1149
+#: src/usertools.c:1151
 msgid "\001f\001wYou are now marked as \001gAWAY\001w.\n"
 msgstr ""
 
-#: src/usertools.c:1151
+#: src/usertools.c:1153
 msgid "\001gDefault away message: \001y%s\001a\n"
 msgstr ""
 
-#: src/usertools.c:1152
+#: src/usertools.c:1154
 msgid "\001f\001gNew Away message: \001c"
 msgstr ""
 
-#: src/usertools.c:1159
+#: src/usertools.c:1161
 msgid "\001f\001wYou are \001rno longer\001w marked as \001gAWAY\001w.\001a"
 msgstr ""
 
@@ -488,10 +497,3 @@ msgid ""
 msgstr ""
 "\n"
 "\001g\001fEr zijn \001y%ud\001g %s aanwezig \001c( \001y%ud \001cqueued ) \001gat \001y%02d:%02d\001g local time.\n"
-# msgid ""
-# "\n"
-# "\001a\001f\001gWelcome to Monolith BBS, \001g%s! \001gThis is your \001w#%d \001glogin.\n"
-# msgstr ""
-# "\n"
-# "\001a\001f\001gWelkom op Monoliet BBS, \001g%s! \001gDit is je \001w#%d \001gverbinding.\n"
-# 
