@@ -20,6 +20,7 @@
 
 #include "monolith.h"
 #include "libmono.h"
+#include "libcache.h"
 #include "setup.h"
 #include "telnet.h"
 
@@ -138,6 +139,7 @@ updateself(int sig)
     xfree(usersupp);
     usersupp = user;
     (void) mono_change_online(usersupp->username, "", 1);
+    start_user_cache(usersupp->usernum);
     signal(SIGUSR2, updateself);
     return;
 }
