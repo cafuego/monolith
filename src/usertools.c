@@ -1523,6 +1523,9 @@ static void
 _print_user_flags(const user_t * user)
 {
 
+    int ret;
+    char xtrapflag[80];
+
 #ifndef NO_MONOHOLIC_FLAG
     cprintf("%s ", _get_monoholic_flag(user));
 #endif
@@ -1552,8 +1555,8 @@ _print_user_flags(const user_t * user)
 	    cprintf("\1r[ \1wX-LOG\1r ] ");
     }
 
-    if (user->xtrapflag)
-	cprintf("\1f%s", user->xtrapflag);
+    ret = mono_sql_u_get_xtrapflag( user->usernum, xtrapflag );
+    if ( ret == 0 ) cprintf("\1f%s", user->xtrapflag);
 
     cprintf("\n\1a\1g");
     return;
