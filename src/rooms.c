@@ -1557,6 +1557,8 @@ low_traffic_quad_list(void)
 
     time(&timenow);
 
+    log_it("quadlizard", "Starting up!");
+
     for (counted = 0; counted <= 1; counted++) {
 	if (counted) {
 	    mesg.type = MES_NORMAL;
@@ -1607,7 +1609,7 @@ low_traffic_quad_list(void)
 		        else
                             if (check_user(scratch.qls[j])) {
                                 (void) notify_ql(scratch.qls[j], scratch.name, (int) ((timenow - post.date) / 86400) );
-		                fprintf(mesg_fp, "    \1f\1gMailed QL[%d]: %s.\1a\n",j, scratch.qls[j]);
+		                fprintf(mesg_fp, "    \1f\1gNotified QL %d, \1y%s\1g, via mail.\1a\n",j, scratch.qls[j]);
                             }
                     }
                 } else {

@@ -1775,7 +1775,7 @@ notify_ql(char *to_user, char *quadname, int nopost)
 
     log_it("quadlizard", "Mailing %s that %s has not had any new posts in the past %d days.", to_user, quadname, nopost);
 
-    sprintf(mesg.subject, "%s", quadname);
+    sprintf(mesg.subject, "Important\1w:\1y %s", quadname, "");
 
     sprintf(filename, "%s%s%ld", getuserdir(to_user), "/mail/", 
 				 get_new_mail_number(to_user));
@@ -1797,11 +1797,11 @@ notify_ql(char *to_user, char *quadname, int nopost)
     fprintf(fp, "%s%s%s%s%s%d%s",
         "\n\1a\1cHi ",
         to_user,
-        "\n\nYour quadrant, ",
+        "\n\nYour quadrant, \1f\1y",
         quadname,
-        ", has not had any new\nposts for \1f\1r",
+        "\1a\1c, has not had any new posts\rfor \1f\1r",
         nopost,
-        "\1a\1c days. Perhaps you should make\na post to get users interested again.\n" );
+        "\1a\1c days. Perhaps you should make a post to get users\ninterested again.\n" );
 
 /* end of post */
     fprintf(fp, "\n%c", 0);
