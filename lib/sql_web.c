@@ -165,7 +165,7 @@ mono_sql_web_wholist(int level)
                 while(list != NULL) {
                     j++;
                     if(j == 1) (void) sprintf(line, "\n");
-                    strcat(line, "\1p[web\1p] ");
+                    strcpy(line, "\1p[web\1p] ");
                     q = line + strlen(line);
                     (void) sprintf(q, "\1f\1g%-18s ", list->user->username);
                     if ((j % 3) == 0)
