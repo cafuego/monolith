@@ -84,16 +84,20 @@
         // Update account details.
         //
         case "i":
-            echo "Name: $name<br>\n";
+            if($name) echo "Name: $name<br>\n";
             echo "Address: $address<br>\n";
             echo "City: $city<br>\n";
             echo "State: $state<br>\n";
             echo "Zip: $zip<br>\n";
             echo "Country: $country<br>\n";
-            echo "Phone: $phone<br>\n";
+            if($phone) echo "Phone: $phone<br>\n";
             echo "Email: $email<br>\n";
             echo "Url: $url<br>\n";
-            echo "Website: $website<br>\n";
+            if($website) echo "Website: $website<br>\n";
+
+            
+
+            // UPDATE user SET hiddeninfo='' WHERE username='$username'
             break;
 
         // Save profile image.
