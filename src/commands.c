@@ -72,9 +72,9 @@ sysop_menu()
 	    cprintf("\1f\1wAdmin cmd: \1a");
 	}
 
-	cmd = get_single_quiet("BCEFgGKMNOPQRSTU\r\b ?");
+	cmd = get_single_quiet("BCEFgGKMNOPQRTU\r\b ?");
 
-	if (strchr("BCERFgOPS", cmd))
+	if (strchr("BCERFgOP", cmd))
 	    nox = 1;		/* is busy, wants no x's */
 
 	switch (cmd) {
@@ -147,12 +147,6 @@ sysop_menu()
 		sysoproom_menu();
 		continue;
 
-            case 'S':
-                nox = 1;
-		cprintf("\1f\1wSearch %s\n", config.message_pl);
-                search_via_sql(curr_rm);
-                break;
-               
 	    case 'U':
 		cprintf("\1f\1r%s cmd: \1a", config.user);
 		sysopuser_menu();

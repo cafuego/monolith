@@ -103,15 +103,9 @@ short_prompt(void)
 	display_short_prompt();
 
 #ifdef SUPERHERO
-        IFSYSOP
-	    cmd = get_single_quiet("~aAbBcCdefEFGHiIjJkKlLMNOPQqrRsSTUvVwWxXYZ0123456789!<>-_+:#.,*\"@`$&a([]% /?\005\006\011\014\016\022\030\'");
-        else
-	    cmd = get_single_quiet("~aAbBcCdefEFGHiIjJkKlLMNOPQqrRsTUvVwWxXYZ0123456789!<>-_+:#.,*\"@`$&a([]% /?\005\006\011\014\016\022\030\'");
+        cmd = get_single_quiet("~aAbBcCdefEFGHiIjJkKlLMNOPQqrRsSTUvVwWxXYZ0123456789!<>-_+:#.,*\"@`$&a([]% /?\005\006\011\014\016\022\030\'");
 #else
-        IFSYSOP
-	    cmd = get_single_quiet("~aAbBcCdefEFGHiIjJkKlLMNOPQqrRsSTUvVwWxXYZ0123456789!<>-_+:#.,*\"@$&a([]% /?\005\006\011\014\016\022\030\'");
-        else
-	    cmd = get_single_quiet("~aAbBcCdefEFGHiIjJkKlLMNOPQqrRsTUvVwWxXYZ0123456789!<>-_+:#.,*\"@$&a([]% /?\005\006\011\014\016\022\030\'");
+        cmd = get_single_quiet("~aAbBcCdefEFGHiIjJkKlLMNOPQqrRsSTUvVwWxXYZ0123456789!<>-_+:#.,*\"@$&a([]% /?\005\006\011\014\016\022\030\'");
 #endif
 
 	cmd = validate_read_command(cmd);	/* priv check */
@@ -339,7 +333,7 @@ short_prompt(void)
 
 	    case 'S':
                 nox = 1;
-                cprintf("\1f\1wSearch %s\n", config.message_pl);
+                cprintf("\1f\1gSearch %s\n", config.message_pl);
                 search_via_sql(curr_rm);
 		break;
 
@@ -603,10 +597,7 @@ long_prompt(long number, int direction)
 
             not_my_post = strcmp(usersupp->username, message_reply_name(NULL));
 
-            IFSYSOP
-	        read_command = get_single_quiet("1234567890 aAbBcCdDeEfFgGhHiIjJlkKLpPrRqQmMnNsStTvVWwxXyYzZ?!#\006\005\014\018\022\030<>%\":~,.*");
-            else
-	        read_command = get_single_quiet("1234567890 aAbBcCdDeEfFgGhHiIjJlkKLpPrqQmMnNstTvVWwxXyYzZ?!#\006\005\014\018\022\030<>%\":~,.*");
+	    read_command = get_single_quiet("1234567890 aAbBcCdDeEfFgGhHiIjJlkKLpPrRqQmMnNsStTvVWwxXyYzZ?!#\006\005\014\018\022\030<>%\":~,.*");
 
 	    read_command = validate_read_command(read_command);		/* priv check */
 
