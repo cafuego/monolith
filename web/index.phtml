@@ -74,6 +74,9 @@
     switch ($action) {
 
         case "a":	// PHP info.
+            echo "<div align=\"center\">\n";
+            pagetitle( "Current Configuration", "/usr/bbs/www/bbs/font/Times_B.ttf" );
+            echo "</div>\n";
             echo "<pre>\n" . phpinfo() . "</pre>\n";
             break;
 
