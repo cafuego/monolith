@@ -73,6 +73,7 @@ function read_message($username, $quad, $current, $direction) {
                 print "<pre><font color=\"#00ffff\">$content</font></pre>\n";
                 print "<p align=\"left\"><font color=\"#FFFFFF\">$f_id.</font><font color=\"#00CC00\">$forum message #$m_id</font>&gt;</p>\n";
                 print "<p> </p>\n";
+                print "<p> </p>\n";
 
                 // Don't let guests be able to post.
                 //
