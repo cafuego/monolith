@@ -89,13 +89,16 @@ int
 mono_sql_t_updated_highest( unsigned int forum, unsigned int topic, unsigned int m_id )
 {
     MYSQL_RES *res;
+    int ret;
 
-    if( (mono_sql_query(&res, "UPDATE " T_TABLE " SET highest=%u WHERE forum_id=%u AND topic_id=%u", m_id, forum, topic )) == -1) {
-        (void) mysql_free_result(res);
-        return 0;
+    ret = mono_sql_query(&res, "UPDATE " T_TABLE " SET highest=%u WHERE forum_id=%u AND topic_id=%u", m_id, forum, topic );
+
+    if( ret == -1 ) {
+//        (void) mysql_free_result(res);
+        return -1;
     }
-    (void) mysql_free_result(res);
-    return -1;
+//    (void) mysql_free_result(res);
+    return 0;
 }
 
 int
