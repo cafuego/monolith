@@ -42,7 +42,7 @@
 #include "sql_user.h"
 
 static void newuser_getname(char * name);
-static void newuser_getpasswd(user_t * user);
+static void newuser_getpasswd(unsigned int user_id);
 static void newuser_registration(user_t * user);
 static user_t *newuser_makesupp(void);
 static int check_lockout(const char *hostname);
@@ -78,7 +78,7 @@ new_user(const char *hostname)
     get_new_usernum( usersupp->username, &usernum );
     usersupp->usernum = usernum;
 
-    newuser_getpasswd(usersupp);
+    newuser_getpasswd(usersupp->usernum);
     newuser_registration(usersupp);
 
     test_ansi_colours(usersupp);
@@ -219,7 +219,7 @@ newuser_getname(char *name)
 }
 
 static void
-newuser_getpasswd(user_t * user)
+newuser_getpasswd(unsigned int user_id)
 {
     char pwread[20], pwtest[20];	/* for password validation */
     int done = FALSE;
@@ -230,8 +230,12 @@ newuser_getpasswd(user_t * user)
 	cprintf("\1f\1gPlease enter a password: ");
 	getline(pwread, -19, 1);
 
+#ifdef USED
+/*       have to comment this out. i don't know what it is for
+		michel 20/09/1999 */
 	if ((!strlen(pwread)) && (user->timescalled > 0))
 	    return;
+#endif
 
 	if (strlen(pwread)) {
 	    cprintf("\1f\1gPlease enter it again: ");
@@ -244,7 +248,7 @@ newuser_getpasswd(user_t * user)
 	}
     }
 
-    mono_sql_u_set_passwd( user->usernum, pwread );
+    mono_sql_u_set_passwd( user_id, pwread );
     cprintf("\n");
     return;
 }
@@ -253,6 +257,8 @@ static void
 newuser_registration(user_t * user)
 {
     char p[RGurlLEN];
+    int ret;
+
     cprintf("\1f\1g");
     more(BBSDIR "/share/newuser/registration", 0);
 
@@ -280,7 +286,7 @@ newuser_registration(user_t * user)
     } while (strlen(user->RGzip) < 3);
 
 	cprintf("  State/Province: ");
-	strcpy( user->RGstate, "" );
+	strcpy( user->RGstate, "" ); /* initialise, or get garbage */
 	getline(user->RGstate, RGstateLEN, 1);
 
     do {
@@ -288,8 +294,8 @@ newuser_registration(user_t * user)
 	getline(user->RGcountry, RGcountryLEN, 1);
     } while (strlen(user->RGcountry) < 3);
 
-	cprintf("  Phone number:     ");
-	strcpy( user->RGphone, "" );
+	cprintf("  Phone number:   ");
+	strcpy( user->RGphone, "" ); /* initialise or get garbage! */
 	getline(user->RGphone, RGphoneLEN, 1);
 
     more(BBSDIR "/share/newuser/email", 0);
@@ -322,11 +328,14 @@ newuser_registration(user_t * user)
 	sprintf(user->RGurl, "http://%s", p);
     }
 
-    mono_sql_u_update_registration( usersupp->usernum,
+    ret = mono_sql_u_update_registration( usersupp->usernum,
         usersupp->RGname, usersupp->RGaddr, usersupp->RGzip, usersupp->RGcity,
         usersupp->RGstate, usersupp->RGcountry, usersupp->RGphone );
-    mono_sql_u_update_email( usersupp->usernum, usersupp->RGemail );
-    mono_sql_u_update_url( usersupp->usernum, usersupp->RGurl );
+    if ( ret == -1 ) fprintf( stderr, "Problems saving registration info.\n" );
+    ret = mono_sql_u_update_email( usersupp->usernum, usersupp->RGemail );
+    if ( ret == -1 ) fprintf( stderr, "Problems saving email.\n" );
+    ret = mono_sql_u_update_url( usersupp->usernum, usersupp->RGurl );
+    if ( ret == -1 ) fprintf( stderr, "Problems saving URL.\n" );
 
     cprintf("\n\1f\1gYou have entered the following information:\n\n");
     dis_regis(user, TRUE);
