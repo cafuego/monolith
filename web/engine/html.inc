@@ -208,9 +208,11 @@ function html_print_foot($username, $starttime) {
     echo "<hr size=\"1\" width=\"400\" align=\"center\">\n";
     echo "<p class=\"footer\">\n";
     echo "  <a href=\"/bbs/index.phtml/\">Main</a> |\n";
+    echo "  <a href=\"$REQUEST_URI\">Check X Messages</a> |\n";
     echo "  <a href=\"/bbs/index.phtml/w\">Wholist</a> |\n";
     echo "  <a href=\"/bbs/index.phtml/l\">All Quadrants</a> |\n";
-    echo "  <a href=\"/bbs/index.phtml/u\">Unread Messages</a> |\n";
+    echo "  <a href=\"/bbs/index.phtml/u\">Unread Messages</a>\n";
+    echo "<p class=\"footer\">\n";
     echo "  <a href=\"/bbs/index.phtml/q\">Log out $username</a>\n";
     echo "<hr size=\"1\" width=\"400\" align=\"center\">\n";
 
