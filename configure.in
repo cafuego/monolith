@@ -66,7 +66,7 @@ AC_SUBST(PROG_CAT)
 
 dnl GNU gettext add-ons
 ALL_LINGUAS="fr en nl de es"
-AM_GNU_GETTEXT
+AM_GNU_GETTEXT([external])
 
 dnl Check for awk/gawk - used to determine if we're linux or not.
 AC_PATH_PROG(awk_path,awk,no)
@@ -597,7 +597,7 @@ AC_OUTPUT(cgi/Makefile lib/Makefile daemons/Makefile src/Makefile \
     share/loginscreens/Makefile web/Makefile web/classes/Makefile \
     web/engine/Makefile web/pix/Makefile web/style/Makefile \
     web/script/Makefile web/sound/Makefile web/flash/Makefile \
-    po/Makefile.in intl/Makefile include/Makefile Makefile build-defs.h)
+    po/Makefile.in include/Makefile Makefile build-defs.h)
 
 dnl Create PHP include file with MYSQL settings.
 dnl
