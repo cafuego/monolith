@@ -50,8 +50,8 @@ function show_wholist($username,$location) {
             $url_user = strtr($url_user, " ", "+");
 
             if($interface != "web" ) {
-                $doing = colorize($doing);
                 $doing = htmlspecialchars($doing);
+                $doing = colorize($doing);
             }
 
             if( strstr($doing, "(null)") )

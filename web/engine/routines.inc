@@ -283,28 +283,37 @@ function list_x_messages($username,$location) {
 
 function colorize($doing) {
 
+    // Make escape chars usable.
+    //
     $doing = rawurlencode($doing);
-    echo "<!-- $doing -->\n";
 
-    // Convert to HTML colour codes.
-    // 
+    // Remove misc codes.
+    //
+    $doing = ereg_replace("%01a", "", $doing);	// Reset.
+    $doing = ereg_replace("%01f", "", $doing);	// Bold.
+    $doing = ereg_replace("%01d", "", $doing);	// Dark.
+    $doing = ereg_replace("%01D", "", $doing);	// Dark bg.
+
+    // Remove bg colours.
+    //
+    $doing = ereg_replace("%01W", "", $doing);	// White.
+    $doing = ereg_replace("%01Y", "", $doing);	// Yellow.
+    $doing = ereg_replace("%01G", "", $doing);	// Green.
+    $doing = ereg_replace("%01C", "", $doing);	// Cyan.
+    $doing = ereg_replace("%01B", "", $doing);	// Blue.
+    $doing = ereg_replace("%01P", "", $doing);	// Purple.
+    $doing = ereg_replace("%01R", "", $doing);	// Red.
+    $doing = ereg_replace("%01r", "</font><font color=\"#ff0000\">", $doing);	// Red.
 
     // Fix fg colours.
     //
     $doing = ereg_replace("%01w", "</font><font color=\"#ffffff\">", $doing);	// White.
-    echo "<!-- $doing -->\n";
     $doing = ereg_replace("%01y", "</font><font color=\"#ffff00\">", $doing);	// Yellow.
-    echo "<!-- $doing -->\n";
     $doing = ereg_replace("%01g", "</font><font color=\"#00ff00\">", $doing);	// Green.
-    echo "<!-- $doing -->\n";
     $doing = ereg_replace("%01c", "</font><font color=\"#00ffff\">", $doing);	// Cyan.
-    echo "<!-- $doing -->\n";
     $doing = ereg_replace("%01b", "</font><font color=\"#0000ff\">", $doing);	// Blue.
-    echo "<!-- $doing -->\n";
     $doing = ereg_replace("%01p", "</font><font color=\"#ff00ff\">", $doing);	// Purple.
-    echo "<!-- $doing -->\n";
     $doing = ereg_replace("%01r", "</font><font color=\"#ff0000\">", $doing);	// Red.
-    echo "<!-- $doing -->\n";
 
     return rawurldecode($doing);
 }
