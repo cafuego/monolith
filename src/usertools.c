@@ -16,7 +16,7 @@
 #include <unistd.h>
 
 #ifdef USE_MYSQL
-  #include MYSQL_HEADER
+#include MYSQL_HEADER
 #endif
 
 #ifdef ENABLE_NLS
@@ -949,9 +949,8 @@ _change_profile(const unsigned int a, const long b, void *c)
 
     if (write_profile(who_am_i(NULL), work) == -1) {
 	cprintf("\1r\1fCould not save your profile.\n\1a");
-        return;
+	return;
     }
-
     sprintf(filename, "%s/profile", getuserdir(who_am_i(NULL)));
     if ((profile = map_file(filename)) == NULL) {
 	xfree(profile);
@@ -963,7 +962,7 @@ _change_profile(const unsigned int a, const long b, void *c)
 	xfree(profile);
 	log_it("errors", "mono_sql_write_profile() returned -1");
 	cprintf(_("\1f\1rUnable to store profile in database!\n"));
-        return;
+	return;
     }
     xfree(profile);
     check_profile_updated();
@@ -1020,10 +1019,10 @@ _change_url(const unsigned int a, const long b, void *c)
 	if (strlen(p) < 5) {
 	    strcpy(usersupp->RGurl, "");
 	    cprintf(_("\1f\1gURL not set.\n"));
-	} else{
+	} else {
 	    sprintf(usersupp->RGurl, "http://%s", p);
-	mono_sql_u_update_url( usersupp->usernum, usersupp->RGurl );
-}
+	    mono_sql_u_update_url(usersupp->usernum, usersupp->RGurl);
+	}
 
 	cprintf("\1a");
     }
@@ -1326,7 +1325,7 @@ _hidden_info_menu(const unsigned int a, const long b, void *c)
 {
     cprintf("\1f\1cToggle hidden info.\1a\n");
     toggle_hidden_info(usersupp);
-    mono_sql_u_update_hidden( usersupp->usernum, usersupp->hidden_info );
+    mono_sql_u_update_hidden(usersupp->usernum, usersupp->hidden_info);
 }
 
 void
