@@ -588,7 +588,7 @@ map_file(const char *filename)
 #endif
         (void) xfree(tmpbuf);
         (void) close(fd);
-        (void) log_it("errors", "Can't mmap() file: %s", filename);
+        (void) log_it("errors", "Can't mmap() file: %s; error: %s", filename, strerror(errno));
         return NULL;
     }
 
@@ -602,7 +602,7 @@ map_file(const char *filename)
      */
     if( (tmpbuf == NULL) || (strlen(tmpbuf) < 1) ) {
         (void) xfree(tmpbuf);
-        (void) log_it("errors", "Bad mmap(): %s.", filename);
+        (void) log_it("errors", "Bad mmap(): %s, %s", filename, strerror(errno));
         (void) log_it("errors", "File size was %lu bytes.", buf.st_size);
         return NULL;
     }
