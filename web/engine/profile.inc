@@ -29,11 +29,11 @@ function profile_user($username, $victim) {
     if ($number) {
         $content_type = mysql_result($result, 0, "content_type");
         if ($content_type == "image/gif")
-            echo "<img align=\"center\" src=\"/bbs/pix/gif.php3?$victim_id\" width=\"100\">\n";
+            echo "<img align=\"center\" src=\"/bbs/pix/gif.php3?$victim_id\">\n";
         else if ($content_type == "image/jpeg")
-            echo "<img align=\"center\" src=\"/bbs/pix/jpeg.php3?$victim_id\" width=\"100\">\n";
+            echo "<img align=\"center\" src=\"/bbs/pix/jpeg.php3?$victim_id\">\n";
         else if ($content_type == "image/png")
-            echo "<img align=\"center\" src=\"/bbs/pix/png.php3?$victim_id\" width=\"100\">\n";
+            echo "<img align=\"center\" src=\"/bbs/pix/png.php3?$victim_id\">\n";
         else
             errorimage("Image is in unsupported format!");
     }
