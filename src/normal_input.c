@@ -713,7 +713,9 @@ void
 ColourChar(char key)
 {
     if (usersupp->flags & US_ANSI) {
+#ifdef CLIENTSRC
         (void) save_colour(key);
+#endif
 	switch (key) {
 	    case 'd':
 		cprintf("[30m");

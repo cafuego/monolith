@@ -17,3 +17,6 @@ extern int print_birthday(date_t bday);
 extern void modify_birthday(date_t * bday);
 extern int qc_get_pos_int(const char, int);
 extern char * m_strcat(char *, const char *);
+#ifdef CLIENTSRC
+extern void save_colour(int key);
+#endif

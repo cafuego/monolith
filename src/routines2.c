@@ -17,6 +17,11 @@
 #include <stdarg.h>
 #include <math.h>
 
+#ifdef HAVE_SYS_UTSNAME_H
+#define __SVR4_I386_ABI_L1__
+#include <sys/utsname.h>
+#endif
+
 #ifdef LINUX
 #include <linux/kernel.h>
 #include <linux/sys.h>
@@ -49,11 +54,13 @@
 #include "routines2.h"
 #undef extern
 
+#ifdef CLIENTSRC
 static void _restore_colour(void);
 static void _set_colour(char key);
 static void _log_attrib(int flag);
 static int attrib_log;
 static colour_t attrib;
+#endif
 
 /*************************************************
 * more()
@@ -157,7 +164,7 @@ m_strcat(char *string1, const char *string2)
 
 
 int
-more_string(char * const string)
+more_string(char *const string)
 {
 
     int inc;
@@ -204,76 +211,136 @@ more_string(char * const string)
     return 1;
 }
 
-/*************************************************
-* print_system_config()
-*************************************************/
+/*
+ * print_system_config()
+ *
+ * Shows system info in <m><s> menu.
+ */
 
 #ifdef LINUX
-  /* proto  (see man sysinfo) */
-  int sysinfo(struct sysinfo *info);
+  /*
+   * proto  (see man sysinfo)
+   */
+int sysinfo(struct sysinfo *info);
 #endif
 
 void
 print_system_config()
 {
-    struct stat buf;
-
 #ifdef LINUX
     struct sysinfo *info;
 #endif
+#ifdef HAVE_SYS_UTSNAME_H
+    struct utsname buf2;
+    char *domain_name = NULL;
+#endif
+#ifdef HAVE_ANIMAL
+    int fd = -1;
+    char *kernel_name = NULL;
+#endif
+    struct stat buf;
 
 #ifdef USE_MYSQL
+    /*
+     * Show MySQL server info if present.
+     */
     MYSQL mysql;
     (void) mysql_get_server_info(&mysql);
 #endif
-  
-    cprintf("\n\1f");
 
+#ifdef HAVE_SYS_UTSNAME_H
+    /*
+     * Kernel info.
+     */
+    if ((uname(&buf2)) == -1) {
+	cprintf("\1f\1rError getting current kernel info!\n");
+	return;
+    }
+
+    /*
+     * 65 is defined in sys/utsname.h, so why not eh?
+     * I can't be bothered looking up the RFC...
+     */
+    domain_name = (char *) xmalloc(65);
+    if ((getdomainname(domain_name, 64)) == -1) {
+	cprintf("\1f\1rError getting domain name!\n");
+	(void) xfree(domain_name);
+	return;
+    }
+#endif
+
+#ifdef LINUX
+    /*
+     * System info (load/mem/disk)
+     */
+    info = xmalloc(sizeof(struct sysinfo));
+    if ((sysinfo(info)) == -1) {
+	cprintf("\1f\1rError getting current system info!\n");
+	(void) xfree(info);
+	return;
+    }
+#endif
+
+#ifdef HAVE_ANIMAL
+    /*
+     * If animal name is reported on /proc filesystem, read it
+     * into mem as opposed to calling /bin/cat.
+     */
+    if ((fd = open("/proc/sys/kernel/name", O_RDONLY)) == -1) {
+	cprintf("\1f\1rError getting kernel name!\n");
+	return;
+    }
+
+    /*
+     * Bit arbitrary, but better too big than too small ;)
+     */
+    kernel_name = (char *) xmalloc(65);
+    (void) read(fd, kernel_name, 64);
+
+    /*
+     * Chop trailing \n
+     */
+    kernel_name[strlen(kernel_name) - 1] = '\0';
+    (void) close(fd);
+#endif
+
+    /*
+     * Compile times.
+     */
 #ifdef CLIENTSRC
     stat(BBSDIR "/bin/yawc_client", &buf);
 #else
     stat(BBSDIR "/bin/yawc_port", &buf);
 #endif
 
-    cprintf("\1wCompiled on host              :\1g monolith.\n");
-    cprintf("\1wHost type                     :\1g ");
-
-    (void) fflush(stdout);
-    (void) system("/bin/echo `/bin/uname` `/bin/arch`");
-
-#ifndef CLIENTSRC
-    cprintf("\r");
+#ifdef HAVE_SYS_UTSNAME_H
+    cprintf("\n\1f");
+    cprintf("\1wCompiled on host              :\1g %s %s\n", buf2.nodename, EQ(domain_name, "(none)") ? "" : domain_name);
+    cprintf("\1wHost type                     :\1g %s %s %s\n", buf2.machine, buf2.sysname, buf2.release);
+    cprintf("\1wBuild version                 :\1g %s\n", buf2.version);
+    (void) xfree(domain_name);
 #endif
 
-    cprintf("\1wOS version                    :\1g ");
-    (void) fflush(stdout);
-    (void) system("/bin/cat /proc/sys/kernel/name");
-
-#ifndef CLIENTSRC
-    cprintf("\r");
+#ifdef HAVE_ANIMAL
+    cprintf("\1wOS version                    :\1g %s.\n", kernel_name);
+    (void) xfree(kernel_name);
 #endif
 
 #ifdef USE_MYSQL
-    cprintf("\1wMySQL Server %-16s :\1g %s\n",
-        mono_mysql_server_info(), mono_mysql_host_info() );
+    cprintf("\n\1wMySQL Server %-16s :\1g %s\n",
+	    mono_mysql_server_info(), mono_mysql_host_info());
     (void) fflush(stdout);
 #endif
 
     cprintf("\n\1wLast compiled                 : %s\n\1f", printdate(buf.st_mtime, 0));
     (void) fflush(stdout);
 
-    /* Get system info via the proper channels */
 #ifdef LINUX
-    info =  xmalloc(sizeof(struct sysinfo));
-    if( (sysinfo (info)) == -1 ) {
-        cprintf("\1f\1rError getting current system info!\n");
-    } else {
-        cprintf ("\1wMachine load                  :\1g %ld %ld %ld\n\r", info->loads[0], info->loads[1], info->loads[2]);
-        cprintf ("\1wTotal memory                  :\1g %ld Mb\n\r", info->totalram / 1000000);
-        cprintf ("\1wTotal swap memory             :\1g %ld Mb\n\n\r", info->totalswap / 1000000);
-    }
+    cprintf("\1wMachine load                  :\1g %ld %ld %ld\n\r", info->loads[0], info->loads[1], info->loads[2]);
+    cprintf("\1wTotal memory                  :\1g %ld Mb\n\r", info->totalram / 1000000);
+    cprintf("\1wTotal swap memory             :\1g %ld Mb\n\n\r", info->totalswap / 1000000);
     xfree(info);
-#endif 
+#endif
 
     cprintf("\1wMaximum Users Online          : \1g%d.\n", MAXUSERS);
     cprintf("\1wSleeping timeout              : \1g%d min.\n", TIMEOUT);
@@ -359,7 +426,9 @@ increment(int extraflag)
 	    IFANSI
 		cprintf("7");	/* store the colors and attributes      */
 
-            (void) _log_attrib(FALSE);
+#ifdef CLIENTSRC
+	    (void) _log_attrib(FALSE);
+#endif
 	    if (line_total > 0)
 		cprintf("\01w\01f -- \01gmore \01w(\01g%i%%\01w) --\01a", (int) ((float) line_count * 100 / line_total));
 	    else
@@ -400,8 +469,10 @@ increment(int extraflag)
 
 	    IFANSI {
 		cprintf("8");	/* restore the colors and attributes    */
-                (void) _restore_colour();
-            }
+#ifdef CLIENTSRC
+		(void) _restore_colour();
+#endif
+	    }
 
 	    switch (c) {
 
@@ -414,30 +485,30 @@ increment(int extraflag)
 		    curr_line = 1;
 		    break;
 
-            case 'c':
-                nox = 1;
-                cprintf("\1gPress \1w<\1rshift-c\1w>\1g to access the config menu.\n");
-                express(3);
-                break;
+		case 'c':
+		    nox = 1;
+		    cprintf("\1gPress \1w<\1rshift-c\1w>\1g to access the config menu.\n");
+		    express(3);
+		    break;
 
 		case 'x':	/* send eXpress                         */
 		    nox = 1;
 		    express(0);
 		    break;
 
-                case '1':
-                case '2':
-                case '3':
-                case '4':
-                case '5':
-                case '6':
-                case '7':
-                case '8':
-                case '9':
-                case '0':
-                    nox = 1;
-                    express(c - 38);
-                    break;
+		case '1':
+		case '2':
+		case '3':
+		case '4':
+		case '5':
+		case '6':
+		case '7':
+		case '8':
+		case '9':
+		case '0':
+		    nox = 1;
+		    express(c - 38);
+		    break;
 
 		case '\030':	/* read X-Log                            */
 		    cprintf("\n\01f\01gRead X-Log.\01a\n");
@@ -498,7 +569,7 @@ get_single(const char *valid_string)
 char
 get_single_quiet(const char *valid_string)
 {
-    register int  c;
+    register int c;
 
     (void) fflush(stdout);	/* usually to make sure the previous text is visible */
     for (;;) {
@@ -671,7 +742,7 @@ modify_birthday(date_t * bday)
 
 /*************************************************************************/
 /* moved this here from quadcont.c so it could be used in general..
-   enjoy.  -russ */
+ * enjoy.  -russ */
 
 /* qc_get_pos_int(const char first, int digits)  
  * can be passed either the first char of an int input if the input is
@@ -692,15 +763,15 @@ qc_get_pos_int(const char first, const int places)
     st[0] = '\0';
 
     if (first != '\0')
-        input = first;
+	input = first;
     else
-        input = get_single_quiet("1234567890\n\r");
+	input = get_single_quiet("1234567890\n\r");
     while (input != '\n' && input != '\r' && input != ' ') {
 	switch (input) {
 	    case '\b':
 		if (ctr > 0) {
 		    st[--ctr] = '\0';
-	    	    cprintf("\b \b");
+		    cprintf("\b \b");
 		}
 		break;
 	    case '0':
@@ -719,24 +790,24 @@ qc_get_pos_int(const char first, const int places)
 	}
 
 	if (input != '\b')
-            cprintf("%c", input);
+	    cprintf("%c", input);
 
-        if (ctr <= digits) 
-            input = get_single_quiet("1234567890\r\n\b");
-        else
-            break;
-    } 
+	if (ctr <= digits)
+	    input = get_single_quiet("1234567890\r\n\b");
+	else
+	    break;
+    }
     if (!strlen(st) || st[0] == '\n' || st[0] == '\r' || st[0] == ' ')
 	return -1;
 
-    for (;;)  /* kill leading 0's */
+    for (;;)			/* kill leading 0's */
 	if (st[0] != '0' || (st[0] == 0 && st[1] == '\0'))
 	    break;
 	else
 	    for (i = 1; st[i - 1] != '\0'; i++)
 		st[i - 1] = st[i];
 
-    if (ctr > digits)  /* trunctuate if too many digits (knob at keyboard) */
+    if (ctr > digits)		/* trunctuate if too many digits (knob at keyboard) */
 	st[ctr - 1] = '\0';
 
     pos_int = atoi(st);
@@ -744,6 +815,7 @@ qc_get_pos_int(const char first, const int places)
     return pos_int;
 }
 
+#ifdef CLIENTSRC
 static void
 _log_attrib(int flag)
 {
@@ -754,50 +826,50 @@ _log_attrib(int flag)
 void
 save_colour(int key)
 {
-    if(!attrib_log)
-        return;
+    if (!attrib_log)
+	return;
 
     switch (key) {
-        case 'a':
-            attrib.fg_colour = key;
-            attrib.bg_colour = 0;
-            attrib.attrib |= ATTRIB_NONE;
-            break;
-        case 'b':
-        case 'c':
-        case 'd':
-        case 'g':
-        case 'p':
-        case 'y':
-        case 'w':
-            attrib.fg_colour = key;
-            break;
-        case 'B':
-        case 'C':
-        case 'D':
-        case 'G':
-        case 'P':
-        case 'Y':
-        case 'W':
-            attrib.bg_colour = key;
-            break;
-        case 'e':
-            attrib.attrib |= ATTRIB_BOLD;
-            break;
-        case 'f':
-            attrib.attrib |= ATTRIB_FLASH;
-            break;
-        case 'h':
-            attrib.attrib |= ATTRIB_HIDDEN;
-            break;
-        case 'i':
-            attrib.attrib |= ATTRIB_INVERSE;
-            break;
-        case 'u':
-            attrib.attrib |= ATTRIB_UNDERLINE;
-            break;
-        default:
-            break;
+	case 'a':
+	    attrib.fg_colour = key;
+	    attrib.bg_colour = 0;
+	    attrib.attrib |= ATTRIB_NONE;
+	    break;
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'g':
+	case 'p':
+	case 'y':
+	case 'w':
+	    attrib.fg_colour = key;
+	    break;
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'G':
+	case 'P':
+	case 'Y':
+	case 'W':
+	    attrib.bg_colour = key;
+	    break;
+	case 'e':
+	    attrib.attrib |= ATTRIB_BOLD;
+	    break;
+	case 'f':
+	    attrib.attrib |= ATTRIB_FLASH;
+	    break;
+	case 'h':
+	    attrib.attrib |= ATTRIB_HIDDEN;
+	    break;
+	case 'i':
+	    attrib.attrib |= ATTRIB_INVERSE;
+	    break;
+	case 'u':
+	    attrib.attrib |= ATTRIB_UNDERLINE;
+	    break;
+	default:
+	    break;
     }
     return;
 }
@@ -805,16 +877,16 @@ save_colour(int key)
 static void
 _restore_colour()
 {
-    if( attrib.attrib & ATTRIB_BOLD )
-        _set_colour('f');
-    if( attrib.attrib & ATTRIB_FLASH )
-        _set_colour('e');
-    if( attrib.attrib & ATTRIB_HIDDEN )
-        _set_colour('h');
-    if( attrib.attrib & ATTRIB_INVERSE )
-        _set_colour('i');
-    if( attrib.attrib & ATTRIB_UNDERLINE )
-        _set_colour('u');
+    if (attrib.attrib & ATTRIB_BOLD)
+	_set_colour('f');
+    if (attrib.attrib & ATTRIB_FLASH)
+	_set_colour('e');
+    if (attrib.attrib & ATTRIB_HIDDEN)
+	_set_colour('h');
+    if (attrib.attrib & ATTRIB_INVERSE)
+	_set_colour('i');
+    if (attrib.attrib & ATTRIB_UNDERLINE)
+	_set_colour('u');
     _set_colour(attrib.bg_colour);
     _set_colour(attrib.fg_colour);
 
@@ -826,7 +898,7 @@ static void
 _set_colour(char key)
 {
     if (usersupp->flags & US_ANSI) {
-        (void) save_colour(key);
+	(void) save_colour(key);
 	switch (key) {
 	    case 'd':
 		cprintf("[30m");
@@ -902,5 +974,6 @@ _set_colour(char key)
     }
     return;
 }
-            
+#endif
+
 /* eof */

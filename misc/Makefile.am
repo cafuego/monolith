@@ -14,4 +14,4 @@ initgoto_SOURCES = initgoto.c
 
 LDADD = -L../lib -lyawc -L/usr/local/mysql/lib 
 
-CFLAGS = -I/usr/local/include/mysql -Wall
+CFLAGS = -I/usr/local/include/mysql -O3 -Wall

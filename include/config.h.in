@@ -102,11 +102,17 @@
 /* Define if you have the <sys/time.h> header file.  */
 #undef HAVE_SYS_TIME_H
 
+/* Define if you have the <sys/utsname.h> header file.  */
+#undef HAVE_SYS_UTSNAME_H
+
 /* Define if you have the <termio.h> header file.  */
 #undef HAVE_TERMIO_H
 
 /* Define if you have the <unistd.h> header file.  */
 #undef HAVE_UNISTD_H
+
+/* Define if you have the <termios.h> header file.  */
+#undef HAVE_TERMIOS_H
 
 /* Define if you have the <crypt.h> header file.  */
 #undef HAVE_CRYPT_H
@@ -122,3 +128,6 @@
 
 /* Define if you want to use the rating system  */
 #undef USE_RATING
+
+/* Define if you have the proc-animal patch installed */
+#undef HAVE_ANIMAL
