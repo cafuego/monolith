@@ -188,7 +188,7 @@ mono_sql_web_get_xes(unsigned int user_id, wx_list_t ** list)
     MYSQL_ROW row;
     wx_list_t entry;
 
-    ret = mono_sql_query(&res, "SELECT w.id AS id,u.username AS user,w.message AS message,w.date AS date FROM webx AS w LEFT JOIN user AS u ON u.id=w.sender WHERE w.recipient=%u AND w.status='unread' AND (w.i_recipient='telnet' OR w.i_recipient='client') ORDER BY w.date ASC", user_id);
+    ret = mono_sql_query(&res, "SELECT w.id AS id,u.username AS user,w.message AS message,UNIX_TIMESTAMP(w.date) AS date FROM webx AS w LEFT JOIN user AS u ON u.id=w.sender WHERE w.recipient=%u AND w.status='unread' AND (w.i_recipient='telnet' OR w.i_recipient='client') ORDER BY w.date ASC", user_id);
 
     if (ret == -1) {
 	(void) mono_sql_u_free_result(res);
