@@ -417,9 +417,9 @@ rate_message(message_t * message)
 #define SEARCH_RES_LEN	1000
 
 void
-search_via_sql()
+search_via_sql( unsigned int forum )
 {
-    int count = 0, forum = 0;
+    int count = 0;
     sr_list_t *list = NULL;
     char needle[31], tempuser[L_USERNAME+1], *p = NULL, line[SEARCH_RES_LEN];
     struct timeval tv_start;
@@ -434,11 +434,7 @@ search_via_sql()
         cprintf("\1f\1gSearch all %s in the BBS? \1w(\1gy\1w/\1gN\1w) \1c", config.message_pl);
         if(yesno_default(NO) == YES)
             forum = -1;
-        else
-            forum = curr_rm;
     } else {
-        if (forum >= 0)
-            forum = curr_rm;
         if(forum==1) {
             cprintf("\1f\1rCan't search Mail yet, sorry.\n");
             return;
@@ -489,7 +485,7 @@ search_via_sql()
     sprintf(line, "\1f\1g\nFound \1y%d \1gmatch%s in %.6f seconds. Listing by %s and %s number.\n\1w--------------------------------------------------------------------------------\n", count, (count != 1) ? "es" : "", (float) working / 1000000, config.forum, config.message);
     strcat(p,line);
 
-    sprintf(line, "\1f\1g%-18s      Id     \1y%-23s \1g%-18s \1rScore\n\1w--------------------------------------------------------------------------------\n", config.user, config.forum, "Subject");
+    sprintf(line, "\1f\1g%-18s     \1y%-23s      \1gId \1y%-18s \1rScore\n\1w--------------------------------------------------------------------------------\n", config.user, config.forum, "Subject");
     strcat(p,line);
 
     while (list != NULL) {
@@ -507,12 +503,12 @@ search_via_sql()
         list->result->subject[18] = '\0';
 
         if (EQ(list->result->flag, "normal")) {
-            sprintf(line, "\1f\1g%-18s %7d \1w%3d.\1y%-23s \1y%-18s \1r%.3f\n", list->result->author, list->result->m_id, list->result->f_id, list->result->forum, ((list->result->subject == NULL) || (EQ(list->result->subject, "(null)"))) ? "[no subject]" : list->result->subject, list->result->score);
+            sprintf(line, "\1f\1g%-18s \1w%3d.\1y%-23s \1g%7d \1y%-18s \1r%.3f\n", list->result->author, list->result->f_id, list->result->forum, list->result->m_id, ((list->result->subject == NULL) || (EQ(list->result->subject, "(null)"))) ? "[no subject]" : list->result->subject, list->result->score);
         } else if (EQ(list->result->flag, "anon") && (strlen(list->result->alias) > 6)) {
             sprintf(tempuser, "'%s'", list->result->alias );
-            sprintf(line, "\1f\1g%-18s %7d \1w%3d.\1y%-23s \1y%-18s \1r%.3f\n", tempuser, list->result->m_id, list->result->f_id, list->result->forum, ((list->result->subject == NULL) || (EQ(list->result->subject, "(null)"))) ? "[no subject]" : list->result->subject, list->result->score);
+            sprintf(line, "\1f\1g%-18s \1w%3d.\1y%-23s \1g%7d \1y%-18s \1r%.3f\n", tempuser, list->result->f_id, list->result->forum, list->result->m_id, ((list->result->subject == NULL) || (EQ(list->result->subject, "(null)"))) ? "[no subject]" : list->result->subject, list->result->score);
         } else {
-            sprintf(line, "\1f\1bAnonymous %-8s \1g%7d \1w%3d.\1y%-23s \1y%-18s \1r%.3f\n", config.user, list->result->m_id, list->result->f_id, list->result->forum, ((list->result->subject == NULL) || (EQ(list->result->subject, "(null)"))) ? "[no subject]" : list->result->subject, list->result->score);
+            sprintf(line, "\1f\1bAnonymous %-8s \1w%3d.\1y%-23s \1g%7d \1y%-18s \1r%.3f\n", config.user, list->result->f_id, list->result->forum, list->result->m_id, ((list->result->subject == NULL) || (EQ(list->result->subject, "(null)"))) ? "[no subject]" : list->result->subject, list->result->score);
         }
         strcat(p,line);
         list = list->next;

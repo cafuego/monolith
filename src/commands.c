@@ -148,8 +148,9 @@ sysop_menu()
 		continue;
 
             case 'S':
+                nox = 1;
 		cprintf("\1f\1wSearch %s\n", config.message_pl);
-                search_via_sql();
+                search_via_sql(curr_rm);
                 break;
                
 	    case 'U':
