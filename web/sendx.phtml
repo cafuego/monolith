@@ -7,8 +7,9 @@
 
     // Get username and print off proper title.
     //
-    require('engine/html.inc');
-    html_print_title( $sender, $REQUEST_URI );
+    $sender = rawurldecode($sender);
+    $recipient = rawurldecode($recipient);
+    print "<title>$sender@Monolith BBS: Sending eXpress message to $recipient</title>\n";
 
 ?>
 
