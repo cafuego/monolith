@@ -741,12 +741,17 @@ sysop_menu()
 	    which_room("\1f\1wAdmin cmd: \1a");
 	}
 
-	cmd = get_single_quiet("BCEFgGKNOQRTU\r\b ?");
+	cmd = get_single_quiet("BCEFgGKMNOQRTU\r\b ?");
 
-	if (strchr("BCEFgOP", cmd))
+	if (strchr("BCEMFgOP", cmd))
 	    nox = 1;		/* is busy, wants no x's */
 
 	switch (cmd) {
+
+	    case 'M':
+		cprintf("\1f\1rEnter SQL message in quad 140 (break code)\n");
+		enter_message(140, 1);
+		break;
 
 	    case 'B':
 		cprintf("\1f\1rMake a broadcast.\1a\n");
