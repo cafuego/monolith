@@ -70,6 +70,8 @@ set_timezone( const char *tz )
     int ret;
     char str[50];
 
+    if ( !tz || !strlen(tz) ) return -1;
+
     ret = sprintf( str, "TZ=%s", tz );
     if ( ret == -1 ) return -1;
 
