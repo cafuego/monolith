@@ -68,7 +68,7 @@ main(int argc, char **argv)
 {
 
     FILE *fp;
-    char host[255], badness = 0, temp[85], tmpallow[5];
+    char tmpallow[5];
 
     set_invocation_name(argv[0]);
     mono_setuid("guest");
