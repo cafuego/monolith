@@ -1,16 +1,17 @@
 # $Id$
 
-# DROP TABLE web-x;
+DROP TABLE webx;
 
-CREATE TABLE web-x (
+CREATE TABLE webx (
 
    id		INT UNSIGNED AUTO_INCREMENT NOT NULL,
 
    sender	INT UNSIGNED NOT NULL,
    recipient	INT UNSIGNED NOT NULL,
    message	BLOB NOT NULL,
+   date		DATETIME NOT NULL,
 
-   status	ENUM( 'unread', 'read' ) DEFAULT 'unread',
+   status	ENUM( 'unread', 'read' ) DEFAULT 'unread' NOT NULL,
    stamp        TIMESTAMP,
 
    PRIMARY KEY	( id ),
