@@ -751,12 +751,19 @@ int
 mono_sql_u_update_awaymsg( unsigned int user_id, const char *awaymsg )
 {
 
-    int i;
+    int i, ret;
     MYSQL_RES *res;
+
+    char *p;
+
+
+    ret = escape_string( awaymsg, &p );
 
     i = mono_sql_query(&res, "UPDATE " U_TABLE 
         " set awaymsg='%s' "
-	" WHERE id=%u", awaymsg, user_id );
+	" WHERE id=%u", p, user_id );
+
+    xfree( p );
 
     if (i == -1) {
 	fprintf(stderr, "No results from query.\n");
@@ -851,10 +858,16 @@ mono_sql_u_update_xtrapflag( unsigned int user_id, const char *xtrapflag )
 
     int i;
     MYSQL_RES *res;
+    char *p;
+    int ret;
+    
+    ret = escape_string( xtrapflag, &p );
 
     i = mono_sql_query(&res, "UPDATE " U_TABLE 
         " set xtrapflag='%s' "
-	" WHERE id=%u", xtrapflag, user_id );
+	" WHERE id=%u", p, user_id );
+
+    xfree( p);
 
     if (i == -1) {
 	fprintf(stderr, "No results from query.\n");
