@@ -55,6 +55,7 @@
 #define C_ROOMLOCK	4	/* used for <m>isc <r>oomlock's		*/
 #define C_NOSILC	8	/* receive no SILC messages 		*/
 #define C_AWAY         16	/* is away, (same as B_AWAY) 		*/
+#define C_LOCK         32	/* is locked, (same as B_LOCK) 		*/
 
 	/********************/
 
