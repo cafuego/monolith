@@ -187,7 +187,7 @@ format_date(message_t *message, char **string)
             if(usersupp->config_flags & CO_EXPANDHEADER) {
                 strftime( fmt_date, 1000, "\n\1f\1gPosted\1w: \1g%A %B %d, %Y \1w(\1g%I:%M %p\1w)\1a", tp );
             } else {
-                strftime( fmt_date, 1000, " \1f\1g%A %b %D, %Y \1w(\1g%I:%M %p\1w)\1a", tp );
+                strftime( fmt_date, 1000, " \1f\1g%A %B %D, %Y \1w(\1g%I:%M %p\1w)\1a", tp );
             }
         }
     } else {
@@ -195,13 +195,13 @@ format_date(message_t *message, char **string)
             if(usersupp->config_flags & CO_EXPANDHEADER) {
                 strftime( fmt_date, 1000, "\n\1f\1gPosted\1w: \1g%A %d %B, %Y \1w(\1g%H:%M\1w)\1a", tp );
             } else {
-                strftime( fmt_date, 1000, " \1f\1g%a %d %b, %Y \1w(\1g%H:%M\1w)\1a", tp );
+                strftime( fmt_date, 1000, " \1f\1g%A %d %B, %Y \1w(\1g%H:%M\1w)\1a", tp );
             }
         } else {
             if(usersupp->config_flags & CO_EXPANDHEADER) {
                 strftime( fmt_date, 1000, "\n\1f\1gPosted\1w: \1g%A %B %d, %Y \1w(\1g%I:%M %p\1w)\1a", tp );
             } else {
-                strftime( fmt_date, 1000, " \1f\1g%a %b %d, %Y \1w(\1g%I:%M %p\1w)\1a", tp );
+                strftime( fmt_date, 1000, " \1f\1g%A %B %D, %Y \1w(\1g%I:%M %p\1w)\1a", tp );
             }
         }
     }
@@ -243,7 +243,7 @@ format_username(message_t *message, char **string)
                 ,config.user
                 ,(message->author == usersupp->usernum) ? " \1w(\1bthis is your post\1w)" : "" );
             else
-                sprintf(fmt_username, "\1f\1gFrom \1bAnon %s\1a"
+                sprintf(fmt_username, "\n\1f\1gFrom \1bAnon %s\1a"
                 ,(message->author == usersupp->usernum) ? " \1w(\1bthis is your post\1w)" : "" );
             break;
 
@@ -253,7 +253,7 @@ format_username(message_t *message, char **string)
                 ,config.user, message->alias
                 ,(message->author == usersupp->usernum) ? " \1w(\1bthis is your post\1w)" : "" );
             else
-                sprintf(fmt_username, "\1f\1gFrom \1bAnon \1w`\1b%s\1w'%s\1a"
+                sprintf(fmt_username, "\n\1f\1gFrom \1bAnon \1w`\1b%s\1w'%s\1a"
                 ,message->alias
                 ,(message->author == usersupp->usernum) ? " \1w(\1bthis is your post\1w)" : "" );
             break;
@@ -264,7 +264,7 @@ format_username(message_t *message, char **string)
                     if(usersupp->config_flags & CO_EXPANDHEADER)
                         sprintf(fmt_username, "\n\1f\1gFrom\1w: \1w%s\1a", tmp_username );
                     else
-                        sprintf(fmt_username, "\1f\1gFrom \1w%s\1a", tmp_username );
+                        sprintf(fmt_username, "\n\1f\1gFrom \1w%s\1a", tmp_username );
                     break;
                case MES_SYSOP:
                     if(usersupp->config_flags & CO_EXPANDHEADER)
@@ -276,26 +276,26 @@ format_username(message_t *message, char **string)
                     if(usersupp->config_flags & CO_EXPANDHEADER)
                         sprintf(fmt_username, "\n\1f\1gFrom\1w: \1b%s\1a", tmp_username );
                     else
-                        sprintf(fmt_username, "\1f\1gFrom \1b%s\1a", tmp_username );
+                        sprintf(fmt_username, "\n\1f\1gFrom \1b%s\1a", tmp_username );
                     break;
                case MES_ROOMAIDE:
                     if(usersupp->config_flags & CO_EXPANDHEADER)
                         sprintf(fmt_username, "\n\1f\1gFrom\1w: \1r%s\1a", tmp_username );
                     else
-                        sprintf(fmt_username, "\1f\1gFrom \1r%s\1a", tmp_username );
+                        sprintf(fmt_username, "\n\1f\1gFrom \1r%s\1a", tmp_username );
                     break;
                case MES_FORCED:
                     if(usersupp->config_flags & CO_EXPANDHEADER)
                         sprintf(fmt_username, "\n\1f\1gFrom\1w: \1y%s \1w(\1rFORCED MESSAGE\1w)\1a", tmp_username );
                     else
-                        sprintf(fmt_username, "\1f\1gFrom \1y%s \1w(\1rFORCED MESSAGE\1w)\1a", tmp_username );
+                        sprintf(fmt_username, "\n\1f\1gFrom \1y%s \1w(\1rFORCED MESSAGE\1w)\1a", tmp_username );
                     break;
                case MES_NORMAL:
                default:
                     if(usersupp->config_flags & CO_EXPANDHEADER)
                         sprintf(fmt_username, "\n\1f\1gFrom\1w: \1y\1n%s\1N\1a", tmp_username );
                     else
-                        sprintf(fmt_username, "\1f\1gFrom \1y\1n%s\1N\1a", tmp_username );
+                        sprintf(fmt_username, "\n\1f\1gFrom \1y\1n%s\1N\1a", tmp_username );
                     break;
             }
             break;
