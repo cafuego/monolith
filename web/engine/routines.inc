@@ -252,7 +252,7 @@ function list_x_messages($username) {
 
     // See if messages were read and trash if yes.
     //
-    $result = MYSQL_QUERY("SELECT w.id AS id,u.username AS user,DATE_FORMAT(w.date, '%H:%i') AS date FROM webx AS w LEFT JOIN user AS u ON u.id=w.recipient WHERE w.sender=$user_id AND w.status='read' AND w.i_recipient='web' ORDER BY w.date ASC");
+    $result = MYSQL_QUERY("SELECT w.id AS id,u.username AS user,w.i_recipient AS interface,DATE_FORMAT(w.date, '%H:%i') AS date FROM webx AS w LEFT JOIN user AS u ON u.id=w.recipient WHERE w.sender=$user_id AND w.status='read' AND ORDER BY w.date ASC");
     $number = MYSQL_NUMROWS($result);
     if ($number) {
         print "<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\" align=\"center\">\n";
@@ -261,13 +261,14 @@ function list_x_messages($username) {
 
             $id = mysql_result($result,$i,"id");
             $user = mysql_result($result,$i,"user");
+            $interface = mysql_result($result,$i,"interface");
             $date = mysql_result($result,$i,"date");
 
             $bing = MYSQL_QUERY("DELETE FROM webx WHERE id=$id");
 
             print "<tr>\n";
             print "  <td align=\"left\">\n";
-            print "    <p align=\"left\"><li><font color=\"#00cc00\">eXpress Message to <a href=\"/bbs/index.phtml/x/$user/\">$user</a> was read at $date CET</font>.\n";
+            print "    <p align=\"left\"><li><font color=\"#00cc00\">eXpress Message to <a href=\"/bbs/index.phtml/x/$user/$interface\">$user@$interface</a> was read at $date CET</font>.\n";
             print "  </td>\n";
             print "</tr>\n";
 
