@@ -89,10 +89,22 @@ function read_message($username, $quad, $current, $direction) {
                 // Don't let guests be able to post.
                 //
                 echo "<div align=\"center\">\n";
-                if($m_id != $highest)
+                if($m_id != $highest) {
                     addbutton("Read Next", "/bbs/index.phtml/r/$quad/$m_id/n", "Read the next message in $forum");
-                else
-                    addbutton("No unread messages", "", "");
+                } else {
+                    // Jump to next quad eh...
+                    //
+                    $result = MYSQL_QUERY("SELECT ut.forum_id AS forum_id,f.name AS forum_name,uf.status AS status FROM usertopic as ut LEFT JOIN topics AS t ON ut.forum_id=t.forum_id LEFT JOIN message as m ON (m.forum_id=ut.forum_id) LEFT JOIN forum as f ON ut.forum_id=f.id LEFT JOIN userforum AS uf ON (uf.forum_id=ut.forum_id AND uf.user_id=ut.user_id) WHERE ut.user_id=$usernum AND uf.status='invited' AND ut.lastread < t.highest GROUP BY ut.forum_id ORDER BY ut.forum_id ASC;");
+                    $number = MYSQL_NUMROWS($result);
+                    if($number) {
+                        $forum_id = mysql_result($result,0,"forum_id");
+                        $forum_name = mysql_result($result,0,"forum_name");
+                        $forum_unread = mysql_result($result,0,"forum_unread");
+                        addbutton("Next quadrant with unread messages", "/bbs/index.phtml/n/$id", "Read next quadrant with unread messages ($forum_name)");
+                    } else {
+                        addbutton("No unread messages left on the BBS", "", "");
+                    }
+                }
                 addbutton("Read Previous", "/bbs/index.phtml/r/$quad/$m_id/p", "Read the previous message in $forum");
                 // if( $username != "Guest" ) {
                 //    addbutton("        ", "", "");
