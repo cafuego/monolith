@@ -107,10 +107,10 @@ function read_message($username, $quad, $current, $direction) {
                 errorimage( "Message $current not found!" );
             }
         } else {
-            print "<h3 align=\"center\">Don't know which message to read.</h3>\n";
+            errorimage( "Don't know which message to read!" );
         }
     } else {
-        print "<h3 align=\"center\">Don't know which quadrant to read.</h3>\n";
+        errorimage( "Don't know which quadrant to read!" );
     }
 }
 

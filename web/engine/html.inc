@@ -137,7 +137,10 @@ function html_get_quadname($username,$quad) {
 
     $result = MYSQL_QUERY("SELECT name FROM forum WHERE id=$quad");
     $number = MYSQL_NUMROWS($result);
+    if($number)
     return mysql_result($result,0,"name");
+    else
+    return "";
 
 }
 
