@@ -186,7 +186,6 @@ typedef struct {
     char forum[20];
     char forum_pl[22];
     char message[12];
-    char message_pl[14];
     char express[12];
     char x_message[12];
     char x_message_pl[14];

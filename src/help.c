@@ -528,7 +528,7 @@ online_help(char context)
 	}
 	if (strchr("lsRA", context)) {
             strcpy(tempstr,"");
-            sprintf(tempstr, "Read old %s", config.message_pl);
+            sprintf(tempstr, "Read old messages");
 	    M_FILENAME, HELPDIR, "commands/old");
 	    MENU_ADDITEM(more_wrapper, 1, 0, (char *) filename, "ti", tempstr, "o");
 	}

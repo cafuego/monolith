@@ -90,10 +90,6 @@ create_config()
 	MENU_ADDITEM(_config_set_room, 0, 0, NULL, "tiv", str_t, "2", cfg.forum);
 	sprintf(str_t, "Room Name (pl) \1w(\1y%s\1a\1f\1w)", cfg.forum_pl);
 	MENU_ADDITEM(_config_set_room, 0, 0, NULL, "tiv", str_t, "3", cfg.forum_pl);
-	sprintf(str_t, "Message \1w(\1y%s\1a\1f\1w)", cfg.message);
-	MENU_ADDITEM(_config_set_message, 0, 0, NULL, "tiv", str_t, "4", cfg.message);
-	sprintf(str_t, "Message (pl) \1w(\1y%s\1a\1f\1w)", cfg.message_pl);
-	MENU_ADDITEM(_config_set_message, 0, 0, NULL, "tiv", str_t, "5", cfg.message_pl);
 	sprintf(str_t, "eXpress \1w(\1y%s\1a\1f\1w)", cfg.express);
 	MENU_ADDITEM(_config_set_xpress, 0, 0, NULL, "tiv", str_t, "6", cfg.express);
 	sprintf(str_t, "X Message \1w(\1y%s\1a\1f\1w)", cfg.x_message);
@@ -185,10 +181,6 @@ edit_config()
 	MENU_ADDITEM(_config_set_room, 0, 0, NULL, "tiv", str_t, "2", cfg.forum);
 	sprintf(str_t, "Room Name (pl) \1w(\1y%s\1a\1f\1w)", cfg.forum_pl);
 	MENU_ADDITEM(_config_set_room, 0, 0, NULL, "tiv", str_t, "3", cfg.forum_pl);
-	sprintf(str_t, "Message \1w(\1y%s\1a\1f\1w)", cfg.message);
-	MENU_ADDITEM(_config_set_message, 0, 0, NULL, "tiv", str_t, "4", cfg.message);
-	sprintf(str_t, "Message (pl) \1w(\1y%s\1a\1f\1w)", cfg.message_pl);
-	MENU_ADDITEM(_config_set_message, 0, 0, NULL, "tiv", str_t, "5", cfg.message_pl);
 	sprintf(str_t, "eXpress \1w(\1y%s\1a\1f\1w)", cfg.express);
 	MENU_ADDITEM(_config_set_xpress, 0, 0, NULL, "tiv", str_t, "6", cfg.express);
 	sprintf(str_t, "X Message \1w(\1y%s\1a\1f\1w)", cfg.x_message);
@@ -361,25 +353,6 @@ _config_set_room(const unsigned int a, const long b, void *string)
     getline(tempstr, 22, FALSE);
     if (strlen(tempstr) > 1)
 	strcpy(cfg.forum_pl, tempstr);
-    return;
-}
-
-void
-_config_set_message(const unsigned int a, const long b, void *string)
-{
-
-    char tempstr[15];
-
-    strcpy(tempstr, "");
-    cprintf("\1f\1gEnter a new `\1ymessage\1g' name \1w(\1g%s\1w): \1c", cfg.message);
-    getline(tempstr, 12, FALSE);
-    if (strlen(tempstr) > 1)
-	strcpy(cfg.message, tempstr);
-    strcpy(tempstr, "");
-    cprintf("\1f\1gEnter the plural \1w(\1g%s\1w): \1c", cfg.message_pl);
-    getline(tempstr, 14, FALSE);
-    if (strlen(tempstr) > 1)
-	strcpy(cfg.message_pl, tempstr);
     return;
 }
 
@@ -614,10 +587,6 @@ _config_ok()
     }
     if( strlen(cfg.message) < 2 ) {
         cprintf("\n\1f\1rYou must change the Message Name before you can save!\n");
-        return FALSE;
-    }
-    if( strlen(cfg.message_pl) < 2 ) {
-        cprintf("\n\1f\1rYou must change the plural Message Name before you can save!\n");
         return FALSE;
     }
     if( strlen(cfg.express) < 2 ) {

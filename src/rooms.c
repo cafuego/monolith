@@ -278,9 +278,9 @@ known_rooms_list(const user_t * user, int long_k_list)
 		    zapped_ctr++;
 		} else {
 		    if (user->lastseen[quad_num] == scratch.highest)
-			sprintf(line, "  \1w[\1c%ld \1g%s\1w]\n", scratch.highest - scratch.lowest, config.message_pl);
+			sprintf(line, "  \1w[\1c%ld \1gmessages\1w]\n", scratch.highest - scratch.lowest);
 		    else {
-			sprintf(line, "  \1w[\1c%ld \1g%s, \1c%ld \1gunread\1w]\n", scratch.highest, config.message_pl, scratch.highest - user->lastseen[quad_num]);
+			sprintf(line, "  \1w[\1c%ld \1gmessages, \1c%ld \1gunread\1w]\n", scratch.highest, scratch.highest - user->lastseen[quad_num]);
 			unseen_ctr++;
 		    }
 		}
@@ -288,8 +288,8 @@ known_rooms_list(const user_t * user, int long_k_list)
 	    }
 	}
     }
-    sprintf(line, "\n\1f\1g           You have \1c%d \1g%s with unread %s", unseen_ctr,
-     (unseen_ctr == 1) ? config.forum : config.forum_pl, config.message_pl);
+    sprintf(line, "\n\1f\1g           You have \1c%d \1g%s with unread messages", unseen_ctr,
+     (unseen_ctr == 1) ? config.forum : config.forum_pl );
 
     if (long_k_list)
 	sprintf(line, ".\n");
@@ -349,7 +349,7 @@ unread_rooms_list(const user_t * user)
 	strcat(textptr, line);
     }
 
-    sprintf(line, "\n\1f\1gYou have \1c%d \1g%s with unread %s and \1c%d \1gskipped %s.\n", unseen_ctr, (unseen_ctr == 1) ? config.forum : config.forum_pl, config.message_pl, skipped_ctr, (skipped_ctr == 1) ? config.forum : config.forum_pl);
+    sprintf(line, "\n\1f\1gYou have \1c%d \1g%s with unread messages and \1c%d \1gskipped %s.\n", unseen_ctr, (unseen_ctr == 1) ? config.forum : config.forum_pl, skipped_ctr, (skipped_ctr == 1) ? config.forum : config.forum_pl);
     strcat(textptr, line);
     return textptr;
 }
@@ -531,9 +531,7 @@ killroom()
 	if (quickroom.flags & QR_INUSE)
 	    quickroom.flags ^= QR_INUSE;
 
-	cprintf("\1f\1rErase all %s in this %s%s",
-		config.message_pl, config.forum,
-		"? \1w(\1rrecommended\1w) (\1rY\1w/\1rn\1w) \1c");
+	cprintf( _("\1f\1rErase all messages in this forum? \1w(\1rrecommended\1w) (\1rY\1w/\1rn\1w) \1c"));
     } else
 	cprintf("\n\1f\1rAre you \1w!SURE!\1r you want Clean The Dungeon? (Y/n) ");
 
@@ -543,7 +541,7 @@ killroom()
 	/*
 	 * Trash posts from SQL table
 	 */
-	cprintf("\1f\1rRemoving %s with forum_id \1y%u\1r from message table... \1a", config.message_pl, curr_rm);
+	cprintf("\1f\1rRemoving messages with forum_id \1y%u\1r from message table... \1a", curr_rm);
 	if ((mono_sql_mes_erase_forum(curr_rm)) == 0)
 	    cprintf("\1f\1gok.\1a\n");
 	else
@@ -553,7 +551,7 @@ killroom()
 	/*
 	 * Trash ratings from SQL table
 	 */
-	cprintf("\1f\1rRemoving %s with forum_id \1y%u\1r from rating table... \1a", config.message_pl, curr_rm);
+	cprintf("\1f\1rRemoving messages with forum_id \1y%u\1r from rating table... \1a", curr_rm);
 	if ((mono_sql_rat_erase_forum(curr_rm)) == 0)
 	    cprintf("\1f\1gok.\1a\n");
 	else
@@ -653,7 +651,7 @@ erase_all_messages(long highest)
     long i;
     char filename[L_FILE + 1];
 
-    cprintf("\n\1f\1rErasing %s for %s \1y%d\1r from file system...", config.message_pl, config.forum, curr_rm);
+    cprintf("\n\1f\1rErasing messages for %s \1y%d\1r from file system...", config.forum, curr_rm);
 
     for (i = 0; i <= highest; i++) {
 	message_header_filename(filename, curr_rm, i);
@@ -749,8 +747,8 @@ print_type()
 	    config.message, quickroom.highest);
     cprintf("    Current lowest %s number: \1c%ld\1g.\n",
 	    config.message, quickroom.lowest);
-    cprintf("    Maximum number of %s: \1c%d\1g.\n",
-	    config.message_pl, quickroom.maxmsg);
+    cprintf("    Maximum number of messages: \1c%d\1g.\n",
+	    quickroom.maxmsg);
     show_room_flags();
     cprintf("    ");
     show_room_aides();
@@ -846,12 +844,12 @@ editroom()
 	    cprintf("\n\1r[\1w0\1r] \1gGuessname    \1w: ");
 	    cprintf("%s", (quickroom.flags & QR_GUESSNAME) ? "\1gYEP." : "\1rNOOOOOOOOO!");
 
-	    cprintf("\n\1r[\1wA\1r] \1gMaximum number of %s\1w: %d.",
-		    config.message_pl, quickroom.maxmsg);
-	    cprintf("\n\1r[\1wB\1r] \1gHighest %s number\1w: %ld.",
-		    config.message, quickroom.highest);
-	    cprintf("\n\1r[\1wC\1r] \1gLowest %s number \1w: %ld.",
-		    config.message, quickroom.lowest);
+	    cprintf("\n\1r[\1wA\1r] \1gMaximum number of messages\1w: %d.",
+		    quickroom.maxmsg);
+	    cprintf("\n\1r[\1wB\1r] \1gHighest message number\1w: %ld.",
+		    quickroom.highest);
+	    cprintf("\n\1r[\1wC\1r] \1gLowest message number \1w: %ld.",
+		    quickroom.lowest);
 	    cprintf("\n\1r[\1wD\1r] \1g%s category \1w: \1y%s.", config.forum, quickroom.category);
 
 	    cprintf("\n\n\1wDon't fiddle with A, B, and C unless you KNOW what you're doing!\n");
@@ -1021,16 +1019,14 @@ edit_room_field(room_t * QRedit, unsigned int forum_id, int fieldnum)
 
 	case 'a':
 	case 'A':
-	    cprintf("\1rEnter the new maximum number of %s\1w(\1r%d\1w): \1c",
-		    config.message_pl, QRedit->maxmsg);
+	    cprintf("\1rEnter the new maximum number of messages\1w(\1r%d\1w): \1c",
+		    QRedit->maxmsg);
 	    j = qc_get_pos_int('\0', 4);
 	    if (j < 10) {
-		cprintf("\1rDon't be daft! 10 %s is the minimum.\n",
-			config.message_pl);
+		cprintf("\1rDon't be daft! 10 messages is the minimum.\n");
 		break;
 	    } else if (j > 1000) {
-		cprintf("\1rDon't be daft! 1000 %s is the maximum.\n",
-			config.message_pl);
+		cprintf("\1rDon't be daft! 1000 messages is the maximum.\n");
 		break;
 	    } else {
 		QRedit->maxmsg = j;
@@ -1196,7 +1192,7 @@ look_into_quickroom(int degree)
     }
 
     if (degree == 1)
-	cprintf("\nA total number of %d %s have been posted to %s.\n", total, config.message_pl, config.bbsname);
+	cprintf("\nA total number of %d messages have been posted to %s.\n", total, config.bbsname);
 
 }
 
@@ -1403,23 +1399,23 @@ usergoto(int new_rm, int old_rm, int destructive_jump)
 	    usersupp->lastseen[curr_rm] = here.highest;
 	    mono_sql_ut_update_lastseen(usersupp->usernum, curr_rm, here.highest);
 	    display_short_prompt();
-	    cprintf("\1f\1w(\1g%ld %s\1w)\1a\n", here.highest - here.lowest, config.message_pl);
+	    cprintf(_("\1f\1w(\1g%ld messages\1w)\1a\n"), here.highest - here.lowest );
 	} else {
 	    if (usersupp->lastseen[curr_rm] < here.lowest) {
 		usersupp->lastseen[curr_rm] = here.lowest;
 		mono_sql_ut_update_lastseen(usersupp->usernum, curr_rm, here.lowest);
 	    }
 	    if (curr_rm && !skipping[curr_rm])	/* looks ugly at Docking Bay, don't bother */
-		cprintf("\1f\1gRead next %s with unread %s.\n", config.forum, config.message_pl);
+		cprintf(_("\1f\1gRead next %s with unread messages.\n"), config.forum );
 	    display_short_prompt();
 	    if (skipping[curr_rm]) {
-		cprintf("\1f\1w (\1gpreviously skipped\1w)");
+		cprintf(_("\1f\1w (\1gpreviously skipped\1w)"));
 		skipping[curr_rm] = 0;
 	    }
-	    cprintf("\n\1f\1w(\1g%ld %s, %ld unread\1w)\1g  Read new %s.\1a\n", here.highest - here.lowest, config.message_pl, here.highest - usersupp->lastseen[curr_rm], config.message_pl);
+	    cprintf(_("\n\1f\1w(\1g%ld messages, %ld unread\1w)\1g  Read new messages.\1a\n"), here.highest - here.lowest, here.highest - usersupp->lastseen[curr_rm] );
 	}
 	if (new_quadinfo()) {
-	    cprintf("\1f\1b*** \1gThe %s\1w<\1rI\1w>\1gnfo has changed\1b ***\1a\n", config.forum);
+	    cprintf(_("\1f\1b*** \1gThe %s\1w<\1rI\1w>\1gnfo has changed\1b ***\1a\n"), config.forum);
 	    writeuser(usersupp, 0);
 	}
     }

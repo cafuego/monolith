@@ -252,7 +252,7 @@ short_prompt(void)
 		break;
 
 	    case 'L':
-		cprintf("\1f\1g%s with unread %s.\n", config.forum_pl, config.message_pl);
+		cprintf("\1f\1g%s with unread messages.\n", config.forum_pl);
 		show_known_rooms(2);
 		break;
 
@@ -283,18 +283,18 @@ short_prompt(void)
 
 
 	    case '\016':	/* umm this is ctrl-n, not ctrl-d */
-		cprintf("\1f\1rCtrl\1w-\1rN\1w-\1gEnter %s.\1a\n", config.message);
+		cprintf(_("\1f\1rCtrl\1w-\1rN\1w-\1gEnter message.\1a\n"));
 		enter_message(curr_rm, EDIT_CTRLD, NO_BANNER, NULL);
 		break;
 
 	    case 'O':
-		cprintf("\1f\1gRead old %s.\1a\n", config.message_pl);
+		cprintf(_("\1f\1gRead old messages.\1a\n"));
 		long_prompt(0, -1);
 		break;
 
 	    case 'P':
 		nox = 1;
-		cprintf(_("\1f\1gProfile an %s.\1a\n"), config.user);
+		cprintf(_("\1f\1gProfile a %s.\1a\n"), config.user);
 		profile_user();
 		break;
 
@@ -310,7 +310,7 @@ short_prompt(void)
 		break;
 
 	    case 'r':
-		cprintf(_("\1f\1gRead %s reverse.\1a\n"), config.message_pl);
+		cprintf(_("\1f\1gRead messages reverse.\1a\n"));
 		long_prompt(0, -1);
 		break;
 
@@ -322,12 +322,12 @@ short_prompt(void)
 
 	    case 'S':
 		nox = 1;
-		cprintf(_("\1f\1gSearch %s\n"), config.message_pl);
+		cprintf(_("\1f\1gSearch messages\n"));
 		search_via_sql(curr_rm);
 		break;
 
 	    case 's':
-		cprintf(("\1f\1gSkipping this %s.\n\n\1a"), config.forum);
+		cprintf(_("\1f\1gSkipping this %s.\n\n\1a"), config.forum);
 		cmdflags &= ~C_ROOMLOCK;
 		skiproom();
 		break;
@@ -360,7 +360,7 @@ short_prompt(void)
 		break;
 
 	    case 'w':
-		cprintf(_("\1f\1gWhich %s are online?\1a\n"), config.user_pl);
+		cprintf(_("\1f\1gWho is online?\1a\n"));
 		show_online(1);
 		break;
 
@@ -435,8 +435,8 @@ short_prompt(void)
 		break;
 
 	    case '-':
-		cprintf(_("\1f\1gJump a number of %s back from the Last Read %s.\1a\n"), config.message_pl, config.message);
-		cprintf(_("\1f\1gHow many %s back shall I jump?\1c "), config.message_pl);
+		cprintf(_("\1f\1gJump a number of messages back from the Last Read Message.\1a\n"));
+		cprintf(_("\1f\1gHow many messages back shall I jump?\1c "));
 		fflush(stdout);
 		getline(tempstr, 4, 1);
 		t = atoi(tempstr);
@@ -447,8 +447,8 @@ short_prompt(void)
 		break;
 
 	    case '_':
-		cprintf(_("\1f\1rJump a number of %s back from the Last %s in this %s.\1a\n"), config.message_pl, config.message, config.forum);
-		cprintf(_("\1f\1gHow many %s back shall I jump?\1c "), config.message_pl);
+		cprintf(_("\1f\1rJump a number of messages back from the Last %s in this %s.\1a\n"), config.forum);
+		cprintf(_("\1f\1gHow many messages back shall I jump?\1c "));
 		fflush(stdout);
 		getline(tempstr, 4, 1);
 		t = atoi(tempstr);
@@ -772,17 +772,17 @@ long_prompt(long number, int direction)
 		    return;
 
 		case 'k':
-		    cprintf("\1f\1gKnown %s\1w:\n\n", config.forum_pl);
+		    cprintf(_("\1f\1gKnown %s\1w:\n\n"), config.forum_pl);
 		    show_known_rooms(1);
 		    break;
 
 		case 'K':
-		    cprintf("\1f\1gAll %s\1w:\n\n", config.forum_pl);
+		    cprintf(_("\1f\1gAll %s\1w:\n\n"), config.forum_pl);
 		    show_known_rooms(0);
 		    break;
 
 		case 'L':
-		    cprintf("\1f\1g%s with unread %s.\n", config.forum_pl, config.message_pl);
+		    cprintf("\1f\1g%s with unread messages.\n", config.forum_pl );
 		    show_known_rooms(2);
 		    break;
 
@@ -849,14 +849,14 @@ long_prompt(long number, int direction)
 
 #ifdef USE_RATING
 		case 'R':
-		    cprintf("\1f\1gRate %s.\1a\n", config.message);
+		    cprintf("\1f\1gRate message.\1a\n");
 		    rate_message(NULL, current, curr_rm);
 #endif
 		    break;
 
 		case 'S':
 		    nox = 1;
-		    cprintf("\1f\1wSearch %s\n", config.message_pl);
+		    cprintf(_("\1f\1wSearch messages\n"));
 		    search_via_sql(curr_rm);
 		    break;
 
@@ -936,8 +936,8 @@ long_prompt(long number, int direction)
 		    break;
 
                 case '-':
-		    cprintf(_("\1f\1gJump a number of %s back from the current %s.\1a\n"), config.message_pl, config.message);
-		    cprintf(_("\1f\1gHow many %s back shall I jump?\1c "), config.message_pl);
+		    cprintf(_("\1f\1gJump a number of messages back from the current message.\1a\n"));
+		    cprintf(_("\1f\1gHow many messages back shall I jump?\1c "));
 		    fflush(stdout);
 		    getline(tempstr, 4, 1);
 		    t = atoi(tempstr);
@@ -951,8 +951,8 @@ long_prompt(long number, int direction)
 		    break;
 
                 case '+':
-		    cprintf(_("\1f\1gJump a number of %s forward from the current %s.\1a\n"), config.message_pl, config.message);
-		    cprintf(_("\1f\1gHow many %s forward shall I jump?\1c "), config.message_pl);
+		    cprintf(_("\1f\1gJump a number of messages forward from the current message.\1a\n"));
+		    cprintf(_("\1f\1gHow many messages forward shall I jump?\1c "));
 		    fflush(stdout);
 		    getline(tempstr, 4, 1);
 		    t = atoi(tempstr);

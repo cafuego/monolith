@@ -861,9 +861,9 @@ mailcheck()
     if (b == 1)
 	cprintf(_("\1f\1gYou have a new private %s in \1pMail>\n"), config.message);
     else if (b > 1)
-	cprintf(_("\1f\1gYou have \1r%d \1gnew private %s in \1pMail>\n"), b, config.message_pl);
+	cprintf(_("\1f\1gYou have \1r%d \1gnew private messages in \1pMail>\n"), b);
     else
-	cprintf(_("\1f\1gYou have \1rno\1g new Mail %s.\1a\n"), config.message_pl);
+	cprintf(_("\1f\1gYou have \1rno\1g new Mail messages.\1a\n"));
 }
 
 /*************************************************

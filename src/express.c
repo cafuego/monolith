@@ -1290,9 +1290,9 @@ format_express(express_t * Catchxs)
 /* an x from whom? */
     if ((vriend = is_cached_friend(Catchxs->sender))) {
 	if ((i = cached_name_to_x(Catchxs->sender)) == -1)
-	    sprintf(from, "\1c\1n%s\1N", Catchxs->sender);
+	    sprintf(from, FRIENDCOL "\1n%s\1N", Catchxs->sender);
 	else
-	    sprintf(from, "\1c\1n%s\1N \1w(\1g%d\1w)", Catchxs->sender, i);
+	    sprintf(from, FRIENDCOL "\1n%s\1N \1w(\1g%d\1w)", Catchxs->sender, i);
     } else
 	sprintf(from, "\1y\1n%s\1N", Catchxs->sender);
 

@@ -76,7 +76,7 @@ enter_message(unsigned int forum, int mode, unsigned long banner_flag, const cha
     /* priv checking */
     if ((quad.flags & QR_READONLY) && (usersupp->priv < PRIV_TECHNICIAN )) {
 	if (((int) rand() % 2) == 1)
-	    cprintf("\1f\1rYou cannot enter %s in read-only %s.\1a\n", config.message_pl, config.forum_pl);
+	    cprintf("\1f\1rYou cannot enter messages in read-only %s.\1a\n", config.forum_pl);
 	else if (((int) rand() % 2) == 1)
 	    cprintf("\1f\1rThe pod bay door remains closed.\1a\n");
 	else

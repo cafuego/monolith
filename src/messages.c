@@ -422,7 +422,7 @@ rate_message(message_t * message, unsigned int number, unsigned int forum)
     int score = 0;
 
     if(forum < 21) {
-	cprintf("\1f\1rYou are not allowed to rate %s posted in this %s.\1a\n", config.message_pl, config.forum);
+	cprintf("\1f\1rYou are not allowed to rate messages posted in this %s.\1a\n", config.forum);
         return;
     }
 
@@ -476,7 +476,7 @@ search_via_sql(unsigned int forum)
     IFSYSOP {
 	cprintf("\1f\1gSearch only this %s? \1w(\1gY\1w/\1gn\1w) \1c", config.forum);
 	if (yesno_default(YES) == NO) {
-            cprintf("\1f\1rNote that searching %d %s will take a while.\n", mono_sql_mes_count(0), config.message_pl);
+            cprintf("\1f\1rNote that searching %d messages will take a while.\n", mono_sql_mes_count(0));
             cprintf("\1f\1rAre you REALLY sure you want to do this? \1w(\1ry\1w/\1rN\1w) \1c");
             if(yesno_default(NO) == YES) {
 	        forum = -1;

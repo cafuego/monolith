@@ -311,7 +311,7 @@ _config_message_menu(const unsigned int a, const long b, void *c)
 	MENU_ADDITEM(_change_alias, 0, 0, NULL,
 		     "tiv", "Change your default alias", "4", "---");
 
-	sprintf(tempstr, "Empty lines around %s", config.message_pl);
+	sprintf(tempstr, "Empty lines around messages");
 	MK_TMPSTR(tempstr);
 	MENU_ADDITEM(set_usersupp_config_flag, CO_NEATMESSAGES, 0, (char *) tmpstr,
 		     "tiv", tempstr, "5",
@@ -329,9 +329,9 @@ _config_message_menu(const unsigned int a, const long b, void *c)
 		     "tiv", tempstr, "7", "---");
 
 	if (usersupp->priv < PRIV_SYSOP)
-	    sprintf(tempstr, "Notify on deleted %s", config.message_pl);
+	    sprintf(tempstr, "Notify on deleted messages");
 	else
-	    sprintf(tempstr, "Display deleted %s", config.message_pl);
+	    sprintf(tempstr, "Display deleted messages");
 	MK_TMPSTR(tempstr);
 	MENU_ADDITEM(set_usersupp_config_flag, CO_DELETEDINFO, 0, (char *) tmpstr,
 		     "tiv", tempstr, "8",
@@ -1371,7 +1371,7 @@ _tgl_status_bar(const unsigned int a, const long b, void *c)
     if (!(usersupp->flags & US_STATUSBAR)) {
 	cprintf("\n\1f\1gIf your screenlength is not set correctly, this will not work, and it might \n ");
 	cprintf("mess up your screen so you can't read anything. If this happens, turn it off \n ");
-	cprintf("again by pressing \1w<\1gc\1w\1w><\1go\1w><\1ge\1w>\1g, then \1w<\1gctrl-r\1w>\n");
+	cprintf("again by pressing \1w<\1gC\1w\1w><\1gg\1w><\1g5\1w>\1g, then \1w<\1gctrl-r\1w>\n");
 	cprintf("\1rNow, are you absolutely sure you wish to turn your status bar on? \1w(\1gy\1w/\1gn\1w) ");
 	if (yesno() == YES) {
 	    usersupp->flags ^= US_STATUSBAR;

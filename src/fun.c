@@ -58,7 +58,7 @@ random_goto()
         if(strlen(thegoto) && thegoto != NULL)
             cprintf("\1f\1g%s\1a", thegoto);
 	else
-            cprintf(_("\1f\1gNo unread %s.\1a"), config.message_pl );
+            cprintf(_("\1f\1gNo unread messages.\1a") );
 	xfree(thegoto);
 
     } else if ((rand() % 1000) == 666 ) {
@@ -66,9 +66,9 @@ random_goto()
         if ( ret == 0 && timescalled > 99 ) 
             cthulhu();
 	else
-        cprintf(_("\1f\1gNo unread %s.\1a"), config.message_pl );
+        cprintf(_("\1f\1gNo unread messages.\1a"));
     } else
-        cprintf(_("\1f\1gNo unread %s.\1a"), config.message_pl );
+        cprintf(_("\1f\1gNo unread messages.\1a"));
 
     return;
 }

@@ -57,7 +57,6 @@ mono_sql_read_config(int num, config_t * data)
     strcpy(config.forum, row[2]);
     strcpy(config.forum_pl, row[3]);
     strcpy(config.message, row[4]);
-    strcpy(config.message_pl, row[5]);
     strcpy(config.express, row[6]);
     strcpy(config.x_message, row[7]);
     strcpy(config.x_message_pl, row[8]);
@@ -94,7 +93,7 @@ mono_sql_save_config(int num, config_t * config)
     if (num == 0) {
 	if ((mono_sql_query(&res, "INSERT INTO " CONFIG_TABLE " VALUES (0,'%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')",
 			    config->bbsname, config->forum, config->forum_pl,
-		       config->message, config->message_pl, config->express,
+		       config->message, "dummy", config->express,
 		      config->x_message, config->x_message_pl, config->user,
 			    config->user_pl, config->username, config->doing,
 			    config->location, config->idle, config->chatmode,
@@ -108,7 +107,7 @@ mono_sql_save_config(int num, config_t * config)
 	if ((mono_sql_query(&res, "REPLACE INTO " CONFIG_TABLE " VALUES(%d,'%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')",
 			    num,
 			    config->bbsname, config->forum, config->forum_pl,
-		       config->message, config->message_pl, config->express,
+		       config->message, "dummy", config->express,
 		      config->x_message, config->x_message_pl, config->user,
 			    config->user_pl, config->username, config->doing,
 			    config->location, config->idle, config->chatmode,
