@@ -90,14 +90,14 @@ function read_message($username, $quad, $current, $direction) {
                 //
                 echo "<div align=\"center\">\n";
                 if($m_id != $highest)
-                    addbutton("Read Next", "/bbs/index.phtml/r/$quad/$m_id/n");
+                    addbutton("Read Next", "/bbs/index.phtml/r/$quad/$m_id/n", "Read the next message in $forum");
                 else
-                    addbutton("No unread messages", "");
-                addbutton("Read Previous", "/bbs/index.phtml/r/$quad/$m_id/p");
+                    addbutton("No unread messages", "", "");
+                addbutton("Read Previous", "/bbs/index.phtml/r/$quad/$m_id/p", "Read the previous message in $forum");
                 // if( $username != "Guest" ) {
-                //    addbutton("        ", "");
-                //    addbutton("Reply to this message", "/bbs/index.phtml/f/$quad/$m_id");
-                //    addbutton("Post new message", "/bbs/index.phtml/e/$quad/$m_id");
+                //    addbutton("        ", "", "");
+                //    addbutton("Reply to this message", "/bbs/index.phtml/f/$quad/$m_id", "Reply to this message");
+                //    addbutton("Post new message", "/bbs/index.phtml/e/$quad/$m_id", "Post a new message in $forum");
                 //}
                 echo "</div>\n";
 

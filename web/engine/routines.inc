@@ -212,7 +212,7 @@ function do_logout($username) {
     errorimage( "You will be taken to our main page in 10 seconds");
     echo "<p>&nbsp;<br>&nbsp;<br></p>\n";
     echo "<div align=\"center\">\n";
-    addbutton( "Log back in as $username", "/bbs/");
+    addbutton( "Log back in as $username", "/bbs/", "Log $username back in");
     echo "</div>\n";
 
 }
@@ -459,7 +459,7 @@ function addimage( $text ) {
 
 }
 
-function addbutton( $text, $url ) {
+function addbutton( $text, $url, $js_text ) {
 
     // To change all images in one go.
     // Image parser only knows basics tho!
@@ -471,12 +471,11 @@ function addbutton( $text, $url ) {
     $imgtext = rawurlencode($imgtext);
 
     if($url != "")
-    echo "<a href=\"$url\"><img src=\"/bbs/image.phtml/$font,$size,$colour/$imgtext/\" alt=\"[ button: $text ]\" border=\"0\"></a>\n";
+        echo "<a href=\"$url\"". mouseover($js_text) ."><img src=\"/bbs/image.phtml/$font,$size,$colour/$imgtext/\" alt=\"[ button: $text ]\" border=\"0\"></a>\n";
     else
-    echo "<img src=\"/bbs/image.phtml/$font,$size,$colour/$imgtext/\" alt=\"[ image: $text ]\">\n";
+        echo "<img src=\"/bbs/image.phtml/$font,$size,$colour/$imgtext/\" alt=\"[ image: $text ]\">\n";
 
 }
-
 
 function errorimage( $text ) {
 

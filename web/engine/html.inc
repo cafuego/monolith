@@ -219,14 +219,14 @@ function html_print_foot($username, $starttime, $location) {
         echo "<hr size=\"1\" width=\"400\" align=\"center\">\n";
 
         echo "<div align=\"center\">\n";
-        addbutton("Check Xes", "$location");
-        addbutton("Old X Log", "/bbs/index.phtml/o");
-        addbutton("Wholist", "/bbs/index.phtml/w");
-        addbutton("Quadrants", "/bbs/index.phtml/l");
-        addbutton("Unread", "/bbs/index.phtml/u");
-        addbutton("       ", "");
-        addbutton("Main Page", "/bbs/");
-        addbutton("Log out", "/bbs/index.phtml/q");
+        addbutton("Check Xes", "$location", "Check for new eXpress messages");
+        addbutton("Old X Log", "/bbs/index.phtml/o", "View your old eXpress messages");
+        addbutton("Wholist", "/bbs/index.phtml/w", "View who's online right now");
+        addbutton("Quadrants", "/bbs/index.phtml/l", "List all available quadrants");
+        addbutton("Unread", "/bbs/index.phtml/u", "List quadrants with unread messages");
+        addbutton("       ", "", "");
+        addbutton("Main Page", "/bbs/", "Go to the main page");
+        addbutton("Log out", "/bbs/index.phtml/q", "Log out");
         echo "</div>\n";
 
     }
@@ -276,17 +276,17 @@ function html_print_buttons($username, $location) {
     if($url_array[3] == "q")
         return;
 
-    echo "". addbutton("Monolith", "/") ."<br>\n";
-    echo "". addbutton("Main Page", "/bbs/index.phtml/") ."<br>\n";
-    echo "". addbutton(" ", "") ."<br>\n";
-    echo "". addbutton("Check Xes", "$location") ."<br>\n";
-    echo "". addbutton("Old X Log", "/bbs/index.phtml/o") ."<br>\n";
-    echo "". addbutton("Wholist", "/bbs/index.phtml/w") ."<br>\n";
-    echo "". addbutton("Quadrants", "/bbs/index.phtml/l") ."<br>\n";
-    echo "". addbutton("Unread", "/bbs/index.phtml/u") ."<br>\n";
-    echo "". addbutton(" ", "") ."<br>\n";
-    echo "". addbutton(" ", "") ."<br>\n";
-    echo "". addbutton("Log out", "/bbs/index.phtml/q") ."<br>\n";
+    echo "". addbutton("Monolith", "/bbs/index.phtml/q", "Log off and go to our main page") ."<br>\n";
+    echo "". addbutton("Main Page", "/bbs/index.phtml/", "Go to the main page") ."<br>\n";
+    echo "". addbutton(" ", "", "") ."<br>\n";
+    echo "". addbutton("Check Xes", "$location", "Check for new eXpress messages") ."<br>\n";
+    echo "". addbutton("Old X Log", "/bbs/index.phtml/o", "View your old eXpress messages") ."<br>\n";
+    echo "". addbutton("Wholist", "/bbs/index.phtml/w", "View who's online right now") ."<br>\n";
+    echo "". addbutton("Quadrants", "/bbs/index.phtml/l", "List all available quadrants") ."<br>\n";
+    echo "". addbutton("Unread", "/bbs/index.phtml/u", "List quadrants with unread messages") ."<br>\n";
+    echo "". addbutton(" ", "", "") ."<br>\n";
+    echo "". addbutton(" ", "", "") ."<br>\n";
+    echo "". addbutton("Log out", "/bbs/index.phtml/q", "Log out") ."<br>\n";
 }
 
 function html_loginsound() {
