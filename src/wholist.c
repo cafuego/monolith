@@ -345,7 +345,7 @@ wholist(int level, const user_t * user)
             min = tdif % 60;
             hour = tdif / 60;
             sprintf(line, "\1a\1f\1g%-20s ", list->user->username);
-            strcat(line, "\1p[   \1yw\1p] ");
+            strcat(line, "\1p[\1ywww \1p] ");
             strcat(line, "\1gMonolith Website ");
             q = line + strlen(line);
             (void) sprintf(q, "\1f\1p%2d:%02d ", hour, min);
