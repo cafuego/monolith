@@ -1,0 +1,30 @@
+msgid ""
+msgstr ""
+"Date: 1999-07-28 15:19:23+0200\n"
+"From: Michel Oosterhof,IBM,079-3224013,0297-540540 <michel@monolith>\n"
+"Content-Type: text/plain; charset=\n"
+"Xgettext-Options: --default-domain=monolith --directory=.. --add-comments --keyword=_ --keyword=N_ --files-from=./POTFILES.in\n"
+"Files: ./cgi/index.c ./cgi/account.c ./cgi/counter.c ./cgi/hprintf.c ./cgi/util.c ./cgi/interface.c ./cgi/knownrooms.c ./cgi/profile.c ./cgi/register.c ./cgi/userlist.c ./cgi/wholist.c ./cgi/www_auth_group.c ./cgi/www_auth_user.c ./daemons/front.c ./daemons/server.c ./lib/btmp.c ./lib/libcache.c ./lib/libdexi.c ./lib/libfriends.c ./lib/libquad.c ./lib/libuid.c ./lib/log.c ./lib/msg_file.c ./lib/routines.c ./lib/sql_config.c ./lib/sql_convert.c ./lib/sql_express.c ./lib/sql_forum.c ./lib/sql_goto.c ./lib/sql_llist.c ./lib/sql_login.c ./lib/sql_mail.c ./lib/sql_message.c ./lib/sql_online.c ./lib/sql_rating.c ./lib/sql_topic.c ./lib/sql_user.c ./lib/sql_userforum.c ./lib/sql_usertopic.c ./lib/sql_useruser.c ./lib/sql_utils.c ./lib/sql_web.c ./lib/userfile.c ./misc/fsql.c ./misc/add_quads.c ./misc/bbscheck.c ./misc/ccat.c ./misc/convert.c ./misc/delsql.c ./misc/dexi.c ./misc/dexi2.c ./misc/findlowest.c ./misc/finger.c ./misc/initdb.c ./misc/initgoto.c ./misc/makeemp.c ./misc/purge.c "
+"./misc/ql_sql.c ./misc/test.c ./misc/ubl.c ./misc/userlist.c ./misc/wholist.c ./shix/libshix.c ./shix/regerror.c ./shix/regexp.c ./shix/regsub.c ./src/menu.c ./src/bbsconfig.c ./src/chat.c ./src/client_input.c ./src/clipboard.c ./src/commands.c ./src/config.c ./src/cprintf.c ./src/display_message.c ./src/enter_message.c ./src/express.c ./src/friends.c ./src/fun.c ./src/help.c ./src/inter.c ./src/key.c ./src/main.c ./src/messages.c ./src/newuser.c ./src/normal_input.c ./src/qc.c ./src/read_menu.c ./src/registration.c ./src/rooms.c ./src/routines2.c ./src/statusbar.c ./src/uadmin.c ./src/usertools.c ./src/vote.c ./src/wholist.c ./intl/bindtextdom.c ./intl/cat-compat.c ./intl/dcgettext.c ./intl/dgettext.c ./intl/finddomain.c ./intl/gettext.c ./intl/intl-compat.c ./intl/loadmsgcat.c ./intl/localealias.c ./intl/textdomain.c\n"
+
+#: misc/ccat.c:90
+msgid "Too many arguments\n"
+msgstr "Te veel argumenten\n"
+
+#: misc/ccat.c:91
+msgid "Try `%s --help' for more information\n"
+msgstr "Probeer `%s --help' voor meer informatie\n"
+
+#: misc/ccat.c:99
+msgid ""
+"This is Monolith ccat.\n"
+"Usage: %s [OPTION] [FILE]\n"
+"  -h, --help          display this help and exit\n"
+"  -v, --version       display version information and exit\n"
+"\n"
+"Report bugs to bugs@monolith.yawc.net.\n"
+msgstr ""
+
+#: misc/ccat.c:131
+msgid "Warning: File ends in colour `%s'. Please fix this\n"
+msgstr "Waarschuwing: Bestand eindigt in kleur `%s'. Repareer dit\n"
