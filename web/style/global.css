@@ -7,7 +7,7 @@
 // Tag definitions.
 //
 p		{ font: 10pt Helvetica; }
-a		{ color: #ffff00; text-decoration: underline; font-weight: bold; }
+a		{ color: #ffff00; text-decoration: underline; }
 b		{ font-weight: bold; }
 ul		{ font: 10pt Helvetica; }
 li		{ font: 10pt Helvetica; }
