@@ -329,7 +329,7 @@ function addimage( $text ) {
     $text = rawurlencode($text);
 
     echo "<div align=\"center\">\n";
-    echo "<img src=\"/bbs/image.phtml/Tahoma_B,24,$colour/$text/\" alt=\"[ image: ". rawurldecode($text) ." ]\">\n";
+    echo "<img src=\"/bbs/image.phtml/Tahoma_B,18,$colour/$text/\" alt=\"[ image: ". rawurldecode($text) ." ]\">\n";
     echo "</div>\n";
 
 }
@@ -339,7 +339,7 @@ function errorimage( $text ) {
     $text = rawurlencode($text);
 
     echo "<div align=\"center\">\n";
-    echo "<img src=\"/bbs/image.phtml/Tahoma_B,24,red/$text/\" alt=\"[ image: ". rawurldecode($text) ." ]\">\n";
+    echo "<img src=\"/bbs/image.phtml/Tahoma_B,18,red/$text/\" alt=\"[ image: ". rawurldecode($text) ." ]\">\n";
     echo "</div>\n";
 
 }
