@@ -11,10 +11,10 @@
     $im = imagecreate( 500, 40 );
     $black = ImageColorAllocate( $im, 0, 0, 0 );
     $white = ImageColorAllocate( $im, 255, 255, 255 );
-    $bounds = ImageTTFBBox( 36, 0, $font, $text );
+    $bounds = ImageTTFBBox( 30, 0, $font, $text );
     $x = 500 - ($bounds[4]-$bounds[6]);
     $y = 30 - ((30 - ($bounds[1]-$bounds[7]))/2);
-    ImageTTFText( $im, 36, 0, $x, $y, $white, $font, $text );
+    ImageTTFText( $im, 30, 0, $x, $y, $white, $font, $text );
     ImageGif( $im );
     ImageDestroy( $im );
 
