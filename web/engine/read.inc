@@ -66,7 +66,6 @@ function read_message($username, $quad, $current, $direction) {
 
                 // Fix (and colourize) content.
                 //
-                $content = htmlspecialchars($content);
                 $content = nl2br($content);
                 $content = colorize($content);
 
