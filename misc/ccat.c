@@ -58,9 +58,9 @@ main(int argc, char *argv[])
 
 
 #ifdef HAVE_GETTEXT
-       setlocale (LC_ALL, "nl");
-       bindtextdomain ("ccat", "/usr/bbs/locale");
-       textdomain ("ccat");
+       setlocale (LC_ALL, "");
+       bindtextdomain ("monolith", "/usr/bbs/lib/locale");
+       textdomain ("monolith");
 #endif
 
 
