@@ -14,7 +14,7 @@ $usernum = get_usernum($username);
 
 echo "<p>$username/$usernum<br>\n";
 
-if ((($userfile == null || $userfile == "")) || (($userfile != null || $userfile != "") && ($userfile_type != "image/gif" || $userfile_type != "image/jpeg"))) {
+if ((($userfile == null || $userfile == "")) || ($userfile != null && $userfile != "" && ($userfile_type != "image/gif" || $userfile_type != "image/jpeg")) {
 
     if ($userfile != null && $userfile != "")
 	    echo "<h2 align=\"center\">Invalid file type!</h2>\n";
