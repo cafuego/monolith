@@ -36,21 +36,16 @@
 #include "telnet.h"
 #endif
 
+#include "enter_message.h"
+#include "input.h"
+#include "rooms.h"
+#include "routines2.h"
+#include "uadmin.h"
+
 #define extern
 #include "messages.h"
 #undef extern
 
-#include "enter_message.h"
-#include "input.h"
-#include "rooms.h"
-#include "msg_file.h"
-#include "routines2.h"
-#include "uadmin.h"
-
-#include "sql_message.h"
-#include "sql_userforum.h"
-#include "sql_rating.h"
-#include "sql_llist.h"
 void
 search()
 {
