@@ -28,11 +28,8 @@
 
 #include "monolith.h"
 #include "libmono.h"
+#include "setup.h"
 #include "ext.h"
-
-#define extern
-#include "commands.h"
-#undef extern
 
 #include "bbsconfig.h"
 #include "chat.h"
@@ -46,19 +43,18 @@
 #include "key.h"  
 #include "main.h"
 #include "messages.h"
-#include "msg_file.h"
 #include "qc.h"
 #include "registration.h"
 #include "read_menu.h"
 #include "routines2.h"
 #include "rooms.h"
-#include "setup.h"
-#include "sql_config.h"
-#include "sql_goto.h"
 #include "telnet.h"
 #include "usertools.h"
 #include "uadmin.h"
 
+#define extern
+#include "commands.h"
+#undef extern
 
 void
 main_menu()
