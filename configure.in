@@ -167,7 +167,7 @@ else
   fi
 fi
 
-AC_OUTPUT(cgi/Makefile lib/Makefile daemons/Makefile src/Makefile misc/Makefile shix/Makefile share/Makefile share/feelings/Makefile share/loginscreens/Makefile web/Makefile web/engine/Makefile web/pix/Makefile Makefile)
+AC_OUTPUT(cgi/Makefile lib/Makefile daemons/Makefile src/Makefile misc/Makefile shix/Makefile share/Makefile share/feelings/Makefile share/loginscreens/Makefile web/Makefile web/engine/Makefile web/pix/Makefile web/sound/Makefile Makefile)
 
 if test "x$with_overview" = "xyes"; then
   dnl Give users a quick overview.
