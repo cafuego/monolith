@@ -22,8 +22,8 @@
     // going to create will have 2 pixels border on each side.
     //
     $bounds = ImageTTFBBox( $size, 0, $font, $text );
-    $width = $bounds[4] + 4;
-    $height = $bounds[5] + 4;
+    $width = $bounds[4] + 10;
+    $height = $bounds[3] + 10;
 
     // Create the image and set fore and background colours.
     //
@@ -33,7 +33,7 @@
 
     // Draw the string onto the image.
     //
-    ImageTTFText( $im, $size, 0, 2, $height-2, $white, $font, $text );
+    ImageTTFText( $im, $size, 0, 5, $height-5, $white, $font, $text );
 
     // Dump output :)
     //
