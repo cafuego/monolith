@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
+#include <sys/time.h>
 #include <fcntl.h>
 #include <stdio.h>
 #include <ctype.h>
@@ -713,6 +714,57 @@ qc_get_pos_int(const char first, int digits)
     }                           /* for(;;) */
     cprintf("\n\1a");
     return pos_int;
+}
+
+void
+mysql_benchmark()
+{
+    mlist_t *list;
+    MYSQL_RES *res;
+    struct timeval t_s;
+    struct timeval t_e;
+    struct timezone tz;
+    unsigned long elapsed = 0;
+    int count = 0;
+
+    tz.tz_minuteswest = 0;
+    tz.tz_dsttime = 0;
+
+    cprintf("Running query to select all messages in quad 78, Unidentified Space Junk>\n");
+    cprintf("and building linked list.\n\n");
+    cprintf("Press key to start... ");
+    inkey();
+    cprintf("ok.");
+    
+    gettimeofday(&t_s, &tz);
+    mono_sql_mes_list_forum(78,0, &list);
+    gettimeofday(&t_e, &tz);
+
+    elapsed = ((1000*t_e.tv_sec)+t_e.tv_usec) - ((1000*t_s.tv_sec)+t_s.tv_usec);
+
+    cprintf("\n\nTime elapsed: %u milliseconds.\n", elapsed );
+    printf("%f seconds\n", ((float)elapsed/1000000) );
+
+    cprintf("\nSearching for 'te*' in all posst in SQL...\n\n");
+    cprintf("Press key to start... ");
+    inkey();
+    cprintf("ok.");
+
+    gettimeofday(&t_s, &tz);
+    (void) mono_sql_query(&res, "SELECT m.message_id,u.username,f.name,m.subject,UNIX_TIMESTAMP(m.date) from message as m left join user as u on m.author = user.id left join forum as f on m.forum_id = f.id where m.subject regexp 'te*' or m.content regexp 'te*'");
+    gettimeofday(&t_e, &tz);
+
+    count = mysql_num_rows(res);
+
+    elapsed = ((1000*t_e.tv_sec)+t_e.tv_usec) - ((1000*t_s.tv_sec)+t_s.tv_usec);
+
+    cprintf("\n\n%d hits, time elapsed: %u milliseconds.\n", count, elapsed );
+    printf("%f seconds\n", ((float)elapsed/1000000) );
+
+    fflush(stdout);
+    (void) mysql_free_result(res);
+
+    return;
 }
 
 /* eof */
