@@ -15,6 +15,7 @@
 
 #include "monolith.h"
 
+#include "libcache.h"
 #include "routines.h"
 #include "sql_user.h"
 #include "sql_useruser.h"
@@ -91,9 +92,9 @@ is_friend(const char *user1, const char *user2)
 {
     unsigned int id1, id2;
 
-    if (mono_sql_u_name2id(user1, &id1) == -1)
+    if (mono_cached_sql_u_name2id(user1, &id1) == -1)
 	return FALSE;
-    if (mono_sql_u_name2id(user2, &id2) == -1)
+    if (mono_cached_sql_u_name2id(user2, &id2) == -1)
 	return FALSE;
 
     return mono_sql_uu_is_on_list(id1, id2, L_FRIEND);
@@ -105,9 +106,9 @@ is_enemy(const char *user1, const char *user2)
 {
     unsigned int id1, id2;
 
-    if (mono_sql_u_name2id(user1, &id1) == -1)
+    if (mono_cached_sql_u_name2id(user1, &id1) == -1)
 	return FALSE;
-    if (mono_sql_u_name2id(user2, &id2) == -1)
+    if (mono_cached_sql_u_name2id(user2, &id2) == -1)
 	return FALSE;
 
     return mono_sql_uu_is_on_list(id1, id2, L_ENEMY);
