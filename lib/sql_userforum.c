@@ -181,13 +181,14 @@ mono_sql_uf_list_hosts_by_user(unsigned int usernumber, forumlist_t **p )
 int
 mono_sql_uf_is_host(unsigned int usernumber, unsigned int forumnumber)
 {
-    int ret, rows;
+    int ret, rows, host;
     MYSQL_RES *res;
+    MYSQL_ROW row;
 
     ret = mono_sql_query(&res, "SELECT count(*) FROM " UF_TABLE " WHERE (user_id='%u' AND forum_id='%u' AND host='y')", usernumber, forumnumber);
 
     if (ret == -1) {
-	fprintf(stderr, "No results from query.\n");
+	fprintf(stderr, "Error in query.\n");
 	return FALSE;
     }
     rows = mysql_num_rows(res);
@@ -195,7 +196,10 @@ mono_sql_uf_is_host(unsigned int usernumber, unsigned int forumnumber)
 	fprintf(stderr, "internal error\n");
 	return FALSE;
     }
+    row = mysql_fetch_row(res);
+    if ( sscanf( row[0], "%d", &host ) == -1 ) return FALSE;
     mysql_free_result(res);
+    if ( host == 0 ) return FALSE;
     return TRUE;
 }
 
