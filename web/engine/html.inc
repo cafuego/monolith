@@ -75,7 +75,7 @@ function html_print_title($username, $location) {
     // Make sure we don't cache any of this.
     //
     echo "<meta http-equiv=\"Pragma\" content=\"no-cache\">\n";
-    echo "<meta http-equiv=\"Expires\" content=\"". gmdate("l, d F Y H:i:s", time()) ." GMT\">\n";
+    echo "<meta http-equiv=\"Expires\" content=\"". gmdate("l, d F Y H:i:s") ." GMT\">\n";
 
     return ($action != "q") ? 1 : 0;
 
