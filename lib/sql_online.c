@@ -42,7 +42,6 @@ mono_sql_onl_add(unsigned int user_id, const char *interface, const char *doing)
     char *fmt_doing = NULL;
 
     (void) escape_string( doing, &fmt_doing );
-    (void) strremcol(fmt_doing);
 
     ret = mono_sql_query(&res, "INSERT INTO " ONLINE_TABLE 
      " (user_id,interface,doing) VALUES (%u,'%s','%s')"
@@ -103,7 +102,6 @@ mono_sql_onl_doing(const char* username, const char *doing)
 
     (void) mono_sql_u_name2id( username, &user_id );
     (void) escape_string( doing, &fmt_doing );
-    (void) strremcol(fmt_doing);
 
     ret = mono_sql_query(&res, "UPDATE " ONLINE_TABLE 
      " SET doing='%s' WHERE user_id=%u", user_id, fmt_doing);

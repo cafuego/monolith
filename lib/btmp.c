@@ -297,7 +297,7 @@ mono_change_online(const char *user, const char *tmp_string, int ch)
 		case 14:
 		    strncpy(p->doing, tmp_string, 29);
 		    p->doing[30] = '\0';
-                    (void) mono_sql_onl_doing( p->username, p->doing);
+                    (void) mono_sql_onl_doing( p->username, p->doing );
 		    break;
 
 		case 15:
