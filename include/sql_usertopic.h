@@ -8,3 +8,5 @@ extern int mono_sql_ut_update_lastseen( unsigned int user_id,
                              unsigned int topic_id, unsigned int message_id );
 extern int mono_sql_ut_query_lastseen( unsigned int user_id,
                              unsigned int topic_id, unsigned int *message_id );
+
+#define UT_TABLE	"usertopic"

@@ -24,8 +24,6 @@
 #include "sql_utils.h"
 #include "sql_usertopic.h"
 
-#define UT_TABLE "usertopic"
-
 int
 mono_sql_ut_update_lastseen( unsigned int user_id,  
                              unsigned int topic_id, unsigned int message_id )

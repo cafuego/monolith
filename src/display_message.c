@@ -728,12 +728,12 @@ show_long_prompt(const unsigned int forum, const unsigned int num, const int dir
 	!(usersupp->config_flags & CO_MONOHEADER))
 	if (high == num)
 	    snprintf(promptstring, sizeof(promptstring) - 1,
-		     "\1f\1w[\1%c%s\1w> \1g%s %u of %lu \1w(\1glast in this %s\1w)] -> ",
+		     "\1f\1w[\1%c%s\1w> \1g%s %u of %u \1w(\1glast in this %s\1w)] -> ",
 		     col, quad.name, config.message, num,
 		     high, config.forum);
 	else
 	    snprintf(promptstring, sizeof(promptstring) - 1,
-		     "\1f\1w[\1%c%s\1w> \1g%s %u of %lu \1w(\1g%lu remaining\1w)] -> ",
+		     "\1f\1w[\1%c%s\1w> \1g%s %u of %u \1w(\1g%u remaining\1w)] -> ",
 		     col, quad.name, config.message, num,
 		     high, (direction > 0) ? high - num : num - low);
     else if (high == num)
@@ -742,7 +742,7 @@ show_long_prompt(const unsigned int forum, const unsigned int num, const int dir
 		 col, quad.name, num);
     else
 	snprintf(promptstring, sizeof(promptstring) - 1,
-		 "\1f\1w[\1%c%s\1w> \1g#%u \1w(\1g%lu remaining\1w)] -> ",
+		 "\1f\1w[\1%c%s\1w> \1g#%u \1w(\1g%u remaining\1w)] -> ",
 	     col, quad.name, num, (direction > 0) ? high - num : num - low);
 
     promptstring[sizeof(promptstring) - 1] = '\0';

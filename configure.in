@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT(cgi/index.c)
+AC_INIT(src/main.c)
 
 AC_CANONICAL_SYSTEM
 
@@ -214,12 +214,12 @@ else
   fi
 fi
 
-AC_OUTPUT(cgi/Makefile lib/Makefile daemons/Makefile src/Makefile \
-     misc/Makefile shix/Makefile share/Makefile share/feelings/Makefile \
-     share/loginscreens/Makefile web/Makefile web/engine/Makefile \
-     web/pix/Makefile web/style/Makefile web/script/Makefile \
-     web/sound/Makefile web/flash/Makefile po/Makefile.in intl/Makefile \
-     Makefile)
+AC_OUTPUT(include/Makefile lib/Makefile daemons/Makefile src/Makefile \
+    misc/Makefile shix/Makefile share/Makefile share/feelings/Makefile \
+    share/loginscreens/Makefile web/Makefile web/classes/Makefile \
+    web/engine/Makefile web/pix/Makefile web/style/Makefile \
+    web/script/Makefile web/sound/Makefile web/flash/Makefile \
+    po/Makefile.in intl/Makefile Makefile)
 
 dnl Only do this if we're not called from the makefile.
 dnl
