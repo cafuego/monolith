@@ -105,7 +105,8 @@ mono_sql_u_check_passwd( unsigned int user_id, const char *passwd )
     }
 
     if ( mysql_num_rows(res) != 1 ) {
-	fprintf(stderr, "Not enough results Error.\n");
+	fprintf(stderr, "The infamous \"Not enough results Error\"\n");
+        mono_sql_u_free_result(res);
         return FALSE;
     }
     row = mysql_fetch_row(res);
@@ -124,7 +125,7 @@ mono_sql_u_check_passwd( unsigned int user_id, const char *passwd )
 
 /* michel: putting this free statement here gives a segfaul.t
      don't know why, but it should really be here */
-     mono_sql_u_free_result(res); 
+     /* mono_sql_u_free_result(res); */
 
     if ( ret == 0 ) return TRUE;
     return FALSE;
