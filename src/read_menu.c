@@ -555,8 +555,9 @@ short_prompt(void)
 void
 long_prompt(long number, int direction)
 {
-    int read_command, read_position_modified;
+    int read_command, read_position_modified, t = 0;
     long start, current, temp_lowest, temp_highest;
+    char tempstr[40];
 
     if ((start = get_read_start_number(number, direction)) == -6666)
 	return;			/* found no new posts */
@@ -601,9 +602,9 @@ long_prompt(long number, int direction)
 	    not_my_post = strcmp(usersupp->username, message_reply_name(NULL));
 
 #ifdef USE_RATING
-	    read_command = get_single_quiet("1234567890 aAbBcCdDeEfFgGhHiIjJlkKLpPrRqQmMnNsStTvVWwxXyYzZ?!#\006\005\014\018\022\030<>%\":~,.*^");
+	    read_command = get_single_quiet("1234567890 aAbBcCdDeEfFgGhHiIjJlkKLpPrRqQmMnNsStTvVWwxXyYzZ?!#\006\005\014\018\022\030<>%\":~,.*^-+");
 #else
-	    read_command = get_single_quiet("1234567890 aAbBcCdDeEfFgGhHiIjJlkKLpPrqQmMnNsStTvVWwxXyYzZ?!#\006\005\014\018\022\030<>%\":~,.*^");
+	    read_command = get_single_quiet("1234567890 aAbBcCdDeEfFgGhHiIjJlkKLpPrqQmMnNsStTvVWwxXyYzZ?!#\006\005\014\018\022\030<>%\":~,.*^-+");
 #endif
 
 	    read_command = validate_read_command(read_command);		/* priv check */
@@ -918,6 +919,36 @@ long_prompt(long number, int direction)
 		    current = start - 1;
 		    set_read_bounds(&temp_lowest, &temp_highest);
 		    read_position_modified = TRUE;
+		    break;
+
+                case '-':
+		    cprintf(_("\1f\1gJump a number of %s back from the current %s.\1a\n"), config.message_pl, config.message);
+		    cprintf(_("\1f\1gHow many %s back shall I jump?\1c "), config.message_pl);
+		    fflush(stdout);
+		    getline(tempstr, 4, 1);
+		    t = atoi(tempstr);
+		    if (t <= 0)
+		        cprintf(_("\1f\1rThat is not a valid entry.\1a\n"));
+		    else {
+		        current = current - t;
+		        set_read_bounds(&temp_lowest, &temp_highest);
+		        read_position_modified = TRUE;
+                    }
+		    break;
+
+                case '+':
+		    cprintf(_("\1f\1gJump a number of %s forward from the current %s.\1a\n"), config.message_pl, config.message);
+		    cprintf(_("\1f\1gHow many %s forward shall I jump?\1c "), config.message_pl);
+		    fflush(stdout);
+		    getline(tempstr, 4, 1);
+		    t = atoi(tempstr);
+		    if (t <= 0)
+		        cprintf(_("\1f\1rThat is not a valid entry.\1a\n"));
+		    else {
+		        current = current + t;
+		        set_read_bounds(&temp_lowest, &temp_highest);
+		        read_position_modified = TRUE;
+                    }
 		    break;
 
 		case 12:	/* <ctrl-l> */
