@@ -4,20 +4,25 @@ DROP TABLE country;
 
 CREATE TABLE country (
 
+# codes: `gb' for united kingdom: (ISO 3166)
     code	CHAR(2) NOT NULL,
-# code: `uk' for united kingdom: some ISO standard
-    phone	CHAR(2),
+# codes: `gbr' for united kingdom: (ISO 3166)
+    ref		CHAR(3) NOT NULL,
+# codes: `826' for united kingdom: (ISO 3166)
+# Saved as char coz first digit may be 0.
+    num		CHAR(3) NOT NULL,
 # international dial code: 31 for holland
-    englishname CHAR(50) NOT NULL,
+    phone	CHAR(2),
 # 'The Netherlands'
-    localname	CHAR(50),
+    englishname CHAR(50) NOT NULL,
 # 'Nederland'
+    localname	CHAR(50),
 
-    language	CHAR(2),
 # main language 'nl' for dutch too, i think. 'en' for english
+    language	CHAR(2),
 
     PRIMARY KEY  ( code ),
     UNIQUE ( englishname )
 );
 
-insert into country values ('nl', '31', 'The Netherlands', 'Nederland', 'nl' )
+insert into country values ('NL', 'NLD', '528', '31', 'The Netherlands', 'Nederland', 'nl' )
