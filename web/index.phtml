@@ -43,10 +43,17 @@
     // Assign values so we can use 'em.
     $action=$url_array[3];		// What action?
     $quad=$url_array[4];		// First arg.
+    $recipient=$url_array[4];		// First arg too.
     $message=$url_array[5];		// Second arg.
     $direction=$url_array[6];		// Third arg.
 
     switch ($action) {
+
+        case "e":	// Enter (new).
+        case "f":	// Followup (reply).
+            require ('engine/post.inc');
+            enter_message($username,$quad,$message,$action);
+            break;
 
         case "l":
             require ('engine/quad.inc');
@@ -58,10 +65,9 @@
             read_message($username,$quad,$message,$direction);
             break;
 
-        case "e":	// Enter (new).
-        case "f":	// Followup (reply).
-            require ('engine/post.inc');
-            enter_message($username,$quad,$message,$action);
+        case "x":
+            require ('engine/express.inc');
+            express_message($username,$recipient);
             break;
 
         default:

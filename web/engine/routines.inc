@@ -64,6 +64,60 @@ function check_priv($username, $forum_id) {
 
 }
 
+function check_friend($username, $friend) {
+
+    // Username exists?
+    //
+    if($username == "" || $username == NULL)
+        return -1;
+
+    connect_db();
+
+    // Get user number.
+    //
+    $result = MYSQL_QUERY("SELECT id FROM user WHERE username='$username'");
+    $number = MYSQL_NUMROWS($result);
+    if ($number)
+        $user_id = mysql_result($result,0,"id");
+    else
+        return -1;
+
+    // Get friend user number.
+    //
+    $result = MYSQL_QUERY("SELECT id FROM user WHERE username='$friend'");
+    $number = MYSQL_NUMROWS($result);
+    if ($number)
+        $friend_id = mysql_result($result,0,"id");
+    else
+        return -2;
+
+    // Get friend status.
+    //
+    $result = MYSQL_QUERY("SELECT status FROM online WHERE id=$friend_id");
+    $number = MYSQL_NUMROWS($result);
+    if ($number)
+        $status = mysql_reult($result,0,"status");
+    else
+        return -2;
+    if( $status == "no" )
+        return -3;
+
+    // Check status.
+    //
+    $result = MYSQL_QUERY("SELECT status FROM useruser WHERE user_id=$user_id AND friend_id=$friend_id");
+    $number = MYSQL_NUMROWS($result);
+    if($number)
+        $status = mysql_result($result,0,"status");
+    else
+        return 0;
+
+    if( $status == "enemy" )
+        return 0;
+    else 
+        return 1;
+
+}
+
 function format_username($username,$user, $alias, $flag) {
 
     if( $flag == "anon" ) {
