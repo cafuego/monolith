@@ -444,7 +444,7 @@ search_via_sql()
     needle[strlen(needle)] = '\0';
     sscanf(needle, "%d", &forum);
 
-    if (forum == 0)
+    if (forum >= 0)
 	forum = curr_rm;
 
     cprintf("\1f\1gNow, enter a string \1w(\1gmax 20 characters\1w)\1g to search for in the\n");
