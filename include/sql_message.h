@@ -1,7 +1,7 @@
 /*
  * $Id$
  */
-extern int mono_sql_mes_add(message_t *message, const char *tmpfile);
+extern int mono_sql_mes_add(message_t *message);
 extern char * mono_sql_mes_make_file(unsigned int forum, unsigned int num);
 extern int mono_sql_mes_remove(unsigned int id, unsigned int forum);
 extern int mono_sql_mes_retrieve(unsigned int id, unsigned int forum, message_t *message);
