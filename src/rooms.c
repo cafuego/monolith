@@ -714,7 +714,7 @@ whoknows()
         default:
             cprintf("\n\1f\1g%d user%s can currently read \1y'%s'\1w:\n", i, (i==1) ? "" : "s", bing.name );
             more_string(invited);
-            switch(i) {
+            switch(k) {
                 case -1:
                     cprintf("\n\1f\1rAn error occurred in the SQL query.\n");
                     break;
@@ -723,7 +723,7 @@ whoknows()
                     break;
                 default:
                     cprintf("\n\1f\1g%d user%s %s been kicked from \1y'%s'\1w:\n",
-                        i, (i == 1) ? "" : "s", (i == 1) ? "has": "have", bing.name );
+                        k, (k == 1) ? "" : "s", (k == 1) ? "has": "have", bing.name );
                     more_string(kicked);
                     break;
            }
