@@ -247,7 +247,7 @@ short_prompt(void)
 		break;
 
 	    case 'K':
-		cprintf("\1f\1gAll %ss\1w:\n", config.forum);
+		cprintf("\1f\1gAll %s\1w:\n", config.forum_pl);
 		show_known_rooms(0);
 		break;
 
