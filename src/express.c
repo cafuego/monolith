@@ -358,7 +358,7 @@ catchx(int key)
     }
 /* sender is enemy? */
 
-    is_my_vnemy = is_my_enemy(Catchxs->sender);
+    is_my_vnemy = is_cached_enemy(Catchxs->sender);
 
     if (!(IS_BROADCAST || Catchxs->override == OR_ENABLED)) {
 	if (is_my_vnemy && Catchxs->override != OR_ENABLE_FORCE) {
@@ -736,7 +736,7 @@ check_x_permissions(const char *x_recip_name, const int X_PARAM, char override)
     for (;;) {
 	if (!BROADCAST) {
 	    is_vnemy_to = is_enemy(x_recip_name, who_am_i(NULL));
-	    is_my_vnemy = is_my_enemy(x_recip_name);
+	    is_my_vnemy = is_cached_enemy(x_recip_name);
 
 	    if (EQ("guest", x_recip_name)) {
 		cprintf(_("\1rYou cannot send %s to Guests.\n\1a"), config.x_message_pl);

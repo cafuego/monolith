@@ -41,27 +41,6 @@ char *menu_friend_list(int param);
 static void menu_friend_remove(int param);
 static void menu_friend_quick_add(void);
 
-friend_t *friend_cache = NULL;
-
-/*
- * ------------------------------------------------ 
- * this fn checks if person2 is an enemy of person1 
- * return true if so, else false                    
- * ------------------------------------------------ 
- */
-
-int
-is_my_enemy(const char *person)
-{
-    return is_cached_enemy(person);
-}
-
-int
-is_my_friend(const char *person)
-{
-    return is_cached_friend(person);
-}
-
 void
 friends_online()
 {
@@ -299,7 +278,7 @@ menu_friend_quick_add()
 	cprintf("\1f\1rNo such user.\n");
 	return;
     }
-    if (!is_my_friend(name)) {
+    if (!is_cached_friend(name)) {
 	strcpy(f.name, name);
 	f.quickx = i;
 	mono_sql_uu_add_entry(usersupp->usernum, id2, L_FRIEND);
