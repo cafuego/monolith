@@ -11,4 +11,4 @@ sql_forumtopic.h sql_goto.h sql_llist.h sql_login.h sql_mail.h \
 sql_message.h sql_online.h sql_rating.h sql_topic.h sql_user.h \
 sql_userforum.h sql_usertopic.h sql_useruser.h sql_utils.h sql_web.h \
 sqlfile.h statusbar.h superhero.h sysconfig.h telnet.h typedefs.h \
-uadmin.h userfile.h usertools.h util.h vote.h wholist.h \
+uadmin.h userfile.h usertools.h util.h vote.h wholist.h 

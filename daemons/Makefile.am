@@ -3,10 +3,10 @@ bin_PROGRAMS = server front
 server_SOURCES = server.c
 front_SOURCES = front.c
 
-CFLAGS=-O3 -Wall -I../include
+AM_CFLAGS=-O3 -Wall -I../include
 
 #ifdef USE_MYSQL
-CFLAGS += $(MYSQL_INCLUDE)
+AM_CFLAGS += $(MYSQL_INCLUDE)
 #endif
 
 #ifdef USE_MYSQL

@@ -55,12 +55,12 @@ AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 AC_PATH_PROG(SENDMAIL, sendmail, /usr/lib/sendmail, $PATH /usr/bin /usr/sbin /usr/etc /etc /usr/ucblib)
 if test -n "$SENDMAIL"; then
-  AC_DEFINE(HAVE_SENDMAIL)
+  AC_DEFINE(HAVE_SENDMAIL, [], [Send mail])
 fi
 AC_SUBST(SENDMAIL)
 AC_PATH_PROG(PROG_CAT, cat, /bin/cat, $PATH /usr/bin /usr/sbin /usr/etc /etc /usr/ucblib)
 if test -n "$PROG_CAT"; then
-  AC_DEFINE(HAVE_CAT)
+  AC_DEFINE(HAVE_CAT, [], [Do you have a cat too])
 fi
 AC_SUBST(PROG_CAT)
 
@@ -113,7 +113,7 @@ if test "x$grep_path" != "xno" ; then
       result=`$grep_path MAP_FAILED /usr/include/sys/mman.h`
       if test "x$result" != "x"; then
         echo " yes"
-        AC_DEFINE(HAVE_MAP_FAILED)
+        AC_DEFINE(HAVE_MAP_FAILED, [], [The map is not the territory])
       else
         echo " no"
       fi
@@ -171,7 +171,7 @@ if test ! x${with_mysql} = x && test -d "${with_mysql}"; then
     if test -f "${mysql_dir}/include/mysql.h"; then
         MYSQL_HEADER="<mysql.h>"
         AC_SUBST(MYSQL_HEADER)
-        AC_DEFINE(USE_MYSQL)
+        AC_DEFINE(USE_MYSQL, [], [My SQL, Your SQL])
         AC_SUBST(MYSQL_INCLUDE)
         AC_SUBST(MYSQL_LIB)
         AC_SUBST(MYSQL_BIN)
@@ -522,7 +522,7 @@ dnl
 echo -n "checking whether to enable icq gateway..."
 if test "x$with_icq" = "xyes"; then
   echo " yes"
-  AC_DEFINE(USE_ICQ)
+  AC_DEFINE(USE_ICQ, [], [I Seek You])
 else
   echo "no"
 fi
@@ -532,7 +532,7 @@ dnl
 echo -n "checking whether to enable ratings..."
 if test "x$with_rating" = "xyes"; then
   echo " yes"
-  AC_DEFINE(USE_RATING)
+  AC_DEFINE(USE_RATING, [], [Ratiosn])
 else
   echo " no"
 fi
@@ -540,7 +540,7 @@ fi
 dnl Use superhero generator?
 echo -n "checking superhero powers..."
 if test "x$with_hero" = "xyes"; then
-  AC_DEFINE(SUPERHERO)
+  AC_DEFINE(SUPERHERO, [], [Masters of the Universe])
   echo " found in /dev/he-man"
 else
   echo " need more spinach (sorry)"
@@ -550,7 +550,7 @@ dnl Check if the proc-animal patch is installed.
 echo -n "checking for proc-animal kernel patch..."
 if test -r /proc/sys/kernel/name; then
     echo " `${PROG_CAT} /proc/sys/kernel/name`"
-    AC_DEFINE(HAVE_ANIMAL)
+    AC_DEFINE(HAVE_ANIMAL, [], [I've got the animal patch])
 else
     echo " nope"
 fi
@@ -560,7 +560,7 @@ if test "x$gawk_path" != "xno" ; then
   os=`echo $target_os | gawk -F'-' '{print $1}'`
   echo -n "checking for sysinfo() call..."
   if test "x$os" = "xlinux" ; then
-    AC_DEFINE(LINUX)
+    AC_DEFINE(LINUX, [], [My name is Linux Torvalds and I pronounce Linux as Linux])
     echo " yes"
   else
     echo " no"

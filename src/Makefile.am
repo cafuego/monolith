@@ -1,7 +1,7 @@
 bin_PROGRAMS = yawc_port yawc_client
-CFLAGS += -O3 -Wall -g 
+AM_CFLAGS = -O3 -Wall -g 
 
-INCLUDES += -I../include
+INCLUDES = -I../include
 
 #ifdef USE_MYSQL
   INCLUDES += $(MYSQL_INCLUDE)

@@ -4,8 +4,8 @@ noinst_LIBRARIES = libicq.a
 
 libicq_a_SOURCES = icqlib.c
 
-CFLAGS += -O3 -Wall -g
-INCLUDES += -I../include
+AM_CFLAGS = -O3 -Wall -g
+INCLUDES = -I../include
 
 #ifdef USE_MYSQL
 INCLUDES += $(MYSQL_INCLUDE)

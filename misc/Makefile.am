@@ -31,9 +31,9 @@ LDADD = -lyawc $(MYSQL_LIB) -L../lib -lmysqlclient
 # this does not work
 # LDADD = -L../lib -lyawc -L/usr/local/mysql/lib -lintl
 
-CFLAGS = -g -O3 -Wall -I../include
+AM_CFLAGS = -g -O3 -Wall -I../include
 
-INCLUDES += -I../include
+INCLUDES = -I../include
 #ifdef USE_MYSQL
 INCLUDES += $(MYSQL_INCLUDE)
 #endif
