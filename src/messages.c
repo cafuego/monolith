@@ -496,26 +496,26 @@ search_via_sql()
     strcat(p,line);
 
     while (list != NULL) {
-        if( strlen(list->result->forum) > 22){
-            list->result->forum[19] = '.';
+        if( strlen(list->result->forum) > 23){
             list->result->forum[20] = '.';
             list->result->forum[21] = '.';
+            list->result->forum[22] = '.';
         }
-        if( strlen(list->result->subject) > 22){
-            list->result->subject[19] = '.';
-            list->result->subject[20] = '.';
-            list->result->subject[21] = '.';
+        if( strlen(list->result->subject) > 18){
+            list->result->subject[15] = '.';
+            list->result->subject[16] = '.';
+            list->result->subject[17] = '.';
         }
-        list->result->forum[22] = '\0';
-        list->result->subject[22] = '\0';
+        list->result->forum[23] = '\0';
+        list->result->subject[18] = '\0';
 
         if (EQ(list->result->flag, "normal")) {
-            sprintf(line, "\1f\1g%5d \1w%3d.\1y%-22s \1g%-18s \1y%-20s \1r%.3f\n", list->result->m_id, list->result->f_id, list->result->forum, list->result->author, ((list->result->subject == NULL) || (EQ(list->result->subject, "(null)"))) ? "[no subject]" : list->result->subject, list->result->score);
+            sprintf(line, "\1f\1g%7d \1w%3d.\1y%-23s \1g%-18s \1y%-18 \1r%.2f\n", list->result->m_id, list->result->f_id, list->result->forum, list->result->author, ((list->result->subject == NULL) || (EQ(list->result->subject, "(null)"))) ? "[no subject]" : list->result->subject, list->result->score);
         } else if (EQ(list->result->flag, "anon") && (strlen(list->result->alias) > 6)) {
             sprintf(tempuser, "'%s'", list->result->alias );
-            sprintf(line, "\1f\1g%5d \1w%3d.\1y%-22s \1g%-18s \1y%-20s \1r%.3f\n", list->result->m_id, list->result->f_id, list->result->forum, tempuser, ((list->result->subject == NULL) || (EQ(list->result->subject, "(null)"))) ? "[no subject]" : list->result->subject, list->result->score);
+            sprintf(line, "\1f\1g%7d \1w%3d.\1y%-23s \1g%-18s \1y%-18 \1r%.2f\n", list->result->m_id, list->result->f_id, list->result->forum, tempuser, ((list->result->subject == NULL) || (EQ(list->result->subject, "(null)"))) ? "[no subject]" : list->result->subject, list->result->score);
         } else {
-            sprintf(line, "\1f\1g%5d \1w%3d.\1y%-22s \1bAnonymous %-8s \1y%-20s \1r%.3f\n", list->result->m_id, list->result->f_id, list->result->forum, config.user, ((list->result->subject == NULL) || (EQ(list->result->subject, "(null)"))) ? "[no subject]" : list->result->subject, list->result->score);
+            sprintf(line, "\1f\1g%7d \1w%3d.\1y%-23s \1bAnonymous %-8s \1y%-18 \1r%.2f\n", list->result->m_id, list->result->f_id, list->result->forum, config.user, ((list->result->subject == NULL) || (EQ(list->result->subject, "(null)"))) ? "[no subject]" : list->result->subject, list->result->score);
         }
         strcat(p,line);
         list = list->next;
