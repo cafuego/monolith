@@ -29,14 +29,17 @@ else
     typeset -i bbs_version=1
 fi
 
+
+svn_version=`svn info | grep Revision | awk -F ': ' '{print $2}'`
+
 # Save new version number back into file.
 #
 echo $bbs_version > .version
 
 echo "#ifdef USE_MYSQL" > $VERSIONFILE
-echo -e "  #define BBS_VERSION\t\"Mono 2.061 (build $bbs_version) - `uname -m` `uname -s` `uname -r` - MySQL \" MYSQL_SERVER_VERSION" >> $VERSIONFILE
+echo -e "  #define BBS_VERSION\t\"Mono 2.061 (build $svn_version.$bbs_version) - `uname -m` `uname -s` `uname -r` - MySQL \" MYSQL_SERVER_VERSION" >> $VERSIONFILE
 echo "#else" >> $VERSIONFILE
-echo -e "  #define BBS_VERSION\t\"Mono 2.061 (build $bbs_version) - `uname -m` `uname -s` `uname -r`\"" >> $VERSIONFILE
+echo -e "  #define BBS_VERSION\t\"Mono 2.061 (build $svn_version.$bbs_version) - `uname -m` `uname -s` `uname -r`\"" >> $VERSIONFILE
 echo "#endif" >> $VERSIONFILE
 
 # Add build base dir and version as integer.
