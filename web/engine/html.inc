@@ -131,6 +131,7 @@ function html_do_logout($username, $hostname) {
     $online = mysql_result($result, 0, "online");
 
     $result = MYSQL_QUERY("DELETE FROM online WHERE user_id=$usernum AND interface='web'");
+    $result = MYSQL_QUERY("DELETE FROM webx WHERE recipient=$usernum AND i_recipient='web'");
     $result = MYSQL_QUERY("INSERT INTO login (user_id,login,logout,host) VALUES($user_id,FROM_UNIXTIME($login),FROM_UNIXTIME($logout),SEC_TO_TIME($online),'$hostname')");
 
     print "<meta http-equiv=\"Refresh\" content=\"10; url=http://monolith.yawc.net/\">\n";
@@ -214,6 +215,7 @@ function html_print_foot($username, $starttime, $location) {
 
         echo "<div align=\"center\">\n";
         addbutton("Check Xes", "$location");
+        addbutton("Old X Log", "/bbs/index.phtml/o");
         addbutton("Wholist", "/bbs/index.phtml/w");
         addbutton("Quadrants", "/bbs/index.phtml/l");
         addbutton("Unread", "/bbs/index.phtml/u");
@@ -273,6 +275,7 @@ function html_print_buttons($username, $location) {
     echo "". addbutton("Main Page", "/bbs/index.phtml/") ."<br>\n";
     echo "". addbutton(" ", "") ."<br>\n";
     echo "". addbutton("Check Xes", "$location") ."<br>\n";
+    echo "". addbutton("Old X Log", "/bbs/index.phtml/o") ."<br>\n";
     echo "". addbutton("Wholist", "/bbs/index.phtml/w") ."<br>\n";
     echo "". addbutton("Quadrants", "/bbs/index.phtml/l") ."<br>\n";
     echo "". addbutton("Unread", "/bbs/index.phtml/u") ."<br>\n";

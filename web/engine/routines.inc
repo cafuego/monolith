@@ -244,6 +244,7 @@ function list_x_messages($username,$location) {
             $reply = rawurlencode($user);
 
             $bing = MYSQL_QUERY("UPDATE webx SET status='read' WHERE id=$id");
+            $bing = MYSQL_QUERY("UPDATE webx SET stamp=NOW() WHERE id=$id");
 
             print "<tr>\n";
             print "  <td align=\"left\" bgcolor=\"#333333\">\n";
@@ -271,8 +272,6 @@ function list_x_messages($username,$location) {
             $interface = mysql_result($result,$i,"interface");
             $date = mysql_result($result,$i,"date");
 
-            $bing = MYSQL_QUERY("DELETE FROM webx WHERE id=$id");
-
             print "<tr>\n";
             print "  <td align=\"left\">\n";
             print "    <p align=\"left\"><li><font color=\"#00cc00\">eXpress Message to <a href=\"/bbs/index.phtml/x/$user/$interface/$location\">$user@$interface</a> was read at $date CET</font>.\n";
@@ -285,6 +284,47 @@ function list_x_messages($username,$location) {
 
     }
 
+}
+
+function x_log($username,$location) {
+
+    $user_id = get_usernum($username);
+
+    connect_db();
+
+    $result = MYSQL_QUERY("SELECT w.id AS id,u.username AS user,w.sender AS sender,w.i_sender AS i_sender,w.recipient AS recipient,w.message AS message,DATE_FORMAT(w.date, '%H:%i') AS date,DATE_FORMAT(w.stamp, '%H:%i') AS stamp FROM webx AS w LEFT JOIN user AS u ON u.id=w.sender WHERE w.recipient=$user_id AND w.status='read' AND w.i_recipient='web' ORDER BY w.date ASC");
+    $number = MYSQL_NUMROWS($result);
+    if ($number) {
+        if($number == 1)
+            addimage( "You have 1 eXpress message in your log" );
+        else
+            addimage( "You have $number eXpress messages in your log" );
+
+        print "<table border=\"0\" cellpadding=\"2\" cellspacing=\"4\" align=\"center\">\n";
+        $i = 0;
+        while ($i < $number) {
+
+            $id = mysql_result($result,$i,"id");
+            $user = mysql_result($result,$i,"user");
+            $sender = mysql_result($result,$i,"sender");
+            $i_sender = mysql_result($result,$i,"i_sender");
+            $recipient = mysql_result($result,$i,"recipient");
+            $message = mysql_result($result,$i,"message");
+            $date = mysql_result($result,$i,"date");
+            $stamp = mysql_result($result,$i,"stamp");
+            $reply = rawurlencode($user);
+
+            print "<tr>\n";
+            print "  <td align=\"left\" bgcolor=\"#333333\">\n";
+            print "    <p align=\"left\"><font color=\"#00cc00\">eXpress Message from <a href=\"/bbs/index.phtml/x/$reply/$i_sender/$location\">$user@$i_sender</a> to <font color=\"#ffff00\">$username@web</font> at </font>(<font color=\"#00cc00\">$date</font>) <font color=\"#00cc00\">$date</font>(read at $stamp)</font>\n";
+            print "    <font color=\"#00cccc\"><pre>$message</pre></font>\n";
+            print "  </td>\n";
+            print "</tr>\n";
+
+            $i++;
+        }
+        print "</table>\n";
+    }
 }
 
 function colorize($doing) {
@@ -408,6 +448,10 @@ function main_menu($username, $current_url) {
         case "n":
             require ('engine/quad.inc');
             list_messages($username,$quad, 1);
+            break;
+
+        case "o":
+            x_log($username,$location);
             break;
 
         case "q":
