@@ -50,3 +50,4 @@ extern void get_newmessage_alias(post_t * const);
 extern int format_post_subjectline(const post_t * const, char *, int);
 extern int format_post_formatline(const post_t * const, char *, char *, int);
 extern int process_post(const post_t *const, const char *, const char *, const int);
+extern void x_to_mail( const char *, char *);

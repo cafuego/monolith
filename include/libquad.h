@@ -3,6 +3,7 @@
 /* prototypes */
 char * post_to_file(int quadno, long number, const char *name);
 extern int change_RAship( int room, const char *rausername, int action);
+extern int change_QL(int, const char *, int);
 
 extern int may_read_room(user_t user, room_t room, int a);
 extern int may_write_room(user_t user, room_t room, int a);

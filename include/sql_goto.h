@@ -4,4 +4,6 @@
 
 #define GOTO_TABLE	"goto"
 
-int mono_sql_random_goto(char *string);
+extern char * mono_sql_random_goto(void);
+extern int mono_sql_add_goto(char *);
+
