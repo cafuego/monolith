@@ -21,8 +21,11 @@
 #include "monolith.h"
 #include "monosql.h"
 #include "routines.h"
-#include "sql_forum.h"
 #include "sql_utils.h"
+
+#define extern
+#include "sql_forum.h"
+#undef extern
 
 /* nasty comaptible stuff */
 int

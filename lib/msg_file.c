@@ -11,8 +11,11 @@
 #include <dirent.h>
 
 #include "monolith.h"
+
 #include "libfriends.h"
 #include "routines.h"
+#include "libcache.h"
+#include "userfile.h"
 #include "libquad.h"
 #include "sql_user.h"
 
