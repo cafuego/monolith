@@ -399,7 +399,7 @@ function addbutton( $text, $url ) {
     // To change all images in one go.
     // Image parser only knows basics tho!
     //
-    $font = "Myriad_I";
+    $font = "Centurygothic_BI";
     $size = 12;
     $colour = "yellow";
     $imgtext = strtr($text, "/", "\\");
