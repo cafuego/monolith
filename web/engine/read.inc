@@ -78,12 +78,12 @@ function read_message($username, $quad, $current, $direction) {
                 // Don't let guests be able to post.
                 //
                 print "<p align=\"center\" style=\"font: 10pt helvetica;\">\n";
-                if( $username != "Guest" ) {
-                    print "<a href=\"/bbs/index.phtml/f/$quad/$m_id\">Reply</a> | \n";
-                    print "<a href=\"/bbs/index.phtml/e/$quad/$m_id\">New message</a> | \n";
-                }
                 print "<a href=\"/bbs/index.phtml/r/$quad/$m_id/n\">Read Next</a> | \n";
                 print "<a href=\"/bbs/index.phtml/r/$quad/$m_id/p\">Read Previous</a>\n";
+                if( $username != "Guest" ) {
+                    print "| <a href=\"/bbs/index.phtml/f/$quad/$m_id\">Reply</a> | \n";
+                    print "<a href=\"/bbs/index.phtml/e/$quad/$m_id\">New message</a>\n";
+                }
 
                 // Update lastseen!
                 //
