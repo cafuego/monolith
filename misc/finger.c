@@ -20,6 +20,8 @@
 #include "monolith.h"
 #include "libmono.h"
 
+#include "sql_web.h"
+
 extern char *wholist(int level, const user_t * user);
 
 #undef FINGER_DISABLED
@@ -48,7 +50,11 @@ main(int argc, char *argv[] )
     printf("%s", p);
     fflush(stdout);
     xfree(p);
-    strremcol(p = mono_sql_web_wholist(1, NULL));
+
+    mono_sql_connect();
+    strremcol(p = mono_sql_web_wholist());
+    mono_sql_detach();
+
     printf("%s", p);
     fflush(stdout);
     xfree(p);

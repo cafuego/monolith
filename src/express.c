@@ -48,6 +48,7 @@
 #include "sql_web.h"
 
 char x_default[L_USERNAME + L_BBSNAME + 2];
+char web_default[L_USERNAME + 1];
 char chat_default[L_USERNAME + 1];
 express_t *xmsgb[XLIMIT];	/* the XLog */
 char *mySysGuide = NULL;
@@ -641,13 +642,16 @@ get_xmessage_destination(char *xmg_dest, const int X_PARAM, char *override)
 
 	    /* web X */
         } else if (WEB) {
-	    if (strlen(x_default)) {
-		cprintf("\1f\1gRecipient \1w(\1y%s\1w): \1c", x_default);
-		strcpy(xmg_dest, x_default);
+	    if (web_default[0]) {
+		cprintf("\1f\1gRecipient \1w(\1y%s\1w): \1c", web_default);
+		strcpy(xmg_dest, web_default);
 	    } else
 		cprintf("\1f\1gRecipient\1w: \1c");
 	    strcpy( namePtr, get_name(5)); /* was assignment */
-	    strcpy(xmg_dest, namePtr);
+            if(*namePtr)
+	        strcpy(xmg_dest, namePtr);
+	    if (!strlen(xmg_dest))
+		return xmg_dest;
             *override = OR_WEB;
 
 	    /* normal/feeling */
