@@ -27,30 +27,30 @@
 #define UT_TABLE "usertopic"
 
 int
-mono_sql_ut_update_lastseen( unsigned int user_id, unsigned int forum_id, 
+mono_sql_ut_update_lastseen( unsigned int user_id,  
                              unsigned int topic_id, unsigned int message_id )
 {
     int ret;
     unsigned int dummy;
     MYSQL_RES *res;
 
-    ret = mono_sql_ut_query_lastseen( user_id, forum_id, topic_id, &dummy ) ;
+    ret = mono_sql_ut_query_lastseen( user_id, topic_id, &dummy ) ;
     if ( ret == -1 ) {
-         mono_sql_ut_add_entry( user_id, forum_id, topic_id );
+         mono_sql_ut_add_entry( user_id, topic_id );
     }
 
     /* make this into an sql query that also checks if room & user exist */
     ret = mono_sql_query(&res,
 			 "UPDATE " UT_TABLE " SET lastread=%u "
-                         "WHERE topic_id=%u AND user_id=%u AND forum_id=%u"
-                , message_id, topic_id, user_id, forum_id );
+                         "WHERE topic_id=%u AND user_id=%u"
+                , message_id, topic_id, user_id );
     mono_sql_u_free_result(res);
 
     return ret;
 }
 
 int
-mono_sql_ut_query_lastseen( unsigned int user_id, unsigned int forum_id, 
+mono_sql_ut_query_lastseen( unsigned int user_id,
                              unsigned int topic_id, unsigned int *message_id )
 {
     int ret;
@@ -61,8 +61,8 @@ mono_sql_ut_query_lastseen( unsigned int user_id, unsigned int forum_id,
     /* make this into an sql query that also checks if room & user exist */
     ret = mono_sql_query(&res,
 		 "SELECT lastread FROM " UT_TABLE " "
-                 "WHERE topic_id=%u AND user_id=%u AND forum_id=%u"
-                , topic_id, user_id, forum_id );
+                 "WHERE topic_id=%u AND user_id=%u"
+                , topic_id, user_id);
 
     if (ret != 0) {
 	return -1;
@@ -85,16 +85,16 @@ mono_sql_ut_query_lastseen( unsigned int user_id, unsigned int forum_id,
 }
 
 int
-mono_sql_ut_add_entry(unsigned int user_id, unsigned int forum_id,  unsigned int topic_id)
+mono_sql_ut_add_entry(unsigned int user_id, unsigned int topic_id)
 {
     int ret;
     MYSQL_RES *res;
 
     /* make this into an sql query that also checks if room & user exist */
     ret = mono_sql_query(&res,
- 		 "SELECT username,forum.name FROM user, forum "
-      	         "WHERE user.id=%u AND forum.id=%u"
-       	, user_id, forum_id );
+ 		 "SELECT username FROM user "
+      	         "WHERE user.id=%u"
+       	, user_id);
     mono_sql_u_free_result(res);
 
     if (ret != 0) {
@@ -102,19 +102,19 @@ mono_sql_ut_add_entry(unsigned int user_id, unsigned int forum_id,  unsigned int
     }
     ret = mono_sql_query(&res, 
            "INSERT INTO " UT_TABLE 
-	   " (user_id,topic_id,forum_id) VALUES (%u,%u,%u)"
-         , user_id, topic_id, forum_id);
+	   " (user_id,topic_id) VALUES (%u,%u)"
+         , user_id, topic_id);
     return ret;
 }
 
 int
-mono_sql_ut_kill_topic(unsigned int forum_id, unsigned int topic_id )
+mono_sql_ut_kill_topic( unsigned int topic_id )
 {
     int ret;
     MYSQL_RES *res;
 
     ret = mono_sql_query(&res, "DELETE FROM " UT_TABLE 
-          " WHERE topic_id=%u AND forum_id=%u", topic_id, forum_id);
+          " WHERE topic_id=%u", topic_id );
 
     if (ret != 0) {
 	fprintf(stderr, "Some sort of error.\n");
@@ -143,15 +143,15 @@ mono_sql_ut_kill_user(unsigned int userid)
 int
 mono_sql_ut_new_user(unsigned int user_id)
 {
-    unsigned int forum_id;
+    unsigned int topic_id;
     int ret;
     MYSQL_RES *res;
 
-    for (forum_id = 0; forum_id < MAXQUADS; forum_id++) {
+    for (topic_id = 0; topic_id < MAXQUADS; topic_id++) {
 	ret = mono_sql_query(&res,
 		   "INSERT INTO " UT_TABLE 
- 		   "(user_id,topic_id,forum_id) VALUES (%u,%u,%u)"
-			     ,user_id, 0, forum_id);
+ 		   "(user_id,topic_id) VALUES (%u,%u,%u)"
+			     ,user_id, topic_id);
 	if (ret == -1)
 	    printf("\nInsert error");
     }
