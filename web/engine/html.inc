@@ -242,9 +242,10 @@ html_print_foot($username, $starttime, $location)
 	echo "<div align=\"center\">\n";
         if($username != "Guest")
             addbutton("Configuration", "/bbs/index.phtml/c", "Configure your account");
-        if($location != "handler" )
+        if($location != "handler" && $username != "Guest")
 	    addbutton("Check Xes", "$location", "Check for new eXpress messages");
-	addbutton("Old X Log", "/bbs/index.phtml/o", "View your old eXpress messages");
+        if($username != "Guest")
+	    addbutton("Old X Log", "/bbs/index.phtml/o", "View your old eXpress messages");
 	addbutton("Wholist", "/bbs/index.phtml/w", "View who's online right now");
 	addbutton("Quadrants", "/bbs/index.phtml/l", "List all available quadrants");
 	addbutton("Unread", "/bbs/index.phtml/u", "List quadrants with unread messages");
