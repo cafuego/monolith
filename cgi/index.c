@@ -291,7 +291,7 @@ main(int argc, char **argv)
 
     chdir(BBSDIR);
     mono_connect_shm();
-    scratch = read_quad(room);
+    read_forum( room, &scratch );
     mono_detach_shm();
     /* this reads the necessary structure, roominfo, quickroom etc files */
 

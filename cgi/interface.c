@@ -194,7 +194,7 @@ parse_input ()
   number = HIGHEST;
   posttype = MES_NORMAL;
   action = ACT_READ;
-  scratch = read_quad (room);
+  read_forum( room, &scratch );
 
 #ifdef DEBUG
   printf ("<!-- There are %d entries -->\n", number_of_entries);
@@ -281,7 +281,7 @@ parse_input ()
 
   if (room <= 13 || room > MAXQUADS || room < 0)
     room = 0;
-  scratch = read_quad (room);
+  read_forum( room, &scratch );
   if (number == HIGHEST)
     {
       number = scratch.highest;
@@ -1146,7 +1146,7 @@ print_user_stats (user_t * structure)
 	{
 	  if (structure->RA_rooms[a] >= 0)
 	    {
-              bing = read_quad( structure->RA_rooms[a] );
+              read_forum( structure->RA_rooms[a], &bing );
               if (may_read_room (*usersupp, bing, structure->RA_rooms[a])) 
                 {
 	          printf ("<font color=\"#ffffff\">%d.</font> <a href=\"/cgi-bin/interface?action=info&quad=%d\">%s</a><br>", structure->RA_rooms[a], structure->RA_rooms[a], bing.name );
@@ -1334,7 +1334,7 @@ show_room_list ()
       if ( (i > 0 && i < 10) || i == 13 ) 
           continue;
 
-      quickroom_s = read_quad (i);
+      read_forum( i, &quickroom_s );
 
       if ( ! EQ( quickroom_s.category, categories[k] ) )
           continue;

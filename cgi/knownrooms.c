@@ -60,7 +60,7 @@ main(int argc, char **argv)
 //    fprintf( fp , "<TR><TD ALIGN=CENTER COLSPAN=3><H3>The list of known quadrants</H3></TD></TR>\n");
 
     for (i = 0; i < MAXQUADS; i++) {
-	quickroom_s = read_quad(i);
+        read_forum( i, &quickroom_s );
 
 	if (quickroom_s.name[0] != '\0' &&
 	    (!(quickroom_s.flags & QR_PRIVATE) || !(quickroom_s.flags & QR_INUSE)) &&

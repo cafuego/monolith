@@ -7,18 +7,17 @@
 #ifdef HAVE_MYSQL_H
   #undef HAVE_MYSQL_MYSQL_H
   #include <mysql.h>
-  char *getenv();
 #else
   #ifdef HAVE_MYSQL_MYSQL_H
     #undef HAVE_MYSQL_H
     #include <mysql/mysql.h>
-  #else
-    #ifndef NO_STDLIB_H
+ #endif
+    #endif
+
+#ifndef NO_STDLIB_H
       #include <stdlib.h>
     #else
       char *getenv();
-    #endif
-  #endif
 #endif
 
 #include <fcntl.h>
@@ -326,7 +325,7 @@ print_user_stats (user_t * structure)
 	{
 	  if (structure->RA_rooms[a] >= 0)
 	    {
-              bing = read_quad( structure->RA_rooms[a] );
+              read_forum( structure->RA_rooms[a], &bing );
               if (may_read_room (*usersupp, bing, structure->RA_rooms[a])) 
                 {
 	          printf ("<font color=\"#ffffff\">%d.</font> <a href=\"/cgi-bin/interface?a=r&q=%d&message=highest\">%s</a><br>", structure->RA_rooms[a], structure->RA_rooms[a], bing.name );
