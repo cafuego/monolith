@@ -154,6 +154,9 @@ wholist(int level, const user_t * user)
 		else if (r->flags & B_AWAY)
 		    strcat(line, "\1p[\1raway\1p] ");
 
+		else if (r->flags & B_LOCK)
+		    strcat(line, "\1p[\1clock\1p] ");
+
 		/* new flags */
 		else {
 		    q = line + strlen(line);
