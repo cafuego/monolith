@@ -1166,7 +1166,7 @@ _get_monoholic_flag(user_t *user)
 {
     float var = 0;
 
-    var = ((float) user->posted / (float) user->timescalled) + ((float) user->x_s / (float) user->timescalled / 100) + ((float) user->timescalled/4000);
+    var = ((float) user->posted / (float) user->timescalled) + ((float) user->x_s / (float) user->timescalled / 100) + ((float) user->timescalled/4000) + ((float) user->priv / 20000);
 
     if((var < 1.8) || (user->timescalled < 1000))
         return "";
