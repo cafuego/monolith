@@ -172,7 +172,7 @@ wholist(int level, const user_t * user)
 		    (void) sprintf(q, "\1p[%s%s%s"
 				   ,((r->flags & B_DONATOR) ? "\1p$" : " ")
 				   ,((r->flags & B_XDISABLED) ? "\1g*" : ((r->flags & B_GUIDEFLAGGED) ? "\1r?" : " "))
-				   ,((r->flags & B_POSTING) ? "\1y+" : ((xing) ? "\1yx" : ((chat) ? "\1pc" : " "))));
+		                   ,((r->flags & B_POSTING) ? "\1y+" : ((xing) ? "\1yx" : ((chat) ? "\1pc" : ((r->flags & B_INFOUPDATED) ? "\1yi" : " " )))));
 
 		    q = line + strlen(line);
 		    j = cached_name_to_x(r->username);

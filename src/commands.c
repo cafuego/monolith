@@ -1389,6 +1389,7 @@ config_menu()
 		cprintf("Are you sure you want to change your profile (y/n)");
 		if (yesno() == YES) {
 		    change_profile(usersupp);
+                    
 		} else {
 		    cprintf("Okay, not changing it then.\n");
 		}

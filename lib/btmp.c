@@ -175,6 +175,8 @@ mono_remove_loggedin(const char *user)
 *       17 -> change lock status
 *       10 -> xdisable all
 *      -10 -> turn off xdisable all
+*       12 -> user has updated profile.
+*      -12 -> profile outdated again.
 *************************************************/
 
 int
@@ -275,6 +277,13 @@ mono_change_online(const char *user, const char *tmp_string, int ch)
 		case -11:
 		    p->chat = 0;
 		    break;
+
+                case 12:
+                    p->flags |= B_INFOUPDATED;
+                    break;
+                case -12:
+		    p->flags &= ~B_INFOUPDATED;
+                    break;
 
 		case 13:
 		    p->flags ^= B_AWAY;

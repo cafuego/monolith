@@ -469,7 +469,7 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
     if (!fp)
 	return;
 
-    if (file_line_len(fp) > (viewing_user->screenlength - 10)) {
+    if (file_line_len(fp) > (viewing_user->screenlength - 15)) {
 	fclose(fp);
 	cprintf("\n\1a\1f\1gPress \1w<\1rSPACE\1w>\1g to continue or \1w<\1rs\1w>\1g to skip... \1a");
 	cmd = get_single_quiet(" s");
@@ -585,6 +585,7 @@ edit_profile(const user_t * user)
 
     sprintf(work, "%s/profile", getuserdir(user->username));
     editor_edit(work);
+    check_profile_updated();
     return;
 
 }
@@ -622,6 +623,7 @@ change_profile(const user_t * user)
     if (write_profile(user->username, work) == -1) {
 	cprintf("\1r\1fCould not save your profile.\n\1a");
     }
+    check_profile_updated();
     return;
 }
 

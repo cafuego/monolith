@@ -17,3 +17,4 @@ extern int main(int argc, char *argv[] );
 extern void print_login_banner(time_t laston);
 extern int user_terminate(void);
 extern void admin_info( void );
+extern void check_profile_updated( void );

@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/signal.h>
+#include <sys/stat.h>
 #include <sys/types.h>
 #include <time.h>
 #include <unistd.h>
@@ -559,6 +560,7 @@ main(int argc, char *argv[])
     } else {
 	change_express(1);
     }
+    check_profile_updated();		/* set wholist flag? */
 
     nox = 0;
 
@@ -821,4 +823,31 @@ admin_info()
 	voting_booth();
 	are_there_held_xs();
     }
+}
+
+/*
+ * Set wholist flag if profile updated within past 2 days
+ */
+void
+check_profile_updated()
+{
+    char work[L_USERNAME + strlen(USERDIR) + 10];
+    time_t timenow;
+    struct stat buf;
+
+    sprintf(work, "%s/profile", getuserdir(usersupp->username));
+    work[strlen(work)] = '\0';
+
+    if(!(fexists(work)))
+        return;
+
+    time(&timenow);
+    stat(work, &buf);
+
+    if( (timenow - buf.st_mtime) < (2 * 24 * 60 * 60) )
+        mono_change_online(usersupp->username, NULL, 12);
+    else
+        mono_change_online(usersupp->username, NULL, -12);
+
+    return;
 }

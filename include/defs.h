@@ -47,6 +47,7 @@
 #define B_LOCK		256     /* this user has locked their terminal  */
 #define B_AWAY	       512	/* this user is afk */
 #define B_FRIENDS_DISABLED 1024     /* this user has friends disabled  */
+#define B_INFOUPDATED	2048	/* profile was changed within last 2 days */
 
 	/********************/
 
