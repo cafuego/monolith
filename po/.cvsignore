@@ -13,3 +13,5 @@ Makefile.in
 monolith.pot
 es.mo
 es.gmo
+cat-id-tbl.c
+stamp-cat-id
