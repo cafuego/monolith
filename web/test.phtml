@@ -16,7 +16,7 @@ echo "<p>$username/$usernum<br>\n";
 
 if ((($userfile == null || $userfile == "")) || (($userfile != null || $userfile != "") && ($userfile_type != "image/gif" || $userfile_type != "image/jpeg"))) {
     if (($userfile_type != "image/gif") || ($userfile_type != "image/jpeg") || ($userfile_type != "image/png"))
-	&&($userfile != null || userfile != "")
+	&& ($userfile != null || userfile != ""))
 	    echo "<h2 align=\"center\">Invalid file type!</h2>\n";
     echo "<p align=\"center\">Accepted types: GIF, JPEG and PNG.<br>\n";
     echo "<form enctype=\"multipart/form-data\" action=\"/bbs/test.phtml\" method=\"post\"\n";
