@@ -62,10 +62,11 @@ int user_compare(const info_t *, const info_t *);
 /* ----------------------------------------------------------------- */
 
 int
-main(int argc, char **argv)
+main(int argc, char *argv[] )
 {
     set_invocation_name(argv[0]);
     chdir(BBSDIR);
+    mono_sql_connect();
 
     /* read the necessary data */
     mono_connect_shm();
@@ -85,8 +86,9 @@ main(int argc, char **argv)
     /* end */
     xfree(all_users);
     xfree(all_rooms);
-    return 0;
-};
+    mono_sql_detach();
+    return EXIT_SUCCESS;
+}
 
 /************************************************************
 * columnize a character string by insert string appropriately
