@@ -652,6 +652,7 @@ get_xmessage_destination(char *xmg_dest, const int X_PARAM, char *override)
 	        strcpy(xmg_dest, namePtr);
 	    if (!strlen(xmg_dest))
 		return xmg_dest;
+	    strcpy(web_default, xmg_dest);
             *override = OR_WEB;
 
 	    /* normal/feeling */
