@@ -239,6 +239,7 @@ print_system_config()
     char *loadavg = NULL;
     float l1 = 0, l2 = 0, l3 = 0;
     int fd = -1, aproc = 0, iproc = 0;
+    long len = 0;
     struct stat buf;
 
 #ifdef USE_MYSQL
@@ -298,12 +299,12 @@ print_system_config()
      */
     kernel_name = (char *) xmalloc(65 * sizeof(char));
     strcpy(kernel_name, "");
-    (void) read(fd, kernel_name, 64);
+    len = read(fd, kernel_name, 64);
 
     /*
      * Chop trailing \n
      */
-    kernel_name[strlen(kernel_name) - 1] = '\0';
+    kernel_name[len - 1] = '\0';
     (void) close(fd);
 #endif
 
@@ -313,8 +314,8 @@ print_system_config()
     }
     loadavg = (char *) xmalloc(42 * sizeof(char));
     strcpy(loadavg, "");
-    (void) read(fd, loadavg, 41);
-    loadavg[strlen(loadavg)-1] = '\0';
+    len = read(fd, loadavg, 41);
+    loadavg[len-1] = '\0';
     (void) close(fd);
     sscanf(loadavg, "%f %f %f %d/%d", &l1, &l2, &l3, &aproc, &iproc);
     xfree(loadavg);
