@@ -1170,7 +1170,7 @@ _get_monoholic_flag(user_t *user)
     var += (float) user->x_s / (float) user->timescalled / 100;
     var += (float) user->timescalled/4000;
 
-    if((var < 1.8) || (usersupp->timescalled < 1000))
+    if((var < 1.8) || (user->timescalled < 1000))
         return "";
     if(var < 1.8)
         return "\1f\1w* \1yAspiring Monoholic \1w*";
