@@ -587,7 +587,7 @@ format_mod_line(message_header_t * header, char *header_string)
 
     if (usersupp->config_flags & CO_EUROPEANDATE)
 	strftime(datestring, sizeof(datestring) - 1,
-		 "\1g%a %d\1w/\1g%m\1w/\1g%y %I:%M %p", tp);
+		 "\1g%a %d\1w/\1g%m\1w/\1g%y %H:%M", tp);
     else
 	strftime(datestring, sizeof(datestring) - 1,
 		 "\1g%a %m\1w/\1g%d\1w/\1g%y %I:%M %p", tp);
