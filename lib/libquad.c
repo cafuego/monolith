@@ -116,6 +116,17 @@ read_quad(unsigned int num)
     return scratch;
 }
 
+int
+read_forum( unsigned int no, room_t *forum ) 
+{
+    if (!shm) {
+	mono_errno = E_NOSHM;
+	return -1;
+    }
+    /* memcpy( forum, &shm->rooms[no], sizeof( room_t ) ); */
+    *forum = shm->rooms[no];
+    return 0;
+}
 
 /* this function writes the quickroom to shm */
 /* still need to implement locking, and writing to file */
@@ -128,6 +139,19 @@ write_quad(room_t room, int num)
     }
     (void) mono_lock_rooms(1);
     shm->rooms[num] = room;
+    (void) mono_lock_rooms(0);
+    return 0;
+}
+
+int
+write_forum( unsigned int no, room_t * forum )
+{
+    if (!shm) {
+	mono_errno = E_NOSHM;
+	return -1;
+    }
+    (void) mono_lock_rooms(1);
+    shm->rooms[no] = *forum;
     (void) mono_lock_rooms(0);
     return 0;
 }
