@@ -1750,7 +1750,7 @@ new_read_menu(unsigned int forum, int direction)
     mlist_t *list = NULL;
     char tempstr[100];
     char cmd = '\0';
-    int unread = 0, direction = 1;
+    int unread = 0, direction = 0;
 
     /*
      * If no unread messages, exit. (but not now)
@@ -1765,7 +1765,7 @@ new_read_menu(unsigned int forum, int direction)
     /*
      * If we can't list unread messages, exit.
      */
-    if( (mono_sql_mes_list_forum(forum, usersupp->lastseen[forum], list)) == -1)
+    if( (mono_sql_mes_list_forum(forum, usersupp->lastseen[forum], &list)) == -1)
         return;
 
     while( list != NULL ) {
@@ -1775,8 +1775,8 @@ new_read_menu(unsigned int forum, int direction)
         switch(cmd) {
 
            case 'a':
-               if(list != NULL)
-                   cprintf("\1f\1gRead this %s again.\n", config.message );
+               cprintf("\1f\1gRead this %s again.\n", config.message );
+               direction = 0;  
                break;
 
            case 'b':
@@ -1815,7 +1815,7 @@ new_read_menu(unsigned int forum, int direction)
                break;
 
         } /* switch */
-
+  
         switch(direction) {
             case '-1':
                 list = list->prev;
