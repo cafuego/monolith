@@ -46,8 +46,14 @@ function print_title($username, $location) {
             $name = html_get_quadname($username,$quad);
             PRINT "<title>$username@Monolith BBS: Reading message in $name</title>\n";
             break;
+        case "w":
+            PRINT "<title>$username@Monolith BBS: Looking at the Wholist</title>\n";
+            break;
+        case "x":
+            PRINT "<title>$username@Monolith BBS: Sending eXpress message to $quad</title>\n";
+            break;
         default:
-            PRINT "<title>$username@Monolith BBS: Listing unzapped quadrants</title>\n";
+            PRINT "<title>$username@Monolith BBS: Listing available quadrants</title>\n";
             break;
     }
 

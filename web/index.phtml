@@ -65,6 +65,11 @@
             read_message($username,$quad,$message,$direction);
             break;
 
+        case "w":
+            require ('engine/who.inc');
+            show_wholist($username);
+            break;
+
         case "x":
             require ('engine/express.inc');
             express_message($username,$recipient);
