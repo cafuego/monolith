@@ -24,3 +24,7 @@ extern void mono_show_config( unsigned int num);
 
 /*** variables ***/
 extern char profile_default[L_USERNAME+L_BBSNAME+2];
+
+/* more vars */
+
+static char *_locale[] = { "European", "American" };

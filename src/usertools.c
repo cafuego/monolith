@@ -4,6 +4,7 @@
 #include <config.h>
 #endif
 
+#include <ctype.h>
 #include <fcntl.h>
 #include <signal.h>
 #include <stdio.h>
@@ -68,6 +69,9 @@ static void _set_screenlength(const unsigned int, const long, const char *);
 static void _tgl_status_bar(const unsigned int, const long, const char *);
 static void _tgl_use_alias(const unsigned int, const long, const char *);
 static void _tgl_silc(const unsigned int, const long, const char *);
+static unsigned int _get_locale(const unsigned long);
+static void _set_date_display(const unsigned int, const long, const char *);
+static void _set_locale(const unsigned int, const long, const char *);
 
 /* code */
 
@@ -114,10 +118,62 @@ profile_user(void)
     return;
 }
 
-/*************************************************
-* menu_options
-*************************************************/
+/*
+ * <C><m> menu.
+ */
+void
+menu_message(void)
+{
 
+    MENU_DECLARE;
+    char tempstr[100];
+    char mesname[20];
+
+    strcpy(mesname, "");
+    sprintf(mesname, "%s", config.message);
+    mesname[0] = toupper(mesname[0]);
+
+    for (;;) {
+	MENU_INIT;
+	strcpy(tempstr, "");
+	sprintf(tempstr, "\n\1f\1w[\1g%s Options\1w]\n\n", mesname);
+	strcpy(the_menu_format.menu_title, tempstr);
+
+	strcpy(tempstr, "");
+	sprintf(tempstr, "Empty lines around %s", config.message_pl);
+	MENU_ADDITEM(set_usersupp_config_flag, CO_NEATMESSAGES, 0, tempstr,
+	     "tiv", tempstr, "1", (usersupp->config_flags & CO_NEATMESSAGES) ? "1" : "0");
+
+	strcpy(tempstr, "");
+	sprintf(tempstr, "Expanded %s headers", config.message);
+	MENU_ADDITEM(set_usersupp_config_flag, CO_EXPANDHEADER, 0, tempstr,
+	     "tiv", tempstr, "2", (usersupp->config_flags & CO_EXPANDHEADER) ? "1" : "0");
+
+	strcpy(tempstr, "");
+	sprintf(tempstr, "Display %s date", (usersupp->config_flags & CO_LONGDATE) ? "long" : "short");
+	MENU_ADDITEM(_set_date_display, 0, 0, "", "ti", tempstr, "3");
+
+	strcpy(tempstr, "");
+	sprintf(tempstr, "%s date format", _locale[_get_locale(usersupp->config_flags)]);
+	MENU_ADDITEM(_set_locale, 0, 0, "", "ti", tempstr, "4");
+
+	MENU_PROCESS_INTERNALS;
+	MENU_DISPLAY(2);
+	if (!MENU_EXEC_COMMAND)
+	    break;
+	MENU_DESTROY;
+    }
+    writeuser(usersupp,0);
+    MENU_DESTROY;
+#ifdef CLIENTSRC
+    send_update_to_client();
+#endif
+    return;
+}
+
+/*
+ * <C><o> menu.
+ */
 void
 menu_options(void)
 {				/* configure user account */
@@ -214,9 +270,9 @@ menu_options(void)
 			 "tiv", "SILC Enabled",
 			 "N", (cmdflags & C_NOSILC) ? "0" : "1");
 
-        MENU_ADDITEM(online_help_wrapper, 0, 0, "o",
-			 "tiv", "Online Help", 
-			 "?", "0");
+	MENU_ADDITEM(online_help_wrapper, 0, 0, "o",
+		     "tiv", "Online Help",
+		     "?", "0");
 
 #ifdef KNOB_FILTER
 	if (EQ(usersupp->username, "Guest")) {
@@ -266,7 +322,7 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
     if (EQ(viewing_user->username, user->username))
 	control = 1;
 
-    mono_sql_uf_list_hosts_by_user( user->usernum, &p);
+    mono_sql_uf_list_hosts_by_user(user->usernum, &p);
 
     cprintf("\n\1y\1f%s\1g ", user->username);
 
@@ -276,11 +332,12 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
 	cprintf("\1w(** %s%s \1w**) ", SYSOPCOL, config.sysop);
     else if (user->priv & PRIV_TECHNICIAN)
 	cprintf("\1w(* %s%s \1w*) ", PROGRAMMERCOL, config.programmer);
-    else if ( p != NULL )
+    else if (p != NULL)
 #ifdef OLD
-    else if (user->flags & US_ROOMAIDE)
+	else
+	if (user->flags & US_ROOMAIDE)
 #endif
-	cprintf("\1w(* %s%s \1w*) ", ROOMAIDECOL, config.roomaide);
+	    cprintf("\1w(* %s%s \1w*) ", ROOMAIDECOL, config.roomaide);
     if (user->flags & US_GUIDE)
 	cprintf("\1w( %s%s \1w) ", GUIDECOL, config.guide);
     if (user->priv & PRIV_NEWBIE)
@@ -322,7 +379,7 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
 	    cprintf("\1f\1gConfiguration\1w: \1y%s\n", shm->config[user->configuration].bbsname);
     }
 #ifdef OLD
-    if (user->flags & US_ROOMAIDE){
+    if (user->flags & US_ROOMAIDE) {
 	for (a = 0; a < 5; a++)
 	    if (user->RA_rooms[a] >= 0) {
 		if (found_RA_rooms == 0) {
@@ -331,16 +388,16 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
 		}
 		cprintf("%d ", user->RA_rooms[a]);
 	    }
-        cprintf("\1a\1f\1c\n");
+	cprintf("\1a\1f\1c\n");
     }
 #endif
     {
 
-        if ( p != NULL ) {
-            cprintf("\1c\1f%s in: \1g\n", config.roomaide );
-            print_forumlist_list(p);
-            dest_forumlist(p);
-        }
+	if (p != NULL) {
+	    cprintf("\1c\1f%s in: \1g\n", config.roomaide);
+	    print_forumlist_list(p);
+	    dest_forumlist(p);
+	}
     }
 
 /*    IFSYSOP mono_sql_uf_list_hosts_by_user( user->usernum ); */
@@ -977,7 +1034,7 @@ mono_show_config(unsigned int num)
 }
 
 /*  config options statics: */
-void 
+void
 set_usersupp_config_flag(const unsigned int mask, const long foo,
 			 const char *flagname)
 {
@@ -990,9 +1047,8 @@ set_usersupp_config_flag(const unsigned int mask, const long foo,
  * which means we have to display "off" when the flag's really on
  * doesn't effect actual flag, just what the user sees. 
  */
-void 
-set_usersupp_flag(const unsigned int mask, const long reverse,
-		  const char *flagname)
+void
+set_usersupp_flag(const unsigned int mask, const long reverse, const char *flagname)
 {
     usersupp->flags ^= mask;
     if (reverse)
@@ -1063,4 +1119,38 @@ _tgl_silc(const unsigned int x, const long y, const char *z)
 	cprintf("\1f\1cToggle SILC.\1a\n");
 	cmdflags ^= C_NOSILC;
     }
+}
+
+/*
+ * Get locale array id (ugly & nasty but it works for the moment.)
+ * Must at some stage rewrite this lot to use proper system locales.
+ */
+static unsigned int
+_get_locale(const unsigned long config_flags)
+{
+    if (config_flags & CO_EUROPEANDATE)
+        return 0;
+    return 1;
+}
+
+/*
+ * Toggle date format.
+ */
+static void
+_set_locale(const unsigned int frog, const long kiss, const char *prince)
+{
+    usersupp->config_flags ^= CO_EUROPEANDATE;
+    cprintf("\n\1f\1cUsing %s date format.", _locale[_get_locale(usersupp->config_flags)]);
+    return;
+}
+
+/*
+ * Toggle date display.
+ */
+static void
+_set_date_display(const unsigned int bongo, const long bouncing, const char *horse)
+{
+    usersupp->config_flags ^= CO_LONGDATE;
+    cprintf("\n\1f\1cDate display set to %s\1c.", (usersupp->config_flags & CO_LONGDATE) ? "\1wlong" : "\1wshort");
+    return;
 }

@@ -8,6 +8,7 @@
 
 #define HAVE_FUN_C 1
 
+#include <ctype.h>
 #include <stdio.h>
 #include <sys/signal.h>
 #include <string.h>
@@ -580,7 +581,7 @@ feeling()
 
     register char cmd = '\0';
 
-    cprintf("\1f\1gSend Feeling Message.\1a\n");
+    cprintf("\1f\1gSend Feeling %s.\1a\n", config.x_message);
     if (usersupp->flags & US_EXPERT)
 	cprintf("\1f\1gPress \1w<\1r?\1w>\1g for a list of available feelings.\1a\n");
     if ((usersupp->flags & US_COOL) || (usersupp->priv & (PRIV_SYSOP | PRIV_WIZARD)))
@@ -1270,9 +1271,13 @@ void
 config_menu()
 {
 
-    char newb[40];
+    char newb[40], mesname[20];
     register char cmd = '\0';
     int i = 1;
+
+    strcpy(mesname, "");
+    sprintf(mesname, "%s",config.message);
+    mesname[0] = toupper(mesname[0]);
 
     while ((cmd != SP) && (cmd != 13) && (cmd != 'Q')) {
 	IFNEXPERT
@@ -1396,8 +1401,8 @@ config_menu()
 		break;
 
 	    case 'M':
-		cprintf("\1f\1gMessage Menu.\n");
-		message_menu();
+		cprintf("\1f\1g%s Menu.\n", mesname);
+		menu_message();
 		break;
 
 	    case 'O':
@@ -1448,32 +1453,6 @@ config_menu()
 	}
 	which_room("\1gConfig: \1w\1f");
     }
-}
-
-void
-message_menu()
-{
-    int i = 0;
-    register char cmd = '\0';
-
-    while ((cmd != SP) && (cmd != 13) && (cmd != 'Q')) {
-	IFNEXPERT
-	{
-	    cprintf("(Message Options)\n");
-	    more(MENUDIR "/menu_misc", 1);
-	    which_room("\1gMisc: \1w");
-	}
-
-	cmd = get_single_quiet(" Q\013");
-
-	switch (cmd) {
-            default:
-                back(12);
-                return;
-        }
-
-    }
-    return;
 }
 
 void

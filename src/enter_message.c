@@ -43,10 +43,6 @@ static int get_subject(message_t *message);
 static int get_content(message_t *message, int flag);
 static int fill_buffer(char **content);
 
-#ifndef DEBUG_SQL_MES
-  #define DEBUG_SQL_MES
-#endif
-
 /*
  *	1: normal message.
  *	2: upload message.

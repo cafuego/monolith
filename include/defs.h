@@ -169,43 +169,39 @@
 
 #define CO_SHOWFRIENDS	1			/* Show friends-online upon login	*/
 #define CO_USEALIAS	2			/* User wants to use standard alias	*/
-#define CO_WHAKFILTER	4			/* Permanent user			*/
-#define CO_NEATMESSAGES 8                       /* User has colors enabled		*/
-#define CO_EXPANDHEADER 16   			/* Print last old message with new	*/
-#define CO_UNUSED5	32			/* Experienced user			*/
-#define CO_UNUSED6	64			/* pause after screenlength lines	*/
-#define CO_UNUSED7	128			/* Don't prompt after each message	*/
-#define CO_UNUSED8       256			/* hide reginfo from regular users	*/
-#define CO_UNUSED9	512	 		/* Show IP numbers in the wholist	*/
-#define CO_UNUSED10	1024			/* Registered user			*/
-#define CO_UNUSED11	2048			/* sees no flashing ansi-colors		*/
-#define CO_UNUSED12	 4096			/* is BAD: XLogged.			*/
-#define CO_UNUSED13	8192			/* is a SysGuide			*/
-#define CO_UNUSED14	16384			/* is a RoomAide			*/
-#define CO_UNUSED15	32768			/* bold-colors disabled			*/
-#define CO_UNUSED16	65536			/* X's disabled automatically at login	*/
-#define CO_UNUSED17  	131072			/* Cools as ice!     			*/
-#define CO_UNUSED18	262144			/* Not very cool                        */
-#define CO_UNUSED19	524288			/* I am happy donator !                 */
-#define CO_UNUSED20	1048576			/* this user is cloaked         	*/
-#define CO_UNUSED21	2097152			/* this user wants to be notified of logins*/
-#define CO_UNUSED22	4194304			/* this user is invisible		*/
-#define CO_UNUSED23	8388608			/* this user uses mash 			*/
-#define CO_UNUSED24	16777216 		/* user is marked as afk		*/
-#define CO_UNUSED25	33554432 		/* user has hostname hidden in profile	*/
-#define CO_UNUSED26	67108864 		/* user has statusbar enabled		*/
-#define CO_UNUSED27	134217728 		/* user has interbbs access disabled	*/
-#define CO_UNUSED28	268435456 		/* user uses the CLient			*/
-#define CO_UNUSED29	536870912 		/* user has extra admin help enabled	*/
-#define CO_UNUSED30	1073741824 		/* user has command line help disabled	*/
-#define CO_UNUSED31	2147483648 		/* user uses the standard alias		*/
-
-	/********************/
-
-#define NO_LOCALE       0
-#define LOCALE_DEFAULT  1
-#define LOCALE_EUROPE   2
-#define LOCALE_US       3
+#define CO_WHAKFILTER	4			/* general post filter */
+#define CO_NEATMESSAGES 8			/* empty lines around messages */
+#define CO_EXPANDHEADER 16			/* expanded (long) headers */
+#define CO_LONGDATE	32			/* long date format */
+#define CO_EUROPEANDATE	64			/* european (as opposed to US) date format */
+/*
+ * rest is unused sofar
+ */
+#define CO_UNUSED7	128
+#define CO_UNUSED8      256
+#define CO_UNUSED9	512
+#define CO_UNUSED10	1024
+#define CO_UNUSED11	2048
+#define CO_UNUSED12	4096
+#define CO_UNUSED13	8192
+#define CO_UNUSED14	16384
+#define CO_UNUSED15	32768
+#define CO_UNUSED16	65536
+#define CO_UNUSED17  	131072
+#define CO_UNUSED18	262144
+#define CO_UNUSED19	524288
+#define CO_UNUSED20	1048576
+#define CO_UNUSED21	2097152
+#define CO_UNUSED22	4194304
+#define CO_UNUSED23	8388608
+#define CO_UNUSED24	16777216
+#define CO_UNUSED25	33554432
+#define CO_UNUSED26	67108864
+#define CO_UNUSED27	134217728
+#define CO_UNUSED28	268435456
+#define CO_UNUSED29	536870912
+#define CO_UNUSED30	1073741824
+#define CO_UNUSED31	2147483648
 
 	/********************/
 

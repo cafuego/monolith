@@ -4,6 +4,7 @@
 #include <config.h>
 #endif
 
+#include <ctype.h>
 #include <time.h>
 #include <stdio.h>
 #include <string.h>
@@ -95,7 +96,12 @@ online_help(const char context)
 {
 
     MENU_DECLARE;
-    char filename[200];
+    char filename[200], mesname[20], tempstr[100];
+
+    strcpy(mesname, "");
+    sprintf(mesname, "%s",config.message);
+    mesname[0] = toupper(mesname[0]);
+
     for (;;) {
 	MENU_INIT;
 
@@ -139,7 +145,8 @@ online_help(const char context)
 		strcat(the_menu_format.menu_title, "Reading ");
 		break;
 	    case 'X':
-		strcat(the_menu_format.menu_title, "X Message ");
+                sprintf(tempstr, "%s %s ", config.express, config.x_message);
+		strcat(the_menu_format.menu_title, tempstr);
 		break;
 	    case 'C':
 		strcat(the_menu_format.menu_title, "Account Configuration ");
@@ -192,8 +199,10 @@ online_help(const char context)
 	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Bold text enabled", "9");
 	}
 	if (strchr("lsIX", context)) {
+            strcpy(tempstr,"");
+            sprintf(tempstr, "Send quick %s", config.express);
 	    M_FILENAME, HELPDIR, "commands/quick_x");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Send quick X", "9");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", tempstr, "9");
 	}
 	if (strchr("lRI", context)) {
 	    M_FILENAME, HELPDIR, "commands/again");
@@ -224,8 +233,10 @@ online_help(const char context)
 	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Address Change \1w<\1ry\1w>\1gell", "A");
 	}
 	if (strchr("o", context)) {
+            strcpy(tempstr,"");
+            sprintf(tempstr, "Disabled %s at login", config.express);
 	    M_FILENAME, HELPDIR, "commands/co_disx");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Disabled X-es at login", "A");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", tempstr, "A");
 	}
 	if (strchr("lRB", context)) {
 	    M_FILENAME, HELPDIR, "commands/backwards");
@@ -248,8 +259,10 @@ online_help(const char context)
 	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Configure Client", "c");
 	}
 	if (strchr("lsXB", context)) {
+            strcpy(tempstr,"");
+            sprintf(tempstr, "Send Chat %s", config.express);
 	    M_FILENAME, HELPDIR, "commands/chatmsg");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Send Chat Message", "c");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", tempstr, "c");
 	}
 	if (strchr("f", context)) {
 	    M_FILENAME, HELPDIR, "commands/clear_friends");
@@ -408,16 +421,22 @@ online_help(const char context)
 	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Mark all posts as Read", "M");
 	}
 	if (strchr("cCA", context)) {
+            strcpy(tempstr,"");
+            sprintf(tempstr, "%s menu \1w[\1rmenu\1w]", mesname);
 	    M_FILENAME, HELPDIR, "commands/message_options");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Message menu \1w[\1rmenu\1w]", "m");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", tempstr, "m");
 	}
 	if (strchr("lsRB", context)) {
+            strcpy(tempstr,"");
+            sprintf(tempstr, "Read next %s", config.message);
 	    M_FILENAME, HELPDIR, "commands/next");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Read next post", "n");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", tempstr, "n");
 	}
 	if (strchr("lsRA", context)) {
+            strcpy(tempstr,"");
+            sprintf(tempstr, "Read old %s", config.message_pl);
 	    M_FILENAME, HELPDIR, "commands/old");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Read old posts", "o");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", tempstr, "o");
 	}
 	if (strchr("cCB", context)) {
 	    M_FILENAME, HELPDIR, "commands/options");
