@@ -522,13 +522,13 @@ get_buffer(FILE * outputfp, int how, int *lines)
 
 	    switch (cmd) {
 		case 'A':
-		    cprintf("Abort\n");
+		    cprintf("\1f\1rAbort.\n");
 
 		    if (how == 9) {
-			cprintf("Sorry, you HAVE to write this message.\n");
+			cprintf("1\f\1rYou MUST write this %s!\n", config.message);
 			break;
 		    }
-		    cprintf("Are you sure? ");
+		    cprintf("\1f\1gAre you sure? \1w(\1gy\1w/\1gn\1w) \1c");
 		    if (yesno() == NO)
 			break;
 		    (void) unlink(tmpfname);
@@ -536,21 +536,21 @@ get_buffer(FILE * outputfp, int how, int *lines)
 		    return 'a';
 
 		case 'C':
-		    cprintf("Continue (as before)\n");
+		    cprintf("\1f\1gContinue.\n");
 		    break;
 
 		case 'D':
-		    cprintf("Continue (until ctrl-d)\n");
+		    cprintf("\1f\1gContinue until \1w<\1rCTRL-D\1w)\n");
 		    edithow = EDIT_CTRLD;
 		    break;
 
 		case 'E':
-		    cprintf("Continue (in editor)\n");
+		    cprintf("\1f\1gContinue in Editor.\n");
 		    edithow = EDIT_EDITOR;
 		    break;
 
 		case 'I':
-		    cprintf("Insert ClipBoard.\n");
+		    cprintf("\1f\1gInsert ClipBoard.\n");
 		    fp2 = xfopen(CLIPFILE, "r", FALSE);
 		    if (fp2 != NULL) {
 			while (b = getc(fp2), b > 0)
@@ -562,19 +562,19 @@ get_buffer(FILE * outputfp, int how, int *lines)
 		    break;
 
 		case 'N':
-		    cprintf("Continue (normally)\n");
+		    cprintf("\1f\1gContinue.\n");
 		    edithow = EDIT_NORMAL;
 		    break;
 
 		case 'P':
-		    cprintf("Print formatted\n");
+		    cprintf("\1f\1gPrint %s.\n", config.message);
 		    curr_line = 1;
 		    (void) fflush(fp);
 		    more(tmpfname, 1);
 		    break;
 
 		case 'S':
-		    cprintf("Save buffer\n");
+		    cprintf("\1f\1gSave %s.\n", config.message);
 		    *lines = 0;
 
 		    (void) fseek(fp, 0, 0);
@@ -589,11 +589,12 @@ get_buffer(FILE * outputfp, int how, int *lines)
 			(void) fclose(fp);
 			return ('s');
 		    }
-		    cprintf("\1rEmpty posts are not saveable, press <a> to abort.\n");
+		    cprintf("\1f\1rI refuse to save an empty %s. Press \1w<\1rA\1w>\1r to abort.\n", config.message);
 		    break;
 
 		default:
-		    cprintf("oops, you jumped out of the switch in normal_input\n");
+                    log_it("errors", "went clueless in normal_input() due to '%c'", cmd);
+		    cprintf("\1f\1gYou cannot press \1w<\1r%c\1w>\1g at this prompt.\n", cmd);
 		    break;
 	    }
 	    cprintf("\1a\1g");

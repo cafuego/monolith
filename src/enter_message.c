@@ -5,6 +5,7 @@
 #include <config.h>
 #endif
 
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -58,10 +59,12 @@ static void your_forum_is_boring_zzzz_form_letter(FILE *, char *, int);
 int
 enter_message(unsigned int forum, int mode, unsigned long banner_flag, const char *automail_name)
 {
+    size_t filesize = 0;
     room_t quad;
     message_header_t *header;
     userlist_t *recipient_list = NULL;
     int reply, abort = FALSE;
+    char _tmpstr[20];
 
     nox = TRUE;
     reply = (mode == REPLY_MODE) ? 1 : 0;
@@ -128,7 +131,6 @@ enter_message(unsigned int forum, int mode, unsigned long banner_flag, const cha
 	}
     }
     if (!(mode == EDIT_NOEDIT && banner_flag & AUTOBANNER)) {
-	size_t filesize;
 
 	set_wholist_posting_flag(header->banner_type);
 	display_message_header(header);
@@ -138,13 +140,15 @@ enter_message(unsigned int forum, int mode, unsigned long banner_flag, const cha
     }
 
     if (abort < 0 || !filesize) {
-	size_t filesize;
 	filesize = get_filesize(temp);
 
+        strcpy(_tmpstr, config.message);
+        _tmpstr[0] = toupper(_tmpstr[0]);
+
 	if (abort == -1 || !filesize)
-	    cprintf("\1f\1rEmpty %s not saved!\n", config.message_pl);
+	    cprintf("\1f\1rI refuse to save an empty %s.\n", config.message_pl);
 	else if (abort == -2)
-	    cprintf("\1f\1r%s aborted.\n", config.message);
+	    cprintf("\1f\1r%s entry aborted.\n", _tmpstr);
 	xfree(header);
 	dest_userlist(recipient_list);
 	if (fexists(temp))
