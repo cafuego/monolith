@@ -66,6 +66,12 @@ enter_message(unsigned int forum, int mode, unsigned long banner_flag, const cha
     nox = TRUE;
     reply = (mode == REPLY_MODE) ? 1 : 0;
 
+    if( ! reply ) {
+        cprintf("\1f\1gAre you replying to the previous %s? \1w(\1gY\1w/\1gn\1w) \1c", config.message);
+        if(yesno_default(YES) == YES)
+            reply = 1;
+    }
+
     header = (message_header_t *) xmalloc(sizeof(message_header_t));
     init_message_header(header);
     quad = read_quad(forum);
