@@ -1800,7 +1800,7 @@ notify_ql(char *to_user, char *quadname, int nopost)
         to_user,
         "\n\nYour quadrant, \1f\1y",
         quadname,
-        "\1a\1c, has not had any new posts\rfor \1f\1r",
+        "\1a\1c, has not had any new posts\nfor \1f\1r",
         nopost,
         "\1a\1c days. Perhaps you should make a post to get users\ninterested again.\n" );
 
