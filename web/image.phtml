@@ -23,7 +23,7 @@
     //
     $bounds = ImageTTFBBox( $size, 0, $font, $text );
     $width = $bounds[4] + 10;
-    $height = $bounds[3] + 10;
+    $height = (-1 * $bounds[3]) + 10;
 
     echo "<p>0: $bounds[0]\n";
     echo "<p>1: $bounds[1]\n";
