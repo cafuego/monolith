@@ -649,27 +649,9 @@ change_roominfo()
 void
 show_room_aides()
 {
-#ifdef OLD
-    int i;
-#endif 
-
     cprintf("\1f\1g%s\1w: ", config.roomaide);
     print_hosts_simple( curr_rm);
     cprintf( "\n" );
-
-#ifdef OLD
-    if (strlen(quickroom.qls[0]) == 0) {
-	cprintf("\1f\1g%s\1w  : \1ySysop.\1a\n", config.roomaide);
-    } else {
-	cprintf("\1f\1g%s%s\1w : \1y%s\1y", config.roomaide, (strlen(quickroom.qls[1]) == 0) ? " " : "s", quickroom.qls[0]);
-	for (i = 1; i < NO_OF_QLS; i++) {
-	    if (strlen(quickroom.qls[i]) != 0) {
-		cprintf(", %s", quickroom.qls[i]);
-	    }
-	}
-	cprintf(".\n");
-    }
-#endif
     cprintf("\1f\1g%s category\1w: \1y%s\1g.\n", config.forum, quickroom.category);
 }
 
