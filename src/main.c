@@ -61,6 +61,8 @@
 #include "vote.h"
 
 int connecting_flag;
+int first_login = FALSE;
+
 
 char previous_host[L_HOSTNAME + 1];
 
@@ -440,6 +442,7 @@ main(int argc, char *argv[])
             usersupp = (user_t *) xcalloc(1, sizeof(user_t));
 	    if (EQ(username, "new")) {	/* a new user?                  */
 		new_user(hname);
+		first_login = TRUE;
 		usersupp = readuser(username);
 		done = TRUE;
 	    } else {
@@ -535,7 +538,7 @@ main(int argc, char *argv[])
     }
 
     /* ask for the key, if they are not validated yet */
-    if ((!(usersupp->priv & PRIV_VALIDATED)) && usersupp->timescalled > 1)
+    if ((!(usersupp->priv & PRIV_VALIDATED)) && first_login == FALSE )
 	enter_key();
 
     if (usersupp->priv & PRIV_VALIDATED)
@@ -620,7 +623,7 @@ main(int argc, char *argv[])
     for (a = 0; a < MAXQUADS; a++)
 	skipping[a] = 0;
 
-    if (usersupp->timescalled == 1) {
+    if ( first_login == TRUE ) {
 #ifdef QC_ENABLE
 	if (qc_user_menu(1) == -1)	/* qc is horked, or locked out */
 #endif
@@ -768,9 +771,13 @@ print_login_banner(time_t laston)
 {
 
     char filename[50];
+    int timescalled = 0;
+    int ret;
+
+    ret = mono_sql_u_get_login_count( usersupp->usernum, &timescalled );
 
     (void) cprintf(_("\n\1a\1f\1gWelcome to %s, \1g%s! \1gThis is your \1w#%d \1glogin.\n")
-		   , BBSNAME, usersupp->username, usersupp->timescalled);
+		   , BBSNAME, usersupp->username, timescalled);
 
     if ((strncmp(previous_host, "none", 4)) != 0)
 	(void) cprintf(_("\1f\1gLast login: %s \1g\1ffrom \1r%-16.16s\n"),
