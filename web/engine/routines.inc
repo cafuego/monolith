@@ -268,7 +268,7 @@ main_screen($username)
     }
     addimage("Hello, $username. Welcome to Monolith BBS");
 
-    if ($number && ($username != "Guest"))
+    if ($number && (strtolower($username) != "guest"))
 	echo "<p class=\"footer\">Your last login was on $date at $time CET from host '$hostname'.</p>\n";
     else
 	echo "<p class=\"footer\">Unable to retrieve your previous login details.</p>\n";

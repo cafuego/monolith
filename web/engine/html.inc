@@ -191,9 +191,9 @@ html_check_priv($action, $username, $forum_id)
     if (!($forum_id))
 	$forum_id = 0;
 
-    // Username exists?
+    // Username exists? BRIAN BAN!!
     //
-    if ($username == "" || $username == NULL)
+    if ($username == "" || $username == NULL || strtolower($username) == "pabo wakataeo")
 	return -1;
 
     MYSQL_CONNECT("localhost", "root", "") OR DIE("Unable to connect to SQL server");
@@ -241,11 +241,11 @@ html_print_foot($username, $starttime, $location)
 	echo "<hr size=\"1\" width=\"400\" align=\"center\">\n";
 
 	echo "<div align=\"center\">\n";
-        if($username != "Guest")
+        if(strtolower($username) != "guest")
             addbutton("Configuration", "/bbs/index.phtml/c", "Configure your account");
-        if($location != "handler" && $username != "Guest")
+        if($location != "handler" && strlolower($username) != "guest")
 	    addbutton("Check Xes", "$location", "Check for new eXpress messages");
-        if($username != "Guest")
+        if(strtolower($username) != "guest")
 	    addbutton("Old X Log", "/bbs/index.phtml/o", "View your old eXpress messages");
 	addbutton("Wholist", "/bbs/index.phtml/w", "View who's online right now");
 	addbutton("Quadrants", "/bbs/index.phtml/l", "List all available quadrants");
@@ -307,7 +307,7 @@ html_print_buttons($username, $location)
 
     // Guests may not configure.
     // 
-    if ($username != "Guest")
+    if (strtolower($username) != "guest")
         echo "".addbutton("Configuration", "/bbs/index.phtml/c", "Configure your account")."<br>\n";
     
     // Don't call a reload if we just submitted data via a form.
