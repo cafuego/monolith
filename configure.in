@@ -21,8 +21,9 @@ AC_PROG_RANLIB
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 
-dnl Check for awk - used to determine if we're linux or not.
+dnl Check for awk/gawk - used to determine if we're linux or not.
 AC_PATH_PROG(awk_path,awk,no)
+AC_PATH_PROG(gawk_path,gawk,no)
 
 dnl Checks for libraries.
 dnl Replace `main' with a function in -lgdbm:
@@ -52,20 +53,29 @@ AC_FUNC_MMAP
 AC_CHECK_FUNCS(gethostname mkdir regcomp socket strcspn strdup strftime strspn strstr)
 
 dnl Define LINUX if this is a linux system.
-if test "x$awk_path" != "xno" ; then
-  os=`echo $target_os | awk -F'-' '{print $1}'`
-  if test $os = linux ; then
+if test "x$gawk_path" != "xno" ; then
+  os=`echo $target_os | gawk -F'-' '{print $1}'`
+  if test "x$os" = "xlinux" ; then
     AC_DEFINE(LINUX)
   fi
+else
+  if test "x$awk_path" != "xno" ; then
+    os=`echo $target_os | awk -F'-' '{print $1}'`
+    if test "x$os" = "xlinux" ; then
+      AC_DEFINE(LINUX)
+    fi
+  fi
+
 fi
 
-if test $with_mysql = yes ; then
+dnl Do a bit of mysql checking.
+if test "x$with_mysql" = "xyes" ; then
   echo
   echo -n "Checking MySQL installation..."
-  if test $ac_cv_header_mysql_h = no ; then
+  if test "x$ac_cv_header_mysql_h" = "xno" ; then
     echo " hmmm..."
     AC_CHECK_HEADERS(mysql/mysql.h)
-    if test $ac_cv_header_mysql_mysql_h = no ; then
+    if test "x$ac_cv_header_mysql_mysql_h" = "xno" ; then
       echo " whoops!"
       echo
       echo "ARGH: Unable to locate mysql!"
