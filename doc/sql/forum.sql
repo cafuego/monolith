@@ -35,7 +35,6 @@ CREATE TABLE forum (
    stamp	TIMESTAMP,
 
    PRIMARY KEY ( id ),
-   INDEX( name ),
    UNIQUE( name )
 
 )

@@ -1,14 +1,12 @@
-#
-# Country info's in SQL. (Makes bbs binary MUCH smaller)
-#
+# Country info's in SQL.
 
-# DROP TABLE country;
+DROP TABLE country;
 
 CREATE TABLE country (
 
     code	CHAR(2) NOT NULL,
 # code: `uk' for united kingdom: some ISO standard
-    phone	NUMERIC(2,0),
+    phone	CHAR(2),
 # international dial code: 31 for holland
     englishname CHAR(50) NOT NULL,
 # 'The Netherlands'
@@ -20,4 +18,6 @@ CREATE TABLE country (
 
     PRIMARY KEY  ( code ),
     UNIQUE ( englishname )
-)
+);
+
+insert into country values ('nl', '31', 'The Netherlands', 'Nederland', 'nl' )
