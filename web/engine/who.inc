@@ -35,6 +35,7 @@ function show_wholist($username, $location)
 	echo "<table border=\"0\" cellpadding=\"4\" cellspacing=\"2\" align=\"center\">\n";
 	echo "<tr>\n";
 	echo "  <th align=\"left\"><p align=\"left\">Username</th>\n";
+	echo "  <th align=\"left\"><p align=\"left\"></th>\n";
 	echo "  <th align=\"left\"><p align=\"left\">Doing</th>\n";
 	echo "  <th align=\"right\"><p align=\"right\">Online for</th>\n";
 	echo "  <th align=\"right\"><p align=\"right\">Via</th>\n";
@@ -60,6 +61,9 @@ function show_wholist($username, $location)
 	    echo "<tr>\n";
 	    echo "  <td align=\"left\">\n";
 	    echo "    <p align=\"left\"><a href=\"/bbs/index.phtml/x/$url_user/$interface/$location\" ".mouseover("Send an eXpress message to $user").">$user</a>\n";
+	    echo "  </td>\n";
+	    echo "  <td align=\"left\">\n";
+	    echo "    <p align=\"left\"> <a href=\"/bbs/index.phtml/p/$url_user\">P</a> \n";
 	    echo "  </td>\n";
 	    echo "  <td align=\"left\">\n";
 	    echo "    <p align=\"left\"><font color=\"#00cc00\">$doing</font>\n";

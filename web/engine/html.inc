@@ -243,9 +243,6 @@ html_print_foot($username, $starttime, $location)
 	addbutton("Wholist", "/bbs/index.phtml/w", "View who's online right now");
 	addbutton("Quadrants", "/bbs/index.phtml/l", "List all available quadrants");
 	addbutton("Unread", "/bbs/index.phtml/u", "List quadrants with unread messages");
-	addbutton("       ", "", "");
-	addbutton("Main Page", "/bbs/", "Go to the main page");
-	addbutton("Log out", "/bbs/index.phtml/q", "Log out");
 	echo "</div>\n";
 
     }

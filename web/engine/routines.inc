@@ -580,6 +580,7 @@ main_menu($username, $current_url)
     $recipient = $url_array[4];	// First arg too.
 
     $victim = $url_array[4];	// First arg too.
+    $victim = rawurldecode($victim);
 
     $message = $url_array[5];	// Second arg.
 
