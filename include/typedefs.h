@@ -36,7 +36,7 @@ struct userlist {
 typedef struct forumlist forumlist_t;
 struct forumlist {
     char name[L_QUADNAME+1];
-    unsigned int forumnum;
+    unsigned int forum_id;
     forumlist_t *next;
 };
 
