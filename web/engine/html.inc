@@ -166,7 +166,7 @@ html_do_logout($username, $hostname)
     $result = MYSQL_QUERY("INSERT INTO login (user_id,login,logout,host) VALUES($usernum,FROM_UNIXTIME($login),FROM_UNIXTIME($logout),SEC_TO_TIME($online),'$hostname')");
     $result = MYSQL_QUERY("UPDATE user SET login_count=login_count+1 WHERE id=$usernum");
 
-    print "<meta http-equiv=\"Refresh\" content=\"10; url=http://$BBSNAME.student.utwente.nl/\">\n";
+    print "<meta http-equiv=\"Refresh\" content=\"10; url=http://monolith.student.utwente.nl/\">\n";
 
 }
 

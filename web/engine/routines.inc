@@ -250,6 +250,8 @@ function
 main_screen($username)
 {
 
+    global $BBSNAME;
+
     // Get details from last login.
     //
     connect_db();

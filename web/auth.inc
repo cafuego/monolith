@@ -1,7 +1,5 @@
 <?php
 
-  global $PHP_AUTH_USER, $PHP_AUTH_PW;
-
   function auth_verify_password( $username, $password ) {
 
     global $MYSQL_SERVER, $MYSQL_USER, $MYSQL_PASS, $MYSQL_DATABASE, $PHP_AUTH_USER, $PHP_AUTH_PW;
