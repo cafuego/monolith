@@ -10,7 +10,10 @@
     $sender = rawurldecode($sender);
     $recipient = rawurldecode($recipient);
     $interface = rawurldecode($interface);
+    $location = rawurldecode($location);
+    $location = strtr($location, "-", "/");
     print "<title>$sender@Monolith BBS: Sending eXpress message to $recipient@$interface</title>\n";
+    print "<meta http-equiv=\"Refresh\" content=\"5; url=http://monolith.yawc.net$location\">
 
 ?>
 
@@ -59,6 +62,8 @@
         print "<h3 align=\"center\">eXpress message to $recipient@$interface could not be saved due to an error</h3>\n";
         echo "<h2 align=\"center\">". mysql_error() ."</h2>\n";
     }
+
+    print "<h3 align=\"center\">You will be taken <a href=\"$location\">back</a> in 5 seconds.\n";
 
     require ('engine/html.inc');
     html_print_foot($username, $starttime);

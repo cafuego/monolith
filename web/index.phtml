@@ -41,7 +41,7 @@
     require ("engine/routines.inc");
 
     // Pick url open into commands.
-    $location=strtr($url_array, "/", "-");
+    $location=strtr($REQUEST_URI, "/", "-");
     $url_array=explode("/",$REQUEST_URI);
 
     // Assign values so we can use 'em.
