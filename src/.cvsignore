@@ -1,3 +1,4 @@
+.deps
 bbsconfig.o
 c_commands.o
 c_display_message.o
