@@ -379,21 +379,9 @@ function colorize($doing) {
 
 function errorsound() {
 
-    // echo "<object src=\"/bbs/sound/error.aiff\" type=\"audio/x-aiff\" autostart=\"true\" hidden=\"true\" loop=\"false\">\n";
-    // echo "  <embed src=\"/bbs/sound/error.aiff\" type=\"audio/x-aiff\" autostart=\"true\" hidden=\"true\" loop=\"false\">\n";
-    // echo "    <noembed>[ <a href=\"/bbs/sound/error.aiff\">sound: error mesage</a> ]</noembed>\n";
-    // echo "  </embed>\n";
-    // echo "</object>\n";
-
     echo "\n    <!-- error sound -->\n";
-    echo "    <embed src=\"/bbs/sound/error.au\" autoplay=\"true\" autostart=\"true\" hidden=\"false\" loop=\"false\">\n";
+    echo "    <embed src=\"/bbs/sound/error.au\" autoplay=\"true\" autostart=\"true\" hidden=\"false\" loop=\"false\" bgcolor=\"#000\">\n";
     echo "    </embed>\n\n";
-
-    // echo "<object src=\"/bbs/sound/error.au\" type=\"audio/basic\" autostart=\"true\" hidden=\"true\" loop=\"false\">\n";
-    // echo "</object>\n";
-    // echo "<embed src=\"/bbs/sound/error.au\" type=\"audio/basic\" autostart=\"true\" hidden=\"true\" loop=\"false\">\n";
-    // echo "  <noembed>[ <a href=\"/bbs/sound/error.au\">sound: error mesage</a> ]</noembed>\n";
-    // echo "</embed>\n";
 
 }
 
@@ -443,7 +431,9 @@ function errorimage( $text ) {
     $imgtext = rawurlencode($imgtext);
 
     echo "<div align=\"center\">\n";
+    echo "<center>\n";
     echo "<img align=\"center\" src=\"/bbs/image.phtml/$font,$size,red/$imgtext/\" alt=\"[ image: $text ]\">\n";
+    echo "</center>\n";
     echo "</div>\n";
 
 }
