@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
+#include <time.h>
 #include <unistd.h>
 
 #include "monolith.h"
@@ -166,18 +167,28 @@ toggle_hidden_info(user_t * user)
 	user->flags ^= US_NOHIDE;
     }
     do {
-	cprintf("\ncf-------------------------------------------------------\n");
+        time_t online_for;
 
-	cprintf("wThis is your info as it is visible for other users:\n\n");
+        online_for = (time(0) - user->laston_from) / 60;
+
+	cprintf("\1f\1c---- This is your info as it is visible for other users:\n");
+    
+	cprintf("\1f\1y%s\1g\n", user->username);
 	dis_regis(user, FALSE);
 
-	if (user->flags & US_HIDDENHOST)
-	    cprintf("\1f\1gYour hostname is hidden for other people.\n");
-	else
-	    cprintf("\1f\1gOther people can see your hostname.\n");
+        cprintf("\1r\1fONLINE \1cfor \1y%ld:%2.2ld \1c",
+		 online_for / 60, online_for % 60);
 
-	cprintf("\nfwThis is your full info:\n\n");
+        if (!(usersupp->flags & US_HIDDENHOST))
+            cprintf("from \1r%s\1c", user->lasthost);
+
+	cprintf("\n\n\1f\1c---- This is your full info:\n");
+
+	cprintf("\1f\1y%s\1g\n", user->username);
 	dis_regis(user, TRUE);
+        cprintf("\1r\1fONLINE \1cfor \1y%ld:%2.2ld \1c",
+		 online_for / 60, online_for % 60);
+        cprintf("from \1r%s\1c\n", user->lasthost);
 
 	more(MENUDIR "/menu_hide_info", 1);
 	cmd = get_single_quiet("123456789anq? ");

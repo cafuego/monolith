@@ -76,9 +76,13 @@ new_user(const char *hostname)
     newuser_getpasswd(usersupp);
     newuser_registration(usersupp);
 
-    test_ansi_colours(usersupp);	/* russ */
+    test_ansi_colours(usersupp);
     cprintf("\1f\1g");
     more(BBSDIR "share/newuser/hideinfo", 0);
+    usersupp->hidden_info = H_REALNAME | H_ADDRESS | H_CITY | H_COUNTRY
+		    | H_PHONE | H_EMAIL | H_URL | H_BIRTHDAY;
+    usersupp->flags |= US_HIDDENHOST;
+
     cprintf("\n\1f\1gPress a key to continue.. \1a");
     inkey();
     toggle_hidden_info(usersupp);
