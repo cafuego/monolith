@@ -57,9 +57,19 @@ check_user(const char *name)
 int
 check_password(const user_t * user, const char *password)
 {
+    char salt[3];
+
     if (!user || !password || !strlen(password))
 	return FALSE;
-    if (strcmp(crypt(password, CRYPTKEY), user->password) == 0)
+
+    strncpy( salt, user->password, 2 );
+    salt[2] = '\0';
+
+#ifdef DEBUG
+    printf( "debug: salt: %s", salt ); 
+#endif
+
+    if (strcmp(crypt(password, salt), user->password) == 0)
 	return TRUE;
     else
 	return FALSE;

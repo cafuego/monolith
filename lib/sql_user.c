@@ -9,6 +9,12 @@
 
 #include <stdio.h>
 #include <assert.h>
+#include <unistd.h>
+
+#ifdef HAVE_CRYPT_H
+#include <crypt.h>
+#endif
+
 #include <mysql.h>
 
 #include "monolith.h"
@@ -57,6 +63,59 @@ mono_sql_u_add_user(const char *username)
     return ret;
 }
 
+/* SET PASSWORD */
+int
+mono_sql_u_set_passwd( unsigned int user_id, const char *passwd )
+{
+    MYSQL_RES *res;
+    int ret;
+    char cryp[14];
+    char salt[3];
+
+    /* generate salt */
+    strcpy( salt, "Lu" );
+
+    strcpy( cryp, crypt( passwd, salt ) );
+
+    ret = mono_sql_query(&res, "UPDATE " U_TABLE " SET password='%s' WHERE id=%u", cryp, user_id);
+
+    return ret;
+}
+
+
+int
+mono_sql_u_check_passwd( unsigned int user_id, const char *passwd )
+{
+    MYSQL_RES *res;
+    MYSQL_ROW row;
+    int ret;
+    char cryp[14];
+    char salt[2];
+
+    strncpy( salt, passwd, 2 );
+    salt[2] = '\0';
+
+    ret = mono_sql_query(&res, "SELECT password FROM " U_TABLE " WHERE id=%u", cryp);
+
+    strcpy( cryp, crypt( passwd, salt ) );
+
+    if ( ret == -1) {
+	fprintf(stderr, "No results from query.\n");
+	return FALSE;
+    }
+    if (mysql_num_rows(res) != 1) {
+        return FALSE;
+    }
+
+    row = mysql_fetch_row(res);
+
+    ret = strcmp( row[0], crypt( passwd, salt ) );
+
+    mysql_free_result(res);
+
+    if ( ret == 0 ) return TRUE;
+    return FALSE;
+}
 
 /* REMOVE BY USERID */
 int
