@@ -7,7 +7,7 @@ AC_CANONICAL_SYSTEM
 
 AM_INIT_AUTOMAKE(monolith, 1.0)
 AC_CONFIG_HEADERS(config.h)
-AC_PREFIX_DEFAULT(/usr/bbs)
+AC_PREFIX_DEFAULT(/usr/local/bbs)
 
 AC_ARG_WITH(name, [  --with-name=NAME        set the BBS name [default=Monolith]],,with_name=Monolith)
 AC_ARG_WITH(mysql, [  --with-mysql[=DIR]      use mysql database system  [default=yes]
@@ -17,11 +17,11 @@ AC_ARG_WITH(mysql, [  --with-mysql[=DIR]      use mysql database system  [defaul
     options, which the BBS will use to connect to the MySQL Server:],,with_mysql=yes)
 AC_ARG_WITH(sql_host, [    --with-sql_host=HOST  Connect to this MySQL Server [default=localhost]],,with_sql_host=localhost)
 AC_ARG_WITH(sql_user, [    --with-sql_user=USER  Connect using this MySQL username [default=bbs]],,with_sql_user=bbs)
-AC_ARG_WITH(sql_pass, [    --with-sql_pass=PASS  Connect using this MySQL password [default=NULL]],,with_sql_pass=NULL)
+AC_ARG_WITH(sql_pass, [    --with-sql_pass=PASS  Connect using this MySQL password [default=bing]],,with_sql_pass=bing)
 AC_ARG_WITH(sql_db, [    --with-sql_db=DB      Use this MySQL database [default=bbs]],,with_sql_db=bbs)
-AC_ARG_WITH(sql_sock, [    --with-sql_sock=SOCK  Connect via this socket [default=/tmp/mysql.sock]
+AC_ARG_WITH(sql_sock, [    --with-sql_sock=SOCK  Connect via this socket [default=/var/run/mysqld/mysqld.sock]
                           
-Additional --enable and --with options recognized:],,with_sql_sock=/tmp/mysql.sock)
+Additional --enable and --with options recognized:],,with_sql_sock=/var/run/mysqld/mysql.sock)
 AC_ARG_WITH(icq, [  --with-icq              use icq gateway system  [default=yes]
                           (allows bbs users to talk to icq users)],,with_icq=yes)
 AC_ARG_WITH(rating, [  --with-rating           use message rating system  [default=no]
@@ -483,11 +483,11 @@ dnl Additional MySQL options.
 dnl
 
 if test "x${with_sql_pass}" = "x"; then
-    with_mysql_pass="NULL"
+    with_sql_pass="NULL"
 fi
 MYSQL_SERVER=${with_sql_host}
 MYSQL_USER=${with_sql_user}
-MYSQL_PASSWORD=${with_sql_pass}
+MYSQL_PASS=${with_sql_pass}
 MYSQL_DATABASE=${with_sql_db}
 MYSQL_SOCKET=${with_sql_sock}
 

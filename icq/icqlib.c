@@ -1,6 +1,6 @@
 /*
 $Id$
-$Log$
+$Log: icqlib.c,v $
 Revision 1.1  1999/09/28 14:31:28  cafuego
 *** empty log message ***
 
