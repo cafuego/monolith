@@ -14,7 +14,10 @@ $usernum = get_usernum($username);
 
 echo "<p>$username/$usernum<br>\n";
 
-if (($userfile == null || $userfile == "") || ($userfile != null && $userfile != "" && ($userfile_type != "image/gif" || $userfile_type != "image/jpeg"))) {
+if(
+    ($userfile == null || $userfile == "") ||
+    ($userfile != null && $userfile != "" && valid($userfile_type) == 0)
+  )  {
 
     if ($userfile != null && $userfile != "")
 	    echo "<h2 align=\"center\">Invalid file type: \"$userfile_type\"</h2>\n";
@@ -56,6 +59,18 @@ if (($userfile == null || $userfile == "") || ($userfile != null && $userfile !=
 
 }
 
+
+function valid( $file_type ) {
+    if($file_type == "image/gif")
+        return 1;
+    if($file_type == "image/jpeg")
+        return 1;
+    if($file_type == "image/jpg")
+        return 1;
+    if($file_type == "image/png")
+        return 1;
+    return 0;
+}
 
 ?>
 
