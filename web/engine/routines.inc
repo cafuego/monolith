@@ -579,6 +579,8 @@ main_menu($username, $current_url)
 
     $recipient = $url_array[4];	// First arg too.
 
+    $victim = $url_array[4];	// First arg too.
+
     $message = $url_array[5];	// Second arg.
 
     $interface = $url_array[5];	// Second arg too.
@@ -624,6 +626,11 @@ main_menu($username, $current_url)
 
 	case "o":
 	    x_log($username, $location);
+	    break;
+
+	case "p":
+	    require('engine/profile.inc');
+	    profile_user($username, $victim);
 	    break;
 
 	case "q":
