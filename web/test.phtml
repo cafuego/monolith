@@ -8,6 +8,7 @@
 
     require('engine/routines.inc');
 
+    connect_db();
     $username = getenv( "REMOTE_USER" );
     $usernum = get_usernum( $username );
 
@@ -26,12 +27,34 @@
             fclose($fp);
             unlink ($userfile);
             $contents = rawurlencode($contents);
-            $result = mysql_query("UPDATE user SET picture='$contents' WHERE id=1151");
-            $result = mysql_query("UPDATE user SET content_type='$userfile_type' WHERE id=1151");
+            $result = mysql_query("UPDATE user SET picture='$contents' WHERE id=$usernum");
+            $result = mysql_query("UPDATE user SET content_type='$userfile_type' WHERE id=$usernum");
         }
         echo "<p>Hopefully saved your file \"$userfile_name\" ($userfile_size bytes) into the database.\n";
-        echo "<br>\n<br>$contents\n";
     }
+
+    $result = mysql_query("SELECT content_type FROM user WHERE id=$usernum");
+    $number = MYSQL_NUMROWS($result);
+    if($number) {
+        $content_type = mysql_result($result, 0, "content_type");
+        switch($content_type) {
+            case "image/gif":
+                echo "<img src=\"/bbs/pix/gif.php3?$usernum\" width=\"100\">\n;
+                break;
+            case "image/jpeg":
+                echo "<img src=\"/bbs/pix/jpeg.php3?$usernum\" width=\"100\">\n;
+                break;
+            case "image/png":
+                echo "<img src=\"/bbs/pix/png.php3?$usernum\" width=\"100\">\n;
+                break;
+            default:
+                echo "<p>Image is in unsupported format. Use GIF, JPEG or PNG.\n";
+                break;
+        }
+    } else {
+        echo "<p>No image\n";
+    }
+    
 
 ?>
 

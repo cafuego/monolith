@@ -7,8 +7,8 @@
 
     // Find out for which user we do this.
     //
-    $url_array = explode("/", $REQUEST_URI);
-    $user_id = $url_array[3];    // What action?
+    $url_array = explode("?", $REQUEST_URI);
+    $user_id = $url_array[1];    // What action?
     
     // Connect to the database.
     require('../engine/routines.inc');
