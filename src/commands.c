@@ -1282,14 +1282,14 @@ config_menu()
 	    which_room("\1gConfig: \1w\1f");
 	}
 
-	cmd = get_single_quiet("AabBCcDEFHiIKLOPsSTWY\r\b ?/");
+	cmd = get_single_quiet("AabBCcDEFHiIKLMOPsSTWY\r\b ?/");
 
 	IFTWIT
-	    if (strchr("acFDKLHIW", cmd)) {
+	    if (strchr("acDFHIKLMW", cmd)) {
 	    more(TWITMSG, 1);
 	    continue;
 	}
-	if (strchr("AbaCcEFDKIPTWY?", cmd))
+	if (strchr("AbaCcEFIDKMPTWY?", cmd))
 	    nox = 1;
 
 	switch (cmd) {
@@ -1395,6 +1395,11 @@ config_menu()
 		key_menu();
 		break;
 
+	    case 'M':
+		cprintf("\1f\1gMessage Menu.\n");
+		message_menu();
+		break;
+
 	    case 'O':
 		cprintf("\1f\1gOptions.\n");
 		menu_options();
@@ -1429,7 +1434,6 @@ config_menu()
 		break;
 
 	    case '/':
-
 		cprintf("(Config Options)\n");
 		more(MENUDIR "/menu_config", 1);
 		break;
@@ -1446,9 +1450,31 @@ config_menu()
     }
 }
 
-/*************************************************
-* misc_menu()
-*************************************************/
+void
+message_menu()
+{
+    int i = 0;
+    register char cmd = '\0';
+
+    while ((cmd != SP) && (cmd != 13) && (cmd != 'Q')) {
+	IFNEXPERT
+	{
+	    cprintf("(Message Options)\n");
+	    more(MENUDIR "/menu_misc", 1);
+	    which_room("\1gMisc: \1w");
+	}
+
+	cmd = get_single_quiet(" Q\013");
+
+	switch (cmd) {
+            default:
+                back(12);
+                return;
+        }
+
+    }
+    return;
+}
 
 void
 misc_menu()

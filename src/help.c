@@ -407,6 +407,10 @@ online_help(const char context)
 	    M_FILENAME, HELPDIR, "commands/mi_markall");
 	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Mark all posts as Read", "M");
 	}
+	if (strchr("cCA", context)) {
+	    M_FILENAME, HELPDIR, "commands/message_options");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Message menu \1w[\1rmenu\1w]", "m");
+	}
 	if (strchr("lsRB", context)) {
 	    M_FILENAME, HELPDIR, "commands/next");
 	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Read next post", "n");
