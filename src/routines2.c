@@ -366,7 +366,7 @@ print_system_config()
     cprintf("\1wMessages currently in database:\1g %d, %d posted by you ", total, mine);
     printf("(%.2f%%)\n", percent);
 #endif
-    cprintf("\n\1gBuilt from `%s' on %s \1w(\1g Build #%d\1w)\n\1f", BUILD_DIR, printdate(buf.st_mtime, 0), COMPILE_NUM);
+    cprintf("\n\1gBuilt in `%s' on %s \1f\1w(\1g#%d\1w)\n", BUILD_DIR, printdate(buf.st_mtime, 0), COMPILE_NUM);
     cprintf("\1wMachine load                  :\1g ");
     printf("%.2f %.2f %.2f", l1, l2, l3);
     cprintf(" \1w(\1g%d\1w/\1g%d\1w)\n", aproc, iproc);
