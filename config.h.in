@@ -129,9 +129,6 @@
 /* Define to 1 if you have the `strstr' function. */
 #undef HAVE_STRSTR
 
-/* We use Subversion, do you? */
-#undef HAVE_SVN
-
 /* Subversion is installed */
 #undef HAVE_SVN
 
