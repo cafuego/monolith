@@ -200,7 +200,7 @@ escape_string(const char *old_string, char **new_string)
 	ns[j] = old_string[i];
 	j++;
     }
-    ns[j] = 0;
+    ns[j] = '\0';
 
     *new_string = ns;
 

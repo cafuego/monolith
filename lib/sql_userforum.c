@@ -289,7 +289,7 @@ mono_sql_uf_is_host(unsigned int usernumber, unsigned int forumnumber)
 	return FALSE;
     }
     row = mysql_fetch_row(res);
-    if (sscanf(row[0], "%u", &host) == -1)
+    if (sscanf(row[0], "%d", &host) == -1)
 	return FALSE;
     mysql_free_result(res);
     if (host == 0)

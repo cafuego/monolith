@@ -546,7 +546,7 @@ map_file(const char *filename)
      * Open file.
      */
     if( (fd = open(filename, O_RDONLY)) == -1) {
-        (void) log_it("errors", "Cannot open() file: %s, mode: O_RDONLY", filename );
+        (void) log_it("errors", "Cannot open() %s, mode: O_RDONLY, %s", filename, strerror(errno) );
         return NULL;
     }
 
@@ -555,7 +555,7 @@ map_file(const char *filename)
      */
     if( (fstat(fd, &buf)) == -1) {
         (void) close(fd);
-        (void) log_it("errors", "Cannot fstat() file: %s", filename );
+        (void) log_it("errors", "Cannot fstat() %s, %s", filename, strerror( errno ) );
         return NULL;
     }
 
