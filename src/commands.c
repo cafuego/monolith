@@ -1539,12 +1539,15 @@ unlock_terminal()
     do {
         cprintf("c");
         fflush(stdout);
-        cprintf("\n\1f\1gUnlock terminal.\1a\n\n");
+        cprintf("\n\1f\1gUnlock terminal.\1a");
+        if(failures)
+            cprintf(" \1f\1w(\1r%d failure%s\1w)\1a", failures, (failures > 1) ? "s" : "" );
+        cprintf("\n\n");
         cprintf("\1f\1gPlease enter your password\1w: \1c");
         (void) getline(pwtest, -19, 1);
 
         if (strlen(pwtest) == 0) {
-            cprintf("\001\1f\1rPassword incorrect!\1a");
+            cprintf("");
             fflush(stdout);
             failures++;
             done = FALSE;
@@ -1552,8 +1555,8 @@ unlock_terminal()
             if ( check_password( usersupp, pwtest ) == TRUE ) {
                done = TRUE;
             } else {
-               cprintf("\001\1f\1rPassword incorrect!\1a");
                fflush(stdout);
+               cprintf("");
                failures++;
                done = FALSE;
             }
