@@ -67,8 +67,8 @@ class user_t {
     //
     function show_profile() {
        addimage("$this->username's Profile");
-       $this->add_info();
        $this->add_image();
+       $this->add_info();
        $this->add_profile();
     }
 
@@ -93,6 +93,7 @@ class user_t {
             echo "<br>\nEmail: <a href=\"mailto:$this->email\">$this->email</a>";
         if( (!(strstr( $this->hiddeninfo, "url" ))) && (strlen($this->url)))
             echo "<br>\nWebpage: <a href=\"$this->url\">$this->url</a>";
+        echo <br clear=\"all\">\n";
         return;
     }
 
@@ -107,14 +108,13 @@ class user_t {
     // Add user's profile pic if it exists.
     //
     function add_image() {
-        echo "<b>$this->image</b>\n";
         if( valid_image($this->image)) {
             if( $this->image == "image/gif")
-                echo "<img align=\"center\" src=\"/bbs/pix/gif.php3?$this->id\">\n";
+                echo "<img align=\"right\" src=\"/bbs/pix/gif.php3?$this->id\">\n";
             else if ($this->image == "image/jpg" || $this->image == "image/jpeg" || $this->image == "image/pjpeg")
-                echo "<img align=\"center\" src=\"/bbs/pix/jpeg.php3?$this->id\">\n";
+                echo "<img align=\"right\" src=\"/bbs/pix/jpeg.php3?$this->id\">\n";
             else if ($this->image == "image/png")
-                echo "<img align=\"center\" src=\"/bbs/pix/png.php3?$this->id\">\n";
+                echo "<img align=\"right\" src=\"/bbs/pix/png.php3?$this->id\">\n";
             else {
                 errorimage("Image format error!");
                 return -1;
