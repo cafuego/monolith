@@ -425,19 +425,19 @@ msgstr "\001f\001y%s \001gis \001rbezig\001g"
 
 #: src/express.c:1268
 msgid " and will receive your %s when done.\001a\n"
-msgstr " en zal je %s ontvangen wanneer deze klaar is.\001a\n"
+msgstr " en zal je %s ontvangen zodra hij of zij klaar is.\001a\n"
 
 #: src/express.c:1272
 msgid "\001f\001gOops, \001y%s\001g is not making sense.\n"
-msgstr ""
+msgstr "\001f\001gOeps, \001y%s\001g slaat helemaal nergens op.\n"
 
 #: src/express.c:1273
 msgid "The %s %s may /1rnot/1g have arrived.\001a\n"
-msgstr ""
+msgstr "De %s %s is misschien /1rniet/1g gearriveerd.\001a\n"
 
 #: src/express.c:1306
 msgid "\r\001f\001w*** \001gA %s from %s was intercepted by SHIX \001w***\n"
-msgstr ""
+msgstr "\r\001f\001w*** \001gEen %s van %s is onderschept door SHIX \001w***\n"
 
 #: src/express.c:1311
 msgid "\r\001f\001b*** %s \001g%s\n"
