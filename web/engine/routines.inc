@@ -252,7 +252,7 @@ function list_x_messages($username,$location) {
 
             print "<tr>\n";
             print "  <td align=\"left\" bgcolor=\"#333333\">\n";
-            print "    <p align=\"left\"><font color=\"#00cc00\">eXpress Message from <a href=\"/bbs/index.phtml/x/$reply/$i_sender/$location\" onMouseOver=\"return setStatus('Reply to $user');\">$user@$i_sender</a> to <font color=\"#ffff00\">$username@web</font> at </font>(<font color=\"#00cc00\">$date</font>)\n";
+            print "    <p align=\"left\"><font color=\"#00cc00\">eXpress Message from <a href=\"/bbs/index.phtml/x/$reply/$i_sender/$location\" ". mouseover("Reply to $user") .">$user@$i_sender</a> to <font color=\"#ffff00\">$username@web</font> at </font>(<font color=\"#00cc00\">$date</font>)\n";
             print "    <font color=\"#00cccc\"><pre>$message</pre></font>\n";
             print "  </td>\n";
             print "</tr>\n";
@@ -343,14 +343,15 @@ function x_log($username,$location) {
     }
 }
 
-function js_escape($text) {
+function mouseover($text) {
 
     // Remove \'s and ''s.
     //
     $text = strtr($text, "\\", "\\\\");
     $text = strtr($text, "'", "\\'");
 
-    return $text;
+    echo "onMouseover=\"return setStatus('$text');\" onMouseOut=\"return setStatus('');\"";
+
 }
 
 function colorize($doing) {
