@@ -217,9 +217,8 @@ function html_print_foot($username, $starttime, $location) {
         addbutton("Wholist", "/bbs/index.phtml/w");
         addbutton("Unread", "/bbs/index.phtml/u");
         addbutton("Quadrants", "/bbs/index.phtml/l");
-
+        addbutton("   ", null);
         addbutton("Monolith", "/");
-        addbutton("Main Page", "/bbs/index.phtml/");
         addbutton("Log out", "/bbs/index.phtml/q");
         echo "</div>\n";
 
@@ -273,12 +272,13 @@ function html_print_buttons($username, $location) {
 
     echo "". addbutton("Monolith", "/") ."<br>\n";
     echo "". addbutton("Main Page", "/bbs/index.phtml/") ."<br>\n";
-    echo "". addbutton(" ", "") ."<br>\n";
+    echo "". addbutton(" ", null) ."<br>\n";
     echo "". addbutton("X Messages", "$location") ."<br>\n";
     echo "". addbutton("Wholist", "/bbs/index.phtml/w") ."<br>\n";
     echo "". addbutton("Unread", "/bbs/index.phtml/u") ."<br>\n";
     echo "". addbutton("Quadrants", "/bbs/index.phtml/l") ."<br>\n";
-    echo "". addbutton(" ", "") ."<br>\n";
+    echo "". addbutton(" ", null) ."<br>\n";
+    echo "". addbutton(" ", null) ."<br>\n";
     echo "". addbutton("Log out", "/bbs/index.phtml/q") ."<br>\n";
 }
 
