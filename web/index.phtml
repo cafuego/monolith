@@ -11,7 +11,7 @@
     if( html_print_title( getenv("REMOTE_USER"), $REQUEST_URI ) )
         html_do_login( getenv("REMOTE_USER") );
     else
-        html_do_logout( getenv("REMOTE_USER") );
+        html_do_logout( getenv("REMOTE_USER"), getenv("REMOTE_HOST") );
 
 ?>
 

@@ -103,14 +103,20 @@ function html_do_login($username) {
 }
 
 
-function html_do_logout($username) {
+function html_do_logout($username, $hostname) {
 
     $usernum = html_get_usernum($username);
 
     MYSQL_CONNECT("localhost", "root", "")  OR DIE("Unable to connect to SQL server");
     @mysql_select_db("bbs") or die( "Unable to select database");
 
+    $result = MYSQL_QUERY("SELECT online AS login,(NOW()-online) AS online,NOW() AS logout FROM online WHERE user_id=$usernum AND interface='web'");
+    $login = mysql_result($result, 0, "login");
+    $logout = mysql_result($result, 0, "logout");
+    $online = mysql_result($result, 0, "online");
+
     $result = MYSQL_QUERY("DELETE FROM online WHERE user_id=$usernum AND interface='web'");
+    $result = MYSQL_QUERY("INSERT INTO login (user_id,login,logout,host) VALUES($user_id,FROM_UNIXTIME($login),FROM_UNIXTIME($logout),SEC_TO_TIME($online),'$hostname')");
 
     print "<meta http-equiv=\"Refresh\" content=\"10; url=http://monolith.yawc.net/\">\n";
 

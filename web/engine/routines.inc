@@ -173,7 +173,25 @@ function do_logout($username) {
 
 function main_screen($username) {
 
+    // Get details from last login.
+    //
+    connect_db();
+
+    $usernum = get_usernum($username);
+
+    $result = MYSQL_QUERY("SELECT MAX(logout) AS logout,online,hostname FROM login WHERE user_id=$usernum");
+    $number = MYSQL_NUMROWS($result);
+    if ($number) {
+        $logout = mysql_result($result,0,"logout");
+        $online = mysql_result($result,0,"online");
+        $hostname = mysql_result($result,0,"hostname");
+    }
+
     print "<h3 align=\"center\">Hello, $username. Welcome to Monolith BBS.</h3>\n";
+    if($number)
+        print "<p align=\"center\">Your last login on $logout lasted for $online and was from $hostname.</p>\n";
+    else
+        print "<p align=\"center\">Unable to retrieve your previous login details.</p>\n";
     print "<p align=\"center\"><img align=\"center\" src=\"/bbs/pix/monolith.jpg\" width=\"300\" height =\"300\" alt=\"[ image: Monolith BBS Logo ]\"></p>\n";
 
 }
