@@ -90,7 +90,12 @@
 
         case "m":
             require ('engine/quad.inc');
-            list_messages($username,$quad);
+            list_messages($username,$quad, 0);
+            break;
+
+        case "n":
+            require ('engine/quad.inc');
+            list_messages($username,$quad, 1);
             break;
 
         case "q":

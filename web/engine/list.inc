@@ -61,7 +61,7 @@ function list_quads($username, $listunread) {
             PRINT "  </td>\n";
             PRINT "  <td align=\"left\">\n";
             if($listunread)
-                PRINT "    <p align=\"left\"><a href=\"/bbs/index.phtml/u/$id\"><font color=\"#ffff00\">$name</font></a>\n";
+                PRINT "    <p align=\"left\"><a href=\"/bbs/index.phtml/n/$id\"><font color=\"#ffff00\">$name</font></a>\n";
             else
                 PRINT "    <p align=\"left\"><a href=\"/bbs/index.phtml/m/$id\"><font color=\"#ffff00\">$name</font></a>\n";
             PRINT "  </td>\n";

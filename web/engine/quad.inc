@@ -4,7 +4,7 @@
   * $id$
   */
 
-function list_messages($username, $quad) {
+function list_messages($username, $quad, $listunread) {
 
     // Check user priv.
     //
@@ -35,10 +35,24 @@ function list_messages($username, $quad) {
 
     // List messages.
     //
-    $result = MYSQL_QUERY("SELECT m.message_id AS m_id,u.username AS username,m.flag AS flag,m.alias AS alias,m.subject AS subject,DATE_FORMAT(m.date,'%W, %e %M %Y %H:%i:%S') as date FROM message AS m LEFT JOIN user AS u ON u.id=m.author WHERE m.forum_id=$quad ORDER BY message_id,subject");
+    if($listunread)
+        $result = MYSQL_QUERY("SELECT m.message_id AS m_id,u.username AS username,m.flag AS flag,m.alias AS alias,m.subject AS subject,DATE_FORMAT(m.date,'%W, %e %M %Y %H:%i:%S') as date FROM message AS m LEFT JOIN user AS u ON u.id=m.author WHERE m.forum_id=$quad AND m.message_id>=$lastseen ORDER BY message_id,subject");
+    else
+        $result = MYSQL_QUERY("SELECT m.message_id AS m_id,u.username AS username,m.flag AS flag,m.alias AS alias,m.subject AS subject,DATE_FORMAT(m.date,'%W, %e %M %Y %H:%i:%S') as date FROM message AS m LEFT JOIN user AS u ON u.id=m.author WHERE m.forum_id=$quad ORDER BY message_id,subject");
+
     $number = MYSQL_NUMROWS($result);
     if ($number) {
-        addimage( "Listing $number messages in $forum" );
+        if($listunread)
+            if($number != 1)
+                addimage( "Listing $number unread messages in $forum" );
+            else
+                addimage( "Listing 1 unread message in $forum" );
+        else
+            if($number != 1)
+                addimage( "Listing $number messages in $forum" );
+            else
+                addimage( "Listing 1 message in $forum" );
+
         PRINT "<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\" align=\"center\">\n";
         $i = 0;
         while ($i < $number) {
@@ -70,7 +84,10 @@ function list_messages($username, $quad) {
         }
         PRINT "</table>\n";
     } else {
-        errorimage( "No messages found!" );
+        if($listunread)
+            errorimage( "No unread messages found!" );
+        else
+            errorimage( "No messages found!" );
     }
 }
 
