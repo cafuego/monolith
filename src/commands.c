@@ -92,7 +92,7 @@ sysop_menu()
 #ifdef DUMP_ALL_POSTS_INTO_SQL
             case 'A':
                 cprintf("Dump all posts into SQL.\n");
-                for (i = 76; i < MAXQUADS; i++)
+                for (i = 0; i < MAXQUADS; i++)
                     bingle(i);
                 break;
 #endif

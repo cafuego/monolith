@@ -208,19 +208,22 @@ save_new_message(message_header_t * header, unsigned int forum)
 	    write_message_header(filename, header);
 	    copy(temp, message_filename(filename, forum, header->m_id));
         }
-	if (usersupp->priv >= PRIV_TECHNICIAN)
-	    cprintf("\n\1a\1wFilesystem time elapsed: %f", 
-		    time_function(TIME_STOP));
-	else
+	if (usersupp->priv >= PRIV_TECHNICIAN) {
+	    cprintf("\n\1a\1wFilesystem time elapsed: ");
+            printf("%f", time_function(TIME_STOP));
+	} else {
 	    time_function(TIME_STOP);
+        }
     }
     
     time_function(TIME_START);
     save_to_sql(header, temp);
-    if (usersupp->priv >= PRIV_TECHNICIAN)
-        cprintf("\n\1a\1wSQL time elapsed: %f\n", time_function(TIME_STOP));
-    else
+    if (usersupp->priv >= PRIV_TECHNICIAN) {
+        cprintf("\n\1a\1wSQL time elapsed: ");
+        printf("%f\n", time_function(TIME_STOP));
+    } else {
 	time_function(TIME_STOP);
+    }
 
     usersupp->posted++;
 

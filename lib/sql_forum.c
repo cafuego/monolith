@@ -252,7 +252,7 @@ mono_sql_f_fix_quickroom()
         sscanf(row[1], "%u", &highest);
 
         if( shm->rooms[forum].highest != highest) {
-            fprintf(stdout, "\rQuadrant %u is fucked, updating..."); fflush(stdout);
+            fprintf(stdout, "\rQuadrant %u is fucked, updating...", forum); fflush(stdout);
             shm->rooms[forum].highest=highest;
             shm->rooms[forum].lowest=(highest-(shm->rooms[forum].maxmsg));
             fprintf(stdout, " ok.\n"); fflush(stdout);
