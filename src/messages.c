@@ -491,7 +491,7 @@ search_via_sql(unsigned int forum)
     }
     cprintf("\n\1f\1gPlease enter either a valid regular expression or a normal string.");
     cprintf("\n\1f\1gNote that the search for a normal string is not case sensitive.");
-    cprintf("\1f\1gFind \1w(\1gmax 30 chars\1w): \1c");
+    cprintf("\n\1f\1gFind \1w(\1gmax 30 chars\1w): \1c");
     strcpy(needle, "");
     getline(needle, 30, FALSE);
     needle[strlen(needle)] = '\0';
