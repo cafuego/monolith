@@ -102,15 +102,39 @@ port_connect(const char *bbsname, unsigned int tries)
 {
 
     int clientFd;
-    int serverLen;
+    int serverLen, clientLen;
     rbbs_t *bbs = NULL;
     unsigned int times = 0;
 
-    struct sockaddr_in serverINETAddress;
-    struct sockaddr *serverSockAddrPtr;
+    struct sockaddr_in serverINETAddress, clientINETAddress;
+    struct sockaddr *serverSockAddrPtr, *clientSockAddrPtr;
 
-    struct hostent *hostStruct;
-    struct in_addr *hostNode;
+    struct hostent *hostStruct, *clientStruct;
+    struct in_addr *hostNode, *clientNode;
+
+    // Firstly, load up entry #1 here, which in theory is our own BBS :-)
+    //
+    mono_setdexient();
+    while (((bbs = mono_getdexient()) != NULL) && strcasecmp(bbs->name, BBSNAME) != 0) ;
+    mono_enddexient();
+    if (bbs == NULL)
+	return 0;
+
+    // Bind to local interface for THIS address, just in case we're aliased to a non-eth0 interface
+    // like we are on Monolith.
+    //
+    clientFd = socket(AF_INET, SOCK_STREAM, DEFAULT_PROTOCOL);
+    clientSockAddrPtr = (struct sockaddr *) &clientINETAddress;
+    clientLen = sizeof(clientINETAddress);
+    clientStruct = gethostbyname(bbs->addr);
+    if (clientStruct == NULL)
+	return -1;
+    clientNode = (struct in_addr *) clientStruct->h_addr;
+    clientINETAddress.sin_addr.s_addr = clientNode->s_addr;
+    (void) bind(clientFd, clientSockAddrPtr, clientLen);
+
+    serverSockAddrPtr = (struct sockaddr *) &serverINETAddress;
+    serverLen = sizeof(serverINETAddress);
 
     mono_setdexient();
     while (((bbs = mono_getdexient()) != NULL) && strcasecmp(bbs->name, bbsname) != 0) ;
@@ -118,10 +142,6 @@ port_connect(const char *bbsname, unsigned int tries)
     if (bbs == NULL)
 	return 0;
 
-    serverSockAddrPtr = (struct sockaddr *) &serverINETAddress;
-    serverLen = sizeof(serverINETAddress);
-
-    clientFd = socket(AF_INET, SOCK_STREAM, DEFAULT_PROTOCOL);
     serverINETAddress.sin_family = AF_INET;
     serverINETAddress.sin_port = htons(bbs->port);
 

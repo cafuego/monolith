@@ -28,7 +28,7 @@
 #endif
 
 #ifdef USE_MYSQL
-  #include MYSQL_HEADER
+#include MYSQL_HEADER
 #endif
 
 #include "version.h"
@@ -162,7 +162,8 @@ char *
 m_strcat(char *string1, const char *string2)
 {
 
-    string1 = (char *) realloc(string1, strlen(string1) + strlen(string2) + 1);
+    string1 =
+	(char *) realloc(string1, strlen(string1) + strlen(string2) + 1);
     strcat(string1, string2);
     return (string1);
 }
@@ -275,7 +276,7 @@ print_system_config()
     strcpy(domain_name, "");
     if ((getdomainname(domain_name, 64)) == -1) {
 	cprintf("\1f\1rError getting domain name!\n");
-        (void) xfree(domain_name);
+	(void) xfree(domain_name);
 	return;
     }
 #endif
@@ -288,7 +289,7 @@ print_system_config()
     info = xmalloc(sizeof(struct sysinfo));
     if ((sysinfo(info)) == -1) {
 	cprintf("\1f\1rError getting current system info!\n");
-        (void) xfree(info);
+	(void) xfree(info);
 	return;
     }
 #endif
@@ -324,7 +325,7 @@ print_system_config()
     loadavg = (char *) xmalloc(42 * sizeof(char));
     strcpy(loadavg, "");
     len = read(fd, loadavg, 41);
-    loadavg[len-1] = '\0';
+    loadavg[len - 1] = '\0';
     (void) close(fd);
     sscanf(loadavg, "%f %f %f %d/%d", &l1, &l2, &l3, &aproc, &iproc);
     xfree(loadavg);
@@ -340,8 +341,10 @@ print_system_config()
 
 #ifdef HAVE_SYS_UTSNAME_H
     cprintf("\n\1f");
-    cprintf("\1wCompiled on host              :\1g %s %s\n", buf2.nodename, EQ(domain_name, "(none)") ? "" : domain_name);
-    cprintf("\1wHost type                     :\1g %s %s %s\n", buf2.machine, buf2.sysname, buf2.release);
+    cprintf("\1wCompiled on host              :\1g %s %s\n", buf2.nodename,
+	    EQ(domain_name, "(none)") ? "" : domain_name);
+    cprintf("\1wHost type                     :\1g %s %s %s\n", buf2.machine,
+	    buf2.sysname, buf2.release);
     cprintf("\1wOS build version              :\1g %s\n", buf2.version);
     (void) xfree(domain_name);
 #endif
@@ -357,23 +360,29 @@ print_system_config()
     (void) fflush(stdout);
     total = mono_sql_mes_count(0);
     mine = mono_sql_mes_count(usersupp->usernum);
-    percent = ((float)mine/(float)total) * 100;
-    cprintf("\1wMessages currently in database:\1g %d, %d posted by you ", total, mine);
+    percent = ((float) mine / (float) total) * 100;
+    cprintf("\1wMessages currently in database:\1g %d, %d posted by you ",
+	    total, mine);
     printf("(%.2f%%)\n", percent);
 #endif
-    cprintf("\n\1wLast compiled                 :\1g %s\1f\n", printdate(buf.st_mtime, 0) );
-    cprintf("\1wBuild directory               :\1g %s \1w(\1g#%d\1w)\n", BUILD_DIR, COMPILE_NUM);
+    cprintf("\n\1wLast compiled                 :\1g %s\1f\n",
+	    printdate(buf.st_mtime, 0));
+    cprintf("\1wBuild directory               :\1g %s \1w(\1g#%d\1w)\n",
+	    BUILD_DIR, COMPILE_NUM);
     cprintf("\1wMachine load                  :\1g ");
     printf("%.2f %.2f %.2f", l1, l2, l3);
     cprintf(" \1w(\1g%d\1w/\1g%d\1w)\n", aproc, iproc);
 
 #ifdef LINUX
-    cprintf("\1wTotal memory                  :\1g %ld Mb\n\r", info->totalram / 1000000);
-    cprintf("\1wTotal swap memory             :\1g %ld Mb\n\n\r", info->totalswap / 1000000);
+    cprintf("\1wTotal memory                  :\1g %ld Mb\n\r",
+	    info->totalram / 1000000);
+    cprintf("\1wTotal swap memory             :\1g %ld Mb\n\n\r",
+	    info->totalswap / 1000000);
     xfree(info);
 #endif
 
-    cprintf("\1wTotal Logins                  : \1g%u since %s\1f\1g.\n", shm->login_count, printdate(shm->boot_time, 0) );
+    cprintf("\1wTotal Logins                  : \1g%u since %s\1f\1g.\n",
+	    shm->login_count, printdate(shm->boot_time, 0));
     cprintf("\1wMaximum Users Online          : \1g%d.\n", MAXUSERS);
     cprintf("\1wSleeping timeout              : \1g%d minutes.\n", TIMEOUT);
     cprintf("\1wUnused accounts purge after   : \1g%d days.\n", PURGEDAY);
@@ -406,7 +415,8 @@ execute_unix_command(const char *command)
 	    command_exit = -999;
 	    b = wait(&command_exit);
 	}
-	while (((b != a) && (b >= 0)) || ((command_exit != 256) && (command_exit != 0)));
+	while (((b != a) && (b >= 0))
+	       || ((command_exit != 256) && (command_exit != 0)));
 
     sttybbs(0);
     return;
@@ -440,7 +450,8 @@ increment(int extraflag)
 
     line_count++;
 
-    if (usersupp->flags & US_PAUSE && (++curr_line >= usersupp->screenlength - 1)
+    if (usersupp->flags & US_PAUSE
+	&& (++curr_line >= usersupp->screenlength - 1)
 	&& (usersupp->screenlength > 5))
 	/* set minimum length */
     {
@@ -455,14 +466,14 @@ increment(int extraflag)
 
 	    are_there_held_xs();	/* a held-xs's in the more prompt */
 
-	    IFANSI
-		cprintf("7");	/* store the colors and attributes      */
+	    IFANSI cprintf("7");	/* store the colors and attributes      */
 
 #ifdef CLIENTSRC
 	    (void) _log_attrib(FALSE);
 #endif
 	    if (line_total > 0)
-		cprintf("\01w\01f -- \01gmore \01w(\01g%i%%\01w) --\01a", (int) ((float) line_count * 100 / line_total));
+		cprintf("\01w\01f -- \01gmore \01w(\01g%i%%\01w) --\01a",
+			(int) ((float) line_count * 100 / line_total));
 	    else
 		cprintf("\01f\01w -- \01gmore \01w--\01a");
 
@@ -519,7 +530,8 @@ increment(int extraflag)
 
 		case 'c':
 		    nox = 1;
-		    cprintf("\1gPress \1w<\1rshift-c\1w>\1g to access the config menu.\n");
+		    cprintf
+			("\1gPress \1w<\1rshift-c\1w>\1g to access the config menu.\n");
 		    express(3);
 		    break;
 
@@ -707,8 +719,8 @@ modify_birthday(date_t * bday)
     date_t dag;
     struct tm t;
 
-    IFNSYSOP
-	if (bday->day != 0) {
+    IFNSYSOP if (bday->day != 0)
+    {
 	cprintf("\1f\1rYour birthday is already set.\n ");
 	return;
     }
@@ -726,7 +738,10 @@ modify_birthday(date_t * bday)
 	if (strlen(birthday) == 0) {
 	    cprintf("Okay, you can do it later.\n ");
 	    break;
-	} else if (sscanf(birthday, "%d-%d-%d", &t.tm_mday, &t.tm_mon, &t.tm_year) == 3) {
+	} else
+	    if (sscanf
+		(birthday, "%d-%d-%d", &t.tm_mday, &t.tm_mon, &t.tm_year)
+		== 3) {
 	    t.tm_year -= 1900;
 	    t.tm_mon--;
 	    if (mktime(&t) != -1) {
@@ -772,6 +787,91 @@ modify_birthday(date_t * bday)
     return;
 }
 
+void
+configure_sql()
+{
+    mysql_t *_sql;
+    unsigned int flag = 0;
+
+    _sql = (mysql_t *) xmalloc(sizeof(mysql_t));
+    memset(_sql, 0, sizeof(mysql_t));
+
+    // Loop this one until we have a config the user is happy with *and* that works.
+    //
+    do {
+	// Loop until we have data and the user is happy with that data.
+	//
+	do {
+
+	    cprintf("\n\1f\1gServer \1w(\1y%s\1w)\1w: \1c",
+		    (strlen(_sql->host) == 0) ? shm->mysql.host : _sql->host);
+	    getline(_sql->host, L_USERNAME, FALSE);
+	    strremcol(_sql->host);
+	    if( strlen(_sql->host) == 0)
+		    strncpy(_sql->host, shm->mysql.host, L_USERNAME);
+
+	    cprintf("\1f\1gUsername \1w(\1y%s\1w)\1w: \1c",
+		    (strlen(_sql->user) == 0) ? shm->mysql.user : _sql->user);
+	    getline(_sql->user, L_USERNAME, FALSE);
+	    strremcol(_sql->user);
+	    if( strlen(_sql->user) == 0)
+		    strncpy(_sql->user, shm->mysql.user, L_USERNAME);
+
+	    cprintf("\1f\1gPassword \1w(\1y%s\1w)\1w: \1c", shm->mysql.pass);
+	    getline(_sql->pass, L_USERNAME, FALSE);
+	    strremcol(_sql->pass);
+
+	    cprintf("\1f\1gDatabase \1w(\1y%s\1w)\1w: \1c",
+		    (strlen(_sql->base) == 0) ? shm->mysql.base : _sql->base);
+	    getline(_sql->base, L_USERNAME, FALSE);
+	    strremcol(_sql->base);
+	    if( strlen(_sql->base) == 0)
+		    strncpy(_sql->base, shm->mysql.base, L_USERNAME);
+
+	    cprintf("\1f\1gSocket \1w(\1y%s\1w)\1w: \1c",
+		    (strlen(_sql->sock) == 0) ? shm->mysql.sock : _sql->sock);
+	    getline(_sql->sock, L_USERNAME, FALSE);
+	    strremcol(_sql->sock);
+	    if( strlen(_sql->sock) == 0)
+		    strncpy(_sql->sock, shm->mysql.sock, L_USERNAME);
+
+	    cprintf("\n\1f\1rTest this configuration? \1w(\1rY\1w/\1rn\1w)\1c ");
+	    if(yesno_default(YES) == NO) {
+		    cprintf("\n\1f\1rQuit configuration? \1w(\1rY\1w/\1rn\1w)\1c ");
+		    if(yesno_default(YES) == YES) {
+			    xfree(_sql);
+			    return;
+		    }
+		    flag = 0;
+	    } else {
+		    flag = 1;
+	    }
+
+	} while (!flag);
+
+	// User is happy with values; test them.
+	//
+	if (! (flag = mono_sql_test_connection(_sql)) ) {
+	    cprintf("\1f\1rNew configuration cannot connect.\n\n");
+	}
+
+    } while ( !flag );
+
+    // Config works!
+    //
+    cprintf("\1f\1gConnection OK.\n\1rSave this new configuration as default? \1w(\1ry\1w/\1rN\1w)\1c ");
+    if( yesno_default(NO) == NO) {
+	    xfree(_sql);
+	    return;
+    }
+
+    // user wants to save new conn. as default. do so adn then switch all users.
+    
+    xfree(_sql);
+    return;
+}
+
+
 /*************************************************************************/
 /* moved this here from quadcont.c so it could be used in general..
  * enjoy.  -russ */
@@ -790,10 +890,8 @@ qc_get_pos_int(const char first, const int places)
     int i, pos_int = 0, ctr = 0;
     char input = '\0', st[10];
     int digits;
-
     digits = places;
     st[0] = '\0';
-
     if (first != '\0')
 	input = first;
     else
@@ -823,7 +921,6 @@ qc_get_pos_int(const char first, const int places)
 
 	if (input != '\b')
 	    cprintf("%c", input);
-
 	if (ctr <= digits)
 	    input = get_single_quiet("1234567890\r\n\b");
 	else
@@ -831,19 +928,15 @@ qc_get_pos_int(const char first, const int places)
     }
     if (!strlen(st) || st[0] == '\n' || st[0] == '\r' || st[0] == ' ')
 	return -1;
-
     for (;;)			/* kill leading 0's */
 	if (st[0] != '0' || (st[0] == 0 && st[1] == '\0'))
 	    break;
 	else
 	    for (i = 1; st[i - 1] != '\0'; i++)
 		st[i - 1] = st[i];
-
     if (ctr > digits)		/* trunctuate if too many digits (knob at keyboard) */
 	st[ctr - 1] = '\0';
-
     pos_int = atoi(st);
-
     return pos_int;
 }
 
@@ -860,7 +953,6 @@ save_colour(int key)
 {
     if (!attrib_log)
 	return;
-
     switch (key) {
 	case 'a':
 	    attrib.fg_colour = key;
@@ -921,7 +1013,6 @@ _restore_colour()
 	_set_colour('u');
     _set_colour(attrib.bg_colour);
     _set_colour(attrib.fg_colour);
-
     (void) _log_attrib(TRUE);
     return;
 }

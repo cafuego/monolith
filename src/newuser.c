@@ -134,7 +134,7 @@ new_user(const char *hostname)
     mono_sql_u_update_hidden( usersupp->usernum, usersupp->hidden_info );
     mono_sql_u_update_email( usersupp->usernum, usersupp->RGemail );
     mono_sql_u_update_url( usersupp->usernum, usersupp->RGurl );
-    xfree(usersupp);
+    // xfree(usersupp);
 
     cprintf("Press a key to continue.. \1a");
     inkey();

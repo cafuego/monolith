@@ -123,7 +123,7 @@ sysop_menu()
 		}
 
 	    case 'F': {
-		char filename[L_FILENAME + 1];
+		char filename[L_FILE + 1];
 
 		cprintf("\1f\1wPost a file in this room. Specify absolute pathname.\n");
 		cprintf("Filename:\1a ");
@@ -446,6 +446,9 @@ sysopuser_menu()
 
 	    case 'v':
 		cprintf("\1f\1gVerify users' emailaddress.\n");
+		cprintf("\1f\1rDisabled\n");
+		break;
+
 		cprintf("\1f\1rEnter user: \1a\1c");
 		if ((tmpuser = readuser(get_name(2))) != NULL) {
 		    cprintf("\1f\1rChecking...\1a\1c\n");
@@ -597,9 +600,9 @@ emperor_menu()
 	    cprintf("\1f\1wAdmin cmd: " WIZARDTITLE " cmd: \1a");
 	}
 
-	cmd = get_single_quiet("bBFrPQR*\r\b ?");
+	cmd = get_single_quiet("bBFrPQRS*\r\b ?");
 
-	if (strchr("bBDEUPQp", cmd))
+	if (strchr("bBDEUPQSp", cmd))
 	    nox = 1;
 
 	switch (cmd) {
@@ -629,6 +632,12 @@ emperor_menu()
 		cprintf("\1f\1bReset a %s.  \1rTemporarily Disabled.\n%s", config.forum,
 			"Use <a>dmin <r>oom, and set lowest and highest to 0.\n\1a");
 		break;
+
+           case 'S':
+                cprintf("\1f\1rConfigure SQL \1w(\1ry\1w/\1rN\1w) \1c");
+                if( yesno_default(NO) == YES )
+                    (void) configure_sql();
+ 		break;
 
 	    case '?':
 		cprintf("\1f\1p(" WIZARDTITLE " Options\1p)\1a\n");
@@ -679,12 +688,10 @@ misc_menu()
 		cprintf("Current locale: %s\n", usersupp->lang );
 		cprintf("\1f\1gChoose Language\1w: \1c" );
  		getline( usersupp->lang, L_LANG, 1 );
-               { char env[L_LANG];
-              extern int  _nl_msg_cat_cntr;
-                sprintf( env, "LANG=%s", usersupp->lang );
-              putenv( env );
-              ++_nl_msg_cat_cntr;
-            }
+                { extern int  _nl_msg_cat_cntr;
+                  setenv( "LANG", usersupp->lang, 1 );
+                  ++_nl_msg_cat_cntr;
+                }
 #else
 		cprintf("Locales not supported.\n");
 #endif

@@ -68,7 +68,7 @@ display_message(unsigned int forum, unsigned int num, const unsigned int mode)
 {
     message_header_t *header = NULL;
     char *header_string = NULL;
-    char filename[L_FILENAME + 1];
+    char filename[L_FILE + 1];
     int m_exists;
     room_t quad;
 
@@ -654,7 +654,7 @@ format_content(message_header_t * header, const int forum, char *content_string)
 {
 
     char *body = NULL, *p;
-    char filename[L_FILENAME + 1];
+    char filename[L_FILE + 1];
     FILE *fp;
     size_t filesize;
 

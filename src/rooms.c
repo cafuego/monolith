@@ -645,7 +645,7 @@ void
 erase_all_messages(long highest)
 {
     long i;
-    char filename[L_FILENAME + 1];
+    char filename[L_FILE + 1];
 
     cprintf("\n\1f\1rErasing %s for %s \1y%d\1r from file system...", config.message_pl, config.forum, curr_rm);
 

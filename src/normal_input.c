@@ -836,11 +836,13 @@ editor_edit(const char *fname)
 	restore_term();
 	sprintf(aaa, "-r%s", quickroom.name);	/* to see the
 						 * roomname */
-	cprintf("\1a\1f\1gTrying to start the PICO editor now: \1p%s\1g.\1a\n", fname);
+	// cprintf("\1a\1f\1gTrying to start the new \1ynano-tiny \1geditor now: \1p%s\1g.\1a\n", fname);
 
-	execl(EDITOR, EDITOR, aaa, fname, NULL);	/* PR: added NULL
-							 * parameter ! */
-	cprintf("execl FAILED\n");
+	cprintf("\1rThe editor is disabled.\n");
+
+	// execl(EDITOR, EDITOR, aaa, fname, NULL);	/* PR: added NULL * parameter ! */
+	// execl(EDITOR, EDITOR, "-l", "-t", "-p", fname, NULL);
+	// cprintf("\1f\1rexecl() failed\1w: \1r%s\n", strerror(errno) );
 	exit(0);		/* PR bugfix? Tell parent editing is
 				 * aborted */
     } else if (a > 0)		/* motherprocess that waits     */

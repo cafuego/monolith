@@ -107,7 +107,7 @@ sleeping(int sig)
     } else if (((idletime == TIMEOUT + 1) && (usersupp->priv < PRIV_TECHNICIAN)) ||
 	       (idletime >= 5 && connecting_flag == 1))
 #else
-    if (idletime == TIMEOUTCLIENT) {
+    if (idletime == TIMEOUTCLIENT && usersupp->priv < PRIV_TECHNICIAN) {
 	cprintf("%c%c%c", IAC, WILL, TELOPT_LOGOUT);
 /*      cprintf("\n\007\1pIs there life behind this terminal?\n\1rYou will be docked out in 1 minute unless you start looking more alive!\n"); */
 	fflush(stdout);
@@ -205,7 +205,7 @@ enter_passwd(const char *username)
     user_t *user = NULL;
 
     pwtest = (char *) xmalloc(MAX_PASS_LEN * sizeof(char));
-    strcpy(pwtest, "");
+    strncpy(pwtest, "", MAX_PASS_LEN);
 
     if (!(mono_sql_u_check_user(username))) {
 	cprintf(_("No such user.\n"));
@@ -309,9 +309,9 @@ enter_name(char **username)
     char pwordshit[20];
 
     for (;;) {			/* loop until we get a real username */
-	strcpy(*username, "");
+	strncpy(*username, "", L_USERNAME);
 	cprintf(_("\nUsername: "));
-	strcpy(*username, get_name(1));
+	strncpy(*username, get_name(1), L_USERNAME);
 
 	if (!strlen(*username)) {
 	    cprintf(_("Enter \"Off\" to quit or \"New\" to enter as a new user.\n"));
@@ -379,14 +379,14 @@ main(int argc, char *argv[])
     }
     if (argc < 2) {
 	cprintf("Usage: %s <hostname> [<username>].\n\n", argv[0]);
-	strcpy(hname, "localhost");
+	strncpy(hname, "localhost", L_HOSTNAME);
 	exit(0);
     }
     strncpy(hname, argv[1], 79);
     hname[79] = '\0';
     if (hname[0] == '\0')	/* we're from localhost */
 	if (gethostname(hname, 79) == -1)
-	    strcpy(hname, "localhost");
+	    strncpy(hname, "localhost", L_HOSTNAME);
 
     connecting_flag = 1;
 
@@ -414,12 +414,13 @@ main(int argc, char *argv[])
     cmdflags = 0;		/* no internal command at start       */
     nox = 1;
 
-    sprintf(temp, BBSDIR "/tmp/%d.1", getpid());	/* make up a temp file name     */
+    snprintf(temp, L_FILE, "%s/tmp/%d.1", BBSDIR, getpid());	/* make up a temp file name     */
     unlink(temp);		/* remove it if it exists       */
 
-    sprintf(tmpname, BBSDIR "/tmp/%d.2", getpid());
+    snprintf(tmpname, L_FILE, "%s/tmp/%d.2", BBSDIR, getpid());
     unlink(tmpname);
 
+    mono_connect_shm();
     mono_sql_connect();
 
     /* OKAY, get ourselves a basic user, we don't want to rely on savefiles */
@@ -430,7 +431,7 @@ main(int argc, char *argv[])
 
     /* add here the random hello messages */
     srand(time(NULL));
-    (void) sprintf(hellomsg, HELLODIR "/hello%d", ((int) random() % 7) + 1);
+    (void) snprintf(hellomsg, L_FILE, "%s/hello%d", HELLODIR, ((int) random() % 7) + 1);
     (void) more(hellomsg, 1);
 
     fflush(stdout);
@@ -444,14 +445,14 @@ main(int argc, char *argv[])
     } else {
 	while (!done) {
 	    username = (char *) xmalloc(sizeof(char) * (L_USERNAME + 1));
-	    strcpy(username, "");
+	    strncpy(username, "", L_USERNAME);
 	    enter_name(&username);	/* find out who the user is     */
 	    xfree(usersupp);	/* free and re-allocate this before */
 	    usersupp = (user_t *) xcalloc(1, sizeof(user_t));
 	    if (EQ(username, "new")) {	/* a new user?                  */
 		new_user(hname);
 		first_login = TRUE;
-		usersupp = readuser(username);
+		// usersupp = readuser(username);
 		done = TRUE;
 	    } else {
 		if (strcasecmp(username, "Guest") != 0) {
@@ -466,6 +467,7 @@ main(int argc, char *argv[])
 			log_it("errors", "Create a guest account!\n");
 			cprintf("\1f\1rGuest account is not enabled, sorry\n");
 			xfree(username);
+			mono_detach_shm();
 			logoff(ULOG_PROBLEM);
 		    }
 		}
@@ -475,21 +477,18 @@ main(int argc, char *argv[])
     }
 
     my_name = (char *) xmalloc(sizeof(char) * (L_USERNAME + 1));
-    strcpy(my_name, usersupp->username);
+    strncpy(my_name, usersupp->username, L_USERNAME);
 
-    set_timezone(usersupp->timezone);
     mono_setuid(my_name);
     connecting_flag = 0;
 
 #ifdef ENABLE_NLS
     {
-	char env[L_LANG + 10];
 	int ret;
 	extern int _nl_msg_cat_cntr;
 
-	sprintf(env, "LANGUAGE=%s", usersupp->lang);
-	ret = putenv(env);
-	IFSYSOP cprintf("Locale: %s\n", env);
+	ret = setenv("LANGUAGE", usersupp->lang, 1);
+	IFSYSOP cprintf("Locale: %s\n", usersupp->lang);
 	if (ret == -1) {
 	    cprintf("Could not set locale.\n");
 	}
@@ -514,10 +513,10 @@ main(int argc, char *argv[])
     }
 
     // username = (char *) xmalloc(sizeof(char) * (L_USERNAME + 1));
-    // strcpy(username, "");
-    // strcpy(username, usersupp->username);
+    // strncpy(username, "", L_USERNAME);
+    // strncpy(username, usersupp->username, L_USERNAME);
 
-    mono_connect_shm();
+    // mono_connect_shm();
 
     if (usersupp->configuration == 0)
 	usersupp->configuration++;
@@ -534,7 +533,7 @@ main(int argc, char *argv[])
 	}
 	cprintf("  \1r\007Done.\n");
     }
-    sprintf(CLIPFILE, "%s/clipboard", getuserdir(my_name));
+    snprintf(CLIPFILE, L_FILE, "%s/clipboard", getuserdir(my_name));
 
     if (!fexists(CLIPFILE)) {
 	(void) close(creat(CLIPFILE, 0660));	/* create the file */
@@ -542,9 +541,10 @@ main(int argc, char *argv[])
     laston = usersupp->laston_from;
     usersupp->laston_from = time(&login_time);
     mono_sql_u_increase_login_count(usersupp->usernum);
-    strcpy(previous_host, usersupp->lasthost);
+    strncpy(previous_host, usersupp->lasthost, L_HOSTNAME);
     strncpy(usersupp->lasthost, hname, L_HOSTNAME);
     usersupp->lasthost[L_HOSTNAME] = '\0';
+
 
     IFTWIT
     {
@@ -559,7 +559,6 @@ main(int argc, char *argv[])
 	usersupp->flags |= US_REGIS;
     else
 	usersupp->flags &= ~US_REGIS;
-
 
     /* ask for their address, if they are degraded */
     IFDEGRADED
@@ -649,6 +648,8 @@ main(int argc, char *argv[])
 #ifndef CLIENTSRC
     more(BBSDIR "/share/try_client", TRUE);
 #endif
+
+    (void) set_timezone(usersupp->timezone);
 
     short_prompt();
     logoff(ULOG_NORMAL);
@@ -763,7 +764,7 @@ logoff(int code)
     status_bar_off();
 
     /* Peter added the random quote on logging off */
-    sprintf(quote, "%s/quote%d", QUOTEDIR, ((int) random() % MAXQUOTE) + 1);
+    snprintf(quote, L_FILE, "%s/quote%d", QUOTEDIR, ((int) random() % MAXQUOTE) + 1);
     (void) more(quote, 1);
     /* on the CLient sometimes you don't see it though, so... */
     (void) fflush(stdout);
@@ -799,7 +800,7 @@ print_login_banner(time_t laston)
 		       printdate(laston, 0), previous_host);
 
     /* motd */
-    sprintf(filename, "%s/etc/motd", BBSDIR);
+    snprintf(filename, L_FILE, "%s/etc/motd", BBSDIR);
 
     if (fexists(filename)) {
 	(void) more(filename, TRUE);
@@ -809,15 +810,18 @@ print_login_banner(time_t laston)
 	    ,(shm->user_count == 1) ? config.user : config.user_pl, date());
 
 /*----------- Personal loginfiles ----------------------------------- */
-    sprintf(filename, "%s/loginmsg", getuserdir(who_am_i(NULL)));
+    snprintf(filename, L_FILE, "%s/loginmsg", getuserdir(who_am_i(NULL)));
 
     if (fexists(filename)) {
 	(void) more(filename, TRUE);
     }
+
+    if ( FALSE ) {
     if (usersupp->config_flags & CO_SHOWFRIENDS) {
 	cprintf(_("\1f\1gYour friends online\1w:\1a\n"));
 	(void) fflush(stdout);
 	friends_online();
+    }
     }
     return;
 }
@@ -899,7 +903,7 @@ check_profile_updated()
     time_t timenow;
     struct stat buf;
 
-    sprintf(work, "%s/profile", getuserdir(usersupp->username));
+    snprintf(work, L_FILE, "%s/profile", getuserdir(usersupp->username));
     work[strlen(work)] = '\0';
 
     if (!(fexists(work)))

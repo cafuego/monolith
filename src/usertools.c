@@ -150,7 +150,7 @@ config_menu(void)
     static void _config_express_menu(const unsigned int, const long, void *);
     static void _config_personal_info_menu(const unsigned int, const long, void *);
 
-    char *context;
+    char *context = NULL;
     MENU_DECLARE;
 
     for (;;) {
@@ -192,11 +192,13 @@ _config_display_options(const unsigned int a, const long b, void *c)
     static void _set_screenlength(const unsigned int, const long, void *);
     static void _tgl_status_bar(const unsigned int, const long, void *);
 
-    char *tmpstr;
+    char *tmpstr = NULL;
+
     MENU_DECLARE;
 
     for (;;) {
 	MENU_INIT;
+
 	strcpy(the_menu_format.menu_title,
 	       "\n\1f\1w[\1gGeneral Configuration Menu\1w]\n\n");
 	MK_TMPSTR("ANSI Colour Display");
@@ -258,7 +260,9 @@ _config_display_options(const unsigned int a, const long b, void *c)
 	the_menu_format.no_boolean_values = 1;
 
 	MENU_PROCESS_INTERNALS;
+
 	MENU_DISPLAY(2);
+
 	if (!MENU_EXEC_COMMAND)
 	    break;
 	MENU_DESTROY;
@@ -777,7 +781,7 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
 
 	    case 's':
 	    case 'q':
-
+		break;
 	}
     } else {
 	fclose(fp);
@@ -1501,7 +1505,7 @@ _print_priv_flags(const user_t * user, forumlist_t * p)
     else if (user->priv & PRIV_SYSOP)
 	cprintf("\1f\1w(** %s%s \1w**) ", SYSOPCOL, config.sysop);
     else if (user->priv & PRIV_TECHNICIAN)
-	cprintf("1f\1w(* %s%s \1w*) ", PROGRAMMERCOL, config.programmer);
+	cprintf("\1f\1w(* %s%s \1w*) ", PROGRAMMERCOL, config.programmer);
 #ifndef OLD
     else if (p != NULL)
 #else

@@ -383,7 +383,7 @@ catchx(int key)
 
 	if (!IS_BROADCAST)	/* file log this x? */
 	    if (usersupp->flags & US_IAMBAD) {
-		char filename[L_FILENAME + 1];
+		char filename[L_FILE + 1];
 		FILE *f;
 
 		strcpy(filename, "");

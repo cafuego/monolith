@@ -46,23 +46,24 @@ friends_online()
 {
     unsigned int j = 0, k = 0;
     friend_t *p;
-    int i;
+    int i = 0;
 
     cprintf("\n");
 
+    // return;
+
     mono_sql_uu_read_list(usersupp->usernum, &p, L_FRIEND);
 
-    while (p) {
-	k = 0;
-	if (mono_return_pid(p->name) != -1) {
-	    k = 1;
-	}
-	if (k == 1) {
+    while(p->next != NULL) {
+	if (mono_return_pid(p->name) == -1) {
+	    k = 0;
+	} else {
 	    mono_sql_uu_user2quickx(usersupp->usernum, p->usernum, &i);
-	    if (i != -1)
+	    if (i != -1) {
 		cprintf("\1f\1w<\1g%d\1w> \1c%-35s%c", i, p->name, j++ % 2 ? '\n' : ' ');
-	    else
+	    } else {
 		cprintf("\1f    \1c%-35s%c", p->name, j++ % 2 ? '\n' : ' ');
+	    }
 	}
 	p = p->next;
     }

@@ -176,7 +176,7 @@ copy_message_wrapper(const unsigned int current_post, const int is_not_my_post, 
 	return -1;
     }
     if (curr_rm != MAIL_FORUM) {
-	char filename[L_FILENAME + 1];
+	char filename[L_FILE + 1];
 	message_header_t message;
 
 	message_header_filename(filename, curr_rm, current_post);
@@ -280,7 +280,7 @@ delete_message_wrapper(const unsigned int current_post, const int is_not_my_post
 void
 lookup_anon_author(const unsigned int current_post)
 {
-    char filename[L_FILENAME + 1];
+    char filename[L_FILE + 1];
     room_t scratch;
     message_header_t message;
 
@@ -367,7 +367,7 @@ void
 purge_mail_quad(void)
 {
     int i, mail_total;
-    char filename[L_FILENAME + 1];
+    char filename[L_FILE + 1];
 
     mail_total = count_mail_messages();
 
@@ -399,7 +399,7 @@ int
 count_mail_messages(void)
 {
     int count;
-    char mail_dir[L_FILENAME + 1], name[L_USERNAME + 1];
+    char mail_dir[L_FILE + 1], name[L_USERNAME + 1];
 
     strcpy(name, usersupp->username);
 

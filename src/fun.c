@@ -79,13 +79,15 @@ random_goto()
  */
 static char *munchies[] = {
     "cookie", "petit four", "biscuit", "waffle",
-    "piece of pie", "kiss", "biscotti", "butterfinger"
+    "piece of pie", "kiss", "biscotti", "butterfinger",
+    "cute little kitten"
 };
 static char *munchmatch[] = {
     "[Cc][Oo][Kk][Ii][Ee]", "[Pp][Ee][Tt][Ii][Tt] [Ff][Oo][Uu][Rr]",
     "[Bb][Ii][Ss][Cc][Uu][Ii][Tt]", "[Ww][Aa][Ff][Ff][Ll][Ee]",
     "[Pp][Ii][Ee][Cc][Ee] [Oo][Ff] [Pp][Ii][Ee]", "  ",
-    "[Bb][Ii][Ss][Cc][Oo][Tt][Tt][Ii]", "[Bb][Uu][Tt][Tt][Ee][Rr][Ff][Ii][Nn][Gg][Ee][Rr]"
+    "[Bb][Ii][Ss][Cc][Oo][Tt][Tt][Ii]", "[Bb][Uu][Tt][Tt][Ee][Rr][Ff][Ii][Nn][Gg][Ee][Rr]",
+    "[Cc][Uu][Tt][Ee] [Ll][Ii][Tt][Tt][Ll][Ee] [Kk][Ii][Tt][Tt][Ee][Nn]"
 };
 
 static char *no = "[Nn][Oo]";
@@ -110,11 +112,15 @@ cthulhu()
      */
     do {
         cprintf("\n\1w666.\1yCthulhu\1w> \1rGimme a %s! \1w", munchies[food]);
-        getline(april_fools, 64, 1);
+        getline(april_fools, 64, 0);
     } while( _cthulhu_bad(food, april_fools));
+
+    april_fools[ strlen(april_fools) ] = '\0';
 
     if(food == 5) 
         cprintf(_("\n\1gI love you too! ;)\n"));
+    else if(food == 8) 
+        cprintf(_("\n\1y*MEOW* :-)\n"));
     else if( shix_strmatch(april_fools, why) )
         cprintf(_("\n\1y*whine* Coz I need one! )~:\n"));
     else if( shix_strmatch(april_fools, no))

@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
 #ifdef ENABLE_NLS

@@ -203,7 +203,7 @@ clear_wholist_posting_flag(unsigned long banner_flag)
 int
 save_new_message(message_header_t * header, unsigned int forum)
 {
-    char filename[L_FILENAME];
+    char filename[L_FILE];
 
     if (header->banner_type & INFO_BANNER) {	/* quadinfo */
 
@@ -258,7 +258,7 @@ save_new_message(message_header_t * header, unsigned int forum)
 int
 save_new_mail(message_header_t * header, userlist_t ** recipient_list)
 {
-    char filename[L_FILENAME];
+    char filename[L_FILE];
     userlist_t *p;
 
     if (header->banner_type & YELL_REPLY_BANNER)
@@ -350,7 +350,7 @@ get_reply_info(message_header_t * header, const unsigned quad_flags)
 {
     message_header_t reply_header;
     int read_success = 0;
-    char filename[L_FILENAME];
+    char filename[L_FILE];
 
     if (curr_rm == MAIL_FORUM) {
 	mail_header_filename(filename, who_am_i(NULL), message_reply_id(0));
@@ -590,7 +590,7 @@ enter_yell()
 void
 change_forum_info(void)
 {
-    char filename[L_FILENAME + 1];
+    char filename[L_FILE + 1];
     char cmd;
     room_t quad;
 
@@ -652,7 +652,7 @@ void
 quad_lizard(message_header_t * header)
 {
     FILE *fp1, *fp2;
-    char filename[L_FILENAME + 1];
+    char filename[L_FILE + 1];
     int ret;
     int i, idle_for, mail_the_lamer_qls;
     long j;
@@ -812,7 +812,7 @@ your_forum_is_boring_zzzz_form_letter(FILE * fp, char *quadname, int idle)
 i_deleted_your_post_haha_mail(const unsigned int current_post)
 {
     FILE *fp;
-    char filename[L_FILENAME + 1], name[L_USERNAME + 1];
+    char filename[L_FILE + 1], name[L_USERNAME + 1];
     message_header_t message;
     room_t quad;
 

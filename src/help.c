@@ -1446,7 +1446,7 @@ static int
     for (;;) {
 	more(HELPDIR "fun/food/drinks.menu", 1);
 	cprintf("\1f\1g     Enter command\1w: \1c");
-	cmd = get_single_quiet("q12345 ");
+	cmd = get_single_quiet("q123456 ");
 
 	switch (cmd) {
 
@@ -1472,6 +1472,10 @@ static int
 
 	    case '5':
 		more(HELPDIR "fun/food/ouch", 1);
+		break;
+
+	    case '6':
+		more(HELPDIR "fun/food/fake_margarita", 1);
 		break;
 
 	    case ' ':

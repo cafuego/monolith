@@ -43,7 +43,7 @@
 int
 edit_message(unsigned int forum, unsigned int id)
 {
-    char msgfile[L_FILENAME+1], hdrfile[L_FILENAME+1], tmpfile[L_FILENAME+1];
+    char msgfile[L_FILE+1], hdrfile[L_FILE+1], tmpfile[L_FILE+1];
     message_header_t *header;
     room_t quad;
 
