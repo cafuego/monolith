@@ -122,8 +122,8 @@ enter_message(unsigned int forum, int mode, unsigned long banner_flag, const cha
 		if (forum == YELL_FORUM) {  
 		    get_mail_names(reply, &recipient_list, header);
 		    header->banner_type |= (ADMIN_BANNER | YELL_REPLY_BANNER | MAIL_BANNER);
-		}
-		get_reply_info(header, quad.flags);
+		} else if (quad.flags & QR_SUBJECTLINE && reply)
+		    get_reply_info(header, quad.flags);
 	    } else
 		get_subject(header);
     }
