@@ -34,6 +34,7 @@
 #include "input.h"
 #include "key.h"  
 #include "msg_file.h"
+#include "quadcont.h"
 #include "registration.h"
 #include "read_menu.h"
 #include "rooms.h"
