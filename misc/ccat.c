@@ -14,7 +14,7 @@
 #include <unistd.h>
 #include <getopt.h>
 
-#ifdef HAVE_GETTEXT
+#ifdef ENABLE_NLS
 #include <libintl.h>
 #include <locale.h>
 #define _(String) gettext (String)
@@ -55,15 +55,12 @@ main(int argc, char *argv[])
     int optc;
     int lose = 0;
 
-
-
-#ifdef HAVE_GETTEXT
+#ifdef ENABLE_NLS
+       printf( "setting locale\n" );
        setlocale (LC_ALL, "");
-       bindtextdomain ( PACKAGE, "/usr/bbs/lib/locale");
+       bindtextdomain ( PACKAGE, "/usr/bbs/share/locale");
        textdomain ( PACKAGE );
 #endif
-
-
 
     progname = argv[0];
 
