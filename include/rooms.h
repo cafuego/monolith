@@ -27,7 +27,7 @@ extern void room_debug_info( void );
 extern void create_room( void );
 extern void change_roominfo( void );
 extern void show_room_flags( void );
-extern int check_messages(int);
+int check_messages(room_t room, int which);
 extern void mark_as_read(int);
 extern void leave_n_unread_posts(int, int); 
 extern int is_zapped(int room);

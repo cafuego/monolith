@@ -1502,9 +1502,10 @@ check_generation()
 *************************************************/
 
 int
-check_messages(int room)
+check_messages(room_t room, int which)
 {
-    return mono_sql_uf_get_unread(room, usersupp->lastseen[room]);
+    int i = room.highest - usersupp->lastseen[which];
+    return (i < 0) ? 0 : i;
 }
 
 int
