@@ -49,6 +49,11 @@
 #include "routines2.h"
 #undef extern
 
+static void _restore_colour(void);
+static void _set_colour(char key);
+static void _log_attrib(int flag);
+static int attrib_log;
+static colour_t attrib;
 
 /*************************************************
 * more()
@@ -354,6 +359,7 @@ increment(int extraflag)
 	    IFANSI
 		cprintf("7");	/* store the colors and attributes      */
 
+            (void) _log_attrib(FALSE);
 	    if (line_total > 0)
 		cprintf("\01w\01f -- \01gmore \01w(\01g%i%%\01w) --\01a", (int) ((float) line_count * 100 / line_total));
 	    else
@@ -392,8 +398,10 @@ increment(int extraflag)
 
 	    cprintf("\r                     \r");
 
-	    IFANSI
+	    IFANSI {
 		cprintf("8");	/* restore the colors and attributes    */
+                (void) _restore_colour();
+            }
 
 	    switch (c) {
 
@@ -735,4 +743,164 @@ qc_get_pos_int(const char first, const int places)
 
     return pos_int;
 }
+
+static void
+_log_attrib(int flag)
+{
+    attrib_log = flag;
+    return;
+}
+
+void
+save_colour(int key)
+{
+    if(!attrib_log)
+        return;
+
+    switch (key) {
+        case 'a':
+            attrib.fg_colour = key;
+            attrib.bg_colour = 0;
+            attrib.attrib |= ATTRIB_NONE;
+            break;
+        case 'b':
+        case 'c':
+        case 'd':
+        case 'g':
+        case 'p':
+        case 'y':
+        case 'w':
+            attrib.fg_colour = key;
+            break;
+        case 'B':
+        case 'C':
+        case 'D':
+        case 'G':
+        case 'P':
+        case 'Y':
+        case 'W':
+            attrib.bg_colour = key;
+            break;
+        case 'e':
+            attrib.attrib |= ATTRIB_BOLD;
+            break;
+        case 'f':
+            attrib.attrib |= ATTRIB_FLASH;
+            break;
+        case 'h':
+            attrib.attrib |= ATTRIB_HIDDEN;
+            break;
+        case 'i':
+            attrib.attrib |= ATTRIB_INVERSE;
+            break;
+        case 'u':
+            attrib.attrib |= ATTRIB_UNDERLINE;
+            break;
+        default:
+            break;
+    }
+    return;
+}
+
+static void
+_restore_colour()
+{
+    if( attrib.attrib & ATTRIB_BOLD )
+        _set_colour('f');
+    if( attrib.attrib & ATTRIB_FLASH )
+        _set_colour('e');
+    if( attrib.attrib & ATTRIB_HIDDEN )
+        _set_colour('h');
+    if( attrib.attrib & ATTRIB_INVERSE )
+        _set_colour('i');
+    if( attrib.attrib & ATTRIB_UNDERLINE )
+        _set_colour('u');
+    _set_colour(attrib.bg_colour);
+    _set_colour(attrib.fg_colour);
+
+    (void) _log_attrib(TRUE);
+    return;
+}
+
+static void
+_set_colour(char key)
+{
+    if (usersupp->flags & US_ANSI) {
+        (void) save_colour(key);
+	switch (key) {
+	    case 'd':
+		cprintf("[30m");
+		break;		/* dark   textcolor       */
+	    case 'r':
+		cprintf("[31m");
+		break;		/* red    textcolor       */
+	    case 'g':
+		cprintf("[32m");
+		break;		/* green  textcolor       */
+	    case 'y':
+		cprintf("[33m");
+		break;		/* yellow textcolor       */
+	    case 'b':
+		cprintf("[34m");
+		break;		/* blue   textcolor       */
+	    case 'p':
+		cprintf("[35m");
+		break;		/* purple textcolor       */
+	    case 'c':
+		cprintf("[36m");
+		break;		/* cyan   textcolor       */
+	    case 'w':
+		cprintf("[37m");
+		break;		/* white  textcolor       */
+	    case 'D':
+		cprintf("[40m");
+		break;		/* dark   backgroundcolor */
+	    case 'R':
+		cprintf("[41m");
+		break;		/* red    backgroundcolor */
+	    case 'G':
+		cprintf("[42m");
+		break;		/* green  backgroundcolor */
+	    case 'Y':
+		cprintf("[43m");
+		break;		/* yellow backgroundcolor */
+	    case 'B':
+		cprintf("[44m");
+		break;		/* blue   backgroundcolor */
+	    case 'P':
+		cprintf("[45m");
+		break;		/* purple backgroundcolor */
+	    case 'C':
+		cprintf("[46m");
+		break;		/* cyan   backgroundcolor */
+	    case 'W':
+		cprintf("[47m");
+		break;		/* white  backgroundcolor */
+	    case 'a':
+		cprintf("[0m");
+		break;		/* RESET   attribute      */
+	    case 'f':
+		if ((usersupp->flags & US_NOBOLDCOLORS) == 0)
+		    cprintf("[1m");
+		break;		/* BOLD    attribute      */
+	    case 'u':
+		cprintf("[4m");
+		break;		/* UNDERLINED attribute   */
+	    case 'e':
+		if ((usersupp->flags & US_NOFLASH) == 0)
+		    cprintf("[5m");
+		break;		/* FLASH   attribute      */
+	    case 'i':
+		cprintf("[7m");
+		break;		/* INVERSE attribute      */
+	    case 'h':
+		cprintf("[8m");
+		break;		/* HIDDEN  attribute      */
+	    default:
+		break;
+	}
+    }
+    return;
+}
+            
 /* eof */

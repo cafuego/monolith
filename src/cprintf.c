@@ -40,7 +40,6 @@ int vcprintf(const char *fmt, va_list args);
 int cprintf(const char *fmt,...);
 extern void ColourChar(char key);
 
-
 /* quick hack added by michel to send out an CR+LF in stead of just a LF */
 int
 bing(int c)
@@ -419,3 +418,5 @@ cprintf(const char *fmt,...)
     va_end(args);
     return i;
 }
+
+/* EOF */

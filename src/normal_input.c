@@ -712,7 +712,8 @@ get_x_lines(char *xstring, int X_PARAM)
 void
 ColourChar(char key)
 {
-    if (usersupp->flags & US_ANSI)
+    if (usersupp->flags & US_ANSI) {
+        (void) save_colour(key);
 	switch (key) {
 	    case 'd':
 		cprintf("[30m");
@@ -785,6 +786,8 @@ ColourChar(char key)
 	    default:
 		break;
 	}
+    }
+
     return;
 }
 
