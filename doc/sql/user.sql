@@ -22,7 +22,7 @@ CREATE TABLE user (
    phone	VARCHAR(20),
    email	VARCHAR(80),
 
-   hiddeninfo   SET( 'name','address','city','state','country','phone','email'),
+   hiddeninfo   SET( 'name','address','zip','city','state','country','phone','email','url'),
 
 # user customizable
    doing	VARCHAR(80),
