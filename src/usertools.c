@@ -2255,7 +2255,7 @@ _change_icq_password(const unsigned int a, const long b, void *c)
     icq_pw = (char *) xmalloc( 255 * sizeof(char) );
     strcpy(icq_pw, "");
     cprintf(_("\1f\1gPlease enter your ICQ Password: \1c"));
-    getline(icq_pw, -254, 1);
+    getline(icq_pw, -20, 1);
 
     if (strlen(icq_pw) == 0) {
         xfree(icq_pw);
