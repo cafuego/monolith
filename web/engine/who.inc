@@ -30,12 +30,12 @@ function show_wholist($username) {
     $number = MYSQL_NUMROWS($result);
     if ($number) {
         print "<h3 align=\"center\">Listing $number users online</h3>\n<p> </p>\n";
-        print "<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\" align=\"center\">\n";
+        print "<table border=\"0\" cellpadding=\"4\" cellspacing=\"2\" align=\"center\">\n";
         print "<tr>\n";
         print "  <th align=\"left\"><p align=\"left\">Username</th>\n";
         print "  <th align=\"left\"><p align=\"left\">Doing</th>\n";
         print "  <th align=\"right\"><p align=\"right\">Online for</th>\n";
-        print "  <th align=\"left\"><p align=\"left\">Via</th>\n";
+        print "  <th align=\"right\"><p align=\"right\">Via</th>\n";
         print "</tr>\n";
         print "<tr>\n";
         print "  <td colspan=\"4\"><hr size=\"1\"></td>\n";
