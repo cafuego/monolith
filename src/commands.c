@@ -838,7 +838,7 @@ misc_menu()
 	    cprintf("\1gMisc: \1w");
 	}
 
-	cmd = get_single_quiet("lLmMrstxz\r\b ?/");
+	cmd = get_single_quiet("lLmMrsxz\r\b ?/");
 
 	switch (cmd) {
             case 'l':
@@ -846,22 +846,6 @@ misc_menu()
                 nox = 1;
                 cprintf("\1f\1gLock Terminal.\n");
                 lock_terminal();
-                break;
-
-	    case 't':
-	    case 'T':
-		nox = 1;
-                if ( strlen( usersupp->timezone ) ) 
-                   cprintf( "\1f\1gTimezone \1w[\1y%s\1w]\1g:\1c ", usersupp->timezone );
-		else 
-                   cprintf( "\1f\1gTimezone \1w:\1c " );
-		{ char str[40];
-		  getline( str, 38, 1 );
-                  if ( strlen( str ) != 0 ) {
-                      strcpy( usersupp->timezone, str );
-                      set_timezone( str );
-                 }
-                    }
                 break;
 
 	    case 'm':

@@ -18,7 +18,7 @@ extern int change_alias( void );
 extern void change_url( void );
 extern void kickout_user( void );
 extern void menu_options( void );
-extern void test_ansi_colours(user_t * );  /* russ */
+extern void test_ansi_colours(user_t * );
 extern void mono_show_config( unsigned int num);
 extern void menu_message(void);
 

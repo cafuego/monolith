@@ -74,9 +74,404 @@ static float _get_monoholic_rating(const user_t *user);
 static char * _get_monoholic_flag(const user_t *user);
 static void _print_priv_flags(const user_t *user, forumlist_t *p);
 static void _print_user_flags(const user_t *user);
+static void _timezone_menu(const unsigned int, const long, const char*);
+static void _tzones_africa(const unsigned int, const long, const char *);
+static void _tzones_america(const unsigned int, const long, const char *);
+static void _tzones_antarctica(const unsigned int, const long, const char *);
+static void _tzones_asia(const unsigned int, const long, const char *);
+static void _tzones_australlia(const unsigned int, const long, const char *);
+static void _tzones_europe(const unsigned int, const long, const char *);
+
+void
+_timezone_menu(const unsigned int a, const long b, const char *c)
+{
+    MENU_DECLARE;
+    MENU_INIT;
+    nox = 1;
+
+    MENU_ADDITEM(_tzones_africa, 0, 0, "", "t", "Africa");
+    MENU_ADDITEM(_tzones_america, 0, 0, "", "t", "America");
+    MENU_ADDITEM(_tzones_antarctica, 0, 0, "", "t", "Antarctica");
+    MENU_ADDITEM(_tzones_asia, 0, 0, "", "t", "Asia");
+    MENU_ADDITEM(_tzones_australlia, 0, 0, "", "t", "Australlia");
+    MENU_ADDITEM(_tzones_europe, 0, 0, "", "t", "Europe");
+
+    strcpy(the_menu_format.menu_title, "\1f\1g\nTimezone Setup Menu:  Continent\n\n");
+    the_menu_format.gen_1_idx = 1;
+    strcpy(the_menu_format.menu_prompt,
+               "\1f\1gSelect Continent: \1w--");
+
+    MENU_PROCESS_INTERNALS;
+    MENU_DISPLAY(1);
+    MENU_EXEC_COMMAND;
+    MENU_DESTROY;
+
+    if (strlen(usersupp->timezone)) {
+	char str[40];
+	strcpy(str, usersupp->timezone);
+	set_timezone(str);
+	cprintf( "\n\1f\1gTimezone set to \1w[\1y%s\1w]\1g\1c\n", usersupp->timezone );
+    } else 
+	cprintf( "\1f\1gTimezone not set, using Monolith timezone." );
+}
+
+static void _tz2str(const unsigned int, const long, const char*);
+
+void
+_tzones_africa(const unsigned int a, const long b, const char *c)
+{
+    MENU_DECLARE;
+    MENU_INIT;
+
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Abidjan", "t", "Abidjan");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Accra", "t", "Accra");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Addis_Ababa", "t", "Addis Ababa");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Algiers", "t", "Algiers");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Asmera", "t", "Asmera");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Bamako", "t", "Bamako");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Bangui", "t", "Bangui");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Banjul", "t", "Banjul");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Bissau", "t", "Bissau");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Blantyre", "t", "Blantyre");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Brazzaville", "t", "Brazzaville");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Bujumbura", "t", "Bujumbura");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Cairo", "t", "Cairo");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Casablanca", "t", "Casablanca");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Ceuta", "t", "Ceuta");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Conakry", "t", "Conakry");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Dakar", "t", "Dakar");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Dar_es_Salaam", "t", "Dar es Salaam");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Djibouti", "t", "Djibouti");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Douala", "t", "Douala");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/El_Aaiun", "t", "El Aaiun");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Freetown", "t", "Freetown");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Gaborone", "t", "Gaborone");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Harare", "t", "Harare");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Johannesburg", "t", "Johannesburg");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Kampala", "t", "Kampala");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Khartoum", "t", "Khartoum");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Kigali", "t", "Kigali");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Kinshasa", "t", "Kinshasa");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Lagos", "t", "Lagos");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Libreville", "t", "Libreville");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Lome", "t", "Lome");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Luanda", "t", "Luanda");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Lubumbashi", "t", "Lubumbashi");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Lusaka", "t", "Lusaka");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Malabo", "t", "Malabo");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Maputo", "t", "Maputo");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Maseru", "t", "Maseru");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Mbabane", "t", "Mbabane");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Mogadishu", "t", "Mogadishu");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Monrovia", "t", "Monrovia");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Nairobi", "t", "Nairobi");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Ndjamena", "t", "Ndjamena");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Niamey", "t", "Niamey");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Nouakchott", "t", "Nouakchott");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Ouagadougou", "t", "Ouagadougou");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Porto-Novo", "t", "Porto-Novo");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Sao_Tome", "t", "Sao Tome");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Timbuktu", "t", "Timbuktu");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Tripoli", "t", "Tripoli");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Tunis", "t", "Tunis");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Windhoek", "t", "Windhoek");
+
+    strcpy(the_menu_format.menu_title, "\1f\1g\n\nTimezone Setup Menu:  City/Country\n\n");
+    the_menu_format.gen_1_idx = 1;
+    the_menu_format.auto_columnize = 1;
+    strcpy(the_menu_format.menu_prompt,
+               "\1f\1gCity/Country in your Timezone: \1w--");
+
+    MENU_PROCESS_INTERNALS;
+    MENU_DISPLAY(1);
+    MENU_EXEC_COMMAND;
+    MENU_DESTROY;
+}
+
+void
+_tzones_america(const unsigned int a, const long b, const char *c)
+{
+    MENU_DECLARE;
+    MENU_INIT;
+
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Anchorage", "t", "Anchorage");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Antigua", "t", "Antigua");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Aruba", "t", "Aruba");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Barbados", "t", "Barbados");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Bogota", "t", "Bogota");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Buenos_Aires", "t", "Buenos Aires");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Caracas", "t", "Caracas");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Cayman", "t", "Cayman");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Chicago", "t", "Chicago");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Costa_Rica", "t", "Costa Rica");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Dawson", "t", "Dawson");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Denver", "t", "Denver");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Detroit", "t", "Detroit");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Dominica", "t", "Dominica");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Edmonton", "t", "Edmonton");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/El_Salvador", "t", "El Salvador");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Grenada", "t", "Grenada");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Guadeloupe", "t", "Guadeloupe");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Guatemala", "t", "Guatemala");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Guyana", "t", "Guyana");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Halifax", "t", "Halifax");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Havana", "t", "Havana");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Indianapolis", "t", "Indianapolis");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Jamaica", "t", "Jamaica");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Juneau", "t", "Juneau");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Lima", "t", "Lima");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Los_Angeles", "t", "Los Angeles");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Louisville", "t", "Louisville");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Martinique", "t", "Martinique");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Mexico_City", "t", "Mexico City");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Montreal", "t", "Montreal");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Montserrat", "t", "Montserrat");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Nassau", "t", "Nassau");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/New_York", "t", "New York");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Nipigon", "t", "Nipigon");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Nome", "t", "Nome");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Panama", "t", "Panama");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Phoenix", "t", "Phoenix");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Puerto_Rico", "t", "Puerto Rico");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Rainy_River", "t", "Rainy River");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Regina", "t", "Regina");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Sao_Paulo", "t", "Sao Paulo");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/St_Johns", "t", "St Johns");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/St_Thomas", "t", "St Thomas");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/St_Vincent", "t", "St Vincent");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Thunder_Bay", "t", "Thunder Bay");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Tijuana", "t", "Tijuana");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Thunder_Bay", "t", "Toronto");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Vancouver", "t", "Vancouver");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Whitehorse", "t", "Whitehorse");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Winnipeg", "t", "Winnipeg");
+    MENU_ADDITEM(_tz2str, 0, 0, ":America/Yellowknife", "t", "Yellowknife");
+	
+    the_menu_format.gen_1_idx = 1;
+    strcpy(the_menu_format.menu_title, "\1f\1g\n\nTimezone Setup Menu:  City/Country\n\n");
+    the_menu_format.auto_columnize = 1;
+    strcpy(the_menu_format.menu_prompt,
+               "\1f\1gCity/Country in your Timezone: \1w--");
+
+    MENU_PROCESS_INTERNALS;
+    MENU_DISPLAY(1);
+    MENU_EXEC_COMMAND;
+    MENU_DESTROY;
+}
+
+void
+_tzones_antarctica(const unsigned int a, const long b, const char *c)
+{
+    MENU_DECLARE;
+    MENU_INIT;
+
+    MENU_ADDITEM(_tz2str, 0, 0, ":Antarctica/Casey", "t", "Casey");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Antarctica/DumontDUrville", "t", "DumontDUrville");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Antarctica/Mawson", "t", "Mawson");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Antarctica/McMurdo", "t", "McMurdo");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Antarctica/Palmer", "t", "Palmer");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Antarctica/South_Pole", "t", "South Pole");
+
+    strcpy(the_menu_format.menu_title, "\1f\1g\n\nTimezone Setup Menu:\n\n");
+    the_menu_format.gen_1_idx = 1;
+    the_menu_format.auto_columnize = 1;
+    strcpy(the_menu_format.menu_prompt,
+               "\1f\1cCool!\1g  Antarctica region: \1w--");
+
+    MENU_PROCESS_INTERNALS;
+    MENU_DISPLAY(1);
+    MENU_EXEC_COMMAND;
+    MENU_DESTROY;
+}
+
+void
+_tzones_asia(const unsigned int a, const long b, const char *c)
+{
+    MENU_DECLARE;
+    MENU_INIT;
+
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Amman", "t", "Amman");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Ashkhabad", "t", "Ashkhabad");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Baghdad", "t", "Baghdad");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Bahrain", "t", "Bahrain");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Baku", "t", "Baku");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Bangkok", "t", "Bangkok");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Beirut", "t", "Beirut");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Brunei", "t", "Brunei");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Calcutta", "t", "Calcutta");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Chungking", "t", "Chungking");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Dacca", "t", "Dacca");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Damascus", "t", "Damascus");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Dushanbe", "t", "Dushanbe");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Gaza", "t", "Gaza");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Hong_Kong", "t", "Hong Kong");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Irkutsk", "t", "Irkutsk");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Ishigaki", "t", "Ishigaki");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Istanbul", "t", "Istanbul");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Jakarta", "t", "Jakarta");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Jerusalem", "t", "Jerusalem");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Kabul", "t", "Kabul");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Kamchatka", "t", "Kamchatka");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Karachi", "t", "Karachi");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Kashgar", "t", "Kashgar");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Katmandu", "t", "Katmandu");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Krasnoyarsk", "t", "Krasnoyarsk");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Kuala_Lumpur", "t", "Kuala Lumpur");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Kuching", "t", "Kuching");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Kuwait", "t", "Kuwait");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Magadan", "t", "Magadan");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Manila", "t", "Manila");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Muscat", "t", "Muscat");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Nicosia", "t", "Nicosia");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Novosibirsk", "t", "Novosibirsk");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Omsk", "t", "Omsk");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Phnom_Penh", "t", "Phnom Penh");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Pyongyang", "t", "Pyongyang");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Qatar", "t", "Qatar");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Rangoon", "t", "Rangoon");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Riyadh", "t", "Riyadh");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Saigon", "t", "Saigon");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Seoul", "t", "Seoul");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Shanghai", "t", "Shanghai");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Singapore", "t", "Singapore");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Taipei", "t", "Taipei");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Tashkent", "t", "Tashkent");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Tbilisi", "t", "Tbilisi");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Tehran", "t", "Tehran");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Tel_Aviv", "t", "Tel Aviv");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Tokyo", "t", "Tokyo");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Ulan_Bator", "t", "Ulan Bator");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Vientiane", "t", "Vientiane");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Vladivostok", "t", "Vladivostok");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Yakutsk", "t", "Yakutsk");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Yekaterinburg", "t", "Yekaterinburg");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Yerevan", "t", "Yerevan");
+
+    strcpy(the_menu_format.menu_title, "\1f\1g\n\nTimezone Setup Menu:  City/Country\n\n");
+    the_menu_format.gen_1_idx = 1;
+    the_menu_format.auto_columnize = 1;
+    strcpy(the_menu_format.menu_prompt,
+               "\1f\1gCity/Country in your Timezone: \1w--");
+
+    MENU_PROCESS_INTERNALS;
+    MENU_DISPLAY(1);
+    MENU_EXEC_COMMAND;
+    MENU_DESTROY;
+}
 
 
-/* code */
+void
+_tzones_australlia(const unsigned int a, const long b, const char *c)
+{
+    MENU_DECLARE;
+    MENU_INIT;
+
+    MENU_ADDITEM(_tz2str, 0, 0, ":Australlia/ACT", "t", "ACT");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Australlia/Adelaide", "t", "Adelaide");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Australlia/Brisbane", "t", "Brisbane");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Australlia/Broken_Hill", "t", "Broken Hill");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Australlia/Canberra", "t", "Canberra");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Australlia/Darwin", "t", "Darwin");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Australlia/Hobart", "t", "Hobart");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Australlia/LHI", "t", "LHI");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Australlia/Lindeman", "t", "Lindeman");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Australlia/Lord_Howe", "t", "Lord Howe");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Australlia/Melbourne", "t", "Melbourne");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Australlia/NSW", "t", "NSW");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Australlia/North", "t", "North");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Australlia/Perth", "t", "Perth");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Australlia/Queensland", "t", "Queensland");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Australlia/South", "t", "South");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Australlia/Sydney", "t", "Sydney");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Australlia/Tasmania", "t", "Tasmania");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Australlia/Victoria", "t", "Victoria");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Australlia/West", "t", "West");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Australlia/Yancowinna", "t", "Yancowinna");
+
+    strcpy(the_menu_format.menu_title, "\1f\1g\n\nTimezone Setup Menu:  City/Region\n\n");
+    the_menu_format.gen_1_idx = 1;
+    the_menu_format.auto_columnize = 1;
+    strcpy(the_menu_format.menu_prompt,
+               "\1f\1gCity/Region in your Timezone: \1w--");
+
+    MENU_PROCESS_INTERNALS;
+    MENU_DISPLAY(1);
+    MENU_EXEC_COMMAND;
+    MENU_DESTROY;
+}
+
+void
+_tzones_europe(const unsigned int a, const long b, const char *c)
+{
+    MENU_DECLARE;
+    MENU_INIT;
+
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Amsterdam", "t", "Amsterdam");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Andorra", "t", "Andorra");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Athens", "t", "Athens");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Belfast", "t", "Belfast");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Belgrade", "t", "Belgrade");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Berlin", "t", "Berlin");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Bratislava", "t", "Bratislava");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Brussels", "t", "Brussels");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Bucharest", "t", "Bucharest");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Budapest", "t", "Budapest");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Chisinau", "t", "Chisinau");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Copenhagen", "t", "Copenhagen");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Dublin", "t", "Dublin");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Gibraltar", "t", "Gibraltar");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Helsinki", "t", "Helsinki");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Istanbul", "t", "Istanbul");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Kaliningrad", "t", "Kaliningrad");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Kiev", "t", "Kiev");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Lisbon", "t", "Lisbon");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Ljubljana", "t", "Ljubljana");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/London", "t", "London");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Luxembourg", "t", "Luxembourg");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Madrid", "t", "Madrid");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Malta", "t", "Malta");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Minsk", "t", "Minsk");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Monaco", "t", "Monaco");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Moscow", "t", "Moscow");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Oslo", "t", "Oslo");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Paris", "t", "Paris");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Prague", "t", "Prague");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Riga", "t", "Riga");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Rome", "t", "Rome");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Samara", "t", "Samara");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/San_Marino", "t", "San Marino");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Sarajevo", "t", "Sarajevo");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Simferopol", "t", "Simferopol");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Skopje", "t", "Skopje");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Sofia", "t", "Sofia");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Stockholm", "t", "Stockholm");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Tallinn", "t", "Tallinn");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Tirane", "t", "Tirane");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Vaduz", "t", "Vaduz");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Vatican", "t", "Vatican");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Vienna", "t", "Vienna");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Vilnius", "t", "Vilnius");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Warsaw", "t", "Warsaw");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Zagreb", "t", "Zagreb");
+    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Zurich", "t", "Zurich");
+
+    strcpy(the_menu_format.menu_title, "\1f\1g\n\nTimezone Setup Menu:  City/Country\n\n");
+    the_menu_format.gen_1_idx = 1;
+    the_menu_format.auto_columnize = 1;
+    strcpy(the_menu_format.menu_prompt,
+               "\1f\1gCity/Country in your Timezone: \1w--");
+
+    MENU_PROCESS_INTERNALS;
+    MENU_DISPLAY(1);
+    MENU_EXEC_COMMAND;
+    MENU_DESTROY;
+}
+
+void
+_tz2str(const unsigned int a, const long b, const char* tzstring)
+{
+    strcpy(usersupp->timezone, tzstring);
+}
 
 /*************************************************
 * profile_user()
@@ -284,6 +679,10 @@ menu_options(void)
 	    MENU_ADDITEM(_tgl_silc, C_NOSILC, 0, "SILC Disable",
 			 "tiv", "SILC Enabled",
 			 "N", (cmdflags & C_NOSILC) ? "0" : "1");
+
+	MENU_ADDITEM(_timezone_menu, 0, 0, "",
+		     "tiv", "Timezone Setup Menu",
+		     "T", "0");
 
 	MENU_ADDITEM(online_help_wrapper, 0, 0, "o",
 		     "tiv", "Online Help",
