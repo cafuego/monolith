@@ -51,5 +51,9 @@ extern int mono_sql_u_get_doing( unsigned int user_id, char *doing );
 extern int mono_sql_u_update_xtrapflag( unsigned int user_id, const char *xtrapflag );
 extern int mono_sql_u_get_xtrapflag( unsigned int user_id, char *xtrapflag );
 
+extern int mono_sql_u_set_icq_number( unsigned int user_id, unsigned long number );
+extern int mono_sql_u_set_icq_number( unsigned int user_id, unsigned long number );
+extern int mono_sql_u_set_icq_pass( unsigned int user_id, const char *pass );
+
 #define U_TABLE	"user"
 /* eof */

@@ -479,7 +479,7 @@ mono_sql_u_get_hidden( unsigned int user_id, int *hiddeninfo )
 
     int i;
     MYSQL_RES *res;
-    MYSQL_ROW *row;
+    /* MYSQL_ROW *row; */
 
     return -1;
 
@@ -596,9 +596,9 @@ int
 mono_sql_u_increase_x_count( unsigned int user_id )
 {
     int i;
-    int ret;
+    /* int ret; */
     MYSQL_RES *res;
-    MYSQL_ROW row;
+    /* MYSQL_ROW row; */
 
     i = mono_sql_query(&res, "UPDATE " U_TABLE
 	" set x_count=x_count+1 WHERE id=%u", user_id );
@@ -664,9 +664,9 @@ int
 mono_sql_u_increase_post_count( unsigned int user_id )
 {
     int i;
-    int ret;
+    /* int ret; */
     MYSQL_RES *res;
-    MYSQL_ROW row;
+    /* MYSQL_ROW row; */
 
     i = mono_sql_query(&res, "UPDATE " U_TABLE
 	" set post_count=post_count+1 WHERE id=%u", user_id );
@@ -732,9 +732,9 @@ int
 mono_sql_u_increase_login_count( unsigned int user_id )
 {
     int i;
-    int ret;
+    /* int ret; */
     MYSQL_RES *res;
-    MYSQL_ROW row;
+    /* MYSQL_ROW row; */
 
     i = mono_sql_query(&res, "UPDATE " U_TABLE
 	" set login_count=login_count+1 WHERE id=%u", user_id );
@@ -904,4 +904,34 @@ mono_sql_u_get_xtrapflag( unsigned int user_id, char *xtrapflag )
     mono_sql_u_free_result(res);
 
     return 0;
+}
+
+
+/* SET ICQ NUMBER */
+int
+mono_sql_u_set_icq_number( unsigned int user_id, unsigned long number )
+{
+    MYSQL_RES *res;
+    int ret;
+
+    ret = mono_sql_query(&res, "UPDATE " U_TABLE " SET icq_number=%lu WHERE id=%u", number, user_id);
+
+    return ret;
+}
+
+/* SET ICQ PASSWORD */
+int
+mono_sql_u_set_icq_pass( unsigned int user_id, const char *pass )
+{
+    MYSQL_RES *res;
+    int ret;
+    char *tmp_pass = NULL;
+
+    ret = escape_string( pass, &tmp_pass );
+
+    ret = mono_sql_query(&res, "UPDATE " U_TABLE " SET icq_pass='%s' WHERE id=%u", tmp_pass, user_id);
+
+    xfree(tmp_pass);
+
+    return ret;
 }
