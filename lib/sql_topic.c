@@ -22,6 +22,7 @@
 #include "monolith.h"
 #include "monosql.h"
 #include "sql_utils.h"
+#include "sql_forumtopic.h"
 
 #define extern
 #include "sql_topic.h"
@@ -34,6 +35,7 @@ mono_sql_t_create_topic( const topic_t * top)
     MYSQL_RES *res;
     char *esc_name = NULL;
    
+    /* check if topic already exists */
     ret = escape_string(top->name, &esc_name);
 
     if ( ret ) {
@@ -46,6 +48,13 @@ mono_sql_t_create_topic( const topic_t * top)
 	   ,top->topic_id, esc_name );
 
     xfree(esc_name);
+
+    if ( ret == -1 ) return -1;
+
+    ret = mono_sql_query( &res, "INSERT INTO " FT_TABLE 
+ 	" (topic_id,forum_id,owner) VALUES (%u,%u,'%s')"
+	, top->topic_id, top->forum_id, 'y' );
+
     return ret;
 }
 
