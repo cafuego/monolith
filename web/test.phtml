@@ -14,8 +14,10 @@ $usernum = get_usernum($username);
 
 echo "<p>$username/$usernum<br>\n";
 
-if ($userfile == null || $userfile == "") {
-    echo "<p>Accepted types: GIF, JPEG and PNG.<br>\n";
+if ((($userfile == null || $userfile == "")) || ((($userfile != null) || $userfile != "")) && ($userfile_type != "image/gif") || ($userfile_type != "image/jpeg"))) {
+    if( ($userfile_type != "image/gif") || ($userfile_type != "image/jpeg") || ($userfile_type != "image/png") ) {
+        echo "<h2 align=\"center\">Invalid file type!</h2>\n";
+    echo "<p align=\"center\">Accepted types: GIF, JPEG and PNG.<br>\n";
     echo "<form enctype=\"multipart/form-data\" action=\"/bbs/test.phtml\" method=\"post\"\n";
     echo "  <input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"10000\">\n";
     echo "  <input type=\"hidden\" name=\"USER_ID\" value=\"$usernum\">\n";
