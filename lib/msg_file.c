@@ -170,10 +170,16 @@ message_copy(const unsigned int from_forum, const unsigned int to_forum, const u
 	    strcpy(to_header->recipient, to_name);
 	}
 
+#ifndef ADDED_BY_PETER_FOR_TESTING!
+        if (to_forum != MAIL_FORUM)
+            (void) save_to_sql(to_header, from_file);
+#endif
+
 	if ((write_message_header(to_header_file, to_header)) == -1) {
 	    xfree(to_header);
 	    break;
 	}
+
 	xfree(to_header);
 	success = 1;
 	break;
