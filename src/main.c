@@ -484,15 +484,16 @@ main(int argc, char *argv[])
 
 #ifdef ENABLE_NLS
     {
-	int ret;
+	char *ret;
 	extern int _nl_msg_cat_cntr;
 
-	ret = setenv("LANGUAGE", usersupp->lang, 1);
-	IFSYSOP cprintf("Locale: %s\n", usersupp->lang);
-	if (ret == -1) {
-	    cprintf("Could not set locale.\n");
+        ret = setlocale(LC_MESSAGES, usersupp->lang );
+
+	if (ret == NULL ) {
+	    log_it( "errors", "Could not set locale: %s.\n", usersupp->lang );
 	}
 	++_nl_msg_cat_cntr;
+
     }
 #endif
 
