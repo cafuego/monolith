@@ -739,7 +739,7 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
         (void) mono_sql_u_get_post_count(user->usernum, &posted);
         (void) mono_sql_u_get_x_count(user->usernum, &x_s);
 	cprintf(_("First login: \1g%s\1c\nLogins: \1g%-5d \1cPosts: \1g%-5d \1cOnlinetime: \1g%2ld:%2.2ld \1cX's: \1g%5ld \n"),
-		printdate(user->firstcall, 1), timescalled,
+		printdate(user->firstcall, 1), timescalled, posted,
 	     user->online / 60, user->online % 60, x_s);
     } else			/* other people profile */
 	cprintf("\n");
