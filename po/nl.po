@@ -467,6 +467,9 @@ msgid ""
 "\001f\001b*** \001pBroadcast from %s \001gat \001c(\001p%02d:%02d\001w) \001b***\n"
 "\001c%s\001a"
 msgstr ""
+"\n"
+"\001f\001b*** \001pMededeling van %s \001gom \001c(\001p%02d:%02d\001w) \001b***\n"
+"\001c%s\001a"
 
 #: src/express.c:1330
 msgid ""
@@ -474,6 +477,9 @@ msgid ""
 "\r\001f\001w*** \001gMany squids wave their tentacles as if to say: \001w***\001a\n"
 "\001c%s"
 msgstr ""
+"\n"
+"\r\001f\001w*** \001gEen groepje inktvissen zwaait met hun tentakels als om te zeggen: \001w***\001a\n"
+"\001c%s"
 
 #: src/express.c:1334
 msgid ""
@@ -481,6 +487,9 @@ msgid ""
 "\r\001f\001r*** \001wYour Black Llama Airhostess says: \001r***\001a\n"
 "\001c%s"
 msgstr ""
+"\n"
+"\r\001f\001r*** \001wJe Zwarte Lama Stewardess zegt: \001r***\001a\n"
+"\001c%s"
 
 #. shout message
 #: src/express.c:1338
@@ -489,6 +498,9 @@ msgid ""
 "\r\001f\001b*** \001gYour mother shouts from downstairs \001b***\001a\n"
 "\001c%s"
 msgstr ""
+"\n"
+"\r\001f\001b*** \001gJe moeder schreeuwt van beneden \001b***\001a\n"
+"\001c%s"
 
 #: src/express.c:1342
 msgid ""
@@ -496,14 +508,17 @@ msgid ""
 "\001f\001r*** \001pIMPORTANT BROADCAST from \001w\001n%s\001N \001r***\n"
 "\001w%s\001a"
 msgstr ""
+"\007\n"
+"\001f\001r*** \001pBELANGRIJKE MEDEDELING van \001w\001n%s\001N \001r***\n"
+"\001w%s\001a"
 
 #: src/express.c:1348
 msgid "\001f\001b*** \001gYour friend %s\001g just logged %s \001w(\001g%02d:%02d\001w) \001b***\001a\n"
-msgstr "\001f\001b*** \001gJe vriend %s\001g just logged %s \001w(\001g%02d:%02d\001w) \001b***\001a\n"
+msgstr "\001f\001b*** \001gJe vriend %s\001g is net %s gelogd \001w(\001g%02d:%02d\001w) \001b***\001a\n"
 
 #: src/express.c:1350
 msgid "\001f\001b*** %s\001g just logged %s \001w(\001g%02d:%02d\001w) \001b***\001a\n"
-msgstr ""
+msgstr "\001f\001b*** %s\001g is net %s gelogd \001w(\001g%02d:%02d\001w) \001b***\001a\n"
 
 #: src/express.c:1355
 msgid ""
@@ -524,6 +539,9 @@ msgid ""
 "\001f\001r* \001wThe House Spirit whispers: \001r*\n"
 "\001a\001c%s"
 msgstr ""
+"\n"
+"\001f\001r* \001wHet Huisspook fluistert: \001r*\n"
+"\001a\001c%s"
 
 #. CountDown-Broadcast
 #: src/express.c:1365
@@ -548,6 +566,9 @@ msgid ""
 "\001f\001b*** \001g%s %s from \001w( %s%s \001w) \001y\001n%s\001N \001gat \001w(\001g%02d:%02d\001w) \001b***\001a\n"
 "\001c%s"
 msgstr ""
+"\n"
+"\001f\001b*** \001g%s %s van \001w( %s%s \001w) \001y\001n%s\001N \001gom \001w(\001g%02d:%02d\001w) \001b***\001a\n"
+"\001c%s"
 
 #: src/express.c:1379 src/express.c:1385
 msgid ""
@@ -608,42 +629,48 @@ msgid ""
 "\001f\001rYour %s is no longer online.\n"
 "Searching for a new one...\001a\n"
 msgstr ""
+"\001f\001rJe %s is niet meer online.\n"
+"Op zoek naar een nieuwe...\001a\n"
 
 #: src/express.c:1442
 msgid "\001f\001rYour %s has his/her messages disabled.\001a\n"
-msgstr ""
+msgstr "\001f\001rJe %s heeft zijn/haar messages uit staan.\001a\n"
 
 #: src/express.c:1443 src/express.c:1448
 msgid "\001f\001rSearching for a new one...\001a\n"
-msgstr ""
+msgstr "\001f\001rOp zoek naar een nieuwe...\001a\n"
 
 #: src/express.c:1447
 msgid "\001f\001rYour %s is no longer marked as %s.\001a\n"
-msgstr ""
+msgstr "\001f\001rJe %s is niet meer gemerkt als %s.\001a\n"
 
 #: src/express.c:1456
 msgid "\001f\001gThere are no %s online right now...\001a\n"
-msgstr ""
+msgstr "\001f\001gEr zijn momenteel geen %s online...\001a\n"
 
 #: src/express.c:1457
 msgid "\001f\001gYou could try to find the answer in the help files.\001a\n"
-msgstr ""
+msgstr "\001f\001gJe zou kunnen proberen het antwoord in de help bestanden te vinden.\001a\n"
 
 #: src/express.c:1458
 msgid "\001f\001gPress \001w<\001r?\001w>\001g to see all commands, or \001w<\001rh\001w>\001g to access the helpfiles.\n"
-msgstr ""
+msgstr "\001f\001gToets \001w<\001r?\001w>\001g voor alle commandos, of \001w<\001rh\001w>\001g voor de help bestanden.\n"
 
 #: src/express.c:1468
 msgid ""
 "\001f\001gYou are asking a %s a Question, and therefore\n"
 " \001a"
 msgstr ""
+"\001f\001gJe stelt %s een Vraag, en daarom\n"
+" \001a"
 
 #: src/express.c:1484
 msgid ""
 "\001f\001gYou are now sending an emote.\n"
 "\001b*** \001y%s \001g"
 msgstr ""
+"\001f\001gJe stuurt nu een Emotie.\n"
+"\001b*** \001y%s \001g"
 
 #: src/express.c:1490
 msgid "\001f\001gYou're now asking \001c%s\001g a BBS-related Question!\001a\n"
@@ -651,7 +678,7 @@ msgstr "\001f\001gJe kunt nu \001c%s\001g een BBS gerelateerde vraag stellen.\00
 
 #: src/express.c:1496
 msgid "\001f\001rYou're now sending a broadcast!\001a\n"
-msgstr ""
+msgstr "\001f\001rJe kunt nu een mededeling versturen!\001a\n"
 
 #: src/express.c:1499
 msgid "\001rWarning: you are still marked as \001caway\001r.\001a\n"
@@ -663,21 +690,23 @@ msgstr "\001f\001gStuur Gevoel %s.\001a\n"
 
 #: src/express.c:1519
 msgid "\001f\001gPress \001w<\001r?\001w>\001g for a list of available feelings.\001a\n"
-msgstr ""
+msgstr "\001f\001gToets \001w<\001r?\001w>\001g voor een lijst van beschikbare gevoelens.\001a\n"
 
 #: src/express.c:1521
 msgid "\001f\001gYou're cool. Press \001w<\001rf\001w>\001g to send the \001cFREEZE\001g feeling.\001a\n"
-msgstr ""
+msgstr "\001f\001gJe bent koel. Toets \001w<\001rf\001w>\001g om het \001cBEVRIES\001g gevoel te verzenden.\001a\n"
 
 #: src/express.c:1664
 msgid "\001f\001rAn error occurrect trying to retrieve \001pweb \001rx-es.\n"
-msgstr ""
+msgstr "\001f\001rEr ging iets fout tijdens het ophalen van \001pweb \001rx-es.\n"
 
 #: src/express.c:1666
 msgid ""
 "\n"
 "\001f\001gYou have \001y%d \001gnew \001pWeb \001g%s %s \001w(\001gHit \001w<\001r^\001w> \001gto reply\001w)\001a\n"
 msgstr ""
+"\n"
+"\001f\001gJe hebt \001y%d \001gnieuwe \001pWeb \001g%s %s \001w(\001gToets \001w<\001r^\001w> \001gom te antwoorden\001w)\001a\n"
 
 #: src/fun.c:61 src/fun.c:69 src/fun.c:71
 msgid "\001f\001gNo unread %s.\001a"
@@ -688,46 +717,60 @@ msgid ""
 "\n"
 "\001gI love you too! ;)\n"
 msgstr ""
+"\n"
+"\001gIk houd ook van jou! ;)\n"
 
 #: src/fun.c:119
 msgid ""
 "\n"
 "\001y*whine* Coz I need one! )~:\n"
 msgstr ""
+"\n"
+"\001y*zeur* Omdat ik er een wil! )~:\n"
 
 #: src/fun.c:121
 msgid ""
 "\n"
 "\001g*pout*  ):\n"
 msgstr ""
+"\n"
+"\001g*pruil*  ):\n"
 
 #: src/fun.c:123
 msgid ""
 "\n"
 "\001g*buurrRp*  (:\n"
 msgstr ""
+"\n"
+"\001g*boerrRr*  (:\n"
 
 #: src/key.c:108
 msgid ""
 "\n"
 "Please enter your validation key, if you have received it.\n"
 msgstr ""
+"\n"
+"Type alsjeblieft je validatie sleutel, als je die ontvangen hebt.\n"
 
 #: src/key.c:109
 msgid "Otherwise, press return.\n"
-msgstr ""
+msgstr "Toets anders enter.\n"
 
 #: src/key.c:115
 msgid ""
 "The key is correct, you are now validated.\n"
 "\n"
 msgstr ""
+"De sleutel is correct, je bent nu gevalideerd.\n"
+"\n"
 
 #: src/key.c:118
 msgid ""
 "Sorry, but the key was incorrect..\n"
 "\n"
 msgstr ""
+"Sorry, maar de sleutel was niet correct..\n"
+"\n"
 
 #: src/main.c:166
 msgid ""
@@ -743,7 +786,7 @@ msgstr "\001f\001rDeze gebruiker bestaat niet.\001a\n"
 
 #: src/main.c:224 src/main.c:326
 msgid "Incorrect login.\n"
-msgstr "Foute login.\n"
+msgstr "Incorrecte login.\n"
 
 #: src/main.c:242
 msgid "\001f\001gPlease enter your \001rcurrent\001g password: "
@@ -775,6 +818,8 @@ msgid ""
 "\n"
 "Username: "
 msgstr ""
+"\n"
+"Gebruikersnaam: "
 
 #: src/main.c:311
 msgid "Enter \"Off\" to quit or \"New\" to enter as a new user.\n"
@@ -782,7 +827,7 @@ msgstr "Type \"Off\" om te stoppen of \"New\" om een nieuwe gebruiker te creeren
 
 #: src/main.c:324
 msgid "%s's Password: "
-msgstr "%s's wachtwoord: "
+msgstr "%s's Wachtwoord: "
 
 #: src/main.c:557
 msgid ""
@@ -842,7 +887,7 @@ msgid ""
 "\001a\001f\001gWelcome to %s, \001g%s! \001gThis is your \001w#%d \001glogin.\n"
 msgstr ""
 "\n"
-"\001a\001f\001gWelkom op %s, \001g%s! \001gDit is je \001w#%d \001glogin.\n"
+"\001a\001f\001gWelkom op %s, \001g%s! \001gDit is je \001w%de \001glogin.\n"
 
 #: src/main.c:787
 msgid "\001f\001gLast login: %s \001g\001ffrom \001r%-16.16s\n"
@@ -854,7 +899,7 @@ msgstr "\001f\001gJe aanwezige vrienden\001w:\001a\n"
 
 #: src/main.c:846
 msgid "\001f\001gYou have a new private %s in \001pMail>\n"
-msgstr "\001f\001gJe hebt een nieuw prive %s in \001pMail>\n"
+msgstr "\001f\001gJe hebt een nieuw privé %s in \001pMail>\n"
 
 #: src/main.c:848
 msgid "\001f\001gYou have \001r%d \001gnew private %s in \001pMail>\n"
@@ -862,11 +907,11 @@ msgstr "\001f\001gJe hebt \001r%d \001gnieuwe poststukken in \001pMail>\n"
 
 #: src/main.c:850
 msgid "\001f\001gYou have \001rno\001g new Mail %s.\001a\n"
-msgstr "\001f\001gJe hebt \001rgeen\001g nieuwe post.\001a\n"
+msgstr "\001f\001gJe hebt \001rgeen\001g nieuwe poststukken.\001a\n"
 
 #: src/messages.c:500
 msgid "\001f\001rERROR: Can't search for nothing...\001a\n"
-msgstr ""
+msgstr "\001f\001rFOUT: Ik kan niet naar niets zoeken...\001a\n"
 
 #: src/messages.c:504
 msgid "\001f\001rERROR: '\001y%s\001r' is not a valid search pattern...\001a\n"
@@ -878,11 +923,11 @@ msgstr "\001f\001r\001eZoeken..."
 
 #: src/read_menu.c:130
 msgid "\001f\001gRead messages backwards.\001a\n"
-msgstr ""
+msgstr "\001f\001gLees berichten achteruit.\001a\n"
 
 #: src/read_menu.c:151
 msgid "\001f\001pSubscribe to %s: \001a"
-msgstr ""
+msgstr "\001f\001pAbonneer op %s: \001a"
 
 #: src/read_menu.c:156
 msgid "\001f\001gEnter message.\001a\n"
@@ -890,7 +935,7 @@ msgstr ""
 
 #: src/read_menu.c:173
 msgid "\001f\001gRead messages forward.\001a\n"
-msgstr ""
+msgstr "\001f\001gLees berichten vooruit.\001a\n"
 
 #: src/read_menu.c:178
 msgid "\001f\001gYour friends online.\001a\n"
@@ -898,7 +943,7 @@ msgstr ""
 
 #: src/read_menu.c:208 src/usertools.c:1080
 msgid "\001f\001gHelpfiles.\001a\n"
-msgstr ""
+msgstr "\001f\001gHelp bestanden.\001a\n"
 
 #: src/read_menu.c:213
 msgid "\001f\001g%s Info.\001a\n"
@@ -1181,6 +1226,8 @@ msgid ""
 "\n"
 "\001f\001gPress \001w<\001rh\001w>\001g to access the helpfiles.\n"
 msgstr ""
+"\n"
+"\001f\001gToets \001w<\001rh\001w>\001g om de help bestanden te bekijken.\n"
 
 #: src/usertools.c:1069
 msgid ""
@@ -1216,7 +1263,7 @@ msgstr ""
 
 #: src/usertools.c:1086
 msgid "\001f\001gCommand Helpfiles.\001a\n"
-msgstr ""
+msgstr "\001f\001gCommando help bestanden.\001a\n"
 
 #: src/usertools.c:1093
 msgid "\001f\001gQuit.\001a\n"
