@@ -21,7 +21,6 @@
 #include "libquad.h"
 #include "ext.h"
 #include "setup.h"
-#include "sql_message.h"
 #include "sql_forum.h"
 #include "sql_userforum.h"
 
@@ -1497,7 +1496,7 @@ check_generation()
 int
 check_messages(int room)
 {
-    return mono_sql_mes_get_unread(room, usersupp->lastseen[room]);
+    return mono_sql_uf_get_unread(room, usersupp->lastseen[room]);
 }
 
 int

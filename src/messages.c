@@ -44,6 +44,8 @@
 #include "usertools.h"
 #include "routines2.h"
 
+#include "sql_userforum.h"
+
 #define MODIFICATION_TIME
 
 static void move_message_to_trash(void);
@@ -1269,7 +1271,7 @@ reset_lastseen()
 int
 unread_room()
 {
-    return mono_sql_mes_unread_room(usersupp->usernum);
+    return mono_sql_uf_unread_room(usersupp->usernum);
 }
 
 /*************************************************
