@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html lang="en">
+<head>
+
+<?php
+
+    // Get username and print off proper title.
+    //
+    require('engine/html.inc');
+    print_title( getenv("REMOTE_USER"), $REQUEST_URI );
+
+?>
+
+<style>
+  p  		{ font: 12pt Helvetica; }
+  ul  		{ font: 12pt Helvetica; }
+  li  		{ font: 12pt Helvetica; }
+  a  		{ font: 12pt Helvetica; color: #FFFF00; text-decoration: underline; }
+  pre		{ font: 12pt Helvetica; }
+  font		{ font: 12pt Helvetica; }
+  b		{ font-weight: bold; }
+  .reply	{ font: 10pt Helvetica; }
+  .green	{ color: #00cc00; }
+  .red		{ font: 10pt Times; font-weight: bold; color: #ff0000; }
+  .footer	{ font: 10pt Times; text-align: center; }
+</style>
+
+</head>
+<body bgcolor="#000000" text="#FFFFFF">
+
+
+<?php
+
+    $starttime = microtime();
+
+    $username = getenv("REMOTE_USER");
+    require ("engine/routines.inc");
+
+    // Pick url open into commands.
+    $url_array=explode("/",$REQUEST_URI);
+
+    // Assign values so we can use 'em.
+    $action=$url_array[3];		// What action?
+    $quad=$url_array[4];		// First arg.
+    $message=$url_array[5];		// Second arg.
+    $direction=$url_array[6];		// Third arg.
+
+    switch ($action) {
+
+        case "l":
+            require ('engine/quad.inc');
+            list_messages($username,$quad);
+            break;
+
+        case "r":
+            require ('engine/read.inc');
+            read_message($username,$quad,$message,$direction);
+            break;
+
+        case "e":	// Enter (new).
+        case "f":	// Followup (reply).
+            require ('engine/post.inc');
+            enter_message($username,$quad,$message,$action);
+            break;
+
+        default:
+            require ('engine/list.inc');
+            list_quads($username);
+            break;
+
+    }
+
+    html_print_foot($starttime);
+    
+?>
+
+</body>
+</html>
