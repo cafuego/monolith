@@ -249,7 +249,7 @@ html_print_foot($username, $starttime, $location)
 	echo "<div align=\"center\">\n";
         if(strtolower($username) != "guest")
             addbutton("Configuration", "/bbs/index.phtml/c", "Configure your account");
-        if($location != "handler" && strlolower($username) != "guest")
+        if($location != "handler" && strtolower($username) != "guest")
 	    addbutton("Check Xes", "$location", "Check for new eXpress messages");
         if(strtolower($username) != "guest")
 	    addbutton("Old X Log", "/bbs/index.phtml/o", "View your old eXpress messages");
