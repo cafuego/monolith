@@ -291,7 +291,7 @@ function colorize($doing) {
 
     // Fix fg colours.
     //
-    $doing = strtr($doing, "%01w", "</font><font color=\\\"#ffffff\\\">");	// White.
+    $doing = ereg_replace("%01w", "</font><font color=\"#ffffff\">", $doing);	// White.
     echo "<!-- $doing -->\n";
     $doing = strtr($doing, "%01y", "</font><font color=\\\"#ffff00\\\">");	// Yellow.
     echo "<!-- $doing -->\n";
