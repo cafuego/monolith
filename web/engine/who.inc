@@ -49,10 +49,12 @@ function show_wholist($username,$location) {
             $url_user = rawurlencode($user);
             $url_user = strtr($url_user, " ", "+");
 
-            if($interface != "web" )
-                $doing  = htmlspecialchars($doing);
+            if($interface != "web" ) {
+                $doing = htmlspecialchars($doing);
+                $doing = colorize($doing);
+            }
 
-            if($doing == "(null)" || $doing == NULL)
+            if( strstr($doing, "(null)") )
                 $doing == "";
 
             print "<tr>\n";
