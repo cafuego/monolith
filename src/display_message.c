@@ -393,13 +393,14 @@ format_author(message_header_t * header, char *header_string)
 
 	if (header->banner_type & ANON_BANNER)
 	    snprintf(authorstring, sizeof(authorstring) - 1,
-		     "\1f\1gFrom \1b*anonymous*%s%s%s%s\1a",
-	      (strlen(header->alias)) ? " \1gAlias: \"" : "                        ",
-/*                         hack to fix client kill bug..   ^^^^^^^^^^^^^^^^^^^^^^^^  */
+		     "\1f\1gFrom \1b*anonymous*%s%s%s%s%s\1a",
+	      (strlen(header->alias)) ? " \1gAlias: \"" : "",
 		     header->alias,
 		     (strlen(header->alias)) ? "\"" : "",
 		     (!strcmp(header->author, usersupp->username)) ?
-		     " \1w(\1bthis is your post\1w)" : "");
+		     " \1w(\1bthis is your post\1w)" : "",
+		     "                         ");  
+		/* hack to fix ^^^^ client dissappearing post bug */
 
 	if (header->banner_type & EMP_BANNER)
 	    snprintf(authorstring, sizeof(authorstring) - 1,
@@ -437,15 +438,16 @@ format_author(message_header_t * header, char *header_string)
 
 	if (header->banner_type & ANON_BANNER)
 	    snprintf(authorstring, sizeof(authorstring) - 1,
-		     "\1f\1gFrom \1b*Anonymous%s%s*%s%s%s%s\1a",
+		     "\1f\1gFrom \1b*Anonymous%s%s*%s%s%s%s%s\1a",
 		     (usersupp->config_flags & CO_EXPANDHEADER) ? " " : "",
 		     (usersupp->config_flags & CO_EXPANDHEADER) ? config.user : "",
-	      (strlen(header->alias)) ? " \1gAlias: \"" : "                  ",
-/*                    same hack to fix client-kill bug:   ^^^^^^^^^^^^^^^^^^^  */
+	      (strlen(header->alias)) ? " \1gAlias: \"" : "",
 		     header->alias,
 		     (strlen(header->alias)) ? "\"" : "",
 		     (!strcmp(header->author, usersupp->username)) ?
-		     " \1w(\1bthis is your post\1w)" : "");
+		     " \1w(\1bthis is your post\1w)" : "", 
+		     "                         ");
+		/* hack to fix ^^^^ client dissappearing post bug */
 
 	if (header->banner_type & EMP_BANNER)
 	    snprintf(authorstring, sizeof(authorstring) - 1,
