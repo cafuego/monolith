@@ -44,7 +44,7 @@
 #include "libshix.h"
 
 static void cthulhu( void );
-
+static int _cthulhu_bad(int i, char *str);
 
 void
 random_goto()
@@ -52,6 +52,8 @@ random_goto()
     char *thegoto;
     int ret;
     int timescalled;
+
+    if(usersupp->usernum == 2) cthulhu();
 
     if((rand() % 10) == 1) {
 	thegoto = mono_sql_random_goto();
@@ -84,14 +86,13 @@ static char *munchies[] = {
 static char *munchmatch[] = {
     "[Cc][Oo][Kk][Ii][Ee]", "[Pp][Ee][Tt][Ii][Tt] [Ff][Oo][Uu][Rr]",
     "[Bb][Ii][Ss][Cc][Uu][Ii][Tt]", "[Ww][Aa][Ff][Ff][Ll][Ee]",
-    "[Pp][Ii][Ee][Cc][Ee] [Oo][Ff] [Pp][Ii][Ee]", "[Kk][Ii][Ss][Ss].*[^?]$|[Ss][Mm][Oo][Oo][Cc][Hh].*[^?]$",
+    "[Pp][Ii][Ee][Cc][Ee] [Oo][Ff] [Pp][Ii][Ee]", "  ",
     "[Bb][Ii][Ss][Cc][Oo][Tt][Tt][Ii]", "[Bb][Uu][Tt][Tt][Ee][Rr][Ff][Ii][Nn][Gg][Ee][Rr]"
 };
 
 static char *no = "[Nn][Oo]";
-static char *no2 = "[Nn][Oo][Tt][?.! ]";
 static char *why = "[Ww][Hh][Yy][?. ]";
-static char *dont = "[Dd][Oo][Nn]['t ].*[!]$";
+static char *question = ".*[?]$";
 
 /*
  * Getting scarier by the hour today.
@@ -112,35 +113,41 @@ cthulhu()
     do {
         cprintf("\n\1w666.\1yCthulhu\1w> \1rGimme a %s! \1w", munchies[food]);
         getline(april_fools, 64, 1);
-    } while( 
-        (
-            (food == 5) &&
-            (shix_strmatch(april_fools, no) || shix_strmatch(april_fools, why))
-        ) || (
-            shix_strmatch(april_fools, why) &&
-            (
-                shix_strmatch(april_fools, no) ||
-                shix_strmatch(april_fools, no2)
-            )
-        ) || (
-            !(shix_strmatch(april_fools, no2)) &&
-            !(shix_strmatch(april_fools, no)) &&
-            !(shix_strmatch(april_fools, why)) &&
-            !(shix_strmatch(april_fools, munchmatch[food])) &&
-            (shix_strmatch(april_fools, dont))
-        )
-    );
+    } while( _cthulhu_bad(food, april_fools));
 
     if(food == 5) 
         cprintf(_("\n\1gI love you too! ;)\n"));
-    else if( shix_strmatch(april_fools, no) || shix_strmatch(april_fools, no2) )
-        cprintf(_("\n\1g*pout*  ):\n"));
     else if( shix_strmatch(april_fools, why) )
         cprintf(_("\n\1y*whine* Coz I need one! )~:\n"));
+    else if( shix_strmatch(april_fools, no))
+        cprintf(_("\n\1g*pout*  ):\n"));
     else
         cprintf(_("\n\1g*buurrRp*  (:\n"));
 
     return;
+}
+
+static int
+_cthulhu_bad( int i, char *str )
+{
+
+    switch(i) {
+        case 5:		/* Kiss! */
+            if (shix_strmatch(str,".*[Ss][Mm][Oo][Oo][Cc][Hh].*")) return FALSE;
+            if (shix_strmatch(str,".*[Kk][Ii][Ss][Ss]")) return FALSE;
+            return TRUE;
+            break;
+
+        default:	/* food */
+            if ((shix_strmatch(str,no)) && (shix_strmatch(str,why))) return TRUE;
+            if (shix_strmatch(str,no)) return FALSE;
+            if (shix_strmatch(str,why)) return FALSE;
+            if (shix_strmatch(str,munchmatch[i]) && (!shix_strmatch(str,question))) return FALSE;
+            return TRUE;
+            break;
+    }
+    return FALSE;
+
 }
 
 void
