@@ -3,6 +3,10 @@
  *
  * Contains all functions for displaying a message or post.
  */
+
+
+#include <config.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
