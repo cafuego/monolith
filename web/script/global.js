@@ -10,10 +10,11 @@ function logout() {
     // If not to a link on the BBS pages, then we go and
     // visit our logout page.
     //
-    if( window.location.indexOf('/bbs/') == -1 ) {
-        if( confirm("You are leaving Monolith BBS\n\nYou must log out first and will\nnow be taken to the logout page.") )
-            self.location = "/bbs/index.phtml/q";
-    }
+    // if( window.location.indexOf('/bbs/') == -1 ) {
+    //     if( confirm("You are leaving Monolith BBS\n\nYou must log out first and will\nnow be taken to the logout page.") )
+    //         self.location = "/bbs/index.phtml/q";
+    // }
+    return;
 
 }
 
