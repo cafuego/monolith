@@ -518,8 +518,8 @@ killroom()
     if (quickroom.flags & QR_INUSE)
 	quickroom.flags ^= QR_INUSE;
 
-    cprintf("\1rClear \1w(\1rerase\1w)\1r all messages? (recommended) (y/n) ");
-    if (yesno() == YES) {
+    cprintf("\1f\1rErase all %s in this %d? \1w(\1rrecommended\1w) (\1rY\1w/\1rn\1w) \1c", config.message_pl, config.forum);
+    if (yesno_default(YES) == YES) {
 	erase_all_messages(quickroom.highest);
 	quickroom.highest = quickroom.lowest = 0;
     }
@@ -527,7 +527,7 @@ killroom()
     for (i = 0; i < NO_OF_QLS; i++)
 	strcpy(quickroom.qls[i], "");
 
-    cprintf("\n\n\1f\1wResetting quickroom... \1a");
+    cprintf("\n\n\1f\1rResetting speedyforum... \1a");
     write_quad(quickroom, curr_rm);
 
     log_sysop_action("deleted %s: %s>", config.forum, temprmname);
@@ -550,17 +550,11 @@ create_room()
 
     for (number = 0; number < MAXQUADS; number++)
 	if (!(readquad(number).flags & QR_INUSE)) {
-	    cprintf("%s%d%s%s",
-		    "\n\1f\1gFound unused quadrant at quad #\1w",
-		     number,
-	            "\n\1rStop\1g searching for an unused quad?",
-		    " \1w(\1ry\1w/\1rn\1w): \1c");
-	    if (yesno() == YES) {
-		cprintf("%s%d%s",
-			"\n\1gInstall at quad number ",
-			number, 
-			"? \1w(\1ry\1w/\1rn\1w): \1c");
-		if (yesno() == NO)
+	    cprintf("\n\1f\1gFound an unused %s at slot \1y%d\1g.\n", config.forum, number);
+	    cprintf("\1gStop searching and use this position? \1w(\1rY\1w/\1rn\1w): \1c");
+	    if (yesno_default(YES) == YES) {
+		cprintf("\1f\1gInstall %s into slot \1y%d\1g? \1w(\1rY\1w/\1rn\1w): \1c", config.forum, number);
+		if (yesno_default(YES) == NO)
 		    return;
 		else
 		    break;
@@ -568,19 +562,16 @@ create_room()
 		continue;
 	}
     if (number >= MAXQUADS) {
-	cprintf("\1rNo unused %s was found.\n", config.forum);
+	cprintf("\1f\1rNo unused %s was found.\n", config.forum);
 	return;
     }
-    cprintf("%s%s%s",
-	"\1f\1rPlease keep the length of the name under 36 characters.\n",
-    	"                      |------------------------------------|\n",
-        "\1f\1gName for new quadrant\1w: \1c");
+    cprintf("\1f\1rPlease keep the length of the name under 36 characters.\n                      |------------------------------------|\n\1f\1gName for new %s\1w: \1c", config.forum);
     quad_name = get_name(3);
 
     if (strlen(quad_name) == 0)
 	return;
     if (get_room_number(quad_name) != -1) {
-	cprintf("\1r'%s' already exists.\n", quad_name);
+	cprintf("\1rA %s named '%s' already exists.\n", config.forum, quad_name);
 	return;
     }
     curr_rm = number;
