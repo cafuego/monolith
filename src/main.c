@@ -229,7 +229,7 @@ enter_passwd(const char *username)
     }
 
     cprintf(_("Incorrect login.\n"));
-    log_it("badpw", "%s from %s", username, hname);
+    log_it("badpw", "%s from %s", user->username, hname);
 
     if (++failures >= 4) {
 	cprintf("Too many failures.\n");
@@ -464,8 +464,8 @@ main(int argc, char *argv[])
 	    } else {
 		xfree(usersupp);
 		if (strcasecmp(username, "Guest") != 0) {
-		    done = enter_passwd(username);
-		    usersupp = readuser(username);
+		    if( (done = enter_passwd(username)) == TRUE )
+		        usersupp = readuser(username);
 		} else {	/* is guest */
 		    if (check_user("Guest")) {
 			usersupp = readuser("Guest");
