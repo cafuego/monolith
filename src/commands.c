@@ -82,7 +82,7 @@ sysop_menu()
 
             case 'A':
                 cprintf("Dump all posts into SQL.\n");
-                for (i = 0; i <= 75; i++)
+                for (i = 76; i < MAXQUADS; i++)
                     bingle(i);
                 break;
 
