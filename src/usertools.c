@@ -326,6 +326,10 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
 
     cprintf("\n\1y\1f%s\1g ", user->username);
 
+#ifndef MONOHOLIC_FLAG
+    cprintf("%s ", _get_monoholic_flag(user));
+#endif
+
     if (user->priv & PRIV_WIZARD)
 	cprintf("\1w(*** %s%s \1w***) ", WIZARDCOL, config.wizard);
     else if (user->priv & PRIV_SYSOP)
@@ -1155,4 +1159,38 @@ _set_date_display(const unsigned int bongo, const long bouncing, const char *hor
     usersupp->config_flags ^= CO_LONGDATE;
     cprintf("\n\1f\1cDate display set to %s\1c.", (usersupp->config_flags & CO_LONGDATE) ? "\1wlong" : "\1wshort");
     return;
+}
+
+static char *
+_get_monoholic_flag(user_t *user)
+{
+    float var = 0;
+
+    var = (float)user->posted / (float)user->timescalled;
+    var += (float) user->x_s / (float) user->timescalled / 100;
+    var += (float) user->timescalled/4000;
+
+    printf("%f\n", var);
+
+    if((var < 1.8) || (usersupp->timescalled < 1000))
+        return "";
+    if(var < 1.8)
+        return "\1f\1w* \1yAspiring Monoholic \1w*";
+    if(var < 2)
+        return "\1f\1w* \1yMonoholic \1w*";
+    if(var < 2.5)
+        return "\1f\1w* \1gDedicated Monoholic \1w*";
+    if(var < 3)
+        return "\1f\1w* \1gCommitted Monoholic \1w*";
+    if(var < 4)
+        return "\1f\1w* \1bGreat Monoholic \1w*";
+    if(var < 6)
+        return "\1f\1w* \1bHigh Monoholic \1w*";
+    if(var < 8)
+        return "\1f\1w* \1pExalted High Monoholic \1w*";
+    if(var < 10)
+        return "\1f\1w* \1pSupreme High Monoholic \1w*";
+
+    return "\1f\1w(* \1rPenultimate Monoholic \1w*)";
+
 }
