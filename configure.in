@@ -21,12 +21,17 @@ AC_ARG_WITH(sql_db, [    --with-sql_db=DB      Use this MySQL database [default=
 AC_ARG_WITH(sql_sock, [    --with-sql_sock=SOCK  Connect via this socket [default=/tmp/mysql.sock]
                           
 Additional --enable and --with options recognized:],,with_sql_sock=/tmp/mysql.sock)
-AC_ARG_WITH(rating, [  --with-rating           use message rating system  [default=yes]
-                          (allows users to rate messages)],,with_rating=yes)
+AC_ARG_WITH(icq, [  --with-icq              use icq gateway system  [default=yes]
+                          (allows users to talk to icq users)],,with_icq=yes)
+AC_ARG_WITH(rating, [  --with-rating           use message rating system  [default=no]
+                          (allows users to rate messages)],,with_rating=no)
 AC_ARG_WITH(hero, [  --with-hero             include superhero toy  [default=yes]
                           (requires silly sysops)],,with_hero=yes)
 AC_ARG_WITH(overview, [  --with-overview         give overview after configuring  [default=no]],,with_overview=no)
 
+if test "x$with_icq" != "xyes"; then
+  with_icq=no
+fi
 if test "x$with_rating" != "xyes"; then
   with_rating=no
 fi
@@ -97,9 +102,9 @@ AC_FUNC_MMAP
 AC_CHECK_FUNCS(uname gettimeofday gethostname mkdir regcomp socket putenv strcspn strdup strspn strstr)
 
 AC_CHECK_HEADERS(sys/mman.h)
-if test ! "x$ac_cv_header_sys_mman_h" = "xno" ; then
-  AC_CHECK_DEFINE(MAP_FAILED, sys/mman.h)
-fi
+dnl if test ! "x$ac_cv_header_sys_mman_h" = "xno" ; then
+dnl   AC_CHECK_DEFINE(MAP_FAILED, sys/mman.h)
+dnl fi
 
 dnl make sure a BBS name was specified.
 dnl
@@ -123,21 +128,21 @@ dnl Do a bit of mysql checking.
 if test ! x${with_mysql} = x && test -d "${with_mysql}"; then
     echo "checking MySQL installation in ${with_mysql}..."
     mysql_dir=${with_mysql}
-    echo -n "  -> headers..."
+    echo -n "checking headers..."
     if test -d "${with_mysql}/include"; then
         MYSQL_INCLUDE="-I${with_mysql}/include"
         echo " ok"
     else
         echo " uh-oh"
     fi
-    echo -n "  -> libraries..."
+    echo -n "checking libraries..."
     if test -d "${with_mysql}/lib"; then
         MYSQL_LIB="-L${with_mysql}/lib"
         echo " ok"
     else
         echo " uh-oh"
     fi
-    echo -n "  -> binaries..."
+    echo -n "checking binaries..."
     if test -d "${with_mysql}/bin"; then
         MYSQL_BIN="${with_mysql}/bin"
         echo " ok"
@@ -185,21 +190,21 @@ dnl ##
                     echo "Found directory /opt/mysql"
                     echo "checking MySQL installation..."
                     mysql_dir=/opt/mysql
-                    echo -n "  -> headers..."
+                    echo -n "checking headers..."
                     if test -d "${mysql_dir}/include"; then
                         MYSQL_INCLUDE="-I${mysql_dir}/include"
                         echo " ok"
                     else
                         echo " uh-oh"
                     fi
-                    echo -n "  -> libraries..."
+                    echo -n "checking libraries..."
                     if test -d "${mysql_dir}/lib"; then
                         MYSQL_LIB="-L${mysql_dir}/lib"
                         echo " ok"
                     else
                         echo " uh-oh"
                     fi
-                    echo -n "  -> binaries..."
+                    echo -n "checking binaries..."
                     if test -d "${mysql_dir}/bin"; then
                         MYSQL_BIN="${mysql_dir}/bin"
                         echo " ok"
@@ -225,21 +230,21 @@ dnl ##
                     echo "Found directory /usr/mysql"
                     echo "checking MySQL installation..."
                     mysql_dir=/usr/mysql
-                    echo -n "  -> headers..."
+                    echo -n "checking headers..."
                     if test -d "${mysql_dir}/include"; then
                         MYSQL_INCLUDE="-I${mysql_dir}/include"
                         echo " ok"
                     else
                         echo " uh-oh"
                     fi
-                    echo -n "  -> libraries..."
+                    echo -n "checking libraries..."
                     if test -d "${mysql_dir}/lib"; then
                         MYSQL_LIB="-L${mysql_dir}/lib"
                         echo " ok"
                     else
                         echo " uh-oh"
                     fi
-                    echo -n "  -> binaries..."
+                    echo -n "checking binaries..."
                     if test -d "${mysql_dir}/bin"; then
                         MYSQL_BIN="${mysql_dir}/bin"
                         echo " ok"
@@ -265,21 +270,21 @@ dnl ##
                     echo "Found directory /usr/local/mysql"
                     echo "checking MySQL installation..."
                     mysql_dir=/usr/local/mysql
-                    echo -n "  -> headers..."
+                    echo -n "checking headers..."
                     if test -d "${mysql_dir}/include"; then
                         MYSQL_INCLUDE="-I${mysql_dir}/include"
                         echo " ok"
                     else
                         echo " uh-oh"
                     fi
-                    echo -n "  -> libraries..."
+                    echo -n "checking libraries..."
                     if test -d "${mysql_dir}/lib"; then
                         MYSQL_LIB="-L${mysql_dir}/lib"
                         echo " ok"
                     else
                         echo " uh-oh"
                     fi
-                    echo -n "  -> binaries..."
+                    echo -n "checking binaries..."
                     if test -d "${mysql_dir}/bin"; then
                         MYSQL_BIN="${mysql_dir}/bin"
                         echo " ok"
@@ -305,21 +310,21 @@ dnl ##
                     echo "Found directory /var/mysql"
                     echo "checking MySQL installation..."
                     mysql_dir=/var/mysql
-                    echo -n "  -> headers..."
+                    echo -n "checking headers..."
                     if test -d "${mysql_dir}/include"; then
                         MYSQL_INCLUDE="-I${mysql_dir}/include"
                         echo " ok"
                     else
                         echo " uh-oh"
                     fi
-                    echo -n "  -> libraries..."
+                    echo -n "checking libraries..."
                     if test -d "${mysql_dir}/lib"; then
                         MYSQL_LIB="-L${mysql_dir}/lib"
                         echo " ok"
                     else
                         echo " uh-oh"
                     fi
-                    echo -n "  -> binaries..."
+                    echo -n "checking binaries..."
                     if test -d "${mysql_dir}/bin"; then
                         MYSQL_BIN="${mysql_dir}/bin"
                         echo " ok"
@@ -411,6 +416,16 @@ AC_SUBST(MYSQL_PASS)
 AC_SUBST(MYSQL_DATABASE)
 AC_SUBST(MYSQL_SOCKET)
 
+dnl Use icq gateway?
+dnl
+echo -n "checking whether to enable icq gateway..."
+if test "x$with_icq" = "xyes"; then
+  echo " yes"
+  AC_DEFINE(USE_ICQ)
+else
+  echo "no"
+fi
+
 dnl Use message rating system?
 dnl
 echo -n "checking whether to enable ratings..."
@@ -463,7 +478,8 @@ else
 fi
 
 AC_OUTPUT(cgi/Makefile lib/Makefile daemons/Makefile src/Makefile \
-    misc/Makefile shix/Makefile share/Makefile share/feelings/Makefile \
+    misc/Makefile shix/Makefile icq/Makefile \
+    share/Makefile share/feelings/Makefile \
     share/loginscreens/Makefile web/Makefile web/classes/Makefile \
     web/engine/Makefile web/pix/Makefile web/style/Makefile \
     web/script/Makefile web/sound/Makefile web/flash/Makefile \
