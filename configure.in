@@ -71,6 +71,7 @@ AM_GNU_GETTEXT
 dnl Check for awk/gawk - used to determine if we're linux or not.
 AC_PATH_PROG(awk_path,awk,no)
 AC_PATH_PROG(gawk_path,gawk,no)
+AC_PATH_PROG(cat_path,cat,no)
 AC_PATH_PROG(grep_path,grep,no)
 
 dnl Checks for libraries.
@@ -102,10 +103,23 @@ AC_FUNC_STRFTIME
 AC_FUNC_MMAP
 AC_CHECK_FUNCS(uname gettimeofday gethostname mkdir regcomp socket putenv strcspn strdup strspn strstr memfrob)
 
-AC_CHECK_HEADERS(sys/mman.h)
-dnl if test ! "x$ac_cv_header_sys_mman_h" = "xno" ; then
-dnl   AC_CHECK_DEFINE(MAP_FAILED, sys/mman.h)
-dnl fi
+dnl check if MAP_FAILED is defined...
+if test "x$grep_path" != "xno" ; then
+  AC_CHECK_HEADERS(sys/mman.h)
+  if test "x$ac_cv_header_sys_mman_h" != "xno" ; then
+    AC_DEFINE(HAVE_SYS_MMAN_H)
+    if test -r /usr/include/sys/mman.h; then
+      echo -n "checking whether sys/mman.h defines MAP_FAILED..."
+      result=`$grep_path MAP_FAILED /usr/include/sys/mman.h`
+      if test "x$result" != "x"; then
+        echo " yes"
+        AC_DEFINE(HAVE_MAP_FAILED)
+      else
+        echo " no"
+      fi
+    fi
+  fi
+fi
 
 dnl make sure a BBS name was specified.
 dnl
@@ -180,9 +194,9 @@ else
 dnl No MySQL specified and not found in standard locations, nearly time to argh.
 dnl
             echo
-            echo "Could not find MySQL and no directory was specified. I'm going to"
-            echo "have a little look around your system and check a few standard"
-            echo "locations, before I start running around in a panicking frenzy."
+            echo "  Could not find MySQL and no directory was specified. I'm going to"
+            echo "  have a little look around your system and check a few standard"
+            echo "  locations, before I start running around in a panicking frenzy."
             echo
 dnl ##
 dnl ##

@@ -933,6 +933,12 @@ mono_sql_u_set_icq_pass( unsigned int user_id, const char *pass )
     int ret;
     char *tmp_pass = NULL;
 
+#ifdef HAVE_MEMFROB
+    /*
+     * Do at least a weak attempt at making the password unreadable if we can.
+     */
+    (void) memfrob(pass, strlen(pass));
+#endif
     ret = escape_string( pass, &tmp_pass );
 
     ret = mono_sql_query(&res, "UPDATE " U_TABLE " SET icq_pass='%s' WHERE id=%u", tmp_pass, user_id);

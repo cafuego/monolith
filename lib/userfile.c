@@ -296,7 +296,7 @@ readuser(const char *name)
     (void) fclose(fp);
 
     if (!(user->configuration))
-	user->configuration = 0;
+	user->configuration = 1;
 
 #ifdef DEBUG
     printf("Successfully read user: %s\n\r", user->username);

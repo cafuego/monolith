@@ -40,6 +40,10 @@ CREATE TABLE user (
    post_count	INT UNSIGNED DEFAULT 0,
    login_count	INT UNSIGNED DEFAULT 0,
 
+# icq number
+   icq_number	INT UNSIGNED DEFAULT 0,
+   icq_pass	VARCHAR(64) NOT NULL,
+
    PRIMARY KEY  ( id ),
    INDEX( username ),
    UNIQUE ( username )

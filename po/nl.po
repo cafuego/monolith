@@ -542,6 +542,7 @@ msgid ""
 msgstr ""
 "\n"
 "\001f\001r????? \001gHULP VERZOEK van \001y\001n%s\001N \001gom \001w(\001g%02d:%02d\001w) \001r?????\001a\n"
+"\001c%s"
 
 #: src/express.c:1397
 msgid ""

@@ -15,6 +15,9 @@
 /* Define as 1 if you have the stpcpy function.  */
 #undef HAVE_STPCPY
 
+/* Define as 1 if you have the memfrob function. (Linux only)  */
+#undef HAVE_MEMFROB
+
 #undef HAVE_ANIMAL
 #undef HAVE_MAP_FAILED
 #undef MYSQL_DIR

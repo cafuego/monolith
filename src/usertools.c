@@ -2266,8 +2266,6 @@ _change_icq_password(const unsigned int a, const long b, void *c)
         return;
     }
 
-    memfrob( icq_pw, strlen(icq_pw) );
-
     if( (mono_sql_u_set_icq_pass(usersupp->usernum, icq_pw)) == -1)
         cprintf(_("\1f\1rSomething went wrong saving your ICQ Password.\n"));
     else
