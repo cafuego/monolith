@@ -618,9 +618,6 @@ format_mod_line(message_header_t * header, char *header_string)
 
     if (!header->orig_m_id)
 	return header_string;
-    else if (!(usersupp->priv & (PRIV_SYSOP | PRIV_WIZARD)))
-	if (!strcmp(header->author, usersupp->username))
-	    return header_string;
 
     tp = localtime(&header->orig_date);
 
