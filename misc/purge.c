@@ -31,8 +31,11 @@ main(int argc, char **argv)
 {
     set_invocation_name(argv[0]);
     mono_setuid("sysop");
+    mono_sql_connect();
 
     purge_users();
+
+    mono_sql_detach();
     exit(0);
 }
 
