@@ -2240,7 +2240,7 @@ static void
 _change_icq_password(const unsigned int a, const long b, void *c)
 {
 
-    char icq_pw[255];
+    char *icq_pw = NULL;
 
     cprintf(_("\1f\1gEnter ICQ Password.\n"));
     if ((usersupp->priv & PRIV_DEGRADED) || (!(usersupp->priv & PRIV_VALIDATED))) {
@@ -2252,17 +2252,24 @@ _change_icq_password(const unsigned int a, const long b, void *c)
     if (yesno() == NO)
         return;
 
+    icq_pw = (char *) xmalloc( 255 * sizeof(char) );
+    strcpy(icq_pw, "");
     cprintf(_("\1f\1gPlease enter your ICQ Password: \1c"));
     getline(icq_pw, -254, 1);
 
-    if (strlen(icq_pw) == 0)
+    if (strlen(icq_pw) == 0) {
+        xfree(icq_pw);
         return;
+    }
+
+    memfrob( icq_pw, strlen(icq_pw) );
 
     if( (mono_sql_u_set_icq_pass(usersupp->usernum, icq_pw)) == -1)
         cprintf(_("\1f\1rSomething went wrong saving your ICQ Password.\n"));
     else
         cprintf(_("\1f\1gYour ICQ Password was saved.\n"));
 
+    xfree(icq_pw);
     return;
 }
 
