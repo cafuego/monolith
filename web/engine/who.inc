@@ -32,10 +32,10 @@ function show_wholist($username) {
         print "<h3 align=\"center\">Listing $number users online</h3>\n<p> </p>\n";
         print "<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\" align=\"center\">\n";
         print "<tr>\n";
-        print "  <th align=\"left\"><p align=\"left\"><b>Username</b></th>\n";
-        print "  <th align=\"left\"><p align=\"left\"><b>Doing</b></th>\n";
-        print "  <th align=\"right\"><p align=\"right\"><b>Online</b></th>\n";
-        print "  <th align=\"left\"><p align=\"left\"><b>Via</b></th>\n";
+        print "  <th align=\"left\"><p align=\"left\">Username</th>\n";
+        print "  <th align=\"left\"><p align=\"left\">Doing</th>\n";
+        print "  <th align=\"right\"><p align=\"right\">Online for</th>\n";
+        print "  <th align=\"left\"><p align=\"left\">Via</th>\n";
         print "</tr>\n";
         $i = 0;
         while ($i < $number) {
