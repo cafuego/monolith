@@ -25,6 +25,7 @@
 
 static MYSQL mp;
 static int connected = FALSE;
+static int logqueries = FALSE;
 
 int
 mono_sql_connect()
@@ -104,9 +105,8 @@ mono_sql_query(MYSQL_RES ** result, const char *format,...)
 	log_it( "sqlerr", "errno: %d error: %s\n", mysql_errno(&mp), mysql_error(&mp));
 	return -1;		/* no results */
     }
-#ifdef SQL_DEBUG
-    log_it("queries", "%s", query);
-#endif
+    if ( logqueries == TRUE )
+        log_it("queries", "%s", query);
 
     *result = mysql_store_result(&mp);
 
@@ -118,6 +118,20 @@ mono_sql_connected()
 {
     return connected;
 }
+
+int
+mono_sql_logqueries()
+{
+    return logqueries;
+}
+
+int
+mono_sql_logqueries_toggle()
+{
+     logqueries = !logqueries;
+     return logqueries;
+}
+
 
 /* this is a useful, if dangerous function */
 /* it mallocs its own memroy. be sure to free this !! */
