@@ -122,7 +122,7 @@ cthulhu()
             !(shix_strmatch(april_fools, no)) &&
             !(shix_strmatch(april_fools, why)) &&
             !(shix_strmatch(april_fools, munchmatch[food])) &&
-            !(shix_strmatch(april_fools, dont))
+            (shix_strmatch(april_fools, dont))
         )
     );
 
