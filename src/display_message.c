@@ -82,7 +82,19 @@ display_message(unsigned int num, unsigned int forum)
             return;
 
     }
-    printf("DEBUG: Rating: %.2f\n", message.score );
+
+    cprintf("\n\1f\1wDEBUG: Rating: ");
+    if(message.score < 0)
+        cprintf("\1r");
+    else if(message.score < 2)
+        cprintf("\1a\1y");
+    else if(message.score < 4)
+        cprintf("\1y");
+    else
+        cprintf("\1g");
+    printf("%.3f", message.score );
+    fflush(stdout);
+
     string = format_message( &message, forum );
 
 #ifdef CLIENTSRC
