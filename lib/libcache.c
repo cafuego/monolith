@@ -15,8 +15,6 @@
 #include "sql_user.h"
 #include "sql_useruser.h"
 
-#include "ext.h"
-
 #define extern
 #include "libcache.h"
 #undef extern
@@ -82,7 +80,7 @@ update_user_cache(const unsigned int num)
 }
 
 void
-start_user_cache(void)
+start_user_cache(const unsigned int the_number)
 {
     friend_t *tmp_flist = NULL, *frPtr;
     user_cache_t the_user;
@@ -91,7 +89,7 @@ start_user_cache(void)
 	flush_user_cache();
 
 /* load friends */
-    if (mono_sql_uu_read_list(usersupp->usernum, &tmp_flist, L_FRIEND) != -1) {
+    if (mono_sql_uu_read_list(the_number, &tmp_flist, L_FRIEND) != -1) {
 	frPtr = tmp_flist;
 	while (frPtr) {
 	    the_user.user_number = frPtr->usernum;
@@ -107,7 +105,7 @@ start_user_cache(void)
     tmp_flist = NULL;
 
 /* load enemies */
-    if (mono_sql_uu_read_list(usersupp->usernum, &tmp_flist, L_ENEMY) != -1) {
+    if (mono_sql_uu_read_list(the_number, &tmp_flist, L_ENEMY) != -1) {
 	frPtr = tmp_flist;
 	while (frPtr) {
 	    the_user.user_number = frPtr->usernum;
