@@ -2,7 +2,7 @@
 #
 # Extremely crude util for creating forum directories.
 
-BBSDIR=/usr/bbs
+BBSDIR=/usr/local/bbs
 FILEDIR=$BBSDIR/save/forums
 BBS_ID=bbs
 

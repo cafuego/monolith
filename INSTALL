@@ -33,7 +33,7 @@ In that case, run `configure' with the option `--srcdir=DIR', where
 DIR is the directory that contains the source code.
 
 By default, `make install' will install the package's files in
-/usr/bbs/bin, /usr/bbs/lib, /usr/bbs/man, etc.  You can specify
+/usr/local/bbs/bin, /usr/bbs/lib, /usr/bbs/man, etc.  You can specify
 an installation prefix other than /usr/bbs by giving `configure' the
 option `--prefix=PATH'.  Alternately, you can do so by giving a value
 for the `prefix' variable when you run `make', e.g.,

@@ -301,7 +301,7 @@ vcprintf(const char *fmt, va_list args)
 		    DynamicColourFlag = 0;
 		    ColourChar((unsigned char) va_arg(args, int));
 		} else
-		    bing((unsigned char) va_arg(args, char));
+		    bing((unsigned char) va_arg(args, int));
 		while (--field_width > 0)
 		    putchar(' ');
 		continue;
@@ -395,9 +395,9 @@ vcprintf(const char *fmt, va_list args)
 	    num = va_arg(args, unsigned long);
 	else if (qualifier == 'h')
 	    if (flags & SIGN)
-		num = va_arg(args, short);
+		num = va_arg(args, int);
 	    else
-		num = va_arg(args, unsigned short);
+		num = va_arg(args, int);
 	else if (flags & SIGN)
 	    num = va_arg(args, int);
 	else
