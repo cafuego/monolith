@@ -283,7 +283,7 @@ kickout(const char *user, unsigned int room)
 	mono_errno = E_NOQUAD;
 	return -1;
     }
-    scratch = read_quad(room);
+    read_forum( room, &scratch );
     userP = readuser(user);
 
     if (!userP) {
@@ -338,7 +338,7 @@ invite(const char *name, unsigned int room)
     if (user == NULL)
 	return -1;
 
-    scratch = read_quad(room);
+    read_forum( room, &scratch );
 
     if (user->generation[room] == scratch.generation) {
 	xfree(user);
@@ -379,15 +379,15 @@ search_msgbase(char *string, unsigned int room, unsigned long start, user_t * us
     char work[80], *p, line[LINE_LENGTH];
     regexp *exp = NULL;
 
+    read_forum( room, &bing );
+
     if (room == 1) {		/* seaching mail */
-	bing = read_quad(room);
 	/* malloc a shitload of memory! */
 	p = (char *) xmalloc((bing.maxmsg) * LINE_LENGTH);
 	start = user->mailnum - bing.maxmsg;
 	if (start < 0)
 	    start = 0;
     } else {			/* normal quad */
-	bing = read_quad(room);
 	/* malloc a shitload of memory! */
 	p = (char *) xmalloc((bing.highest - bing.lowest) * LINE_LENGTH);
 	if (start < bing.lowest)

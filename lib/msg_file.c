@@ -168,7 +168,7 @@ message_copy(const unsigned int from_forum, const unsigned int to_forum, const u
 	    xfree(to_header);
 	    break;
 	}
-	forum = read_quad(to_forum);
+        read_forum( to_forum, &forum );
 
 	to_header->orig_m_id = to_header->m_id;
 	to_header->orig_f_id = to_header->f_id;
@@ -502,7 +502,7 @@ convert_message_base(int forum)
 	highest_message = user->mailnum;
 lowest_message = 1;
 	forum = MAIL_FORUM;
-	quad = read_quad(forum);
+        read_forum( forum, &quad );
 #endif
 
 #ifndef CONVERT_MAIL_QUAD
@@ -510,7 +510,7 @@ lowest_message = 1;
     if (forum == 1)
 	return -1;
 #endif
-    quad = read_quad(forum);
+    read_forum( forum, &quad );
     highest_message = quad.highest;
     lowest_message = quad.lowest;
 #endif

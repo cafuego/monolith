@@ -391,7 +391,7 @@ _mono_sql_mes_cleanup(unsigned int forum)
     /*
      * Yuck.
      */
-    scratch = read_quad(forum);
+    read_forum( forum, &scratch );
     if( (lowest = scratch.highest - scratch.maxmsg) < 0)
         lowest = 0;
 
