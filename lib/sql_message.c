@@ -125,7 +125,11 @@ mono_sql_mes_retrieve(unsigned int id, unsigned int forum, message_t *data)
     message_t message;
     int ret = 0;
 
+    ret = mono_sql_query(&res, "SELECT m.message_id,m.topic_id,m.forum_id,m.author,m.alias,m.subject,UNIX_TIMESTAMP(m.date) AS date,m.type,m.priv,m.deleted,AVG(r.score) AS score FROM %s AS m,%s AS r WHERE m.message_id IN (r.message_id) AND m.forum_id=%u AND m.message_id=%u GROUP BY m.message_id", M_TABLE, R_TABLE, forum, id);
+
+#ifdef OLD_SHIT
     ret = mono_sql_query(&res, "SELECT message_id,topic_id,forum_id,author,alias,subject,UNIX_TIMESTAMP(date),type,priv,deleted FROM " M_TABLE " WHERE message_id=%u AND forum_id=%u", id, forum);
+#endif
 
     if (ret == -1) {
  	(void) mysql_free_result(res);
@@ -173,7 +177,7 @@ mono_sql_mes_retrieve(unsigned int id, unsigned int forum, message_t *data)
     /*
      * Score!
      */
-    message.score = mono_sql_rat_get_rating(message.num, message.forum);
+    sscanf(row[10], "%f", &message.score);
 #else
     message.score = 0;
 #endif
@@ -199,16 +203,14 @@ mono_sql_mes_list_forum(unsigned int forum, unsigned int start, mlist_t ** list)
     mlist_t entry;
     message_t *message;
 
-
     /*
      * Coolest query in the BBS sofar :)
      */
-#ifdef ALLOW_SUBQUERIES
-    ret = mono_sql_query(&res, "SELECT m.message_id,m.topic_id,m.forum_id,m.author,m.alias,m.subject,UNIX_TIMESTAMP(m.date) AS date,m.type,m.priv,m.deleted,AVG(r.score) AS score FROM message AS m LEFT JOIN rating AS r ON m.message_id = r.message_id AND m.forum_id = m.forum_id WHERE m.message_id>%u AND m.forum_id=%u ORDER BY m.message_id", start, forum );
-#else
+    ret = mono_sql_query(&res, "SELECT m.message_id,m.topic_id,m.forum_id,m.author,m.alias,m.subject,UNIX_TIMESTAMP(m.date) AS date,m.type,m.priv,m.deleted,AVG(r.score) AS score FROM %s AS m,%s AS r WHERE m.message_id IN (r.message_id) AND m.forum_id=%u AND m.message_id>%u GROUP BY m.message_id", M_TABLE, R_TABLE, forum, start);
+
+#ifdef OLD_SHIT
     ret = mono_sql_query(&res, "SELECT message_id,topic_id,forum_id,author,alias,subject,UNIX_TIMESTAMP(date) AS date,type,priv,deleted FROM " M_TABLE " WHERE message_id>%u AND forum_id=%u ORDER BY message_id", start, forum);
 #endif
-
     
     if (ret == -1) {
 	(void) mysql_free_result(res);
@@ -250,9 +252,12 @@ mono_sql_mes_list_topic(unsigned int topic, unsigned int start, mlist_t ** list)
     int ret = 0, rows = 0, i = 0;
     mlist_t entry;
 
-#ifdef ALLOW_SUBQUERIES
-    ret = mono_sql_query(&res, "SELECT m.message_id,m.topic_id,m.forum_id,m.author,m.alias,m.subject,UNIX_TIMESTAMP(m.date) AS date,m.type,m.priv,m.deleted,AVG(r.score) AS score FROM message AS m LEFT JOIN rating AS r ON m.message_id = r.message_id AND m.topic_id = m.topic_id WHERE m.message_id>%u AND m.topic_id=%u ORDER BY m.message_id", start, topic );
-#else
+    /*
+     * Second coolest query in the BBS sofar.
+     */
+    ret = mono_sql_query(&res, "SELECT m.message_id,m.topic_id,m.forum_id,m.author,m.alias,m.subject,UNIX_TIMESTAMP(m.date) AS date,m.type,m.priv,m.deleted,AVG(r.score) AS score FROM %s AS m,%s AS r WHERE m.message_id IN (r.message_id) AND m.topic_id=%u AND m.message_id>%u GROUP BY m.message_id", M_TABLE, R_TABLE, topic, start);
+
+#ifdef OLD_SHIT
     ret = mono_sql_query(&res, "SELECT message_id,topic_id,forum_id,author,alias,subject,UNIX_TIMESTAMP(date) AS date,type,priv,deleted FROM " M_TABLE " WHERE message_id>%u AND topic_id=%u ORDER BY message_id", start, topic);
 #endif
 
@@ -363,13 +368,13 @@ _mono_sql_mes_row_to_mes(MYSQL_ROW row)
     sscanf(row[9], "%c", &message->deleted);
 
 #ifdef USE_RATING
-  #ifdef ALLOW_SUBQUERIES
     sscanf(row[10], "%f", &message->score);
-  #else
-    message->score = mono_sql_rat_get_rating(message->num, message->forum);
-  #endif
 #else
     message->score = 0;
+#endif
+
+#ifdef OLD_SHIT
+    message->score = mono_sql_rat_get_rating(message->num, message->forum);
 #endif
 
     return message;
