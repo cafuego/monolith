@@ -1428,14 +1428,14 @@ feeling()
     if ((usersupp->flags & US_COOL) || (usersupp->priv & (PRIV_SYSOP | PRIV_WIZARD)))
 	cprintf("\1f\1gYou're cool. Press \1w<\1rf\1w>\1g to send the \1cFREEZE\1g feeling.\1a\n");
 
-    while ((cmd != SP) && (cmd != 13)) {
+    while ((cmd != SP) && (cmd != 13) && (cmd !='\n')) {
 	IFNEXPERT
 	{
 	    cprintf("\1f\1gFeeling Options.\1a\n");
 	    more(MENUDIR "/menu_feelings", 1);
 	}
 	cprintf("\n\1f\1gFeeling: \1a");
-	cmd = get_single_quiet("12abcdefFgGhHiklmnoOpPrRstTuwzZ\r ?");
+	cmd = get_single_quiet("12abcdefFgGhHiklmnoOpPrRstTuwzZ\n ?\013");
 
 	if (cmd != '?')
 	    cprintf("\1f\1c%c\n", cmd);
@@ -1443,6 +1443,7 @@ feeling()
 	switch (cmd) {
 	    case ' ':
 	    case 13:
+	    case '\n':
 		return;
 
 	    case '?':
