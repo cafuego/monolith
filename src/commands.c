@@ -889,9 +889,9 @@ sysoproom_menu()
 	    which_room("\1f\1pAdmin cmd: \1rRoom cmd: \1a");
 	}
 
-	cmd = get_single_quiet("CDEILKNPTWZQG\r\b ?");
+	cmd = get_single_quiet("CDEHiILkKNPTWZQG\r\b ?");
 
-	if (strchr("CLDEIKTZQ", cmd))
+	if (strchr("CLDEHiIkKTZQ", cmd))
 	    nox = 1;		/* is busy... */
 
 	switch (cmd) {
@@ -916,15 +916,29 @@ sysoproom_menu()
 		low_traffic_quad_list();
 		break;
 
-	    case 'I':
+	    case 'H':
+		edithosts_menu();
+	 	break;
+
+	    case 'i':
 		cprintf("\1f\1rInvite user to %s.\1a\n", config.forum);
 		do_invite();
 		break;
 
-	    case 'K':
+            case 'I': 
+                invite_menu();
+                break;
+           
+
+	    case 'k':
 		cprintf("\1f\1rKickout user from %s.\1a\n", config.forum);
 		do_kickout();
 		break;
+
+            case 'K': 
+	kickout_menu();
+                break;
+            
 
 	    case 'L':
 		cprintf("\1f\1pList of %ss.\1a\n", config.forum);
@@ -1090,7 +1104,7 @@ roomaide_menu()
 	    more(QUADRANT "/index", 1);
 	    which_room(ROOMAIDETITLE " cmd: \1a");
 	}
-	cmd = get_single_quiet("DEIKNPRTW\r\b ?");
+	cmd = get_single_quiet("DEiIkKNPRTW\r\b ?");
 
 	if (strchr("DEIK", cmd))
 	    nox = 1;
@@ -1109,19 +1123,28 @@ roomaide_menu()
 		editroom();
 		break;
 
-	    case 'I':
+	    case 'i':
 		cprintf("\1f\1wInvite %s to %s.\1a\n", config.user, config.forum);
 		if (usersupp->flags & US_ADMINHELP)
 		    more(QUADRANT "/invite", 1);
 		do_invite();
 		break;
 
-	    case 'K':
+            case 'I': 
+	invite_menu();
+                break;
+            
+
+	    case 'k':
 		cprintf("\1f\1wKickout %s from %s.\1a\n", config.user, config.forum);
 		if (usersupp->flags & US_ADMINHELP)
 		    more(QUADRANT "/kickout", 1);
 		do_kickout();
 		break;
+
+            case 'K': 
+	         kickout_menu();
+ break;
 
 	    case 'N':
 		cprintf("\1f\1wNotebook-utility.\1a\n");
