@@ -22,7 +22,13 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 
+#ifdef HAVE_MYSQL_H
 #include <mysql.h>
+#else
+#ifdef HAVE_MYSQL_MYSQL_H
+#include <mysql/mysql.h>
+#endif
+#endif
 
 #include "monolith.h"
 #include "libmono.h"

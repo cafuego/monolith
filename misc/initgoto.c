@@ -8,13 +8,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+
+#ifdef HAVE_MYSQL_H
 #include <mysql.h>
+#else
+#ifdef HAVE_MYSQL_MYSQL_H
+#include <mysql/mysql.h>
+#endif
+#endif
 
 #include "monolith.h"
 #include "libmono.h"
 #include "routines.h"
-#include "sql_config.h"
-#include "sql_utils.h"
+#include "monosql.h"
 
 #define BUFSIZE		3000
 
