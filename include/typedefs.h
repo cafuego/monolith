@@ -48,6 +48,14 @@ struct forumlist {
     forumlist_t *next;
 };
 
+typedef struct topiclist topiclist_t;
+struct topiclist {
+    char name[L_TOPICNAME+1];
+    unsigned int topic_id;
+    topiclist_t *next;
+};
+
+
 typedef struct {
    unsigned int m_id;			/* messsage number in forum */
    unsigned int f_id;			/* forum number */
