@@ -251,7 +251,7 @@ function list_x_messages($username) {
 
             print "<tr>\n";
             print "  <td align=\"left\">\n";
-            print "    <p align=\"left\"><font color=\"#00cc00\">Message to <a href=\"/bbs/index.phtml/x/$user/\">$user</a> at </font>(<font color=\"#00cc00\">$date</font>)\n";
+            print "    <p align=\"left\"><font color=\"#00cc00\">eXpress Message to <a href=\"/bbs/index.phtml/x/$user/\">$user</a> was read at $date CET</font>.\n";
             print "  </td>\n";
             print "</tr>\n";
 
