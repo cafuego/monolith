@@ -1,5 +1,7 @@
 <?php
 
+  global $PHP_AUTH_USER, $PHP_AUTH_PW;
+
   function auth_verify_password( $username, $password ) {
 
     global $MYSQL_SERVER, $MYSQL_USER, $MYSQL_PASS, $MYSQL_DATABASE, $PHP_AUTH_USER, $PHP_AUTH_PW;
@@ -84,7 +86,7 @@
 
   // Check if we have a username, check password if we do.
   //
-  if((!isset($PHP_AUTH_USER)) || ($PHP_AUTH_USER = "") || ($PHP_AUTH_USER == NULL)) {
+  if(!isset($PHP_AUTH_USER)) {
     Header("WWW-Authenticate: Basic realm=\"$BBSNAME BBS\"");
     Header("HTTP/1.0 401 Unauthorized");
     auth_head();
