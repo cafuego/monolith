@@ -254,8 +254,8 @@ x_message_to_mail(const char *x, char *to_user)
 
     if (fp != NULL) {
         fprintf(fp, "%s%s%s",
-	    "\1f\1b*** \1gYou logged off while I was sending you this", 
-	    " eXpress message \1b***\1a\1c\n",
+	    "\n\1f\1b*** \1gYou logged off while I was sending you this", 
+	    " eXpress message \1b***\1a\1c\n\n",
             x );
 
 	fclose(fp);
