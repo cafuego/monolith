@@ -262,7 +262,7 @@ save_to_sql(const message_header_t *header, const char *filename)
     message->m_id = header->m_id;
     message->f_id = header->f_id;
     message->t_id = 0;
-    mono_cached_sql_u_name2id(who_am_i(NULL), &message->a_id);
+    mono_cached_sql_u_name2id(header->author, &message->a_id);
     sprintf(message->alias, "%s", header->alias);
     sprintf(message->subject, "%s", header->subject);
     sprintf(message->flag, "%s", get_flag(header->banner_type));
