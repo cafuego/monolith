@@ -59,6 +59,8 @@ enter_message(unsigned int forum, unsigned int flag)
 
     message = (message_t *)xcalloc( 1, sizeof(message_t) );
     
+    message->author = usersupp->usernum;
+    message->topic = 1;
     message->forum = forum;
     message->deleted = 'n';
 
@@ -97,7 +99,7 @@ enter_message(unsigned int forum, unsigned int flag)
             
     }
 
-    if( (mono_sql_mes_add(message, usersupp->usernum, temp)) == -1)
+    if( (mono_sql_mes_add(message, temp)) == -1)
         cprintf("\1f\1rCould not save your %s!\n", config.message);
     else
         cprintf("\1f\1gSaved.\n");

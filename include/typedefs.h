@@ -50,9 +50,15 @@ struct forumlist {
 
 typedef struct {
     unsigned int num;
-    unsigned int topic;
     unsigned int forum;
-    char author[L_USERNAME+1];
+    unsigned int topic;
+    unsigned int author;
+    unsigned int f_highest;
+    unsigned int f_remaining;
+    unsigned int f_flags;
+    char f_name[L_TOPICNAME+1];
+    char t_name[L_QUADNAME+1];
+    char a_name[L_USERNAME+1];
     char alias[L_USERNAME+1];
     char subject[L_SUBJECT];
     time_t date;

@@ -29,7 +29,7 @@
 #include "sql_utils.h"
 #undef extern
 
-#define SQLQUERY_BUFFER_SIZE 500
+#define SQLQUERY_BUFFER_SIZE 1000
 #undef SQL_DEBUG
 
 static MYSQL mp;

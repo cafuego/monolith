@@ -1845,9 +1845,9 @@ new_read_menu(unsigned int forum, int direction)
     while( list != NULL ) {
 
 #ifdef USE_RATING
-        cmd = get_single_quiet("abefnsqR ");
+        cmd = get_single_quiet("abefnsqR \005");
 #else
-        cmd = get_single_quiet("abefnsq ");
+        cmd = get_single_quiet("abefnsq \005");
 #endif
 
         switch(cmd) {
@@ -1869,6 +1869,11 @@ new_read_menu(unsigned int forum, int direction)
            case 'e':
                cprintf("\1f\1rEnter SQL %s in %s 140 \1w(\1rbreak code\1w)\n", config.message, config.forum);
                enter_message(140, 1);
+               break;
+
+           case '\005':
+               cprintf("\1f\1rEnter Titled SQL %s in %s 140 \1w(\1rbreak code\1w)\n", config.message, config.forum);
+               enter_message(140, 4);
                break;
 
            case 'f':

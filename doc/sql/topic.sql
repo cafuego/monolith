@@ -1,7 +1,7 @@
 # Topics
 # sub-areas inside forums.
 
-# DROP TABLE topic;
+DROP TABLE topic;
 
 CREATE TABLE topic (
 
@@ -10,8 +10,6 @@ CREATE TABLE topic (
    forum_id	INT  UNSIGNED NOT NULL,
 
    name		VARCHAR(40) NOT NULL,
-
-   highest      INT UNSIGNED DEFAULT 0,
 
    frozen	ENUM( 'y','n' ) DEFAULT 'n',
    hidden	ENUM( 'y','n' ) DEFAULT 'n',

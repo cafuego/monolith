@@ -243,7 +243,7 @@ format_username(message_t *message, char **string)
     type = get_message_type(message->type);
     priv = get_message_priv(message->priv);
 
-    if( check_user(message->author) == FALSE ) {
+    if( check_user(message->a_name) == FALSE ) {
         if(usersupp->config_flags & CO_EXPANDHEADER)
             sprintf(fmt_username, "\n\1f\1gFrom\1w: \1rDeleted %s\1a", config.user );
         else
@@ -256,61 +256,61 @@ format_username(message_t *message, char **string)
             if(usersupp->config_flags & CO_EXPANDHEADER)
                 sprintf(fmt_username, "\n\1f\1gFrom\1w: \1bAnonymous %s%s\1a"
                 ,config.user
-                ,EQ(message->author,usersupp->username) ? " \1w(\1bthis is your post\1w)" : "" );
+                ,EQ(message->a_name,usersupp->username) ? " \1w(\1bthis is your post\1w)" : "" );
             else
                 sprintf(fmt_username, "\n\1f\1gFrom \1bAnon %s\1a"
-                ,EQ(message->author,usersupp->username) ? " \1w(\1bthis is your post\1w)" : "" );
+                ,EQ(message->a_name,usersupp->username) ? " \1w(\1bthis is your post\1w)" : "" );
             break;
 
         case MES_AN2:
             if(usersupp->config_flags & CO_EXPANDHEADER)
                 sprintf(fmt_username, "\n\1f\1gFrom\1w: \1bAnonymous %s \1w`\1b%s\1w'%s\1a"
                 ,config.user, message->alias
-                ,EQ(message->author,usersupp->username) ? " \1w(\1bthis is your post\1w)" : "" );
+                ,EQ(message->a_name,usersupp->username) ? " \1w(\1bthis is your post\1w)" : "" );
             else
                 sprintf(fmt_username, "\n\1f\1gFrom \1bAnon \1w`\1b%s\1w'%s\1a"
                 ,message->alias
-                ,EQ(message->author,usersupp->username) ? " \1w(\1bthis is your post\1w)" : "" );
+                ,EQ(message->a_name,usersupp->username) ? " \1w(\1bthis is your post\1w)" : "" );
             break;
   
         default:
             switch(priv) {
                case MES_WIZARD:
                     if(usersupp->config_flags & CO_EXPANDHEADER)
-                        sprintf(fmt_username, "\n\1f\1gFrom\1w: \1w%s\1a", message->author );
+                        sprintf(fmt_username, "\n\1f\1gFrom\1w: \1w%s\1a", message->a_name );
                     else
-                        sprintf(fmt_username, "\n\1f\1gFrom \1w%s\1a", message->author );
+                        sprintf(fmt_username, "\n\1f\1gFrom \1w%s\1a", message->a_name );
                     break;
                case MES_SYSOP:
                     if(usersupp->config_flags & CO_EXPANDHEADER)
-                        sprintf(fmt_username, "\1f\1gFrom\1w: \1p%s\1a", message->author );
+                        sprintf(fmt_username, "\1f\1gFrom\1w: \1p%s\1a", message->a_name );
                     else
-                        sprintf(fmt_username, "\n\1f\1gFrom \1p%s\1a", message->author );
+                        sprintf(fmt_username, "\n\1f\1gFrom \1p%s\1a", message->a_name );
                     break;
                case MES_TECHNICIAN:
                     if(usersupp->config_flags & CO_EXPANDHEADER)
-                        sprintf(fmt_username, "\n\1f\1gFrom\1w: \1b%s\1a", message->author );
+                        sprintf(fmt_username, "\n\1f\1gFrom\1w: \1b%s\1a", message->a_name );
                     else
-                        sprintf(fmt_username, "\n\1f\1gFrom \1b%s\1a", message->author );
+                        sprintf(fmt_username, "\n\1f\1gFrom \1b%s\1a", message->a_name );
                     break;
                case MES_ROOMAIDE:
                     if(usersupp->config_flags & CO_EXPANDHEADER)
-                        sprintf(fmt_username, "\n\1f\1gFrom\1w: \1r%s\1a", message->author );
+                        sprintf(fmt_username, "\n\1f\1gFrom\1w: \1r%s\1a", message->a_name );
                     else
-                        sprintf(fmt_username, "\n\1f\1gFrom \1r%s\1a", message->author );
+                        sprintf(fmt_username, "\n\1f\1gFrom \1r%s\1a", message->a_name );
                     break;
                case MES_FORCED:
                     if(usersupp->config_flags & CO_EXPANDHEADER)
-                        sprintf(fmt_username, "\n\1f\1gFrom\1w: \1y%s \1w(\1rFORCED MESSAGE\1w)\1a", message->author );
+                        sprintf(fmt_username, "\n\1f\1gFrom\1w: \1y%s \1w(\1rFORCED MESSAGE\1w)\1a", message->a_name );
                     else
-                        sprintf(fmt_username, "\n\1f\1gFrom \1y%s \1w(\1rFORCED MESSAGE\1w)\1a", message->author );
+                        sprintf(fmt_username, "\n\1f\1gFrom \1y%s \1w(\1rFORCED MESSAGE\1w)\1a", message->a_name );
                     break;
                case MES_NORMAL:
                default:
                     if(usersupp->config_flags & CO_EXPANDHEADER)
-                        sprintf(fmt_username, "\n\1f\1gFrom\1w: \1y\1n%s\1N\1a", message->author );
+                        sprintf(fmt_username, "\n\1f\1gFrom\1w: \1y\1n%s\1N\1a", message->a_name );
                     else
-                        sprintf(fmt_username, "\n\1f\1gFrom \1y\1n%s\1N\1a", message->author );
+                        sprintf(fmt_username, "\n\1f\1gFrom \1y\1n%s\1N\1a", message->a_name );
                     break;
             }
             break;
@@ -392,8 +392,8 @@ format_subject(message_t *message, char **string)
 
     char fmt_subject[100];
 
-    if(((message->subject == NULL) || (strlen(message->subject) == 0)) && (usersupp->config_flags & CO_EXPANDHEADER))
-        sprintf(fmt_subject, "\n\1f\1gSubject\1w: \1w[\1yno subject\1w]\n");
+    if(((message->subject == NULL) || (strlen(message->subject) == 0) || (EQ(message->subject,"(null)")) ) && (usersupp->config_flags & CO_EXPANDHEADER))
+        sprintf(fmt_subject, "\n\1f\1gSubject\1w: \1yNo subject.\n");
     else if((message->subject != NULL) || (strlen(message->subject) > 0))
         sprintf(fmt_subject, "\n\1f\1gSubject\1w: \1y%s\1a\n", message->subject);
     else
@@ -459,33 +459,25 @@ static int
 format_footer(message_t *message, char **string )
 {
     char fmt_footer[200], col;
-    room_t *quad;
 
-    quad = (room_t *)xmalloc( sizeof(room_t) );
-    memset(quad, 0, sizeof(room_t) );
-
-    (void) mono_sql_f_read_quad(message->forum, quad);
-
-    if((quad->flags & QR_ANONONLY) || (quad->flags & QR_ANON2) || (quad->flags & QR_ALIASNAME)) col = 'p';
-    else if (quad->flags & QR_PRIVATE) col = 'r';
+    if((message->f_flags & QR_ANONONLY) || (message->f_flags & QR_ANON2) || (message->f_flags & QR_ALIASNAME)) col = 'p';
+    else if (message->f_flags & QR_PRIVATE) col = 'r';
     else col = 'y';
 
     if(usersupp->config_flags & CO_EXPANDHEADER)
-        if( (quad->highest - message->num) > 0 )
+        if( message->f_remaining > 0 )
             sprintf(fmt_footer, "\n\1f\1w[\1%c%s\1w> \1g%s %u of %lu \1w(\1g%lu remaining\1w)] -> "
-                ,col, quad->name, config.message, message->num, quad->highest, (quad->highest - message->num) );
+                ,col, message->f_name, config.message, message->num, message->f_highest, message->f_remaining );
         else
             sprintf(fmt_footer, "\n\1f\1w[\1%c%s\1w> \1g%s %u of %lu \1w(\1glast in this %s\1w)] -> "
-                ,col, quad->name, config.message, message->num, quad->highest, config.forum );
+                ,col, message->f_name, config.message, message->num, message->f_highest, config.forum );
     else
-        if( (quad->highest - message->num) > 0 )
+        if( message->f_remaining > 0 )
             sprintf(fmt_footer, "\n\1f\1w[\1%c%s\1w> \1g#%u \1w(\1g%lu remaining\1w)] -> "
-                ,col, quad->name, message->num, (quad->highest - message->num) );
+                ,col, message->f_name, message->num, message->f_remaining );
         else
             sprintf(fmt_footer, "\n\1f\1w[\1%c%s\1w> \1g#%u \1w(\1glast\1w)] -> "
-                ,col, quad->name, message->num );
-
-    xfree(quad);
+                ,col, message->f_name, message->num );
 
     *string = (char *)xrealloc( *string, strlen(*string)+strlen(fmt_footer) );
     strcat( *string, fmt_footer );
