@@ -3,6 +3,7 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+#include <build-defs.h>
 
 #include <string.h>
 #include <sys/types.h>
