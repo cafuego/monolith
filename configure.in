@@ -59,7 +59,7 @@ fi
 AC_SUBST(PROG_CAT)
 
 dnl GNU gettext add-ons
-ALL_LINGUAS="fr en nl de"
+ALL_LINGUAS="fr en nl de es"
 AM_GNU_GETTEXT
 
 dnl Check for awk/gawk - used to determine if we're linux or not.
