@@ -689,7 +689,7 @@ misc_menu()
 		cprintf("\1f\1gChoose Language\1w: \1c" );
  		getline( usersupp->lang, L_LANG, 1 );
                 { extern int  _nl_msg_cat_cntr;
-                  setenv( "LANG", usersupp->lang, 1 );
+                  setlocale( LC_MESSAGES, usersupp->lang );
                   ++_nl_msg_cat_cntr;
                 }
 #else
