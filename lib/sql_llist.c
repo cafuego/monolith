@@ -59,6 +59,12 @@ mono_sql_ll_free_mlist(mlist_t *list)
 {
     mlist_t *ref;
 
+    /*
+     * rewind list
+     */
+    while (list->prev != NULL)
+        list = list->prev;
+
     while (list != NULL) {
         ref = list->next;
         (void) xfree(list->message->content);
@@ -85,6 +91,7 @@ mono_sql_ll_add_srlist_to_list(sr_list_t entry, sr_list_t ** list)
 
     *p = entry;
     p->next = NULL;
+    p->prev = NULL;
 
     q = *list;
 
@@ -95,6 +102,7 @@ mono_sql_ll_add_srlist_to_list(sr_list_t entry, sr_list_t ** list)
 	    q = q->next;
         }
 	q->next = p;
+        p->prev = q;
     }
 
     return 0;
@@ -104,6 +112,12 @@ void
 mono_sql_ll_free_sr_list(sr_list_t *list)
 {
     sr_list_t *ref;
+
+    /*
+     * rewind list
+     */
+    while (list->prev != NULL)
+        list= list->prev;
 
     while (list != NULL) {
         ref = list->next;
