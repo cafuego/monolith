@@ -1,7 +1,6 @@
 /* $Id$ */
 
 /* prototypes */
-extern void main_menu(void);
 extern void yell_menu (void);
 extern void sysop_menu(void);
 extern void bbsconfig_menu(void);
