@@ -96,6 +96,9 @@ mono_sql_mes_add(message_t *message)
     (void) mono_sql_rat_add_rating(message->a_id, message->m_id, message->f_id, 0);
 #endif
 
+    /*
+     * Trashe xpired posts.
+     */
     (void) _mono_sql_mes_cleanup(message->f_id);
 
     return ret;
@@ -323,30 +326,28 @@ mono_sql_mes_search_forum(int forum, const char *string, sr_list_t **list)
             "SELECT " \
                 "m.message_id,m.forum_id,m.topic_id,f.name,t.name," \
                 "u.username,m.alias,m.subject,m.flag " \
-            "FROM %s AS m " \
-                "LEFT JOIN %s AS u ON u.id=m.author " \
-                "LEFT JOIN %s AS f ON f.id=m.forum_id " \
-                "LEFT JOIN %s AS t ON m.topic_id=t.topic_id " \
+            "FROM " M_TABLE " AS m " \
+                "LEFT JOIN " U_TABLE " AS u ON u.id=m.author " \
+                "LEFT JOIN " F_TABLE " AS f ON f.id=m.forum_id " \
+                "LEFT JOIN " T_TABLE " AS t ON m.topic_id=t.topic_id " \
             "WHERE " \
                 "(m.content REGEXP '%s' OR m.subject REGEXP '%s') " \
                 "AND m.forum_id=%u " \
                 "GROUP BY m.message_id " \
             "ORDER BY m.forum_id, m.message_id",
-                M_TABLE, U_TABLE, F_TABLE, T_TABLE, 
                 needle, needle, forum );
     else
         ret = mono_sql_query( &res,
             "SELECT " \
                 "m.message_id,m.forum_id,m.topic_id,f.name,t.name," \
                 "u.username,m.alias,m.subject,m.flag " \
-            "FROM %s AS m " \
-                "LEFT JOIN %s AS u ON u.id=m.author " \
-                "LEFT JOIN %s AS f ON f.id=m.forum_id " \
-                "LEFT JOIN %s AS t ON m.topic_id=t.topic_id " \
+            "FROM " M_TABLE " AS m " \
+                "LEFT JOIN " U_TABLE " AS u ON u.id=m.author " \
+                "LEFT JOIN " F_TABLE " AS f ON f.id=m.forum_id " \
+                "LEFT JOIN " T_TABLE " AS t ON m.topic_id=t.topic_id " \
             "WHERE " \
                 "m.content REGEXP '%s' OR m.subject REGEXP '%s' " \
             "ORDER BY m.forum_id, m.message_id",
-                M_TABLE, U_TABLE, F_TABLE, T_TABLE,
                 needle, needle );
 
     xfree(needle);
@@ -387,9 +388,13 @@ _mono_sql_mes_cleanup(unsigned int forum)
     room_t scratch;
     int lowest = 0;
 
+    /*
+     * Yuck.
+     */
     scratch = read_quad(forum);
     if( (lowest = scratch.highest - scratch.maxmsg) < 0)
         lowest = 0;
+
     /*
      * Delete old messages from message table.
      */
