@@ -1,6 +1,6 @@
 /* $Id$ */
 
-#define QUICKROOM 		BBSDIR "save/fastquadrant"
+#define QUICKROOM 		BBSDIR "save/speedyforum"
 
 #define ADMINLIST 		BBSDIR "etc/UBL/adminlist"
 #define ADMINLISTSYS 		BBSDIR "etc/UBL/adminsyslist"
