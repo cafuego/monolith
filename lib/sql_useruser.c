@@ -20,6 +20,7 @@
 #include "monolith.h"
 #include "monosql.h"
 #include "sql_utils.h"
+#include "sql_useruser.h"
 
 #define UU_TABLE "useruser"
 

@@ -18,62 +18,40 @@
 #include "sql_utils.h"
 #include "sql_goto.h"
 
-int
-mono_sql_random_goto(char *string)
+char *
+mono_sql_random_goto(void)
 {
     MYSQL_RES *res;
     MYSQL_ROW row;
     int num = 0;
+    char *string;
 
-    /*
-     * Empty the bastard, just in case.
-     */
     mono_sql_query(&res, "SELECT COUNT(*) FROM %s", GOTO_TABLE);
+    
+    if ((mysql_num_rows(res)) != 1) {
+	(void) mysql_free_result(res);
+	return NULL;
+    }
 
-    /*
-     * See how many gotos we have and squeal if none.
-     */
-    if ((mysql_num_rows(res)) == 0) {
-	(void) mysql_free_result(res);
-	return -1;
-    }
-    if (mysql_num_rows(res) > 1) {
-	(void) mysql_free_result(res);
-	return -1;
-    }
     row = mysql_fetch_row(res);
     num = atoi(row[0]);
     (void) mysql_free_result(res);
 
-    /*
-     * Read a random goto.
-     */
-    mono_sql_query(&res, "SELECT * FROM %s WHERE ID=%d", GOTO_TABLE, (rand() % (num - 1)) + 1);
+    mono_sql_query(&res, "SELECT * FROM %s WHERE ID=%d", GOTO_TABLE, 
+		((rand() % num) + 1));
 
-    /*
-     * No goto found???
-     */
-    if (mysql_num_rows(res) == 0) {
+    if (mysql_num_rows(res) != 1) {
 	(void) mysql_free_result(res);
-	return -1;
+	return NULL;
     }
-    /*
-     * * Too many gotos found. *eep*
-     */
-    if (mysql_num_rows(res) > 1) {
-	(void) mysql_free_result(res);
-	return -1;
-    }
+
     row = mysql_fetch_row(res);
 
-    /*
-     * Skip the id (row 0)
-     */
-    sprintf(string, row[1]);
-
+    string = (char *) xmalloc(strlen(row[1]) + 1);
+    strcpy(string, row[1]);
     (void) mysql_free_result(res);
 
-    return 0;
+    return string;
 }
 
 int
