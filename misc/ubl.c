@@ -490,11 +490,12 @@ whotest(info_t * u, int rm_nbr)
     if (u->priv & PRIV_DELETED)
         return 0;
 
-    if (u->priv & PRIV_TWIT)
+    if (u->priv & PRIV_TWIT) {
         if (rm_nbr == 13 || rm_nbr == 1)  /* mail / curseroom */
             return 1;
         else
             return 0;
+    }
 
     if (u->priv >= PRIV_WIZARD)
         return 1;               /* Wizard are _always_ allowed */
@@ -602,7 +603,6 @@ post_ubl_results()
     fp = xfopen(filename, "w", FALSE);
     if (fp == NULL)
 	return -1;
-    fprintf(fp, "\n");
 
     /* the actual post content. */
     fprintf(fp, "UBL updated %d users.\n", usercount);
@@ -612,7 +612,6 @@ post_ubl_results()
     fprintf(fp, "%d users have Expert Status enabled. (%d%%)\n", expert_users, (expert_users * 100) / usercount);
     fprintf(fp, "%d users have SHIX enabled. (%d%%)\n", shix_users, (shix_users * 100) / usercount);
 
-    fprintf(fp, "\n");
     fclose(fp);
 
     return 0;

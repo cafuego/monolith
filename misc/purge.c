@@ -20,13 +20,13 @@
 #define USERTMPFILE BBSDIR "tmp/purge.tmp"
 
 void purge_users(void);
-void main(int argc, char **argv);
+int main(int argc, char **argv);
 
 /*************************************************
 * main()
 *************************************************/
 
-void
+int
 main(int argc, char **argv)
 {
     set_invocation_name(argv[0]);
@@ -36,7 +36,7 @@ main(int argc, char **argv)
     purge_users();
 
     mono_sql_detach();
-    exit(0);
+    return 0;
 }
 
 /*************************************************

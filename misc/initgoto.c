@@ -11,8 +11,10 @@
 #include <mysql.h>
 
 #include "monolith.h"
+#include "libmono.h"
 #include "routines.h"
 #include "sql_config.h"
+#include "sql_utils.h"
 
 #define BUFSIZE		3000
 
@@ -23,7 +25,6 @@ main( int argc, char *argv[])
     FILE *fp;
     MYSQL_RES *res;
     char buffer[BUFSIZE];
-    int i = 0;
 
     set_invocation_name(argv[0]);
     mono_setuid("guest");

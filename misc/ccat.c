@@ -314,13 +314,14 @@ number(long num, int base, int size, int precision
 	    bing(' ');
     if (sign)
 	bing(sign);
-    if (type & SPECIAL)
-	if (base == 8)
+    if (type & SPECIAL)  {
+	if (base == 8) {
 	    bing('0');
-	else if (base == 16) {
+	} else if (base == 16) {
 	    bing('0');
 	    bing(digits[33]);
 	}
+    }
     if (!(type & LEFT))
 	while (size-- > 0)
 	    bing(c);
