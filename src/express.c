@@ -1302,108 +1302,108 @@ format_express(express_t * Catchxs)
 	switch (Catchxs->override) {
 
 	    case OR_SHIX:
-		sprintf(buf, "\r\1f\1w*** \1gA %s from %s was intercepted by SHIX \1w***\n"
+		sprintf(buf, _("\r\1f\1w*** \1gA %s from %s was intercepted by SHIX \1w***\n")
 			,config.x_message, from);
 		break;
 
 	    case OR_EMOTE:
-		sprintf(buf, "\r\1f\1b*** %s \1g%s\n", from, Catchxs->message);
+		sprintf(buf, _("\r\1f\1b*** %s \1g%s\n"), from, Catchxs->message);
 		break;
 
 	    case OR_SILC:
-		sprintf(buf, "\n\n\1f\1w[\1r %s \1w]\n\1y%s\n", Catchxs->sender, Catchxs->message);
+		sprintf(buf, _("\n\n\1f\1w[\1r %s \1w]\n\1y%s\n"), Catchxs->sender, Catchxs->message);
 		break;
 
 	    case OR_CHAT:
-		sprintf(buf, "\n\1f\1p=== \1g%s %s from %s \1gto \1p%s \1gat \1w(\1g%02d:%02d\1w) \1p===\1a\n\1c%s"
+		sprintf(buf, _("\n\1f\1p=== \1g%s %s from %s \1gto \1p%s \1gat \1w(\1g%02d:%02d\1w) \1p===\1a\n\1c%s")
 		     ,config.chatmode, config.chatroom, from, Catchxs->recipient, tp->tm_hour
 			,tp->tm_min, Catchxs->message);
 		break;
 
 	    case OR_BROADCAST:
-		sprintf(buf, "\n\1f\1b*** \1pBroadcast from %s \1gat \1c(\1p%02d:%02d\1w) \1b***\n\1c%s\1a"
+		sprintf(buf, _("\n\1f\1b*** \1pBroadcast from %s \1gat \1c(\1p%02d:%02d\1w) \1b***\n\1c%s\1a")
 			,from, tp->tm_hour, tp->tm_min, Catchxs->message);
 		break;
 
 	    case OR_FISH:
-		sprintf(buf, "\n\r\1f\1w*** \1gMany squids wave their tentacles as if to say: \1w***\1a\n\1c%s", Catchxs->message);
+		sprintf(buf, _("\n\r\1f\1w*** \1gMany squids wave their tentacles as if to say: \1w***\1a\n\1c%s"), Catchxs->message);
 		break;
 
 	    case OR_LLAMA:
-		sprintf(buf, "\n\r\1f\1r*** \1wYour Black Llama Airhostess says: \1r***\1a\n\1c%s", Catchxs->message);
+		sprintf(buf, _("\n\r\1f\1r*** \1wYour Black Llama Airhostess says: \1r***\1a\n\1c%s"), Catchxs->message);
 		break;
 
 	    case OR_SHOUT:	/* shout message */
-		sprintf(buf, "\n\r\1f\1b*** \1gYour mother shouts from downstairs \1b***\1a\n\1c%s", Catchxs->message);
+		sprintf(buf, _("\n\r\1f\1b*** \1gYour mother shouts from downstairs \1b***\1a\n\1c%s"), Catchxs->message);
 		break;
 
 	    case OR_IMPORTANT:	/* Emp Broadcast  */
-		sprintf(buf, "\007\n\1f\1r*** \1pIMPORTANT BROADCAST from \1w\1n%s\1N \1r***\n\1w%s\1a", Catchxs->sender, Catchxs->message);
+		sprintf(buf, _("\007\n\1f\1r*** \1pIMPORTANT BROADCAST from \1w\1n%s\1N \1r***\n\1w%s\1a"), Catchxs->sender, Catchxs->message);
 		break;
 
 	    case OR_LOGIN:
 	    case OR_LOGOUT:
 		if (vriend)
-		    sprintf(buf, "\1f\1b*** \1gYour friend %s\1g just logged %s \1w(\1g%02d:%02d\1w) \1b***\1a\n", from, (Catchxs->override == OR_LOGIN) ? "\1gon" : "\1roff", tp->tm_hour, tp->tm_min);
+		    sprintf(buf, _("\1f\1b*** \1gYour friend %s\1g just logged %s \1w(\1g%02d:%02d\1w) \1b***\1a\n"), from, (Catchxs->override == OR_LOGIN) ? "\1gon" : "\1roff", tp->tm_hour, tp->tm_min);
 		else
-		    sprintf(buf, "\1f\1b*** %s\1g just logged %s \1w(\1g%02d:%02d\1w) \1b***\1a\n", from, (Catchxs->override == OR_LOGIN) ? "\1gon" : "\1roff", tp->tm_hour, tp->tm_min);
+		    sprintf(buf, _("\1f\1b*** %s\1g just logged %s \1w(\1g%02d:%02d\1w) \1b***\1a\n"), from, (Catchxs->override == OR_LOGIN) ? "\1gon" : "\1roff", tp->tm_hour, tp->tm_min);
 		break;
 
 	    case OR_KICKOFF:
 		if (vriend)
-		    sprintf(buf, "\1f\1b*** \1gYour friend %s\1g has been logged off \1w(\1g%02d:%02d\1w) \1b***\n\1a\n", from, tp->tm_hour, tp->tm_min);
+		    sprintf(buf, _("\1f\1b*** \1gYour friend %s\1g has been logged off \1w(\1g%02d:%02d\1w) \1b***\n\1a\n"), from, tp->tm_hour, tp->tm_min);
 		else
-		    sprintf(buf, "\1f\1b*** %s\1g has been logged off \1w(\1g%02d:%02d\1w) \1b***\n\1a\n", from, tp->tm_hour, tp->tm_min);
+		    sprintf(buf, _("\1f\1b*** %s\1g has been logged off \1w(\1g%02d:%02d\1w) \1b***\n\1a\n"), from, tp->tm_hour, tp->tm_min);
 		break;
 
 	    case OR_NOWHERE:	/* House Spirit Broadcast */
-		sprintf(buf, "\n\1f\1r* \1wThe House Spirit whispers: \1r*\n\1a\1c%s", Catchxs->message);
+		sprintf(buf, _("\n\1f\1r* \1wThe House Spirit whispers: \1r*\n\1a\1c%s"), Catchxs->message);
 		break;
 
 	    case OR_COUNTDOWN:	/* CountDown-Broadcast  */
-		sprintf(buf, "\n%s\n", Catchxs->message);
+		sprintf(buf, _("\n%s\n"), Catchxs->message);
 		break;
 
 	    case OR_SILENT:
-		sprintf(buf, "\n\1f\1r***\1w Cthulhu whispers: \1r***\1a\n\1c%s", Catchxs->message);
+		sprintf(buf, _("\n\1f\1r***\1w Cthulhu whispers: \1r***\1a\n\1c%s"), Catchxs->message);
 		break;
 
 	    case OR_T_GUIDE:
-		sprintf(buf, "\n\1f\1b*** \1g%s %s from \1w( %s%s \1w) \1y\1n%s\1N \1gat \1w(\1g%02d:%02d\1w) \1b***\1a\n\1c%s"
+		sprintf(buf, _("\n\1f\1b*** \1g%s %s from \1w( %s%s \1w) \1y\1n%s\1N \1gat \1w(\1g%02d:%02d\1w) \1b***\1a\n\1c%s")
 		   ,config.express, config.x_message, GUIDECOL, config.guide
 		,Catchxs->sender, tp->tm_hour, tp->tm_min, Catchxs->message);
 		break;
 
 	    case OR_T_TECH:
-		sprintf(buf, "\n\1f\1b*** \1g%s %s from \1w( %s%s \1w) \1n%s\1N \1gat \1w(\1g%02d:%02d\1w) \1b***\1a\n\1c%s"
+		sprintf(buf, _("\n\1f\1b*** \1g%s %s from \1w( %s%s \1w) \1n%s\1N \1gat \1w(\1g%02d:%02d\1w) \1b***\1a\n\1c%s")
 			,config.express, config.x_message, PROGRAMMERCOL, config.programmer
 		,Catchxs->sender, tp->tm_hour, tp->tm_min, Catchxs->message);
 		break;
 
 	    case OR_T_ADMIN:
-		sprintf(buf, "\n\1f\1b*** \1g%s %s from \1w( %s%s \1w) \1n%s\1N \1gat \1w(\1g%02d:%02d\1w) \1b***\1a\n\1c%s"
+		sprintf(buf, _("\n\1f\1b*** \1g%s %s from \1w( %s%s \1w) \1n%s\1N \1gat \1w(\1g%02d:%02d\1w) \1b***\1a\n\1c%s")
 		   ,config.express, config.x_message, ADMINCOL, config.admin
 		,Catchxs->sender, tp->tm_hour, tp->tm_min, Catchxs->message);
 		break;
 
 	    case OR_QUESTION:
-		sprintf(buf, "\n\1f\1r????? \1gHELP REQUEST \
-from \1y\1n%s\1N \1gat \1w(\1g%02d:%02d\1w) \1r?????\1a\n\1c%s",
+		sprintf(buf, _("\n\1f\1r????? \1gHELP REQUEST \
+from \1y\1n%s\1N \1gat \1w(\1g%02d:%02d\1w) \1r?????\1a\n\1c%s"),
 		Catchxs->sender, tp->tm_hour, tp->tm_min, Catchxs->message);
 		break;
 
 	    case OR_FEEL:
-		sprintf(buf, "\n\1f\1b*** \1gFeeling from %s \1gat \1w(\1g%02d:%02d\1w) \1b***\1a\n%s\1a", from, tp->tm_hour, tp->tm_min, Catchxs->message);
+		sprintf(buf, _("\n\1f\1b*** \1gFeeling from %s \1gat \1w(\1g%02d:%02d\1w) \1b***\1a\n%s\1a"), from, tp->tm_hour, tp->tm_min, Catchxs->message);
 		break;
 
 	    case OR_WEB:
-		sprintf(buf, "\n\1f\1b*** \1pWeb\1g %s %s from %s \1gto \1y%s \1gat \1w(\1g%02d:%02d\1w) \1b***\1a\n\1c%s", config.express, config.x_message, from, Catchxs->recipient
+		sprintf(buf, _("\n\1f\1b*** \1pWeb\1g %s %s from %s \1gto \1y%s \1gat \1w(\1g%02d:%02d\1w) \1b***\1a\n\1c%s"), config.express, config.x_message, from, Catchxs->recipient
 			,tp->tm_hour, tp->tm_min, Catchxs->message);
                 break;
 
 	    case OR_ENABLED:
 	    default:
-		sprintf(buf, "\n\1f\1b*** \1g%s %s from %s \1gto \1y%s \1gat \1w(\1g%02d:%02d\1w) \1b***\1a\n\1c%s", config.express, config.x_message, from, Catchxs->recipient
+		sprintf(buf, _("\n\1f\1b*** \1g%s %s from %s \1gto \1y%s \1gat \1w(\1g%02d:%02d\1w) \1b***\1a\n\1c%s"), config.express, config.x_message, from, Catchxs->recipient
 			,tp->tm_hour, tp->tm_min, Catchxs->message);
 		break;
 
