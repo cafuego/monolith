@@ -9,6 +9,7 @@ extern int mono_sql_u_add_user_new(const char *, unsigned int );
 
 extern int mono_sql_u_set_passwd( unsigned int, const char * );
 extern int mono_sql_u_check_passwd( unsigned int, const char * );
+extern int mono_sql_u_check_user( const char *username );
 
 #define U_TABLE	"user"
 /* eof */
