@@ -2,7 +2,15 @@
 
 /*
 #ifndef MYSQL_RES
-#include <mysql.h>
+  #ifdef HAVE_MYSQL_H
+    #undef HAVE_MYSQL_MYSQL_H
+    #include <mysql.h>
+  #else
+    #ifdef HAVE_MYSQL_MYSQL_H
+      #undef HAVE_MYSQL_H
+      #include <mysql/mysql.h>
+    #endif
+  #endif
 #endif
 */
 
