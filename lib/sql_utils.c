@@ -34,7 +34,7 @@
 
 static MYSQL mp;
 static int connected = FALSE;
-static int logqueries = TRUE;
+static int logqueries = FALSE;
 
 static int query_length(const char *format, va_list arg);
 
@@ -42,11 +42,11 @@ int
 mono_sql_connect()
 {
     if (!(mysql_connect(&mp, "localhost", "root", NULL))) {
-	log_it("sql", "could not connect to server (%s) !\n", mysql_error(&mp));
+	log_it("sql", "could not connect to server (%s) !", mysql_error(&mp));
 	return -1;
     }
     if (mysql_select_db(&mp, "bbs")) {
-	log_it("sql", "could not connect to database (%s)!\n", mysql_error(&mp));
+	log_it("sql", "could not connect to database (%s)!", mysql_error(&mp));
 	return -1;
     }
     connected = TRUE;
@@ -120,7 +120,7 @@ mono_sql_query(MYSQL_RES ** result, const char *format,...)
 	fprintf(stderr, "errno: %d error: %s\n", mysql_errno(&mp), mysql_error(&mp));
 #endif
         log_it( "sqlerr", "%s", query);
-	log_it( "sqlerr", "errno: %d error: %s\n", mysql_errno(&mp), mysql_error(&mp));
+	log_it( "sqlerr", "errno: %d error: %s", mysql_errno(&mp), mysql_error(&mp));
         xfree(query);
 	return -1;		/* no results */
     }
