@@ -290,20 +290,31 @@ function colorize($doing) {
     $doing = strtr($doing, "\1d", "");
     $doing = strtr($doing, "\1D", "");
 
+    echo "<!-- $doing -->\n";
+
     // Remove bg colours.
     //
     $doing = strtr($doing, "\1D", "");
     $doing = strtr($doing, "\1D", "");
 
+    echo "<!-- $doing -->\n";
+
     // Fix fg colours.
     //
     $doing = strtr($doing, "\1w", "</font><font color=\"#ffffff\">");	// White.
+    echo "<!-- $doing -->\n";
     $doing = strtr($doing, "\1y", "</font><font color=\"#ffff00\">");	// Yellow.
+    echo "<!-- $doing -->\n";
     $doing = strtr($doing, "\1g", "</font><font color=\"#00ff00\">");	// Green.
+    echo "<!-- $doing -->\n";
     $doing = strtr($doing, "\1c", "</font><font color=\"#00ffff\">");	// Cyan.
+    echo "<!-- $doing -->\n";
     $doing = strtr($doing, "\1b", "</font><font color=\"#0000ff\">");	// Blue.
+    echo "<!-- $doing -->\n";
     $doing = strtr($doing, "\1p", "</font><font color=\"#ff00ff\">");	// Purple.
+    echo "<!-- $doing -->\n";
     $doing = strtr($doing, "\1r", "</font><font color=\"#ff0000\">");	// Red.
+    echo "<!-- $doing -->\n";
 
     return $doing;
 }
