@@ -521,11 +521,9 @@ enter_admin_message(void)
     if (usersupp->priv & (PRIV_TECHNICIAN | PRIV_SYSOP | PRIV_WIZARD)) {
 	cprintf("\1f\1rEnter %s with title.\1a\n", config.message);
 	fflush(stdout);
-	if (usersupp->priv & PRIV_WIZARD)
-	    enter_message(curr_rm, EDIT_NORMAL, EMP_BANNER, NULL);
-	else if (usersupp->priv & PRIV_SYSOP)
-	    enter_message(curr_rm, EDIT_NORMAL, SYSOP_BANNER, NULL);
-	else
+	if (usersupp->priv & (PRIV_WIZARD | PRIV_SYSOP))
+	    enter_message(curr_rm, EDIT_NORMAL, ADMIN_BANNER, NULL);
+	else if (usersupp->priv & (PRIV_TECHNICIAN))
 	    enter_message(curr_rm, EDIT_NORMAL, TECH_BANNER, NULL);
     }
     return;

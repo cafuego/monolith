@@ -72,7 +72,7 @@ sysop_menu()
 	    cprintf("\1f\1wAdmin cmd: \1a");
 	}
 
-	cmd = get_single_quiet("ABCEFgGKMNORQTU\r\b ?");
+	cmd = get_single_quiet("ABCEFgGKMNOPRQTU\r\b ?");
 
 	if (strchr("BCERFgOP", cmd))
 	    nox = 1;		/* is busy, wants no x's */
@@ -136,6 +136,11 @@ sysop_menu()
 		cprintf("\1f\1rNoteBook \1w(\1rpersonal\1w)\1a\n");
 		notebook(2);
 		break;
+
+	    case 'P':
+		cprintf("\1f\1wPost as %s\n", config.sysop);
+		enter_message(curr_rm, EDIT_NORMAL, SYSOP_BANNER, NULL);
+		continue;
 
 	    case 'R':
 		cprintf("\1f\1r%s cmd: \1a", config.forum);
@@ -555,9 +560,9 @@ emperor_menu()
 	    cprintf("\1f\1wAdmin cmd: " WIZARDTITLE " cmd: \1a");
 	}
 
-	cmd = get_single_quiet("bBFrR*\r\b ?");
+	cmd = get_single_quiet("bBFrRP*\r\b ?");
 
-	if (strchr("bBDEU", cmd))
+	if (strchr("bBDEUPp", cmd))
 	    nox = 1;
 
 	switch (cmd) {
@@ -570,6 +575,11 @@ emperor_menu()
 	    case 'B':
 		cprintf("\1f\1rBOOT ALL USERS!\1a\n");
 		emergency_boot_all_users();
+		break;
+
+	    case 'P':
+		cprintf("\1f\1wPost as %s\n", config.wizard);
+		enter_message(curr_rm, EDIT_NORMAL, EMP_BANNER, NULL);
 		break;
 
 	    case 'R':
