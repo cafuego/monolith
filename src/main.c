@@ -487,12 +487,16 @@ main(int argc, char *argv[])
 
 #ifdef ENABLE_NLS
     {
-	char env[L_LANG];
-	sprintf(env, "LANG=%s", usersupp->lang);
-	putenv(env);
-    }
-    {
+	char env[L_LANG+10];
+	int ret;
 	extern int _nl_msg_cat_cntr;
+
+	sprintf(env, "LANGUAGE=%s", usersupp->lang);
+	ret = putenv(env);
+	IFSYSOP cprintf("%s\n",env);
+        if ( ret == -1 ) {
+           cprintf( "Could not set locale.\n" );
+        }
 	++_nl_msg_cat_cntr;
     }
 #endif
