@@ -1,7 +1,7 @@
 <?
 
  /*
-  * $id$
+  * $Id$
   */
 
 function enter_message($username, $quad, $current, $action) {
@@ -11,9 +11,11 @@ function enter_message($username, $quad, $current, $action) {
     switch(check_priv($username,$quad)) {
 
         case -1:
+            errorsound();
             errorimage( "You are not currently logged in. Log in first!" );
             return;
         case 0:
+            sorrysound();
             errorimage( "You do not have the privileges to view this message" );
             return;
         default:

@@ -28,11 +28,11 @@ function express_message($username, $recipient, $interface, $location) {
     switch(check_friend($username,$recipient)) {
 
         case -4:
-            errorsound();
+            sorrysound();
             errorimage( "$recipient has web express messages disabled!" );
             return;
         case -3:
-            errorsound();
+            sorrysound();
             errorimage( "$recipient is not currently online!" );
             return;
         case -2:
@@ -44,7 +44,7 @@ function express_message($username, $recipient, $interface, $location) {
             errorimage( "You are not currently logged in. Log in first!" );
             return;
         case 0:
-            errorsound();
+            sorrysound();
             errorimage( "You are not allowed to send $recipient messages" );
             return;
         default:

@@ -1,7 +1,7 @@
 <?
 
  /*
-  * $id$
+  * $Id$
   */
 
 function read_message($username, $quad, $current, $direction) {
@@ -15,7 +15,7 @@ function read_message($username, $quad, $current, $direction) {
             errorimage( "You are not currently logged in. Log in first!" );
             return;
         case 0:
-            errorsound();
+            sorrysound();
             errorimage( "You do not have the privileges to view this message" );
             return;
         default:

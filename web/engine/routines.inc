@@ -181,6 +181,7 @@ function format_subject($subject) {
 
 function do_logout($username) {
 
+    suresound();
     errorimage( "$username was logged out" );
     errorimage( "You will be taken to our main page in 10 seconds");
     echo "<p>&nbsp;<br>&nbsp;<br></p>\n";
@@ -379,10 +380,20 @@ function colorize($doing) {
 
 function errorsound() {
 
-    echo "\n    <!-- error sound -->\n";
-    echo "    <embed src=\"/bbs/sound/error.aiff\" type=\"audio/x-aiff\" height=\"0\" width=\"0\" autoplay=\"true\" autostart=\"true\" hidden=\"false\" loop=\"false\" bgcolor=\"#000\">\n";
+    echo "\n    <embed src=\"/bbs/sound/error.aiff\" type=\"audio/x-aiff\" height=\"0\" width=\"0\" autoplay=\"true\" autostart=\"true\" hidden=\"false\" loop=\"false\" bgcolor=\"#000\">\n";
     echo "    </embed>\n\n";
+}
 
+function sorrysound() {
+
+    echo "\n    <embed src=\"/bbs/sound/sorry.aiff\" type=\"audio/x-aiff\" height=\"0\" width=\"0\" autoplay=\"true\" autostart=\"true\" hidden=\"false\" loop=\"false\" bgcolor=\"#000\">\n";
+    echo "    </embed>\n\n";
+}
+
+function suresound() {
+
+    echo "\n    <embed src=\"/bbs/sound/sure.aiff\" type=\"audio/x-aiff\" height=\"0\" width=\"0\" autoplay=\"true\" autostart=\"true\" hidden=\"false\" loop=\"false\" bgcolor=\"#000\">\n";
+    echo "    </embed>\n\n";
 }
 
 
@@ -431,9 +442,7 @@ function errorimage( $text ) {
     $imgtext = rawurlencode($imgtext);
 
     echo "<div align=\"center\">\n";
-    echo "<center>\n";
     echo "<img src=\"/bbs/image.phtml/$font,$size,red/$imgtext/\" alt=\"[ image: $text ]\">\n";
-    echo "</center>\n";
     echo "</div>\n";
 
 }

@@ -1,7 +1,7 @@
 <?
 
  /*
-  * $id$
+  * $Id$
   */
 
 function list_messages($username, $quad, $listunread) {
@@ -15,7 +15,7 @@ function list_messages($username, $quad, $listunread) {
             errorimage( "You are not currently logged in. Log in first!" );
             return;
         case 0:
-            errorsound();
+            sorrysound();
             errorimage( "You do not have the privileges to view this quadrant!" );
             return;
         default:
@@ -93,10 +93,10 @@ function list_messages($username, $quad, $listunread) {
         echo "</table>\n";
     } else {
         if($listunread) {
-            errorsound();
+            sorrysound();
             errorimage( "No unread messages found!" );
         } else {
-            errorsound();
+            sorrysound();
             errorimage( "No messages found!" );
         }
     }
