@@ -60,6 +60,19 @@ dest_userlist(userlist_t * list)
 }
 
 int
+dest_forumlist(forumlist_t * list)
+{
+    forumlist_t *p, *q;
+
+    p = list;
+    while (p) {
+	q = p->next;
+	xfree(p);
+	p = q;
+    }
+    return 0;
+}
+int
 add_to_forumlist(forumlist_t element, forumlist_t ** list)
 {
     forumlist_t *p, *q;
@@ -168,11 +181,10 @@ mono_sql_uf_list_hosts_by_user(unsigned int usernumber, forumlist_t ** p)
 	if (sscanf(row[0], "%u", &forum_id) == -1)
 	    continue;
 
-	e.forumnum = forum_id;
-	/* strcpy( e.forumname, row[1] ); */
+	e.forum_id = forum_id;
+        if ( shm )
+	strcpy( e.name, shm->rooms[forum_id].name ); 
 	add_to_forumlist(e, p);
-
-	/* do something ! */
     }
     mysql_free_result(res);
     return 0;
@@ -365,7 +377,7 @@ mono_sql_uf_list_invited_by_user(unsigned int usernumber, forumlist_t ** p)
 	if (sscanf(row[0], "%u", &forum_id) == -1)
 	    continue;
 
-	e.forumnum = forum_id;
+	e.forum_id = forum_id;
 	/* strcpy( e.forumname, row[1] ); */
 	add_to_forumlist(e, p);
 
@@ -498,7 +510,7 @@ mono_sql_uf_list_kicked_by_user(unsigned int usernumber, forumlist_t ** p)
 	if (sscanf(row[0], "%u", &forum_id) == -1)
 	    continue;
 
-	e.forumnum = forum_id;
+	e.forum_id = forum_id;
 	/* strcpy( e.forumname, row[1] ); */
 	add_to_forumlist(e, p);
 
