@@ -221,8 +221,10 @@ function list_x_messages($username) {
     $result = MYSQL_QUERY("SELECT w.id AS id,u.username AS user,w.sender AS sender,w.recipient AS recipient,w.message AS message,DATE_FORMAT(w.date, '%H:%i') AS date FROM webx AS w LEFT JOIN user AS u ON u.id=w.sender WHERE w.recipient=$user_id AND w.status='unread' ORDER BY w.date ASC");
     $number = MYSQL_NUMROWS($result);
     if ($number) {
-        print "<h3 align=\"center\">You have $number eXpress messages</h3>\n<p> </p>\n";
-        print "<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\" align=\"center\" bgcolor=\"#333333\">\n";
+        if(number == 1)
+            print "<h3 align=\"center\">You have $number eXpress message</h3>\n<p> </p>\n";
+        else
+            print "<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\" align=\"center\" bgcolor=\"#333333\">\n";
         $i = 0;
         while ($i < $number) {
 
@@ -238,7 +240,7 @@ function list_x_messages($username) {
             print "<tr>\n";
             print "  <td align=\"left\">\n";
             print "    <p align=\"left\"><font color=\"#00cc00\">eXpress Message from <a href=\"/bbs/index.phtml/x/$user/\">$user</a> at </font>(<font color=\"#00cc00\">$date</font>)\n";
-            print "    <font color=\"#00cccc\"><pre>$message</pre></font><br><hr size=\"1\">\n";
+            print "    <font color=\"#00cccc\"><pre>$message</pre></font>\n";
             print "  </td>\n";
             print "</tr>\n";
 
