@@ -2,20 +2,31 @@
 
     Header( "Content-type: image/gif" );
 
+    // Image, font and string data passed through.
+    //
     $url_array=explode("/",$REQUEST_URI);
 
-    // $font = "/usr/bbs/www/bbs/font/Arialblack_I0.ttf";
-    // $text = "Bing!";
-    $font = "/usr/bbs/www/bbs/font/". $url_array[3] .".ttf";
+    // First, get the font info.
+    //
+    $font_info = explode(",", $url_array[3]);
+    $font = "/usr/bbs/www/bbs/font/". $font_info[0] .".ttf";
+    $size = $font_info[1];
+
+    // Then, get the string to display.
+    //
     $text = rawurldecode($url_array[4]);
 
-    $im = imagecreate( 500, 50 );
+    // Now, determine the image size we need. The image we are
+    // going to create will have 2 pixels border on each side.
+    //
+    $bounds = ImageTTFBBox( $size, 0, $font, $text );
+    $width = $bounds[3] + 4;
+    $height = $bounds[2] + 4;
+
+    $im = imagecreate( width, height );
     $black = ImageColorAllocate( $im, 0, 0, 0 );
     $white = ImageColorAllocate( $im, 255, 255, 255 );
-    $bounds = ImageTTFBBox( 30, 0, $font, $text );
-    $x = (500 - ($bounds[2]-$bounds[0]))/2;
-    $y = (50 - ($bounds[7]-$bounds[1]))/2;
-    ImageTTFText( $im, 30, 0, $x, $y, $white, $font, $text );
+    ImageTTFText( $im, $size, 0, 2, $height-2, $white, $font, $text );
     ImageGif( $im );
     ImageDestroy( $im );
 
