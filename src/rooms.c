@@ -21,6 +21,7 @@
 #include "libquad.h"
 #include "ext.h"
 #include "setup.h"
+#include "sql_forum.h"
 #include "sql_userforum.h"
 
 #define extern
