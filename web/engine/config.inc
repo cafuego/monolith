@@ -9,6 +9,8 @@ function config( $username ) {
     echo "  <input type=\"submit\" value=\"Upload File\">\n";
     echo "</form>\n";
 
+}
+
 ?>
 
 </body>

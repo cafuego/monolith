@@ -606,7 +606,6 @@ main_menu($username, $current_url)
 	    break;
 
 	case "e":		// Enter (new).
-
 	case "f":		// Followup (reply).
 	    require('engine/post.inc');
 	    enter_message($username, $quad, $message, $action);
