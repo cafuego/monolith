@@ -2,11 +2,11 @@
 
     Header( "Content-type: image/gif" );
 
-    // $url_array=explode("/",$REQUEST_URI);
+    $url_array=explode("/",$REQUEST_URI);
 
     $font = "/usr/bbs/www/bbs/font/Arialblack_I.ttf";
-    // $text = rawurldecode($url_array[3]);
-    $text = "Bing!";
+    $text = rawurldecode($url_array[3]);
+    // $text = "Bing!";
 
     $im = imagecreate( 500, 50 );
     $black = ImageColorAllocate( $im, 0, 0, 0 );
