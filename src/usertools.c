@@ -157,7 +157,7 @@ menu_message(void)
 
 	strcpy(tempstr, "");
 
-	sprintf(tempstr, "Display \1y%s\1g date", 
+	sprintf(tempstr, "Display \1w%s\1g date", 
 		(usersupp->config_flags & CO_LONGDATE) ? "long" : "short");
 	MENU_ADDITEM(_set_date_display, 0, 0, "", "t", tempstr);
 
@@ -174,7 +174,7 @@ menu_message(void)
 	   tempstr, "tv", tempstr,
 	   (usersupp->config_flags & CO_MONOHEADER) ? "1" : "0");
 
-	sprintf(tempstr, "\1y%s\1g date format", _locale[_get_locale(usersupp->config_flags)]);
+	sprintf(tempstr, "\1w%s\1g date format", _locale[_get_locale(usersupp->config_flags)]);
 	MENU_ADDITEM(_set_locale, 0, 0, "", "t", tempstr);
 
 	the_menu_format.auto_columnize = 1;
