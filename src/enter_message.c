@@ -137,25 +137,24 @@ enter_message(unsigned int forum, int mode, unsigned long banner_flag, const cha
 	abort = get_content(mode);
 	clear_wholist_posting_flag(header->banner_type);
 	filesize = get_filesize(temp);
-    }
+	if (abort < 0 || !filesize) {
+	    filesize = get_filesize(temp);
 
-    if (abort < 0 || !filesize) {
-	filesize = get_filesize(temp);
+	    strcpy(_tmpstr, config.message);
+	    _tmpstr[0] = toupper(_tmpstr[0]);
 
-        strcpy(_tmpstr, config.message);
-        _tmpstr[0] = toupper(_tmpstr[0]);
-
-	if (abort == -1)
-	    cprintf("\1f\1rI refuse to save an empty %s.\n", config.message);
-	else if (abort == -2)
-	    cprintf("\1f\1r%s entry aborted.\n", _tmpstr);
-        else if (!filesize)
-	    cprintf("\1f\1rI refuse to save an empty %s.\n", config.message);
-	xfree(header);
-	dest_userlist(recipient_list);
-	if (fexists(temp))
-	    unlink(temp);
-	return -1;
+	    if (abort == -1)
+		cprintf("\1f\1rI refuse to save an empty %s.\n", config.message);
+	    else if (abort == -2)
+		cprintf("\1f\1r%s entry aborted.\n", _tmpstr);
+	    else if (!filesize)
+		cprintf("\1f\1rI refuse to save an empty %s.\n", config.message);
+	    xfree(header);
+	    dest_userlist(recipient_list);
+	    if (fexists(temp))
+		unlink(temp);
+	    return -1;
+	}
     }
     if (header->banner_type & YELL_REPLY_BANNER)
 	message_move(YELL_FORUM, HANDLED_YELL_FORUM, message_reply_id(0), "");
