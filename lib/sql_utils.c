@@ -62,8 +62,8 @@ mono_sql_query(MYSQL_RES ** result, const char *format,...)
 
     /* block signal during query */
     sigemptyset(&set);
-    sigaddset(&set, SIGUSR1);
-    sigaddset(&set, SIGIO);
+    /* sigaddset(&set, SIGUSR1); */
+    /* sigaddset(&set, SIGIO); */
     sigaddset(&set, SIGUSR2); 
     sigaddset(&set, SIGINT);
     sigaddset(&set, SIGQUIT);
