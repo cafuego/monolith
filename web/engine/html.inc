@@ -54,8 +54,14 @@ function html_print_title($username, $location) {
             print "<title>$username@Monolith BBS: Reading message in $name</title>\n";
             break;
         case "w":
-            print "<title>$username@Monolith BBS: Looking at the Wholist [Updating every minute]</title>\n";
-            print "<meta http-equiv=\"Refresh\" content=\"60; url=http://monolith.yawc.net/bbs/index.phtml/w/\">\n";
+            // Stop auto-update if there are new x-es.
+            //
+            if( html_are_there_xs($username) ) {
+                print "<title>$username@Monolith BBS: Looking at the Wholist [New X, not updating!]</title>\n";
+            } else {
+                print "<title>$username@Monolith BBS: Looking at the Wholist [Updating every minute]</title>\n";
+                print "<meta http-equiv=\"Refresh\" content=\"60; url=http://monolith.yawc.net/bbs/index.phtml/w/\">\n";
+            }
             break;
         case "x":
             $quad = rawurldecode($quad);
@@ -220,6 +226,16 @@ function html_print_foot($username, $starttime) {
     print "  </td>\n";
     print "</tr>\n";
     print "</table>\n";
+
+}
+
+function html_are_there_xs($username) {
+
+    $user_id = html_get_usernum($username);
+    MYSQL_CONNECT("localhost", "root", "")  OR DIE("Unable to connect to SQL server");
+    @mysql_select_db("bbs") or die( "Unable to select database");
+    $result = MYSQL_QUERY("SELECT w.id AS id,u.username AS user,w.sender AS sender,w.i_sender AS i_sender,w.recipient AS recipient,w.message AS message,DATE_FORMAT(w.date, '%H:%i') AS date FROM webx AS w LEFT JOIN user AS u ON u.id=w.sender WHERE w.recipient=$user_id AND w.status='unread' AND w.i_recipient='web' ORDER BY w.date ASC");
+    $return MYSQL_NUMROWS($result);
 
 }
 

@@ -6,8 +6,6 @@
 
 function show_wholist($username,$location) {
 
-    print "<!-- $location -->\n";
-
     // Check user priv.
     //
     switch(check_priv($username,0)) {
