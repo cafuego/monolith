@@ -6,7 +6,6 @@ DROP TABLE topics;
 CREATE TABLE topics (
 
 # topic name/number
-   forum_id	INT UNSIGNED NOT NULL,
    topic_id	INT UNSIGNED NOT NULL,
 
    highest 	INT UNSIGNED DEFAULT 0,
