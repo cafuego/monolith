@@ -55,9 +55,6 @@ function show_wholist($username,$location) {
                 $doing = colorize($doing);
             }
 
-            if( $doing == "(null)" || $doing == "(null) ") || $doing == null )
-                $doing == "";
-
             print "<tr>\n";
             print "  <td align=\"left\">\n";
             print "    <p align=\"left\"><a href=\"/bbs/index.phtml/x/$url_user/$interface/$location\">$user</a>\n";
