@@ -274,7 +274,8 @@ print_system_config()
 
 #ifdef LINUX
     /*
-     * System info (load/mem/disk)
+     * System info (mem/disk)
+     * load gets done right out of /proc/loadavg
      */
     info = xmalloc(sizeof(struct sysinfo));
     if ((sysinfo(info)) == -1) {
