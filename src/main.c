@@ -438,8 +438,8 @@ main(int argc, char *argv[])
     } else {
 	while (!done) {
 	    enter_name(username);	/* find out who the user is     */
-	    xfree(usersupp);
-            usersupp = NULL;
+	    xfree(usersupp);		/* free and re-allocate this before */
+            usersupp = NULL;		/* each attempt, otherwise nasty things happen. */
             usersupp = (user_t *) xcalloc(1, sizeof(user_t));
 	    if (EQ(username, "new")) {	/* a new user?                  */
 		new_user(hname);
