@@ -2,7 +2,7 @@
 
   function auth_verify_password( $username, $password ) {
 
-    global $MYSQL_SERVER, $MYSQL_USER, $MYSQL_PASS, $MYSQL_DATABASE;
+    global $MYSQL_SERVER, $MYSQL_USER, $MYSQL_PASS, $MYSQL_DATABASE, $PHP_AUTH_USER, $PHP_AUTH_PW;
 
     @mysql_connect($MYSQL_SERVER, $MYSQL_USER, $MYSQL_PASS) or die("Unable to connect to MySQL server");
     @mysql_select_db($MYSQL_DATABASE) or die("Unable to select BBS database");
@@ -16,6 +16,11 @@
       return false;
 
     $sql_pass = mysql_result($res, 0, "password");
+
+    echo "<!-- $password -->\n";
+    echo "<!-- $sql_pass -->\n";
+    echo "<!-- ". substr($sql_pass,0,2) ." -->\n";
+    echo "<!-- ". crypt($password, substr($sql_pass, 0, 2)) ." -->\n";
 
     if( (crypt($password, substr($sql_pass, 0, 2))) == $sql_pass)
       return true;
@@ -68,6 +73,8 @@
   }
 
   function auth_invalid_userpass() {
+
+    global $PHP_AUTH_USER, $PHP_AUTH_PW;
 
     echo "<h2 align=\"center\">Invalid Password</h2>\n";
     echo "<p align=\"center\">The password you provided for $PHP_AUTH_USER is incorrect.</p>\n";
