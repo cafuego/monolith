@@ -182,7 +182,7 @@ function format_subject($subject) {
 function do_logout($username) {
 
     errorimage( "$username was logged out" );
-    print "<h3 align=\"center\">In 10 seconds you will be taken to Monoliths main page.</h3>\n";
+    errorimage( "You will be taken to our main page in 10 seconds");
     print "<h3 align=\"center\"><a href=\"/bbs/\">Log back in</a></h3>\n";
 
 }
@@ -354,10 +354,10 @@ function addbutton( $text, $url ) {
 
 function errorimage( $text ) {
 
-    $text = rawurlencode($text);
+    $imgtext = rawurlencode($text);
 
     echo "<div align=\"center\">\n";
-    echo "<img src=\"/bbs/image.phtml/Tahoma_B,18,red/$text/\" alt=\"[ image: $text ]\">\n";
+    echo "<img src=\"/bbs/image.phtml/Tahoma_B,18,red/$imgtext/\" alt=\"[ image: $text ]\">\n";
     echo "</div>\n";
 
 }
