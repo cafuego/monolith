@@ -751,6 +751,7 @@ check_x_permissions(const char *x_recip_name, const int X_PARAM, char override)
             if (x_recip_btmp->flags & B_LOCK) {
 		cprintf("\1g\1y%s \1gis \1clocked \1gand will not get your %s %s immediately.\n"
 			,x_recip_btmp->username, config.express, config.x_message);
+            }
 	    if (EMOTE)
 		override = OR_EMOTE;
 	    else if (QUESTION)
