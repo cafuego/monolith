@@ -119,7 +119,7 @@ int
 copy_message_wrapper(const unsigned int current_post, const int is_not_my_post, const int copy)
 {
     int to_quad, fail, count;
-    char tempstr[100], *to_name = NULL;
+    char tempstr[100], to_name[L_USERNAME + 1];
     room_t scratch;
 
     scratch = read_quad(curr_rm);
@@ -182,7 +182,6 @@ copy_message_wrapper(const unsigned int current_post, const int is_not_my_post, 
 
 	if (to_quad == MAIL_FORUM) {
 
-	    to_name = (char *) xmalloc(sizeof(L_USERNAME + 1));
 	    cprintf("\n\1f\1yRecipient: \1c");
 	    strcpy(to_name, get_name(2));
 	    if (!strlen(to_name)) {
@@ -211,7 +210,6 @@ copy_message_wrapper(const unsigned int current_post, const int is_not_my_post, 
 	    break;
     }
 
-    xfree(to_name);
     return 0;
 }
 
