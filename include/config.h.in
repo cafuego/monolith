@@ -96,5 +96,8 @@
 /* Define if you have the <crypt.h> header file.  */
 #undef HAVE_CRYPT_H
 
+/* Define if you have the <termbits.h> header file.  */
+#undef HAVE_TERMBITS_H
+
 /* Define if you have the gdbm library (-lgdbm).  */
 #undef HAVE_LIBGDBM
