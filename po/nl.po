@@ -1291,7 +1291,7 @@ msgstr ""
 
 #: src/usertools.c:1181
 msgid "\001f\001wYou are \001rno longer\001w marked as \001gAWAY\001w.\001a"
-msgstr "\001f\001wJe staat \001niet meer\001w gemarkeerd als \001gAFWEZIG001w.\001a"
+msgstr "\001f\001wJe staat \001rniet meer\001w gemarkeerd als \001gAFWEZIG\001w.\001a"
 
 #: src/usertools.c:1218
 msgid "\001f\001gKey Menu.\n"
