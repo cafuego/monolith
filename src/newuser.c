@@ -101,8 +101,9 @@ new_user(const char *hostname)
     cprintf("Sending... ");
     fflush(stdout);
 
-    generate_new_key(usersupp);
-    i = send_key(usersupp->username, usersupp->RGemail, usersupp->validation_key);
+    generate_new_key(usersupp->usernum);
+
+    i = send_key(usersupp->usernum );
 
     switch (i) {
 
@@ -281,7 +282,8 @@ newuser_registration(user_t * user)
 	getline(user->RGzip, RGzipLEN, 1);
     } while (strlen(user->RGzip) < 3);
 
-	cprintf("* State/Province: ");
+	cprintf("  State/Province: ");
+	strcpy( user->RGstate, "" );
 	getline(user->RGstate, RGstateLEN, 1);
 
     do {
@@ -289,10 +291,9 @@ newuser_registration(user_t * user)
 	getline(user->RGcountry, RGcountryLEN, 1);
     } while (strlen(user->RGcountry) < 3);
 
-    do {
-	cprintf("Phone number:     ");
+	cprintf("  Phone number:     ");
+	strcpy( user->RGphone, "" );
 	getline(user->RGphone, RGphoneLEN, 1);
-    } while (strlen(user->RGphone) < 4);
 
     more(BBSDIR "/share/newuser/email", 0);
 
@@ -323,6 +324,12 @@ newuser_registration(user_t * user)
         strremcol( p );
 	sprintf(user->RGurl, "http://%s", p);
     }
+
+    mono_sql_u_update_registration( usersupp->usernum,
+        usersupp->RGname, usersupp->RGaddr, usersupp->RGzip, usersupp->RGcity,
+        usersupp->RGstate, usersupp->RGcountry, usersupp->RGphone );
+    mono_sql_u_update_email( usersupp->usernum, usersupp->RGemail );
+    mono_sql_u_update_url( usersupp->usernum, usersupp->RGurl );
 
     cprintf("\n\1f\1gYou have entered the following information:\n\n");
     dis_regis(user, TRUE);

@@ -44,6 +44,7 @@
 #undef extern
 
 #include "input.h"
+#include "sql_user.h"
 #include "routines2.h"
 
 void
@@ -66,7 +67,7 @@ key_menu()
 	switch (c) {
 	    case 's':
 		cprintf("Send another validation key.\n");
-		i = send_key(usersupp->username, usersupp->RGemail, usersupp->validation_key);
+		i = send_key( usersupp->usernum );
 		switch (i) {
 		    case 0:
 			cprintf("\nYour validation key was sent to `%s'.\n", usersupp->RGemail);
@@ -100,25 +101,36 @@ enter_key()
 {
 
     char key[5];
+    int ikey;
 
-    cprintf("\nPlease enter your validation key, if you have received ");
-    cprintf("Otherwise, press return.\n");
+    mono_sql_u_get_validation( usersupp->usernum, &ikey );
+
+    cprintf(_("\nPlease enter your validation key, if you have received it.\n"));
+    cprintf(_("Otherwise, press return.\n"));
 
     cprintf("\nPlease enter your key: ");
     getline(key, 5, 0);
 
-    if (atol(key) == usersupp->validation_key) {
-	cprintf("The key is correct, you are now validated.\n\n");
+    if ( ikey==-1) {
+	/* dodgy backwards compatible code. i set all keys of current 
+	   users to = -1. this if can be removed in a few months.
+			20 sept 1999 */
+        ikey = usersupp->validation_key;
+    }
+
+    if (atoi(key) == ikey ) {
+	cprintf(_("The key is correct, you are now validated.\n\n"));
 	usersupp->priv |= PRIV_VALIDATED;
     } else {
-	cprintf("Sorry, but the key was incorrect..\n\n");
+	cprintf(_("Sorry, but the key was incorrect..\n\n"));
     }
     return;
 
 }
 
 int
-send_key(const char *username, const char *email, long key)
+/* send_key(const char *username, const char *email, long key) */
+send_key( unsigned int user_id )
 {
 
 #define ACCEPTED "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@1234567890_%.-"
@@ -130,6 +142,14 @@ send_key(const char *username, const char *email, long key)
     char cmd[200];
 #endif
     size_t accepted;
+
+    char email[80];
+    int key, ret;
+    char username[L_USERNAME+1];
+  
+    ret = mono_sql_u_get_email( user_id, email );
+    ret = mono_sql_u_get_validation( user_id, &key );
+    ret = mono_sql_u_id2name( user_id, username );
 
     accepted = strspn(email, ACCEPTED);
 
@@ -152,7 +172,7 @@ send_key(const char *username, const char *email, long key)
     fprintf(sendmail, "To: %s <%s>\n", username, email);
     fprintf(sendmail, "Subject: %s BBS validation key.\n", BBSNAME);
     fprintf(sendmail, "%s\n", message);
-    fprintf(sendmail, "\n*** Your %s BBS validation key is: %lu ***\n", BBSNAME, key);
+    fprintf(sendmail, "\n*** Your %s BBS validation key is: %d ***\n", BBSNAME, key);
 
     xfree(message);
     if( pclose(sendmail) == -1 ) {
@@ -174,12 +194,14 @@ send_key(const char *username, const char *email, long key)
 }
 
 void
-generate_new_key(user_type * user)
+generate_new_key(unsigned int user_id)
 {
 
     time_t bing;
+    int key;
 
     time(&bing);
     srandom(bing);
-    user->validation_key = random() % 9999;
+    key =  random() % 9999;
+    mono_sql_u_update_validation( user_id, key );
 }
