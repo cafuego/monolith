@@ -109,7 +109,7 @@ function check_friend($username, $friend) {
     if($number)
         $status = mysql_result($result,0,"status");
     else
-        return 0;
+        return 1;
 
     if( $status == "enemy" )
         return 0;

@@ -34,7 +34,7 @@ function express_message($username, $recipient) {
             break;
     }
 
-    connect_db();
+    print "<h3 align=\"center\">Sending an eXpress message to $recipient</h3>\n";
 
 }
 
