@@ -52,6 +52,7 @@ function list_quads($username, $listunread) {
             $total = mysql_result($result, $i,"total");
             $unread = mysql_result($result, $i,"unread");
             $status = mysql_result($result,$i,"status");
+            $js_name = $name;
             $name = htmlspecialchars($name);
            
             // Show quad with message info.
@@ -62,9 +63,9 @@ function list_quads($username, $listunread) {
             PRINT "  </td>\n";
             PRINT "  <td align=\"left\">\n";
             if($listunread)
-                PRINT "    <p align=\"left\"><a href=\"/bbs/index.phtml/n/$id\"><font color=\"#ffff00\">$name</font></a>\n";
+                echo "    <p align=\"left\"><a href=\"/bbs/index.phtml/n/$id\" onMouseOver=\"return setStatus('". js_escape("List unread messages in $js_name") ."');\"><font color=\"#ffff00\">$name</font></a>\n";
             else
-                PRINT "    <p align=\"left\"><a href=\"/bbs/index.phtml/m/$id\"><font color=\"#ffff00\">$name</font></a>\n";
+                echo "    <p align=\"left\"><a href=\"/bbs/index.phtml/m/$id\" onMouseOver=\"return setStatus('". js_escape("List messages in $js_name") ."');\"><font color=\"#ffff00\">$name</font></a>\n";
             PRINT "  </td>\n";
             PRINT "  <td align=\"left\">\n";
             if ($unread == NULL || $unread  <= 0)

@@ -343,6 +343,16 @@ function x_log($username,$location) {
     }
 }
 
+function js_escape($text) {
+
+    // Remove \'s and ''s.
+    //
+    $text = strtr($text, "\\", "\\\\");
+    $text = strtr($text, "'", "\\'");
+
+    return $text;
+}
+
 function colorize($doing) {
 
     // Make escape chars usable.
