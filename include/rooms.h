@@ -32,7 +32,7 @@ extern void check_generation(void);
 extern void zap_all( void );
 extern char * unread_rooms_list(const user_t * );
 extern void erase_all_messages( long );
-extern room_t readquad( int ); /*EEK!*/
+extern room_t readquad( unsigned int ); /*EEK!*/
 extern void edithosts_menu(void);
 extern void invite_menu(void);
 extern void kickout_menu(void);
