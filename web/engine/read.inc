@@ -99,7 +99,10 @@ function read_message($username, $quad, $current, $direction) {
                 //
                 if( $username != "Guest" ) {
                     $usernum = get_usernum($username);
-                    $result = MYSQL_QUERY("UPDATE usertopic SET lastread=$current WHERE forum_id=$f_id AND user_id=$usernum");
+                    $result = MYSQL_QUERY("SELECT lastread FROM usertopic WHERE forum_id=$f_id AND user_id=$usernum");
+                    $lastread = mysql_result($result,0,"lastread");
+                    if($lastread < $current)
+                        $result = MYSQL_QUERY("UPDATE usertopic SET lastread=$current WHERE forum_id=$f_id AND user_id=$usernum");
                 }
 
             } else {
