@@ -160,8 +160,8 @@ if test "x$gawk_path" != "xno" ; then
   fi
 else
   if test "x$awk_path" != "xno" ; then
-    os=`echo $target_os | awk -F'-' '{print $1}'`
     echo -n "checking for sysinfo() call..."
+    os=`echo $target_os | awk -F'-' '{print $1}'`
     if test "x$os" = "xlinux" ; then
       AC_DEFINE(LINUX)
       echo " yes"
