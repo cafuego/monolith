@@ -36,8 +36,7 @@ mono_sql_ut_update_lastseen( unsigned int user_id, unsigned int forum_id,
 
     ret = mono_sql_ut_query_lastseen( user_id, forum_id, topic_id, &dummy ) ;
     if ( ret == -1 ) {
-          if ( forum_id < MAXQUADS )
-                mono_sql_ut_add_entry( user_id, forum_id, topic_id );
+         mono_sql_ut_add_entry( user_id, forum_id, topic_id );
     }
 
     /* make this into an sql query that also checks if room & user exist */
@@ -71,8 +70,10 @@ mono_sql_ut_query_lastseen( unsigned int user_id, unsigned int forum_id,
     if (ret != 0) {
 	return -1;
     }
-    if (mysql_num_rows(res) != 1) {
-        (void) mono_sql_u_free_result(res);
+    if ( mysql_num_rows(res) == 0 ) {
+        return -1;
+    } else if ( mysql_num_rows(res) > 1 ) {
+        mono_sql_u_free_result(res);
         return -1;
     }
 
