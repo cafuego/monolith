@@ -23,8 +23,9 @@
     //
     $bounds = ImageTTFBBox( $size, 0, $font, $text );
     $width = abs( $bounds[4] ) + 10;
-    $height = abs( $bounds[3] ) + 10;
+    $height = abs( $bounds[5] ) + 10;
 
+    if( 0 ) {
     echo "<p>0: $bounds[0]\n";
     echo "<p>1: $bounds[1]\n";
     echo "<p>2: $bounds[2]\n";
@@ -37,7 +38,8 @@
     echo "<p> ";
     echo "<p>H: $height\n";
     echo "<p>W: $width\n";
-    exit;
+
+    }
 
     // Create the image and set fore and background colours.
     //
