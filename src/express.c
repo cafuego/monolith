@@ -836,7 +836,7 @@ check_x_permissions(const char *x_recip_name, const int X_PARAM, char override)
 	    }
 /* x-disabled recipient ? */
 	    if (x_recip_btmp->flags & B_XDISABLED) {
-		if (is_friend(x_recip_name, username))
+		if (is_friend(x_recip_name, usersupp->username))
 		    override = OR_ENABLED;
 		cprintf(_("\1y\1f%s \1ghas disabled %s %s.\n\1a"), x_recip_btmp->username
 			,config.express, config.x_message_pl);
@@ -1482,7 +1482,7 @@ display_express_prompt(const int X_PARAM)
 /* emote */
     if (EMOTE) {
 	cprintf(_("\1f\1gYou are now sending an emote.\n\1b*** \1y%s \1g")
-		,username);
+		,usersupp->username);
 	cprintf("\1c");
 
 /* question */

@@ -259,7 +259,7 @@ remote_express(const char *recipient)
 
 
     memset(&x, 0, sizeof(express_t));
-    strcpy(x.sender, username);
+    strcpy(x.sender, usersupp->username);
     sprintf(x.recipient, "%s@%s", name, rbbs);
     time(&x.time);
     x.override = OR_NORMAL;

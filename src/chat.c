@@ -101,7 +101,7 @@ chat_subscribe()
     /* if it has been modified, change online status */
     if (usersupp->chat != oldchat) {
 	sprintf(string, "%ud", usersupp->chat);
-	mono_change_online(username, string, 11);
+	mono_change_online(usersupp->username, string, 11);
     }
     return;
 }

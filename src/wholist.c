@@ -199,7 +199,7 @@ wholist(int level, const user_t * user)
 	tdif /= 60;
 	min = tdif % 60;
 	hour = tdif / 60;
-	xing = (EQ(r->x_ing_to, username) || EQ(r->x_ing_to, "Everyone"));
+	xing = (EQ(r->x_ing_to, usersupp->username) || EQ(r->x_ing_to, "Everyone"));
 	silc = (EQ(r->x_ing_to, "SILC") && (usersupp->priv >= PRIV_SYSOP));
 	chat = (is_chat_subscribed(user->chat, r->x_ing_to));
 	if ((user != NULL) && is_cached_friend(r->username))

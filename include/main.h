@@ -8,7 +8,7 @@ extern RETSIGTYPE kickoutmyself(int sig);
 extern void change_passwd(user_t *user);
 extern void do_changepw(void);
 extern void getwindowsize(int sig);
-extern void enter_name( char *usernm);
+extern void enter_name( char **username);
 extern int enter_passwd(const char *username);
 extern void init_system(void);
 extern void logoff(int code);

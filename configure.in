@@ -448,7 +448,7 @@ if test "x$with_rating" = "xyes"; then
   echo " yes"
   AC_DEFINE(USE_RATING)
 else
-  echo "no"
+  echo " no"
 fi
 
 dnl Use superhero generator?

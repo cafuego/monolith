@@ -135,7 +135,7 @@ updateself(int sig)
     unsigned int i;
 
     sig++;
-    user = readuser(username);
+    user = readuser(usersupp->username);
 
     if (user == NULL) {
 	if (writeuser(user, 0) == -1) {
@@ -297,30 +297,31 @@ change_passwd(user_t * user)
 *************************************************/
 
 void
-enter_name(char *usernm)
+enter_name(char **username)
 {
 
     char pwordshit[20];
 
     for (;;) {			/* loop until we get a real username */
+	strcpy(*username, "");
 	cprintf(_("\nUsername: "));
-	strcpy(usernm, get_name(1));
+	strcpy(*username, get_name(1));
 
-	if (!strlen(usernm)) {
+	if (!strlen(*username)) {
 	    cprintf(_("Enter \"Off\" to quit or \"New\" to enter as a new user.\n"));
 	    continue;
-	} else if (EQ(usernm, "new"))
+	} else if (EQ(*username, "new"))
 	    return;
 
-	else if (EQ(usernm, "off")
-		 || EQ(usernm, "logoff")
-		 || usernm[0] == EOF
+	else if (EQ(*username, "off")
+		 || EQ(*username, "logoff")
+		 || *username[0] == EOF
 	    ) {
 	    logoff(ULOG_OFF);
 	} else {
 	    /* if this user does not exist, fake a password-entry */
-	    if (mono_sql_u_check_user(usernm) == FALSE) {
-		cprintf(_("%s's Password: "), usernm);
+	    if (mono_sql_u_check_user(*username) == FALSE) {
+		cprintf(_("%s's Password: "), *username);
 		(void) getline(pwordshit, -19, 1);
 		cprintf(_("Incorrect login.\n"));
 		continue;
@@ -345,6 +346,7 @@ main(int argc, char *argv[])
     char hellomsg[40], *my_name = NULL;
     time_t laston;
     pid_t pid;
+    char *username = NULL;
 
 /*
  * argv[1]    contains the hostname that the user is calling from
@@ -435,9 +437,9 @@ main(int argc, char *argv[])
 	usersupp = readuser(argv[2]);
     } else {
 	while (!done) {
-	    enter_name(username);	/* find out who the user is     */
+            username = (char *) xmalloc( sizeof(char) * (L_USERNAME+1));
+	    enter_name(&username);	/* find out who the user is     */
 	    xfree(usersupp);		/* free and re-allocate this before */
-            usersupp = NULL;		/* each attempt, otherwise nasty things happen. */
             usersupp = (user_t *) xcalloc(1, sizeof(user_t));
 	    if (EQ(username, "new")) {	/* a new user?                  */
 		new_user(hname);
@@ -455,11 +457,13 @@ main(int argc, char *argv[])
 		    } else {
 			log_it("errors", "Create a guest account!\n");
 			cprintf("\1f\1rGuest account is not enabled, sorry\n");
+                        xfree(username);
 			logoff(ULOG_PROBLEM);
 		    }
 		}
 	    }
 	}
+        xfree(username);
     }
 
     my_name = (char *) xmalloc(sizeof(char) * (L_USERNAME + 1));

@@ -92,8 +92,6 @@ new_user(const char *hostname)
     inkey();
     toggle_hidden_info(usersupp);
 
-    strcpy(username, usersupp->username);
-
     config_menu();
 
     cprintf("\1f\1g\nA personal validation key is being generated and sent to the\n");
@@ -128,7 +126,6 @@ new_user(const char *hostname)
     inkey();
     more(BBSDIR "/share/newuser/final", 1);
 
-    strcpy(username, usersupp->username);
     log_it("newuserlog", "Created user '%s' from host '%s'", usersupp->username, hname);
     writeuser(usersupp, 0);
     mono_sql_u_update_registration( usersupp->usernum,

@@ -1160,7 +1160,7 @@ toggle_away(void)
 
     mono_change_online(who_am_i(NULL), " ", 13);	/* toggle away */
     cmdflags ^= C_AWAY;
-    user = mono_read_btmp(username);	/* find out what's the toggle is */
+    user = mono_read_btmp(usersupp->username);	/* find out what's the toggle is */
 
     if (user == NULL)
 	return;

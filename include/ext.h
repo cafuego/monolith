@@ -1,7 +1,6 @@
 /* $Id$ */
 /* This file contains all global variables */
 
-extern char	username[L_USERNAME+1];	/* name user enters at login	*/
 extern char	hname[255];		/* host user's calling from	*/
 extern char	skipping[MAXQUADS];	/* which rooms are skipped	*/
 extern int	last_skipped_rm;        /* room # of last skipped rm    */
