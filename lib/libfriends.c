@@ -16,6 +16,8 @@
 #include "monolith.h"
 
 #include "routines.h"
+#include "sql_user.h"
+#include "sql_useruser.h"
 #include "userfile.h"
 #include "libfriends.h"
 

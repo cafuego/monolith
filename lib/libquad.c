@@ -23,6 +23,7 @@
 #include "log.h"
 #include "userfile.h"
 #include "routines.h"
+#include "sql_userforum.h"
 #include "libshix.h"
 
 char *

@@ -18,6 +18,7 @@
 #include <mysql.h>
 
 #include "monolith.h"
+#include "libfriends.h"
 #include "monosql.h"
 #include "sql_utils.h"
 #include "sql_useruser.h"
@@ -69,7 +70,7 @@ mono_sql_uu_read_list(unsigned int user_id, friend_t ** first, int flag)
 
 /* this is very nasty and needs to be rewritten! */
 int
-mono_sql_uu_write_list(unsigned int user_id, const friend_t * first)
+mono_sql_uu_write_list(unsigned int user_id, friend_t * const first)
 {
     friend_t *p;
 

@@ -11,13 +11,14 @@
 #include "monolith.h"
 #include "monosql.h"
 #include "routines.h"
+#include "sql_forum.h"
 #include "sql_utils.h"
 
 #define F_TABLE "forum"
 
 /* nasty comaptible stuff */
 int
-mono_sql_f_write_quad(unsigned int num, const room_t * q)
+mono_sql_f_write_quad(unsigned int num, room_t * const q)
 {
     printf("debug: writing quad %u\n", num);
     mono_sql_f_remove_forum(num);
@@ -66,7 +67,7 @@ mono_sql_f_read_quad(unsigned int num, room_t * room)
 
 
 int
-mono_sql_f_add_old_forum(unsigned int forum_id, const room_t * q)
+mono_sql_f_add_old_forum(unsigned int forum_id, room_t * const q)
 {
 
     int ret;

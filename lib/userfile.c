@@ -29,6 +29,10 @@
 #include "log.h"
 #include "registration.h"
 #include "routines.h"
+#include "sql_userforum.h"
+#include "sql_user.h"
+#include "sql_useruser.h"
+
 
 /*************************************************
 * check_user()
@@ -381,7 +385,7 @@ writeuser(user_t * user, int update)
 
     (void) fprintf(fp, "username|%s\n", user->username);
     (void) fprintf(fp, "password|%s\n", user->password);
-    (void) fprintf(fp, "usernum|%lu\n", user->usernum);
+    (void) fprintf(fp, "usernum|%lu\n", (unsigned long) user->usernum);
     (void) fprintf(fp, "priv|%u\n", user->priv);
 
     (void) fprintf(fp, "lastseen");
@@ -479,6 +483,7 @@ del_sql_user(unsigned int user_id)
     mono_sql_uf_kill_user(user_id);
     mono_sql_uu_kill_user(user_id);
     mono_sql_u_kill_user(user_id);
+    return 0;
 }
 
 int
