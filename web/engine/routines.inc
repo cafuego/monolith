@@ -380,6 +380,8 @@ function colorize($doing) {
 function errorsound() {
 
     echo "<object data=\"/bbs/sound/error.au\">\n";
+    echo "  <embed src=\"/bbs/sound/error.au\">\n";
+    echo "  </embed>\n";
     echo "</object>\n";
 
 }
