@@ -401,7 +401,7 @@ sysopuser_menu()
 	switch (cmd) {
 	    case 'E':
 		cprintf("\1f\1rEdit a user.\1a\n");
-		useradmin();
+		useradmin( NULL );
 		break;
 
 	    case 'n': 

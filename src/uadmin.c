@@ -54,7 +54,7 @@ static int uadmin_need_rewrite;
 *************************************************/
 
 void
-useradmin()
+useradmin( const char *username )
 {
     char oldname[L_USERNAME + 1], f_bef[16], f_aft[16];
     char name[L_USERNAME + 1];
@@ -62,14 +62,18 @@ useradmin()
     unsigned int oldpriv;
     user_t *user;
 
-    /* * if these were initalized up there, it doesn't work.. */
+    /* if these were initalized up there, it doesn't work.. */
     uadmin_need_rewrite = FALSE;
 
-    cprintf("User to edit: ");
-    strcpy(name, get_name(2));
+    /* Get a name if nothing was passed */
+    if( username == NULL ) {
+        cprintf("User to edit: ");
+        strcpy(name, get_name(2));
 
-    if (strlen(name) == 0)
-	return;
+        if (strlen(name) == 0)
+	    return;
+    } else	/* name was passed to function */
+        snprintf(name, L_USERNAME, "%s", username);
 
     if (mono_sql_u_check_user(name) == FALSE) {
 	cprintf("\1rNo such user.\n");

@@ -702,6 +702,10 @@ long_prompt(long number, int direction)
 		    break;
 
 		case 'E':
+                    if((usersupp->priv >= PRIV_SYSOP) && (curr_rm == 2)) {
+                        useradmin( profile_default );
+                        break;
+                    }
 		    cprintf("\1f\1gEnter Editor-%s.\1a\n", config.message);
 		    direction = 1;
 		    status_bar_off();
