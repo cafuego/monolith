@@ -77,7 +77,7 @@ function read_message($username, $quad, $current, $direction) {
                 // Don't let guests be able to post.
                 //
                 echo "<div align=\"center\">\n";
-                addbutton("Read Next", "/bbs/index.phtml/r/$quad/$m_id/n");
+                addbutton("Read Next    ", "/bbs/index.phtml/r/$quad/$m_id/n");
                 addbutton("Read Previous", "/bbs/index.phtml/r/$quad/$m_id/p");
                 // if( $username != "Guest" ) {
                 //    addbutton("        ", "");

@@ -215,8 +215,8 @@ function html_print_foot($username, $starttime, $location) {
         echo "<div align=\"center\">\n";
         addbutton("Check Xes", "$location");
         addbutton("Wholist", "/bbs/index.phtml/w");
-        addbutton("Unread", "/bbs/index.phtml/u");
         addbutton("Quadrants", "/bbs/index.phtml/l");
+        addbutton("Unread", "/bbs/index.phtml/u");
         addbutton("       ", "");
         addbutton("Main Page", "/bbs/");
         addbutton("Log out", "/bbs/index.phtml/q");
@@ -274,8 +274,8 @@ function html_print_buttons($username, $location) {
     echo "". addbutton(" ", "") ."<br>\n";
     echo "". addbutton("Check Xes", "$location") ."<br>\n";
     echo "". addbutton("Wholist", "/bbs/index.phtml/w") ."<br>\n";
-    echo "". addbutton("Unread", "/bbs/index.phtml/u") ."<br>\n";
     echo "". addbutton("Quadrants", "/bbs/index.phtml/l") ."<br>\n";
+    echo "". addbutton("Unread", "/bbs/index.phtml/u") ."<br>\n";
     echo "". addbutton(" ", "") ."<br>\n";
     echo "". addbutton(" ", "") ."<br>\n";
     echo "". addbutton("Log out", "/bbs/index.phtml/q") ."<br>\n";
