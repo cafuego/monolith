@@ -30,7 +30,7 @@ extern void show_room_flags( void );
 int check_messages(room_t room, int which);
 extern void mark_as_read(int);
 extern void leave_n_unread_posts(int, int); 
-extern int is_zapped(int room);
+extern int is_zapped(int room, const room_t *);
 extern void check_generation(void);
 extern void zap_all( void );
 extern char * unread_rooms_list(const user_t * );
