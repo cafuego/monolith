@@ -623,10 +623,17 @@ format_mod_line(message_header_t * header, char *header_string)
 		 (usersupp->config_flags & CO_EXPANDHEADER) ? "Copied" : "C",
 		 header->modified_by);
     else if (header->mod_type & MOD_EDIT)
-	snprintf(mod_line, sizeof(mod_line) - 1,
+        if( header->banner_type & ANON_BANNER ) {
+	    snprintf(mod_line, sizeof(mod_line) - 1,
+		 "\1f\1gOriginally posted\1w: An unknown date and time \1w[\1r%s: %s %s\1w]\1a\n",
+		 (usersupp->config_flags & CO_EXPANDHEADER) ? "Edited" : "E",
+                 (usersupp->config_flags & CO_EXPANDHEADER) ? "Anonymous" : "Anon", config.user );
+        } else {
+	    snprintf(mod_line, sizeof(mod_line) - 1,
 		 "\1f\1gOriginally posted\1w: %s \1w[\1r%s: %s\1w]\1a\n",
 		 datestring, (usersupp->config_flags & CO_EXPANDHEADER) ? "Edited" : "E",
-                 ( header->banner_type & ANON_BANNER ) ? "\1bAnonymous" : header->modified_by );
+                 header->modified_by );
+        }
     else
 	strcpy(mod_line, "\1f\1rUnknown mod_type!\1a\n");
 
