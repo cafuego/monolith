@@ -747,3 +747,142 @@ mono_sql_u_increase_login_count( unsigned int user_id )
 }
 
 /* eof */
+int
+mono_sql_u_update_awaymsg( unsigned int user_id, const char *awaymsg )
+{
+
+    int i;
+    MYSQL_RES *res;
+
+    i = mono_sql_query(&res, "UPDATE " U_TABLE 
+        " set awaymsg='%s' "
+	" WHERE id=%u", awaymsg, user_id );
+
+    if (i == -1) {
+	fprintf(stderr, "No results from query.\n");
+        return -1;
+    }   
+
+    mono_sql_u_free_result(res);
+    return 0;
+}
+
+int
+mono_sql_u_get_awaymsg( unsigned int user_id, char *awaymsg )
+{
+    int i;
+    int ret;
+    MYSQL_RES *res;
+    MYSQL_ROW row;
+
+    i = mono_sql_query(&res, "SELECT awaymsg FROM " U_TABLE 
+	" WHERE id=%u", user_id );
+
+    if (i == -1) {
+        fprintf(stderr, "No results from query.\n");
+        return -1;
+    }
+
+    if (mysql_num_rows(res) != 1) {
+        return -1;
+    }
+
+    row = mysql_fetch_row(res);
+    ret = snprintf( awaymsg, L_AWAYMSG, "%s", row[0]);
+    mono_sql_u_free_result(res);
+
+    return 0;
+}
+/* eof */
+int
+mono_sql_u_update_doing( unsigned int user_id, const char *doing )
+{
+
+    int i;
+    MYSQL_RES *res;
+
+    i = mono_sql_query(&res, "UPDATE " U_TABLE 
+        " set doing='%s' "
+	" WHERE id=%u", doing, user_id );
+
+    if (i == -1) {
+	fprintf(stderr, "No results from query.\n");
+        return -1;
+    }   
+
+    mono_sql_u_free_result(res);
+    return 0;
+}
+
+int
+mono_sql_u_get_doing( unsigned int user_id, char *doing )
+{
+    int i;
+    int ret;
+    MYSQL_RES *res;
+    MYSQL_ROW row;
+
+    i = mono_sql_query(&res, "SELECT doing FROM " U_TABLE 
+	" WHERE id=%u", user_id );
+
+    if (i == -1) {
+        fprintf(stderr, "No results from query.\n");
+        return -1;
+    }
+
+    if (mysql_num_rows(res) != 1) {
+        return -1;
+    }
+
+    row = mysql_fetch_row(res);
+    ret = snprintf( doing, L_AWAYMSG, "%s", row[0]);
+    mono_sql_u_free_result(res);
+
+    return 0;
+}
+int
+mono_sql_u_update_xtrapflag( unsigned int user_id, const char *xtrapflag )
+{
+
+    int i;
+    MYSQL_RES *res;
+
+    i = mono_sql_query(&res, "UPDATE " U_TABLE 
+        " set xtrapflag='%s' "
+	" WHERE id=%u", xtrapflag, user_id );
+
+    if (i == -1) {
+	fprintf(stderr, "No results from query.\n");
+        return -1;
+    }   
+
+    mono_sql_u_free_result(res);
+    return 0;
+}
+
+int
+mono_sql_u_get_xtrapflag( unsigned int user_id, char *xtrapflag )
+{
+    int i;
+    int ret;
+    MYSQL_RES *res;
+    MYSQL_ROW row;
+
+    i = mono_sql_query(&res, "SELECT xtrapflag FROM " U_TABLE 
+	" WHERE id=%u", user_id );
+
+    if (i == -1) {
+        fprintf(stderr, "No results from query.\n");
+        return -1;
+    }
+
+    if (mysql_num_rows(res) != 1) {
+        return -1;
+    }
+
+    row = mysql_fetch_row(res);
+    ret = snprintf( xtrapflag, L_AWAYMSG, "%s", row[0]);
+    mono_sql_u_free_result(res);
+
+    return 0;
+}
