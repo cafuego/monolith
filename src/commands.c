@@ -1220,14 +1220,14 @@ config_menu()
 	    which_room("\1gConfig: \1w\1f");
 	}
 
-	cmd = get_single_quiet("AabBCcDEFHiIKLOPsSTWY\r\b ?");
+	cmd = get_single_quiet("AabBCcDEFHiIKLOPsSTWY\r\b ?/");
 
 	IFTWIT
 	    if (strchr("acFDKLHIW", cmd)) {
 	    more(TWITMSG, 1);
 	    continue;
 	}
-	if (strchr("AbaCcEFDKIPTWY", cmd))
+	if (strchr("AbaCcEFDKIPTWY?", cmd))
 	    nox = 1;
 
 	switch (cmd) {
@@ -1366,11 +1366,13 @@ config_menu()
 		change_url();
 		break;
 
-	    case '?':
+	    case '/':
 
 		cprintf("(Config Options)\n");
 		more(MENUDIR "/menu_config", 1);
+		break;
 
+	    case '?':
 		online_help('c');
 		break;
 
@@ -1401,7 +1403,7 @@ misc_menu()
 	    which_room("\1gMisc: \1w");
 	}
 
-	cmd = get_single_quiet("lLmMrsxz\r\b ?");
+	cmd = get_single_quiet("lLmMrsxz\r\b ?/");
 
 	switch (cmd) {
             case 'l':
@@ -1451,9 +1453,13 @@ misc_menu()
 		break;
 
 
-	    case '?':
+	    case '/':
 		cprintf("\1f\1w(\1gMisc. Options\1w)\n");
 		more(MENUDIR "/menu_misc", 1);
+		break;
+ 
+	    case '?':
+		online_help('i');
 		break;
 
 	    default:

@@ -202,6 +202,9 @@ menu_options(void)
 	    MENU_ADDITEM(_tgl_silc, C_NOSILC, 0, "SILC Disable",
 			 "tiv", "SILC Enabled",
 			 "N", (cmdflags & C_NOSILC) ? "0" : "1");
+        MENU_ADDITEM(online_help_wrapper, 0, 0, "o",
+			 "tiv", "Online Help", 
+			 "?", "0");
 
 #ifdef KNOB_FILTER
 	if (EQ(usersupp->username, "Guest")) {
