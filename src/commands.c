@@ -51,6 +51,8 @@
 #include "quadcont.h"
 
 static void userlists(void);
+static void lock_terminal(void);
+static void unlock_terminal(void);
 
 #define NUMBER_COLOR 'w'
 
@@ -1403,9 +1405,16 @@ misc_menu()
 	    which_room("\1gMisc: \1w");
 	}
 
-	cmd = get_single_quiet("mMrsxz\r\b ?");
+	cmd = get_single_quiet("lLmMrsxz\r\b ?");
 
 	switch (cmd) {
+            case 'l':
+            case 'L':
+                nox = 1;
+                cprintf("\1f\1gLock Terminal.\n");
+                lock_terminal();
+                break;
+
 	    case 'm':
 		nox = 1;
 		cprintf("\1f\1cMail Direct.\n");
@@ -1505,4 +1514,48 @@ userlists()
 	putchar('\n');
     }
 
+}
+
+static void
+lock_terminal()
+{
+    mono_change_online(usersupp->username, " ", 17);
+    cprintf("c");
+    fflush(stdout);
+    cprintf("\1f\1w[ Terminal locked for %s@%s ]", usersupp->username, config.bbsname );
+    fflush(stdout);
+    inkey();
+    unlock_terminal();
+    mono_change_online(usersupp->username, " ", 17);
+    return;
+}
+
+static void
+unlock_terminal()
+{
+    char pwtest[20];
+    unsigned int done = FALSE, failures = 0;
+
+    do {
+        cprintf("\r\1f\1gPlease enter your password\1w: \1c");
+        (void) getline(pwtest, -19, 1);
+
+        if (strlen(pwtest) == 0) {
+            failures++;
+            done = FALSE;
+        } else {
+            if ( check_password( usersupp, pwtest ) == TRUE ) {
+               done = TRUE;
+            } else {
+               failures++;
+               done = FALSE;
+            }
+        }
+        if( failures >= 4 ) {
+            cprintf("\n\1f\1rToo many failures, logging off!\1a\n");
+            logoff(0);
+         }
+    } while( done != TRUE );
+
+    return;
 }
