@@ -138,6 +138,10 @@ readuser(const char *name)
 	    p = strtok(NULL, DELIM);
 	    if (p)
 		strcpy(user->password, p);
+        } else if (strcmp("lang", type ) == 0 ) {
+            p = strtok(NULL, DELIM);
+            if (p)
+                strcpy(user->lang, p );
 	} else if (strcmp("usernum", type) == 0) {
 	    p = strtok(NULL, DELIM);
 	    if (p)
@@ -428,6 +432,7 @@ writeuser(user_t * user, int update)
     (void) fprintf(fp, "flags|%u\n", user->flags);
     (void) fprintf(fp, "chat|%u\n", user->chat);
     (void) fprintf(fp, "config_flags|%u\n", user->config_flags);
+    (void) fprintf(fp, "lang|%s\n", user->lang);
     (void) fprintf(fp, "alias|%s\n", user->alias);
     (void) fprintf(fp, "configuration|%u\n", user->configuration);
     (void) fprintf(fp, "screenlength|%u\n", user->screenlength);
