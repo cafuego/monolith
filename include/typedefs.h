@@ -215,7 +215,6 @@ typedef struct {
 /* typedef struct usersupp {	/ * User record */
 typedef struct {	/* User record */
     char username[L_USERNAME + 1];	/* The User's UserName          */
-    char password[14];		/* The User's Password                  */
     unsigned int usernum;	/* The User's UserNumber                */
     unsigned priv;		/* The User's Access level: PRIV_       */
     long lastseen[MAXQUADS];	/* Last message seen in each room       */
@@ -233,7 +232,6 @@ typedef struct {	/* User record */
     unsigned int timescalled;	/* Number of logins                     */
     int posted;			/* Number of messages posted (ever)     */
     int RA_rooms[5];		/* Numbers of rooms the user RA's.      */
-    long validation_key;	/* the number ofthe validation key      */
     unsigned long x_s;		/* Number of X's ever received & sent   */
     time_t firstcall;		/* time of first call                   */
     time_t laston_from;		/* Last time the user called            */
