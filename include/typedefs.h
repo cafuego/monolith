@@ -48,24 +48,48 @@ struct forumlist {
     forumlist_t *next;
 };
 
+/*
+ * The message struct. These are filled by SQL query.
+ */
 typedef struct {
-    unsigned int num;
-    unsigned int forum;
-    unsigned int topic;
-    unsigned int author;
-    unsigned int f_highest;
-    unsigned int f_remaining;
-    unsigned int f_flags;
-    char f_name[L_TOPICNAME+1];
-    char t_name[L_QUADNAME+1];
-    char a_name[L_USERNAME+1];
-    char alias[L_USERNAME+1];
-    char subject[L_SUBJECT];
-    time_t date;
-    char type[8];
-    char priv[8];
-    char deleted;
-    float score;
+   unsigned int m_id;			/* messsage number in forum */
+   unsigned int f_id;			/* forum number */
+   unsigned int t_id;			/* topic number */
+   unsigned int a_id;			/* author's usernum */
+   char author[L_USERNAME + 1];		/* author's username */
+   char alias[L_USERNAME + 1];		/* alias */
+   char subject[L_SUBJECT + 1];		/* subject */
+   char *content;			/* complete message content */
+   time_t date;				/* date posted */
+   float score;				/* average message rating */
+   char flag[L_FLAGNAME + 1];		/* merger of type & priv */
+   char forum_name[L_QUADNAME + 1];	/* name of forum */
+   char topic_name[L_TOPICNAME + 1];	/* name of topic */
+
+   /*
+    * Reply info.
+    */
+   unsigned int reply_m_id;		/* messagenum replied to */
+   unsigned int reply_f_id;		/* forum number replied to */
+   unsigned int reply_t_id;		/* topic number replied to */
+   unsigned int reply_a_id;		/* usernum replied to */
+   char reply_author[L_USERNAME + 1];	/* username replied to */
+   char reply_alias[L_USERNAME + 1];	/* alias replied to */
+   char reply_forum_name[L_QUADNAME + 1];	/* replied to quad name */
+   char reply_topic_name[L_TOPICNAME + 1];	/* replied to topic name */
+
+   /*
+    * Modification info.
+    */
+   unsigned int orig_m_id;		/* original message number */
+   unsigned int orig_f_id;		/* original forum number */
+   unsigned int orig_t_id;		/* original topic number */
+   unsigned int orig_a_id;		/* original author's usernum */
+   char orig_author[L_USERNAME + 1];	/* original author's username */
+   time_t orig_date;			/* original posting date */
+   char orig_forum[L_QUADNAME + 1];	/* original forum name */
+   char orig_topic[L_TOPICNAME + 1];	/* original topic name */
+   char mod_reason[L_REASON + 1];	/* reason for modification */
 } message_t;
 
 /* a linked list with messages. To be used when reading
