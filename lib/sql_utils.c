@@ -28,7 +28,7 @@
 #include "sql_utils.h"
 #undef extern
 
-#define SQLQUERY_BUFFER_SIZE 10
+#define SQLQUERY_BUFFER_SIZE 100000
 #undef SQL_DEBUG
 
 static MYSQL mp;
@@ -88,15 +88,17 @@ mono_sql_query(MYSQL_RES ** result, const char *format,...)
 	perror("sigprocmask");
 
     /* determine length, including varargs */
-    va_start(ptr, format);
-    length = query_length(format, ptr);
-    va_end(ptr);
+    /*
+     * va_start(ptr, format);
+     * length = query_length(format, ptr);
+     * va_end(ptr);
+     */
 
-    query = (char *) xmalloc( length * sizeof(char) );
+    query = (char *) xmalloc( SQLQUERY_BUFFER_SIZE * sizeof(char) );
 
     /* create query string */
     va_start(ptr, format);
-    ret = vsnprintf(query, length, format, ptr);
+    ret = vsnprintf(query, SQLQUERY_BUFFER_SIZE, format, ptr);
     va_end(ptr);
 
     /* error check & log */
