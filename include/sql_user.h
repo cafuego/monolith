@@ -11,5 +11,9 @@ extern int mono_sql_u_set_passwd( unsigned int, const char * );
 extern int mono_sql_u_check_passwd( unsigned int, const char * );
 extern int mono_sql_u_check_user( const char *username );
 
+extern int mono_sql_u_update_registration( unsigned int user_id,
+  const char *name, const char *address, const char *zip, const char *city,
+  const char *state, const char *country, const char *phone );
+
 #define U_TABLE	"user"
 /* eof */
