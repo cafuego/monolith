@@ -146,7 +146,7 @@ message_reply_name(char *message_author)
 char *
 format_header(message_header_t * header, unsigned int forum, char *header_string)
 {
-    unsigned int length;
+    unsigned int length, length2;
 
     if (header->banner_type & INFO_BANNER)
 	header_string = format_info(header, header_string);
@@ -154,14 +154,15 @@ format_header(message_header_t * header, unsigned int forum, char *header_string
     else if (usersupp->config_flags & CO_MONOHEADER) {
 	if (!(header->banner_type & ANON_BANNER)) {
 	    header_string = format_date(header, header_string);
-	     header_string = m_strcat(header_string, " ");
+	    header_string = m_strcat(header_string, " ");
 	}
 	header_string = format_author(header, header_string);
 	header_string = format_banner(header, header_string);
 	header_string = m_strcat(header_string, "\n");
-        length = strlen(header_string);
+	length = length2 = strlen(header_string);
 	header_string = format_subject(header, header_string);
-	header_string = m_strcat(header_string, " ");
+	if (strlen(header_string) > length2)
+	    header_string = m_strcat(header_string, " ");
 	header_string = format_reply(header, header_string);
 	if (strlen(header_string) > length + 1)
 	    header_string = m_strcat(header_string, "\n");
@@ -267,7 +268,7 @@ format_date(message_header_t * header, char *header_string)
 
     if (usersupp->config_flags & CO_MONOHEADER)
 	strftime(fmt_date, sizeof(fmt_date) - 1,
-		 "\1g%a, %d %b %Y \1w(\1g%H:%M\1w)\1a", tp);
+		 "\1g%a, %b %d %Y \1w(\1g%H:%M\1w)\1a", tp);
 
     else if (usersupp->config_flags & CO_LONGDATE)
 	if (usersupp->config_flags & CO_EUROPEANDATE)
@@ -317,14 +318,14 @@ format_info(message_header_t * header, char *header_string)
     if ((snprintf(infostring, sizeof(infostring) - 1,
 		  "\1f\1g%s Name\1w:\1%c %s\n\1gAccess Type\1w: %s",
 		  config.forum, c, quad.name,
-      		  (c == 'r') ? "\1rInvite Only\1g" : "\1gPublic")) == -1)
+		  (c == 'r') ? "\1rInvite Only\1g" : "\1gPublic")) == -1)
 	infostring[sizeof(infostring) - 1] = '\0';
     header_string = m_strcat(header_string, infostring);
 
     if ((snprintf(infostring, sizeof(infostring) - 1,
 		  "\1g\n%s Options\1w: %s%s %s %s", config.user,
-		  (c == 'p') ? ((quad.flags & QR_ANON2) ? 
-		  "\1bAnonymous Option\1g " : "\1bAnonymous Only\1g ")
+		  (c == 'p') ? ((quad.flags & QR_ANON2) ?
+			"\1bAnonymous Option\1g " : "\1bAnonymous Only\1g ")
 		  : "",
 		  (c == 'p') ?
 		  ((quad.flags & QR_ALIASNAME) ? "\1b(aliased)\1g" : "")
@@ -348,18 +349,18 @@ format_info(message_header_t * header, char *header_string)
 	else {
 	    q = p;
 	    while (q) {
-	        strcpy(infostring, q->name);
-	        if (q->next)
+		strcpy(infostring, q->name);
+		if (q->next)
 		    strcat(infostring, ", ");
-	        q = q->next;
+		q = q->next;
 		header_string = m_strcat(header_string, infostring);
 	    }
-	dest_userlist(p);
+	    dest_userlist(p);
 	}
     }
 #else
-    snprintf(infostring, sizeof(infostring) - 1, 
-	"\n\1f\1g%s%s", config.roomaide, "(s)\1w:\1r ");
+    snprintf(infostring, sizeof(infostring) - 1,
+	     "\n\1f\1g%s%s", config.roomaide, "(s)\1w:\1r ");
     header_string = m_strcat(header_string, infostring);
     for (i = 0; i < NO_OF_QLS; i++) {
 	strcpy(infostring, "");
@@ -390,71 +391,106 @@ format_author(message_header_t * header, char *header_string)
 
     strcpy(authorstring, "");
 
-if (header->banner_type & ANON_BANNER)
-    snprintf(authorstring, sizeof(authorstring) - 1,
-             "\1f\1gFrom \1b*Anonymous%s%s*%s%s%s%s\1a",
-             (usersupp->config_flags & CO_EXPANDHEADER &&
-               !(usersupp->config_flags & CO_MONOHEADER)) ? " " : "",
-             (usersupp->config_flags & CO_EXPANDHEADER &&
-               !(usersupp->config_flags & CO_MONOHEADER)) ? config.user : "",
-             (strlen(header->alias)) ? " \1gAlias: \"" : "", header->alias,
-             (strlen(header->alias)) ? "\"" : "",
-             (!strcmp(header->author, usersupp->username)) ?
-             " \1w(\1bthis is your post\1w)" : "");
+    if (usersupp->config_flags & CO_MONOHEADER) {
 
-    if (header->banner_type & EMP_BANNER)
-	snprintf(authorstring, sizeof(authorstring) - 1,
-		 "\1f\1g%srom%s \1w%s\1a",
-		 (usersupp->config_flags & CO_MONOHEADER) ? "f" : "F",
-		 (usersupp->config_flags & CO_EXPANDHEADER) ? ":" : "",
-		 header->author);
+	if (header->banner_type & ANON_BANNER)
+	    snprintf(authorstring, sizeof(authorstring) - 1,
+		     "\1f\1gFrom \1b*anonymous*%s%s%s%s\1a",
+	      (strlen(header->alias)) ? " \1gAlias: \"" : "", header->alias,
+		     (strlen(header->alias)) ? "\"" : "",
+		     (!strcmp(header->author, usersupp->username)) ?
+		     " \1w(\1bthis is your post\1w)" : "");
 
-    if (header->banner_type & ADMIN_BANNER)
-	snprintf(authorstring, sizeof(authorstring) - 1,
-		 "\1f\1g%srom%s \1w%s\1a",
-		 (usersupp->config_flags & CO_MONOHEADER) ? "f" : "F",
-		 (usersupp->config_flags & CO_EXPANDHEADER) ? "\1w:" : "",
-		 header->author);
+	if (header->banner_type & EMP_BANNER)
+	    snprintf(authorstring, sizeof(authorstring) - 1,
+		     "\1f\1gfrom \1w%s\1a", header->author);
 
-    if (header->banner_type & (SYSOP_BANNER | SYSTEM_BANNER))
-	snprintf(authorstring, sizeof(authorstring) - 1,
-		 "\1f\1g%srom%s \1w%s\1a",
-		 (usersupp->config_flags & CO_MONOHEADER) ? "f" : "F",
-		 (usersupp->config_flags & CO_EXPANDHEADER) ? "\1w:" : "",
-		 header->author);
+	if (header->banner_type & ADMIN_BANNER)
+	    snprintf(authorstring, sizeof(authorstring) - 1,
+		     "\1f\1gfrom \1w%s\1a", header->author);
 
-    if (header->banner_type & TECH_BANNER)
-	snprintf(authorstring, sizeof(authorstring) - 1,
-		 "\1f\1g%srom%s \1b%s\1a",
-		 (usersupp->config_flags & CO_MONOHEADER) ? "f" : "F",
-		 (usersupp->config_flags & CO_EXPANDHEADER) ? ":" : "",
-		 header->author);
+	if (header->banner_type & (SYSOP_BANNER | SYSTEM_BANNER))
+	    snprintf(authorstring, sizeof(authorstring) - 1,
+		     "\1f\1gfrom \1w%s\1a", header->author);
 
-    if (header->banner_type & QL_BANNER)
-	snprintf(authorstring, sizeof(authorstring) - 1,
-		 "\1f\1g%srom%s \1r%s\1a",
-		 (usersupp->config_flags & CO_MONOHEADER) ? "f" : "F",
-		 (usersupp->config_flags & CO_EXPANDHEADER) ? "\1w:" : "",
-		 header->author);
+	if (header->banner_type & TECH_BANNER)
+	    snprintf(authorstring, sizeof(authorstring) - 1,
+		     "\1f\1gfrom \1b%s\1a", header->author);
 
-    if (header->banner_type & FORCED_BANNER)
-	snprintf(authorstring, sizeof(authorstring) - 1,
-		 "\1f\1g%srom%s \1r%s%s\1a",
-		 (usersupp->config_flags & CO_MONOHEADER) ? "f" : "F",
-		 (usersupp->config_flags & CO_EXPANDHEADER) ? "\1w:" : "",
-		 header->author,
-		 "\1w  (\1rKickout Notification\1w)");
+	if (header->banner_type & QL_BANNER)
+	    snprintf(authorstring, sizeof(authorstring) - 1,
+		     "\1f\1gfrom \1r%s\1a", header->author);
 
-    if (header->banner_type & INFO_BANNER)
-	snprintf(authorstring, sizeof(authorstring) - 1,
-		 "\1f\1r by %s\n\1a", header->author);
+	if (header->banner_type & FORCED_BANNER)
+	    snprintf(authorstring, sizeof(authorstring) - 1,
+		     "\1f\1gfrom \1r%s%s\1a",
+		     header->author, "\1w  (\1rKickout Notification\1w)");
 
-    if (header->banner_type & NO_BANNER || !strlen(authorstring))
-	snprintf(authorstring, sizeof(authorstring) - 1,
-		 "\1f\1g%srom%s \1y%s\1a",
-		 (usersupp->config_flags & CO_MONOHEADER) ? "f" : "F",
-		 (usersupp->config_flags & CO_EXPANDHEADER) ? "\1w:" : "",
-		 header->author);
+	if (header->banner_type & INFO_BANNER)
+	    snprintf(authorstring, sizeof(authorstring) - 1,
+		     "\1f\1r by %s\n\1a", header->author);
+
+	if (header->banner_type & NO_BANNER || !strlen(authorstring))
+	    snprintf(authorstring, sizeof(authorstring) - 1,
+		     "\1f\1gfrom \1y%s\1a", header->author);
+    } else {
+
+	if (header->banner_type & ANON_BANNER)
+	    snprintf(authorstring, sizeof(authorstring) - 1,
+		     "\1f\1gFrom \1b*Anonymous%s%s*%s%s%s%s\1a",
+		     (usersupp->config_flags & CO_EXPANDHEADER) ? " " : "",
+		     (usersupp->config_flags & CO_EXPANDHEADER) ? config.user : "",
+	      (strlen(header->alias)) ? " \1gAlias: \"" : "", header->alias,
+		     (strlen(header->alias)) ? "\"" : "",
+		     (!strcmp(header->author, usersupp->username)) ?
+		     " \1w(\1bthis is your post\1w)" : "");
+
+	if (header->banner_type & EMP_BANNER)
+	    snprintf(authorstring, sizeof(authorstring) - 1,
+		     "\1f\1gFrom%s \1w%s\1a",
+		     (usersupp->config_flags & CO_EXPANDHEADER) ? ":" : "",
+		     header->author);
+
+	if (header->banner_type & ADMIN_BANNER)
+	    snprintf(authorstring, sizeof(authorstring) - 1,
+		     "\1f\1gFrom%s \1w%s\1a",
+		   (usersupp->config_flags & CO_EXPANDHEADER) ? "\1w:" : "",
+		     header->author);
+
+	if (header->banner_type & (SYSOP_BANNER | SYSTEM_BANNER))
+	    snprintf(authorstring, sizeof(authorstring) - 1,
+		     "\1f\1gFrom%s \1w%s\1a",
+		   (usersupp->config_flags & CO_EXPANDHEADER) ? "\1w:" : "",
+		     header->author);
+
+	if (header->banner_type & TECH_BANNER)
+	    snprintf(authorstring, sizeof(authorstring) - 1,
+		     "\1f\1gFrom%s \1b%s\1a",
+		     (usersupp->config_flags & CO_EXPANDHEADER) ? ":" : "",
+		     header->author);
+
+	if (header->banner_type & QL_BANNER)
+	    snprintf(authorstring, sizeof(authorstring) - 1,
+		     "\1f\1gFrom%s \1r%s\1a",
+		   (usersupp->config_flags & CO_EXPANDHEADER) ? "\1w:" : "",
+		     header->author);
+
+	if (header->banner_type & FORCED_BANNER)
+	    snprintf(authorstring, sizeof(authorstring) - 1,
+		     "\1f\1gFrom%s \1r%s%s\1a",
+		   (usersupp->config_flags & CO_EXPANDHEADER) ? "\1w:" : "",
+		     header->author, "\1w  (\1rKickout Notification\1w)");
+
+	if (header->banner_type & INFO_BANNER)
+	    snprintf(authorstring, sizeof(authorstring) - 1,
+		     "\1f\1r by %s\n\1a", header->author);
+
+	if (header->banner_type & NO_BANNER || !strlen(authorstring))
+	    snprintf(authorstring, sizeof(authorstring) - 1,
+		     "\1f\1gFrom%s \1y%s\1a",
+		   (usersupp->config_flags & CO_EXPANDHEADER) ? "\1w:" : "",
+		     header->author);
+    }
 
     authorstring[sizeof(authorstring) - 1] = '\0';
 
@@ -524,7 +560,7 @@ format_subject(message_header_t * header, char *header_string)
     char mesg_subject[100];
 
     if (!strlen(header->subject))
-        return header_string;
+	return header_string;
 
     strcpy(mesg_subject, "");
 
@@ -559,7 +595,7 @@ format_reply(message_header_t * header, char *header_string)
 	snprintf(mesg_reply, sizeof(mesg_reply) - 1,
 		 "\1f\1g%s\1w: \1g%s%s#%u by \1y%s",
 		 (usersupp->config_flags & CO_EXPANDHEADER) ? "Reply" : "Re",
-		 (usersupp->config_flags & CO_EXPANDHEADER) ? config.message : "",
+	   (usersupp->config_flags & CO_EXPANDHEADER) ? config.message : "",
 		 (usersupp->config_flags & CO_EXPANDHEADER) ? " " : "",
 		 header->reply_m_id,
 		 header->reply_to_author);
@@ -705,15 +741,15 @@ show_long_prompt(const unsigned int forum, const unsigned int num, const int dir
 }
 
 #ifdef MERGE_CODE_FOR_THE_RECORD
- 
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #ifdef HAVE_SYS_MMAN_H
-  #include <sys/mman.h>
+#include <sys/mman.h>
 #else
-  #include <asm/mman.h>
+#include <asm/mman.h>
 #endif
 
 #include <sys/types.h>
@@ -742,65 +778,64 @@ show_long_prompt(const unsigned int forum, const unsigned int num, const int dir
 #include "input.h"
 
 #ifdef CLIENTSRC
-  #include "telnet.h"
+#include "telnet.h"
 #endif
 
-static char * format_message(message_t * message);
-static int format_header(message_t *message, char **string );
-static int format_date(message_t *message, char **string);
-static int format_username(message_t *message, char **string );
-static int format_title(message_t *message, char **string );
-static int format_subject(message_t *message, char **string );
-static int format_content(message_t *message, char **string );
-static int format_footer(message_t *message, char **string );
-static int get_message_type( const char *type );
-static int get_message_priv( const char *priv );
+static char *format_message(message_t * message);
+static int format_header(message_t * message, char **string);
+static int format_date(message_t * message, char **string);
+static int format_username(message_t * message, char **string);
+static int format_title(message_t * message, char **string);
+static int format_subject(message_t * message, char **string);
+static int format_content(message_t * message, char **string);
+static int format_footer(message_t * message, char **string);
+static int get_message_type(const char *type);
+static int get_message_priv(const char *priv);
 
 void
-display_message(message_t *message)
+display_message(message_t * message)
 {
     char *string = NULL;
 
     /*
      * Don't show deleted messages, but show warning if the user wants it...
      */
-    if( message->deleted == 'y') {
-        if(usersupp->priv < PRIV_SYSOP ) {
-            if(usersupp->config_flags & CO_DELETEDINFO)
-                cprintf("\n\1f\1w[\1rDeleted %s.\1w]\1a\n", config.message);
-            return;
-        } else {
-            /*
-             * For admins, the whole message is shown if DELETEDINFO is
-             * not set.
-             */
-            if(!(usersupp->config_flags & CO_DELETEDINFO)) {
-                cprintf("\n\1f\1w[\1rDeleted %s.\1w]\1a\n", config.message);
-                return;
-            }
-        }
+    if (message->deleted == 'y') {
+	if (usersupp->priv < PRIV_SYSOP) {
+	    if (usersupp->config_flags & CO_DELETEDINFO)
+		cprintf("\n\1f\1w[\1rDeleted %s.\1w]\1a\n", config.message);
+	    return;
+	} else {
+	    /*
+	     * For admins, the whole message is shown if DELETEDINFO is
+	     * not set.
+	     */
+	    if (!(usersupp->config_flags & CO_DELETEDINFO)) {
+		cprintf("\n\1f\1w[\1rDeleted %s.\1w]\1a\n", config.message);
+		return;
+	    }
+	}
     }
-
     cprintf("\n\1f\1wDEBUG: Rating: ");
-    if(message->score < 0)
-        cprintf("\1r");
-    else if(message->score < 2)
-        cprintf("\1a\1y");
-    else if(message->score < 4)
-        cprintf("\1y");
+    if (message->score < 0)
+	cprintf("\1r");
+    else if (message->score < 2)
+	cprintf("\1a\1y");
+    else if (message->score < 4)
+	cprintf("\1y");
     else
-        cprintf("\1g");
-    printf("%.3f", message->score );
+	cprintf("\1g");
+    printf("%.3f", message->score);
     fflush(stdout);
 
-    string = format_message( message );
+    string = format_message(message);
 
 #ifdef CLIENTSRC
     putchar(IAC);
     putchar(POST_S);
 #endif
 
-    more_string( string );
+    more_string(string);
 
 #ifdef CLIENTSRC
     putchar(IAC);
@@ -814,15 +849,15 @@ display_message(message_t *message)
 }
 
 static char *
-format_message( message_t *message)
+format_message(message_t * message)
 {
     char *string = NULL;
 
     /*
      * malloc() here and realloc in all following functions.
      */
-    string = (char *)xmalloc( sizeof(char) );
-    memset( string, 0, sizeof(string) );
+    string = (char *) xmalloc(sizeof(char));
+    memset(string, 0, sizeof(string));
 
     (void) format_header(message, &string);
     (void) format_content(message, &string);
@@ -836,18 +871,18 @@ format_message( message_t *message)
  * Displays header as show when entering a new message.
  */
 void
-display_header(message_t *message)
+display_header(message_t * message)
 {
 
     char *string = NULL;
 
-    string = (char *)xmalloc( sizeof(char) );
-    memset( string, 0, sizeof(string) );
- 
-    (void) format_username(message, &string);
-    (void) format_title(message, &string );
+    string = (char *) xmalloc(sizeof(char));
+    memset(string, 0, sizeof(string));
 
-    more_string( string );
+    (void) format_username(message, &string);
+    (void) format_title(message, &string);
+
+    more_string(string);
     xfree(string);
 
     return;
@@ -858,7 +893,7 @@ display_header(message_t *message)
  * This is a nasty looking thing, but cleaning up is a later worry <heh>
  */
 static int
-format_header( message_t *message, char **string )
+format_header(message_t * message, char **string)
 {
 
     /*
@@ -866,16 +901,16 @@ format_header( message_t *message, char **string )
      * Small header is Ye Olde Format. (1 line).
      */
 
-    if(usersupp->config_flags & CO_EXPANDHEADER) {
-        (void) format_date(message, string);
-        (void) format_username(message, string);
-        (void) format_title(message, string);
-        (void) format_admininfo(message, string);
+    if (usersupp->config_flags & CO_EXPANDHEADER) {
+	(void) format_date(message, string);
+	(void) format_username(message, string);
+	(void) format_title(message, string);
+	(void) format_admininfo(message, string);
     } else {
-        (void) format_username(message, string);
-        (void) format_title(message, string);
-        (void) format_date(message, string);
-        (void) format_admininfo(message, string);
+	(void) format_username(message, string);
+	(void) format_title(message, string);
+	(void) format_date(message, string);
+	(void) format_admininfo(message, string);
     }
 
     (void) format_subject(message, string);
@@ -887,7 +922,7 @@ format_header( message_t *message, char **string )
  * Puts formatted date into string according to locale rules.
  */
 static int
-format_date(message_t *message, char **string)
+format_date(message_t * message, char **string)
 {
 
     struct tm *tp;
@@ -895,46 +930,46 @@ format_date(message_t *message, char **string)
 
     tp = localtime(&message->date);
 
-    if( usersupp->config_flags & CO_LONGDATE ) {
-        if( usersupp->config_flags & CO_EUROPEANDATE ) {
-            if(usersupp->config_flags & CO_EXPANDHEADER) {
-                strftime( fmt_date, 1000, "\n\1f\1gPosted\1w: \1g%A %d %B, %Y \1w(\1g%H:%M\1w)\1a", tp );
-            } else {
-                strftime( fmt_date, 1000, " \1f\1g%A %d %B, %Y \1w(\1g%H:%M\1w)\1a", tp );
-            }
-        } else {
-            if(usersupp->config_flags & CO_EXPANDHEADER) {
-                strftime( fmt_date, 1000, "\n\1f\1gPosted\1w: \1g%A %B %d, %Y \1w(\1g%I:%M %p\1w)\1a", tp );
-            } else {
-                strftime( fmt_date, 1000, " \1f\1g%A %B %D, %Y \1w(\1g%I:%M %p\1w)\1a", tp );
-            }
-        }
+    if (usersupp->config_flags & CO_LONGDATE) {
+	if (usersupp->config_flags & CO_EUROPEANDATE) {
+	    if (usersupp->config_flags & CO_EXPANDHEADER) {
+		strftime(fmt_date, 1000, "\n\1f\1gPosted\1w: \1g%A %d %B, %Y \1w(\1g%H:%M\1w)\1a", tp);
+	    } else {
+		strftime(fmt_date, 1000, " \1f\1g%A %d %B, %Y \1w(\1g%H:%M\1w)\1a", tp);
+	    }
+	} else {
+	    if (usersupp->config_flags & CO_EXPANDHEADER) {
+		strftime(fmt_date, 1000, "\n\1f\1gPosted\1w: \1g%A %B %d, %Y \1w(\1g%I:%M %p\1w)\1a", tp);
+	    } else {
+		strftime(fmt_date, 1000, " \1f\1g%A %B %D, %Y \1w(\1g%I:%M %p\1w)\1a", tp);
+	    }
+	}
     } else {
-        if( usersupp->config_flags & CO_EUROPEANDATE ) {
-            if(usersupp->config_flags & CO_EXPANDHEADER) {
-                strftime( fmt_date, 1000, "\n\1f\1gPosted\1w: \1g%A %d %B, %Y \1w(\1g%H:%M\1w)\1a", tp );
-            } else {
-                strftime( fmt_date, 1000, " \1f\1g%A %d %B, %Y \1w(\1g%H:%M\1w)\1a", tp );
-            }
-        } else {
-            if(usersupp->config_flags & CO_EXPANDHEADER) {
-                strftime( fmt_date, 1000, "\n\1f\1gPosted\1w: \1g%A %B %d, %Y \1w(\1g%I:%M %p\1w)\1a", tp );
-            } else {
-                strftime( fmt_date, 1000, " \1f\1g%A %B %D, %Y \1w(\1g%I:%M %p\1w)\1a", tp );
-            }
-        }
+	if (usersupp->config_flags & CO_EUROPEANDATE) {
+	    if (usersupp->config_flags & CO_EXPANDHEADER) {
+		strftime(fmt_date, 1000, "\n\1f\1gPosted\1w: \1g%A %d %B, %Y \1w(\1g%H:%M\1w)\1a", tp);
+	    } else {
+		strftime(fmt_date, 1000, " \1f\1g%A %d %B, %Y \1w(\1g%H:%M\1w)\1a", tp);
+	    }
+	} else {
+	    if (usersupp->config_flags & CO_EXPANDHEADER) {
+		strftime(fmt_date, 1000, "\n\1f\1gPosted\1w: \1g%A %B %d, %Y \1w(\1g%I:%M %p\1w)\1a", tp);
+	    } else {
+		strftime(fmt_date, 1000, " \1f\1g%A %B %D, %Y \1w(\1g%I:%M %p\1w)\1a", tp);
+	    }
+	}
     }
 
     fmt_date[strlen(fmt_date)] = '\0';
 
-    *string = (char *)xrealloc( *string, strlen(*string)+strlen(fmt_date) );
-    strcat( *string, fmt_date );
+    *string = (char *) xrealloc(*string, strlen(*string) + strlen(fmt_date));
+    strcat(*string, fmt_date);
 
     return 0;
 }
 
 static int
-format_username(message_t *message, char **string)
+format_username(message_t * message, char **string)
 {
 
     char fmt_username[100];
@@ -946,89 +981,89 @@ format_username(message_t *message, char **string)
     type = get_message_type(message->type);
     priv = get_message_priv(message->priv);
 
-    if( check_user(message->a_name) == FALSE ) {
-        if(usersupp->config_flags & CO_EXPANDHEADER)
-            sprintf(fmt_username, "\n\1f\1gFrom\1w: \1rDeleted %s\1a", config.user );
-        else
-            sprintf(fmt_username, "\n\1f\1gFrom \1rDeleted %s\1a", config.user );
+    if (check_user(message->a_name) == FALSE) {
+	if (usersupp->config_flags & CO_EXPANDHEADER)
+	    sprintf(fmt_username, "\n\1f\1gFrom\1w: \1rDeleted %s\1a", config.user);
+	else
+	    sprintf(fmt_username, "\n\1f\1gFrom \1rDeleted %s\1a", config.user);
     } else {
 
-    switch(type) {
+	switch (type) {
 
-        case MES_ANON:
-            if(usersupp->config_flags & CO_EXPANDHEADER)
-                sprintf(fmt_username, "\n\1f\1gFrom\1w: \1bAnonymous %s%s\1a"
-                ,config.user
-                ,EQ(message->a_name,usersupp->username) ? " \1w(\1bthis is your post\1w)" : "" );
-            else
-                sprintf(fmt_username, "\n\1f\1gFrom \1bAnon %s\1a"
-                ,EQ(message->a_name,usersupp->username) ? " \1w(\1bthis is your post\1w)" : "" );
-            break;
+	    case MES_ANON:
+		if (usersupp->config_flags & CO_EXPANDHEADER)
+		    sprintf(fmt_username, "\n\1f\1gFrom\1w: \1bAnonymous %s%s\1a"
+			    ,config.user
+			    ,EQ(message->a_name, usersupp->username) ? " \1w(\1bthis is your post\1w)" : "");
+		else
+		    sprintf(fmt_username, "\n\1f\1gFrom \1bAnon %s\1a"
+			    ,EQ(message->a_name, usersupp->username) ? " \1w(\1bthis is your post\1w)" : "");
+		break;
 
-        case MES_AN2:
-            if(usersupp->config_flags & CO_EXPANDHEADER)
-                sprintf(fmt_username, "\n\1f\1gFrom\1w: \1bAnonymous %s \1w`\1b%s\1w'%s\1a"
-                ,config.user, message->alias
-                ,EQ(message->a_name,usersupp->username) ? " \1w(\1bthis is your post\1w)" : "" );
-            else
-                sprintf(fmt_username, "\n\1f\1gFrom \1bAnon \1w`\1b%s\1w'%s\1a"
-                ,message->alias
-                ,EQ(message->a_name,usersupp->username) ? " \1w(\1bthis is your post\1w)" : "" );
-            break;
-  
-        default:
-            switch(priv) {
-               case MES_WIZARD:
-                    if(usersupp->config_flags & CO_EXPANDHEADER)
-                        sprintf(fmt_username, "\n\1f\1gFrom\1w: \1w%s\1a", message->a_name );
-                    else
-                        sprintf(fmt_username, "\n\1f\1gFrom \1w%s\1a", message->a_name );
-                    break;
-               case MES_SYSOP:
-                    if(usersupp->config_flags & CO_EXPANDHEADER)
-                        sprintf(fmt_username, "\1f\1gFrom\1w: \1p%s\1a", message->a_name );
-                    else
-                        sprintf(fmt_username, "\n\1f\1gFrom \1p%s\1a", message->a_name );
-                    break;
-               case MES_TECHNICIAN:
-                    if(usersupp->config_flags & CO_EXPANDHEADER)
-                        sprintf(fmt_username, "\n\1f\1gFrom\1w: \1b%s\1a", message->a_name );
-                    else
-                        sprintf(fmt_username, "\n\1f\1gFrom \1b%s\1a", message->a_name );
-                    break;
-               case MES_ROOMAIDE:
-                    if(usersupp->config_flags & CO_EXPANDHEADER)
-                        sprintf(fmt_username, "\n\1f\1gFrom\1w: \1r%s\1a", message->a_name );
-                    else
-                        sprintf(fmt_username, "\n\1f\1gFrom \1r%s\1a", message->a_name );
-                    break;
-               case MES_FORCED:
-                    if(usersupp->config_flags & CO_EXPANDHEADER)
-                        sprintf(fmt_username, "\n\1f\1gFrom\1w: \1y%s \1w(\1rFORCED MESSAGE\1w)\1a", message->a_name );
-                    else
-                        sprintf(fmt_username, "\n\1f\1gFrom \1y%s \1w(\1rFORCED MESSAGE\1w)\1a", message->a_name );
-                    break;
-               case MES_NORMAL:
-               default:
-                    if(usersupp->config_flags & CO_EXPANDHEADER)
-                        sprintf(fmt_username, "\n\1f\1gFrom\1w: \1y\1n%s\1N\1a", message->a_name );
-                    else
-                        sprintf(fmt_username, "\n\1f\1gFrom \1y\1n%s\1N\1a", message->a_name );
-                    break;
-            }
-            break;
-        }
+	    case MES_AN2:
+		if (usersupp->config_flags & CO_EXPANDHEADER)
+		    sprintf(fmt_username, "\n\1f\1gFrom\1w: \1bAnonymous %s \1w`\1b%s\1w'%s\1a"
+			    ,config.user, message->alias
+			    ,EQ(message->a_name, usersupp->username) ? " \1w(\1bthis is your post\1w)" : "");
+		else
+		    sprintf(fmt_username, "\n\1f\1gFrom \1bAnon \1w`\1b%s\1w'%s\1a"
+			    ,message->alias
+			    ,EQ(message->a_name, usersupp->username) ? " \1w(\1bthis is your post\1w)" : "");
+		break;
+
+	    default:
+		switch (priv) {
+		    case MES_WIZARD:
+			if (usersupp->config_flags & CO_EXPANDHEADER)
+			    sprintf(fmt_username, "\n\1f\1gFrom\1w: \1w%s\1a", message->a_name);
+			else
+			    sprintf(fmt_username, "\n\1f\1gFrom \1w%s\1a", message->a_name);
+			break;
+		    case MES_SYSOP:
+			if (usersupp->config_flags & CO_EXPANDHEADER)
+			    sprintf(fmt_username, "\1f\1gFrom\1w: \1p%s\1a", message->a_name);
+			else
+			    sprintf(fmt_username, "\n\1f\1gFrom \1p%s\1a", message->a_name);
+			break;
+		    case MES_TECHNICIAN:
+			if (usersupp->config_flags & CO_EXPANDHEADER)
+			    sprintf(fmt_username, "\n\1f\1gFrom\1w: \1b%s\1a", message->a_name);
+			else
+			    sprintf(fmt_username, "\n\1f\1gFrom \1b%s\1a", message->a_name);
+			break;
+		    case MES_ROOMAIDE:
+			if (usersupp->config_flags & CO_EXPANDHEADER)
+			    sprintf(fmt_username, "\n\1f\1gFrom\1w: \1r%s\1a", message->a_name);
+			else
+			    sprintf(fmt_username, "\n\1f\1gFrom \1r%s\1a", message->a_name);
+			break;
+		    case MES_FORCED:
+			if (usersupp->config_flags & CO_EXPANDHEADER)
+			    sprintf(fmt_username, "\n\1f\1gFrom\1w: \1y%s \1w(\1rFORCED MESSAGE\1w)\1a", message->a_name);
+			else
+			    sprintf(fmt_username, "\n\1f\1gFrom \1y%s \1w(\1rFORCED MESSAGE\1w)\1a", message->a_name);
+			break;
+		    case MES_NORMAL:
+		    default:
+			if (usersupp->config_flags & CO_EXPANDHEADER)
+			    sprintf(fmt_username, "\n\1f\1gFrom\1w: \1y\1n%s\1N\1a", message->a_name);
+			else
+			    sprintf(fmt_username, "\n\1f\1gFrom \1y\1n%s\1N\1a", message->a_name);
+			break;
+		}
+		break;
+	}
     }
     fmt_username[strlen(fmt_username)] = '\0';
 
-    *string = (char *)xrealloc( *string, strlen(*string)+strlen(fmt_username) );
-    strcat( *string, fmt_username );
+    *string = (char *) xrealloc(*string, strlen(*string) + strlen(fmt_username));
+    strcat(*string, fmt_username);
 
     return 0;
 }
 
 static int
-format_title(message_t *message, char **string)
+format_title(message_t * message, char **string)
 {
 
     char fmt_title[100];
@@ -1036,76 +1071,76 @@ format_title(message_t *message, char **string)
 
     priv = get_message_priv(message->priv);
 
-    switch(priv) {
-        case MES_WIZARD:
-            sprintf(fmt_title, " \1f\1w( %s )\1a", config.wizard );
-            break;
+    switch (priv) {
+	case MES_WIZARD:
+	    sprintf(fmt_title, " \1f\1w( %s )\1a", config.wizard);
+	    break;
 
-        case MES_SYSOP:
-            sprintf(fmt_title, " \1f\1w( \1p%s \1w)\1a", config.sysop );
-            break;
+	case MES_SYSOP:
+	    sprintf(fmt_title, " \1f\1w( \1p%s \1w)\1a", config.sysop);
+	    break;
 
-        case MES_TECHNICIAN:
-            sprintf(fmt_title, " \1f\1w( \1b%s \1w)\1a", config.programmer );
-            break;
+	case MES_TECHNICIAN:
+	    sprintf(fmt_title, " \1f\1w( \1b%s \1w)\1a", config.programmer);
+	    break;
 
-        case MES_ROOMAIDE:
-            sprintf(fmt_title, " \1f\1w( \1r%s \1w)\1a", config.roomaide );
-            break;
+	case MES_ROOMAIDE:
+	    sprintf(fmt_title, " \1f\1w( \1r%s \1w)\1a", config.roomaide);
+	    break;
 
-        default:
-            return -1;
-            break;
+	default:
+	    return -1;
+	    break;
 
     }
     fmt_title[strlen(fmt_title)] = '\0';
 
-    *string = (char *)xrealloc( *string, strlen(*string)+strlen(fmt_title) );
-    strcat( *string, fmt_title );
+    *string = (char *) xrealloc(*string, strlen(*string) + strlen(fmt_title));
+    strcat(*string, fmt_title);
 
     return 0;
 
 }
 
 static int
-format_admininfo(message_t *message, char **string)
+format_admininfo(message_t * message, char **string)
 {
     char fmt_admin[100];
 
-    if( usersupp->priv < PRIV_SYSOP )
-        return -1;
+    if (usersupp->priv < PRIV_SYSOP)
+	return -1;
 
     strcpy(fmt_admin, "");
 
-    if(message->deleted == 'y')
-        sprintf(fmt_admin, " \1f\1w(\1rDeleted %s\1w)", config.message);
+    if (message->deleted == 'y')
+	sprintf(fmt_admin, " \1f\1w(\1rDeleted %s\1w)", config.message);
 
     fmt_admin[strlen(fmt_admin)] = '\0';
 
-    *string = (char *)xrealloc( *string, strlen(*string)+strlen(fmt_admin) );
-    strcat( *string, fmt_admin );
+    *string = (char *) xrealloc(*string, strlen(*string) + strlen(fmt_admin));
+    strcat(*string, fmt_admin);
 
     return 0;
 
 }
 
 static int
-format_subject(message_t *message, char **string)
+format_subject(message_t * message, char **string)
 {
 
     char fmt_subject[100];
 
-    if(((message->subject == NULL) || (strlen(message->subject) == 0) || (EQ(message->subject,"(null)")) ) && (usersupp->config_flags & CO_EXPANDHEADER))
-        sprintf(fmt_subject, "\n\1f\1gSubject\1w: \1yNo subject.\n");
-    else if((message->subject != NULL) || (strlen(message->subject) > 0))
-        sprintf(fmt_subject, "\n\1f\1gSubject\1w: \1y%s\1a\n", message->subject);
+    if (((message->subject == NULL) || (strlen(message->subject) == 0) || (EQ(message->subject, "(null)"))) && (usersupp->config_flags & CO_EXPANDHEADER))
+	sprintf(fmt_subject, "\n\1f\1gSubject\1w: \1yNo subject.\n");
+    else if ((message->subject != NULL) || (strlen(message->subject) > 0))
+	sprintf(fmt_subject, "\n\1f\1gSubject\1w: \1y%s\1a\n", message->subject);
     else
-        sprintf(fmt_subject, "\n");
+	sprintf(fmt_subject, "\n");
 
     fmt_subject[strlen(fmt_subject)] = '\0';
 
-    *string = (char *)xrealloc( *string, strlen(*string)+strlen(fmt_subject) );
-    strcat( *string, fmt_subject );
+    *string = (char *) xrealloc(*string, strlen(*string) + strlen(fmt_subject));
+    strcat(*string, fmt_subject);
 
     return 0;
 
@@ -1115,105 +1150,105 @@ format_subject(message_t *message, char **string)
  * Note that the return values in here aren't used yes.. but they should.
  */
 static int
-format_content(message_t *message, char **string )
+format_content(message_t * message, char **string)
 {
 
     char *content = NULL;
     char filename[100];
 
     /* Find message filename. */
-    sprintf( filename, "%s", mono_sql_mes_make_file(message->forum, message->num));
+    sprintf(filename, "%s", mono_sql_mes_make_file(message->forum, message->num));
 
     /* Empty lines around content? */
-    if( usersupp->config_flags & CO_NEATMESSAGES ) {
-        *string = (char *)xrealloc( *string, strlen(*string)+strlen("\n") );
-        strcat( *string, "\n" );
+    if (usersupp->config_flags & CO_NEATMESSAGES) {
+	*string = (char *) xrealloc(*string, strlen(*string) + strlen("\n"));
+	strcat(*string, "\n");
     }
-
     /* Set content colour, based on score (TODO) */
-    *string = (char *)xrealloc( *string, strlen(*string)+strlen("\1a\1x") );
-    if( message->score > 1.99 )
-        strcat( *string, "\1a\1w" );
+    *string = (char *) xrealloc(*string, strlen(*string) + strlen("\1a\1x"));
+    if (message->score > 1.99)
+	strcat(*string, "\1a\1w");
     else
-        strcat( *string, "\1a\1c" );
+	strcat(*string, "\1a\1c");
 
-     /*
-      * Get file contents into mem.
-      */
-     if( (content = map_file(filename)) == NULL) {
-         content = (char *) xmalloc( 100 );
-         sprintf(content, "%s\n", "\1f\1rAIIEE! Real nasty error: message file missing!" );
-     }
-
+    /*
+     * Get file contents into mem.
+     */
+    if ((content = map_file(filename)) == NULL) {
+	content = (char *) xmalloc(100);
+	sprintf(content, "%s\n", "\1f\1rAIIEE! Real nasty error: message file missing!");
+    }
     /* Append actual message content. */
-    *string = (char *)xrealloc( *string, strlen(*string)+strlen(content) );
-    strcat( *string, content );
+    *string = (char *) xrealloc(*string, strlen(*string) + strlen(content));
+    strcat(*string, content);
     (void) xfree(content);
 
-    if( usersupp->config_flags & CO_NEATMESSAGES ) {
-        *string = (char *)xrealloc( *string, strlen(*string)+strlen("\n") );
-        strcat( *string, "\n" );
+    if (usersupp->config_flags & CO_NEATMESSAGES) {
+	*string = (char *) xrealloc(*string, strlen(*string) + strlen("\n"));
+	strcat(*string, "\n");
     }
     return 0;
 
 }
 
 static int
-format_footer(message_t *message, char **string )
+format_footer(message_t * message, char **string)
 {
     char fmt_footer[200], col;
 
-    if((message->f_flags & QR_ANONONLY) || (message->f_flags & QR_ANON2) || (message->f_flags & QR_ALIASNAME)) col = 'p';
-    else if (message->f_flags & QR_PRIVATE) col = 'r';
-    else col = 'y';
-
-    if(usersupp->config_flags & CO_EXPANDHEADER)
-        if( message->f_remaining > 0 )
-            sprintf(fmt_footer, "\n\1f\1w[\1%c%s\1w> \1g%s %u of %lu \1w(\1g%lu remaining\1w)] -> "
-                ,col, message->f_name, config.message, message->num, message->f_highest, message->f_remaining );
-        else
-            sprintf(fmt_footer, "\n\1f\1w[\1%c%s\1w> \1g%s %u of %lu \1w(\1glast in this %s\1w)] -> "
-                ,col, message->f_name, config.message, message->num, message->f_highest, config.forum );
+    if ((message->f_flags & QR_ANONONLY) || (message->f_flags & QR_ANON2) || (message->f_flags & QR_ALIASNAME))
+	col = 'p';
+    else if (message->f_flags & QR_PRIVATE)
+	col = 'r';
     else
-        if( message->f_remaining > 0 )
-            sprintf(fmt_footer, "\n\1f\1w[\1%c%s\1w> \1g#%u \1w(\1g%lu remaining\1w)] -> "
-                ,col, message->f_name, message->num, message->f_remaining );
-        else
-            sprintf(fmt_footer, "\n\1f\1w[\1%c%s\1w> \1g#%u \1w(\1glast\1w)] -> "
-                ,col, message->f_name, message->num );
+	col = 'y';
 
-    *string = (char *)xrealloc( *string, strlen(*string)+strlen(fmt_footer) );
-    strcat( *string, fmt_footer );
+    if (usersupp->config_flags & CO_EXPANDHEADER)
+	if (message->f_remaining > 0)
+	    sprintf(fmt_footer, "\n\1f\1w[\1%c%s\1w> \1g%s %u of %lu \1w(\1g%lu remaining\1w)] -> "
+		    ,col, message->f_name, config.message, message->num, message->f_highest, message->f_remaining);
+	else
+	    sprintf(fmt_footer, "\n\1f\1w[\1%c%s\1w> \1g%s %u of %lu \1w(\1glast in this %s\1w)] -> "
+		    ,col, message->f_name, config.message, message->num, message->f_highest, config.forum);
+    else if (message->f_remaining > 0)
+	sprintf(fmt_footer, "\n\1f\1w[\1%c%s\1w> \1g#%u \1w(\1g%lu remaining\1w)] -> "
+		,col, message->f_name, message->num, message->f_remaining);
+    else
+	sprintf(fmt_footer, "\n\1f\1w[\1%c%s\1w> \1g#%u \1w(\1glast\1w)] -> "
+		,col, message->f_name, message->num);
+
+    *string = (char *) xrealloc(*string, strlen(*string) + strlen(fmt_footer));
+    strcat(*string, fmt_footer);
 
     return 0;
 }
 
 static int
-get_message_type( const char *type )
+get_message_type(const char *type)
 {
-    if( EQ(type, "anon"))
-        return MES_ANON;
-    else if( EQ(type, "alias"))
-        return MES_AN2;
+    if (EQ(type, "anon"))
+	return MES_ANON;
+    else if (EQ(type, "alias"))
+	return MES_AN2;
     else
-        return MES_NORMAL;
+	return MES_NORMAL;
 }
 
 static int
-get_message_priv( const char *priv )
+get_message_priv(const char *priv)
 {
-    if( EQ(priv, "emp"))
-        return MES_WIZARD;
-    else if( EQ(priv, "sysop"))
-        return MES_SYSOP;
-    else if( EQ(priv, "tech"))
-        return MES_TECHNICIAN;
-    else if( EQ(priv, "host"))
-        return MES_ROOMAIDE;
-    else if( EQ(priv, "normal"))
-        return MES_NORMAL;
+    if (EQ(priv, "emp"))
+	return MES_WIZARD;
+    else if (EQ(priv, "sysop"))
+	return MES_SYSOP;
+    else if (EQ(priv, "tech"))
+	return MES_TECHNICIAN;
+    else if (EQ(priv, "host"))
+	return MES_ROOMAIDE;
+    else if (EQ(priv, "normal"))
+	return MES_NORMAL;
     else
-        return MES_NORMAL;
+	return MES_NORMAL;
 }
 
 #endif
