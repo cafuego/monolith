@@ -60,10 +60,6 @@
 
 int need_rewrite;
 
-void menu_hostedit_add(const unsigned int, const long, const char *);
-void menu_hostedit_remove(const unsigned int, const long, const char *);
-void menu_hostedit_list(const unsigned int, const long, const char *);
-void menu_hostedit_kill(const unsigned int, const long, const char *);
 
 static void show_qls(void);
 static int print_hosts_simple( unsigned int forum_id );
@@ -1646,15 +1642,20 @@ invite_menu()
 void
 edithosts_menu()
 {
+
+static void menu_hostedit_add(const unsigned int, const long, void *);
+static void menu_hostedit_remove(const unsigned int, const long, void *);
+static void menu_hostedit_list(const unsigned int, const long, void *);
+static void menu_hostedit_kill(const unsigned int, const long, void *);
     MENU_DECLARE;
 
     MENU_INIT;
     sprintf(the_menu_format.menu_title, "\n\n\1f\1w[\1gEdit hosts for Forum #%d\1w]\n\n", curr_rm);
 
-    MENU_ADDITEM(menu_hostedit_add, 1, 0, "", "ti", "Add host", "a");
-    MENU_ADDITEM(menu_hostedit_remove, 1, 0, "", "ti", "Remove host", "r");
-    MENU_ADDITEM(menu_hostedit_list, 1, 0, "", "ti", "List hosts", "l");
-    MENU_ADDITEM(menu_hostedit_kill, 1, 0, "", "ti", "Remove all hosts", "k");
+    MENU_ADDITEM(menu_hostedit_add, 1, 0, NULL, "ti", "Add host", "a");
+    MENU_ADDITEM(menu_hostedit_remove, 1, 0, NULL, "ti", "Remove host", "r");
+    MENU_ADDITEM(menu_hostedit_list, 1, 0, NULL, "ti", "List hosts", "l");
+    MENU_ADDITEM(menu_hostedit_kill, 1, 0, NULL, "ti", "Remove all hosts", "k");
 
         MENU_PROCESS_INTERNALS;
 
@@ -1670,7 +1671,7 @@ edithosts_menu()
 }
 
 void
-menu_hostedit_add(const unsigned int ZZ, const long ZZZ, const char *ZZZZ)
+menu_hostedit_add(const unsigned int ZZ, const long ZZZ, void *ZZZZ)
 {
     char *name;
     unsigned int id2;
@@ -1701,7 +1702,7 @@ menu_hostedit_add(const unsigned int ZZ, const long ZZZ, const char *ZZZZ)
 }
 
 void
-menu_hostedit_remove(const unsigned int ZZ, const long ZZZ, const char *ZZZZ)
+menu_hostedit_remove(const unsigned int ZZ, const long ZZZ, void *ZZZZ)
 {
     char *name;
     unsigned int id2;
@@ -1728,7 +1729,7 @@ menu_hostedit_remove(const unsigned int ZZ, const long ZZZ, const char *ZZZZ)
 }
 
 void
-menu_hostedit_kill(const unsigned int ZZ, const long ZZZ, const char *ZZZZ)
+menu_hostedit_kill(const unsigned int ZZ, const long ZZZ, void *ZZZZ)
 {
     printf("Removing all hosts!\n");
     printf("Not implemented yet!\n");
@@ -1738,7 +1739,7 @@ menu_hostedit_kill(const unsigned int ZZ, const long ZZZ, const char *ZZZZ)
 }
 
 void
-menu_hostedit_list(const unsigned int ZZ, const long ZZZ, const char *ZZZZ)
+menu_hostedit_list(const unsigned int ZZ, const long ZZZ, void *ZZZZ)
 {
     userlist_t *p = NULL;
 

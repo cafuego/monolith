@@ -10,7 +10,7 @@ extern char get_single ( const char *);
 extern char get_single_quiet ( const char *);
 extern int more_string(char * const );
 extern int more( const char *, int );
-extern void more_wrapper(const unsigned int, const long, const char *);
+extern void more_wrapper(const unsigned int, const long, void *);
 extern void execute_unix_command( const char * );
 extern void print_system_config( void );
 extern int print_birthday(date_t bday);

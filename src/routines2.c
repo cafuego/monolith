@@ -142,7 +142,7 @@ more(const char *filename, int color)
 }
 
 void
-more_wrapper(const unsigned int col, const long keypress, const char *filename)
+more_wrapper(const unsigned int col, const long keypress, void *filename)
 {
     more(filename, 1);
     if (keypress) {

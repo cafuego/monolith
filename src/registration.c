@@ -19,6 +19,7 @@
 #undef extern
 
 #include "main.h"
+#include "menu.h"
 #include "input.h"
 #include "log.h"
 #include "routines.h"
@@ -68,91 +69,167 @@ dis_regis(const user_t * user, int override)
 void
 change_info(user_t * user, int override)
 {
-    char string[100];
-    int done = FALSE;
 
-    while (!done) {
-	cprintf("\nPress enter to accept values in brackets.\n");
+#define ADDR_NAME	1
+#define ADDR_ADDRESS	2
+#define ADDR_CITY	4
+#define ADDR_ZIP	8
+#define ADDR_STATE	16
+#define ADDR_COUNTRY	32
+#define ADDR_PHONE	64
+#define ADDR_EMAIL	128
+#define ADDR_URL	256
+
+static void _address_edit(const unsigned int, const long, void *);
+
+    char tempstr[100];
+    user_t *tempuser;
+    MENU_DECLARE;
+
+    tempuser = (user_t *) xmalloc(sizeof(user_t));
+
+    for (;;) {
+	MENU_INIT;
+   /* 
+    * WARNING: since all menu object's void pointer function arg
+    * point at the same thing in memory, in this case, a pointer
+    * to a malloc'd user_t, we -DO NOT- want MENU_DESTROY to try
+    * and free one for each menu item!  instead we set 
+    * destroy_void_object in the menu format struct to off, and
+    * free() the object explicitly at the end of the function.
+    */
+	the_menu_format.destroy_void_object = 0;
+
+	memcpy(tempuser, user, sizeof(user_t));
+
+	strcpy(the_menu_format.menu_title, 
+		"\n\1f\1w[\1gRegistration Information Menu\1w]\n\n");
 
 	if (override || (user->priv & PRIV_DEGRADED)) {
-	    cprintf("REAL name: [%s] ", user->RGname);
-	    getline(string, RGnameLEN, 1);
-	    if (strlen(string) != 0)
-		strcpy(user->RGname, string);
+	    sprintf(tempstr, "REAL name: %s", tempuser->RGname);
+	    MENU_ADDITEM(_address_edit, ADDR_NAME, RGnameLEN,
+		      (user_t *) tempuser, "t", tempstr);
 	}
-	cprintf("Address [%s]: ", user->RGaddr);
-	getline(string, RGaddrLEN, 1);
-	if (strlen(string) != 0) {
-            strremcol( string );
-	    strcpy(user->RGaddr, string);
-        }
+	sprintf(tempstr, "Address:   %s", tempuser->RGaddr);
+	MENU_ADDITEM(_address_edit, ADDR_ADDRESS, RGaddrLEN,
+		      (user_t *) tempuser, "t", tempstr);
 
-	cprintf("City/town [%s]: ", user->RGcity);
-	getline(string, RGcityLEN, 1);
-	if (strlen(string) != 0) {
-            strremcol( string );
-	    strcpy(user->RGcity, string);
-        }
+	sprintf(tempstr, "City/town: %s", tempuser->RGcity);
+	MENU_ADDITEM(_address_edit, ADDR_CITY, RGcityLEN,
+		      (user_t *) tempuser, "t", tempstr);
 
-	cprintf("ZIP code [%s]: ", user->RGzip);
-	getline(string, RGzipLEN, 1);
-	if (strlen(string) != 0) {
-            strremcol( string );
-	    strcpy(user->RGzip, string);
-        }
+	sprintf(tempstr, "ZIP code:  %s", tempuser->RGzip);
+	MENU_ADDITEM(_address_edit, ADDR_ZIP, RGzipLEN,
+		      (user_t *) tempuser, "t", tempstr);
 
-	cprintf("State [%s]: ", user->RGstate);
-	getline(string, RGstateLEN, 1);
-	if (strcmp(string, "none") == 0)
-	    strcpy(user->RGstate, "");
-	else if (strlen(string) != 0) {
-            strremcol( string );
-	    strcpy(user->RGstate, string);
-        }
+	sprintf(tempstr, "State:     %s", tempuser->RGstate);
+	MENU_ADDITEM(_address_edit, ADDR_STATE, RGstateLEN,
+		      (user_t *) tempuser, "t", tempstr);
 
-	cprintf("Country [%s]: ", user->RGcountry);
-	getline(string, RGcountryLEN, 1);
-	if (strlen(string) != 0) {
-            strremcol( string );
-	    strcpy(user->RGcountry, string);
-        }
+	sprintf(tempstr, "Country:   %s", tempuser->RGcountry);
+	MENU_ADDITEM(_address_edit, ADDR_COUNTRY, RGcountryLEN,
+		      (user_t *) tempuser, "t", tempstr);
 
-	cprintf("Phone number [%s]: ", user->RGphone);
-	getline(string, RGphoneLEN, 1);
-	if (strcmp(string, "none") == 0)
-	    strcpy(user->RGphone, "");
-	else if (strlen(string) != 0) {
-            strremcol( string );
-	    strcpy(user->RGphone, string);
-        }
+	sprintf(tempstr, "Phone:     %s", tempuser->RGphone);
+	MENU_ADDITEM(_address_edit, ADDR_PHONE, RGphoneLEN,
+		      (user_t *) tempuser, "t", tempstr);
 
-	cprintf("Email address [%s]: ", user->RGemail);
-	getline(string, RGemailLEN, 1);
-	if (strcmp(string, "none") == 0)
-	    strcpy(user->RGemail, "");
-	else if (strlen(string) != 0) {
-            strremcol( string );
-	    strcpy(user->RGemail, string);
-        }
+	sprintf(tempstr, "Email:     %s", tempuser->RGemail);
+	MENU_ADDITEM(_address_edit, ADDR_EMAIL, RGemailLEN,
+		      (user_t *) tempuser, "t", tempstr);
 
-	cprintf("URL [%s]: ", user->RGurl);
-	getline(string, RGurlLEN, 1);
-	if (strcmp(string, "none") == 0)
-	    strcpy(user->RGurl, "");
-	else if (strlen(string) != 0) {
-            strremcol( string );
-	    strcpy(user->RGurl, string);
-        }
-	cprintf("\n");
+	sprintf(tempstr, "URL:       %s", tempuser->RGurl);
+	MENU_ADDITEM(_address_edit, ADDR_URL, RGurlLEN,
+		      (user_t *) tempuser, "t", tempstr);
 
-	cprintf("*** You have entered the following:\n");
-	dis_regis(user, TRUE);
+	the_menu_format.gen_1_idx = 1;
+	MENU_PROCESS_INTERNALS;
+	MENU_DISPLAY(1);
 
-	cprintf("\nIs this correct (y/n)? ");
-	if (yesno() == YES)
-	    done = TRUE;
+	if (!MENU_EXEC_COMMAND)
+	    break;
+
+	memcpy(user, tempuser, sizeof(user_t));  
+	MENU_DESTROY;
     }
-    return;
+    MENU_DESTROY;
+    xfree(tempuser);
+}
+
+void 
+_address_edit(const unsigned int fieldname, const long fieldlen, void *user)
+{
+    user_t *t_user;
+    char string[200];
+
+    t_user = (user_t *) user;
+
+    switch (fieldname) {
+	case ADDR_NAME:	
+	    cprintf("\1f\1g\nNew Name \1w[\1g%s\1w]:\1g ",t_user->RGname);
+	    break;
+	case ADDR_ADDRESS:	
+	    cprintf("\1f\1g\nNew Address \1w[\1g%s\1w]:\1g ",t_user->RGaddr);
+	    break;
+	case ADDR_CITY:	
+	    cprintf("\1f\1g\nNew City \1w[\1g%s\1w]:\1g ",t_user->RGcity);
+	    break;
+	case ADDR_ZIP:	
+	    cprintf("\1f\1g\nNew ZIP \1w[\1g%s\1w]:\1g ",t_user->RGzip);
+	    break;
+	case ADDR_STATE:	
+	    cprintf("\1f\1g\nNew State \1w[\1g%s\1w]:\1g ",t_user->RGstate);
+	    break;
+	case ADDR_COUNTRY:	
+	    cprintf("\1f\1g\nNew Country \1w[\1g%s\1w]:\1g ",t_user->RGcountry);
+	    break;
+	case ADDR_PHONE:	
+	    cprintf("\1f\1g\nNew Phone \1w[\1g%s\1w]:\1g ",t_user->RGphone);
+	    break;
+	case ADDR_EMAIL:	
+	    cprintf("\1f\1g\nNew Email \1w[\1g%s\1w]:\1g ",t_user->RGemail);
+	    break;
+	case ADDR_URL:	
+	    cprintf("\1f\1g\nNew URL \1w[\1g%s\1w]:\1g ",t_user->RGurl);
+	    break;
+    }
+
+    string[0] = '\0';
+    getline(string, fieldlen, 1);
+    if (strlen(string))
+        strremcol(string);
+    else
+	return;
+
+    switch (fieldname) {
+	case ADDR_NAME:	
+	    strcpy(t_user->RGname, string);
+	    break;
+	case ADDR_ADDRESS:	
+	    strcpy(t_user->RGaddr, string);
+	    break;
+	case ADDR_CITY:	
+	    strcpy(t_user->RGcity, string);
+	    break;
+	case ADDR_ZIP:	
+	    strcpy(t_user->RGzip, string);
+	    break;
+	case ADDR_STATE:	
+	    strcpy(t_user->RGstate, string);
+	    break;
+	case ADDR_COUNTRY:	
+	    strcpy(t_user->RGcountry, string);
+	    break;
+	case ADDR_PHONE:	
+	    strcpy(t_user->RGphone, string);
+	    break;
+	case ADDR_EMAIL:	
+	    strcpy(t_user->RGemail, string);
+	    break;
+	case ADDR_URL:	
+	    strcpy(t_user->RGurl, string);
+	    break;
+    }
 }
 
 void

@@ -20,6 +20,7 @@ typedef struct _menu_display_format_shit {
     int idx_emax;	/* but the strlen minus any colorcodes stored */
     int ival_emax;	/* as colorcodes don't take up display width */
     int txt_emax;
+    int destroy_void_object;
  
     char menu_valid_input[200];  
  
@@ -31,12 +32,12 @@ typedef struct _menu_item {
     char * MI_ival;	/* menu index value-see M_display_t.no_boolean_values*/
     
     /* generic pointer to function */
-    void (*vfunc)(const unsigned int, const long, const char *);
+    void (*vfunc)(const unsigned int, const long, void *);
 
     /* arguments to above */
     unsigned int ui_arg;
     long l_arg;
-    char * c_arg;
+    void *obj_arg;
 
     } M_item_t;
 
@@ -47,31 +48,35 @@ typedef struct _menu_linked_list_node {
 
 /* prototypes */
 
-extern M_LN_t *destroy_menu(M_LN_t *);
+extern M_LN_t *destroy_menu(M_LN_t *, M_display_t *);
 extern M_LN_t * mono_display_menu_ified( M_LN_t *, M_display_t *, int);
-extern M_LNptr add_menu_item(M_LNptr , void (*)(const unsigned int, const long, const char *), unsigned int, long, char *, char *, ...);
+extern M_LNptr add_menu_item(M_LNptr , void (*)(const unsigned int, const long, void *), unsigned int, long, void *, char *, ...);
 extern void test_dlist_code(void);
 extern void set_menu_defaults(M_display_t *);
-extern void do_bing (const unsigned int, const long, const char*);
+extern void do_bing (const unsigned int, const long, void*);
 extern void exec_menu_cmd(M_LN_t *, const char *);
 extern void process_menu_internals(M_LN_t *, M_display_t *);
 extern int menu_command(M_LN_t * , M_display_t * );
-extern void do_nothing(const unsigned int, const long, const char *);
+extern void do_nothing(const unsigned int, const long, void *);
 
 /* macros */
 
 #define MENU_DECLARE M_display_t the_menu_format; M_LN_t *the_menu = NULL
-#define MENU_ADDITEM(a_vfunc, a_unsigned, a_long, a_charP, format, arghs...)  \
-        the_menu = add_menu_item(the_menu, a_vfunc, a_unsigned, a_long, a_charP, format , ## arghs)
+#define MENU_ADDITEM(a_vfunc, a_unsigned, a_long, a_voidP, format, arghs...)  \
+        the_menu = add_menu_item(the_menu, a_vfunc, a_unsigned, a_long, a_voidP, format , ## arghs)
 #define MENU_INIT set_menu_defaults(&the_menu_format)
 #define MENU_PROCESS_INTERNALS \
 	process_menu_internals(the_menu, &the_menu_format)
 #define MENU_EXEC_COMMAND menu_command(the_menu, &the_menu_format)
-#define MENU_DESTROY the_menu = destroy_menu(the_menu); \
+#define MENU_DESTROY the_menu = destroy_menu(the_menu, &the_menu_format); \
             if (the_menu != NULL) \
                 cprintf("\ndestroy_menu() fail.")
 #define MENU_DISPLAY(COLUMNS) the_menu = \
              mono_display_menu_ified(the_menu, &the_menu_format, COLUMNS)
+
+#define MALLOC_TMPSTR(x) tmpstr = (char *) xmalloc(sizeof(char) * x)
+#define TMPSTR_STRCPY(x) strcpy(tmpstr, x)
+#define MK_TMPSTR(x) MALLOC_TMPSTR(100); TMPSTR_STRCPY(x)
 
 /* eof */
 
@@ -82,7 +87,7 @@ extern void do_nothing(const unsigned int, const long, const char *);
 /* 
 (disclaimer)
 This thing is written with macros to make using it less of a pain in the
-ass..  unfortunately, that's likely to make it a pain in the ass to use.
+ass to use.  unfortunately, that's likely to make it a pain in the ass to use.
 
 How to use:
 
@@ -105,16 +110,16 @@ where function_name is the name of the function called by choosing that index,
 
 where the function args are:
 the first arg is an unsigned int, the second arg is a long, the third arg is 
-a char *.  you have to supply these, and prototype and define them in the 
+a void *.  you have to supply these, and prototype and define them in the 
 function you want to call, even if they're not used.  yes, i know it's ugly.
 for example:  to call function bing, defined somewhere as:
-void bing(const unsigned int mask, const long unused, const char * name)
+void bing(const unsigned int mask, const long unused, void * name)
 
 MENU_ADDITEM(bing, 1024, 0, usersupp->username", 
 	"tiv", usersupp->username, "n", (strlen(usersupp->username)) ? "1":"0");
 
 for the user, at the exec prompt, pressing 'n' (the index) would execute:
-	bing(1024,0,usersupp->username);
+	bing(1024,0,(char *) usersupp->username);
 
   (see notes on MENU_ADDITEM)
 

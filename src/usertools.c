@@ -64,8 +64,8 @@ static char *_locale[] = { "European", "American" };
 
 /* file wide static prototypes */
 
-static void set_usersupp_flag(const unsigned int, const long, const char *);
-static void set_usersupp_config_flag(const unsigned int, const long, const char *);
+static void set_usersupp_flag(const unsigned int, const long, void *);
+static void set_usersupp_config_flag(const unsigned int, const long, void *);
 static unsigned int _get_locale(const unsigned long);
 static float _get_monoholic_rating(const user_t *user);
 static char * _get_monoholic_flag(const user_t *user);
@@ -124,29 +124,34 @@ profile_user(void)
 void
 config_menu(void)
 {
-    static void _config_display_options(const unsigned int, const long, const char *);
-    static void _config_message_menu(const unsigned int, const long, const char *);
-    static void _config_express_menu(const unsigned int, const long, const char *);
-    static void _config_personal_info_menu(const unsigned int, const long, const char *);
 
+static void _config_display_options(const unsigned int, const long, void *);
+static void _config_message_menu(const unsigned int, const long, void *);
+static void _config_express_menu(const unsigned int, const long, void *);
+static void _config_personal_info_menu(const unsigned int, const long, void *);
+
+    char *context;
     MENU_DECLARE;
 
     for (;;) {
 	MENU_INIT;
 	strcpy(the_menu_format.menu_title, 
 		"\n\1f\1w[\1gMain Configuration Menu\1w]\n\n");
-	MENU_ADDITEM(_config_display_options, 0, 0, "",
-		    "ti", "General Configuration    \1w[\1rmenu\1w]", "1");  
-	MENU_ADDITEM(_config_message_menu, 0, 0, "",
-		    "ti", "Message System Options   \1w[\1rmenu\1w]", "2");
-	MENU_ADDITEM(_config_express_menu, 0, 0, "",
-		    "ti", "Express Message Options  \1w[\1rmenu\1w]", "3");
-	MENU_ADDITEM(_config_personal_info_menu, 0, 0, "",
-		    "ti", "Personal Information     \1w[\1rmenu\1w]", "4");
+	MENU_ADDITEM(_config_display_options, 0, 0, NULL,
+		    "ti", "General Configuration    \1w[\1rmenu\1w]", "G");  
+	MENU_ADDITEM(_config_message_menu, 0, 0, NULL,
+		    "ti", "Message System Options   \1w[\1rmenu\1w]", "M");
+	MENU_ADDITEM(_config_express_menu, 0, 0, NULL,
+		    "ti", "Express Message Options  \1w[\1rmenu\1w]", "X");
+	MENU_ADDITEM(_config_personal_info_menu, 0, 0, NULL,
+		    "ti", "Personal Information     \1w[\1rmenu\1w]", "P");
 
-        MENU_ADDITEM(do_nothing, 0, 0, "", "ti", "-----------", "");
+        MENU_ADDITEM(do_nothing, 0, 0, NULL, "ti", "-----------", "");
 
-	MENU_ADDITEM(online_help_wrapper, 0, 0, "m",
+        context = (char *) xmalloc(sizeof(char) * 2);
+	strcpy(context, "m");
+
+	MENU_ADDITEM(online_help_wrapper, 0, 0, (char *) context,
 		    "ti", "Online Help:  This Menu", "?");
 
 	MENU_PROCESS_INTERNALS;
@@ -160,66 +165,74 @@ config_menu(void)
 
 
 void
-_config_display_options(const unsigned int a, const long b, const char *c)
+_config_display_options(const unsigned int a, const long b, void *c)
 {
-    static void _bbs_appearance_wrapper(const unsigned int, const long, const char *);
-    static void _client_local_config(const unsigned int, const long, const char *);
-    static void _set_screenlength(const unsigned int, const long, const char *);
-    static void _tgl_status_bar(const unsigned int, const long, const char *);
+    static void _bbs_appearance_wrapper(const unsigned int, const long, void *);
+    static void _client_local_config(const unsigned int, const long, void *);
+    static void _set_screenlength(const unsigned int, const long, void *);
+    static void _tgl_status_bar(const unsigned int, const long, void *);
 
-    char tempstr[100];
+    char *tmpstr;
     MENU_DECLARE;
 
     for (;;) {
 	MENU_INIT;
 	strcpy(the_menu_format.menu_title, 
 		"\n\1f\1w[\1gGeneral Configuration Menu\1w]\n\n");
-	strcpy(tempstr, "");
-	sprintf(tempstr, "Screenlength: \1w[\1r%2d\1w] \1glines", usersupp->screenlength);
-
-	MENU_ADDITEM(set_usersupp_flag, US_ANSI, 0, "ANSI Colour Display",
+	MK_TMPSTR("ANSI Colour Display");
+	MENU_ADDITEM(set_usersupp_flag, US_ANSI, 0, (char *) tmpstr,
 		     "tiv", "Display ANSI Colours", "1",
 		     (usersupp->flags & US_ANSI) ? "\1yYes" : " No");
+	MK_TMPSTR("Display of flashing text");
 	MENU_ADDITEM(set_usersupp_flag, US_NOFLASH, 1,
-		     "Display of flashing text",
+		     (char *) tmpstr,
 		     "tiv", "Display Flashing Text", "2",
 		     (usersupp->flags & US_NOFLASH) ? " No" : "\1yYes");
+	MK_TMPSTR("Display of Bold Text");
 	MENU_ADDITEM(set_usersupp_flag, US_NOBOLDCOLORS, 1,
-		     "Display of Bold Text",
+		     (char *) tmpstr,
 		     "tiv", "Display Bold Text", "3",
 		     (usersupp->flags & US_NOBOLDCOLORS) ? " No" : "\1yYes");
+	MK_TMPSTR("Display Hostnames in the Wholist");
 	MENU_ADDITEM(set_usersupp_flag, US_IPWHOLIST, 0,
-		     "Display Hostnames in the Wholist",
+		     (char *) tmpstr,
 		     "tiv", "Show hostnames in the wholist", "4", 
 		     (usersupp->flags & US_IPWHOLIST) ? "\1yYes" : " No");
-	MENU_ADDITEM(_tgl_status_bar, 0, 0, "", "tiv", "Display Status Bar", "5",
+	MENU_ADDITEM(_tgl_status_bar, 0, 0, NULL, "tiv", "Display Status Bar", "5",
 		     (usersupp->flags & US_STATUSBAR) ? "\1yYes" : " No");
-	MENU_ADDITEM(_bbs_appearance_wrapper, 0, 0, "",
-		     "tiv", "Set BBS Appearance/Style", "6", "---");
-	MENU_ADDITEM(_set_screenlength, 0, 0, "", "tiv", tempstr, "7", "---");
-	MENU_ADDITEM(set_usersupp_flag, US_EXPERT, 0, "Expert User",
+	MENU_ADDITEM(_bbs_appearance_wrapper, 0, 0, NULL,
+		     "tiv", "Set BBS Style  \1w[\1rmenu\1w]", "6", "---");
+	MALLOC_TMPSTR(100);
+	sprintf(tmpstr, "Screenlength: \1w[\1r%2d\1w] \1glines", usersupp->screenlength);
+	MENU_ADDITEM(_set_screenlength, 0, 0, (char *) tmpstr, "tiv", tmpstr, "7", "---");
+	MK_TMPSTR("Expert User");
+	MENU_ADDITEM(set_usersupp_flag, US_EXPERT, 0, (char *) tmpstr,
 		     "tiv", "Expert User Mode", "8",
 		     (usersupp->flags & US_EXPERT) ? "\1yYes" : " No");
+	MK_TMPSTR("Enable Extra Command Help");
 	MENU_ADDITEM(set_usersupp_flag, US_NOCMDHELP, 1,
-		     "Enable Extra Command Help",
+		     (char *) tmpstr,
 		     "tiv", "Extra Command Help", "9",
 		     (usersupp->flags & US_NOCMDHELP) ? " No" : "\1yYes");
 
 #ifdef CLIENTSRC
-	MENU_ADDITEM(_client_local_config, 0, 0, "",
+	MENU_ADDITEM(_client_local_config, 0, 0, NULL,
 		    "tiv", "Local Client Configuration", "C", "---");
 #endif
 
 	if ((usersupp->flags & US_ROOMAIDE) || (usersupp->priv >= PRIV_SYSOP)
-	    || (usersupp->flags & US_GUIDE))
+	    || (usersupp->flags & US_GUIDE)) {
+	    MK_TMPSTR("Enable Extra Admin Help");
 	    MENU_ADDITEM(set_usersupp_flag, US_ADMINHELP, 0,
-			 "Enable Extra Admin Help",
+			 (char *) tmpstr,
 			 "tiv", "Extra Admin Help", "H",
 			 (usersupp->flags & US_ADMINHELP) ? "\1yYes" : " No");
+	}
 
-        MENU_ADDITEM(do_nothing, 0, 0, "", "tiv", "-----------", "", " ");
+        MENU_ADDITEM(do_nothing, 0, 0, NULL, "tiv", "-----------", "", " ");
 
-	MENU_ADDITEM(online_help_wrapper, 0, 0, "g",
+	MK_TMPSTR("g");
+	MENU_ADDITEM(online_help_wrapper, 0, 0, (char *) tmpstr,
 		     "tiv", "Online Help: This Menu", "?", "---");
 
 	the_menu_format.auto_columnize = 1;
@@ -240,79 +253,82 @@ _config_display_options(const unsigned int a, const long b, const char *c)
 
 
 void
-_config_message_menu(const unsigned int a, const long b, const char *c)
+_config_message_menu(const unsigned int a, const long b, void *c)
 {
 
-    static void _change_alias(const unsigned int, const long, const char *);
-    static void _tgl_use_alias(const unsigned int, const long, const char *);
-    static void _set_locale(const unsigned int, const long, const char *);
-    static void _set_date_display(const unsigned int, const long, const char *);
+    static void _change_alias(const unsigned int, const long, void *);
+    static void _tgl_use_alias(const unsigned int, const long, void *);
+    static void _set_locale(const unsigned int, const long, void *);
+    static void _set_date_display(const unsigned int, const long, void *);
 
-    char tempstr[100], mesname[20];
+    char *tmpstr, tempstr[100];
     MENU_DECLARE;
-
-    strcpy(mesname, "");
-    sprintf(mesname, "%s", config.message);
-    mesname[0] = toupper(mesname[0]);
 
     for (;;) {
 	MENU_INIT;
 	strcpy(the_menu_format.menu_title, 
 		"\n\1f\1w[\1gMessage System Configuration Menu\1w]\n\n");
-
+	MK_TMPSTR("Viewing of last old post");
 	MENU_ADDITEM(set_usersupp_flag, US_LASTOLD, 0,
-		    "Viewing of last old post",
+		    (char *) tmpstr,
 		    "tiv", "See last old post", "0",
 		    (usersupp->flags & US_LASTOLD) ? "\1yYes" : " No");
+	MK_TMPSTR("Prompting after each post");
 	MENU_ADDITEM(set_usersupp_flag, US_NOPROMPT, 1,
-		    "Prompting after each post",
+		    (char *) tmpstr,
 		    "tiv", "Prompt after each post", "1",
 		    (usersupp->flags & US_NOPROMPT) ? " No" : "\1yYes");
-	MENU_ADDITEM(set_usersupp_flag, US_PAUSE, 0, "Pause after each screen",
+	MK_TMPSTR("Pause after each screen");
+	MENU_ADDITEM(set_usersupp_flag, US_PAUSE, 0, (char *) tmpstr,
 		    "tiv", "Pause after each screenfull", "2",
 		    (usersupp->flags & US_PAUSE) ? "\1yYes" : " No");
-	MENU_ADDITEM(_tgl_use_alias, 0, 0, "",
+	MENU_ADDITEM(_tgl_use_alias, 0, 0, NULL,
 		    "tiv", "Use a default alias", "3",
 		    (usersupp->config_flags & CO_USEALIAS) ? "\1yYes" : " No");
-	MENU_ADDITEM(_change_alias, 0, 0, "",
+	MENU_ADDITEM(_change_alias, 0, 0, NULL,
 		    "tiv", "Change your default alias", "4", "---");
 
 	sprintf(tempstr, "Empty lines around %s", config.message_pl);
-	MENU_ADDITEM(set_usersupp_config_flag, CO_NEATMESSAGES, 0, tempstr,
+	MK_TMPSTR(tempstr);
+	MENU_ADDITEM(set_usersupp_config_flag, CO_NEATMESSAGES, 0, (char *) tmpstr,
 		    "tiv", tempstr, "5",
 		    (usersupp->config_flags & CO_NEATMESSAGES) ? "\1yYes" : " No");
 
 	sprintf(tempstr, "Expanded %s headers", config.message);
-	MENU_ADDITEM(set_usersupp_config_flag, CO_EXPANDHEADER, 0, tempstr,
+	MK_TMPSTR(tempstr);
+	MENU_ADDITEM(set_usersupp_config_flag, CO_EXPANDHEADER, 0, (char *) tmpstr,
 		    "tiv", tempstr, "6",
 		    (usersupp->config_flags & CO_EXPANDHEADER) ? "\1yYes" : " No");
 
 	sprintf(tempstr, "Display \1w%s\1g date", 
 		(usersupp->config_flags & CO_LONGDATE) ? "long" : "short");
-	MENU_ADDITEM(_set_date_display, 0, 0, "", 
+	MENU_ADDITEM(_set_date_display, 0, 0, NULL, 
 		    "tiv", tempstr, "7", "---");
 
         if (usersupp-> priv < PRIV_SYSOP)
             sprintf(tempstr, "Notify on deleted %s", config.message_pl);
         else
             sprintf(tempstr, "Display deleted %s", config.message_pl);
-	MENU_ADDITEM(set_usersupp_config_flag, CO_DELETEDINFO, 0, tempstr,
+	MK_TMPSTR(tempstr);
+	MENU_ADDITEM(set_usersupp_config_flag, CO_DELETEDINFO, 0, (char *) tmpstr,
 	     	    "tiv", tempstr, "8", 
 		    (usersupp->config_flags & CO_DELETEDINFO) ? "\1yYes" : " No");
 
 	sprintf(tempstr, "Monolith-Style %s headers", config.message);
+	MK_TMPSTR(tempstr);
 	MENU_ADDITEM(set_usersupp_config_flag, CO_MONOHEADER, 0, 
-	   	    tempstr, "tiv", tempstr, "9", 
+	   	    (char *) tmpstr, "tiv", tempstr, "9", 
 	   	    (usersupp->config_flags & CO_MONOHEADER) ? "\1yYes" : " No");
 
 	sprintf(tempstr, "\1w%s\1g date format", 
 		_locale[_get_locale(usersupp->config_flags)]);
-	MENU_ADDITEM(_set_locale, 0, 0, "",
+	MENU_ADDITEM(_set_locale, 0, 0, NULL,
 		    "tiv", tempstr, "A", "---");
 
-        MENU_ADDITEM(do_nothing, 0, 0, "", "tiv", "-----------", "", "\1g--");
+        MENU_ADDITEM(do_nothing, 0, 0, NULL, "tiv", "-----------", "", "\1g--");
 
-	MENU_ADDITEM(online_help_wrapper, 0, 0, "p",
+	MK_TMPSTR("p");
+	MENU_ADDITEM(online_help_wrapper, 0, 0, (char *) tmpstr,
 		    "ti", "Online Help:  This Menu", "?");
 
 	the_menu_format.no_boolean_values = 1;
@@ -327,60 +343,68 @@ _config_message_menu(const unsigned int a, const long b, const char *c)
 
 
 void
-_config_express_menu(const unsigned int a, const long b, const char *c)
+_config_express_menu(const unsigned int a, const long b, void *c)
 {
-    static void _menu_friend_wrapper(const unsigned int, const long, const char *);
-    static void _chat_subscribe_wrapper(const unsigned int, const long, const char *);
-    static void _tgl_silc(const unsigned int, const long, const char *);
+    static void _menu_friend_wrapper(const unsigned int, const long, void *);
+    static void _chat_subscribe_wrapper(const unsigned int, const long, void *);
+    static void _tgl_silc(const unsigned int, const long, void *);
 
     MENU_DECLARE;
+    char *tmpstr;
 
     for (;;) {
 	MENU_INIT;
 	strcpy(the_menu_format.menu_title, "\n\1f\1w[\1gExpress Message Configuration Menu\1w]\n\n");
 
+	MK_TMPSTR("X-message disable at login");
 	MENU_ADDITEM(set_usersupp_flag, US_XOFF, 0,
-		     "X-message disable at login",
+		     (char *) tmpstr,
 		     "tiv", "Disabled eXpress messages at login",
 		     "1", (usersupp->flags & US_XOFF) ? "\1yYes" : " No");
+	MK_TMPSTR("Receiving friendslist logon notices");
 	MENU_ADDITEM(set_usersupp_flag, US_NOTIFY_FR, 0,
-		     "Receiving friendslist logon notices",
+		     (char *) tmpstr,
 		     "tiv", "Receive logon/off notifies",
 		     "2", (usersupp->flags & US_NOTIFY_FR) ? "\1yYes" : " No");
-	MENU_ADDITEM(set_usersupp_flag, US_SHIX, 0, "SHIX Filter",
+	MK_TMPSTR("SHIX Filter");
+	MENU_ADDITEM(set_usersupp_flag, US_SHIX, 0, (char *) tmpstr,
 		     "tiv", "Use the SHIX Filter",
 		     "3", (usersupp->flags & US_SHIX) ? "\1yYes" : " No");
+	MK_TMPSTR("InterBBS access");
 	MENU_ADDITEM(set_usersupp_flag, US_NOINTERXS, 1,
-		     "InterBBS access",
+		     (char *) tmpstr,
 		     "tiv", "InterBBS Access",
 		     "4", (usersupp->flags & US_NOINTERXS) ? " No" : "\1yYes");
+	MK_TMPSTR("Showing of friends online at login");
 	MENU_ADDITEM(set_usersupp_config_flag, CO_SHOWFRIENDS, 0,
-		     "Showing of friends online at login",
+		     (char *) tmpstr,
 		     "tiv", "Show friends online when you login",
 		     "5", (usersupp->config_flags & CO_SHOWFRIENDS) ? "\1yYes" : " No");
+	MK_TMPSTR("Display of all logon/off events");
 	MENU_ADDITEM(set_usersupp_flag, US_NOTIFY_ALL, 0,
-		     "Display of all logon/off events",
+		     (char *) tmpstr,
 		     "tiv", "Display all logon/off events",
 		     "6", (usersupp->flags & US_NOTIFY_ALL) ? "\1yYes" : " No");
-	MENU_ADDITEM(_menu_friend_wrapper, 0, FRIEND, "",
+	MENU_ADDITEM(_menu_friend_wrapper, 0, FRIEND, NULL,
 		     "tiv", "Friends List   \1w[\1rmenu\1w]",
 		     "7", "---");
-	MENU_ADDITEM(_menu_friend_wrapper, 0, ENEMY, "",
+	MENU_ADDITEM(_menu_friend_wrapper, 0, ENEMY, NULL,
 		     "tiv", "Enemies List   \1w[\1rmenu\1w]",
 		     "8", "---");
-	MENU_ADDITEM(_chat_subscribe_wrapper, 0, 0, "",
+	MENU_ADDITEM(_chat_subscribe_wrapper, 0, 0, NULL,
 		     "tiv",
 		     "Chat Channels:  subscribe/unsubscribe \1w[\1rmenu\1w]",
 		     "9", "---");
 
 	if (usersupp->priv >= PRIV_SYSOP)
-	    MENU_ADDITEM(_tgl_silc, C_NOSILC, 0, "SILC Enable",
+	    MENU_ADDITEM(_tgl_silc, C_NOSILC, 0, NULL,
 		         "tiv", "SILC Enabled",
 			 "S", (cmdflags & C_NOSILC) ? " No" : "\1yYes");
 
-        MENU_ADDITEM(do_nothing, 0, 0, "", "tiv", "-----------", "", "\1g--");
+        MENU_ADDITEM(do_nothing, 0, 0, NULL, "tiv", "-----------", "", "\1g--");
 
-	MENU_ADDITEM(online_help_wrapper, 0, 0, "x",
+	MK_TMPSTR("x");
+	MENU_ADDITEM(online_help_wrapper, 0, 0, (char *) tmpstr,
 		     "tiv", "Online Help:  This Menu", 
 		     "?", "---");
 
@@ -398,23 +422,23 @@ _config_express_menu(const unsigned int a, const long b, const char *c)
 
 
 void 
-_config_personal_info_menu(const unsigned int a, const long b, const char *c)
+_config_personal_info_menu(const unsigned int a, const long b, void *c)
 {
 
-static void _hidden_info_menu (const unsigned int, const long, const char *);
-static void _timezone_menu (const unsigned int, const long, const char*);
-static void _change_address (const unsigned int, const long, const char*);
-static void _change_birthday (const unsigned int, const long, const char*);
-static void _change_flying (const unsigned int, const long, const char*);
-static void _change_host (const unsigned int, const long, const char*);
-static void _change_profile (const unsigned int, const long, const char*);
-static void _edit_profile (const unsigned int, const long, const char*);
-static void _key_menu_wrapper (const unsigned int, const long, const char*);
-static void _change_password (const unsigned int, const long, const char*);
-static void _change_url (const unsigned int, const long, const char*);
+static void _hidden_info_menu (const unsigned int, const long, void *);
+static void _timezone_menu (const unsigned int, const long, void*);
+static void _change_address (const unsigned int, const long, void*);
+static void _change_birthday (const unsigned int, const long, void*);
+static void _change_flying (const unsigned int, const long, void*);
+static void _change_host (const unsigned int, const long, void*);
+static void _change_profile (const unsigned int, const long, void*);
+static void _edit_profile (const unsigned int, const long, void*);
+static void _key_menu_wrapper (const unsigned int, const long, void*);
+static void _change_password (const unsigned int, const long, void*);
+static void _change_url (const unsigned int, const long, void*);
 
 
-    char tempstr[100];
+    char *tmpstr, tempstr[100];
     MENU_DECLARE;
 
     for (;;) {
@@ -422,44 +446,45 @@ static void _change_url (const unsigned int, const long, const char*);
 	strcpy(the_menu_format.menu_title,
 	      "\n\1f\1w[\1gPersonal Info Configuration Menu\1w]\n\n");
 		     
-	sprintf(tempstr, "Change %s", config.doing);
-        MENU_ADDITEM(_change_flying, 0, 0, "",
-		     "ti", tempstr, "1");
+        MENU_ADDITEM(_change_address, 0, 0, NULL,
+		     "ti", "Change Address Information", "A");
+		     
+        MENU_ADDITEM(_change_birthday, 0, 0, NULL,
+		     "ti", "Update Birthday", "B");
+		     
+	MENU_ADDITEM(_change_password, 0, 0, NULL,	
+		     "ti", "Change account password", "D");
+		     
+	MENU_ADDITEM(_hidden_info_menu, 0, 0, NULL,
+		     "ti", "Toggle Hidden Info \1w[\1rmenu\1w]", "H");
 
-	MENU_ADDITEM(_hidden_info_menu, 0, 0, "",
-		     "ti", "Toggle Hidden Info \1w[\1rmenu\1w]", "2");
-
-	MENU_ADDITEM(_change_profile, 0, 0, "",
-		     "ti", "Change your profile", "3");
+	MENU_ADDITEM(_change_profile, 0, 0, NULL,
+		     "ti", "Change your profile", "i");
 		     
-	MENU_ADDITEM(_edit_profile, 0, 0, "",
-		     "ti", "Edit your profile", "4");
+	MENU_ADDITEM(_edit_profile, 0, 0, NULL,
+		     "ti", "Edit your profile", "I");
 		     
-        MENU_ADDITEM(_change_address, 0, 0, "",
-		     "ti", "Change Address Information", "5");
-		     
-	MENU_ADDITEM(_change_password, 0, 0, "",	
-		     "ti", "Change account password", "6");
-		     
-	MENU_ADDITEM(_timezone_menu, 0, 0, "",
-		     "ti", "Timezone Setup  \1w[\1rmenu\1w]", "7");
-
-        MENU_ADDITEM(_change_birthday, 0, 0, "",
-		     "ti", "Update Birthday", "8");
-		     
-	MENU_ADDITEM(_change_url, 0, 0, "",
-		     "ti", "Change URL (homepage)", "9");
-		
 	sprintf(tempstr, "Change %s", LOCATION);	     
-	MENU_ADDITEM(_change_host, 0, 0, "",
-		     "ti", tempstr, "A");
+	MENU_ADDITEM(_change_host, 0, 0, NULL,
+		     "ti", tempstr, "L");
 		     
-	MENU_ADDITEM(_key_menu_wrapper, 0, 0, "",	
+	MENU_ADDITEM(_timezone_menu, 0, 0, NULL,
+		     "ti", "Timezone Setup  \1w[\1rmenu\1w]", "T");
+
+	MENU_ADDITEM(_key_menu_wrapper, 0, 0, NULL,	
 		     "ti", "Validation Key \1w[\1rmenu\1w]", "V");
 		     
-        MENU_ADDITEM(do_nothing, 0, 0, "", "ti", "-----------", "");
+	MENU_ADDITEM(_change_url, 0, 0, NULL,
+		     "ti", "Change URL (homepage)", "W");
+		
+	sprintf(tempstr, "Change %s", config.doing);
+        MENU_ADDITEM(_change_flying, 0, 0, NULL,
+		     "ti", tempstr, "Y");
 
-	MENU_ADDITEM(online_help_wrapper, 0, 0, "a",
+        MENU_ADDITEM(do_nothing, 0, 0, NULL, "ti", "-----------", "");
+
+	MK_TMPSTR("a");
+	MENU_ADDITEM(online_help_wrapper, 0, 0, (char *) tmpstr,
 		     "ti", "Online Help:  This Menu", "?");
 
 	the_menu_format.auto_columnize = 1;
@@ -476,7 +501,7 @@ static void _change_url (const unsigned int, const long, const char*);
 
 
 void
-_menu_friend_wrapper(const unsigned int a, const long which, const char *c)
+_menu_friend_wrapper(const unsigned int a, const long which, void *c)
 {
     if (which == ENEMY) {
 	cprintf("\1f\1gChange your Enemylist.\1a\n\n");
@@ -488,7 +513,7 @@ _menu_friend_wrapper(const unsigned int a, const long which, const char *c)
 }
 
 void
-_chat_subscribe_wrapper(const unsigned int a, const long b, const char *c)
+_chat_subscribe_wrapper(const unsigned int a, const long b, void *c)
 {
 		cprintf("\1f\1pSubscribe to channel: \1a");
 		chat_subscribe();
@@ -496,7 +521,7 @@ _chat_subscribe_wrapper(const unsigned int a, const long b, const char *c)
 
  
 void
-_bbs_appearance_wrapper(const unsigned int a, const long b, const char *c)
+_bbs_appearance_wrapper(const unsigned int a, const long b, void *c)
 {
     cprintf("\1f\1gChange configuration.\n\n");
     cprintf("\1f\1gYour configuration is set to \1y`%s'\1g.\n", config.bbsname);
@@ -511,7 +536,7 @@ _bbs_appearance_wrapper(const unsigned int a, const long b, const char *c)
 }
 
 void
-_client_local_config(const unsigned int a, const long b, const char *c)
+_client_local_config(const unsigned int a, const long b, void *c)
 {
 #ifdef CLIENTSRC
     client_input(CONFIG, 0);
@@ -821,11 +846,11 @@ test_ansi_colours(user_t * user)
 
 
 void
-_edit_profile(const unsigned int a, const long b, const char *c)
+_edit_profile(const unsigned int a, const long b, void *c)
 {
     char filename[L_FILENAME];
 
-    cprintf("Are you sure you want to change your profile (y/n)");
+    cprintf("Are you sure you want to Edit your profile? (y/n) ");
     if (yesno() == NO) {
         cprintf("Okay, not changing it then.\n");
         return;
@@ -838,7 +863,7 @@ _edit_profile(const unsigned int a, const long b, const char *c)
 
 
 void
-_change_profile(const unsigned int a, const long b, const char *c)
+_change_profile(const unsigned int a, const long b, void *c)
 {
     int i;
     char work[560];
@@ -846,7 +871,7 @@ _change_profile(const unsigned int a, const long b, const char *c)
     char tempstr[300];
 #endif
 
-    cprintf("Are you sure you want to change your profile (y/n)");
+    cprintf("Are you sure you want to change your profile? (y/n) ");
     if (yesno() == NO) {
         cprintf("Okay, not changing it then.\n");
         return;
@@ -878,7 +903,7 @@ _change_profile(const unsigned int a, const long b, const char *c)
 
 
 void
-_change_birthday(const unsigned int a, const long b, const char *c)
+_change_birthday(const unsigned int a, const long b, void *c)
 {
     cprintf("\1f\1gChange birthday/date.\n");
     modify_birthday(&(usersupp->birthday));
@@ -886,7 +911,7 @@ _change_birthday(const unsigned int a, const long b, const char *c)
 
 
 void
-_change_flying(const unsigned int a, const long b, const char *c)
+_change_flying(const unsigned int a, const long b, void *c)
 {
     cprintf("\1gYour current %s is: \1y`%s\1a'\n", config.doing, usersupp->doing);
     cprintf("\1f\1gDo you want to change this? \1w(\1gy\1w/\1gn\1w)\1c ");
@@ -902,7 +927,7 @@ _change_flying(const unsigned int a, const long b, const char *c)
 }
 
 void
-_change_address(const unsigned int a, const long b, const char *c)
+_change_address(const unsigned int a, const long b, void *c)
 {
     cprintf("\1f\1gChange address.\n");
     if ((usersupp->priv & PRIV_DEGRADED) || (!(usersupp->priv & PRIV_VALIDATED))) {
@@ -915,7 +940,7 @@ _change_address(const unsigned int a, const long b, const char *c)
 }
 
 void
-_change_url(const unsigned int a, const long b, const char *c)
+_change_url(const unsigned int a, const long b, void *c)
 {
     char p[RGurlLEN];
 
@@ -935,7 +960,7 @@ _change_url(const unsigned int a, const long b, const char *c)
 }
 
 void
-_change_password(const unsigned int a, const long b, const char *c)
+_change_password(const unsigned int a, const long b, void *c)
 {
     do_changepw();
 }
@@ -1098,7 +1123,7 @@ toggle_interbbs(void)
 
 
 void
-_key_menu_wrapper(const unsigned int a, const long b, const char *c)
+_key_menu_wrapper(const unsigned int a, const long b, void *c)
 {
     cprintf("\1f\1gKey Menu.\n");
     key_menu();
@@ -1106,7 +1131,7 @@ _key_menu_wrapper(const unsigned int a, const long b, const char *c)
 
 
 void
-_change_host(const unsigned int a, const long b, const char *c)
+_change_host(const unsigned int a, const long b, void *c)
 {
 
     char newb[17];
@@ -1159,7 +1184,7 @@ show_online(int type)
 }
 
 void
-_change_alias(const unsigned int a, const long b, const char *c)
+_change_alias(const unsigned int a, const long b, void *c)
 {
     char aliasstr[L_USERNAME + 1];
 
@@ -1194,45 +1219,11 @@ _change_alias(const unsigned int a, const long b, const char *c)
     cprintf("\1f\1gYour alias is set to \1y`%s'\1g.\n", usersupp->alias);
 }
 
-#ifdef OLD_SHIT
-#error
-void
-mono_show_config(unsigned int num)
-{
-
-    unsigned int i;
-    char temp_configname[30];
-    MENU_DECLARE;
-
-    MENU_INIT;
-    the_menu_format.gen_0_idx = 1;	/* we want an index beginning w/ 0 */
-    the_menu_format.auto_columnize = 1;
-
-    for (i = 0; i < MAXCONFIGS; i++) {
-	if (strlen(shm->config[i].bbsname) != 0)
-	    strncpy(temp_configname, shm->config[i].bbsname, 28);
-	else
-	    strcpy(temp_configname, "-");
-
-	if (temp_configname[0] == '-')	/* blank (dummy) entry */
-	    continue;
-	if (strlen(temp_configname) > 27)
-	    temp_configname[27] = '\0';
-	MENU_ADDITEM(do_nothing, 0, 0, "", "tv", temp_configname, (i == num) ? "1" : "0");
-    }
-    MENU_PROCESS_INTERNALS;
-    MENU_DISPLAY(0);
-    MENU_DESTROY;
-
-    return;
-
-}
-#endif
 
 /*  config options statics: */
 void
 set_usersupp_config_flag(const unsigned int mask, const long foo,
-			 const char *flagname)
+			 void *flagname)
 {
     usersupp->config_flags ^= mask;
     cprintf("\n\1f\1c%s is now %s.\n", flagname, (usersupp->config_flags & mask) ?
@@ -1244,7 +1235,7 @@ set_usersupp_config_flag(const unsigned int mask, const long foo,
  * doesn't effect actual flag, just what the user sees. 
  */
 void
-set_usersupp_flag(const unsigned int mask, const long reverse, const char *flagname)
+set_usersupp_flag(const unsigned int mask, const long reverse, void *flagname)
 {
     usersupp->flags ^= mask;
     if (reverse)
@@ -1256,14 +1247,14 @@ set_usersupp_flag(const unsigned int mask, const long reverse, const char *flagn
 }
 
 void
-_hidden_info_menu(const unsigned int a, const long b, const char *c)
+_hidden_info_menu(const unsigned int a, const long b, void *c)
 {
     cprintf("\1f\1cToggle hidden info.\1a\n");
     toggle_hidden_info(usersupp);
 }
 
 void
-_set_screenlength(const unsigned int x, const long y, const char *z)
+_set_screenlength(const unsigned int x, const long y, void *z)
 {
     char tempstr[10];
     int a;
@@ -1278,7 +1269,7 @@ _set_screenlength(const unsigned int x, const long y, const char *z)
 }
 
 void
-_tgl_status_bar(const unsigned int a, const long b, const char *c)
+_tgl_status_bar(const unsigned int a, const long b, void *c)
 {
     status_bar_off();
     cprintf("\1f\1cToggle statusbar %s\1c.\1a\n", (usersupp->flags & US_STATUSBAR) ? "\1roff" : "\1gon");
@@ -1296,7 +1287,7 @@ _tgl_status_bar(const unsigned int a, const long b, const char *c)
 }
 
 void
-_tgl_use_alias(const unsigned int x, const long y, const char *z)
+_tgl_use_alias(const unsigned int x, const long y, void *z)
 {
     if (strlen(usersupp->alias)) {
 	cprintf("\1f\1cToggle usage of default alias %s\1c.\1a\n", (usersupp->config_flags & CO_USEALIAS) ? "\1roff" : "\1gon");
@@ -1308,7 +1299,7 @@ _tgl_use_alias(const unsigned int x, const long y, const char *z)
 }
 
 void
-_tgl_silc(const unsigned int x, const long y, const char *z)
+_tgl_silc(const unsigned int x, const long y, void *z)
 {
     IFSYSOP
     {
@@ -1333,7 +1324,7 @@ _get_locale(const unsigned long config_flags)
  * Toggle date format.
  */
 static void
-_set_locale(const unsigned int frog, const long kiss, const char *prince)
+_set_locale(const unsigned int frog, const long kiss, void *prince)
 {
     usersupp->config_flags ^= CO_EUROPEANDATE;
     cprintf("\n\1f\1cUsing %s date format.", _locale[_get_locale(usersupp->config_flags)]);
@@ -1344,7 +1335,7 @@ _set_locale(const unsigned int frog, const long kiss, const char *prince)
  * Toggle date display.
  */
 static void
-_set_date_display(const unsigned int bongo, const long bouncing, const char *horse)
+_set_date_display(const unsigned int bongo, const long bouncing, void *horse)
 {
     usersupp->config_flags ^= CO_LONGDATE;
     cprintf("\n\1f\1cDate display set to %s\1c.", (usersupp->config_flags & CO_LONGDATE) ? "\1wlong" : "\1wshort");
@@ -1479,26 +1470,26 @@ _print_user_flags(const user_t *user)
 
 
 void
-_timezone_menu(const unsigned int a, const long b, const char *c)
+_timezone_menu(const unsigned int a, const long b, void *c)
 {
 
-    static void _tzones_africa(const unsigned int, const long, const char *);
-    static void _tzones_america(const unsigned int, const long, const char *);
-    static void _tzones_antarctica(const unsigned int, const long, const char *);
-    static void _tzones_asia(const unsigned int, const long, const char *);
-    static void _tzones_australlia(const unsigned int, const long, const char *);
-    static void _tzones_europe(const unsigned int, const long, const char *);
+    static void _tzones_africa(const unsigned int, const long, void *);
+    static void _tzones_america(const unsigned int, const long, void *);
+    static void _tzones_antarctica(const unsigned int, const long, void *);
+    static void _tzones_asia(const unsigned int, const long, void *);
+    static void _tzones_australlia(const unsigned int, const long, void *);
+    static void _tzones_europe(const unsigned int, const long, void *);
 
     MENU_DECLARE;
     MENU_INIT;
     nox = 1;
 
-    MENU_ADDITEM(_tzones_africa, 0, 0, "", "t", "Africa");
-    MENU_ADDITEM(_tzones_america, 0, 0, "", "t", "America");
-    MENU_ADDITEM(_tzones_antarctica, 0, 0, "", "t", "Antarctica");
-    MENU_ADDITEM(_tzones_asia, 0, 0, "", "t", "Asia");
-    MENU_ADDITEM(_tzones_australlia, 0, 0, "", "t", "Australia");
-    MENU_ADDITEM(_tzones_europe, 0, 0, "", "t", "Europe");
+    MENU_ADDITEM(_tzones_africa, 0, 0, NULL, "t", "Africa");
+    MENU_ADDITEM(_tzones_america, 0, 0, NULL, "t", "America");
+    MENU_ADDITEM(_tzones_antarctica, 0, 0, NULL, "t", "Antarctica");
+    MENU_ADDITEM(_tzones_asia, 0, 0, NULL, "t", "Asia");
+    MENU_ADDITEM(_tzones_australlia, 0, 0, NULL, "t", "Australia");
+    MENU_ADDITEM(_tzones_europe, 0, 0, NULL, "t", "Europe");
 
     strcpy(the_menu_format.menu_title, "\1f\1g\nTimezone Setup Menu:  Continent\n\n");
     the_menu_format.gen_1_idx = 1;
@@ -1519,66 +1510,119 @@ _timezone_menu(const unsigned int a, const long b, const char *c)
 	cprintf( "\1f\1gTimezone not set, using Monolith timezone." );
 }
 
-static void _tz2str(const unsigned int, const long, const char*);
+static void _tz2str(const unsigned int, const long, void*);
 
 void
-_tzones_africa(const unsigned int a, const long b, const char *c)
+_tzones_africa(const unsigned int a, const long b, void *c)
 {
+    char *tmpstr;
     MENU_DECLARE;
     MENU_INIT;
 
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Abidjan", "t", "Abidjan");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Accra", "t", "Accra");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Addis_Ababa", "t", "Addis Ababa");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Algiers", "t", "Algiers");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Asmera", "t", "Asmera");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Bamako", "t", "Bamako");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Bangui", "t", "Bangui");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Banjul", "t", "Banjul");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Bissau", "t", "Bissau");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Blantyre", "t", "Blantyre");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Brazzaville", "t", "Brazzaville");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Bujumbura", "t", "Bujumbura");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Cairo", "t", "Cairo");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Casablanca", "t", "Casablanca");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Ceuta", "t", "Ceuta");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Conakry", "t", "Conakry");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Dakar", "t", "Dakar");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Dar_es_Salaam", "t", "Dar es Salaam");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Djibouti", "t", "Djibouti");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Douala", "t", "Douala");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/El_Aaiun", "t", "El Aaiun");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Freetown", "t", "Freetown");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Gaborone", "t", "Gaborone");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Harare", "t", "Harare");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Johannesburg", "t", "Johannesburg");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Kampala", "t", "Kampala");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Khartoum", "t", "Khartoum");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Kigali", "t", "Kigali");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Kinshasa", "t", "Kinshasa");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Lagos", "t", "Lagos");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Libreville", "t", "Libreville");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Lome", "t", "Lome");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Luanda", "t", "Luanda");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Lubumbashi", "t", "Lubumbashi");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Lusaka", "t", "Lusaka");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Malabo", "t", "Malabo");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Maputo", "t", "Maputo");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Maseru", "t", "Maseru");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Mbabane", "t", "Mbabane");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Mogadishu", "t", "Mogadishu");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Monrovia", "t", "Monrovia");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Nairobi", "t", "Nairobi");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Ndjamena", "t", "Ndjamena");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Niamey", "t", "Niamey");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Nouakchott", "t", "Nouakchott");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Ouagadougou", "t", "Ouagadougou");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Porto-Novo", "t", "Porto-Novo");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Sao_Tome", "t", "Sao Tome");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Timbuktu", "t", "Timbuktu");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Tripoli", "t", "Tripoli");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Tunis", "t", "Tunis");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Africa/Windhoek", "t", "Windhoek");
+    MK_TMPSTR(":Africa/Abidjan");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Abidjan");
+    MK_TMPSTR(":Africa/Accra");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Accra");
+    MK_TMPSTR(":Africa/Addis_Ababa");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Addis Ababa");
+    MK_TMPSTR(":Africa/Algiers");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Algiers");
+    MK_TMPSTR(":Africa/Asmera");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Asmera");
+    MK_TMPSTR(":Africa/Bamako");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Bamako");
+    MK_TMPSTR(":Africa/Bangui");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Bangui");
+    MK_TMPSTR(":Africa/Banjul");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Banjul");
+    MK_TMPSTR(":Africa/Bissau");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Bissau");
+    MK_TMPSTR(":Africa/Blantyre");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Blantyre");
+    MK_TMPSTR(":Africa/Brazzaville");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Brazzaville");
+    MK_TMPSTR(":Africa/Bujumbura");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Bujumbura");
+    MK_TMPSTR(":Africa/Cairo");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Cairo");
+    MK_TMPSTR(":Africa/Casablanca");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Casablanca");
+    MK_TMPSTR(":Africa/Ceuta");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Ceuta");
+    MK_TMPSTR(":Africa/Conakry");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Conakry");
+    MK_TMPSTR(":Africa/Dakar");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Dakar");
+    MK_TMPSTR(":Africa/Dar_es_Salaam");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Dar es Salaam");
+    MK_TMPSTR(":Africa/Djibouti");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Djibouti");
+    MK_TMPSTR(":Africa/Douala");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Douala");
+    MK_TMPSTR(":Africa/El_Aaiun");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "El Aaiun");
+    MK_TMPSTR(":Africa/Freetown");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Freetown");
+    MK_TMPSTR(":Africa/Gaborone");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Gaborone");
+    MK_TMPSTR(":Africa/Harare");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Harare");
+    MK_TMPSTR(":Africa/Johannesburg");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Johannesburg");
+    MK_TMPSTR(":Africa/Kampala");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Kampala");
+    MK_TMPSTR(":Africa/Khartoum");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Khartoum");
+    MK_TMPSTR(":Africa/Kigali");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Kigali");
+    MK_TMPSTR(":Africa/Kinshasa");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Kinshasa");
+    MK_TMPSTR(":Africa/Lagos");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Lagos");
+    MK_TMPSTR(":Africa/Libreville");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Libreville");
+    MK_TMPSTR(":Africa/Lome");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Lome");
+    MK_TMPSTR(":Africa/Luanda");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Luanda");
+    MK_TMPSTR(":Africa/Lubumbashi");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Lubumbashi");
+    MK_TMPSTR(":Africa/Lusaka");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Lusaka");
+    MK_TMPSTR(":Africa/Malabo");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Malabo");
+    MK_TMPSTR(":Africa/Maputo");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Maputo");
+    MK_TMPSTR(":Africa/Maseru");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Maseru");
+    MK_TMPSTR(":Africa/Mbabane");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Mbabane");
+    MK_TMPSTR(":Africa/Mogadishu");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Mogadishu");
+    MK_TMPSTR(":Africa/Monrovia");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Monrovia");
+    MK_TMPSTR(":Africa/Nairobi");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Nairobi");
+    MK_TMPSTR(":Africa/Ndjamena");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Ndjamena");
+    MK_TMPSTR(":Africa/Niamey");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Niamey");
+    MK_TMPSTR(":Africa/Nouakchott");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Nouakchott");
+    MK_TMPSTR(":Africa/Ouagadougou");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Ouagadougou");
+    MK_TMPSTR(":Africa/Porto-Novo");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Porto-Novo");
+    MK_TMPSTR(":Africa/Sao_Tome");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Sao Tome");
+    MK_TMPSTR(":Africa/Timbuktu");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Timbuktu");
+    MK_TMPSTR(":Africa/Tripoli");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Tripoli");
+    MK_TMPSTR(":Africa/Tunis");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Tunis");
+    MK_TMPSTR(":Africa/Windhoek");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Windhoek");
 
     strcpy(the_menu_format.menu_title, "\1f\1g\n\nTimezone Setup Menu:  City/Country\n\n");
     the_menu_format.gen_1_idx = 1;
@@ -1593,63 +1637,116 @@ _tzones_africa(const unsigned int a, const long b, const char *c)
 }
 
 void
-_tzones_america(const unsigned int a, const long b, const char *c)
+_tzones_america(const unsigned int a, const long b, void *c)
 {
+    char *tmpstr;
     MENU_DECLARE;
     MENU_INIT;
 
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Anchorage", "t", "Anchorage");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Antigua", "t", "Antigua");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Aruba", "t", "Aruba");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Barbados", "t", "Barbados");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Bogota", "t", "Bogota");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Buenos_Aires", "t", "Buenos Aires");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Caracas", "t", "Caracas");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Cayman", "t", "Cayman");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Chicago", "t", "Chicago");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Costa_Rica", "t", "Costa Rica");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Dawson", "t", "Dawson");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Denver", "t", "Denver");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Detroit", "t", "Detroit");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Dominica", "t", "Dominica");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Edmonton", "t", "Edmonton");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/El_Salvador", "t", "El Salvador");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Grenada", "t", "Grenada");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Guadeloupe", "t", "Guadeloupe");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Guatemala", "t", "Guatemala");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Guyana", "t", "Guyana");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Halifax", "t", "Halifax");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Havana", "t", "Havana");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Indianapolis", "t", "Indianapolis");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Jamaica", "t", "Jamaica");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Juneau", "t", "Juneau");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Lima", "t", "Lima");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Los_Angeles", "t", "Los Angeles");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Louisville", "t", "Louisville");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Martinique", "t", "Martinique");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Mexico_City", "t", "Mexico City");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Montreal", "t", "Montreal");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Montserrat", "t", "Montserrat");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Nassau", "t", "Nassau");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/New_York", "t", "New York");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Nipigon", "t", "Nipigon");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Nome", "t", "Nome");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Panama", "t", "Panama");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Phoenix", "t", "Phoenix");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Puerto_Rico", "t", "Puerto Rico");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Rainy_River", "t", "Rainy River");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Regina", "t", "Regina");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Sao_Paulo", "t", "Sao Paulo");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/St_Johns", "t", "St Johns");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/St_Thomas", "t", "St Thomas");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/St_Vincent", "t", "St Vincent");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Thunder_Bay", "t", "Thunder Bay");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Tijuana", "t", "Tijuana");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Thunder_Bay", "t", "Toronto");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Vancouver", "t", "Vancouver");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Whitehorse", "t", "Whitehorse");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Winnipeg", "t", "Winnipeg");
-    MENU_ADDITEM(_tz2str, 0, 0, ":America/Yellowknife", "t", "Yellowknife");
+    MK_TMPSTR(":America/Anchorage");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Anchorage");
+    MK_TMPSTR(":America/Antigua");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Antigua");
+    MK_TMPSTR(":America/Aruba");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Aruba");
+    MK_TMPSTR(":America/Barbados");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Barbados");
+    MK_TMPSTR(":America/Bogota");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Bogota");
+    MK_TMPSTR(":America/Buenos_Aires");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Buenos Aires");
+    MK_TMPSTR(":America/Caracas");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Caracas");
+    MK_TMPSTR(":America/Cayman");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Cayman");
+    MK_TMPSTR(":America/Chicago");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Chicago");
+    MK_TMPSTR(":America/Costa_Rica");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Costa Rica");
+    MK_TMPSTR(":America/Dawson");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Dawson");
+    MK_TMPSTR(":America/Denver");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Denver");
+    MK_TMPSTR(":America/Detroit");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Detroit");
+    MK_TMPSTR(":America/Dominica");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Dominica");
+    MK_TMPSTR(":America/Edmonton");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Edmonton");
+    MK_TMPSTR(":America/El_Salvador");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "El Salvador");
+    MK_TMPSTR(":America/Grenada");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Grenada");
+    MK_TMPSTR(":America/Guadeloupe");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Guadeloupe");
+    MK_TMPSTR(":America/Guatemala");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Guatemala");
+    MK_TMPSTR(":America/Guyana");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Guyana");
+    MK_TMPSTR(":America/Halifax");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Halifax");
+    MK_TMPSTR(":America/Havana");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Havana");
+    MK_TMPSTR(":America/Indianapolis");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Indianapolis");
+    MK_TMPSTR(":America/Jamaica");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Jamaica");
+    MK_TMPSTR(":America/Juneau");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Juneau");
+    MK_TMPSTR(":America/Lima");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Lima");
+    MK_TMPSTR(":America/Los_Angeles");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Los Angeles");
+    MK_TMPSTR(":America/Louisville");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Louisville");
+    MK_TMPSTR(":America/Martinique");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Martinique");
+    MK_TMPSTR(":America/Mexico_City");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Mexico City");
+    MK_TMPSTR(":America/Montreal");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Montreal");
+    MK_TMPSTR(":America/Montserrat");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Montserrat");
+    MK_TMPSTR(":America/Nassau");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Nassau");
+    MK_TMPSTR(":America/New_York");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "New York");
+    MK_TMPSTR(":America/Nipigon");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Nipigon");
+    MK_TMPSTR(":America/Nome");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Nome");
+    MK_TMPSTR(":America/Panama");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Panama");
+    MK_TMPSTR(":America/Phoenix");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Phoenix");
+    MK_TMPSTR(":America/Puerto_Rico");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Puerto Rico");
+    MK_TMPSTR(":America/Rainy_River");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Rainy River");
+    MK_TMPSTR(":America/Regina");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Regina");
+    MK_TMPSTR(":America/Sao_Paulo");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Sao Paulo");
+    MK_TMPSTR(":America/St_Johns");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "St Johns");
+    MK_TMPSTR(":America/St_Thomas");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "St Thomas");
+    MK_TMPSTR(":America/St_Vincent");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "St Vincent");
+    MK_TMPSTR(":America/Thunder_Bay");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Thunder Bay");
+    MK_TMPSTR(":America/Tijuana");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Tijuana");
+    MK_TMPSTR(":America/Thunder_Bay");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Toronto");
+    MK_TMPSTR(":America/Vancouver");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Vancouver");
+    MK_TMPSTR(":America/Whitehorse");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Whitehorse");
+    MK_TMPSTR(":America/Winnipeg");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Winnipeg");
+    MK_TMPSTR(":America/Yellowknife");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Yellowknife");
 	
     the_menu_format.gen_1_idx = 1;
     strcpy(the_menu_format.menu_title, "\1f\1g\n\nTimezone Setup Menu:  City/Country\n\n");
@@ -1664,17 +1761,24 @@ _tzones_america(const unsigned int a, const long b, const char *c)
 }
 
 void
-_tzones_antarctica(const unsigned int a, const long b, const char *c)
+_tzones_antarctica(const unsigned int a, const long b, void *c)
 {
+    char *tmpstr;
     MENU_DECLARE;
     MENU_INIT;
 
-    MENU_ADDITEM(_tz2str, 0, 0, ":Antarctica/Casey", "t", "Casey");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Antarctica/DumontDUrville", "t", "DumontDUrville");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Antarctica/Mawson", "t", "Mawson");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Antarctica/McMurdo", "t", "McMurdo");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Antarctica/Palmer", "t", "Palmer");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Antarctica/South_Pole", "t", "South Pole");
+    MK_TMPSTR(":Antarctica/Casey");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Casey");
+    MK_TMPSTR(":Antarctica/DumontDUrville");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "DumontDUrville");
+    MK_TMPSTR(":Antarctica/Mawson");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Mawson");
+    MK_TMPSTR(":Antarctica/McMurdo");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "McMurdo");
+    MK_TMPSTR(":Antarctica/Palmer");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Palmer");
+    MK_TMPSTR(":Antarctica/South_Pole");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "South Pole");
 
     strcpy(the_menu_format.menu_title, "\1f\1g\n\nTimezone Setup Menu:\n\n");
     the_menu_format.gen_1_idx = 1;
@@ -1689,67 +1793,124 @@ _tzones_antarctica(const unsigned int a, const long b, const char *c)
 }
 
 void
-_tzones_asia(const unsigned int a, const long b, const char *c)
+_tzones_asia(const unsigned int a, const long b, void *c)
 {
+    char *tmpstr;
     MENU_DECLARE;
     MENU_INIT;
 
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Amman", "t", "Amman");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Ashkhabad", "t", "Ashkhabad");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Baghdad", "t", "Baghdad");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Bahrain", "t", "Bahrain");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Baku", "t", "Baku");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Bangkok", "t", "Bangkok");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Beirut", "t", "Beirut");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Brunei", "t", "Brunei");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Calcutta", "t", "Calcutta");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Chungking", "t", "Chungking");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Dacca", "t", "Dacca");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Damascus", "t", "Damascus");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Dushanbe", "t", "Dushanbe");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Gaza", "t", "Gaza");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Hong_Kong", "t", "Hong Kong");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Irkutsk", "t", "Irkutsk");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Ishigaki", "t", "Ishigaki");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Istanbul", "t", "Istanbul");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Jakarta", "t", "Jakarta");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Jerusalem", "t", "Jerusalem");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Kabul", "t", "Kabul");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Kamchatka", "t", "Kamchatka");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Karachi", "t", "Karachi");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Kashgar", "t", "Kashgar");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Katmandu", "t", "Katmandu");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Krasnoyarsk", "t", "Krasnoyarsk");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Kuala_Lumpur", "t", "Kuala Lumpur");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Kuching", "t", "Kuching");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Kuwait", "t", "Kuwait");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Magadan", "t", "Magadan");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Manila", "t", "Manila");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Muscat", "t", "Muscat");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Nicosia", "t", "Nicosia");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Novosibirsk", "t", "Novosibirsk");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Omsk", "t", "Omsk");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Phnom_Penh", "t", "Phnom Penh");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Pyongyang", "t", "Pyongyang");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Qatar", "t", "Qatar");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Rangoon", "t", "Rangoon");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Riyadh", "t", "Riyadh");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Saigon", "t", "Saigon");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Seoul", "t", "Seoul");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Shanghai", "t", "Shanghai");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Singapore", "t", "Singapore");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Taipei", "t", "Taipei");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Tashkent", "t", "Tashkent");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Tbilisi", "t", "Tbilisi");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Tehran", "t", "Tehran");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Tel_Aviv", "t", "Tel Aviv");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Tokyo", "t", "Tokyo");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Ulan_Bator", "t", "Ulan Bator");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Vientiane", "t", "Vientiane");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Vladivostok", "t", "Vladivostok");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Yakutsk", "t", "Yakutsk");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Yekaterinburg", "t", "Yekaterinburg");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Asia/Yerevan", "t", "Yerevan");
+    MK_TMPSTR(":Asia/Amman");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Amman");
+    MK_TMPSTR(":Asia/Ashkhabad");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Ashkhabad");
+    MK_TMPSTR(":Asia/Baghdad");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Baghdad");
+    MK_TMPSTR(":Asia/Bahrain");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Bahrain");
+    MK_TMPSTR(":Asia/Baku");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Baku");
+    MK_TMPSTR(":Asia/Bangkok");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Bangkok");
+    MK_TMPSTR(":Asia/Beirut");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Beirut");
+    MK_TMPSTR(":Asia/Brunei");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Brunei");
+    MK_TMPSTR(":Asia/Calcutta");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Calcutta");
+    MK_TMPSTR(":Asia/Chungking");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Chungking");
+    MK_TMPSTR(":Asia/Dacca");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Dacca");
+    MK_TMPSTR(":Asia/Damascus");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Damascus");
+    MK_TMPSTR(":Asia/Dushanbe");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Dushanbe");
+    MK_TMPSTR(":Asia/Gaza");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Gaza");
+    MK_TMPSTR(":Asia/Hong_Kong");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Hong Kong");
+    MK_TMPSTR(":Asia/Irkutsk");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Irkutsk");
+    MK_TMPSTR(":Asia/Ishigaki");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Ishigaki");
+    MK_TMPSTR(":Asia/Istanbul");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Istanbul");
+    MK_TMPSTR(":Asia/Jakarta");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Jakarta");
+    MK_TMPSTR(":Asia/Jerusalem");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Jerusalem");
+    MK_TMPSTR(":Asia/Kabul");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Kabul");
+    MK_TMPSTR(":Asia/Kamchatka");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Kamchatka");
+    MK_TMPSTR(":Asia/Karachi");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Karachi");
+    MK_TMPSTR(":Asia/Kashgar");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Kashgar");
+    MK_TMPSTR(":Asia/Katmandu");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Katmandu");
+    MK_TMPSTR(":Asia/Krasnoyarsk");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Krasnoyarsk");
+    MK_TMPSTR(":Asia/Kuala_Lumpur");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Kuala Lumpur");
+    MK_TMPSTR(":Asia/Kuching");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Kuching");
+    MK_TMPSTR(":Asia/Kuwait");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Kuwait");
+    MK_TMPSTR(":Asia/Magadan");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Magadan");
+    MK_TMPSTR(":Asia/Manila");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Manila");
+    MK_TMPSTR(":Asia/Muscat");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Muscat");
+    MK_TMPSTR(":Asia/Nicosia");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Nicosia");
+    MK_TMPSTR(":Asia/Novosibirsk");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Novosibirsk");
+    MK_TMPSTR(":Asia/Omsk");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Omsk");
+    MK_TMPSTR(":Asia/Phnom_Penh");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Phnom Penh");
+    MK_TMPSTR(":Asia/Pyongyang");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Pyongyang");
+    MK_TMPSTR(":Asia/Qatar");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Qatar");
+    MK_TMPSTR(":Asia/Rangoon");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Rangoon");
+    MK_TMPSTR(":Asia/Riyadh");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Riyadh");
+    MK_TMPSTR(":Asia/Saigon");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Saigon");
+    MK_TMPSTR(":Asia/Seoul");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Seoul");
+    MK_TMPSTR(":Asia/Shanghai");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Shanghai");
+    MK_TMPSTR(":Asia/Singapore");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Singapore");
+    MK_TMPSTR(":Asia/Taipei");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Taipei");
+    MK_TMPSTR(":Asia/Tashkent");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Tashkent");
+    MK_TMPSTR(":Asia/Tbilisi");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Tbilisi");
+    MK_TMPSTR(":Asia/Tehran");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Tehran");
+    MK_TMPSTR(":Asia/Tel_Aviv");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Tel Aviv");
+    MK_TMPSTR(":Asia/Tokyo");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Tokyo");
+    MK_TMPSTR(":Asia/Ulan_Bator");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Ulan Bator");
+    MK_TMPSTR(":Asia/Vientiane");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Vientiane");
+    MK_TMPSTR(":Asia/Vladivostok");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Vladivostok");
+    MK_TMPSTR(":Asia/Yakutsk");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Yakutsk");
+    MK_TMPSTR(":Asia/Yekaterinburg");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Yekaterinburg");
+    MK_TMPSTR(":Asia/Yerevan");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Yerevan");
 
     strcpy(the_menu_format.menu_title, "\1f\1g\n\nTimezone Setup Menu:  City/Country\n\n");
     the_menu_format.gen_1_idx = 1;
@@ -1765,32 +1926,54 @@ _tzones_asia(const unsigned int a, const long b, const char *c)
 
 
 void
-_tzones_australlia(const unsigned int a, const long b, const char *c)
+_tzones_australlia(const unsigned int a, const long b, void *c)
 {
+    char *tmpstr;
     MENU_DECLARE;
     MENU_INIT;
 
-    MENU_ADDITEM(_tz2str, 0, 0, ":Australia/ACT", "t", "ACT");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Australia/Adelaide", "t", "Adelaide");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Australia/Brisbane", "t", "Brisbane");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Australia/Broken_Hill", "t", "Broken Hill");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Australia/Canberra", "t", "Canberra");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Australia/Darwin", "t", "Darwin");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Australia/Hobart", "t", "Hobart");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Australia/LHI", "t", "LHI");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Australia/Lindeman", "t", "Lindeman");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Australia/Lord_Howe", "t", "Lord Howe");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Australia/Melbourne", "t", "Melbourne");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Australia/NSW", "t", "NSW");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Australia/North", "t", "North");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Australia/Perth", "t", "Perth");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Australia/Queensland", "t", "Queensland");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Australia/South", "t", "South");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Australia/Sydney", "t", "Sydney");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Australia/Tasmania", "t", "Tasmania");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Australia/Victoria", "t", "Victoria");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Australia/West", "t", "West");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Australia/Yancowinna", "t", "Yancowinna");
+    MK_TMPSTR(":Australia/ACT");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "ACT");
+    MK_TMPSTR(":Australia/Adelaide");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Adelaide");
+    MK_TMPSTR(":Australia/Brisbane");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Brisbane");
+    MK_TMPSTR(":Australia/Broken_Hill");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Broken Hill");
+    MK_TMPSTR(":Australia/Canberra");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Canberra");
+    MK_TMPSTR(":Australia/Darwin");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Darwin");
+    MK_TMPSTR(":Australia/Hobart");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Hobart");
+    MK_TMPSTR(":Australia/LHI");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "LHI");
+    MK_TMPSTR(":Australia/Lindeman");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Lindeman");
+    MK_TMPSTR(":Australia/Lord_Howe");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Lord Howe");
+    MK_TMPSTR(":Australia/Melbourne");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Melbourne");
+    MK_TMPSTR(":Australia/NSW");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "NSW");
+    MK_TMPSTR(":Australia/North");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "North");
+    MK_TMPSTR(":Australia/Perth");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Perth");
+    MK_TMPSTR(":Australia/Queensland");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Queensland");
+    MK_TMPSTR(":Australia/South");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "South");
+    MK_TMPSTR(":Australia/Sydney");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Sydney");
+    MK_TMPSTR(":Australia/Tasmania");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Tasmania");
+    MK_TMPSTR(":Australia/Victoria");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Victoria");
+    MK_TMPSTR(":Australia/West");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "West");
+    MK_TMPSTR(":Australia/Yancowinna");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Yancowinna");
 
     strcpy(the_menu_format.menu_title, "\1f\1g\n\nTimezone Setup Menu:  City/Region\n\n");
     the_menu_format.gen_1_idx = 1;
@@ -1805,59 +1988,108 @@ _tzones_australlia(const unsigned int a, const long b, const char *c)
 }
 
 void
-_tzones_europe(const unsigned int a, const long b, const char *c)
+_tzones_europe(const unsigned int a, const long b, void *c)
 {
+    char *tmpstr;
     MENU_DECLARE;
     MENU_INIT;
 
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Amsterdam", "t", "Amsterdam");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Andorra", "t", "Andorra");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Athens", "t", "Athens");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Belfast", "t", "Belfast");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Belgrade", "t", "Belgrade");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Berlin", "t", "Berlin");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Bratislava", "t", "Bratislava");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Brussels", "t", "Brussels");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Bucharest", "t", "Bucharest");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Budapest", "t", "Budapest");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Chisinau", "t", "Chisinau");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Copenhagen", "t", "Copenhagen");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Dublin", "t", "Dublin");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Gibraltar", "t", "Gibraltar");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Helsinki", "t", "Helsinki");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Istanbul", "t", "Istanbul");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Kaliningrad", "t", "Kaliningrad");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Kiev", "t", "Kiev");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Lisbon", "t", "Lisbon");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Ljubljana", "t", "Ljubljana");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/London", "t", "London");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Luxembourg", "t", "Luxembourg");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Madrid", "t", "Madrid");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Malta", "t", "Malta");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Minsk", "t", "Minsk");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Monaco", "t", "Monaco");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Moscow", "t", "Moscow");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Oslo", "t", "Oslo");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Paris", "t", "Paris");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Prague", "t", "Prague");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Riga", "t", "Riga");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Rome", "t", "Rome");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Samara", "t", "Samara");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/San_Marino", "t", "San Marino");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Sarajevo", "t", "Sarajevo");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Simferopol", "t", "Simferopol");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Skopje", "t", "Skopje");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Sofia", "t", "Sofia");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Stockholm", "t", "Stockholm");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Tallinn", "t", "Tallinn");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Tirane", "t", "Tirane");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Vaduz", "t", "Vaduz");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Vatican", "t", "Vatican");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Vienna", "t", "Vienna");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Vilnius", "t", "Vilnius");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Warsaw", "t", "Warsaw");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Zagreb", "t", "Zagreb");
-    MENU_ADDITEM(_tz2str, 0, 0, ":Europe/Zurich", "t", "Zurich");
+    MK_TMPSTR(":Europe/Amsterdam");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Amsterdam");
+    MK_TMPSTR(":Europe/Andorra");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Andorra");
+    MK_TMPSTR(":Europe/Athens");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Athens");
+    MK_TMPSTR(":Europe/Belfast");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Belfast");
+    MK_TMPSTR(":Europe/Belgrade");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Belgrade");
+    MK_TMPSTR(":Europe/Berlin");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Berlin");
+    MK_TMPSTR(":Europe/Bratislava");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Bratislava");
+    MK_TMPSTR(":Europe/Brussels");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Brussels");
+    MK_TMPSTR(":Europe/Bucharest");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Bucharest");
+    MK_TMPSTR(":Europe/Budapest");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Budapest");
+    MK_TMPSTR(":Europe/Chisinau");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Chisinau");
+    MK_TMPSTR(":Europe/Copenhagen");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Copenhagen");
+    MK_TMPSTR(":Europe/Dublin");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Dublin");
+    MK_TMPSTR(":Europe/Gibraltar");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Gibraltar");
+    MK_TMPSTR(":Europe/Helsinki");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Helsinki");
+    MK_TMPSTR(":Europe/Istanbul");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Istanbul");
+    MK_TMPSTR(":Europe/Kaliningrad");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Kaliningrad");
+    MK_TMPSTR(":Europe/Kiev");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Kiev");
+    MK_TMPSTR(":Europe/Lisbon");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Lisbon");
+    MK_TMPSTR(":Europe/Ljubljana");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Ljubljana");
+    MK_TMPSTR(":Europe/London");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "London");
+    MK_TMPSTR(":Europe/Luxembourg");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Luxembourg");
+    MK_TMPSTR(":Europe/Madrid");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Madrid");
+    MK_TMPSTR(":Europe/Malta");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Malta");
+    MK_TMPSTR(":Europe/Minsk");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Minsk");
+    MK_TMPSTR(":Europe/Monaco");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Monaco");
+    MK_TMPSTR(":Europe/Moscow");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Moscow");
+    MK_TMPSTR(":Europe/Oslo");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Oslo");
+    MK_TMPSTR(":Europe/Paris");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Paris");
+    MK_TMPSTR(":Europe/Prague");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Prague");
+    MK_TMPSTR(":Europe/Riga");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Riga");
+    MK_TMPSTR(":Europe/Rome");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Rome");
+    MK_TMPSTR(":Europe/Samara");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Samara");
+    MK_TMPSTR(":Europe/San_Marino");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "San Marino");
+    MK_TMPSTR(":Europe/Sarajevo");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Sarajevo");
+    MK_TMPSTR(":Europe/Simferopol");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Simferopol");
+    MK_TMPSTR(":Europe/Skopje");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Skopje");
+    MK_TMPSTR(":Europe/Sofia");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Sofia");
+    MK_TMPSTR(":Europe/Stockholm");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Stockholm");
+    MK_TMPSTR(":Europe/Tallinn");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Tallinn");
+    MK_TMPSTR(":Europe/Tirane");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Tirane");
+    MK_TMPSTR(":Europe/Vaduz");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Vaduz");
+    MK_TMPSTR(":Europe/Vatican");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Vatican");
+    MK_TMPSTR(":Europe/Vienna");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Vienna");
+    MK_TMPSTR(":Europe/Vilnius");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Vilnius");
+    MK_TMPSTR(":Europe/Warsaw");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Warsaw");
+    MK_TMPSTR(":Europe/Zagreb");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Zagreb");
+    MK_TMPSTR(":Europe/Zurich");
+    MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Zurich");
 
     strcpy(the_menu_format.menu_title, "\1f\1g\n\nTimezone Setup Menu:  City/Country\n\n");
     the_menu_format.gen_1_idx = 1;
@@ -1872,7 +2104,7 @@ _tzones_europe(const unsigned int a, const long b, const char *c)
 }
 
 void
-_tz2str(const unsigned int a, const long b, const char* tzstring)
+_tz2str(const unsigned int a, const long b, void* tzstring)
 {
     strcpy(usersupp->timezone, tzstring);
 }

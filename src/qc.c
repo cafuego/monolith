@@ -828,13 +828,13 @@ int
 qc_set_values(const int mode)
 {
     MENU_DECLARE;
-    char tempstr[30], tempstr1[5], tempstr2[10];
+    char *tempstr, tempstr1[5], tempstr2[10];
     qc_record qc_rec;
     int ret = -1, i, count;
     unsigned int id;
 
-    static void _set_qc_f_value(const unsigned int, const long, const char *);
-    static void _set_qc_u_value(const unsigned int, const long, const char *);
+    static void _set_qc_f_value(const unsigned int, const long, void *);
+    static void _set_qc_u_value(const unsigned int, const long, void *);
 
     for (;;) {
 	MENU_INIT;
@@ -869,23 +869,32 @@ qc_set_values(const int mode)
 		    ((qc_rec.cat_quot[i] == CONTENT_SCALE) ? "\1y" : "\1r")
 		    : "\1b", qc_rec.cat_quot[i]);
 
-
+	    tempstr = (char *) xmalloc(strlen(qc_rec.cat_name[i]) + 1);
 	    sprintf(tempstr, "%s", qc_rec.cat_name[i]);
 
 	    if (mode & FORUM_EDIT)
 		MENU_ADDITEM(_set_qc_f_value,
-			     qc_rec.cat_id[i], qc_rec.cat_quot[i], tempstr,
+			     qc_rec.cat_id[i], qc_rec.cat_quot[i], 
+			     (char *) tempstr,
 			     "tiv", qc_rec.cat_name[i], tempstr1, tempstr2);
 	    else
 		MENU_ADDITEM(_set_qc_u_value,
-			     qc_rec.cat_id[i], qc_rec.cat_quot[i], tempstr,
+			     qc_rec.cat_id[i], qc_rec.cat_quot[i], 
+			     (char *) tempstr,
 			     "tiv", qc_rec.cat_name[i], tempstr1, tempstr2);
 	}
 
-	MENU_ADDITEM(do_nothing, 0, 0, "", "tiv", "-----------", "", "\1g--");
+	MENU_ADDITEM(do_nothing, 0, 0, NULL, "tiv", "-----------", "", "\1g--");
 
-	MENU_ADDITEM(more_wrapper, 1, 1,
-		     (mode & FORUM_EDIT) ? QC_F_EDIT_DOC : QC_U_EDIT_DOC,
+        if (mode & FORUM_EDIT) {
+	    tempstr = (char *) xmalloc(strlen(QC_F_EDIT_DOC) + 1);
+	    strcpy(tempstr, QC_F_EDIT_DOC);
+	} else {
+	    tempstr = (char *) xmalloc(strlen(QC_U_EDIT_DOC) + 1);
+	    strcpy(tempstr, QC_U_EDIT_DOC);
+        }
+	    
+	MENU_ADDITEM(more_wrapper, 1, 1, tempstr,
 		     "ti", "Help", "?");
 
 	the_menu_format.auto_columnize = 1;
@@ -906,12 +915,12 @@ qc_set_values(const int mode)
 
 
 void
-_set_qc_f_value(const unsigned int category_id, const long val, const char *category_name)
+_set_qc_f_value(const unsigned int category_id, const long val, void *category_name)
 {
     int ret, new_val;
     unsigned int max, max_at_id, forum;
 
-    cprintf("\n\1f\1gCategory:\1y %s\n", category_name);
+    cprintf("\n\1f\1gCategory:\1y %s\n", (char *) category_name);
     cprintf("\1gEnter content score on a scale of 0 to %d: \1y[%u] \1c",
 	    CONTENT_SCALE, val);
 
@@ -931,7 +940,7 @@ _set_qc_f_value(const unsigned int category_id, const long val, const char *cate
 	    cprintf("\n\1f\1rCategory %d%s%s%s%s", max_at_id,
 		    " is already rated as this forum's major category.\n\n",
 		    "\1gReduce it's rating by at least 1 before making\1y ",
-		    category_name,
+		    (char *) category_name,
 		  "\1g the\nmajor category for this forum.\nPress a key..");
 	    inkey();
 	    return;
@@ -944,13 +953,13 @@ _set_qc_f_value(const unsigned int category_id, const long val, const char *cate
 
 
 void
-_set_qc_u_value(const unsigned int category_id, const long val, const char *category_name)
+_set_qc_u_value(const unsigned int category_id, const long val, void *category_name)
 {
     int ret;
     unsigned int new_val;
 
     cprintf("\n\1f\1gRate your interest in \1y%s \1gon a scale of 0 to %d: \1y[%u] \1c",
-	    category_name, CONTENT_SCALE, val);
+	    (char *) category_name, CONTENT_SCALE, val);
 
     new_val = qc_get_pos_int('\0', 1);
     if (new_val > CONTENT_SCALE)
@@ -973,8 +982,8 @@ qc_set_flags(void)
     int ret = -1;
     unsigned int id;
 
-    static void _toggle_qc_flag(const unsigned int, const long, const char *);
-    static void _set_qc_newbie_unread(const unsigned int, const long, const char *);
+    static void _toggle_qc_flag(const unsigned int, const long, void *);
+    static void _set_qc_newbie_unread(const unsigned int, const long, void *);
 
     for (;;) {
 	MENU_INIT;
@@ -992,11 +1001,11 @@ qc_set_flags(void)
 	}
 	sprintf(tempstr, "Newbie unread posts \1w[\1y%u\1w]", qc_rec.newbie_r);
 	MENU_ADDITEM(_set_qc_newbie_unread,
-		     qc_rec.newbie_r, 0, "",
+		     qc_rec.newbie_r, 0, NULL,
 		     "t", tempstr);
 
 	MENU_ADDITEM(_toggle_qc_flag,
-		     qc_rec.flags, QC_AUTOZAP, "",
+		     qc_rec.flags, QC_AUTOZAP, NULL,
 	  "tv", "Newbie Auto-Zap", (qc_rec.flags & QC_AUTOZAP) ? "1" : "0");
 
 	the_menu_format.auto_columnize = 1;
@@ -1013,7 +1022,7 @@ qc_set_flags(void)
 }
 
 void
-_toggle_qc_flag(const unsigned int curr_flags, const long mask, const char *bar)
+_toggle_qc_flag(const unsigned int curr_flags, const long mask, void *bar)
 {
     int ret;
     unsigned int newflags;
@@ -1028,7 +1037,7 @@ _toggle_qc_flag(const unsigned int curr_flags, const long mask, const char *bar)
 }
 
 void
-_set_qc_newbie_unread(const unsigned int curr_unread, const long foo, const char *bar)
+_set_qc_newbie_unread(const unsigned int curr_unread, const long foo, void *bar)
 {
     int ret, new_unread;
 

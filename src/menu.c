@@ -84,7 +84,7 @@ test_dlist_code(void)
 //    the_menu_format.gen_1_idx = 1;
 the_menu_format.auto_columnize = 1;
     strcpy(the_menu_format.menu_title, "\1f\1yBing's Bongs:\n");
-    MENU_ADDITEM(do_bing, 256, 777, "smoke porcupine",
+    MENU_ADDITEM(do_bing, 256, 777, (char *) "smoke porcupine",
 	"tiv", "tastes like chicken(do_bing)", "\"", "1");
     MENU_PROCESS_INTERNALS;
     MENU_DISPLAY(1);
@@ -192,25 +192,34 @@ exec_menu_cmd(M_LN_t * the_menu, const char *cmd)
     }
     if (the_menu != NULL)
 	the_menu->mi_ptr->vfunc(the_menu->mi_ptr->ui_arg,
-			  the_menu->mi_ptr->l_arg, the_menu->mi_ptr->c_arg);
+			  the_menu->mi_ptr->l_arg, the_menu->mi_ptr->obj_arg);
 }
 void
-do_bing(const unsigned int the_int, const long the_long, const char *the_string)
+do_bing(const unsigned int the_int, const long the_long, void *the_string)
 {
     cprintf("\nunsigned int:%ud  long: %ld  string: %s\n", the_int, the_long, the_string);
 }
 
 M_LN_t *
-destroy_menu(M_LN_t * the_menu)
+destroy_menu(M_LN_t * the_menu, M_display_t * m_fmt )
 {
     M_LN_t *linkPtr;
 
     while (the_menu != NULL) {
+
+#ifdef _DEBUG_MENU_CODE
+	cprintf("\ndestroying link.");
+#ifdef _DEBUG_MENU_TEXT_VPTR
+	cprintf("\ndestroying text object: %s", (char *) the_menu->mi_ptr->obj_arg);
+#endif
+#endif
 	linkPtr = the_menu->nextPtr;
 	xfree(the_menu->mi_ptr->MI_txt);
 	xfree(the_menu->mi_ptr->MI_idx);
 	xfree(the_menu->mi_ptr->MI_ival);
-	xfree(the_menu->mi_ptr->c_arg);
+	if (m_fmt->destroy_void_object) 
+	    if (the_menu->mi_ptr->obj_arg != NULL) 
+	        xfree(the_menu->mi_ptr->obj_arg);
 	xfree(the_menu->mi_ptr);
 	xfree(the_menu);
 	the_menu = linkPtr;
@@ -254,11 +263,12 @@ set_menu_defaults(M_display_t * mformPtr)
     mformPtr->idx_emax = 0;
     mformPtr->ival_emax = 0;
     mformPtr->txt_emax = 0;
-
+   
+    mformPtr->destroy_void_object = 1;
 }
 
 void 
-do_nothing(const unsigned int foo, const long footoo, const char *bar)
+do_nothing(const unsigned int foo, const long footoo, void *bar)
 {
 }
 
@@ -268,11 +278,11 @@ init_menu_item(M_item_t * m_item)
     m_item->MI_txt = m_item->MI_idx = m_item->MI_ival = NULL;
     m_item->vfunc = do_nothing;
     m_item->ui_arg = m_item->l_arg = 0;
-    m_item->c_arg = NULL;
+    m_item->obj_arg = NULL;
 }
 
 M_LNptr
-add_menu_item(M_LNptr the_menu, void (*vfunction) (const unsigned int, const long, const char *), unsigned int unsigned_arg, long long_arg, char *char_arg, char *fmt,...)
+add_menu_item(M_LNptr the_menu, void (*vfunction) (const unsigned int, const long, void *), unsigned int unsigned_arg, long long_arg, void *void_arg, char *fmt,...)
 {
     va_list ap;
     M_item_t *m_item;
@@ -312,10 +322,8 @@ add_menu_item(M_LNptr the_menu, void (*vfunction) (const unsigned int, const lon
     }
     m_item->ui_arg = unsigned_arg;
     m_item->l_arg = long_arg;
-    if (strlen(char_arg)) {
-	m_item->c_arg = (char *) xmalloc(strlen(char_arg) + 1);
-	strcpy(m_item->c_arg, char_arg);
-    }
+    m_item->obj_arg = void_arg;
+    
     return the_menu = linked_list_insertNode(the_menu, m_item);
 }
 
@@ -340,7 +348,7 @@ column_sort_linked_list(M_LN_t * src_menu, int columns)
 
     row_total = linked_list_itemtotal(src_menu);
     while (row_total % columns) {	/* append empty items to end of list */
-	src_menu = add_menu_item(src_menu, do_nothing, 0, 0, "", "tiv", "", "", "");
+	src_menu = add_menu_item(src_menu, do_nothing, 0, 0, NULL, "tiv", "", "", "");
 	row_total++;
     }
 

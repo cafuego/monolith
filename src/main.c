@@ -308,7 +308,7 @@ enter_name(char *usernm)
 	} else {
 	    /* if this user does not exist, fake a password-entry */
 	    if (check_user(usernm) == FALSE) {
-		cprintf("Password: ");
+		cprintf("%s's Password: ", usernm);
 		(void) getline(pwordshit, -19, 1);
 		cprintf("Incorrect login.\n");
 		continue;

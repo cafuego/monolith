@@ -33,25 +33,25 @@
 static config_t cfg;
 static int num;
 
-static void _config_set_bbsname(const unsigned int a, const long b, const char *string);
-static void _config_set_room(const unsigned int a, const long b, const char *string);
-static void _config_set_message(const unsigned int a, const long b, const char *string);
-static void _config_set_xpress(const unsigned int a, const long b, const char *string);
-static void _config_set_xmessage(const unsigned int a, const long b, const char *string);
-static void _config_set_user(const unsigned int a, const long b, const char *string);
-static void _config_set_username(const unsigned int a, const long b, const char *string);
-static void _config_set_doing(const unsigned int a, const long b, const char *string);
-static void _config_set_location(const unsigned int a, const long b, const char *string);
-static void _config_set_idle(const unsigned int a, const long b, const char *string);
-static void _config_set_chat(const unsigned int a, const long b, const char *string);
-static void _config_set_channel(const unsigned int a, const long b, const char *string);
-static void _config_set_admin(const unsigned int a, const long b, const char *string);
-static void _config_set_wizard(const unsigned int a, const long b, const char *string);
-static void _config_set_sysop(const unsigned int a, const long b, const char *string);
-static void _config_set_progdude(const unsigned int a, const long b, const char *string);
-static void _config_set_roomaide(const unsigned int a, const long b, const char *string);
-static void _config_set_guide(const unsigned int a, const long b, const char *string);
-static void _config_save(const unsigned int a, const long b, const char *string);
+static void _config_set_bbsname(const unsigned int, const long, void *);
+static void _config_set_room(const unsigned int, const long, void *);
+static void _config_set_message(const unsigned int, const long, void *);
+static void _config_set_xpress(const unsigned int, const long, void *);
+static void _config_set_xmessage(const unsigned int, const long, void *);
+static void _config_set_user(const unsigned int, const long, void *);
+static void _config_set_username(const unsigned int, const long, void *);
+static void _config_set_doing(const unsigned int, const long, void *);
+static void _config_set_location(const unsigned int, const long, void *);
+static void _config_set_idle(const unsigned int, const long, void *);
+static void _config_set_chat(const unsigned int, const long, void *);
+static void _config_set_channel(const unsigned int, const long, void *);
+static void _config_set_admin(const unsigned int, const long, void *);
+static void _config_set_wizard(const unsigned int, const long, void *);
+static void _config_set_sysop(const unsigned int, const long, void *);
+static void _config_set_progdude(const unsigned int, const long, void *);
+static void _config_set_roomaide(const unsigned int, const long, void *);
+static void _config_set_guide(const unsigned int, const long, void *);
+static void _config_save(const unsigned int, const long, void *);
 static int _config_ok( void );
 
 /*
@@ -80,49 +80,49 @@ create_config()
         sprintf(the_menu_format.menu_title, "\n\1f\1w[\1gCreate BBS Configuration\1w: \1y%s\1w]\n\n", cfg.bbsname);
 
 	sprintf(str_t, "BBS Name \1w(\1y%s\1a\1f\1w)", cfg.bbsname);
-	MENU_ADDITEM(_config_set_bbsname, 1, 0, "", "tiv", str_t, "1", cfg.bbsname);
+	MENU_ADDITEM(_config_set_bbsname, 1, 0, NULL, "tiv", str_t, "1", cfg.bbsname);
 	sprintf(str_t, "Room Name \1w(\1y%s\1a\1f\1w)", cfg.forum);
-	MENU_ADDITEM(_config_set_room, 0, 0, "", "tiv", str_t, "2", cfg.forum);
+	MENU_ADDITEM(_config_set_room, 0, 0, NULL, "tiv", str_t, "2", cfg.forum);
 	sprintf(str_t, "Room Name (pl) \1w(\1y%s\1a\1f\1w)", cfg.forum_pl);
-	MENU_ADDITEM(_config_set_room, 0, 0, "", "tiv", str_t, "3", cfg.forum_pl);
+	MENU_ADDITEM(_config_set_room, 0, 0, NULL, "tiv", str_t, "3", cfg.forum_pl);
 	sprintf(str_t, "Message \1w(\1y%s\1a\1f\1w)", cfg.message);
-	MENU_ADDITEM(_config_set_message, 0, 0, "", "tiv", str_t, "4", cfg.message);
+	MENU_ADDITEM(_config_set_message, 0, 0, NULL, "tiv", str_t, "4", cfg.message);
 	sprintf(str_t, "Message (pl) \1w(\1y%s\1a\1f\1w)", cfg.message_pl);
-	MENU_ADDITEM(_config_set_message, 0, 0, "", "tiv", str_t, "5", cfg.message_pl);
+	MENU_ADDITEM(_config_set_message, 0, 0, NULL, "tiv", str_t, "5", cfg.message_pl);
 	sprintf(str_t, "eXpress \1w(\1y%s\1a\1f\1w)", cfg.express);
-	MENU_ADDITEM(_config_set_xpress, 0, 0, "", "tiv", str_t, "6", cfg.express);
+	MENU_ADDITEM(_config_set_xpress, 0, 0, NULL, "tiv", str_t, "6", cfg.express);
 	sprintf(str_t, "X Message \1w(\1y%s\1a\1f\1w)", cfg.x_message);
-	MENU_ADDITEM(_config_set_xmessage, 0, 0, "", "tiv", str_t, "7", cfg.x_message);
+	MENU_ADDITEM(_config_set_xmessage, 0, 0, NULL, "tiv", str_t, "7", cfg.x_message);
 	sprintf(str_t, "X Message (pl) \1w(\1y%s\1a\1f\1w)", cfg.x_message_pl);
-	MENU_ADDITEM(_config_set_xmessage, 0, 0, "", "tiv", str_t, "8", cfg.x_message_pl);
+	MENU_ADDITEM(_config_set_xmessage, 0, 0, NULL, "tiv", str_t, "8", cfg.x_message_pl);
 	sprintf(str_t, "User \1w(\1y%s\1a\1f\1w)", cfg.user);
-	MENU_ADDITEM(_config_set_user, 0, 0, "", "tiv", str_t, "9", cfg.user);
+	MENU_ADDITEM(_config_set_user, 0, 0, NULL, "tiv", str_t, "9", cfg.user);
 	sprintf(str_t, "User (pl) \1w(\1y%s\1a\1f\1w)", cfg.user_pl);
-	MENU_ADDITEM(_config_set_user, 0, 0, "", "tiv", str_t, "a", cfg.user_pl);
+	MENU_ADDITEM(_config_set_user, 0, 0, NULL, "tiv", str_t, "a", cfg.user_pl);
 	sprintf(str_t, "Username \1w(\1y%s\1a\1f\1w)", cfg.username);
-	MENU_ADDITEM(_config_set_username, 0, 0, "", "tiv", str_t, "b", cfg.username);
+	MENU_ADDITEM(_config_set_username, 0, 0, NULL, "tiv", str_t, "b", cfg.username);
 	sprintf(str_t, "Doing \1w(\1y%s\1a\1f\1w)", cfg.doing);
-	MENU_ADDITEM(_config_set_doing, 0, 0, "", "tiv", str_t, "c", cfg.doing);
+	MENU_ADDITEM(_config_set_doing, 0, 0, NULL, "tiv", str_t, "c", cfg.doing);
 	sprintf(str_t, "Location \1w(\1y%s\1a\1f\1w)", cfg.location);
-	MENU_ADDITEM(_config_set_location, 0, 0, "", "tiv", str_t, "d", cfg.location);
+	MENU_ADDITEM(_config_set_location, 0, 0, NULL, "tiv", str_t, "d", cfg.location);
 	sprintf(str_t, "Idle \1w(\1y%s\1a\1f\1w)", cfg.idle);
-	MENU_ADDITEM(_config_set_idle, 0, 0, "", "tiv", str_t, "e", cfg.idle);
+	MENU_ADDITEM(_config_set_idle, 0, 0, NULL, "tiv", str_t, "e", cfg.idle);
 	sprintf(str_t, "Chat \1w(\1y%s\1a\1f\1w)", cfg.chatmode);
-	MENU_ADDITEM(_config_set_chat, 0, 0, "", "tiv", str_t, "f", cfg.chatmode);
+	MENU_ADDITEM(_config_set_chat, 0, 0, NULL, "tiv", str_t, "f", cfg.chatmode);
 	sprintf(str_t, "Channel \1w(\1y%s\1a\1f\1w)", cfg.chatroom);
-	MENU_ADDITEM(_config_set_channel, 0, 0, "", "tiv", str_t, "g", cfg.chatroom);
+	MENU_ADDITEM(_config_set_channel, 0, 0, NULL, "tiv", str_t, "g", cfg.chatroom);
 	sprintf(str_t, "Admin \1w(\1y%s\1a\1f\1w)", cfg.admin);
-	MENU_ADDITEM(_config_set_admin, 0, 0, "", "tiv", str_t, "h", cfg.admin);
+	MENU_ADDITEM(_config_set_admin, 0, 0, NULL, "tiv", str_t, "h", cfg.admin);
 	sprintf(str_t, "Wizard \1w(\1y%s\1a\1f\1w)", cfg.wizard);
-	MENU_ADDITEM(_config_set_wizard, 0, 0, "", "tiv", str_t, "i", cfg.wizard);
+	MENU_ADDITEM(_config_set_wizard, 0, 0, NULL, "tiv", str_t, "i", cfg.wizard);
 	sprintf(str_t, "Sysop \1w(\1y%s\1a\1f\1w)", cfg.sysop);
-	MENU_ADDITEM(_config_set_sysop, 0, 0, "", "tiv", str_t, "j", cfg.sysop);
+	MENU_ADDITEM(_config_set_sysop, 0, 0, NULL, "tiv", str_t, "j", cfg.sysop);
 	sprintf(str_t, "Programmer \1w(\1y%s\1a\1f\1w)", cfg.programmer);
-	MENU_ADDITEM(_config_set_progdude, 0, 0, "", "tiv", str_t, "k", cfg.programmer);
+	MENU_ADDITEM(_config_set_progdude, 0, 0, NULL, "tiv", str_t, "k", cfg.programmer);
 	sprintf(str_t, "Roomaide \1w(\1y%s\1a\1f\1w)", cfg.roomaide);
-	MENU_ADDITEM(_config_set_roomaide, 0, 0, "", "tiv", str_t, "l", cfg.roomaide);
+	MENU_ADDITEM(_config_set_roomaide, 0, 0, NULL, "tiv", str_t, "l", cfg.roomaide);
 	sprintf(str_t, "Guide \1w(\1y%s\1a\1f\1w)", cfg.guide);
-	MENU_ADDITEM(_config_set_guide, 0, 0, "", "tiv", str_t, "m", cfg.guide);
+	MENU_ADDITEM(_config_set_guide, 0, 0, NULL, "tiv", str_t, "m", cfg.guide);
 
 	MENU_PROCESS_INTERNALS;
 	MENU_DISPLAY(2);
@@ -132,7 +132,7 @@ create_config()
          */
 	if (!MENU_EXEC_COMMAND) {
             if(_config_ok()) {
-                _config_save(0, 0, "");
+                _config_save(0, 0, NULL);
 	        break;
             } else {
                 cprintf("\1f\1rReally abort creating this config? \1w(\1ry\1w/\1rN\1w)\1c ");
@@ -175,49 +175,49 @@ edit_config()
 	sprintf(the_menu_format.menu_title, "\n\1f\1w[\1gEdit BBS Configuration\1w: \1y%s\1w]\n\n", cfg.bbsname);
 
 	sprintf(str_t, "BBS Name \1w(\1y%s\1a\1f\1w)", cfg.bbsname);
-	MENU_ADDITEM(_config_set_bbsname, 0, 0, "", "tiv", str_t, "1", cfg.bbsname);
+	MENU_ADDITEM(_config_set_bbsname, 0, 0, NULL, "tiv", str_t, "1", cfg.bbsname);
 	sprintf(str_t, "Room Name \1w(\1y%s\1a\1f\1w)", cfg.forum);
-	MENU_ADDITEM(_config_set_room, 0, 0, "", "tiv", str_t, "2", cfg.forum);
+	MENU_ADDITEM(_config_set_room, 0, 0, NULL, "tiv", str_t, "2", cfg.forum);
 	sprintf(str_t, "Room Name (pl) \1w(\1y%s\1a\1f\1w)", cfg.forum_pl);
-	MENU_ADDITEM(_config_set_room, 0, 0, "", "tiv", str_t, "3", cfg.forum_pl);
+	MENU_ADDITEM(_config_set_room, 0, 0, NULL, "tiv", str_t, "3", cfg.forum_pl);
 	sprintf(str_t, "Message \1w(\1y%s\1a\1f\1w)", cfg.message);
-	MENU_ADDITEM(_config_set_message, 0, 0, "", "tiv", str_t, "4", cfg.message);
+	MENU_ADDITEM(_config_set_message, 0, 0, NULL, "tiv", str_t, "4", cfg.message);
 	sprintf(str_t, "Message (pl) \1w(\1y%s\1a\1f\1w)", cfg.message_pl);
-	MENU_ADDITEM(_config_set_message, 0, 0, "", "tiv", str_t, "5", cfg.message_pl);
+	MENU_ADDITEM(_config_set_message, 0, 0, NULL, "tiv", str_t, "5", cfg.message_pl);
 	sprintf(str_t, "eXpress \1w(\1y%s\1a\1f\1w)", cfg.express);
-	MENU_ADDITEM(_config_set_xpress, 0, 0, "", "tiv", str_t, "6", cfg.express);
+	MENU_ADDITEM(_config_set_xpress, 0, 0, NULL, "tiv", str_t, "6", cfg.express);
 	sprintf(str_t, "X Message \1w(\1y%s\1a\1f\1w)", cfg.x_message);
-	MENU_ADDITEM(_config_set_xmessage, 0, 0, "", "tiv", str_t, "7", cfg.x_message);
+	MENU_ADDITEM(_config_set_xmessage, 0, 0, NULL, "tiv", str_t, "7", cfg.x_message);
 	sprintf(str_t, "X Message (pl) \1w(\1y%s\1a\1f\1w)", cfg.x_message_pl);
-	MENU_ADDITEM(_config_set_xmessage, 0, 0, "", "tiv", str_t, "8", cfg.x_message_pl);
+	MENU_ADDITEM(_config_set_xmessage, 0, 0, NULL, "tiv", str_t, "8", cfg.x_message_pl);
 	sprintf(str_t, "User \1w(\1y%s\1a\1f\1w)", cfg.user);
-	MENU_ADDITEM(_config_set_user, 0, 0, "", "tiv", str_t, "9", cfg.user);
+	MENU_ADDITEM(_config_set_user, 0, 0, NULL, "tiv", str_t, "9", cfg.user);
 	sprintf(str_t, "User (pl) \1w(\1y%s\1a\1f\1w)", cfg.user_pl);
-	MENU_ADDITEM(_config_set_user, 0, 0, "", "tiv", str_t, "a", cfg.user_pl);
+	MENU_ADDITEM(_config_set_user, 0, 0, NULL, "tiv", str_t, "a", cfg.user_pl);
 	sprintf(str_t, "Username \1w(\1y%s\1a\1f\1w)", cfg.username);
-	MENU_ADDITEM(_config_set_username, 0, 0, "", "tiv", str_t, "b", cfg.username);
+	MENU_ADDITEM(_config_set_username, 0, 0, NULL, "tiv", str_t, "b", cfg.username);
 	sprintf(str_t, "Doing \1w(\1y%s\1a\1f\1w)", cfg.doing);
-	MENU_ADDITEM(_config_set_doing, 0, 0, "", "tiv", str_t, "c", cfg.doing);
+	MENU_ADDITEM(_config_set_doing, 0, 0, NULL, "tiv", str_t, "c", cfg.doing);
 	sprintf(str_t, "Location \1w(\1y%s\1a\1f\1w)", cfg.location);
-	MENU_ADDITEM(_config_set_location, 0, 0, "", "tiv", str_t, "d", cfg.location);
+	MENU_ADDITEM(_config_set_location, 0, 0, NULL, "tiv", str_t, "d", cfg.location);
 	sprintf(str_t, "Idle \1w(\1y%s\1a\1f\1w)", cfg.idle);
-	MENU_ADDITEM(_config_set_idle, 0, 0, "", "tiv", str_t, "e", cfg.idle);
+	MENU_ADDITEM(_config_set_idle, 0, 0, NULL, "tiv", str_t, "e", cfg.idle);
 	sprintf(str_t, "Chat \1w(\1y%s\1a\1f\1w)", cfg.chatmode);
-	MENU_ADDITEM(_config_set_chat, 0, 0, "", "tiv", str_t, "f", cfg.chatmode);
+	MENU_ADDITEM(_config_set_chat, 0, 0, NULL, "tiv", str_t, "f", cfg.chatmode);
 	sprintf(str_t, "Channel \1w(\1y%s\1a\1f\1w)", cfg.chatroom);
-	MENU_ADDITEM(_config_set_channel, 0, 0, "", "tiv", str_t, "g", cfg.chatroom);
+	MENU_ADDITEM(_config_set_channel, 0, 0, NULL, "tiv", str_t, "g", cfg.chatroom);
 	sprintf(str_t, "Admin \1w(\1y%s\1a\1f\1w)", cfg.admin);
-	MENU_ADDITEM(_config_set_admin, 0, 0, "", "tiv", str_t, "h", cfg.admin);
+	MENU_ADDITEM(_config_set_admin, 0, 0, NULL, "tiv", str_t, "h", cfg.admin);
 	sprintf(str_t, "Wizard \1w(\1y%s\1a\1f\1w)", cfg.wizard);
-	MENU_ADDITEM(_config_set_wizard, 0, 0, "", "tiv", str_t, "i", cfg.wizard);
+	MENU_ADDITEM(_config_set_wizard, 0, 0, NULL, "tiv", str_t, "i", cfg.wizard);
 	sprintf(str_t, "Sysop \1w(\1y%s\1a\1f\1w)", cfg.sysop);
-	MENU_ADDITEM(_config_set_sysop, 0, 0, "", "tiv", str_t, "j", cfg.sysop);
+	MENU_ADDITEM(_config_set_sysop, 0, 0, NULL, "tiv", str_t, "j", cfg.sysop);
 	sprintf(str_t, "Programmer \1w(\1y%s\1a\1f\1w)", cfg.programmer);
-	MENU_ADDITEM(_config_set_progdude, 0, 0, "", "tiv", str_t, "k", cfg.programmer);
+	MENU_ADDITEM(_config_set_progdude, 0, 0, NULL, "tiv", str_t, "k", cfg.programmer);
 	sprintf(str_t, "Roomaide \1w(\1y%s\1a\1f\1w)", cfg.roomaide);
-	MENU_ADDITEM(_config_set_roomaide, 0, 0, "", "tiv", str_t, "l", cfg.roomaide);
+	MENU_ADDITEM(_config_set_roomaide, 0, 0, NULL, "tiv", str_t, "l", cfg.roomaide);
 	sprintf(str_t, "Guide \1w(\1y%s\1a\1f\1w)", cfg.guide);
-	MENU_ADDITEM(_config_set_guide, 0, 0, "", "tiv", str_t, "m", cfg.guide);
+	MENU_ADDITEM(_config_set_guide, 0, 0, NULL, "tiv", str_t, "m", cfg.guide);
 
 	MENU_PROCESS_INTERNALS;
 	MENU_DISPLAY(2);
@@ -228,7 +228,7 @@ edit_config()
 
     MENU_DESTROY;
 
-    _config_save(0,0,"");
+    _config_save(0,0,NULL);
     return;
 }
 
@@ -290,7 +290,7 @@ select_config(const char *prompt)
      * Keep reading until no more configs...
      */
     while((mono_sql_read_config(i, &cfg)) != -1) {
-	MENU_ADDITEM(NULL, 0, 0, "", "tv", cfg.bbsname, (i == usersupp->configuration) ? "1" : "0");
+	MENU_ADDITEM(NULL, 0, 0, NULL, "tv", cfg.bbsname, (i == usersupp->configuration) ? "1" : "0");
         i++;
     }
 
@@ -322,7 +322,7 @@ select_config(const char *prompt)
  * A Zillion little functions!
  */
 void
-_config_set_bbsname(const unsigned int a, const long b, const char *string)
+_config_set_bbsname(const unsigned int a, const long b, void *string)
 {
     char tempstr[21];
 
@@ -342,7 +342,7 @@ _config_set_bbsname(const unsigned int a, const long b, const char *string)
 }
 
 void
-_config_set_room(const unsigned int a, const long b, const char *string)
+_config_set_room(const unsigned int a, const long b, void *string)
 {
     char tempstr[23];
 
@@ -360,7 +360,7 @@ _config_set_room(const unsigned int a, const long b, const char *string)
 }
 
 void
-_config_set_message(const unsigned int a, const long b, const char *string)
+_config_set_message(const unsigned int a, const long b, void *string)
 {
 
     char tempstr[15];
@@ -379,7 +379,7 @@ _config_set_message(const unsigned int a, const long b, const char *string)
 }
 
 void
-_config_set_xpress(const unsigned int a, const long b, const char *string)
+_config_set_xpress(const unsigned int a, const long b, void *string)
 {
     char tempstr[13];
 
@@ -392,7 +392,7 @@ _config_set_xpress(const unsigned int a, const long b, const char *string)
 }
 
 void
-_config_set_xmessage(const unsigned int a, const long b, const char *string)
+_config_set_xmessage(const unsigned int a, const long b, void *string)
 {
     char tempstr[15];
 
@@ -410,7 +410,7 @@ _config_set_xmessage(const unsigned int a, const long b, const char *string)
 }
 
 void
-_config_set_user(const unsigned int a, const long b, const char *string)
+_config_set_user(const unsigned int a, const long b, void *string)
 {
     char tempstr[15];
 
@@ -428,7 +428,7 @@ _config_set_user(const unsigned int a, const long b, const char *string)
 }
 
 void
-_config_set_username(const unsigned int a, const long b, const char *string)
+_config_set_username(const unsigned int a, const long b, void *string)
 {
     char tempstr[13];
 
@@ -441,7 +441,7 @@ _config_set_username(const unsigned int a, const long b, const char *string)
 }
 
 void
-_config_set_doing(const unsigned int a, const long b, const char *string)
+_config_set_doing(const unsigned int a, const long b, void *string)
 {
     char tempstr[21];
 
@@ -454,7 +454,7 @@ _config_set_doing(const unsigned int a, const long b, const char *string)
 }
 
 void
-_config_set_location(const unsigned int a, const long b, const char *string)
+_config_set_location(const unsigned int a, const long b, void *string)
 {
     char tempstr[16];
 
@@ -467,7 +467,7 @@ _config_set_location(const unsigned int a, const long b, const char *string)
 }
 
 void
-_config_set_idle(const unsigned int a, const long b, const char *string)
+_config_set_idle(const unsigned int a, const long b, void *string)
 {
     char tempstr[21];
 
@@ -480,7 +480,7 @@ _config_set_idle(const unsigned int a, const long b, const char *string)
 }
 
 void
-_config_set_chat(const unsigned int a, const long b, const char *string)
+_config_set_chat(const unsigned int a, const long b, void *string)
 {
     char tempstr[21];
 
@@ -493,7 +493,7 @@ _config_set_chat(const unsigned int a, const long b, const char *string)
 }
 
 void
-_config_set_channel(const unsigned int a, const long b, const char *string)
+_config_set_channel(const unsigned int a, const long b, void *string)
 {
     char tempstr[20];
 
@@ -506,7 +506,7 @@ _config_set_channel(const unsigned int a, const long b, const char *string)
 }
 
 void
-_config_set_admin(const unsigned int a, const long b, const char *string)
+_config_set_admin(const unsigned int a, const long b, void *string)
 {
     char tempstr[21];
 
@@ -518,7 +518,7 @@ _config_set_admin(const unsigned int a, const long b, const char *string)
     return;
 }
 void
-_config_set_wizard(const unsigned int a, const long b, const char *string)
+_config_set_wizard(const unsigned int a, const long b, void *string)
 {
     char tempstr[21];
 
@@ -531,7 +531,7 @@ _config_set_wizard(const unsigned int a, const long b, const char *string)
 }
 
 void
-_config_set_sysop(const unsigned int a, const long b, const char *string)
+_config_set_sysop(const unsigned int a, const long b, void *string)
 {
     char tempstr[21];
 
@@ -543,7 +543,7 @@ _config_set_sysop(const unsigned int a, const long b, const char *string)
     return;
 }
 void
-_config_set_progdude(const unsigned int a, const long b, const char *string)
+_config_set_progdude(const unsigned int a, const long b, void *string)
 {
     char tempstr[21];
 
@@ -555,7 +555,7 @@ _config_set_progdude(const unsigned int a, const long b, const char *string)
     return;
 }
 void
-_config_set_roomaide(const unsigned int a, const long b, const char *string)
+_config_set_roomaide(const unsigned int a, const long b, void *string)
 {
     char tempstr[21];
 
@@ -567,7 +567,7 @@ _config_set_roomaide(const unsigned int a, const long b, const char *string)
     return;
 }
 void
-_config_set_guide(const unsigned int a, const long b, const char *string)
+_config_set_guide(const unsigned int a, const long b, void *string)
 {
     char tempstr[21];
 
@@ -579,7 +579,7 @@ _config_set_guide(const unsigned int a, const long b, const char *string)
     return;
 }
 void
-_config_save(const unsigned int a, const long b, const char *string)
+_config_save(const unsigned int a, const long b, void *c)
 {
     cprintf("\1f\1gSave changes? \1w(\1gY\1w/\1gn\1w) \1c");
     if (yesno_default(YES) == YES) {
