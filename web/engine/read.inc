@@ -70,7 +70,7 @@ function read_message($username, $quad, $current, $direction) {
                 print "<h3 align=\"center\">Listing message $m_id in $forum</h3>\n<p> </p>\n";
                 print "<div style=\"margin-left: 150;\">\n";
                 print "<p align=\"left\"><font color=\"#00CC00\">From</font> $user <font color=\"#00CC00\">on</font> <font color=\"#00CC00\">$date CET</font><br><font color=\"#FFFF00\">Subject</font>: <font color=\"#FFFF00\">$subject</font></p>\n";
-                print "<pre><font color=\"#00CCCC\">$content</font></pre>\n";
+                print "<pre><font color=\"#00ffff\">$content</font></pre>\n";
                 print "<p align=\"left\"><font color=\"#FFFFFF\">$f_id.</font><font color=\"#00CC00\">$forum message #$m_id</font>&gt;</p>\n";
                 print "</div>\n";
                 print "<p> </p>\n";
