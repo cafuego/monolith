@@ -369,16 +369,16 @@ printdate(time_t timetoprint, int format)
 
     switch (format) {
 	case -1:
-	    (void) strftime(whole, sizeof(whole), "%a %d %b %Y %H:%M:%S %Z", tp);
+	    (void) strftime(whole, sizeof(whole), "%A %d %b %Y %H:%M:%S %Z", tp);
 	    break;
 	case 0:
-	    (void) strftime(whole, sizeof(whole), "\1f\1g%a %d %b, %Y %H:%M:%S %Z\1a", tp);
+	    (void) strftime(whole, sizeof(whole), "\1f\1g%A %d %B %Y %X %Z\1a", tp);
 	    break;
 	case 1:
-	    (void) strftime(whole, sizeof(whole), "%d %b %Y %H:%M:%S %Z", tp);
+	    (void) strftime(whole, sizeof(whole), "%d %b %Y %X %Z", tp);
 	    break;
 	case 2:
-	    (void) strftime(whole, sizeof(whole), "%H:%M", tp);
+	    (void) strftime(whole, sizeof(whole), "%X", tp);
 	    break;
     }
 
