@@ -69,7 +69,7 @@ function show_wholist($username,$location) {
             print "    <p align=\"right\"><font color=\"#00cc00\">$online</font>\n";
             print "  </td>\n";
             print "  <td align=\"right\">\n";
-            print "    <p align=\"right\"><font color=\"#ff00ff\">&nbsp;$interface&nbsp;</font>\n";
+            print "    <p align=\"right\"><font color=\"#ff00ff\">&nbsp;$interface</font>\n";
             print "  </td>\n";
             print "</tr>\n";
 

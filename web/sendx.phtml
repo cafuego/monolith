@@ -50,8 +50,6 @@
     $message = htmlspecialchars($message);
     $message = strtr($message, "'", "\\'");
 
-    list_x_messages($username, $location);
-
     connect_db();
 
     $result = MYSQL_QUERY("INSERT INTO webx (sender,recipient,message,date,status,i_sender,i_recipient) VALUES ($u_id,$r_id,'$message',NOW(),'unread','web','$interface')");

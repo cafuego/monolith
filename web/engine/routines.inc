@@ -374,7 +374,7 @@ function main_menu($username, $current_url) {
     $interface=$url_array[5];           // Second arg too.
     $direction=$url_array[6];           // Third arg.
     if($action != "x")
-        $location = strtr($REQUEST_URI, "/", "-");
+        $location = strtr($current_url, "/", "-");
     else
         $location=$url_array[6];        // Third arg too.
 

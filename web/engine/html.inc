@@ -208,7 +208,7 @@ function html_print_foot($username, $starttime, $location) {
 
     // Don't show menu if we're logging off.
     //
-    if($url_array[3] != "q") {
+    if($url_array[3] != "q" && (!($location == ""))) {
 
         echo "<hr size=\"1\" width=\"400\" align=\"center\">\n";
 
