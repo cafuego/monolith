@@ -173,6 +173,7 @@ mono_remove_loggedin(const char *user)
 *	14 -> new flying
 *       15 -> new user we're x-ing to 
 *       16 -> change away message
+*       17 -> change lock status
 *       10 -> xdisable all
 *      -10 -> turn off xdisable all
 *************************************************/
@@ -293,6 +294,10 @@ mono_change_online(const char *user, const char *tmp_string, int ch)
 		case 16:
 		    strncpy(p->awaymsg, tmp_string, 99);
 		    p->awaymsg[99] = '\0';
+		    break;
+
+		case 17:
+		    p->flags ^= B_LOCK;
 		    break;
 
 		default:
