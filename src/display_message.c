@@ -19,6 +19,7 @@
 #include "sql_message.h"
 #include "ext.h"
 #include "display_message.h"
+#include "input.h"
 
 #ifdef CLIENTSRC
   #include "telnet.h"
