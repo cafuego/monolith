@@ -84,20 +84,30 @@ more(const char *filename, int color)
      * mmap() file.
      */ 
 #ifdef HAVE_MAP_FAILED
-    if( (tmpbuf = mmap(tmpbuf, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED ) { 
+    if( (tmpbuf = mmap(NULL, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED ) { 
 #else
-    if( (tmpbuf = mmap(tmpbuf, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == ((__ptr_t) -1) ) { 
+    if( (tmpbuf = mmap(NULL, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == ((__ptr_t) -1) ) { 
 #endif
+        (void) xfree(tmpbuf);
         (void) close(fd);
-        log_it("errors", "Can't mmap() file %s!", filename);
+        (void) log_it("errors", "Can't mmap() file: %s", filename);
         (void) fprintf(stderr, "Could not open a file, error has been logged.\n");
         return -1;
     }
+
+    /*
+     * Close file.
+     */
+    (void) close(fd);
+
+    /* 
+     * Check for weirdness (we can't more_string a 0 length string)
+     */
     if( (tmpbuf == NULL) || (strlen(tmpbuf) < 1) ) {
-        (void) close(fd);
-        log_it("errors", "Bad mmap(): %s.", filename);
-        log_it("errors", "File size was %lu bytes.", buf.st_size);
-        (void) fprintf(stderr, "Could not open a file, error has been logged.\n");
+        (void) xfree(tmpbuf);
+        (void) log_it("errors", "Bad mmap(): %s.", filename);
+        (void) log_it("errors", "File size was %lu bytes.", buf.st_size);
+        (void) fprintf(stderr, "Found an odd file, error has been logged.\n");
         return -1;
     }
 
@@ -106,29 +116,28 @@ more(const char *filename, int color)
      */
     message = (char *) xmalloc( strlen(tmpbuf) );
     (void) memset(message, 0, strlen(tmpbuf) );
-    snprintf(message, strlen(tmpbuf), "%s", tmpbuf );
+    (void) snprintf(message, strlen(tmpbuf), "%s", tmpbuf );
 
     /*
-     * Kill buffer and close file.
+     * Kill buffer.
      */
     if( (munmap(tmpbuf, buf.st_size)) == -1) {
-        log_it("errors", "Can't munmap() file %s!", filename);
-        (void) fprintf(stderr, "Could not open a file, error has been logged.\n");
         (void) xfree(tmpbuf);
+        (void) log_it("errors", "Can't munmap() file %s!", filename);
+        (void) fprintf(stderr, "Could not open a file, error has been logged.\n");
     }
-    (void) close(fd);
 
     /*
      * Show contents.
      */
     (void) more_string(message);
-    xfree(message);
+    (void) xfree(message);
 
     return 1;
 }
 
 int
-more_string(char *string)
+more_string(const char *string)
 {
 
     int inc;
@@ -303,11 +312,13 @@ increment(int extraflag)
 	cprintf("%c%c", IAC, MORE_M);
 #endif
 
+#ifdef NOT_ENABLED_DUE_TO_RECURSIVE_CALLS
 	c = 'W';
 
 	while (c == 'W' || c == 'x') {
 
 	    are_there_held_xs();	/* a held-xs's in the more prompt */
+#endif
 
 	    IFANSI
 		cprintf("7");	/* store the colors and attributes      */
@@ -318,6 +329,7 @@ increment(int extraflag)
 		cprintf("\01f\01w -- \01gmore \01w--\01a");
 
 	    (void) fflush(stdout);
+#ifdef NOT_ENABLED_DUE_TO_RECURSIVE_CALLS
 	    c = get_single_quiet("GNQSWcvx \r\n\030");
 
 	    IFTWIT {
@@ -404,6 +416,7 @@ increment(int extraflag)
 		    return (1);
 	    }
 	}
+#endif
 
 #ifdef CLIENTSRC
 	cprintf("%c%c", IAC, MORE_M);
