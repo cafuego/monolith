@@ -497,6 +497,7 @@ del_sql_user(unsigned int user_id)
 {
     mono_sql_uf_kill_user(user_id);
     mono_sql_uu_kill_user(user_id);
+    mono_sql_ut_kill_user(user_id);
     mono_sql_u_kill_user(user_id);
     return 0;
 }
@@ -739,6 +740,7 @@ get_new_usernum(const char *usernm, unsigned int *num)
     mono_sql_u_add_user(usernm);
     mono_sql_u_name2id(usernm, num);
     mono_sql_uf_new_user( *num );
+    mono_sql_ut_new_user( *num );
 
     return *num;
 
