@@ -43,7 +43,7 @@ main(int argc, char *argv[])
 	return 0;
     }
     if (strcmp(argv[1], "-h") == 0) {
-	fprintf(stderr, "Usage: %s [-v] [-h] [file]\n", argv[0]);
+	fprintf(stderr, "Usage: %s [-v] [-h] file\n", argv[0]);
 	return 0;
     }
     if ((fp = fopen(argv[1], "r")) == NULL) {
