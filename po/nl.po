@@ -300,7 +300,7 @@ msgid ""
 "\001g\001fThere are \001y%u\001g %s online at \001y%02d:%02d\001g local time.\n"
 msgstr ""
 "\n"
-"\001g\001fEr zijn \001y%u\001g %s gebruikers aanwezig op \001y%02d:%02d\001g lokale tijd.\n"
+"\001g\001fEr zijn \001y%u\001g %s gebruikers aanwezig om \001y%02d:%02d\001g lokale tijd.\n"
 
 #: src/wholist.c:105
 msgid ""
