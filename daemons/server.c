@@ -41,7 +41,6 @@ unsigned int maxallow, my_position;
 char hostname[255];
 char username[L_USERNAME + 1];
 int successful_pre_login = 0;
-int allowed_skip_queue = 0;
 pid_t mypid;
 FILE *netofp, *netifp;
 struct sockaddr_in acc_addr;
@@ -76,8 +75,6 @@ main(int argc, char **argv)
 	sleep(5);
 	logoff(0);
     }
-    signal(SIGALRM, retry);
-    alarm(30);			/* 30 seconds between autoupdates */
     mypid = getpid();
 
     /* use ALLOWFILE to determine maximum number of users, else
@@ -188,213 +185,6 @@ get_hostname()
     return;
 }
 
-/*************************************************
-* wait_in_queue()
-*************************************************/
-int
-wait_in_queue()
-{
-
-    int cmd;
-
-    if (rewrite_queue(1) == 9)	/* add myself to the Queue        */
-	return 9;
-
-    retry(1);
-
-    for (;;) {
-	cmd = netget();
-
-	if (cmd == 3 || cmd == 4) {
-	    /* <Ctrl-C> or <Ctrl-D> exits the Queue. */
-	    printf("\nQuitting right now...\n");
-	    rewrite_queue(2);
-	    logoff(0);
-	}
-	if (cmd == 10 || cmd == 13) {	/* <Enter> retries              */
-	    retry(1);
-	}
-	if (cmd == 'L') {	/* <L>ogin from the Queue and skip it
-				 * if I'm allowed to.                   */
-	    mono_login();
-	    retry(1);
-	}
-    }
-    if (rewrite_queue(2) == 9)
-	return 9;
-
-    return 1;
-
-}
-
-/*************************************************
-* rewrite_queue()
-*
-* in_what_way:	1 -> put myself at the end of it
-*		2 -> remove myself: i'm leaving
-*		3 -> put myself at the top!
-*		4 -> rewrite the queue, remove
-*		     only the eventual ghosts.
-*
-* Achtung: if in_what_way == 1 here in the CLient-
-* "front", we do not put the user at the end of
-* the Queue. We put him after the last CLientuser
-* instead - CLientusers can jump past normal users
-* in the queue.
-*************************************************/
-int
-rewrite_queue(int in_what_way)
-{
-    int new_qc = 0, benefit = 0;
-    unsigned int i, j;
-    mono_queue_t tmpq;
-
-    if (shm->queue_count >= MAXQUEUED && in_what_way == 1) {
-	printf("*** Sorry, even the Queue to the BBS is full right now! ***\n");
-	printf("\n    Try again later.\n");
-	return (9);
-    }
-    mono_lock_queue(1);		/* lock it                      */
-
-    for (i = 0; i < shm->queue_count; i++) {
-	if (kill(shm->queue[i].pid, 0) != 0
-	    || (shm->queue[i].pid == mypid && in_what_way == 2)) {
-	    for (j = i; j < shm->queue_count - 1; j++)
-		bcopy(&(shm->queue[j + 1]), &(shm->queue[j]), sizeof(mono_queue_t));
-	    continue;
-	}
-	new_qc++;
-
-	if (shm->queue[i].pid == mypid)
-	    my_position = new_qc;
-
-    }
-
-    shm->queue_count = new_qc;
-
-
-    if (in_what_way == 1) {	/* if we're putting myself in   */
-	/*
-	 * we will now search for the position that we'll use: we are allowed
-	 * to jump past every telnet-user as we're using the CLient.
-	 */
-
-	for (i = shm->queue_count - 1; i > 0; i--) {
-	    if (shm->queue[i].flags & Q_CLIENTUSER)
-		break;
-	    benefit++;
-	}
-
-	if (benefit > 0) {
-	    printf(" *** Hey, smart move to use the CLient: you've jumped past\n");
-	    printf(" *** %d users in the Queue this way.\n\n", benefit);
-	    fflush(stdout);
-	}
-	my_position = i + 1;
-
-	/*
-	 * we now know where we'll be, so we push down every user below us one
-	 * step.
-	 */
-
-	for (i = shm->queue_count; i > my_position; i--)
-	    bcopy(&(shm->queue[i - 1]), &(shm->queue[i]), sizeof(mono_queue_t));
-
-	strcpy(shm->queue[my_position].host, hostname);
-	shm->queue[my_position].pid = mypid;
-	shm->queue[my_position].flags = Q_CLIENTUSER;
-
-	shm->queue_count += 1;
-    }
-    if (in_what_way == 3) {	/* if we're jumping to the top    */
-
-	/* first backup my own entry      */
-	bcopy(&(shm->queue[my_position - 1]), &tmpq, sizeof(mono_queue_t));
-
-	/* push down everybody above me   */
-	for (i = my_position - 1; i > 0; i--)
-	    bcopy(&(shm->queue[i - 1]), &(shm->queue[i]), sizeof(mono_queue_t));
-
-	/* then put back me at the top    */
-	bcopy(&tmpq, &(shm->queue[0]), sizeof(mono_queue_t));
-
-    }
-    mono_lock_queue(2);		/* unlock it                    */
-
-
-    return (1);
-
-}
-
-
-
-/*************************************************
-* retry()
-*
-* this function is run every 30 seconds, to find
-* out if somebody either has left the BBS or the
-* queue, in a bad way.
-* it is also called when the user hits <enter> and
-* when a user leaves the BBS.
-*************************************************/
-
-RETSIGTYPE
-retry(int sig)
-{
-
-    long t;
-    struct tm *tp;
-
-    rewrite_queue(4);		/* remove ghosts                */
-    if (my_position == 1) {	/* if I'm first in the queue    */
-	if (shm->user_count < maxallow) {	/* I should be let in by now!   */
-	    rewrite_queue(2);
-	    ok_let_in();
-	}
-    }
-    if (my_position > shm->queue_count) {
-	printf("\n*** Oopsie. There seems to be some sort of problem here right now,\n");
-	printf("    you are being thrown off the Queue. Sorry - try again and post in Bugs> about this!\n\n");
-	fflush(stdout);
-	rewrite_queue(2);
-	logoff(0);
-    }
-    if (successful_pre_login == 1 && allowed_skip_queue == 1) {
-	if (shm->user_count < MAXUSERS) {
-	    printf("---SCHWOOSCH!--- There you skipped the whole Queue... (c:\n");
-	    fflush(stdout);
-	    rewrite_queue(2);
-	    ok_let_in();
-	} else if (my_position != 1) {	/* we jump to the queue-top     */
-	    printf("Sorry, but the BBS is _completely_ full: I can't even squeeze in a\n");
-	    printf("little Sysop right now.\n");
-	    printf("But you'll be put at the top of the queue so relax for a minute or two...\n");
-	    fflush(stdout);
-	    rewrite_queue(3);
-	}
-    }
-    time(&t);
-    tp = (struct tm *) localtime(&t);
-
-    if (shm->queue_count == 1)
-	printf("(%.2d:%.2d) You're the only one in the queue right now.\n",
-	       tp->tm_hour, tp->tm_min);
-    else
-	printf("(%.2d:%.2d) There are %d users in the queue; you're #%d.\n",
-	       tp->tm_hour, tp->tm_min, shm->queue_count, my_position);
-
-    fflush(stdout);
-
-    if (sig != 1) {
-	signal(SIGALRM, retry);	/* do this again                */
-	alarm(30);
-    }
-}
-
-/*************************************************
-* login()
-*************************************************/
-
 void
 mono_login()
 {
@@ -408,7 +198,6 @@ mono_login()
 	return;
     }
     successful_pre_login = 0;
-    allowed_skip_queue = 0;
 
     (void)srand( 42 );
     i = rand() % 7;
@@ -445,8 +234,6 @@ mono_login()
 	printf("\nYou are now logged in.\n\n");
 	strcpy(username, testuser);
 
-	if (user->priv >= PRIV_SYSOP)
-	    allowed_skip_queue = 1;
     } else {
 	printf("Incorrect login.\n");
 	strcpy(testuser, "");

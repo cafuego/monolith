@@ -52,7 +52,7 @@
 
 char hname[255], username[L_USERNAME + 1];
 unsigned int maxallow;
-int my_position, successful_pre_login = 0, allowed_skip_queue = 0;
+int my_position, successful_pre_login = 0;
 pid_t mypid;
 char *l_user[] = {
     "Alien species", "Fish species", "LaMeR NiCk", "Cyborg id", "Username"
@@ -87,7 +87,6 @@ main(int argc, char **argv)
 
     signal(SIGHUP, log_off);
     signal(SIGPIPE, log_off);
-    signal(SIGALRM, retry);
 
     sttybbs(0);
 
@@ -136,13 +135,6 @@ main(int argc, char **argv)
 #endif
     mono_connect_shm();
 
-    if (shm->user_count >= maxallow) {	/* || shm->queue_count > 0) */
-	printf("\n\r\n\rSorry, the BBS is full at the moment. Please try again later.\n\r\n\r");
-        mono_detach_shm();
-	exit(0);
-    }
-    /* sends the SIGALRM signal after 30 secs */
-    alarm(30);			/* 30 seconds between autoupdates */
     ok_let_in();
     return 0;
 }
@@ -166,167 +158,6 @@ ok_let_in()
     log_off(0);
 }
 
-/*************************************************
-* wait_in_queue()
-*************************************************/
-
-int
-wait_in_queue()
-{
-
-    int cmd;
-
-    if (rewrite_queue(1) == QUEUE_FULL)
-	/* add myself to the Queue at first     */
-/*    return QUEUE_FULL; */
-
-	retry(1);
-
-    for (;;) {
-	cmd = getc(stdin);
-
-	if (cmd == 3 || cmd == 4) {
-	    /* ctrl-c or ctrl-d to get out */
-	    printf("\nLeaving right now...\n");
-	    rewrite_queue(2);
-	    log_off(0);
-	}
-	if (cmd == 10 || cmd == 13) {
-	    retry(1);
-	}
-	if (cmd == 'L') {	/* <L>ogin from the Queue and skip it
-				 * if I'm allowed to.                   */
-	    mono_login();
-	    retry(1);
-	}
-    }
-}
-
-
-
-/*************************************************
-* rewrite_queue()
-*
-* in_what_way:	1 -> put myself at the end of it
-*		2 -> remove myself: i'm leaving
-*		3 -> put myself at the top!
-*		4 -> rewrite the queue, remove
-*		     only the eventual ghosts.
-*************************************************/
-
-int
-rewrite_queue(int echo)
-{
-
-    unsigned int i, j;
-    int new_qc = 0;
-    mono_queue_t tmpq;
-
-    if (shm->queue_count >= MAXQUEUED && echo == 1) {
-	printf("*** Sorry, Monolith BBS is full right now! ***\r\n\n");
-	printf(" There are %d users online which is currently the maximum.\n\r", MAXUSERS);
-	return QUEUE_FULL;
-    }
-    mono_lock_queue(1);		/* lock it                      */
-
-    for (i = 0; i < shm->queue_count; i++) {
-	if (kill(shm->queue[i].pid, 0) != 0
-	    || (shm->queue[i].pid == mypid && echo == 2)) {
-	    for (j = i; j < shm->queue_count - 1; j++)
-		bcopy(&(shm->queue[j + 1]), &(shm->queue[j]), sizeof(mono_queue_t));
-	    continue;
-	}
-	new_qc++;
-
-	if (shm->queue[i].pid == mypid)
-	    my_position = new_qc;
-    }
-
-    shm->queue_count = new_qc;
-
-
-    if (echo == 1) {		/* if we're putting myself in   */
-	strncpy(shm->queue[shm->queue_count].host, hname, L_HOSTNAME);
-	shm->queue[shm->queue_count].pid = mypid;
-	shm->queue[shm->queue_count].flags = 0;
-	shm->queue_count += 1;
-    }
-    if (echo == 3) {		/* if we're jumping to the top  */
-	/* first backup my own entry      */
-	bcopy(&(shm->queue[my_position - 1]), &tmpq, sizeof(mono_queue_t));
-
-	/* push down everybody above me   */
-	for (i = my_position - 1; i > 0; i--)
-	    bcopy(&(shm->queue[i - 1]), &(shm->queue[i]), sizeof(mono_queue_t));
-
-	/* then put back me at the top    */
-	bcopy(&tmpq, &(shm->queue[0]), sizeof(mono_queue_t));
-
-    }
-    mono_lock_queue(2);		/* unlock it                    */
-
-    return 1;
-
-}
-
-
-
-/*************************************************
-* retry()
-*
-* this function is run every 30 seconds, to find
-* out if somebody either has left the BBS or the
-* queue, in a bad way.
-* it is also called when the user hits <enter> and
-* when a user leaves the BBS.
-*************************************************/
-
-RETSIGTYPE
-retry(int sig)
-{
-
-    time_t t;
-    struct tm *tp;
-
-    sig++;			/* to stop gcc warning */
-
-    rewrite_queue(4);		/* remove ghosts                */
-
-    if (my_position == 1) {	/* if I'm first in the queue    */
-	if (shm->user_count < maxallow) {	/* I should be let in by now!   */
-	    rewrite_queue(2);
-	    putchar('\007');
-	    ok_let_in();
-	}
-    }
-    if (successful_pre_login == 1 && allowed_skip_queue == 1) {
-	if (shm->user_count < MAXUSERS) {
-	    printf("...and then we skipped the entire AirLock. Welcome to Monolith BBS...\n");
-	    rewrite_queue(2);
-	    putchar('\007');
-	    ok_let_in();
-	} else if (my_position != 1) {	/* we jump to the queue-top     */
-	    printf("Sorry, but the BBS is _completely_ full: I can't even squeeze in a\n");
-	    printf("little spotty Emperor right now.\n");
-	    printf("But you'll be put in in front of the AirLock so relax for a minute or two...\n");
-	    rewrite_queue(3);
-	}
-    }
-    time(&t);
-    tp = localtime(&t);
-
-    if (shm->queue_count == 1)
-	printf("(%.2d:%.2d) You're the only one in the AirLock right now.\n",
-	       tp->tm_hour, tp->tm_min);
-    else
-	printf("(%.2d:%.2d) There are %d users in the AirLock; you're #%d.\n",
-	       tp->tm_hour, tp->tm_min, shm->queue_count, my_position);
-
-    signal(SIGALRM, retry);	/* do this again                */
-    alarm(30);
-    return;
-}
-
 
 /*************************************************
 * mono_login()
@@ -345,7 +176,6 @@ mono_login()
 	return;
 
     successful_pre_login = 0;
-    allowed_skip_queue = 0;
 
     (void)srand(42);
     i = rand() % 7;
@@ -380,8 +210,6 @@ mono_login()
 	strcpy(username, tmp_user);	/* added this - Lisa */
 	printf("\n [ Logged In ]\n\n");
 
-	if (user->priv >= PRIV_SYSOP)
-	    allowed_skip_queue = 1;
     } else {
 	printf("Incorrect login.\n");
 	strcpy(username, "");
