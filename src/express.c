@@ -251,7 +251,7 @@ catchx(int key)
 {
     express_t *Catchxs, *xmsg;
     char ruser[L_USERNAME + 1], rbbs[L_BBSNAME + 1];
-    int friendb;
+    int friendb, is_my_vnemy = 0;
     char override;
     char tempstr[100];
 
@@ -302,14 +302,17 @@ catchx(int key)
 	    return;
     }
 /* sender is enemy? */
+
+    is_my_vnemy = is_my_enemy(Catchxs->sender);
+
     if (!(IS_BROADCAST || Catchxs->override == OR_ENABLED)) {
-	if (is_my_enemy(Catchxs->sender) && Catchxs->override != OR_ENABLE_FORCE) {
+	if (is_my_vnemy && Catchxs->override != OR_ENABLE_FORCE) {
 	    Catchxs->ack = ACK_DISABLED;
 	    Catchxs->override = OR_FREE;
 	    return;
 
 /* sysop/sys_analyst force x */
-	} else if (((cmdflags & C_XDISABLED) || (is_my_enemy(Catchxs->sender)))
+	} else if (((cmdflags & C_XDISABLED) || (is_my_vnemy))
 		   && (Catchxs->override == OR_ENABLE_FORCE)) {
 	    if (Catchxs->sender_priv >= PRIV_SYSOP)
 		Catchxs->override = OR_T_ADMIN;
@@ -651,9 +654,13 @@ char
 check_x_permissions(const char *x_recip_name, const int X_PARAM, char override)
 {
     btmp_t *x_recip_btmp = NULL;
+    int is_my_vnemy = 0, is_vnemy_to = 0;
 
     for (;;) {
 	if (!BROADCAST) {
+	    is_vnemy_to = is_enemy(x_recip_name, usersupp->username);
+	    is_my_vnemy = is_enemy(usersupp->username, x_recip_name);
+
 	    if (EQ("guest", x_recip_name)) {
 		cprintf("\1rYou cannot send %s to Guests.\n\1a", config.x_message_pl);
 		override = OR_NO_PERMS;
@@ -702,9 +709,8 @@ check_x_permissions(const char *x_recip_name, const int X_PARAM, char override)
 		    break;
 		}
 /* recipient is x-enemy ? */
-	    if ((is_enemy(x_recip_name, usersupp->username))
-		|| (is_enemy(usersupp->username, x_recip_name))) {
-		if (is_enemy(usersupp->username, x_recip_name))
+	    if (is_vnemy_to || is_my_vnemy) {
+		if (is_my_vnemy)
 		    if (is_cached_friend(x_recip_name))
 			cprintf("\1f\1y\n%s is on both your friend and enemy lists, how odd..  (:\1a\n"
 				,x_recip_name);
