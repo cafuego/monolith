@@ -45,7 +45,7 @@
 #include "routines.h"		/* for xmalloc, etc */
 #include "input.h"		/* for getline */
 
-static void qc_menu(void);
+static void qc_admin_menu(void);
 static void qc_categories_menu(void);
 
 static int _sql_qc_add_category(const char *cat_name);
@@ -66,15 +66,18 @@ static int _sql_qc_user_on_file(const unsigned int u_id, int *rows);
 static int _sql_qc_add_user(const int id);
 static int _sql_qc_delete_user(const int id);
 static int _sql_qc_get_f_max_and_slot(unsigned int *, const unsigned int, unsigned int *);
+
+#ifdef QC_TIME_FUNCTIONS
+/* these are unused as of yet..  */
 static int _sql_qc_get_u_last_mod(const unsigned int, unsigned long *);
 static int _sql_qc_get_f_last_mod(unsigned long *);
 static int _sql_qc_get_t_last_mod(unsigned long *);
-
-static void qc_convert_to_sql(void);
+#endif
 
 static int qc_set_values(const int);
 static void qc_set_flags(void);
 
+static int qc_evaluate(const unsigned int, int ***);
 static int qc_mail_results(int **);
 static void qc_show_results(int **);
 
@@ -84,20 +87,20 @@ static void qc_rename_category(void);
 
 static int qc_get_category_slot(void);
 
+/* user function lockout stuff */
 static void qc_lock_menu(void);
-static void qc_toggle_lockout(void);
 static void qc_show_lock_status(void);
 static int qc_set_lockout(void);
 static char *qc_who_locked_it(char *);
 static void qc_clear_lockout(void);
+static int qc_islocked(void);
 
-static int qc_evaluate(const unsigned int, int ***);
 
 /*----------------------------------------------------------------------------*/
 void
 new_qc(void)
 {
-    qc_menu();
+    qc_admin_menu();
 }
 
 int
@@ -107,7 +110,8 @@ _sql_qc_count_categories(int *num)
     MYSQL_ROW row;
     int ret;
 
-    ret = mono_sql_query(&res, "SELECT COUNT(cat_id) FROM %s WHERE f_id=0", QC_TABLE);
+    ret = mono_sql_query(&res, 
+	"SELECT COUNT(cat_id) FROM %s WHERE f_id=0", QC_TABLE);
     if (ret == 0) {
 	row = mysql_fetch_row(res);
 	sscanf(row[0], "%u", num);
@@ -144,11 +148,9 @@ int
 _sql_qc_delete_user(const int id)
 {
     MYSQL_RES *res;
-    int ret;
 
-    ret = mono_sql_query(&res,
-	"DELETE FROM %s where id=%u", USER_QC_TABLE, id);
-    return ret;
+    return mono_sql_query(&res,
+			  "DELETE FROM %s where id=%u", USER_QC_TABLE, id);
 }
 int
 _sql_qc_add_category(const char *name)
@@ -198,7 +200,6 @@ _sql_qc_add_category(const char *name)
 
 
 /* returns -1 if no such category exists, or error */
-
 int
 _sql_qc_name2id(const char *name, unsigned int *id)
 {
@@ -206,7 +207,8 @@ _sql_qc_name2id(const char *name, unsigned int *id)
     MYSQL_ROW row;
     int ret;
 
-    ret = mono_sql_query(&res, "SELECT cat_id from %s WHERE cat_name='%s' AND f_id=0",
+    ret = mono_sql_query(&res,
+		     "SELECT cat_id from %s WHERE cat_name='%s' AND f_id=0",
 			 QC_TABLE, name);
 
     if (ret == -1)
@@ -230,7 +232,8 @@ _sql_qc_id2name(char *name, const unsigned int id)
     MYSQL_ROW row;
     int ret;
 
-    ret = mono_sql_query(&res, "SELECT cat_name from %s WHERE cat_id=%u AND f_id=0",
+    ret = mono_sql_query(&res,
+		       "SELECT cat_name from %s WHERE cat_id=%u AND f_id=0",
 			 QC_TABLE, id);
 
     if (ret == -1)
@@ -253,7 +256,8 @@ _sql_qc_rename_category(const char *name, const unsigned int id)
     MYSQL_RES *res;
     int ret;
 
-    ret = mono_sql_query(&res, "UPDATE %s SET cat_name='%s' WHERE cat_id=%u",
+    ret = mono_sql_query(&res,
+			 "UPDATE %s SET cat_name='%s' WHERE cat_id=%u",
 			 QC_TABLE, name, id);
     mysql_free_result(res);
     return ret;
@@ -265,7 +269,8 @@ _sql_qc_update_u_quotient(const unsigned int id, const unsigned int new_val, con
     MYSQL_RES *res;
     int ret;
 
-    ret = mono_sql_query(&res, "UPDATE %s SET cat_quot=%u WHERE cat_id=%u AND id=%u",
+    ret = mono_sql_query(&res,
+		      "UPDATE %s SET cat_quot=%u WHERE cat_id=%u AND id=%u",
 			 USER_QC_TABLE, new_val, id, user_id);
     mysql_free_result(res);
     return ret;
@@ -277,7 +282,8 @@ _sql_qc_update_f_quotient(const unsigned int id, const unsigned int new_val, con
     MYSQL_RES *res;
     int ret;
 
-    ret = mono_sql_query(&res, "UPDATE %s SET cat_quot=%u WHERE cat_id=%u AND f_id=%u",
+    ret = mono_sql_query(&res,
+		    "UPDATE %s SET cat_quot=%u WHERE cat_id=%u AND f_id=%u",
 			 QC_TABLE, new_val, id, forum);
     mysql_free_result(res);
     return ret;
@@ -289,7 +295,8 @@ _sql_qc_fiddle_with_flags(const unsigned int newflags, const unsigned int forum)
     MYSQL_RES *res;
     int ret;
 
-    ret = mono_sql_query(&res, "UPDATE %s SET flags=%u WHERE f_id=%u",
+    ret = mono_sql_query(&res,
+			 "UPDATE %s SET flags=%u WHERE f_id=%u",
 			 QC_TABLE, newflags, forum);
     mysql_free_result(res);
     return ret;
@@ -301,7 +308,8 @@ _sql_qc_set_newbie_unread(const unsigned int new_unread, const unsigned int foru
     MYSQL_RES *res;
     int ret;
 
-    ret = mono_sql_query(&res, "UPDATE %s SET newbie_r=%u WHERE f_id=%u",
+    ret = mono_sql_query(&res,
+			 "UPDATE %s SET newbie_r=%u WHERE f_id=%u",
 			 QC_TABLE, new_unread, forum);
     mysql_free_result(res);
     return ret;
@@ -412,13 +420,15 @@ _sql_qc_fetch_all_quads_qc(qc_record *** qc_list)
 	sscanf(row[0], "%u", &alloc_count);
 	mysql_free_result(res);
     }
-    if (ret == -1 || alloc_count < 1) {		/* alloc_count *should* be MAXQUADS.. */
+    /* alloc_count *should* be MAXQUADS.. but it's not an error. */
+    if (ret == -1 || alloc_count < 1) {
 	printf("\nSome sort of sql error at fetch_all.\n");
 	return -1;
     }
     ret = mono_sql_query(&res,
-			 "SELECT f_id, newbie_r, flags, cat_id, cat_name, cat_quot FROM %s ORDER BY f_id",
-			 QC_TABLE);
+			 "SELECT f_id, newbie_r, flags, cat_id, \
+				cat_name, cat_quot
+				FROM %s ORDER BY f_id", QC_TABLE);
     if (ret == -1) {
 	printf("\nSome sort of sql error at fetch_all.\n");
 	return -1;
@@ -514,7 +524,7 @@ _sql_qc_get_f_max_and_slot(unsigned int *c_id, const unsigned int forum, unsigne
     int rows, i;
 
     if (mono_sql_query(&res, "SELECT MAX(cat_quot) FROM %s WHERE f_id=%u",
-			 QC_TABLE, forum) == -1)
+		       QC_TABLE, forum) == -1)
 	return -1;
 
     rows = mysql_num_rows(res);
@@ -531,8 +541,9 @@ _sql_qc_get_f_max_and_slot(unsigned int *c_id, const unsigned int forum, unsigne
     if (*max == 0)
 	return 0;
 
-    if (mono_sql_query(&res, "SELECT cat_id FROM %s WHERE f_id=%u AND cat_quot=%d",
-			 QC_TABLE, forum, *max) == -1)
+    if (mono_sql_query(&res,
+		       "SELECT cat_id FROM %s WHERE f_id=%u AND cat_quot=%d",
+		       QC_TABLE, forum, *max) == -1)
 	return -1;
 
     rows = mysql_num_rows(res);
@@ -555,7 +566,8 @@ _sql_qc_user_on_file(const unsigned int u_id, int *rows)
     MYSQL_RES *res;
     int ret;
 
-    ret = mono_sql_query(&res, "SELECT id FROM % s WHERE cat_id = 0 AND id = %u ",
+    ret = mono_sql_query(&res,
+			 "SELECT id FROM % s WHERE cat_id = 0 AND id = %u ",
 			 USER_QC_TABLE, u_id);
     *rows = mysql_num_rows(res);
     mysql_free_result(res);
@@ -568,7 +580,8 @@ _sql_qc_zero_forum_categories(const unsigned int forum)
     MYSQL_RES *res;
     int ret;
 
-    ret = mono_sql_query(&res, "UPDATE %s SET cat_quot=0 WHERE f_id = %u ",
+    ret = mono_sql_query(&res,
+			 "UPDATE %s SET cat_quot=0 WHERE f_id = %u ",
 			 QC_TABLE, forum);
     mysql_free_result(res);
     return ret;
@@ -583,15 +596,14 @@ _sql_qc_fetch_user_qc(const unsigned int u_id, qc_record * qc)
     int ret, i, rows;
 
     ret = mono_sql_query(&res,
-	 	"SELECT DISTINCT uqc.id, uqc.cat_id, uqc.cat_quot,\
-		fqc.cat_name FROM %s, %s WHERE fqc.cat_id=uqc.cat_id\
-		AND uqc.id=%u GROUP BY fqc.cat_id", 
-		USER_QC_TABLE, QC_TABLE, u_id);
+			 "SELECT DISTINCT uqc.id, uqc.cat_id, uqc.cat_quot, \
+		fqc.cat_name FROM %s, %s WHERE fqc.cat_id=uqc.cat_id \
+		AND uqc.id=%u GROUP BY fqc.cat_id",
+			 USER_QC_TABLE, QC_TABLE, u_id);
 
-    if (ret == -1) {
-	printf("\nSome sort of sql error at fetch.\n");
+    if (ret == -1) 
 	return -1;
-    }
+    
     rows = mysql_num_rows(res);
 
     for (i = 0; i < rows; i++) {
@@ -612,14 +624,17 @@ _sql_qc_fetch_user_qc(const unsigned int u_id, qc_record * qc)
     return 0;
 }
 
+#ifdef QC_TIME_FUNCTIONS
+
 int
 _sql_qc_get_u_last_mod(const unsigned int id, unsigned long *timeval)
 {
     MYSQL_RES *res;
     MYSQL_ROW row;
 
-    if (mono_sql_query(&res, "SELECT MAX(mod_date) from %s WHERE id=%u",
-			 USER_QC_TABLE, id) == -1)
+    if (mono_sql_query(&res,
+		       "SELECT MAX(mod_date) from %s WHERE id=%u",
+		       USER_QC_TABLE, id) == -1)
 	return -1;
     row = mysql_fetch_row(res);
     sscanf(row[0], "%lu", timeval);
@@ -628,13 +643,14 @@ _sql_qc_get_u_last_mod(const unsigned int id, unsigned long *timeval)
 }
 
 int
-_sql_qc_get_f_last_mod(unsigned long * timeval)
+_sql_qc_get_f_last_mod(unsigned long *timeval)
 {
     MYSQL_RES *res;
     MYSQL_ROW row;
 
-    if (mono_sql_query(&res, "SELECT MAX(mod_time) from %s WHERE t_id=0",
-			 QC_TABLE) == -1)
+    if (mono_sql_query(&res,
+		       "SELECT MAX(mod_time) from %s WHERE t_id=0",
+		       QC_TABLE) == -1)
 	return -1;
     row = mysql_fetch_row(res);
     sscanf(row[0], "%lu", timeval);
@@ -643,19 +659,22 @@ _sql_qc_get_f_last_mod(unsigned long * timeval)
 }
 
 int
-_sql_qc_get_t_last_mod(unsigned long * timeval)
+_sql_qc_get_t_last_mod(unsigned long *timeval)
 {
     MYSQL_RES *res;
     MYSQL_ROW row;
 
-    if (mono_sql_query(&res, "SELECT MAX(mod_time) from %s WHERE t_id>0",
-			 QC_TABLE) == -1)
+    if (mono_sql_query(&res,
+		       "SELECT MAX(mod_time) from %s WHERE t_id>0",
+		       QC_TABLE) == -1)
 	return -1;
     row = mysql_fetch_row(res);
     sscanf(row[0], "%lu", timeval);
     mysql_free_result(res);
     return 0;
 }
+
+#endif
 
 /*----------------------------------------------------------------------------*/
 
@@ -672,7 +691,7 @@ qc_add_category(void)
 
     ret = _sql_qc_count_categories(&i);
     if (ret == -1) {
-	cprintf("\n\1f\1rSome sort of SQL error.\1a");
+	cprintf("\n\1f\1r_sql_qc_count_categories() returned error.\1a");
 	return;
     } else if (i > 0) {
 	i = -1;
@@ -682,15 +701,16 @@ qc_add_category(void)
 	    return;
 	}
     }
-    cprintf("\n\n\1f\1gNew category name: \1y%s\1g  Save? \1w(\1rY\1w/\1rn\1w) \1a", category);
-    if (!(yesno_default(1)))
+    cprintf("\n\n\1f\1gNew category name: \1y%s%s",
+	    category, "\1g  Save? \1w(\1rY\1w/\1rn\1w) \1a");
+    if (yesno_default(YES) == NO)
 	return;
 
     ret = _sql_qc_add_category(category);
     if (ret == 0)
 	cprintf("\n\1f\1g\nDone. \1a");
     else
-	cprintf("\n\1f\1r\nSome sort of SQL error. \1a");
+	cprintf("\n\1f\1r\n_sql_qc_add_category() returned error. \1a");
 
     cprintf("\1a\1f\1gPress a key. \1a");
     inkey();
@@ -711,7 +731,7 @@ qc_delete_category(void)
 
     ret = _sql_qc_id2name(category, cat_slot);
     if (ret == -1) {
-	cprintf("\n\1f\1rSome sort of SQL error in id2name.\1a\n");
+	cprintf("\n\1f\1r_sql_qc_id2name() returned error.\1a\n");
 	return;
     }
     cprintf("\n\1f\1rWARNING\1w: This will delete category  \1r%s%s%s",
@@ -721,7 +741,8 @@ qc_delete_category(void)
     if ((yesno_default(NO)) == YES) {
 	ret = _sql_qc_delete_category(cat_slot);
 	cprintf("\n\1f%s  Press a key..\1a",
-	      (ret == 0) ? "\1gDeleted." : "\1rSome sort of SQL error.\1g");
+	      (ret == 0) ? "\1gDeleted." : 
+		"\1r_sql_qc_delete_category() returned error.\1g");
 	inkey();
     }
     return;
@@ -738,7 +759,7 @@ qc_rename_category(void)
     if ((cat_slot = qc_get_category_slot()) == -1)
 	return;
     if ((_sql_qc_id2name(old_category, cat_slot)) == -1) {
-	cprintf("\n\1f\1rSome sort of SQL error.\1a\n");
+	cprintf("\n\1f\1r_sql_qc_id2name() returned error.\1a\n");
 	return;
     }
     cprintf("\n\1f\1gRename category \1y%s\1g, to: \1a\n\n",
@@ -763,7 +784,8 @@ qc_rename_category(void)
     ret = _sql_qc_rename_category(category, cat_slot);
 
     cprintf("\n\1f%s  Press a key..\1a",
-     (ret == 0) ? "\1gCategory renamed." : "\1rSome sort of SQL error.\1g");
+     	(ret == 0) ? "\1gCategory renamed." : 
+	"\1r_sql_qc_rename_category() returned error.\1g");
     inkey();
     return;
 }
@@ -775,9 +797,8 @@ void
 qc_edit_room(void)
 {
     register char editcmd = '\0';
-    int done = 0;
 
-    while (!done) {
+    for (;;) {
 	cprintf("%s%s",
 		"\n\1f\1w<\1rf\1w>\1glags \1w<\1rs\1w>\1get values ",
 		"\1w<\1r?\1w> <\1rq\1w>\1guit\n\1rCommand\1w: \1a");
@@ -797,10 +818,9 @@ qc_edit_room(void)
 	    case ' ':
 	    case 'q':
 	    default:
-		done = 1;
+		return;
 	}
     }
-    return;
 }
 
 
@@ -820,8 +840,8 @@ qc_set_values(const int mode)
 	MENU_INIT;
 	strcpy(the_menu_format.menu_title,
 	       (mode & FORUM_EDIT) ?
-		"\n\1f\1w[\1gQuadrant Rating Menu\1w]\n\n" :
-		"\n\1f\1w[\1gReading Interests Ratings Menu\1w]\n\n" );
+	       "\n\n\1f\1w[\1gQuadrant Rating Menu\1w]\n\n" :
+	       "\n\n\1f\1w[\1gReading Interests Ratings Menu\1w]\n\n");
 
 	memset(&qc_rec, 0, sizeof(qc_record));
 
@@ -834,18 +854,20 @@ qc_set_values(const int mode)
 	}
 
 	if (ret == -1) {
-	    cprintf("\n\1f\1rSome sort of SQL error.\n\1a");
+	    cprintf("\n\1f\1r%s\n\1a", (mode & FORUM_EDIT) ?
+		"_sql_qc_fetch_quad_qc() returned error." :
+		"_sql_qc_fetch_user_qc() returned error.");
 	    return -1;
 	}
 	if (_sql_qc_count_categories(&count) == -1) {
-	    cprintf("\n\1f\1rSome sort of SQL error.\n\1a");
+	    cprintf("\n\1f\1r_sql_qc_count_categories() returned error.\n\1a");
 	    return -1;
 	}
 	for (i = 0; i < count; i++) {
 	    sprintf(tempstr1, "%u", qc_rec.cat_id[i]);
-	    sprintf(tempstr2, " %s%u", (qc_rec.cat_quot[i]) ? 
-		((qc_rec.cat_quot[i] == CONTENT_SCALE) ? "\1y" : "\1r")
-		 : "\1b", qc_rec.cat_quot[i]);
+	    sprintf(tempstr2, " %s%u", (qc_rec.cat_quot[i]) ?
+		    ((qc_rec.cat_quot[i] == CONTENT_SCALE) ? "\1y" : "\1r")
+		    : "\1b", qc_rec.cat_quot[i]);
 
 
 	    sprintf(tempstr, "%s", qc_rec.cat_name[i]);
@@ -860,17 +882,17 @@ qc_set_values(const int mode)
 			     "tiv", qc_rec.cat_name[i], tempstr1, tempstr2);
 	}
 
-        MENU_ADDITEM(do_nothing, 0, 0, "", "tiv", "-----------", "", "\1g--");
-	
-        MENU_ADDITEM(more_wrapper, 1, 1, 
-		(mode & FORUM_EDIT) ? QC_F_EDIT_DOC : QC_U_EDIT_DOC,
-		"ti", "Help", "?");
+	MENU_ADDITEM(do_nothing, 0, 0, "", "tiv", "-----------", "", "\1g--");
+
+	MENU_ADDITEM(more_wrapper, 1, 1,
+		     (mode & FORUM_EDIT) ? QC_F_EDIT_DOC : QC_U_EDIT_DOC,
+		     "ti", "Help", "?");
 
 	the_menu_format.auto_columnize = 1;
 	the_menu_format.no_boolean_values = 1;
 	the_menu_format.value_color = 'y';
 	strcpy(the_menu_format.menu_prompt,
-		"\1f\1gCategory \1w<\1rnumber\1w>\1g to edit");
+	       "\1f\1gCategory \1w<\1rnumber\1w>\1g to edit");
 
 	MENU_PROCESS_INTERNALS;
 	MENU_DISPLAY(2);
@@ -903,22 +925,21 @@ _set_qc_f_value(const unsigned int category_id, const long val, const char *cate
 
     if (new_val == CONTENT_SCALE) {
 	if (_sql_qc_get_f_max_and_slot(&max_at_id, forum, &max) == -1)
-	    cprintf("\n\1f\1rSome sort of sql error.");
+	    cprintf("\n\1f\1r_sql_qc_get_f_max_and_slot() returned error.");
 
 	if (max == CONTENT_SCALE && max_at_id != category_id) {
 	    cprintf("\n\1f\1rCategory %d%s%s%s%s", max_at_id,
-		" is already rated as this forum's major category.\n\n",
-		"\1gReduce it's rating by at least 1 before making\1y ",
-		category_name,
-		"\1g the\nmajor category for this forum.\nPress a key..");
+		    " is already rated as this forum's major category.\n\n",
+		    "\1gReduce it's rating by at least 1 before making\1y ",
+		    category_name,
+		  "\1g the\nmajor category for this forum.\nPress a key..");
 	    inkey();
 	    return;
-        }
+	}
     }
-
     ret = _sql_qc_update_f_quotient(category_id, new_val, forum);
     if (ret == -1)
-	cprintf("\n\1f\1rSome sort of SQL error.\n\1a");
+	cprintf("\n\1f\1r_sql_qc_update_f_quotient() returned error.\n\1a");
 }
 
 
@@ -939,7 +960,7 @@ _set_qc_u_value(const unsigned int category_id, const long val, const char *cate
 
     ret = _sql_qc_update_u_quotient(category_id, new_val, usersupp->usernum);
     if (ret == -1)
-	cprintf("\n\1f\1rSome sort of SQL error.\n\1a");
+	cprintf("\n\1f\1r_sql_qc_update_u_quotient() returned error.\n\1a");
 }
 /*----------------------------------------------------------------------------*/
 
@@ -966,7 +987,7 @@ qc_set_flags(void)
 	ret = _sql_qc_fetch_quad_qc(id, &qc_rec);
 
 	if (ret == -1) {
-	    cprintf("\n\1f\1rSome sort of SQL error.\n\1a");
+	    cprintf("\n\1f\1r_sql_qc_fetch_quad_qc() returned error.\n\1a");
 	    return;
 	}
 	sprintf(tempstr, "Newbie unread posts \1w[\1y%u\1w]", qc_rec.newbie_r);
@@ -1002,7 +1023,7 @@ _toggle_qc_flag(const unsigned int curr_flags, const long mask, const char *bar)
 
     ret = _sql_qc_fiddle_with_flags(newflags, curr_rm);
     if (ret == -1)
-	cprintf("\n\1f\1rSome sort of SQL error.");
+	cprintf("\n\1f\1r_sql_qc_fiddle_with_flags() returned error.");
 
 }
 
@@ -1030,45 +1051,52 @@ _set_qc_newbie_unread(const unsigned int curr_unread, const long foo, const char
     }
     ret = _sql_qc_set_newbie_unread(new_unread, curr_rm);
     if (ret == -1)
-	cprintf("\n\1f\1rSome sort of SQL error.");
+	cprintf("\n\1f\1r_sql_qc_set_newbie_unread() returned error.");
 }
 
 /*----------------------------------------------------------------------------*/
 void
-qc_menu(void)
+qc_admin_menu(void)
 {
     register char menucmd = '\0';
 
-    cprintf("\n\n\1f\1w<\1re\1w>\1gdit \1w<\1rl\1w>\1gock menu \1w<\1rc\1w>\1gategories l\1w<\1ri\1w>\1gsts \1w<\1rq\1w>\1guit\nQC main menu command: \1a");
-    menucmd = get_single_quiet("elcquiw ");
-    switch (menucmd) {
-	case 'e':
-	    cprintf("\1a\1f\1rEdit\1a\n");
-	    qc_edit_room();
-	    break;
-	case 'c':
-	    qc_categories_menu();
-	    break;
-	case 'u':
-	    cprintf("\1a\1f\1rUser Menu\1a\n");
-	    qc_user_menu(0);
-	    break;
-	case 'i':
-#ifdef I_HOPE_I_NEVER_HAVE_TO_DEFINE_THIS_DEFINE_AGAIN
-	    cprintf("\1a\1f\1rConvert to sql.  (use this only once!)\1a\n");
-	    if (strcmp(usersupp->username, "Asdf") == 0)
-		qc_convert_to_sql();
-#endif
-	    break;
-	case ' ':
-	case 'q':
-	    cprintf("\1f\1rQuitting..\1a");
-	    return;
-	default:
-	    cprintf("\n\1f\1cHave you hugged *your* squid today?\1a\n");
-	    return;
-    }				/* switch */
-    qc_menu();
+    for (;;) {
+	cprintf("%s%s%s%s%s%s",
+		"\n\n\1f\1w<\1re\1w>\1gdit", " \1w<\1rl\1w>\1gock menu",
+		" \1w<\1rc\1w>\1gategories", " l\1w<\1ri\1w>\1gsts",
+		" \1w<\1rq\1w>\1guit", "\nQC main menu command: \1a");
+	menucmd = get_single_quiet("elcquiw ");
+
+	switch (menucmd) {
+	    case 'e':
+		cprintf("\1a\1f\1rEdit\1a\n");
+		qc_edit_room();
+		break;
+	    case 'c':
+		qc_categories_menu();
+		break;
+	    case 'u':
+		cprintf("\1a\1f\1rUser Menu\1a\n");
+		qc_user_menu(0);
+		break;
+	    case 'l':
+		qc_lock_menu();
+		break;
+
+	    case 'i':
+		cprintf("%s%s",
+			"\1f\1r\nOn todo list..  prolly should list quads",
+		  "\nand topics with all zero quotients at the minimum\1a\n");
+		break;
+	    case ' ':
+	    case 'q':
+		cprintf("\1f\1rQuitting..\1a");
+		return;
+	    default:
+		cprintf("\n\1f\1cHave you hugged *your* squid today?\1a\n");
+		return;
+	}			/* switch */
+    }
 }
 
 
@@ -1127,6 +1155,10 @@ qc_user_menu(int newbie)
     char foo = '\0';
     room_t scratch;
 
+    if (qc_islocked()) {
+	cprintf("\n\1f\1rThis function temporarily disabled.\1a\n");
+	return -1;
+    }
     ret = _sql_qc_user_on_file(usersupp->usernum, &has_file);
     if (!has_file && ret != 1)
 	ret = _sql_qc_add_user(usersupp->usernum);
@@ -1141,23 +1173,22 @@ qc_user_menu(int newbie)
 
 	if (!has_file) {
 	    cprintf("\n\1f\1gSave data option:\n%s%s%s%s%s%s%s%s%s",
-		"Interest data, if saved, is kept with the strictest",
-		" confidentiality.\nIt will not be used, sold,",
-		" transferred or disclosed to ANYBODY.\n",
-		"The option of saving this data is presented as a",
-		" convenience, since\nsome functions of the BBS will ",
-		"notify you if new subjects arise\nthat might suit your",
-		" interests, if your interest data is saved to file.",
-		"\n\nDo you want your evaluation saved for future use?",
-		"\1w (\1ry\1w/\1rn\1w) \1c");
+		    "Interest data, if saved, is kept with the strictest",
+		    " confidentiality.\nIt will not be used, sold,",
+		    " transferred or disclosed to ANYBODY.\n",
+		    "The option of saving this data is presented as a",
+		    " convenience, since\nsome functions of the BBS will ",
+		    "notify you if new subjects arise\nthat might suit your",
+		    " interests, if your interest data is saved to file.",
+		    "\n\nDo you want your evaluation saved for future use?",
+		    "\1w (\1ry\1w/\1rn\1w) \1c");
 	    if (yesno() == NO)
 		delete_file = 1;
 	}
-
 	if (newbie)
 	    flags |= QC_NEWUSER;
- 
-        alloc_count = qc_evaluate(flags, &eval);
+
+	alloc_count = qc_evaluate(flags, &eval);
     }
 
     if (delete_file)
@@ -1166,16 +1197,15 @@ qc_user_menu(int newbie)
     if (alloc_count == -1) {
 	cprintf("\n\n\1f\1r%s%s%s",
 	    "Argh!  Something really bad happened with the selection code.",
-	    "\nThe programmer obviously should have slept before he wrote it.",
-	    "\nPress any key to send him a porcupine.. \1a");
+	 "\nThe programmer obviously should have slept before he wrote it.",
+		"\nPress any key to send him a porcupine.. \1a");
 	inkey();
 	return -1;
     }
-
     for (i = 0; i < MAXQUADS; i++) {
 	if (*eval[i] == -5)	/* skip these, regardless */
 	    continue;
-        if (newbie) 
+	if (newbie)
 	    if ((*eval[i] == -1) || (*eval[i] == -2)) {	/* stuff to zap */
 		scratch = readquad(i);
 		usersupp->forget[i] = scratch.generation;
@@ -1210,7 +1240,7 @@ qc_user_menu(int newbie)
 		break;
 	}
 
-    }	
+    }
     for (i = 0; i < alloc_count; i++)
 	xfree(eval[i]);
     xfree(eval);
@@ -1221,11 +1251,11 @@ qc_user_menu(int newbie)
 
 /*----------------------------------------------------------------------------*/
 void
-qc_show_results(int ** eval)
+qc_show_results(int **eval)
 {
     int i, items_left = 0;
     room_t scratch;
-    char * string, line[200];
+    char *string, line[200];
 
     string = (char *) xmalloc(sizeof(char) * 2);
     strcpy(string, "");
@@ -1274,65 +1304,6 @@ qc_mail_results(int **eval)
 
 /*----------------------------------------------------------------------------*/
 
-void 
-qc_convert_to_sql(void)
-{
-#ifdef I_HOPE_I_NEVER_HAVE_TO_DEFINE_THIS_DEFINE_AGAIN
-#define QC_FILEDIR BBSDIR "save/forums/"  
-
-    qc_thingme temp_read;
-    FILE *qcPtr;
-    char filename[80];
-    int i, j, ret;
-
-/* categories */
- 
-    sprintf(filename, QC_FILEDIR "1/qcfile");
-    if ((qcPtr = fopen(filename, "r")) == NULL) {
-	cprintf("\nError, couldn't read categories.  aborting.\n");
-	return;
-    }
-
-    fread(&temp_read, sizeof(qc_thingme), 1, qcPtr);
-
-    for (j = 0; j < NO_OF_CATEGORIES; j++) 
-        if (strlen(temp_read.category_name[j]) &&
-		 strcmp(temp_read.category_name[j], "<unused>")) 
-    	    ret = _sql_qc_add_category(temp_read.category_name[j]);
-    
-
-
-/* quotients */
-
-    for (i = 0; i < MAXQUADS; i++) {
-        sprintf(filename, QC_FILEDIR "%d/qcfile", i);
-        if ((qcPtr = fopen(filename, "r")) == NULL)
-	    continue;
-        fread(&temp_read, sizeof(qc_thingme), 1, qcPtr);
-        fclose(qcPtr);
-        if ((i % 10) == 0)
-	    cprintf(".");
-
-	if (temp_read.flags[0] == -1)
-		_sql_qc_fiddle_with_flags(QC_AUTOZAP, i);
-        else
-        	_sql_qc_set_newbie_unread(temp_read.flags[0], i);
-
-	for (j = 0; j < NO_OF_CATEGORIES; j++) {
-            if (!(strlen(temp_read.category_name[j]) &&
-		 strcmp(temp_read.category_name[j], "<unused>")))
-		continue;
-	    _sql_qc_update_f_quotient(j, temp_read.content_quotient[j], i);
-	     
-        }
-    }
-
-#endif
-    return;
-}
-
-/*----------------------------------------------------------------------------*/
-
 int
 qc_get_category_slot(void)
 {
@@ -1358,47 +1329,36 @@ qc_lock_menu(void)
 {
     char cmd = '\0';
 
-    qc_show_lock_status();
+    for (;;) {
+	qc_show_lock_status();
 
-    cprintf("\1f\n\n\1w<\1rt\1w>oggle lockout \1w<\1r?\1w> <\1rq\1w>\1guit\1r : \1a");
-    cmd = get_single_quiet("tq? ");
-    switch (cmd) {
-	case 't':
-	    cprintf("\n\1a\1f\1cToggle lock on user functions.\n\1a");
-	    qc_toggle_lockout();
-	    qc_lock_menu();
-	    break;
-	case '?':
-	    more(QC_LOCK_DOC, 0);
-	    qc_lock_menu();
-	    break;
-	case ' ':
-	case 'q':
-	    cprintf("\n\1f\1rQuitting..\1a");
-	    break;
+	cprintf("\1f\n\1w<\1rt\1w>\1goggle lockout \1w<\1r?\1w>%s",
+		" <\1rq\1w>\1guit\1r : \1a");
+	cmd = get_single_quiet("tq?\r\n ");
+	switch (cmd) {
+	    case 't':
+		if (qc_islocked())
+		    qc_clear_lockout();
+		else
+		    qc_set_lockout();
+		break;
+	    case '?':
+		more(QC_LOCK_DOC, 0);
+		break;
+	    case ' ':
+	    case 'q':
+	    case '\r':
+	    case '\n':
+		cprintf("\n\1f\1rQuitting..\1a");
+		return;
+	}
     }
 }
 
-/*----------------------------------------------------------------------------*/
-void
-qc_toggle_lockout(void)
+int
+qc_islocked(void)
 {
-    int islocked;
-    char name[L_USERNAME + 1];
-
-    islocked = fexists(QC_LOCKOUT);
-    cprintf("\n\1a\1f\1gUser functions are currently %s\1c%s\1g.\1a",
-	    ((islocked) ? "\1rlocked\1g by " : "\1gunlocked"),
-	    ((islocked) ? (qc_who_locked_it(name)) : ""));
-    cprintf("\1a\1f\1g  Change? \1w(\1ry\1w/\1rN\1w) \1a");
-    if (!yesno_default(0))
-	return;
-
-    if (islocked) {
-	qc_clear_lockout();
-	cprintf("\n\1a\1f\1gUser functions for database enabled.\1a");
-    } else if (qc_set_lockout())
-	    cprintf("\1a\1f\1r\nLock set, user functions disabled.\1a");
+    return fexists(QC_LOCKOUT);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1408,12 +1368,12 @@ qc_show_lock_status(void)
 {
     char name[L_USERNAME + 1];
 
-    cprintf("\n\n\1a\1f\1wLock Status: \n\n\1a");
-    if (fexists(QC_LOCKOUT))
-	cprintf("\1f\1gQC user functions are \1rlocked \1g by \1c%s\1g.\1a\n\n",
+    cprintf("\n\n\1a\1f\1r-- Lock Status:  \1g");
+    if (qc_islocked())
+	cprintf("QC user functions are \1rlocked\1g by \1c%s\1g.\1a\n",
 		qc_who_locked_it(name));
     else
-        cprintf("\1a\1f\1gNo QC lock in place.\1a\n");
+	cprintf("No QC lock in place.\1a\n");
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1437,18 +1397,18 @@ qc_set_lockout(void)
 char *
 qc_who_locked_it(char *wholocked_it)
 {
-    FILE *lockPtr;
+    FILE *fp;
     char name[L_USERNAME + 1];
     int i;
 
-    if ((lockPtr = fopen(QC_LOCKOUT, "r")) == NULL) 
+    if ((fp = fopen(QC_LOCKOUT, "r")) == NULL)
 	strcpy(wholocked_it, "error.");
     else {
-	for (i = 0; !feof(lockPtr); i++) 
-	    name[i] = fgetc(lockPtr);
-	fclose(lockPtr);
-        name[i - 1] = '\0';
-        strcpy(wholocked_it, name);
+	for (i = 0; !feof(fp); i++)
+	    name[i] = fgetc(fp);
+	fclose(fp);
+	name[i - 1] = '\0';
+	strcpy(wholocked_it, name);
     }
     return wholocked_it;
 }
@@ -1481,16 +1441,17 @@ qc_clear_lockout(void)
  */
 
 int
-qc_evaluate(const unsigned int eval_flags, int *** eval_list)
+qc_evaluate(const unsigned int eval_flags, int ***eval_list)
 {
-    int user_q[NO_OF_CATEGORIES], read_q[NO_OF_CATEGORIES], **kabong = NULL, *kazam;
+    int user_q[NO_OF_CATEGORIES], read_q[NO_OF_CATEGORIES], **kabong = NULL,
+       *kazam;
     int i, j, temp_int, list_count, index, alloc_count = 0;
     int s_accept, s_reject, zero_set, w_accept, w_reject;
-    
+
     qc_record **list, user_rec;
 
     list_count = _sql_qc_fetch_all_quads_qc(&list);
-    if (list_count < 1) 
+    if (list_count < 1)
 	return -1;
 
     if (_sql_qc_fetch_user_qc(usersupp->usernum, &user_rec) == -1) {
@@ -1499,13 +1460,12 @@ qc_evaluate(const unsigned int eval_flags, int *** eval_list)
 	xfree(list);
 	return -1;
     }
-
 /* put user quotients into local array for coder's sanity */
 
     for (j = 0; j < NO_OF_CATEGORIES; j++)
-        if (strlen(user_rec.cat_name[j]) == 0)
-            user_q[j] = 0;
-   	else
+	if (strlen(user_rec.cat_name[j]) == 0)
+	    user_q[j] = 0;
+	else
 	    user_q[j] = user_rec.cat_quot[j];
 
 /* evaluate all quads:  i */
@@ -1521,15 +1481,15 @@ qc_evaluate(const unsigned int eval_flags, int *** eval_list)
 
 /* find quad id in list */
 
-        for (index = 0; index < MAXQUADS; index++)
+	for (index = 0; index < MAXQUADS; index++)
 	    if (list[index]->id == i)
 		break;
-	if (index >= MAXQUADS)  /* no record in list */
+	if (index >= MAXQUADS)	/* no record in list */
 	    continue;
 
 /* skip quads that have all 0 content ratings */
 
-	for (j = 0; j < NO_OF_CATEGORIES; j++) 
+	for (j = 0; j < NO_OF_CATEGORIES; j++)
 	    if (list[index]->cat_quot[j] > 0)
 		break;
 	if (j >= NO_OF_CATEGORIES)
@@ -1544,17 +1504,16 @@ qc_evaluate(const unsigned int eval_flags, int *** eval_list)
 	    *kazam = list[index]->newbie_r;
 	    continue;
 	}
-
 	s_accept = s_reject = zero_set = w_accept = w_reject = 0;
 
 /* read quad's 'quotients' into local array for coder's sanity */
 
 	for (j = 0; j < NO_OF_CATEGORIES; j++) {
 	    if (strlen(list[index]->cat_name[j]) == 0) {
-	        read_q[j] = 0;
+		read_q[j] = 0;
 		continue;
-	    } else 
-	        read_q[j] = list[index]->cat_quot[j];
+	    } else
+		read_q[j] = list[index]->cat_quot[j];
 
 /* user zero of major category */
 
@@ -1565,7 +1524,7 @@ qc_evaluate(const unsigned int eval_flags, int *** eval_list)
 /* user max of major category */
 
 	    } else if (user_q[j] == CONTENT_SCALE &&
-		           read_q[j] == CONTENT_SCALE) {
+		       read_q[j] == CONTENT_SCALE) {
 		*kazam = list[index]->newbie_r * 2;
 		break;
 
@@ -1584,7 +1543,7 @@ qc_evaluate(const unsigned int eval_flags, int *** eval_list)
 		    ((user_q[j] - read_q[j]) * (user_q[j] - read_q[j]));
 		temp_int = (int) (sqrt(temp_int) * 100);
 
-/* fuzzy code for fuzzy sets */ 
+/* fuzzy code for fuzzy sets */
 
 		if (temp_int >= CONTENT_SCALE * 2 * 70)		/* >= 70%  etc. */
 		    s_accept += 2;	/*  err on side of caution */
@@ -1606,7 +1565,7 @@ qc_evaluate(const unsigned int eval_flags, int *** eval_list)
 		    cprintf("\n\1a\1c Argh.. eval code is buggered.\1a ");
 	    }
 
-	}  /* j */
+	}			/* j */
 
 	if (*kazam == -5) {
 	    for (;;) {		/* reduce this rubbish */
@@ -1635,19 +1594,18 @@ qc_evaluate(const unsigned int eval_flags, int *** eval_list)
 		break;
 	    }			/* for (;;) */
 
-	    if (s_accept && !s_reject) 
+	    if (s_accept && !s_reject)
 		*kazam = list[index]->newbie_r;
-	    else if (!s_accept && s_reject) 
+	    else if (!s_accept && s_reject)
 		*kazam = -1;
-	    else if (!(s_accept || s_reject)) 	/* all zero */
+	    else if (!(s_accept || s_reject))	/* all zero */
 		if (!(w_accept || w_reject))
 		    *kazam = ((zero_set) ? 0 : -1);
 		else
 		    *kazam = ((w_accept) ? list[index]->newbie_r : -1);
-	    
-	}  /* if (*kazam == -5) */
 
-    }  /* i */
+	}			/* if (*kazam == -5) */
+    }				/* i */
 
     for (i = 0; i < list_count; i++)
 	xfree(list[i]);
