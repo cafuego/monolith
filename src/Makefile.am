@@ -3,15 +3,16 @@ CFLAGS += -Wall
 
 yawc_port_SOURCES = clipboard.c friends.c chat.c fun.c help.c menu.c \
   normal_input.c newuser.c quadcont.c registration.c key.c inter.c vote.c \
-  uadmin.c wholist.c rooms.c bbsconfig.c enter_message.c
+  uadmin.c wholist.c rooms.c bbsconfig.c
+
 yawc_client_SOURCES = clipboard.c friends.c chat.c fun.c help.c menu.c \
   client_input.c newuser.c quadcont.c registration.c key.c inter.c \
-  vote.c wholist.c uadmin.c rooms.c bbsconfig.c enter_message.c
+  vote.c wholist.c uadmin.c rooms.c bbsconfig.c
 
-yawc_port_LDADD = p_commands.o p_express.o p_main.o p_messages.o cprintf.o p_display_message.o \
+yawc_port_LDADD = p_commands.o p_express.o p_main.o p_messages.o cprintf.o \
   routines2.o p_statusbar.o p_usertools.o -L../lib -L../shix -lyawc -lm -lshix -L/usr/local/mysql/lib -lmysqlclient
 
-yawc_client_LDADD =  c_commands.o c_express.o c_main.o c_messages.o c_display_message.o \
+yawc_client_LDADD =  c_commands.o c_express.o c_main.o c_messages.o \
   c_routines2.o c_statusbar.o c_usertools.o -L../lib -L../shix -lyawc -lm -lshix -L/usr/local/mysql/lib -lmysqlclient
 
 c_commands.o: commands.c

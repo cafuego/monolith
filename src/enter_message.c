@@ -1,5 +1,4 @@
-/*
- *
+/* $Id$
  */
 #include <fcntl.h>
 #include <stdio.h>
@@ -9,6 +8,8 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+
+#include <mysql.h>
 
 #include "monolith.h"
 #include "libmono.h"

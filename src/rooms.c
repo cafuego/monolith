@@ -673,7 +673,6 @@ show_room_aides()
 /*
  * show roomaides with slot numbers for roomediting
  */
-
 void
 show_qls()
 {

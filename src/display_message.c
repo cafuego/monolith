@@ -10,6 +10,8 @@
 #include <unistd.h>
 #include <time.h>
 
+#include <mysql.h>
+
 #include "monolith.h"
 #include "libmono.h"
 #include "routines2.h"
