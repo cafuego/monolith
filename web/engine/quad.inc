@@ -66,8 +66,8 @@ function list_messages($username, $quad, $listunread) {
             $subject = mysql_result($result,$i,"subject");
             $date = mysql_result($result,$i,"date");
             $subject = htmlspecialchars($subject);
-            $user = format_username($username,$user,$alias,$flag);
             $js_user = format_js_username($user,$alias,$flag);
+            $user = format_username($username,$user,$alias,$flag);
             $subject = format_subject($subject);
 
             echo "<tr>\n";
