@@ -7,7 +7,7 @@
 $check = true;
 $persistent_connections = true;
 
-function 
+function
 connect_db()
 {
 
@@ -19,7 +19,7 @@ connect_db()
     @mysql_select_db("$db") or die("Unable to select database");
 }
 
-function 
+function
 get_usernum($username)
 {
 
@@ -34,7 +34,7 @@ get_usernum($username)
 
 }
 
-function 
+function
 get_username($usernum)
 {
 
@@ -49,7 +49,7 @@ get_username($usernum)
 
 }
 
-function 
+function
 check_priv($username, $forum_id)
 {
 
@@ -88,7 +88,7 @@ check_priv($username, $forum_id)
 
 }
 
-function 
+function
 check_friend($username, $friend)
 {
 
@@ -144,7 +144,7 @@ check_friend($username, $friend)
 
 }
 
-function 
+function
 format_username($username, $user, $alias, $flag)
 {
 
@@ -159,7 +159,7 @@ format_username($username, $user, $alias, $flag)
 	return format_user($user);
 }
 
-function 
+function
 format_js_username($user, $alias, $flag)
 {
 
@@ -169,7 +169,7 @@ format_js_username($user, $alias, $flag)
 	return format_js_user($user);
 }
 
-function 
+function
 format_user($user)
 {
   IF($user == ""):
@@ -181,7 +181,7 @@ format_user($user)
     return "<font color=\"#ffff00\">$user</font>";
 }
 
-function 
+function
 format_js_user($user)
 {
   IF($user == ""):
@@ -193,7 +193,7 @@ format_js_user($user)
     return "$user";
 }
 
-function 
+function
 format_alias($alias, $mine)
 {
 
@@ -209,7 +209,7 @@ format_alias($alias, $mine)
 
 }
 
-function 
+function
 format_js_alias($alias)
 {
 
@@ -219,7 +219,7 @@ format_js_alias($alias)
 	return "Anon '$alias'";
 }
 
-function 
+function
 format_subject($subject)
 {
   IF($subject == "" || $subject == "(null)"):
@@ -228,7 +228,7 @@ format_subject($subject)
     return $subject;
 }
 
-function 
+function
 do_logout($username)
 {
 
@@ -242,7 +242,7 @@ do_logout($username)
 
 }
 
-function 
+function
 main_screen($username)
 {
 
@@ -279,7 +279,7 @@ main_screen($username)
 
 }
 
-function 
+function
 list_x_messages($username, $location)
 {
 
@@ -310,7 +310,7 @@ list_x_messages($username, $location)
 	    $message = mysql_result($result, $i, "message");
 	    $date = mysql_result($result, $i, "date");
 	    $reply = rawurlencode($user);
-            $message = strtr($message, "\\", "'");
+	    $message = strtr($message, "\\", "'");
 
 	    $bing = MYSQL_QUERY("UPDATE webx SET status='read' WHERE id=$id");
 	    $bing = MYSQL_QUERY("UPDATE webx SET stamp=NOW() WHERE id=$id");
@@ -355,7 +355,7 @@ list_x_messages($username, $location)
     }
 }
 
-function 
+function
 x_log($username, $location)
 {
 
@@ -392,7 +392,7 @@ x_log($username, $location)
 	    $date = mysql_result($result, $i, "date");
 	    $stamp = mysql_result($result, $i, "stamp");
 	    $reply = rawurlencode($sender);
-            $message = strtr($message, "\\", "'");
+	    $message = strtr($message, "\\", "'");
 
 	    print "<tr>\n";
 	    print "  <td align=\"left\" bgcolor=\"#333333\">\n";
@@ -409,7 +409,7 @@ x_log($username, $location)
     }
 }
 
-function 
+function
 mouseover($text)
 {
 
@@ -422,7 +422,7 @@ mouseover($text)
 
 }
 
-function 
+function
 colorize($doing)
 {
 
@@ -479,7 +479,7 @@ colorize($doing)
     return rawurldecode($doing);
 }
 
-function 
+function
 errorsound()
 {
 
@@ -487,7 +487,7 @@ errorsound()
     echo "    </embed>\n\n";
 }
 
-function 
+function
 messagesound()
 {
 
@@ -495,7 +495,7 @@ messagesound()
     echo "    </embed>\n\n";
 }
 
-function 
+function
 sorrysound()
 {
 
@@ -503,7 +503,7 @@ sorrysound()
     echo "    </embed>\n\n";
 }
 
-function 
+function
 suresound()
 {
 
@@ -511,7 +511,7 @@ suresound()
     echo "    </embed>\n\n";
 }
 
-function 
+function
 addimage($text)
 {
 
@@ -530,7 +530,7 @@ addimage($text)
 
 }
 
-function 
+function
 addbutton($text, $url, $js_text)
 {
 
@@ -550,7 +550,7 @@ addbutton($text, $url, $js_text)
 
 }
 
-function 
+function
 errorimage($text)
 {
 
@@ -566,7 +566,7 @@ errorimage($text)
 
 }
 
-function 
+function
 main_menu($username, $current_url)
 {
 
@@ -631,7 +631,7 @@ main_menu($username, $current_url)
 	case "p":
 	    require('engine/profile.inc');
 	    profile_user($username, $victim);
-	    break;
+    	    break;
 
 	case "q":
 	    do_logout($username);

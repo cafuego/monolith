@@ -4,8 +4,7 @@
   * $Id$
   */
 
-function profile_user($username, $victim)
-{
+function profile_user($username, $victim) {
 
     // Check user priv.
     //
@@ -40,9 +39,6 @@ function profile_user($username, $victim)
     }
 
     echo "<h4 align=\"center\">( and that's all there is at the moment )</h4>\n";
-
-}
-
 
 }
 
