@@ -37,6 +37,9 @@ function show_wholist($username) {
         print "  <th align=\"right\"><p align=\"right\">Online for</th>\n";
         print "  <th align=\"left\"><p align=\"left\">Via</th>\n";
         print "</tr>\n";
+        print "<tr>\n";
+        print "  <td colspan=\"4\"><hr size=\"1\"></td>\n";
+        print "</tr>\n";
         $i = 0;
         while ($i < $number) {
             $user = mysql_result($result,$i,"name");
