@@ -8,12 +8,12 @@
     // $text = rawurldecode($url_array[3]);
     $text = "Bing!";
 
-    $im = imagecreate( 500, 40 );
+    $im = imagecreate( 500, 60 );
     $black = ImageColorAllocate( $im, 0, 0, 0 );
     $white = ImageColorAllocate( $im, 255, 255, 255 );
     $bounds = ImageTTFBBox( 30, 0, $font, $text );
     $x = (500 - ($bounds[2]-$bounds[0]))/2;
-    $y = (40 - ($bounds[7]-$bounds[1]))/2;
+    $y = (60 - ($bounds[7]-$bounds[1]))/2;
     ImageTTFText( $im, 30, 0, $x, $y, $white, $font, $text );
     ImageGif( $im );
     ImageDestroy( $im );
