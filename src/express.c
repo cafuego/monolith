@@ -492,7 +492,10 @@ express(int X_PARAM)
     if (override == OR_NO_PERMS)
 	return;
 
-    mono_change_online(who_am_i(NULL), to, 15);
+    IF(!WEB)
+        mono_change_online(who_am_i(NULL), to, 15);
+    else
+        mono_change_online(who_am_i(NULL), "", 15);
 
     display_express_prompt(X_PARAM);
 
