@@ -171,40 +171,36 @@ kickoutmyself(int sig)
 
 /*************************************************
 * enter_passwd()
-*
-* executed at login screen 
-*
 *************************************************/
 
-void
-enter_passwd(user_t * user, int *done)
+int
+enter_passwd(user_t * user)
 {
 
     char pwtest[20];
-    static int failures;	/* counts login failures        */
+    static int failures;
 
     cprintf("\rPassword: ");
     (void) getline(pwtest, -19, 1);
 
     if (strlen(pwtest) == 0) {
 	failures++;
-	*done = FALSE;
-    } else {
-        if ( mono_sql_u_check_passwd( user->usernum, pwtest ) == TRUE )
-	    *done = TRUE;
-	else {
-	    cprintf("Incorrect login.\n");
-
-	    /* record the failure */
-	    log_it("badpw", "%s from %s", username, hname);
-	    ++failures;
-	    if (failures >= 4) {
-		cprintf("Too many failures.\n");
-		logoff(-1);
-	    }
-	}
+	return FALSE;
     }
-}				/* end enter_passwd */
+
+    if ( mono_sql_u_check_passwd(user->usernum, pwtest ) == TRUE )
+        return TRUE;
+
+    cprintf("Incorrect login.\n");
+    log_it("badpw", "%s from %s", username, hname);
+
+    if (++failures >= 4) {
+ 	cprintf("Too many failures.\n");
+     	logoff(-1);
+    }
+
+    return FALSE;
+}	
 
 void
 do_changepw()
@@ -426,7 +422,7 @@ main(int argc, char *argv[])
 		xfree(usersupp);
 		usersupp = readuser(username);
 		if (strcasecmp(username, "Guest") != 0) {
-		    enter_passwd(usersupp, &done);
+		    done = enter_passwd(usersupp);
 		} else {	/* is guest */
 		    done = TRUE;
 		    if (usersupp == NULL) {
