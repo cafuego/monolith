@@ -348,7 +348,7 @@ print_system_config()
     cprintf("\n\1wMySQL Server %-16s :\1g %s\n",
 	    mono_mysql_server_info(), mono_mysql_host_info());
     (void) fflush(stdout);
-    cprintf("\1wMessages currently in database:\1g %d\n", mono_sql_mes_count());
+    cprintf("\1wMessages currently in database:\1g %d (%d posted by you)\n", mono_sql_mes_count(0), mono_sql_mes_count(usersupp->usernum));
 #endif
 
     cprintf("\n\1wLast compiled                 : %s\n\1f", printdate(buf.st_mtime, 0));

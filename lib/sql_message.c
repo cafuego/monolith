@@ -426,13 +426,16 @@ mono_sql_mes_erase_forum(unsigned int forum)
 }
 
 int
-mono_sql_mes_count()
+mono_sql_mes_count(int user_id)
 {
     MYSQL_RES *res;
     MYSQL_ROW row;
     int ret = 0, rows = 0, i = 0;
 
-    ret = mono_sql_query(&res, "SELECT COUNT(*) FROM %s", M_TABLE);
+    if (user_id==0)
+        ret = mono_sql_query(&res, "SELECT COUNT(*) FROM %s", M_TABLE);
+    else
+        ret = mono_sql_query(&res, "SELECT COUNT(*) FROM %s WHERE author=%d", M_TABLE, user_id);
 
     if (ret != 0) {
 	(void) log_it("sqlerr", "Unable to count messages.");

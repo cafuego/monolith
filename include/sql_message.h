@@ -10,7 +10,7 @@ extern int mono_sql_mes_list_topic(unsigned int topic, unsigned int start, mlist
 extern int mono_sql_mes_search_forum(int forum, const char *needle, sr_list_t **list);
 extern int mono_sql_mes_mark_deleted(unsigned int id, unsigned int forum);
 extern int mono_sql_mes_erase_forum( unsigned int forum );
-extern int mono_sql_mes_count( void );
+extern int mono_sql_mes_count( int user_id );
 
 #define M_TABLE "message"
 #define FILEDIR BBSDIR "/save/messages"
