@@ -8,7 +8,8 @@
     // Get username and print off proper title.
     //
     require('engine/html.inc');
-    print_title( getenv("REMOTE_USER"), $REQUEST_URI );
+    html_print_title( getenv("REMOTE_USER"), $REQUEST_URI );
+    html_do_login( getenv("REMOTE_USER") );
 
 ?>
 

@@ -1,10 +1,10 @@
 <?
 
  /*
-  * $id$
+  * $Id$
   */
 
-function print_title($username, $location) {
+function html_print_title($username, $location) {
 
     // Assign values so we can use 'em.
     $url_array=explode("/",$location);
@@ -62,6 +62,33 @@ function print_title($username, $location) {
     $fmt_time = strftime("%a, %d %b %Y %H:%M:%S %Z", time());
     print "<meta http-equiv=\"Pragma\" content=\"no-cache\">\n";
     print "<meta http-equiv=\"Expires\" content=\"$fmt_time\">\n";
+
+}
+
+
+function html_get_usernum($username) {
+
+    MYSQL_CONNECT("localhost", "root", "")  OR DIE("Unable to connect to SQL server");
+    @mysql_select_db("bbs") or die( "Unable to select database");
+
+    $result = MYSQL_QUERY("SELECT id FROM user WHERE username='$username'");
+    $number = MYSQL_NUMROWS($result);
+    if ($number)
+        $user_id = mysql_result($result,0,"id");
+    else
+        $user_id = 0;
+    return $user_id;
+
+}
+
+function html_do_login($username) {
+
+    $usernum = html_get_usernum($username);
+
+    MYSQL_CONNECT("localhost", "root", "")  OR DIE("Unable to connect to SQL server");
+    @mysql_select_db("bbs") or die( "Unable to select database");
+
+    $result = MYSQL_QUERY("INSERT INTO online (user_id,interface,doing) VALUES ($usernum,'web','<font color=\"#ffff00\">Surfing the web</font>')");
 
 }
 

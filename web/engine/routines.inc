@@ -1,7 +1,7 @@
 <?
 
  /*
-  * $id$
+  * $Id$
   */
 
 $check = true;
@@ -161,6 +161,16 @@ function format_subject($subject) {
         return "[No subject]";
     ENDIF;
     return $subject;
+}
+
+function do_logout($username) {
+
+    $usernum = get_usernum($username);
+
+    connect_db();
+
+    $result = MYSQL_QUERY("DELETE FROM online WHERE user_id=$usernum AND interface='web'");
+
 }
 
 ?>
