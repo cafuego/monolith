@@ -251,39 +251,39 @@ newuser_registration(user_t * user)
     cprintf("\1f\1g");
     more(BBSDIR "/share/newuser/registration", 0);
 
-    cprintf("\1gPlease enter your real name.\n");
+    cprintf("Please enter your real name.\n");
     do {
-	cprintf("\n\1gFULL REAL name: \1w");
+	cprintf("\n* FULL REAL name: ");
 	getline(user->RGname, RGnameLEN, 1);
     }
     while (strlen(user->RGname) <= 6);
 
-    cprintf("\1gNext, enter your address \1r(\1gstreet name, and number\1r)\1g.\n");
+    cprintf("\nNext, enter your address (street name, and number).\n\n");
     do {
-	cprintf("\1f\1gAddress:      \1w ");
+	cprintf("* Address:        ");
 	getline(user->RGaddr, RGaddrLEN, 1);
     } while (strlen(user->RGaddr) < 3);
 
     do {
-	cprintf("\1gCity/town:     \1w");
+	cprintf("* City/Suburb:    ");
 	getline(user->RGcity, RGcityLEN, 1);
     } while (strlen(user->RGcity) < 2);
 
     do {
-	cprintf("\1gZip code:      \1w");
+	cprintf("* Zip code:       ");
 	getline(user->RGzip, RGzipLEN, 1);
     } while (strlen(user->RGzip) < 3);
 
-	cprintf("\1gState:         \1w");
+	cprintf("* State/Province: ");
 	getline(user->RGstate, RGstateLEN, 1);
 
     do {
-	cprintf("\1gCountry:       \1w");
+	cprintf("* Country:        ");
 	getline(user->RGcountry, RGcountryLEN, 1);
     } while (strlen(user->RGcountry) < 3);
 
     do {
-	cprintf("\1gPhone number:  \1w");
+	cprintf("Phone number:     ");
 	getline(user->RGphone, RGphoneLEN, 1);
     } while (strlen(user->RGphone) < 4);
 
@@ -291,30 +291,30 @@ newuser_registration(user_t * user)
 
     cprintf("\n\1f\1gPlease enter your e-mail address in the form: \1wuser@host.domain.edu\n");
     fflush(stdout);
-    sleep(1);
+    sleep(3);
 
     do {
-	cprintf("\n\n\1gEmail address: \1w");
+	cprintf("\n\n* Email address:  ");
 	getline(user->RGemail, RGemailLEN, 1);
     }
     while ((strlen(user->RGemail) < 7)
 	   || (is_allowed_email(user->RGemail) == FALSE));
 
-    cprintf("\n\1gYou can enter a WWW homepage address (URL) if you wish.  \1w(Optional)\n");
-    cprintf("\1gEnter it in the form:   \1whost.machine.edu/directory\n\n");
-    cprintf("\1gIf you don't have a homepage, or don't understand this ");
+    cprintf("\nYou can enter a homepage address (URL) if you wish.\n");
+    cprintf("Enter it in the form: host.machine.edu/directory\n");
+    cprintf("If you don't have a homepage, or don't understand this ");
     cprintf("just press return.\n\n");
 
     fflush(stdout);
 
-    cprintf("\1f\1g\n\nURL:             \1whttp://");
+    cprintf("\n\nURL:              http://");
     getline(p, RGurlLEN - 7, 1);
     if (strlen(p) < 5) {
 	strcpy(user->RGurl, "");
-	cprintf("\1gURL left blank.\n");
+	cprintf("URL left blank.\n");
     } else {
         strremcol( p );
-	sprintf(user->RGurl, "\1whttp://%s", p);
+	sprintf(user->RGurl, "http://%s", p);
     }
 
     cprintf("\n\1f\1gYou have entered the following information:\n\n");
@@ -322,7 +322,7 @@ newuser_registration(user_t * user)
 
     cprintf("\n\1wPlease check that it is correct!\n");
     fflush(stdout);
-    sleep(1);
+    sleep(3);
 
     cprintf("\1f\1g\n\nIs the information correct so far? \1w(\1ry\1w/\1rn\1w) ");
     if (yesno() == NO)

@@ -128,7 +128,7 @@ mono_sql_ut_kill_user(unsigned int userid)
     int ret;
     MYSQL_RES *res;
 
-    ret = mono_sql_query(&res, "DELETE FROM " UT_TABLE " WHERE (user_id='%u')", userid);
+    ret = mono_sql_query(&res, "DELETE FROM " UT_TABLE " WHERE user_id=%u", userid);
 
     if (ret != 0) {
 	fprintf(stderr, "Some sort of error.\n");
@@ -148,8 +148,7 @@ mono_sql_ut_new_user(unsigned int user_id)
     for (topic_id = 0; topic_id < MAXQUADS; topic_id++) {
 	ret = mono_sql_query(&res,
 		   "INSERT INTO " UT_TABLE 
- 		   "(user_id,topic_id) VALUES (%u,%u,%u)"
-			     ,user_id, topic_id);
+ 		   "(user_id,topic_id) VALUES (%u,%u)" ,user_id, topic_id);
 	if (ret == -1)
 	    printf("\nInsert error");
     }

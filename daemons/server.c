@@ -34,6 +34,7 @@
 #include "monolith.h"
 #include "libmono.h"
 #include "setup.h"
+#include "version.h"
 
 #define extern
 #include "server.h"
@@ -67,7 +68,7 @@ main(int argc, char **argv)
     mono_setuid("guest");
 
     printf("\r");
-    printf("Welcome to %s.\nRunning %s\n", BBSNAME, VERSION);
+    printf("Welcome to %s.\n\rRunning %s\n", BBSNAME, BBS_VERSION);
 
     fflush(stdout);
 

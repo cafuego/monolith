@@ -347,7 +347,7 @@ print_system_config()
     cprintf("\n\1f");
     cprintf("\1wCompiled on host              :\1g %s %s\n", buf2.nodename, EQ(domain_name, "(none)") ? "" : domain_name);
     cprintf("\1wHost type                     :\1g %s %s %s\n", buf2.machine, buf2.sysname, buf2.release);
-    cprintf("\1wBuild version                 :\1g %s\n", buf2.version);
+    cprintf("\1wOS build version              :\1g %s\n", buf2.version);
     (void) xfree(domain_name);
 #endif
 

@@ -35,8 +35,8 @@
 #include "monolith.h"
 #include "libmono.h"
 #include "ext.h"
-#include "setup.h"
 #include "telnet.h"
+#include "setup.h"
 
 #include "bbsconfig.h"
 #include "chat.h"
@@ -336,7 +336,7 @@ _config_message_menu(const unsigned int a, const long b, void *c)
 	     	    "tiv", tempstr, "8", 
 		    (usersupp->config_flags & CO_DELETEDINFO) ? "\1yYes" : " No");
 
-	sprintf(tempstr, "Monolith-Style %s headers", config.message);
+	sprintf(tempstr, "%s-Style %s headers", BBSNAME, config.message);
 	MK_TMPSTR(tempstr);
 	MENU_ADDITEM(set_usersupp_config_flag, CO_MONOHEADER, 0, 
 	   	    (char *) tmpstr, "tiv", tempstr, "9", 
@@ -1056,7 +1056,7 @@ kickout_user()
 	return;
     b = mono_read_btmp(name);
     if (b == NULL) {
-	cprintf("\1w%s is not on Monolith.\n", name);
+	cprintf("\1w%s is not on %s BBS.\n", BBSNAME, name);
 	return;
     }
     kick_pid = b->pid;
@@ -1530,7 +1530,7 @@ _timezone_menu(const unsigned int a, const long b, void *c)
 	set_timezone(str);
 	cprintf( "\n\1f\1gTimezone set to \1w[\1y%s\1w]\1g\1c\n", usersupp->timezone );
     } else 
-	cprintf( "\1f\1gTimezone not set, using Monolith timezone." );
+	cprintf( "\1f\1gTimezone not set, using %s timezone.", BBSNAME );
 }
 
 static void _tz2str(const unsigned int, const long, void*);

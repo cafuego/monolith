@@ -128,7 +128,12 @@ send_key(const user_type * user)
 
 #define ACCEPTED "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@1234567890_%.-"
 
+#ifdef HAVE_SENDMAIL
+    FILE *sendmail = NULL;
+    char *message = NULL;
+#else
     char cmd[200];
+#endif
     size_t accepted;
 
     accepted = strspn(user->RGemail, ACCEPTED);
@@ -137,16 +142,40 @@ send_key(const user_type * user)
 	log_it("email", "%s has invalid chars in the email address. Validation key not sent.", usersupp->username);
 	return 1;
     }
-    sprintf(cmd, "/bin/mail -s \"Monolith Validation Key: %ld\" \'%s\' < %s &"
-	    ,user->validation_key, user->RGemail, VALIDATION_EMAIL);
+
+#ifdef HAVE_SENDMAIL
+    if( (sendmail = popen( SENDMAIL " -t", "w" )) == NULL ) {
+	log_it("email", "Error trying to send validation key to %s.\nCan't popen(%s).", user->RGemail, SENDMAIL);
+	return 2;
+    }
+    if ((message = map_file(VALIDATION_EMAIL)) == NULL) {
+        xfree(message);
+	log_it("email", "Error trying to send validation key to %s.\nCan't mmap %s.", user->RGemail, VALIDATION_EMAIL);
+	return 2;
+    }
+
+    fprintf(sendmail, "To: %s <%s>\n", user->RGname, user->RGemail);
+    fprintf(sendmail, "Subject: %s BBS validation key.\n", BBSNAME);
+    fprintf(sendmail, "%s\n", message);
+    fprintf(sendmail, "\n*** Your %s BBS validation key is: %lu ***\n", BBSNAME, user->validation_key);
+
+    xfree(message);
+    if( pclose(sendmail) == -1 ) {
+	log_it("email", "Error trying to send validation key to %s.\nCan't pclose(%X).", user->RGemail, sendmail);
+	return 2;
+    }
+#else
+    sprintf(cmd, "/bin/mail -s \"%s BBS Validation Key: %ld\" \'%s\' < %s &"
+	    ,BBSNAME, user->validation_key, user->RGemail, VALIDATION_EMAIL);
 
     if (system(cmd) == -1) {
 	log_it("email", "Error trying to send validation key to %s.\nCommand: %s.", user->RGemail, cmd);
 	return 2;
-    } else {
-	log_it("email", "Validation key sent to %s at %s.", usersupp->username, usersupp->RGemail);
-	return 0;
     }
+#endif
+
+    log_it("email", "Validation key sent to %s at %s.", usersupp->username, usersupp->RGemail);
+    return 0;
 }
 
 void

@@ -8,6 +8,7 @@ AM_INIT_AUTOMAKE(monolith, 1.0)
 AM_CONFIG_HEADER(include/config.h)
 AC_PREFIX_DEFAULT(/usr/bbs)
 
+AC_ARG_WITH(name, [  --with-name=NAME      set the BBS name [default=none]],,with_name=none)
 AC_ARG_WITH(mysql, [  --with-mysql[=DIR]      use mysql database system  [default=yes]
                           (requires mysql to be installed)],,with_mysql=yes)
 AC_ARG_WITH(rating, [  --with-rating           use message rating system  [default=yes]
@@ -15,7 +16,6 @@ AC_ARG_WITH(rating, [  --with-rating           use message rating system  [defau
 AC_ARG_WITH(hero, [  --with-hero             include superhero toy  [default=yes]
                           (requires silly sysops)],,with_hero=yes)
 AC_ARG_WITH(overview, [  --with-overview         give overview after configuring  [default=no]],,with_overview=no)
-
 
 if test "x$with_rating" != "xyes"; then
   with_rating=no
@@ -37,6 +37,16 @@ AC_PROG_CC
 AC_PROG_RANLIB
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
+AC_PATH_PROG(PROG_SENDMAIL, sendmail, /usr/lib/sendmail, $PATH /usr/bin /usr/sbin /usr/etc /etc /usr/ucblib)
+if test -n "$PROG_SENDMAIL"; then
+  AC_DEFINE(HAVE_SENDMAIL)
+fi
+AC_SUBST(PROG_SENDMAIL)
+AC_PATH_PROG(PROG_CAT, cat, /bin/cat, $PATH /usr/bin /usr/sbin /usr/etc /etc /usr/ucblib)
+if test -n "$PROG_CAT"; then
+  AC_DEFINE(HAVE_CAT)
+fi
+AC_SUBST(PROG_CAT)
 
 dnl GNU gettext add-ons
 ALL_LINGUAS="fr en nl de"
@@ -92,6 +102,24 @@ if test "x$grep_path" != "xno" ; then
       fi
     fi
   fi
+fi
+
+dnl make sure a BBS name was specified.
+dnl
+echo -n "checking for BBS name..."
+if test "x$with_name" = "xnone"; then
+    echo
+    echo " no name"
+    echo
+    echo "You MUST specify a name for your BBS. Use the --with-name=NAME option"
+    echo "to specify it. For instance: --with-name=Monolith would cause your BBS"
+    echo "to be called 'Monolith BBS'. (We'd prefer if you chose something else)"
+    echo
+    exit 0
+else
+    echo " $with_name BBS"
+    BBSNAME="$with_name"
+    AC_SUBST(BBSNAME)
 fi
 
 dnl Do a bit of mysql checking.
@@ -185,7 +213,7 @@ fi
 dnl Check if the proc-animal patch is installed.
 echo -n "checking for proc-animal kernel patch..."
 if test -r /proc/sys/kernel/name; then
-    echo " yes"
+    echo "`${PROG_CAT} /proc/sys/kernel/name`"
     AC_DEFINE(HAVE_ANIMAL)
 else
     echo " no"
@@ -239,7 +267,7 @@ if test "$no_create" != "yes" ; then
     clear
     
     echo "----------------------------------------------------------------------"
-    echo "        You have set up your BBS with the following features:"
+    echo "       You have set up $with_name BBS with the following features:"
     echo "----------------------------------------------------------------------"
     echo
     echo "  * MySQL is installed and will be used."
@@ -263,9 +291,9 @@ if test "$no_create" != "yes" ; then
   if test "x$with_overview" = "xno"; then
     echo "----------------------------------------------------------------------"
   fi
-  echo "Just run make and sit back whilst the BBS is compiled. After"
-  echo "compilation is finished, refer to the README file for details on"
-  echo "how to install the BBS on your machine. Note that you will need"
+  echo "Just run make and sit back whilst $with_name BBS is compiled."
+  echo "After compilation is finished, refer to the README file for details"
+  echo "on how to install the BBS on your machine. Note that you will need"
   echo "root access to do this."
   echo "----------------------------------------------------------------------"
   echo

@@ -37,7 +37,7 @@
 
 #include "monolith.h"
 #include "libmono.h"
-#include "setup.h"
+#include "version.h"
 #include "telnet.h"
 
 #define extern
@@ -667,7 +667,7 @@ user_terminate()
     }
     while (cmd != 'n' || cmd != 'y' || cmd != 'm') {
 
-	cprintf(_("\n\1f\1gAre you sure you want to leave Monolith? \1w(\1gy\1w/\1gn\1w/\1gm\1w/\1g?\1w)\1g "));
+	cprintf(_("\n\1f\1gAre you sure you want to leave %s? \1w(\1gy\1w/\1gn\1w/\1gm\1w/\1g?\1w)\1g ") , BBSNAME);
 	cmd = get_single_quiet("ynm?");
 
 	switch (cmd) {
@@ -782,8 +782,8 @@ print_login_banner(time_t laston)
 
     char filename[50];
 
-    (void) cprintf(_("\n\1a\1f\1gWelcome to Monolith BBS, \1g%s! \1gThis is your \1w#%d \1glogin.\n")
-		   ,usersupp->username, usersupp->timescalled);
+    (void) cprintf(_("\n\1a\1f\1gWelcome to %s, \1g%s! \1gThis is your \1w#%d \1glogin.\n")
+		   , BBSNAME, usersupp->username, usersupp->timescalled);
 
     if ((strncmp(previous_host, "none", 4)) != 0)
 	(void) cprintf(_("\1f\1gLast login: %s \1g\1ffrom \1r%-16.16s\n"),

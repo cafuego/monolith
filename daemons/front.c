@@ -18,6 +18,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
+
 #ifdef HAVE_TERMIOS_H
   #include <termios.h>
 #else
@@ -48,6 +49,7 @@
 #include "monolith.h"
 #include "libmono.h"
 #include "setup.h"
+#include "version.h"
 
 #define extern
 #include "front.h"
@@ -95,7 +97,7 @@ main(int argc, char **argv)
     sttybbs(0);
 
     printf("\r");
-    printf("Welcome to %s.\nRunning %s\n", BBSNAME, VERSION);
+    printf("Welcome to %s.\n\rRunning %s\n", BBSNAME, BBS_VERSION);
     fflush(stdout);
 
     /* if the bbs is down no reason to do anything else */
