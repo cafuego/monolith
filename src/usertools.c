@@ -72,6 +72,9 @@ static void _tgl_silc(const unsigned int, const long, const char *);
 static unsigned int _get_locale(const unsigned long);
 static void _set_date_display(const unsigned int, const long, const char *);
 static void _set_locale(const unsigned int, const long, const char *);
+static float _get_monoholic_rating(user_t *user);
+static char * _get_monoholic_flag(user_t *user);
+
 
 /* code */
 
@@ -326,7 +329,7 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
 
     cprintf("\n\1y\1f%s\1g ", user->username);
 
-#ifndef MONOHOLIC_FLAG
+#ifndef NO_MONOHOLIC_FLAG
     cprintf("%s ", _get_monoholic_flag(user));
 #endif
 
@@ -380,7 +383,8 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
 	cprintf("\1f\1yAideline:%s\n", user->aideline);
     if (viewing_user->priv >= PRIV_SYSOP) {
         (void) mono_sql_read_config(user->configuration, &frog);
-        cprintf("\1f\1gConfiguration\1w: \1y%s\n", frog.bbsname);
+        cprintf("\1f\1gConfiguration\1w: \1y%s\1g; Monoholic Rating\1w: \1y", frog.bbsname);
+        printf("%.3f\n",_get_monoholic_rating(user));
     }
 #ifdef OLD
     if (user->flags & US_ROOMAIDE) {
@@ -1161,12 +1165,18 @@ _set_date_display(const unsigned int bongo, const long bouncing, const char *hor
     return;
 }
 
+static float
+_get_monoholic_rating(user_t *user)
+{
+    return ((float) user->posted / (float) user->timescalled) + ((float) user->x_s / (float) user->timescalled / 100) + ((float) user->timescalled/4000) + ((float) user->priv / 20000);
+}
+
 static char *
 _get_monoholic_flag(user_t *user)
 {
     float var = 0;
 
-    var = ((float) user->posted / (float) user->timescalled) + ((float) user->x_s / (float) user->timescalled / 100) + ((float) user->timescalled/4000) + ((float) user->priv / 20000);
+    var = _get_monoholic_rating(user);
 
     if((var < 1.8) || (user->timescalled < 666))
         return "";
