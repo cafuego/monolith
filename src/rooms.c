@@ -505,7 +505,6 @@ void
 killroom()
 {
 
-    int i;
     char temprmname[50];
 
     quickroom = readquad(curr_rm);
@@ -525,8 +524,6 @@ killroom()
 	strcpy(quickroom.name, "");
 	if (quickroom.flags & QR_INUSE)
 	    quickroom.flags ^= QR_INUSE;
-
-	for (i = 0; i < NO_OF_QLS; i++) strcpy(quickroom.qls[i], "");
 
 	cprintf("\1f\1rErase all %s in this %s%s",
 		config.message_pl, config.forum,
@@ -614,7 +611,6 @@ create_room()
     quickroom = readquad(curr_rm);
 
     strcpy(quickroom.name, quad_name);
-    strcpy(quickroom.qls[0], "Sysop");
     quickroom.generation++;
     quickroom.lowest = ++quickroom.highest;
     quickroom.maxmsg = 100;
@@ -1158,7 +1154,6 @@ look_into_quickroom(int degree)
 	    for (a = 0; a < blank; a++)
 		putchar(' ');
 
-	    /* do qls */
 	    ret = mono_sql_uf_list_hosts_by_forum(round, &p);
 
 	    if (ret == -1) {
