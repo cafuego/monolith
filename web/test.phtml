@@ -11,11 +11,6 @@
     $username = getenv( "REMOTE_USER" );
     $usernum = get_usernum( $username );
 
-    if($usernum != 1151) {
-        echo "<h3 align=\"center\">Go away, this is a test page for developers only</h3>\n";
-        exit;
-    }
-
     if($userfile == null || $userfile == "") {
         echo "<form enctype=\"multipart/form-data\" action=\"/bbs/test.phtml\" method=\"post\"\n";
         echo "  <input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"10000\">\n";
