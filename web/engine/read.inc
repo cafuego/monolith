@@ -70,10 +70,15 @@ function read_message($username, $quad, $current, $direction) {
                 // Show message.
                 //
                 addimage( "Reading message $m_id in $forum" );
-                print "<p align=\"left\"><font color=\"#00CC00\">From</font> $user <font color=\"#00CC00\">on</font> <font color=\"#00CC00\">$date CET</font><br><font color=\"#FFFF00\">Subject</font>: <font color=\"#FFFF00\">$subject</font></p>\n";
-                print "<pre><font color=\"#00ffff\">$content</font></pre>\n";
-                print "<p align=\"left\"><font color=\"#FFFFFF\">$f_id.</font><font color=\"#00CC00\">$forum</font> (<font color=\"#00CC00\">message $m_id of $highest</font>)&gt;</p>\n";
-                print "<p>&nbsp;<br></p>\n";
+                echo "<p align=\"left\"><font color=\"#00CC00\">From</font> $user";
+                if( $flag != "anon" )
+                    echo " <font color=\"#00CC00\">on</font> <font color=\"#00CC00\">$date CET</font><br>"\n:
+                else
+                    echo "\n";
+                echo "<font color=\"#FFFF00\">Subject</font>: <font color=\"#FFFF00\">$subject</font></p>\n";
+                echo "<pre><font color=\"#00ffff\">$content</font></pre>\n";
+                echo "<p align=\"left\"><font color=\"#FFFFFF\">$f_id.</font><font color=\"#00CC00\">$forum</font> (<font color=\"#00CC00\">message $m_id of $highest</font>)&gt;</p>\n";
+                echo "<p>&nbsp;<br></p>\n";
 
                 // Don't let guests be able to post.
                 //

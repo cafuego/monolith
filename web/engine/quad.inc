@@ -36,9 +36,9 @@ function list_messages($username, $quad, $listunread) {
     // List messages.
     //
     if($listunread)
-        $result = MYSQL_QUERY("SELECT m.message_id AS m_id,u.username AS username,m.flag AS flag,m.alias AS alias,m.subject AS subject,DATE_FORMAT(m.date,'%W, %e %M %Y %H:%i:%S') as date FROM message AS m LEFT JOIN user AS u ON u.id=m.author WHERE m.forum_id=$quad AND m.message_id>=$lastseen ORDER BY message_id,subject");
+        $result = MYSQL_QUERY("SELECT m.message_id AS m_id,u.username AS username,m.flag AS flag,m.alias AS alias,m.subject AS subject,DATE_FORMAT(m.date,'%a, %e %b %Y %H:%i') as date FROM message AS m LEFT JOIN user AS u ON u.id=m.author WHERE m.forum_id=$quad AND m.message_id>=$lastseen ORDER BY message_id,subject");
     else
-        $result = MYSQL_QUERY("SELECT m.message_id AS m_id,u.username AS username,m.flag AS flag,m.alias AS alias,m.subject AS subject,DATE_FORMAT(m.date,'%W, %e %M %Y %H:%i:%S') as date FROM message AS m LEFT JOIN user AS u ON u.id=m.author WHERE m.forum_id=$quad ORDER BY message_id,subject");
+        $result = MYSQL_QUERY("SELECT m.message_id AS m_id,u.username AS username,m.flag AS flag,m.alias AS alias,m.subject AS subject,DATE_FORMAT(m.date,'%a, %e %b %Y %H:%i') as date FROM message AS m LEFT JOIN user AS u ON u.id=m.author WHERE m.forum_id=$quad ORDER BY message_id,subject");
 
     $number = MYSQL_NUMROWS($result);
     if ($number) {
@@ -74,8 +74,15 @@ function list_messages($username, $quad, $listunread) {
                 echo "    <p align=\"right\" class=\"green\"><font color=\"#ff0000\">New:</font> $m_id\n";
             echo "  </td>\n";
             echo "  <td align=\"left\" valign=\"top\">\n";
-            echo "    <p align=\"left\"><font color=\"#00cc00\">Posted on $date CET</font><br>\n";
-            echo "     <a href=\"/bbs/index.phtml/r/$quad/$m_id\">$subject</a> <font color=\"#00cc00\">by</font> $user\n";
+ 
+            // Don't show date if anon post *sigh*
+            //
+            echo "     <a href=\"/bbs/index.phtml/r/$quad/$m_id\">$subject</a> <font color=\"#00cc00\">by</font> $user";
+            if( $flag != "anon"  )
+                echo " <font color=\"#00cc00\">on $date CET</font><br>\n";
+            else
+                echo "\n";
+
             echo "  </td>\n";
             echo "</tr>\n";
 
