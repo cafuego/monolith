@@ -69,8 +69,7 @@ function read_message($username, $quad, $current, $direction)
 		$alias = htmlspecialchars($alias);
 		$subject = htmlspecialchars($subject);
 		$content = htmlspecialchars($content);
-                if( $username == "Cafuego" )
-		    $content = mes_link_urls($content);
+		$content = mes_link_urls($content);
 		$content = colorize($content);
 		$user = format_username($username, $user, $alias, $flag);
 		$subject = format_subject($subject);
