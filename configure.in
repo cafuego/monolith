@@ -1,17 +1,28 @@
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT(cgi/index.c)
 
-AC_CANONICAL_HOST
+AC_CANONICAL_SYSTEM
 
 AM_INIT_AUTOMAKE(monolith, 1.0)
 AM_CONFIG_HEADER(include/config.h)
 AC_PREFIX_DEFAULT(/usr/bbs)
+
+AC_ARG_WITH(mysql, [  --with-mysql            use mysql database system [default=yes]
+                          (requires mysql to be installed)],,with_mysql=yes)
+if test "x$with_mysql" != "xyes"; then
+  with_mysql=no
+fi
+
+umask 002
 
 dnl Checks for programs.
 AC_PROG_CC
 AC_PROG_RANLIB
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
+
+dnl Check for awk - used to determine if we're linux or not.
+AC_PATH_PROG(awk_path,awk,no)
 
 dnl Checks for libraries.
 dnl Replace `main' with a function in -lgdbm:
@@ -40,23 +51,34 @@ AC_FUNC_VPRINTF
 AC_FUNC_MMAP
 AC_CHECK_FUNCS(gethostname mkdir regcomp socket strcspn strdup strftime strspn strstr)
 
-echo
-echo -n "Checking MySQL installation..."
-if test $ac_cv_header_mysql_h = no ; then
-  echo " whoops!"
-  echo
-  echo "ARGH: Unable to locate mysql!"
-  echo
-  echo "Please install the MySQL database system, which is available for free from"
-  echo "http://www.mysql.org/ and run this program again. If you do have MySQL in-"
-  echo "stalled, check directory and file permissions, or create symbolic links so"
-  echo "configure can find it."
-  echo
-  exit 0
-else
-  echo " rock!"
-  AC_CHECK_LIB(mysqlclient, mysql_connect)
+dnl Define LINUX if this is a linux system.
+if test "x$awk_path" != "xno" ; then
+  os=`echo $target_os | awk -F'-' '{print $1}'`
+  if test $os = linux ; then
+    AC_DEFINE(LINUX)
+  fi
 fi
-echo
+
+if test $with_mysql = yes ; then
+  echo
+  echo -n "Checking MySQL installation..."
+  if test $ac_cv_header_mysql_h = no ; then
+    echo " whoops!"
+    echo
+    echo "ARGH: Unable to locate mysql!"
+    echo
+    echo "Please install the MySQL database system, which is available for free from"
+    echo "http://www.mysql.org/ and run this program again. If you do have MySQL in-"
+    echo "stalled, check directory and file permissions, or create symbolic links so"
+    echo "configure can find it."
+    echo
+    exit 0
+  else
+    echo " rock!"
+    AC_CHECK_LIB(mysqlclient, mysql_connect)
+    AC_DEFINE(USE_MYSQL)
+  fi
+  echo
+fi
 
 AC_OUTPUT(cgi/Makefile lib/Makefile daemons/Makefile src/Makefile misc/Makefile shix/Makefile share/Makefile share/feelings/Makefile share/loginscreens/Makefile Makefile)
