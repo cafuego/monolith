@@ -28,49 +28,49 @@ function config_account( $username ) {
 
     echo "  <table align=\"left\" border=\"0\" cellpadding=\"2\" cellspacing=\"2\">\n";
     if( strstr( $user->hiddeninfo, "name" ))
-        echo "<tr><td><input type=\"checkbox\" name=\"name\"> Real name:</td><td>$user->realname</td></tr>\n";
+        echo "<tr><td align=\"left\" valign=\"top\"><input type=\"checkbox\" name=\"name\"> Real name:</td><td align=\"left\" valign=\"top\">$user->realname</td></tr>\n";
     else
-        echo "<tr><td><input type=\"checkbox\" name=\"name\" checked> Real name:</td><td>$user->realname</td></tr>\n";
+        echo "<tr><td align=\"left\" valign=\"top\"><input type=\"checkbox\" name=\"name\" checked> Real name:</td><td align=\"left\" valign=\"top\">$user->realname</td></tr>\n";
 
     if( strstr( $user->hiddeninfo, "address" ))
-        echo "<tr><td><input type=\"checkbox\" name=\"address\"> Address:</td><td>$user->address</td></tr>\n";
+        echo "<tr><td align=\"left\" valign=\"top\"><input type=\"checkbox\" name=\"address\"> Address:</td><td align=\"left\" valign=\"top\">$user->address</td></tr>\n";
     else
-        echo "<tr><td><input type=\"checkbox\" name=\"address\" checked> Address:</td><td>$user->address</td></tr>\n";
+        echo "<tr><td align=\"left\" valign=\"top\"><input type=\"checkbox\" name=\"address\" checked> Address:</td><td align=\"left\" valign=\"top\">$user->address</td></tr>\n";
 
     if( strstr( $user->hiddeninfo, "city" ))
-        echo "<tr><td><input type=\"checkbox\" name=\"city\"> City:</td><td>$user->city</td></tr>\n";
+        echo "<tr><td align=\"left\" valign=\"top\"><input type=\"checkbox\" name=\"city\"> City:</td><td align=\"left\" valign=\"top\">$user->city</td></tr>\n";
     else
-        echo "<tr><td><input type=\"checkbox\" name=\"city\" checked> City:</td><td>$user->city</td></tr>\n";
+        echo "<tr><td align=\"left\" valign=\"top\"><input type=\"checkbox\" name=\"city\" checked> City:</td><td align=\"left\" valign=\"top\">$user->city</td></tr>\n";
 
     if( strstr( $user->hiddeninfo, "state" ))
-        echo "<tr><td><input type=\"checkbox\" name=\"state\"> State:</td><td>$user->state</td></tr>\n";
+        echo "<tr><td align=\"left\" valign=\"top\"><input type=\"checkbox\" name=\"state\"> State:</td><td align=\"left\" valign=\"top\">$user->state</td></tr>\n";
     else
-        echo "<tr><td><input type=\"checkbox\" name=\"state\" checked> State:</td><td>$user->state</td></tr>\n";
+        echo "<tr><td align=\"left\" valign=\"top\"><input type=\"checkbox\" name=\"state\" checked> State:</td><td align=\"left\" valign=\"top\">$user->state</td></tr>\n";
 
     if( strstr( $user->hiddeninfo, "zip" ))
-        echo "<tr><td><input type=\"checkbox\" name=\"zip\"> Zip/Post code:</td><td>$user->zip</td></tr>\n";
+        echo "<tr><td align=\"left\" valign=\"top\"><input type=\"checkbox\" name=\"zip\"> Zip/Post code:</td><td align=\"left\" valign=\"top\">$user->zip</td></tr>\n";
     else
-        echo "<tr><td><input type=\"checkbox\" name=\"zip\" checked> Zip/Post code:</td><td>$user->zip</td></tr>\n";
+        echo "<tr><td align=\"left\" valign=\"top\"><input type=\"checkbox\" name=\"zip\" checked> Zip/Post code:</td><td align=\"left\" valign=\"top\">$user->zip</td></tr>\n";
 
     if( strstr( $user->hiddeninfo, "country" ))
-        echo "<tr><td><input type=\"checkbox\" name=\"country\"> Country:</td><td>$user->country</td></tr>\n";
+        echo "<tr><td align=\"left\" valign=\"top\"><input type=\"checkbox\" name=\"country\"> Country:</td><td align=\"left\" valign=\"top\">$user->country</td></tr>\n";
     else
-        echo "<tr><td><input type=\"checkbox\" name=\"country\" checked> Country:</td><td>$user->country</td></tr>\n";
+        echo "<tr><td align=\"left\" valign=\"top\"><input type=\"checkbox\" name=\"country\" checked> Country:</td><td align=\"left\" valign=\"top\">$user->country</td></tr>\n";
 
     if( strstr( $user->hiddeninfo, "phone" ))
-        echo "<tr><td><input type=\"checkbox\" name=\"phone\"> Phone:</td><td>$user->phone</td></tr>\n";
+        echo "<tr><td align=\"left\" valign=\"top\"><input type=\"checkbox\" name=\"phone\"> Phone:</td><td align=\"left\" valign=\"top\">$user->phone</td></tr>\n";
     else
-        echo "<tr><td><input type=\"checkbox\" name=\"phone\" checked> Phone:</td><td>$user->phone</td></tr>\n";
+        echo "<tr><td align=\"left\" valign=\"top\"><input type=\"checkbox\" name=\"phone\" checked> Phone:</td><td align=\"left\" valign=\"top\">$user->phone</td></tr>\n";
 
     if( strstr( $user->hiddeninfo, "email" ))
-        echo "<tr><td><input type=\"checkbox\" name=\"email\"> Email:</td><td>$user->email</td></tr>\n";
+        echo "<tr><td align=\"left\" valign=\"top\"><input type=\"checkbox\" name=\"email\"> Email:</td><td align=\"left\" valign=\"top\">$user->email</td></tr>\n";
     else
-        echo "<tr><td><input type=\"checkbox\" name=\"email\" checked> Email:</td><td>$user->email</td></tr>\n";
+        echo "<tr><td align=\"left\" valign=\"top\"><input type=\"checkbox\" name=\"email\" checked> Email:</td><td align=\"left\" valign=\"top\">$user->email</td></tr>\n";
 
     if( strstr( $user->hiddeninfo, "url" ))
-        echo "<tr><td><input type=\"checkbox\" name=\"url\"> Webpage:</td><td><input type=\"text\" size=\"50\" name=\"website\" value=\"$user->url\"></td></tr>\n";
+        echo "<tr><td align=\"left\" valign=\"top\"><input type=\"checkbox\" name=\"url\"> Webpage:</td><td align=\"left\" valign=\"top\"><input type=\"text\" size=\"50\" name=\"website\" value=\"$user->url\"></td></tr>\n";
     else
-        echo "<tr><td><input type=\"checkbox\" name=\"url\" checked> Webpage:</td><td><input type=\"text\" size=\"50\" name=\"website\" value=\"$user->url\"></td></tr>\n";
+        echo "<tr><td align=\"left\" valign=\"top\"><input type=\"checkbox\" name=\"url\" checked> Webpage:</td><td align=\"left\" valign=\"top\"><input type=\"text\" size=\"50\" name=\"website\" value=\"$user->url\"></td></tr>\n";
     echo "  </table>\n";
 
     echo "  <br clear=\"all\">\n";
