@@ -179,7 +179,7 @@ function mes_link_urls( $text ) {
             $url = $tmplist[0];
             $line = eregi_replace($url, "<a href=\"$url\">$url</a>", $line);
         }
-        eregi("ftp://.* ", $text, $ftp_list);
+        eregi("ftp://.* ", $line, $ftp_list);
         if(isset($ftp_list)) {
             $url = current($ftp_list);
             $tmplist = split(" ", $url);
