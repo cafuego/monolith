@@ -214,7 +214,7 @@ function html_print_foot($username, $starttime) {
     echo "<tr>\n";
     echo "  <td>\n";
     echo "    <p class=\"footer\" style=\"text-align: right;\">&copy; The Monolith Community 1999 -\n";
-    echo "      Generated: ". gmdate("l, d F Y H:i:s", time()) ." GMT\" in ". printf("%.2f", $elapsed) ." seconds.<br>\n";
+    echo "      Generated: ". gmdate("l, d F Y H:i:s", time()) ." GMT in ". printf("%.2f", ($end[0]-$start[0]+$end[1]-$start[1]) ." seconds.<br>\n";
     echo "      Send email to <a class=\"red\" href=\"mailto:webmaster@monolith.yawc.net\">webmaster@monolith.yawc.net</a> for suggestions and comments.</p>\n";
     echo "  </td>\n";
     echo "  <td>\n";
