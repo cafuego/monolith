@@ -116,12 +116,9 @@ class user_t {
             else if ($this->image == "image/png")
                 echo "<img align=\"right\" src=\"/bbs/pix/png.php3?$this->id\">\n";
             else {
-                errorimage("Image format error!");
+                errorimage("Image mime type error: $this->image");
                 return -1;
             }
-        } else {
-            errorimage("Image is in unsupported format!");
-            return -1;
         }
         return 0;
     }
