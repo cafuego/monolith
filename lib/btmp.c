@@ -494,6 +494,7 @@ mono_connect_shm()
 	    exit(EXIT_FAILURE);
 	}
 	_mono_initialize_shm();
+	mono_sql_f_fix_quickroom();
     }
     if (shm == NULL) {
 	exit(EXIT_FAILURE);
@@ -781,6 +782,4 @@ mono_find_x_ing(const char *name, char *xer)
 	return -1;
 
 }
-
-
 /* eof */

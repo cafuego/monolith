@@ -23,6 +23,8 @@
 #include "routines.h"
 #include "sql_utils.h"
 
+#include "btmp.h"
+
 #define extern
 #include "sql_forum.h"
 #undef extern
@@ -222,4 +224,38 @@ mono_sql_f_partname2id(const char *forumname, unsigned int *forumid)
     return 0;
 }
 
+void
+mono_sql_f_fix_quickroom()
+{
+    MYSQL_RES *res;
+    MYSQL_ROW row;
+    int i = 0, rows = 0, ret = 0;
+    unsigned int forum = 0, highest = 0;
+
+    ret = mono_sql_query(&res, "SELECT forum_id,highest FROM topic");
+
+    if (ret == -1) {
+        (void) mysql_free_result(res);
+        return;
+    }
+    if ((rows = mysql_num_rows(res)) == 0) {
+        (void) mysql_free_result(res);
+        return;
+    }
+
+    for (i = 0; i < rows; i++) {
+        row = mysql_fetch_row(res);
+        if (row == NULL)
+            break;
+
+        sscanf(row[0], "%u", &forum);
+        sscanf(row[1], "%u", &highest);
+
+        shm->rooms[forum].highest=highest;
+        shm->rooms[forum].lowest=(highest-(shm->rooms[forum].maxmsg));
+    }
+    return;
+}
+
+/* eof */
 /* eof */
