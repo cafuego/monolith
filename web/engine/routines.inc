@@ -350,7 +350,7 @@ function mouseover($text) {
     $text = strtr($text, "\\", "\\\\");
     $text = strtr($text, "'", "\\'");
 
-    echo "onMouseover=\"return setStatus('$text');\" onMouseOut=\"return setStatus('');\"";
+    return "onMouseover=\"return setStatus('$text');\" onMouseOut=\"return setStatus('');\"";
 
 }
 
