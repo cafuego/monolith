@@ -39,6 +39,9 @@ function html_print_title($username, $location) {
             PRINT "<title>$username@Monolith BBS: Replying to message in $name</title>\n";
             break;
         case "l":
+            PRINT "<title>$username@Monolith BBS: Listing available quadrants</title>\n";
+            break;
+        case "m":
             $name = html_get_quadname($username,$quad);
             PRINT "<title>$username@Monolith BBS: Listing messages in $name</title>\n";
             break;
@@ -56,7 +59,7 @@ function html_print_title($username, $location) {
             PRINT "<title>$username@Monolith BBS: Sending eXpress message to $quad</title>\n";
             break;
         default:
-            PRINT "<title>$username@Monolith BBS: Listing available quadrants</title>\n";
+            PRINT "<title>$username@Monolith BBS: Logged in</title>\n";
             break;
     }
 
