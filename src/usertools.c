@@ -1166,9 +1166,7 @@ _get_monoholic_flag(user_t *user)
 {
     float var = 0;
 
-    var = (float)user->posted / (float)user->timescalled;
-    var += (float) user->x_s / (float) user->timescalled / 100;
-    var += (float) user->timescalled/4000;
+    var = ((float) user->posted / (float) user->timescalled) + ((float) user->x_s / (float) user->timescalled / 100) + ((float) user->timescalled/4000);
 
     if((var < 1.8) || (user->timescalled < 1000))
         return "";
@@ -1183,22 +1181,35 @@ _get_monoholic_flag(user_t *user)
     if(var < 3.5)
         return "\1f\1w* \1gCommitted Monoholic \1w*";
     if(var < 4)
-        return "\1f\1w* \1bGreat Monoholic \1w*";
+        return "\1f\1w* \1gGreat Monoholic \1w*";
     if(var < 5)
-        return "\1f\1w* \1bHigh Monoholic \1w*";
+        return "\1f\1w* \1gGrand Monoholic \1w*";
     if(var < 6)
-        return "\1f\1w* \1bExalted Monoholic \1w*";
+        return "\1f\1w* \1gHigh Monoholic \1w*";
     if(var < 7)
-        return "\1f\1w* \1bSupreme Monoholic \1w*";
+        return "\1f\1w* \1gSupreme Monoholic \1w*";
     if(var < 8)
-        return "\1f\1w* \1pGreat High Monoholic \1w*";
+        return "\1f\1w* \1bGreat High Monoholic \1w*";
     if(var < 9)
-        return "\1f\1w* \1pExalted High Monoholic \1w*";
+        return "\1f\1w* \1bGrand High Monoholic \1w*";
     if(var < 10)
-        return "\1f\1w* \1pSupreme High Monoholic \1w*";
+        return "\1f\1w* \1bSupreme High Monoholic \1w*";
+    if(var < 11)
+        return "\1f\1w* \1bExalted Great Monoholic \1w*";
     if(var < 12)
-        return "\1f\1w* \1pSupreme High Exalted Monoholic \1w*";
-
+        return "\1f\1w* \1bExalted Grand Monoholic \1w*";
+    if(var < 13)
+        return "\1f\1w* \1bExalted High Monoholic \1w*";
+    if(var < 14)
+        return "\1f\1w* \1bExalted Supreme Monoholic \1w*";
+    if(var < 15)
+        return "\1f\1w* \1pSupreme Exalted High Monoholic \1w*";
+    if(var < 16)
+        return "\1f\1w* \1pSupreme Exalted Great Monoholic \1w*";
+    if(var < 17)
+        return "\1f\1w* \1pSupreme Exalted Grand Monoholic \1w*";
+    if(var < 18)
+        return "\1f\1w* \1pSupreme Exalted High Monoholic \1w*";
     return "\1f\1w(* \1rPenultimate Monoholic \1w*)";
 
 }
