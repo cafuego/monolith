@@ -143,6 +143,7 @@ mono_sql_mes_retrieve(unsigned int id, unsigned int forum, message_t *data)
         "LEFT JOIN " T_TABLE " AS tr ON tr.topic_id=m.r_topic_id " \
         "LEFT JOIN " T_TABLE " AS tm ON tm.topic_id=m.m_topic_id" \
         "," R_TABLE " AS r WHERE m.message_id IN(r.message_id) " \
+        "AND m.forum_id IN (r.forum_id) " \
         "AND m.forum_id=%u AND m.message_id=%u", forum, id );
 
 #ifdef OLD_SHIT
@@ -203,8 +204,8 @@ mono_sql_mes_list_forum(unsigned int forum, unsigned int start, mlist_t ** list)
         "LEFT JOIN " T_TABLE " AS tr ON tr.topic_id=m.r_topic_id " \
         "LEFT JOIN " T_TABLE " AS tm ON tm.topic_id=m.m_topic_id" \
         "," R_TABLE " AS r WHERE m.message_id IN(r.message_id) " \
-        "AND m.forum_id=%u AND m.message_id>%u GROUP BY m.message_id",
-            forum, start );
+        "AND m.forum_id IN (r.forum_id) AND m.forum_id=%u AND " \
+        "m.message_id>%u GROUP BY m.message_id", forum, start );
 
 #ifdef OLD_SHIT
     ret = mono_sql_query(&res, "SELECT message_id,topic_id,forum_id,author,alias,subject,UNIX_TIMESTAMP(date) AS date,type,priv,deleted FROM " M_TABLE " WHERE message_id>%u AND forum_id=%u ORDER BY message_id", start, forum);
@@ -271,8 +272,8 @@ mono_sql_mes_list_topic(unsigned int topic, unsigned int start, mlist_t ** list)
         "LEFT JOIN " T_TABLE " AS tr ON tr.topic_id=m.r_topic_id " \
         "LEFT JOIN " T_TABLE " AS tm ON tm.topic_id=m.m_topic_id" \
         "," R_TABLE " AS r WHERE m.message_id IN(r.message_id) " \
-        "AND m.topic_id=%u AND m.message_id>%u GROUP BY m.message_id",
-            topic, start );
+        "AND m.forum_id IN (r.forum_id) AND m.topic_id=%u AND " \
+        "m.message_id>%u GROUP BY m.message_id", topic, start );
 
 #ifdef OLD_SHIT
     ret = mono_sql_query(&res, "SELECT message_id,topic_id,forum_id,author,alias,subject,UNIX_TIMESTAMP(date) AS date,type,priv,deleted FROM " M_TABLE " WHERE message_id>%u AND topic_id=%u ORDER BY message_id", start, topic);
