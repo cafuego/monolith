@@ -167,7 +167,7 @@ segfault(int sig)
 {
     sig++;
     sleep(1);
-    cprintf( _("OH NO!!!!!!! A SEGFAULT!!!!!\n "));
+    cprintf(_("OH NO!!!!!!! A SEGFAULT!!!!!\n "));
     /*
      * Well, it _might_ work... if not, I'll fiddle with ye
      * code for cleaning up a previous login.
@@ -198,39 +198,42 @@ kickoutmyself(int sig)
 *************************************************/
 
 int
-enter_passwd(user_t * user, const char *username)
+enter_passwd(const char *username)
 {
 
     char pwtest[20];
     static int failures;
+    user_t *user = NULL;
 
-    if(usersupp != NULL)
-        cprintf("\r%s's Password: ", user->username);
-    else
-        cprintf("\r%s's Password: ", username);
+    /*
+     * First check if user exists. If not, just say so.
+     */
+    if (!(check_user(username))) {
+        cprintf(_("No such user.\n"));
+	log_it("badpw", "Login as %s from %s, but user does not exist", username, hname);
+        return FALSE;
+    }
+
+    user = readuser(username);
+    cprintf("\r%s's Password: ", user->username);
     (void) getline(pwtest, -19, 1);
 
     if (strlen(pwtest) == 0) {
 	failures++;
 	return FALSE;
     }
+    if (mono_sql_u_check_passwd(user->usernum, pwtest) == TRUE)
+	return TRUE;
 
-    if ( mono_sql_u_check_passwd(user->usernum, pwtest ) == TRUE )
-        return TRUE;
-
-    if( ! (check_user( username ))) {
-        log_it("badpw", "Login as %s from %s, but user does not exist", username, hname);
-
-    cprintf( _("Incorrect login.\n"));
+    cprintf(_("Incorrect login.\n"));
     log_it("badpw", "%s from %s", username, hname);
 
     if (++failures >= 4) {
- 	cprintf("Too many failures.\n");
-     	logoff(-1);
+	cprintf("Too many failures.\n");
+	logoff(-1);
     }
-
     return FALSE;
-}	
+}
 
 void
 do_changepw()
@@ -238,13 +241,13 @@ do_changepw()
 
     char pwtest[20];
 
-    cprintf( _("\1f\1gPlease enter your \1rcurrent\1g password: "));
+    cprintf(_("\1f\1gPlease enter your \1rcurrent\1g password: "));
     getline(pwtest, -19, 1);
 
     if (strlen(pwtest) == 0)
 	return;
 
-    if ( mono_sql_u_check_passwd( usersupp->usernum, pwtest ) == TRUE ) {
+    if (mono_sql_u_check_passwd(usersupp->usernum, pwtest) == TRUE) {
 	change_passwd(usersupp);
 	(void) writeuser(usersupp, 0);
 	(void) cprintf(_("Password changed.\n"));
@@ -286,8 +289,8 @@ change_passwd(user_t * user)
 	}
     }
 
-    set_password( user, pwread );
-    mono_sql_u_set_passwd( user->usernum, pwread );
+    set_password(user, pwread);
+    mono_sql_u_set_passwd(user->usernum, pwread);
     cprintf("\n");
 
 }				/* end change_passwd */
@@ -373,9 +376,9 @@ main(int argc, char *argv[])
     chdir(BBSDIR);
 
 #ifdef ENABLE_NLS
-       setlocale (LC_ALL, "");
-       bindtextdomain ( PACKAGE, "/usr/bbs/share/locale");
-       textdomain ( PACKAGE );
+    setlocale(LC_ALL, "");
+    bindtextdomain(PACKAGE, "/usr/bbs/share/locale");
+    textdomain(PACKAGE);
 #endif
 
     if (getuid() != BBSUID && getgid() != BBSGID) {
@@ -424,11 +427,11 @@ main(int argc, char *argv[])
 
     sprintf(tmpname, BBSDIR "/tmp/%d.2", getpid());
     unlink(tmpname);
-       
+
     mono_sql_connect();
 
     /* OKAY, get ourselves a basic user, we don't want to rely on savefiles */
-    usersupp = (user_t *)xcalloc(1, sizeof(user_t));
+    usersupp = (user_t *) xcalloc(1, sizeof(user_t));
     /* usersupp = readuser( "Guest" ); */
     usersupp->screenlength = 35;
     usersupp->priv = 0;
@@ -436,7 +439,7 @@ main(int argc, char *argv[])
     /* add here the random hello messages */
     srand(time(NULL));
     (void) sprintf(hellomsg, HELLODIR "/hello%d", ((int) random() % 7) + 1);
-    (void) more(hellomsg,1);
+    (void) more(hellomsg, 1);
 
     fflush(stdout);
     usersupp->screenlength = 24;
@@ -450,18 +453,20 @@ main(int argc, char *argv[])
 	while (!done) {
 	    enter_name(username);	/* find out who the user is     */
 	    if (EQ(username, "new")) {	/* a new user?                  */
-                xfree(usersupp);        /* free guest struct */
+		xfree(usersupp);	/* free guest struct */
 		new_user(hname);
 		usersupp = readuser(username);
 		done = TRUE;
 	    } else {
 		xfree(usersupp);
-		usersupp = readuser(username);
 		if (strcasecmp(username, "Guest") != 0) {
-		    done = enter_passwd(usersupp, username);
+		    done = enter_passwd(username);
+		    usersupp = readuser(username);
 		} else {	/* is guest */
-		    done = TRUE;
-		    if (usersupp == NULL) {
+		    if (check_user("Guest")) {
+			usersupp = readuser("Guest");
+			done = TRUE;
+		    } else {
 			log_it("errors", "Create a guest account!\n");
 			cprintf("\1f\1rGuest account is not enabled, sorry\n");
 			logoff(ULOG_PROBLEM);
@@ -474,19 +479,20 @@ main(int argc, char *argv[])
     my_name = (char *) xmalloc(sizeof(char) * (L_USERNAME + 1));
     strcpy(my_name, usersupp->username);
 
-    set_timezone( usersupp->timezone );
+    set_timezone(usersupp->timezone);
     mono_setuid(my_name);
     connecting_flag = 0;
 
 #ifdef ENABLE_NLS
-{      char env[L_LANG];
-       sprintf( env, "LANG=%s", usersupp->lang );
-       putenv( env );
-}
-        {
-              extern int  _nl_msg_cat_cntr;
-              ++_nl_msg_cat_cntr;
-            }
+    {
+	char env[L_LANG];
+	sprintf(env, "LANG=%s", usersupp->lang);
+	putenv(env);
+    }
+    {
+	extern int _nl_msg_cat_cntr;
+	++_nl_msg_cat_cntr;
+    }
 #endif
 
 #ifdef OLD
@@ -508,7 +514,8 @@ main(int argc, char *argv[])
 
     mono_connect_shm();
 
-    if (usersupp->configuration == 0) usersupp->configuration++;
+    if (usersupp->configuration == 0)
+	usersupp->configuration++;
     mono_sql_read_config(usersupp->configuration, &config);
 
     IFGUEST;
@@ -522,14 +529,13 @@ main(int argc, char *argv[])
 	}
 	cprintf("  \1r\007Done.\n");
     }
-
     sprintf(CLIPFILE, "%s/clipboard", getuserdir(my_name));
 
     if (!fexists(CLIPFILE)) {
 	(void) close(creat(CLIPFILE, 0660));	/* create the file */
     }
     laston = usersupp->laston_from;
-    usersupp->laston_from = time( &login_time );
+    usersupp->laston_from = time(&login_time);
     usersupp->timescalled++;
     strcpy(previous_host, usersupp->lasthost);
     strncpy(usersupp->lasthost, hname, L_HOSTNAME);
@@ -544,11 +550,11 @@ main(int argc, char *argv[])
     if ((!(usersupp->priv & PRIV_VALIDATED)) && usersupp->timescalled > 1)
 	enter_key();
 
-    if (usersupp->priv & PRIV_VALIDATED) 
+    if (usersupp->priv & PRIV_VALIDATED)
 	usersupp->flags |= US_REGIS;
-    else 
+    else
 	usersupp->flags &= ~US_REGIS;
-    
+
 
     /* ask for their address, if they are degraded */
     IFDEGRADED
@@ -564,11 +570,11 @@ main(int argc, char *argv[])
     /* this resets the rooms for guests */
     IFGUEST
     {
-       room_t thing;
-   
+	room_t thing;
+
 	usersupp->flags |= US_XOFF;
 	for (a = 0; a < MAXQUADS; a++) {
-            thing = readquad( a );
+	    thing = readquad(a);
 	    usersupp->lastseen[a] = thing.lowest;
 	    usersupp->generation[a] = -1;
 	    usersupp->forget[a] = -1;
@@ -593,7 +599,7 @@ main(int argc, char *argv[])
 #endif
     setup_express();		/* setup express stuff */
 
-    xfree(my_name);  /* not needed, who_am_i() in btmp.c knows who i am now */
+    xfree(my_name);		/* not needed, who_am_i() in btmp.c knows who i am now */
 
     /* FROM THIS POINT ON, THE USER IS LOGGED IN, AND IN THE WHOLIST. */
     /* -------------------------------------------------------------- */
@@ -608,7 +614,7 @@ main(int argc, char *argv[])
     } else {
 	change_express(1);
     }
-    check_profile_updated();		/* set wholist flag? */
+    check_profile_updated();	/* set wholist flag? */
     nox = 0;
 
     /* yes! let's tell friends of mine that i'm logged on! */
@@ -619,22 +625,21 @@ main(int argc, char *argv[])
 
     curr_rm = 0;
     gotocurr();
-    last_skipped_rm = -1;  /* set to anything negative here */
+    last_skipped_rm = -1;	/* set to anything negative here */
 
     for (a = 0; a < MAXQUADS; a++)
 	skipping[a] = 0;
 
     if (usersupp->timescalled == 1) {
 #ifdef QC_ENABLE
-        if (qc_user_menu(1) == -1) /* qc is horked, or locked out */
+	if (qc_user_menu(1) == -1)	/* qc is horked, or locked out */
 #endif
-            newbie_mark_as_read(5);     /* marks all but 5 messages as read */
+	    newbie_mark_as_read(5);	/* marks all but 5 messages as read */
 
-    mono_sql_uu_clear_list( usersupp->usernum );
+	mono_sql_uu_clear_list(usersupp->usernum);
     }
-
 #ifndef CLIENTSRC
-    more( BBSDIR "share/try_client", TRUE);
+    more(BBSDIR "share/try_client", TRUE);
 #endif
 
     short_prompt();
@@ -656,8 +661,8 @@ user_terminate()
     /* add stuff here to check if someone is x-ing you */
     if (mono_find_x_ing(who_am_i(NULL), xer) == 0) {
 	cprintf(_("\n\n\1g\1f%s \1yis still sending you an %s %s.\n\1a"), xer, config.express, config.x_message);
-        cprintf(_("\1f\1gHit any key to continue...\1a"));
-        inkey();
+	cprintf(_("\1f\1gHit any key to continue...\1a"));
+	inkey();
     }
     while (cmd != 'n' || cmd != 'y' || cmd != 'm') {
 
@@ -713,26 +718,25 @@ logoff(int code)
 
 #ifdef MAIL_QUOTA
     if (!code)
-        purge_mail_quad();
+	purge_mail_quad();
 #endif
-    
-    if ( connecting_flag ) {
+
+    if (connecting_flag) {
 	(void) mono_send_signal_to_the_queue();		/* if there's a queue, let 1 in */
 	(void) mono_detach_shm();
-        (void) mono_sql_detach();
-        (void) exit(0);
+	(void) mono_sql_detach();
+	(void) exit(0);
     }
-
 #ifdef PORT
-    (void) mono_sql_onl_remove( usersupp->usernum, "telnet" );	/* remove from sql */
+    (void) mono_sql_onl_remove(usersupp->usernum, "telnet");	/* remove from sql */
 #else
-    (void) mono_sql_onl_remove( usersupp->usernum, "client" );	/* remove from sql */
+    (void) mono_sql_onl_remove(usersupp->usernum, "client");	/* remove from sql */
 #endif
 
     if (shm) {
 	(void) dump_quickroom();
 	(void) log_user(usersupp, hname, code);
-	(void) mono_sql_log_logout( usersupp->usernum, login_time, time(0), hname, code );
+	(void) mono_sql_log_logout(usersupp->usernum, login_time, time(0), hname, code);
 	(void) mono_remove_loggedin(who_am_i(NULL));	/* remove user from wholist     */
 
 	/* say goodbye */
@@ -743,7 +747,7 @@ logoff(int code)
 
 	(void) mono_send_signal_to_the_queue();		/* if there's a queue, let 1 in */
 	(void) mono_detach_shm();
-        (void) mono_sql_detach();
+	(void) mono_sql_detach();
     }
     /* change online time stuff */
     usersupp->laston_to = time(0);
@@ -777,7 +781,7 @@ print_login_banner(time_t laston)
 
     char filename[50];
 
-    (void) cprintf( _("\n\1a\1f\1gWelcome to Monolith BBS, \1g%s! \1gThis is your \1w#%d \1glogin.\n")
+    (void) cprintf(_("\n\1a\1f\1gWelcome to Monolith BBS, \1g%s! \1gThis is your \1w#%d \1glogin.\n")
 		   ,usersupp->username, usersupp->timescalled);
 
     if ((strncmp(previous_host, "none", 4)) != 0)
@@ -817,10 +821,11 @@ mailcheck()
 {
 
     int b, count;
-    float percent;	
-    
-    if EQ(who_am_i(NULL), "Guest")
-	return;
+    float percent;
+
+    if EQ
+	(who_am_i(NULL), "Guest")
+	    return;
 
     count = count_mail_messages();
 
@@ -828,8 +833,8 @@ mailcheck()
     b = (int) (100 * percent);
 
     if (count > 0)
-        cprintf("\n\1f\1gYour Mail quad is at %s%d \1gpercent capacity.\n", 
-	((b < 80) ? "" : ((b < 95) ? "\1y" : "\1r")), b); 
+	cprintf("\n\1f\1gYour Mail quad is at %s%d \1gpercent capacity.\n",
+		((b < 80) ? "" : ((b < 95) ? "\1y" : "\1r")), b);
 
     b = usersupp->mailnum - usersupp->lastseen[1];
 
@@ -899,16 +904,16 @@ check_profile_updated()
     sprintf(work, "%s/profile", getuserdir(usersupp->username));
     work[strlen(work)] = '\0';
 
-    if(!(fexists(work)))
-        return;
+    if (!(fexists(work)))
+	return;
 
     time(&timenow);
     stat(work, &buf);
 
-    if( (timenow - buf.st_mtime) < (2 * 24 * 60 * 60) )
-        mono_change_online(usersupp->username, NULL, 12);
+    if ((timenow - buf.st_mtime) < (2 * 24 * 60 * 60))
+	mono_change_online(usersupp->username, NULL, 12);
     else
-        mono_change_online(usersupp->username, NULL, -12);
+	mono_change_online(usersupp->username, NULL, -12);
 
     return;
 }
