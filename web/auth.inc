@@ -74,7 +74,7 @@
 
   function auth_invalid_userpass() {
 
-    global $PHP_AUTH_USER, $PHP_AUTH_PW;
+    global $PHP_AUTH_USER $PHP_AUTH_PW;
 
     echo "<h2 align=\"center\">Invalid Password</h2>\n";
     echo "<p align=\"center\">The password you provided for $PHP_AUTH_USER is incorrect.</p>\n";
@@ -84,6 +84,9 @@
     echo "                    be taken to the login screen automatically.</p>\n";
     echo "</body>\n";
     echo "</html>\n";
+
+    unset $PHP_AUTH_USER;
+    unset $PHP_AUTH_PW;
 
     return;
   }
