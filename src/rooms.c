@@ -819,7 +819,7 @@ editroom()
 	if (command == '\n' || command == '\r')
 	    done = TRUE;
 	else
-	    edit_room_field(&quickroom, command);
+	    edit_room_field(&quickroom, curr_rm, command );
     }				/* end while */
 
     if (need_rewrite == TRUE) {
@@ -841,7 +841,7 @@ editroom()
  */
 
 void
-edit_room_field(room_t * QRedit, int fieldnum)
+edit_room_field(room_t * QRedit, unsigned int forum_id, int fieldnum )
 {
     int loop, slot, i, j = 0;
     char *quad_name, cmd, name[L_USERNAME + 1];
@@ -862,6 +862,7 @@ edit_room_field(room_t * QRedit, int fieldnum)
 	    } else {
 		log_sysop_action("changed %ss name into %s.", QRedit->name, quad_name);
 		strcpy(QRedit->name, quad_name);
+                mono_sql_f_rename_forum( forum_id, quad_name );
 		need_rewrite = TRUE;
 	    }
 	    break;
