@@ -9,3 +9,4 @@ Makefile
 Makefile.in
 build-defs.h
 configure
+stamp-h
