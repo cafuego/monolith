@@ -167,16 +167,31 @@ function read_message($username, $quad, $current, $direction)
  */
 function mes_link_urls( $text ) {
 
-    eregi("http://.* $", $text, $url_list);
-
-    if(isset($url_list)) {
-        $url = current($url_list);
+    eregi("http://.* ", $text, $http_list);
+    if(isset($http_list)) {
+        $url = current($http_list);
+        $tmplist = split(" ", $url);
+        $url = $tmplist[0];
         do {
             echo "<a href=\"$url\">$url</a>\n";
-        } while($url = next($url_list));
+        } while($url = next($http_list));
     } else {
-       echo "<p>No links found.\n";
+       echo "<p>No http links found.\n";
     }
+
+    eregi("ftp://.* ", $text, $ftp_list);
+    if(isset($ftp_list)) {
+        $url = current($ftp_list);
+        $tmplist = split(" ", $url);
+        $url = $tmplist[0];
+        do {
+            echo "<a href=\"$url\">$url</a>\n";
+        } while($url = next($ftp_list));
+    } else {
+       echo "<p>No ftp links found.\n";
+    }
+
+    return $text;
 
     return $text;
 }
