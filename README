@@ -12,6 +12,10 @@ After that you need to do the following as root:
 * add a user `bbs' to /etc/passwd, the user should have /usr/bbs 
     as homedir, and be in the `bbs' group.
 
+* get and install the MySQL server (www.tcx.se), and install that.
+  create a database called 'bbs' and run the .sql files that are
+  stored in doc/sql
+
 * run `make install' to install the binaries
 
 * add the daemons to /etc/inetd.conf
@@ -31,9 +35,6 @@ private         24/tcp
 
 Here we moved the telnet port to port 24 (normally unused), and put the
 bbs on the normal telnet port.
-
-* The `make install' procedure does not yet copy all files in share/ to
-  the bbs directories. You have to copy those by hand.
 
 * Create dirs in /usr/bbs/save/quads with numbers from 0 to MAXROOMS 
   (usually 150)
