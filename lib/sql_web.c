@@ -164,13 +164,13 @@ mono_sql_web_wholist()
          * Start printing users.
          */
         while(list != NULL) {
-            sprintf(line, "\1a\1f%-20s ", list->user->username);
+            sprintf(line, "\1a\1f\1g%-20s ", list->user->username);
             strcat(line, "\1p[    ] ");
             strcat(line, "\1gMonolith Website ");
             q = line + strlen(line);
             (void) sprintf(q, "\1f\1p%s ", list->user->online);
             q = line + strlen(line);
-            (void) sprintf(q, "\1f\1ySurfing the web\1a\n");
+            (void) sprintf(q, "\1f\1ySurfing the web in style!\1a\n");
             strcat(p, line);
             list = list->next;
         }

@@ -162,6 +162,9 @@ mono_sql_convert_row_to_wu(MYSQL_ROW row)
 
     memset(u, 0, sizeof(wu_t));
 
+    strcpy(u->username, "");
+    strcpy(u->online, "");
+
     snprintf(u->username, L_USERNAME, "%s", row[0]);
     snprintf(u->online, 15, "%s", row[1]);
 
@@ -169,7 +172,7 @@ mono_sql_convert_row_to_wu(MYSQL_ROW row)
      * Chop seconds :)
      */
     c = strrchr(u->online, ':');
-    c = '\0';
+    c = NULL;
 
     return u;
 }
