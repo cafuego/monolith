@@ -646,8 +646,15 @@ change_roominfo()
 void
 show_room_aides()
 {
+#ifdef OLD
     int i;
+#endif 
 
+    cprintf("\1f\1g%s\1w: ", config.roomaide);
+    print_hosts_simple( curr_rm);
+    cprintf( "\n" );
+
+#ifdef OLD
     if (strlen(quickroom.qls[0]) == 0) {
 	cprintf("\1f\1g%s\1w  : \1ySysop.\1a\n", config.roomaide);
     } else {
@@ -659,6 +666,7 @@ show_room_aides()
 	}
 	cprintf(".\n");
     }
+#endif
     cprintf("\1f\1g%s category\1w: \1y%s\1g.\n", config.forum, quickroom.category);
 }
 
@@ -1668,6 +1676,32 @@ print_userlist_list(userlist_t * p)
     return;
 }
 
+
+int
+print_hosts_simple( unsigned int forum_id )
+{
+    userlist_t *p;
+    int ret;
+
+    ret = mono_sql_uf_list_hosts_by_forum(forum_id, &p);
+    
+    if ( ret == -1 ) {
+       cprintf( "Error, could not get list of hosts.\n" );
+       return -1;
+    }
+
+    cprintf( "\1g\1f" );
+
+    while (p) {
+        cprintf( "%s", p->name);
+        if ( p->next ) cprintf( ", " );
+	p = p->next;
+    }
+
+    cprintf( "\1n" );
+    dest_userlist(p);
+    return 0;
+}
 
 void
 kickout_menu()
