@@ -24,7 +24,7 @@ function profile_user($username, $victim) {
 
     addimage("$victim's Profile");
 
-    $result = mysql_query("SELECT content_type FROM user WHERE id=$USER_ID");
+    $result = mysql_query("SELECT content_type FROM user WHERE id=$victim_id");
     $number = MYSQL_NUMROWS($result);
     if ($number) {
         $content_type = mysql_result($result, 0, "content_type");
