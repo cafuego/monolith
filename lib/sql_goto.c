@@ -37,7 +37,7 @@ mono_sql_random_goto(void)
     num = atoi(row[0]);
     (void) mysql_free_result(res);
 
-    mono_sql_query(&res, "SELECT * FROM %s WHERE ID=%d", GOTO_TABLE, 
+    mono_sql_query(&res, "SELECT goto FROM %s WHERE ID=%d", GOTO_TABLE, 
 		((rand() % num) + 1));
 
     if (mysql_num_rows(res) != 1) {
@@ -47,8 +47,8 @@ mono_sql_random_goto(void)
 
     row = mysql_fetch_row(res);
 
-    string = (char *) xmalloc(strlen(row[1]) + 1);
-    strcpy(string, row[1]);
+    string = (char *) xmalloc(strlen(row[0]) + 1);
+    strcpy(string, row[0]);
     (void) mysql_free_result(res);
 
     return string;

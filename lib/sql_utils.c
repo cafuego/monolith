@@ -149,6 +149,7 @@ escape_string(const char *old_string, char **new_string)
     return 0;
 }
 
+#ifdef MICHELS_TIME_FUNCS
 /* convert MySQL date format to UNIX time_t */
 /* YYYY-MM-DD -> long : */
 /* returns 0 on success, -1 on error */
@@ -206,5 +207,6 @@ time_to_date(time_t time, char *datetime)
 
     return 0;
 }
+#endif
 
 /* eof */
