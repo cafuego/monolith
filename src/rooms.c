@@ -373,7 +373,7 @@ do_invite()
 	cprintf("\1f\1rSomething went wrong inviting that user.\n\1a");
 	return;
     }
-    mono_sql_u_name2id(the_user, &user_id);
+    mono_cached_sql_u_name2id(the_user, &user_id);
     mono_sql_uf_add_invited(user_id, curr_rm);
 
     log_sysop_action("invited %s into %s>.", the_user, quickroom.name);
@@ -423,7 +423,7 @@ do_kickout()
 	cprintf("\n\1f\1rSomething went wrong kicking that user.\n\1a");
 	return;
     }
-    mono_sql_u_name2id(the_user, &user_id);
+    mono_cached_sql_u_name2id(the_user, &user_id);
     mono_sql_uf_add_kicked(user_id, curr_rm);
 
     log_sysop_action("kicked %s out of %s>.", the_user, quickroom.name);
@@ -1717,7 +1717,7 @@ menu_hostedit_add(const unsigned int ZZ, const long ZZZ, void *ZZZZ)
     if (strlen(name) == 0)
         return; 
 
-    if (mono_sql_u_name2id(name, &id2) == -1) {
+    if (mono_cached_sql_u_name2id(name, &id2) == -1) {
         cprintf("\1f\1rNo such user.\n");
         return; 
     }
@@ -1748,7 +1748,7 @@ menu_hostedit_remove(const unsigned int ZZ, const long ZZZ, void *ZZZZ)
     if (strlen(name) == 0)
         return;
 
-    mono_sql_u_name2id(name, &id2);
+    mono_cached_sql_u_name2id(name, &id2);
 
     if (mono_sql_uf_is_host( id2, curr_rm ) == FALSE) {
         cprintf("\1f\1y%s \1gis not a host in forum #%d.\n", name, curr_rm );

@@ -104,7 +104,7 @@ sendx(char *to, const char *send_string, char override)
     if (IS_BROADCAST)
 	Sendxs = &(shm->broadcast);
     else if (IS_WEB) {
-        (void) mono_sql_u_name2id(to, &to_id);
+        (void) mono_cached_sql_u_name2id(to, &to_id);
 #ifdef PORT
         if (mono_sql_web_send_x(usersupp->usernum, to_id, send_string, "telnet"))
 #else

@@ -283,7 +283,7 @@ menu_friend_add(int param)
 	    sprintf(name, "%s@%s", user, bbs);
 	}
 #endif
-    } else if (mono_sql_u_name2id(name, &id2) == -1) {
+    } else if (mono_cached_sql_u_name2id(name, &id2) == -1) {
 	cprintf("\1f\1rNo such user.\n");
 	return;
     }
@@ -327,7 +327,7 @@ menu_friend_quick_add()
     i = command - '0';
     if (mono_sql_uu_quickx2user(usersupp->usernum, i, &id2) == -1) {
 	strcpy(old, "");
-    } else if (mono_sql_u_id2name(id2, old) == -1) {
+    } else if (mono_cached_sql_u_id2name(id2, old) == -1) {
 	strcpy(old, "");
     }
     if (strlen(old) != 0) {
@@ -347,7 +347,7 @@ menu_friend_quick_add()
     if (strchr(name, '@') != NULL) {
 	cprintf("\1f\1rSorry, InterBBS names are not allowed.\n");
 	return;
-    } else if (mono_sql_u_name2id(name, &id2) == -1) {
+    } else if (mono_cached_sql_u_name2id(name, &id2) == -1) {
 	cprintf("\1f\1rNo such user.\n");
 	return;
     }
@@ -379,7 +379,7 @@ menu_friend_remove(int param)
     if (strlen(name) == 0)
 	return;
 
-    mono_sql_u_name2id(name, &id2);
+    mono_cached_sql_u_name2id(name, &id2);
 
     if (mono_sql_uu_is_on_list(usersupp->usernum, id2, flag) == FALSE) {
 	cprintf("\1f\1y%s \1gis not on your %slist.\n", name,
