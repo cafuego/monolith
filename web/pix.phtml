@@ -6,6 +6,7 @@
     connect_db();
     $result = mysql_query("select picture from user where id=1151");
     $data = mysql_result($result, 0, "picture");
+    $data = rawurldecode($data);
     echo "$data";
 
 ?>

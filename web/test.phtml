@@ -25,6 +25,7 @@
             $contents = fread( $fp, filesize( $userfile ) );
             fclose($fp);
             unlink ($userfile);
+            $contents = rawurlencode($contents);
             $result = mysql_query("UPDATE user SET picture='$contents' WHERE id=$usernum");
             $result = mysql_query("UPDATE user SET content_type='$userfile_type' WHERE id=$usernum");
         }
