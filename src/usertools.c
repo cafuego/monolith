@@ -1170,8 +1170,6 @@ _get_monoholic_flag(user_t *user)
     var += (float) user->x_s / (float) user->timescalled / 100;
     var += (float) user->timescalled/4000;
 
-    printf("%f\n", var);
-
     if((var < 1.8) || (usersupp->timescalled < 1000))
         return "";
     if(var < 1.8)
