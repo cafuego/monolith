@@ -39,7 +39,8 @@ mono_sql_mes_get_unread(unsigned int forum, unsigned int lastseen)
     }
 
     row = mysql_fetch_row(res);
-    ret = atoi(row[0]);
+
+    sscanf(row[0],"%d", &ret);
 
     (void) mysql_free_result(res);
 
