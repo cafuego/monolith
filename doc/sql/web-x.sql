@@ -1,6 +1,6 @@
 # $Id$
 
-DROP TABLE webx;
+# DROP TABLE webx;
 
 CREATE TABLE webx (
 

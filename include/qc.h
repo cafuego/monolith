@@ -5,15 +5,15 @@
 #define QC_TABLE "fqc"
 #define USER_QC_TABLE "uqc"
 
-#define QC_LOCKOUT BBSDIR "save/forums/qc.lockout"  /*lockout file */
+#define QC_LOCKOUT BBSDIR "/save/forums/qc.lockout"  /*lockout file */
 
   /*docs*/
-#define QC_NEWUSER_HELP BBSDIR "share/quadcont/newuser.doc"
-#define QC_NEWUSER_DONE "share/quadcont/newuser.done"
-#define QC_U_EDIT_DOC BBSDIR "share/quadcont/userdoc.doc"
-#define QC_USERDOC_DISCLAIMER "share/quadcont/userdoc.done"
-#define QC_F_EDIT_DOC BBSDIR "share/quadcont/quadedit"
-#define QC_LOCK_DOC BBSDIR "share/quadcont/lockhelp"
+#define QC_NEWUSER_HELP BBSDIR "/share/quadcont/newuser.doc"
+#define QC_NEWUSER_DONE "/share/quadcont/newuser.done"
+#define QC_U_EDIT_DOC BBSDIR "/share/quadcont/userdoc.doc"
+#define QC_USERDOC_DISCLAIMER "/share/quadcont/userdoc.done"
+#define QC_F_EDIT_DOC BBSDIR "/share/quadcont/quadedit"
+#define QC_LOCK_DOC BBSDIR "/share/quadcont/lockhelp"
  
 #define USER_EDIT	0
 #define FORUM_EDIT	1

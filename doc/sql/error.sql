@@ -2,7 +2,7 @@
 # Error log in SQL.
 #
 
-DROP TABLE error;
+# DROP TABLE error;
 
 CREATE TABLE error (
 

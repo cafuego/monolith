@@ -2,7 +2,7 @@
 # Logins in SQL.
 #
 
-DROP TABLE login;
+# DROP TABLE login;
 
 CREATE TABLE login (
 

@@ -1,6 +1,6 @@
 # Forums
 
-#DROP TABLE forum;
+# DROP TABLE forum;
 
 CREATE TABLE forum (
 

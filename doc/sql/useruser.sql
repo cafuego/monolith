@@ -1,7 +1,7 @@
 # users <-> users
 # table with friends, enemies, inform logons, etc.
 
-DROP TABLE useruser;
+# DROP TABLE useruser;
 
 CREATE TABLE useruser (
 

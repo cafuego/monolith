@@ -17,6 +17,7 @@
 #include <sys/mman.h>
 
 #ifdef HAVE_TERMBITS_H
+#undef HAVE_TERMIO_H
 #include <termbits.h>
 #endif
 

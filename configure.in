@@ -7,7 +7,7 @@ AM_INIT_AUTOMAKE(monolith, 1.0)
 AM_CONFIG_HEADER(include/config.h)
 AC_PREFIX_DEFAULT(/usr/bbs)
 
-AC_ARG_WITH(mysql, [  --with-mysql            use mysql database system  [default=yes]
+AC_ARG_WITH(mysql, [  --with-mysql=DIR        use mysql database system  [default=yes]
                           (requires mysql to be installed)],,with_mysql=yes)
 AC_ARG_WITH(rating, [  --with-rating           use message rating system  [default=yes]
                           (allows users to rate messages)],,with_rating=yes)
@@ -15,9 +15,7 @@ AC_ARG_WITH(hero, [  --with-hero             include superhero toy  [default=yes
                           (requires silly sysops)],,with_hero=yes)
 AC_ARG_WITH(overview, [  --with-overview         give overview after configuring  [default=no]],,with_overview=no)
 
-if test "x$with_mysql" != "xyes"; then
-  with_mysql=no
-fi
+
 if test "x$with_rating" != "xyes"; then
   with_rating=no
 fi
@@ -29,6 +27,8 @@ if test "x$with_overview" != "xyes"; then
 fi
 
 umask 002
+
+AC_SUBST(prefix)
 
 dnl Checks for programs.
 AC_PROG_AWK
@@ -57,7 +57,7 @@ dnl Checks for header files.
 AC_HEADER_DIRENT
 AC_HEADER_STDC
 AC_HEADER_SYS_WAIT
-AC_CHECK_HEADERS(crypt.h fcntl.h sgtty.h sys/file.h sys/ioctl.h sys/time.h sys/utsname.h termio.h termios.h termbits.h asm/termbits.h unistd.h mysql.h)
+AC_CHECK_HEADERS(crypt.h fcntl.h sgtty.h sys/file.h sys/ioctl.h sys/time.h sys/utsname.h termio.h termios.h termbits.h asm/termbits.h unistd.h)
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
@@ -94,15 +94,39 @@ if test "x$grep_path" != "xno" ; then
 fi
 
 dnl Do a bit of mysql checking.
-if test "x$with_mysql" = "xyes" ; then
-  echo -n "checking MySQL installation..."
-  if test "x$ac_cv_header_mysql_h" = "xno" ; then
-    echo " having another look"
-    AC_CHECK_HEADERS(mysql/mysql.h)
-    if test "x$ac_cv_header_mysql_mysql_h" = "xno" ; then
-      echo " whoops!"
+echo "checking MySQL installation..."
+if test ! x${withval} = x && test -d "${withval}" && test -d "${withval}/include"; then
+    mysql_dir=${withval}
+    echo -n "  -> headers..."
+    if test -d "${withval}/include"; then
+        MYSQL_INCLUDE="-I${withval}/include"
+        echo " ok"
+    else
+        echo " uh-oh"
+    fi
+    echo -n "  -> libraries..."
+    if test -d "${withval}/lib"; then
+        MYSQL_LIB="-L${withval}/lib"
+        echo " ok"
+    else
+        echo " uh-oh"
+    fi
+    echo -n "  -> binaries..."
+    if test -d "${withval}/bin"; then
+        MYSQL_BIN="${withval}/bin"
+        echo " ok"
+    else
+        echo " uh-oh"
+    fi
+    if test -f "${withval}/include/mysql.h"; then
+      AC_DEFINE(HAVE_MYSQL_H)
+      AC_DEFINE(USE_MYSQL)
+      AC_SUBST(MYSQL_INCLUDE)
+      AC_SUBST(MYSQL_LIB)
+      AC_SUBST(MYSQL_BIN)
+    else
       echo
-      echo "ARGH: Unable to locate mysql!"
+      echo "ARGH: Unable to locate mysql! Take cover! Self destructing in 3 seconds!"
       echo
       echo "Please install the MySQL database system, which is available for free from"
       echo "http://www.mysql.org/ and run this program again. If you do have MySQL in-"
@@ -110,15 +134,16 @@ if test "x$with_mysql" = "xyes" ; then
       echo "configure can find it."
       echo
       exit 0
-    else
-      AC_DEFINE(HAVE_MYSQL_MYSQL_H)
     fi
-  else
-    echo " rock!"
-    AC_DEFINE(HAVE_MYSQL_H)
-  fi
-  AC_CHECK_LIB(mysqlclient, mysql_connect)
-  AC_DEFINE(USE_MYSQL)
+else
+    echo
+    echo "ARGH: Unable to locate mysql! Take cover! Self destructing in 3 seconds!"
+    echo
+    echo "Please install the MySQL database system, which is available for free from"
+    echo "http://www.mysql.org/ and run this program again. If you do have MySQL in-"
+    echo "stalled, use the option --with-mysql=DIR so that $0 can find it."
+    echo
+    exit 0
 fi
 
 dnl Use message rating system?
@@ -184,7 +209,7 @@ if test "$no_create" != "yes" ; then
 
   dnl Update or create version stamp, but only if it' not
   dnl automagically running.
-  /bin/sh ./mkversion-sh
+  /bin/sh ./mkversion-sh $mysql_dir
 
   dnl Linux newbie stuff.
   dnl

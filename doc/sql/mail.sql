@@ -1,6 +1,6 @@
 # mail
 
-DROP TABLE mail;
+# DROP TABLE mail;
 
 CREATE TABLE mail (
 

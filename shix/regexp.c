@@ -801,7 +801,7 @@ regexec(prog, string)
  register char *string;
 {
     register char *s;
-    extern char *strchr();
+    // extern char *strchr();
 
     /* Be paranoid... */
     if (prog == NULL || string == NULL) {
@@ -896,7 +896,7 @@ regmatch(prog)
 {
     register char *scan;	/* Current node. */
     char *next;			/* Next node. */
-    extern char *strchr();
+    // extern char *strchr();
 
     scan = prog;
 #ifdef DEBUG
@@ -1101,7 +1101,7 @@ regrepeat(p)
     register char *scan;
     register char *opnd;
 
-    extern char *strchr();
+    // extern char *strchr();
 
     scan = reginput;
     opnd = OPERAND(p);

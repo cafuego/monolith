@@ -3,7 +3,15 @@
 noinst_LIBRARIES = libshix.a
 libshix_a_SOURCES = libshix.c regerror.c regexp.c regsub.c
 
-CFLAGS = -O3 -Wall
+#ifdef USE_MYSQL
+LDADD = $(MYSQL_LIB) -lmysqlclient
+#endif
+
+CFLAGS =-O3 -Wall -DBBSDIR=\"$(prefix)\"
+
+#ifdef USE_MYSQL
+CFLAGS += $(MYSQL_INCLUDE)
+#endif
 
 #CFLAGS += -pedantic -w -W \
 #  -Wall -Waggregate-return -Wcast-align -Wcast-qual \

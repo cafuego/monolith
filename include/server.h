@@ -22,11 +22,11 @@
 #define FD_SETSIZE 256
 #endif
 
-#define BBSEXECUTABLE   BBSDIR "bin/yawc_client"
-#define MOTD		BBSDIR "share/motd" 
-#define ALLOWFILE	BBSDIR "etc/front.ALLOW"
-#define PROHIBMSG	BBSDIR "share/messages/prohib"
-#define FULLMSG		BBSDIR "share/messages/full"
+#define BBSEXECUTABLE   BBSDIR "/bin/yawc_client"
+#define MOTD		BBSDIR "/share/motd" 
+#define ALLOWFILE	BBSDIR "/etc/front.ALLOW"
+#define PROHIBMSG	BBSDIR "/share/messages/prohib"
+#define FULLMSG		BBSDIR "/share/messages/full"
 
 /* prototypes */
 int main(int, char **);

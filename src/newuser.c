@@ -162,7 +162,7 @@ newuser_makesupp()
 	user->RA_rooms[a] = -1;
 
     strcpy(user->lasthost, "\1rnewbie.com");
-    strcpy(user->doing, "\1R\1yI'm a new species!");
+    strcpy(user->doing, "\1Y\1bI'm a tea drinker!");
 
     time(&aa);
     user->laston_from = aa;

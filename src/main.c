@@ -378,7 +378,7 @@ main(int argc, char *argv[])
 
 #ifdef ENABLE_NLS
     setlocale(LC_ALL, "");
-    bindtextdomain(PACKAGE, "/usr/bbs/share/locale");
+    bindtextdomain(PACKAGE, BBSDIR "/share/locale");
     textdomain(PACKAGE);
 #endif
 
@@ -395,7 +395,7 @@ main(int argc, char *argv[])
     hname[79] = '\0';
     if (hname[0] == '\0')	/* we're from localhost */
 	if (gethostname(hname, 79) == -1)
-	    strcpy(hname, "bbs.monolith.nl");
+	    strcpy(hname, "localhost");
 
     connecting_flag = 1;
 

@@ -3,8 +3,17 @@ bin_PROGRAMS = server front
 server_SOURCES = server.c
 front_SOURCES = front.c
 
-LDADD = -L../lib -lyawc
-CFLAGS = -O3 -Wall
+CFLAGS = -O3 -Wall -DBBSDIR=\"$(prefix)\"
+
+#ifdef USE_MYSQL
+CFLAGS += $(MYSQL_INCLUDE)
+#endif
+
+#ifdef USE_MYSQL
+LDADD = $(MYSQL_LIB) -L../lib -lmysqlclient -lyawc
+#else
+LDADD = $(MYSQL_LIB) -L../lib -lyawc -lmysqlclient
+#endif
 
 #CFLAGS += -W \
 #  -Wall -Waggregate-return -Wcast-align -Wcast-qual \

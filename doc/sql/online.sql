@@ -1,7 +1,7 @@
 # $Id$
 # list of currently online users.
 
-DROP TABLE online;
+# DROP TABLE online;
 
 CREATE TABLE online (
 

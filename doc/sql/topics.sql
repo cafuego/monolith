@@ -1,7 +1,7 @@
 # Topics
 # sub-areas inside forums.
 
-DROP TABLE topics;
+# DROP TABLE topics;
 
 CREATE TABLE topics (
 

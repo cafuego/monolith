@@ -18,4 +18,8 @@ LDADD = -L../lib -lyawc -L/usr/local/mysql/lib ../intl/libintl.a
 # this does not work
 #LDADD = -L../lib -lyawc -L/usr/local/mysql/lib -lintl
 
-CFLAGS = -I/usr/local/include/mysql -O3 -Wall
+CFLAGS = -g -O3 -Wall -DBBSDIR=\"$(prefix)\"
+
+#ifdef USE_MYSQL
+CFLAGS =+ $(MYSQL_INCLUDE)
+#endif

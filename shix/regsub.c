@@ -49,7 +49,7 @@ regsub(prog, source, dest)
     register char c;
     register int no;
     register int len;
-    extern char *strncpy();
+    // extern char *strncpy();
 
     if (prog == NULL || source == NULL || dest == NULL) {
 	regerror("NULL parm to regsub");

@@ -307,7 +307,7 @@ dexi_wholist(const char *bbsname)
 	cprintf("\1r\1fRemote host not responding.\1a\n\n");
 	return 0;
     }
-    file = tempnam(BBSDIR "tmp", "rwho");
+    file = tempnam(BBSDIR "/tmp", "rwho");
 
     tf = xfopen(file, "w", FALSE);
     if (!tf) {
@@ -387,7 +387,7 @@ dexi_profile(const char *ruser, const char *rbbs)
 	cprintf("\1f\1rRemote host not responding.\1a\n");
 	return 0;
     }
-    file = tempnam(BBSDIR "tmp", "rprof");
+    file = tempnam(BBSDIR "/tmp", "rprof");
 
     tf = xfopen(file, "w", FALSE);
     if (!tf) {

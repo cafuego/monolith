@@ -1247,7 +1247,7 @@ copy_message_to_sql(unsigned int forum, unsigned int message)
     message_header_filename(&filename, forum, message);
     if ((read_message_header(filename, header)) == -1)
 	return;
-    sprintf(content, "/usr/bbs/save/forums/%d/%d.t", forum, message);
+    sprintf(content, "%s/save/forums/%d/%d.t", BBSDIR, forum, message);
 
     /* Now save it. */
     (void) save_to_sql(header, content);

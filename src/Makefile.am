@@ -1,5 +1,9 @@
 bin_PROGRAMS = yawc_port yawc_client
-CFLAGS = -O3 -Wall -g
+CFLAGS = -O3 -Wall -g -DBBSDIR=\"$(prefix)\"
+
+#ifdef USE_MYSQL
+  CFLAGS += $(MYSQL_INCLUDE)
+#endif
 
 yawc_port_SOURCES = clipboard.c friends.c chat.c fun.c help.c menu.c \
   normal_input.c newuser.c registration.c key.c inter.c vote.c \
@@ -11,11 +15,13 @@ yawc_client_SOURCES = clipboard.c friends.c chat.c fun.c help.c menu.c \
 
 yawc_port_LDADD = p_commands.o p_express.o p_main.o p_messages.o p_cprintf.o \
   p_routines2.o p_statusbar.o p_usertools.o p_display_message.o \
-  -L../lib -L../shix -lyawc -lintl -lm -lshix -L/usr/local/mysql/lib
+  $(MYSQL_LIB) -L../lib -L../shix -lyawc -lm -lshix -lintl \
+  -lmysqlclient
 
 yawc_client_LDADD =  c_commands.o c_client_input.o c_express.o c_main.o \
   c_messages.o c_routines2.o c_statusbar.o c_usertools.o c_display_message.o \
-  -L../lib -L../shix -lyawc -lintl -lm -lshix -L/usr/local/mysql/lib
+  $(MYSQL_LIB) -L../lib -L../shix -lyawc -lm -lshix -lintl \
+  -lmysqlclient
 
 c_commands.o: commands.c
 	$(COMPILE) \

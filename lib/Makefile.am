@@ -9,8 +9,12 @@ libyawc_a_SOURCES = btmp.c libcache.c libdexi.c \
   sql_usertopic.c sql_message.c sql_rating.c sql_llist.c sql_convert.c \
   sql_online.c sql_web.c
 
-LDADD = -L/usr/local/mysql/lib -lmysqlclient 
-CFLAGS = -O3 -Wall -g
+CFLAGS=-O3 -Wall -g -DBBSDIR=\"$(prefix)\"
+
+#ifdef USE_MYSQL
+CFLAGS += $(MYSQL_INCLUDE)
+#endif
+
 #-w -W -pedantic \
 #  -Wall -Waggregate-return -Wcast-align -Wcast-qual \
 #  -Wcomment -Wconversion -Werror -Wformat -Wimplicit \

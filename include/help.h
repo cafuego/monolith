@@ -1,9 +1,9 @@
 /* $Id$ */
 
 /* defines */
-#define LITDIR		BBSDIR "share/messages/literature/"
-#define SHAKEDIR	BBSDIR "share/messages/shakespeare/"
-#define HELPDIR		BBSDIR "share/help/"
+#define LITDIR		BBSDIR "/share/messages/literature/"
+#define SHAKEDIR	BBSDIR "/share/messages/shakespeare/"
+#define HELPDIR		BBSDIR "/share/help/"
 
 /* prototypes */
 extern void help_topics( void );

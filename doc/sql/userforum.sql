@@ -1,7 +1,7 @@
 # hosts <-> users
 # M to N relationship between rooms & users
 
-DROP TABLE userforum;
+# DROP TABLE userforum;
 
 CREATE TABLE userforum (
 

@@ -4,11 +4,8 @@
 #define BBSUID          333     /* bbs's uid from /etc/passwd file	*/
 #define BBSGID          333     /* bbs's gid from /etc/group file	*/
 
-/* where bbs's homedir is */
-#define BBSDIR		"/usr/bbs/"	
-
 /* the <shift-e>ditor */
-#define EDITOR		BBSDIR "bin/BBSpico"	
+#define EDITOR		BBSDIR "/bin/BBSpico"	
 
 /* Crypt-key for the passwords */
 #define CRYPTKEY	"Gu"	

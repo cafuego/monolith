@@ -469,7 +469,7 @@ get_buffer(FILE * outputfp, int how, int *lines)
     else
 	edithow = how;
 
-    strcpy(tmpfname, tempnam(BBSDIR "tmp", "getbuf"));
+    strcpy(tmpfname, tempnam(BBSDIR "/tmp", "getbuf"));
 
     fp = xfopen(tmpfname, "w+", FALSE);
     if (fp == NULL)

@@ -1,6 +1,6 @@
 # Country info's in SQL.
 
-DROP TABLE country;
+# DROP TABLE country;
 
 CREATE TABLE country (
 

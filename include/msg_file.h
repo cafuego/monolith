@@ -15,7 +15,7 @@
 #define TRASH_FORUM		144
 #define HANDLED_YELL_FORUM	148
 
-#define FORUMDIR BBSDIR "save/forums"
+#define FORUMDIR BBSDIR "/save/forums"
 
 #define DISPLAY_NORMAL		0
 #define DISPLAY_INFO		1

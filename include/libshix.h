@@ -3,7 +3,7 @@
 /* defines */
 #define DELIM	"|"
 #define NSUBEXP  10
-#define SHIX_SCOREFILE BBSDIR "etc/shix.scores"
+#define SHIX_SCOREFILE BBSDIR "/etc/shix.scores"
 
 #define MAGIC   0234
 
