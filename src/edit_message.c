@@ -118,6 +118,8 @@ edit_message(unsigned int forum, unsigned int id)
     // Clean up.
     if(fexists(tmpfile));
         unlink(tmpfile);
+    if(fexists(temp));
+        unlink(temp);
     xfree(header);
 
     log_it("editlog", "%s edited message %u in forum %u.%s", usersupp->username, id, forum, quad.name);
