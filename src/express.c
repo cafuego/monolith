@@ -395,8 +395,7 @@ catchx(int key)
 	if (nox == 0) {
 	    for (; xmsgp < XLIMIT; xmsgp++) {
 		if (usersupp->flags & US_BEEP)
-		    if (xmsgb[xmsgp]->override != OR_SILC)
-			putchar('\007');
+		    putchar('\007');
 #ifdef CLIENTSRC
 		(void) putchar(IAC);
 		(void) putchar(XMSG_S);		/* x message start */
