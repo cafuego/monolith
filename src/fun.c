@@ -83,7 +83,8 @@ static char *munchmatch[] = {
     "[Bb][Ii][Ss][Cc][Oo][Tt][Tt][Ii]", "[Bb][Uu][Tt][Tt][Ee][Rr][Ff][Ii][Nn][Gg][Ee][Rr]"
 };
 
-static char *no = "[Nn][Oo][Tt. ]";
+static char *no = "[Nn][Oo]";
+static char *no2 = "[Nn][Oo][Tt][?.! ]";
 static char *why = "[Ww][Hh][Yy][?. ]";
 static char *dont = "[Dd][Oo][Nn]['t ].*[!]$";
 
@@ -111,6 +112,12 @@ cthulhu()
             (food == 5) &&
             (shix_strmatch(april_fools, no) || shix_strmatch(april_fools, why))
         ) || (
+                (
+                   shix_strmatch(april_fools, why) &&
+                   ( shix_strmatch(april_fools, no) ||
+                     shix_strmatch(april_fools, no2))
+                ) ||
+            !(shix_strmatch(april_fools, no2)) &&
             !(shix_strmatch(april_fools, no)) &&
             !(shix_strmatch(april_fools, why)) &&
             !(shix_strmatch(april_fools, munchmatch[food])) &&
@@ -120,7 +127,7 @@ cthulhu()
 
     if(food == 5) 
         cprintf(_("\n\1gI love you too! ;)\n"));
-    else if( shix_strmatch(april_fools, no) )
+    else if( shix_strmatch(april_fools, no) || shix_strmatch(april_fools, no2) )
         cprintf(_("\n\1g*pout*  ):\n"));
     else if( shix_strmatch(april_fools, why) )
         cprintf(_("\n\1y*whine* Coz I need one! )~:\n"));
