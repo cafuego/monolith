@@ -105,7 +105,7 @@ mono_sql_uf_is_host(unsigned int usernumber, unsigned int forumnumber)
     int ret, rows;
     MYSQL_RES *res;
 
-    ret = mono_sql_query(&res, "SELECT * FROM " UF_TABLE " WHERE (user_id='%u' AND forum_id='%u' AND host='y')", usernumber, forumnumber);
+    ret = mono_sql_query(&res, "SELECT count(*) FROM " UF_TABLE " WHERE (user_id='%u' AND forum_id='%u' AND host='y')", usernumber, forumnumber);
 
     if (ret == -1) {
 	fprintf(stderr, "No results from query.\n");
@@ -260,7 +260,7 @@ mono_sql_uf_is_invited(unsigned int usernumber, unsigned int forumnumber)
     int ret, rows;
     MYSQL_RES *res;
 
-    ret = mono_sql_query(&res, "SELECT * FROM " UF_TABLE
+    ret = mono_sql_query(&res, "SELECT count(*) FROM " UF_TABLE
 			 " WHERE (user_id='%u' AND forum_id='%u' AND status='invited' )", usernumber, forumnumber);
 
     if (ret == -1) {
@@ -381,7 +381,7 @@ mono_sql_uf_is_kicked(unsigned int user_id, unsigned int forum_id)
     int ret, rows;
     MYSQL_RES *res;
 
-    ret = mono_sql_query(&res, "SELECT * FROM " UF_TABLE " WHERE (user_id='%u' AND forum_id='%u' AND status='kicked')", user_id, forum_id);
+    ret = mono_sql_query(&res, "SELECT count(*) FROM " UF_TABLE " WHERE (user_id='%u' AND forum_id='%u' AND status='kicked')", user_id, forum_id);
 
     if (ret == -1) {
 	fprintf(stderr, "No results from query.\n");
