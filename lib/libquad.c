@@ -259,11 +259,12 @@ may_read_room(user_t user, room_t room, int quad_num)
     if (user.priv & PRIV_DELETED)
 	return 0;
 
-    if (user.priv & PRIV_TWIT)
+    if (user.priv & PRIV_TWIT) {
 	if (quad_num == 13 || quad_num == 1)	/* mail / curseroom */
 	    return 1;
 	else
 	    return 0;
+    }
 
     if (user.priv >= PRIV_WIZARD)
 	return 1;		/* Wizard are _always_ allowed */

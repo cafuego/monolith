@@ -583,7 +583,7 @@ mono_display_menu_ified(M_LN_t * the_menu, M_display_t * m_fmt, int columns)
     for (ctr = 1; someNode != NULL; someNode = someNode->nextPtr) {
 	/* index subcolumn */
 	strcpy(tmpstr, "");
-	if (someNode->mi_ptr->MI_idx != NULL)
+	if (someNode->mi_ptr->MI_idx != NULL) {
 	    if (!strlen(someNode->mi_ptr->MI_idx))
 		strcat(tmpstr, "  ");
 	    else
@@ -591,6 +591,7 @@ mono_display_menu_ified(M_LN_t * the_menu, M_display_t * m_fmt, int columns)
 		     m_fmt->bracket_color,
 		     m_fmt->index_color, someNode->mi_ptr->MI_idx,
 		     m_fmt->bracket_color);
+        }
 	if (m_fmt->idx_emax) {
 	    for (k = strlen(tmpstr) - cnt_cc(tmpstr); k <= m_fmt->idx_emax + 2; k++)
 		strcat(tmpstr, " ");

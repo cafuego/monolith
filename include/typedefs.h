@@ -247,3 +247,28 @@ typedef struct {
     char origroom[L_QUADNAME+1];	/* name of original quad */
     time_t moddate;			/* time of modification (move) */
 } post_t;
+
+typedef struct {
+    unsigned int num;
+    unsigned int topic;
+    unsigned int forum;
+
+    unsigned int author;
+    char alias[L_USERNAME+1];
+
+    char subject[L_SUBJECT];
+    time_t date;
+
+    char *content;
+
+    unsigned int type;
+    unsigned int priv;
+    unsigned int deleted;
+} message_t;
+
+typedef struct mlist mlist_t;
+struct mlist {
+    unsigned int id;
+    mlist_t *next;
+    mlist_t *prev;
+};

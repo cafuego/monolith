@@ -17,7 +17,7 @@
 #include <sys/ioctl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-/* #include <asm/termbits.h> */
+#include <termbits.h>
 #include <time.h>
 #include <unistd.h>
 

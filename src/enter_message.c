@@ -88,7 +88,7 @@ enter_message(int flag, unsigned int forum)
             
     }
 
-    if( (mono_sql_add_message(message, forum)) == -1)
+    if( (mono_sql_mes_add(message, forum)) == -1)
         cprintf("\1f\1rCould not save your %s!\n", config.message);
     else
         cprintf("\1f\1gSaved.\n");

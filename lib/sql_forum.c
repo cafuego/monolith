@@ -6,6 +6,7 @@
 #endif
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <mysql.h>
 
 #include "monolith.h"
@@ -190,7 +191,43 @@ mono_sql_f_partname2id(const char *forumname, unsigned int *forumid)
     return 0;
 }
 
+unsigned int
+mono_sql_f_get_new_message_id( unsigned int forum )
+{
 
-/* eof */
+    MYSQL_RES *res;
+    MYSQL_ROW row;
+    int ret = 0;
 
+    ret = mono_sql_query(&res, "SELECT highest FROM " F_TABLE " WHERE id=%u", forum );
+
+    if (ret == -1) {
+        (void) mysql_free_result(res);
+        return 0;
+    }
+    if ( mysql_num_rows(res) == 0) {
+        (void) mysql_free_result(res);
+        return 0;
+    }
+    if ( mysql_num_rows(res) > 1) {
+        (void) mysql_free_result(res);
+        return 0;
+    }
+
+    row = mysql_fetch_row(res);
+
+    ret = atoi(row[0]);
+    (void) mysql_free_result(res);
+
+    ret++;
+
+    if( (mono_sql_query(&res, "UPDATE " F_TABLE " SET highest=%u WHERE id=%u", ret, forum)) == -1) {
+        (void) mysql_free_result(res);
+        return 0;
+    }
+
+    (void) mysql_free_result(res);
+
+    return ret;
+}
 /* eof */

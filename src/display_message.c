@@ -39,7 +39,7 @@ display_message(unsigned int num, unsigned int forum)
 
     memset(&message, 0, sizeof(message_t));
 
-    switch (mono_sql_retrieve_message(num, forum, &message)) {
+    switch (mono_sql_mes_retrieve(num, forum, &message)) {
 
         case 0:
             break;
@@ -416,7 +416,7 @@ showmessages()
    
     enter_message(1,1);
 
-    (void) mono_sql_list_forum(1,0,&list);
+    (void) mono_sql_mes_list_forum(1,0,&list);
 
     while(list != NULL) {
         display_message(list->id,1);
@@ -424,7 +424,7 @@ showmessages()
         cprintf("\1f\1gRead next %s\1a\n", config.message);
         list = list->next;
     }
-    mono_sql_free_list(list);
+    mono_sql_mes_free_list(list);
 
     return;
 }

@@ -16,6 +16,10 @@
 #include "monosql.h"
 #include "sql_utils.h"
 
+#ifdef extern
+#include "sql_message.h"
+#endif
+
 #define M_TABLE "message"
 
 static int _mono_sql_mes_add_num_to_list(mlist_t entry, mlist_t ** list);
@@ -37,7 +41,7 @@ mono_sql_mes_get_unread(unsigned int forum, unsigned int lastseen)
     row = mysql_fetch_row(res);
     ret = atoi(row[0]);
 
-    (void) myqsl_free_result(res);
+    (void) mysql_free_result(res);
 
     return ret;
 }
@@ -60,7 +64,7 @@ mono_sql_mes_add(message_t *message, unsigned int forum)
      * added to the BBS. TIMESTAMP in the table would be better though.
      */
     message->date = time(0);
-    (void) time_to_datetime(message->date, &date);
+    (void) time_to_datetime(message->date, date);
 
     ret = mono_sql_query(&res, "INSERT INTO " M_TABLE " (message_id,topic_id,forum_id,author,alias,subject,date,type,priv,deleted) VALUES (%u,%u,%u,%u,'%s','%s','%s',%d,%d,'n')",
         message->num, message->topic, message->forum, message->author,
@@ -75,7 +79,7 @@ mono_sql_mes_add(message_t *message, unsigned int forum)
      * length due to the fixed size of the query.
      */
     (void) escape_string(message->content, &content);
-    ret = mono_sql_query(&res, "UPDATE " M_TABLE " SET content='%s' WHERE message_id=%d AND forum_id=%d", content, num, forum );
+    ret = mono_sql_query(&res, "UPDATE " M_TABLE " SET content='%s' WHERE message_id=%d AND forum_id=%d", content, message->num, message->forum );
     xfree(content);
 
     return ret;
@@ -165,7 +169,7 @@ mono_sql_mes_retrieve(unsigned int id, unsigned int forum, message_t *data)
      */
     message.type = atoi(row[8]);;
     message.priv = atoi(row[9]);
-    message.deleted = row[10];
+    message.deleted = atoi(row[10]);
 
     (void) mysql_free_result(res);
 
@@ -206,7 +210,7 @@ mono_sql_mes_list_forum(unsigned int forum, unsigned int start, mlist_t ** list)
 	    continue;
 	/* Add this one to the linked list */
         cprintf("DEBUG: Added message %u.\n", entry.id);
-	if (_mono_sql_add_num_to_list(entry, list) == -1)
+	if (_mono_sql_mes_add_num_to_list(entry, list) == -1)
 	    break;
     }
     mysql_free_result(res);
@@ -244,7 +248,7 @@ mono_sql_mes_list_topic(unsigned int topic, unsigned int start, mlist_t ** list)
 	if (sscanf(row[0], "%u", &(entry.id)) == -1)
 	    continue;
 	/* Add this one to the linked list */
-	if (_mono_sql_add_num_to_list(entry, list) == -1)
+	if (_mono_sql_mes_add_num_to_list(entry, list) == -1)
 	    break;
     }
     mysql_free_result(res);

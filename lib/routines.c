@@ -14,6 +14,7 @@
 #include <sys/ioctl.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <termbits.h>
 
 #ifdef HAVE_TERMIO_H
 #include <termio.h>
@@ -115,6 +116,23 @@ xmalloc(size_t size)
     allocated_total++;
 #endif
 
+    return value;
+}
+
+/*
+ * xrealloc() - our own realloc, with error notify and extra +1 allocation.
+ */
+void *
+xrealloc(void *pointer, size_t size)
+{
+    register void *value = realloc(pointer, size+1);
+
+    if (value == NULL) {
+        mono_errno = E_NOMEM;
+        perror("memory exhausted\n");
+        (void) log_it("errors", "Memory exhausted.");
+        exit(EXIT_FAILURE);
+    }
     return value;
 }
 

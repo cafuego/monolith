@@ -170,8 +170,8 @@
 #define CO_SHOWFRIENDS	1			/* Show friends-online upon login	*/
 #define CO_USEALIAS	2			/* User wants to use standard alias	*/
 #define CO_WHAKFILTER	4			/* Permanent user			*/
-#define CO_UNUSED3	8			/* User has colors enabled		*/
-#define CO_UNUSED4	16			/* Print last old message with new	*/
+#define CO_NEATMESSAGES 8                       /* User has colors enabled		*/
+#define CO_EXPANDHEADER 16   			/* Print last old message with new	*/
 #define CO_UNUSED5	32			/* Experienced user			*/
 #define CO_UNUSED6	64			/* pause after screenlength lines	*/
 #define CO_UNUSED7	128			/* Don't prompt after each message	*/
@@ -199,6 +199,13 @@
 #define CO_UNUSED29	536870912 		/* user has extra admin help enabled	*/
 #define CO_UNUSED30	1073741824 		/* user has command line help disabled	*/
 #define CO_UNUSED31	2147483648 		/* user uses the standard alias		*/
+
+	/********************/
+
+#define NO_LOCALE       0
+#define LOCALE_DEFAULT  1
+#define LOCALE_EUROPE   2
+#define LOCALE_US       3
 
 	/********************/
 
