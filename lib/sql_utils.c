@@ -97,7 +97,9 @@ mono_sql_query(MYSQL_RES ** result, const char *format,...)
 	perror("sigprocmask");
 
     if (ret == -1) {
+#ifdef SQL_ERROR_SHIT_THAT_MAKES_USERS_WHINE
 	fprintf(stderr, "errno: %d error: %s\n", mysql_errno(&mp), mysql_error(&mp));
+#endif
 	return -1;		/* no results */
     }
     log_it("queries", query);
