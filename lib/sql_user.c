@@ -299,4 +299,50 @@ mono_sql_u_update_registration( unsigned int user_id,
     return 0;
 }
 
+
+int
+mono_sql_u_update_email( unsigned int user_id,
+		const char *email
+) {
+
+    int i;
+    MYSQL_RES *res;
+
+    i = mono_sql_query(&res, "UPDATE " U_TABLE 
+        " set email='%s', "
+	" WHERE id=%u", email, user_id );
+
+    if (i == -1) {
+	fprintf(stderr, "No results from query.\n");
+        return -1;
+    }   
+
+    mono_sql_u_free_result(res);
+    return 0;
+}
+
+/* eof */
+
+int
+mono_sql_u_update_url( unsigned int user_id,
+		const char *url
+) {
+
+    int i;
+    MYSQL_RES *res;
+
+    i = mono_sql_query(&res, "UPDATE " U_TABLE 
+        " set url='%s', "
+	" WHERE id=%u", url, user_id );
+
+    if (i == -1) {
+	fprintf(stderr, "No results from query.\n");
+        return -1;
+    }   
+
+    mono_sql_u_free_result(res);
+    return 0;
+}
+
+/* eof */
 /* eof */
