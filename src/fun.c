@@ -41,18 +41,21 @@
 #include "input.h"
 #include "sql_goto.h"
 #include "routines2.h"
+#include "libshix.h"
 
-static char *munchies[] = {
-    "cookie", "petit four", "biscuit", "waffle",
-    "piece of pie", "biscotti", "butterfinger"
-};
+static void cthulhu( void );
+
 
 void
 random_goto()
 {
 
-    char *thegoto, april_fools[65];
-    int food = 0;
+    char *thegoto;
+
+    if( usersupp->usernum == 2 ) {
+        cthulhu();
+        return;
+    }
   
     if((rand() % 10) == 1) {
 	thegoto = mono_sql_random_goto();
@@ -63,20 +66,54 @@ random_goto()
 	xfree(thegoto);
 
     } else if ((rand() % 1000) == 666 && usersupp->timescalled > 99) { 
-        food = rand() % 7;
-        strcpy(april_fools, "");
-        while ( strstr(april_fools, munchies[food]) == NULL) {
-            cprintf("\n\1w666.\1yCthulhu\1w> \1rGimme a %s! \1w", munchies[food]);
-            getline(april_fools, 64, 1);
-        }
-        if((strstr(april_fools, "no ") == NULL) &&
-            (strstr(april_fools, "not") == NULL) )
-            cprintf("\n\1g*buurrRp*  (:\n");
-        else
-            cprintf("\n\1g*pout*  ):\n");
-
+        cthulhu();
     } else
         cprintf(_("\1f\1gNo unread %s.\1a"), config.message_pl );
+
+    return;
+}
+
+
+/*
+ * Improved cthulhu now knows regular expressions :)
+ */
+static char *munchies[] = {
+    "cookie", "petit four", "biscuit", "waffle",
+    "piece of pie", "biscotti", "butterfinger"
+};
+static char *munchmatch[] = {
+    "[Cc][Oo][Kk][Ii][Ee]", "[Pp][Ee][Tt][Ii][Tt] [Ff][Oo][Uu][Rr]",
+    "[Bb][Ii][Ss][Cc][Uu][Ii][Tt]", "[Ww][Aa][Ff][Ff][Ll][Ee]",
+    "[Pp][Ii][Ee][Cc][Ee] [Oo][Ff] [Pp][Ii][Ee]",
+    "[Bb][Ii][Ss][Cc][Oo][Tt][Tt][Ii]", "[Bb][Uu][Tt][Tt][Ee][Rr][Ff][Ii][Nn][Gg][Ee][Rr]"
+};
+
+static char *no = "[Nn][Oo][Tt. ]";
+static char *why = "[Ww][Hh][Yy][?. ]";
+
+static void
+cthulhu()
+{
+    char april_fools[65];
+    int food = 0;
+
+    food = rand() % 7;
+    strcpy(april_fools, "");
+    do {
+        cprintf("\n\1w666.\1yCthulhu\1w> \1rGimme a %s! \1w", munchies[food]);
+        getline(april_fools, 64, 1);
+    } while( 
+        !(shix_strmatch(april_fools, no)) &&
+        !(shix_strmatch(april_fools, why)) &&
+        !(shix_strmatch(april_fools, munchmatch[food]))
+    );
+
+    if( shix_strmatch(april_fools, no) )
+        cprintf(_("\n\1g*pout*  ):\n"));
+    else if( shix_strmatch(april_fools, why) )
+        cprintf(_("\n\1y*whine* Coz I need one! )~:\n"));
+    else
+        cprintf(_("\n\1g*buurrRp*  (:\n"));
 
     return;
 }
