@@ -5,6 +5,8 @@
 #define NSUBEXP  10
 #define SHIX_SCOREFILE BBSDIR "etc/shix.scores"
 
+#define MAGIC   0234
+
 typedef struct {
     char word[100];
     int score;

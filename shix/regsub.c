@@ -28,7 +28,6 @@
 #include <string.h>
 
 #include "libshix.h"
-#include "regmagic.h"
 
 #ifndef CHARBITS
 #define	UCHARAT(p)	((int)*(unsigned char *)(p))

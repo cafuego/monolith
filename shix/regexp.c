@@ -53,7 +53,6 @@
 #include <ctype.h>
 
 #include "libshix.h"
-#include "regmagic.h"
 
 /*
  * The "internal use only" fields in regexp.h are present to pass info from
@@ -145,10 +144,6 @@
 #define OP(p)	(*(p))
 #define NEXT(p) (((*((p)+1)&0377)<<8) + (*((p)+2)&0377))
 #define OPERAND(p)	((p) + 3)
-
-/*
- * See regmagic.h for one further detail of program structure.
- */
 
 
 /*
