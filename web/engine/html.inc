@@ -200,7 +200,6 @@ function html_check_priv($action, $username, $forum_id) {
 
 function html_print_foot($username, $starttime, $location) {
 
-    $location = strstr($location, "-", "/");
     $endtime = microtime();
 
     $start = explode( " ", $starttime);
