@@ -44,6 +44,8 @@
 
 #define MODIFICATION_TIME
 
+static void move_message_to_trash(void);
+
 long reply_num;			/* msgnumber of the replied msg         */
 char curr_post_is_mine = FALSE;
 
@@ -231,6 +233,13 @@ set_message_type(const int msgtype, const int enterhow)
     } else			/* temp_message_type reverts to the MES_* type as was called */
 	temp_message_type = msgtype;
     return temp_message_type;
+}
+
+void 
+move_message_to_trash(void)
+{
+    if (move_message(curr_rm, reply_num, 144, "") != 0) 
+	cprintf("\1f\1rMoving message to Trash> failed.\1a\n");
 }
 
 int
@@ -986,8 +995,18 @@ read_menu(long number, int direction)
 		    return;
 
 		case 't':
-		case 'T':
 		    cprintf("\1f\1gDate: \1w%s \1f\1w(\1gCET\1w)\1a\n", printdate(time(0), 0));
+		    break;
+
+		case 'T':
+		    IFSYSOP {
+			cprintf("\1f\1r Trash Message.\1a\n");
+			reply_num = current;
+			move_message_to_trash();
+			reply_num = 0;
+			read_position_modified = TRUE;
+		    } else
+			cprintf("\1f\1gDate: \1w%s \1f\1w(\1gCET\1w)\1a\n", printdate(time(0), 0));
 		    break;
 
 		case 'v':
