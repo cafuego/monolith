@@ -49,6 +49,8 @@ function express_message($username, $recipient) {
     if($username != "Cafuego")
     return;
 
+    $recp_id = get_usernum($recipient);
+
     // Show message.
     //
     PRINT "<div style=\"margin-left: 150;\">\n";
@@ -59,13 +61,12 @@ function express_message($username, $recipient) {
 
     // Hidden but required info for reply.
     //
-    PRINT "<input type=\"hidden\" name=\"sender\" value=\"\$usernum\">\n";
-    PRINT "<input type=\"hidden\" name=\"recipient\" value=\"\$usernum\">\n";
+    PRINT "<input type=\"hidden\" name=\"recipient\" value=\"$recp_id\">\n";
 
     // Show formatted header.
     //
     $now = strftime("%H:%M", time());
-    PRINT "<p align=\"left\"><font color=\"#00CC00\">From</font> <font color=\"#ffff00\">$username</font> to <font color=\"#ffff00\">$recp_name</font> <font color=\"#00cc00\">at</font> (<font color=\"#00cc00\">$now</font>)<br>\n";
+    PRINT "<p align=\"left\"><font color=\"#00CC00\">eXpress Message from</font> <font color=\"#ffff00\">$username</font> <font color=\"#00cc00\">to</font> <font color=\"#ffff00\">$recpient</font> <font color=\"#00cc00\">at</font> (<font color=\"#00cc00\">$now</font>)</p>\n";
     PRINT "<textarea rows=\"6\" cols=\"70\" name=\"message\" style=\"font: 10pt Helvetica\">Enter your message here.</textarea>\n";
 
     // Form buttons.
