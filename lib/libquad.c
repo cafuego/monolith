@@ -488,6 +488,7 @@ kickout(const char *user, int room)
     }
     userP->generation[room] = (-5);
     userP->forget[room] = scratch.generation;
+    mono_sql_uf_add_kicked( room, userP->usernum );
 
     if (writeuser(userP, 0) != 0) {
 	xfree(userP);
@@ -533,6 +534,7 @@ invite(const char *name, int room)
     }
     user->generation[room] = scratch.generation;
     user->forget[room] = -1;
+    mono_sql_uf_add_invited( room, userP->usernum );
 
     (void) writeuser(user, 0);
 

@@ -191,29 +191,6 @@ mono_sql_uf_kill_user(unsigned int userid)
     return 0;
 }
 
-/* okay. tmp. convert function */
-void
-convert_quick()
-{
-
-    unsigned int i, usernum;
-    int j;
-
-    for (i = 0; i < MAXQUADS; i++) {
-	for (j = 0; j < 5; j++) {
-	    if (strlen(shm->rooms[i].qls[j])) {
-		printf("converting QL %s in quad %u\n", shm->rooms[i].qls[j], i);
-		fflush(stdout);
-		if (mono_sql_u_name2id(shm->rooms[i].qls[j], &usernum) == -1)
-		    continue;
-		mono_sql_uf_add_entry(usernum, i);
-		mono_sql_uf_add_host(usernum, i);
-	    }
-	}
-    }
-    return;
-}
-
 int
 mono_sql_uf_list_invited_by_forum(unsigned int forumnumber)
 {
