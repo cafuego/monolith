@@ -69,7 +69,7 @@ is_cached_friend(const char *name)
     p = friend_cache;
     while(p) {
         if (strlen(p->name))
-	    if (!strcmp(name, p->name))
+	    if (!strcasecmp(name, p->name))
 	        return 1;
 	p = p->next;
     }
@@ -97,7 +97,7 @@ cached_name_to_x(const char * bobs_name)
     
     p = friend_cache;
     while(p) {
-	if (!strcmp(p->name, bobs_name))
+	if (!strcasecmp(p->name, bobs_name))
 	    return p->quickx;
 	p = p->next;
     }
