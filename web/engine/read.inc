@@ -72,7 +72,7 @@ function read_message($username, $quad, $current, $direction) {
                 addimage( "Reading message $m_id in $forum" );
                 echo "<p align=\"left\"><font color=\"#00CC00\">From</font> $user";
                 if( $flag != "anon" )
-                    echo " <font color=\"#00CC00\">on</font> <font color=\"#00CC00\">$date CET</font><br>"\n:
+                    echo " <font color=\"#00CC00\">on</font> <font color=\"#00CC00\">$date CET</font><br>\n";
                 else
                     echo "\n";
                 echo "<font color=\"#FFFF00\">Subject</font>: <font color=\"#FFFF00\">$subject</font></p>\n";
