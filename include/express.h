@@ -50,6 +50,7 @@
 #define ACK_SHIX         'M' /* sendx() catchx()  */
 #define ACK_AWAY	 'Y' /* sendx() catchx()  */
 #define ACK_LOCK	 'L' /* sendx() catchx()  */
+#define ACK_LOCK	 'L' /* sendx() catchx()  */
 #define ACK_NOTBUSY 	 'N' /* format_ack() catchx()  */
 #define ACK_OOPS	 'o' /* something went very wrong */
 

@@ -339,6 +339,8 @@ catchx(int key)
     if (!IS_BROADCAST) {
 	if (cmdflags & C_AWAY)
 	    Catchxs->ack = ACK_AWAY;
+        else if (cmdflags & C_LOCK)
+	    Catchxs->ack = ACK_LOCK;
 	else
 	    Catchxs->ack = nox ? ACK_BUSY : ACK_RECEIVED;
 	override = Catchxs->override;
@@ -1091,6 +1093,14 @@ static void
 format_ack(express_t * Catchxs)
 {
     switch (Catchxs->ack) {
+        
+	case ACK_LOCK:
+	    cprintf("\1f\1g%s %s received by \1y%s\1g.\n", config.express
+		    ,config.x_message, Catchxs->recipient);
+	    cprintf("\1f\1y%s\1g is marked as \1clocked\1g though.\1a\n"
+		    ,Catchxs->recipient);
+	    break;
+
 	case ACK_AWAY:
 	    cprintf("\1f\1g%s %s received by \1y%s\1g.\n", config.express
 		    ,config.x_message, Catchxs->recipient);
