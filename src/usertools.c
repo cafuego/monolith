@@ -381,11 +381,6 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
 
     if ((viewing_user->priv >= PRIV_SYSOP) && (strlen(user->aideline) > 0))
 	cprintf("\1f\1yAideline:%s\n", user->aideline);
-    if (viewing_user->priv >= PRIV_SYSOP) {
-        (void) mono_sql_read_config(user->configuration, &frog);
-        cprintf("\1f\1gConfiguration\1w: \1y%s\1g; Monoholic Rating\1w: \1y", frog.bbsname);
-        printf("%.3f\n",_get_monoholic_rating(user));
-    }
 #ifdef OLD
     if (user->flags & US_ROOMAIDE) {
 	for (a = 0; a < 5; a++)
@@ -453,11 +448,15 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
     }
 
     if (viewing_user->priv >= PRIV_SYSOP) {	/* a sysop profiles */
-	cprintf("First login: \1g%s\1c\nLogins: \1g%-5d \1cPosts: \1g%-5d \1cOnlinetime: \1g%2ld:%2.2ld   \1cPriv: \1g%5d  \1cX's: \1g%5ld \n",
-		printdate(user->firstcall, 1), user->timescalled,
+        (void) mono_sql_read_config(user->configuration, &frog);
+        cprintf("\1f\1cConfiguration\1w: \1g%s \1cMonoholic Rating\1w: \1g", frog.bbsname);
+        printf("%.3f",_get_monoholic_rating(user));
+        cprintf("\n");
+	cprintf("\1f\1cUsernum\1w: \1g%d \1cFirst login\1w: \1g%s\n",user->usernum, printdate(user->firstcall, 1) );
+        cprintf("\1f\1cLogins\1w: \1g%-5d \1cPosts: \1g%-5d \1cOnlinetime: \1g%2ld:%2.2ld   \1cPriv: \1g%5d  \1cX's: \1g%5ld \n",
+		user->timescalled,
 		user->posted, user->online / 60, user->online % 60,
 		user->priv, user->x_s);
-	cprintf("\1cUsernum: \1y%d\1c\n", user->usernum);
     } else if (control) {	/* you profile yourself */
 	cprintf("First login: \1g%s\1c\nLogins: \1g%-5d \1cPosts: \1g%-5d \1cOnlinetime: \1g%2ld:%2.2ld \1cX's: \1g%5ld \n",
 		printdate(user->firstcall, 1), user->timescalled,
