@@ -859,7 +859,7 @@ _edit_profile(const unsigned int a, const long b, void *c)
     FILE *fp = NULL;
     char filename[L_FILENAME], *profile = NULL;
 
-    cprintf(_("Are you sure you want to edit your profile? (y/n) "));
+    cprintf(_("\1f\1gAre you sure you want to edit your profile? \1w(\1gy\1w/\1gn\1w) \1c"));
     if (yesno() == NO) {
 	return;
     }
