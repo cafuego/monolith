@@ -79,11 +79,11 @@ function read_message($username, $quad, $current, $direction) {
                 echo "<div align=\"center\">\n";
                 addbutton("Read Next", "/bbs/index.phtml/r/$quad/$m_id/n");
                 addbutton("Read Previous", "/bbs/index.phtml/r/$quad/$m_id/p");
-                if( $username != "Guest" ) {
-                    addbutton("        ", null);
-                    addbutton("Reply to this message", "/bbs/index.phtml/f/$quad/$m_id");
-                    addbutton("Post new message", "/bbs/index.phtml/e/$quad/$m_id");
-                }
+                // if( $username != "Guest" ) {
+                //    addbutton("        ", null);
+                //    addbutton("Reply to this message", "/bbs/index.phtml/f/$quad/$m_id");
+                //    addbutton("Post new message", "/bbs/index.phtml/e/$quad/$m_id");
+                //}
                 echo "</div>\n";
 
                 // Update lastseen!

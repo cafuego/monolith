@@ -343,9 +343,9 @@ function addbutton( $text, $url ) {
     $imgtext = rawurlencode($text);
 
     if($url)
-    echo "<a href=\"$url\"><img src=\"/bbs/image.phtml/Arial_I,12,$colour/$imgtext/\" alt=\"[ button: $text ]\" border=\"0\"></a>\n";
+    echo "<a href=\"$url\"><img src=\"/bbs/image.phtml/Arialblack_I,12,$colour/$imgtext/\" alt=\"[ button: $text ]\" border=\"0\"></a>\n";
     else
-    echo "<img src=\"/bbs/image.phtml/Arial_I,12,$colour/$imgtext/\" alt=\" \">\n";
+    echo "<img src=\"/bbs/image.phtml/Arialblack_I,12,$colour/$imgtext/\" alt=\" \">\n";
 
 }
 
