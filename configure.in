@@ -36,7 +36,7 @@ dnl Checks for header files.
 AC_HEADER_DIRENT
 AC_HEADER_STDC
 AC_HEADER_SYS_WAIT
-AC_CHECK_HEADERS(crypt.h fcntl.h sgtty.h sys/file.h sys/ioctl.h sys/time.h termio.h unistd.h termbits.h sys/mman.h mysql.h mysql/mysql.h)
+AC_CHECK_HEADERS(crypt.h fcntl.h sgtty.h sys/file.h sys/ioctl.h sys/time.h termio.h unistd.h termbits.h sys/mman.h mysql.h)
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
@@ -91,8 +91,8 @@ if test "x$with_mysql" = "xyes" ; then
     fi
   else
     echo " rock!"
+    AC_DEFINE(HAVE_MYSQL_H)
   fi
-  AC_DEFINE(HAVE_MYSQL_H)
   AC_CHECK_LIB(mysqlclient, mysql_connect)
   AC_DEFINE(USE_MYSQL)
   echo
