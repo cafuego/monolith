@@ -675,7 +675,7 @@ whoknows()
 {
     char fname[70];
 
-    sprintf(fname, QUADDIR "/%d/whoknows", curr_rm);
+    sprintf(fname, FORUMDIR "/%d/whoknows", curr_rm);
     cprintf("\n");
     more(fname, 1);
     cprintf("\n");
