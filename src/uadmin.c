@@ -136,7 +136,7 @@ useradmin()
 	cprintf("\1f\1w[\1rspace\1w] \1gAbort  \1w[\1rENTER\1w] \1gSave and quit.\n");
 	cprintf("\1f\1w(space is not always guaranteed to work)\n\n\1pChoice\1w> ");
 
-	command = get_single(" 123456789#$%AbBCEfFHILpPQW\r\n");
+	command = get_single(" 123456789$%AbBCEfFHILpPQW\r\n");
 
 	if (command != '\r' && command != '\n' && command != ' ')
 	    edit_field(user, command);
@@ -183,16 +183,6 @@ edit_field(user_t * user, int fieldnum)
     int n;
 
     switch (fieldnum) {
-
-	case '#':
-	    cprintf("Current Usernumber: %ld\n", user->usernum);
-	    cprintf("\nNew Usernumber: ");
-	    getline(ny, 6, 1);
-	    user->usernum = atoi(ny);
-	    uadmin_need_rewrite = TRUE;
-	    log_sysop_action("changed %s's usernumber to %ld"
-			     ,user->username, user->usernum);
-	    break;
 
 	case '$':
 	    user->flags ^= US_DONATOR;
