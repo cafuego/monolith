@@ -695,12 +695,28 @@ gotocurr()
 void
 whoknows()
 {
-    char fname[70];
+    char *string = NULL;
+    int ret = 0;
+    room_t bing;
 
-    sprintf(fname, FORUMDIR "/%d/whoknows", curr_rm);
-    cprintf("\n");
-    more(fname, 1);
-    cprintf("\n");
+    bing = readquad(curr_rm);
+    ret = mono_sql_uf_whoknows( curr_rm, &string );
+
+    switch(ret) {
+        case -1:
+            cprintf("\1f\1rAn error occurred in the SQL query.\n");
+            break;
+        case 0:
+            cprintf("\1f\1rNo users currently know this %s.\n", config.forum);
+            break;
+        default:
+            cprintf("\1f\1g%d users can currently read %s.\n", ret, bing.name );
+            more_string(string);
+            break;
+    }
+
+    xfree(string);
+    return;
 }
 
 

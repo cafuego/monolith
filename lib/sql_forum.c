@@ -19,6 +19,7 @@
 #include "sql_utils.h"
 
 #include "btmp.h"
+#include "log.h"
 
 #define extern
 #include "sql_forum.h"
@@ -247,10 +248,9 @@ mono_sql_f_fix_quickroom()
         sscanf(row[1], "%u", &highest);
 
         if(shm->rooms[forum].highest != highest) {
-            fprintf(stdout, "\rQuadrant %u is fucked, updating...", forum); fflush(stdout);
+            log_it("shmlog", "Quadrant %u is broken. SQL says highest=%u and shm says highest=%u", forum, highest, shm->rooms[forum].highest );
             shm->rooms[forum].highest=highest;
             shm->rooms[forum].lowest=(highest-(shm->rooms[forum].maxmsg));
-            fprintf(stdout, " ok.\n"); fflush(stdout);
         }
     }
 

@@ -31,6 +31,7 @@ extern int mono_sql_uf_update_lastseen(unsigned int usernum, unsigned int forum)
 extern int mono_sql_uf_get_unread(unsigned int forum, unsigned int lastseen);
 
 extern int mono_sql_uf_is_a_host(unsigned int usernumber);
+extern int mono_sql_uf_whoknows( unsigned int forum_id, char **result );
 
 
 #define UF_TABLE "userforum"

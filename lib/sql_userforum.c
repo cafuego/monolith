@@ -10,9 +10,10 @@
 #include <build-defs.h>
 
 #include <stdio.h>
+#include <string.h>
 
 #ifdef USE_MYSQL
-  #include MYSQL_HEADER
+#include MYSQL_HEADER
 #endif
 
 #include "monolith.h"
@@ -21,6 +22,7 @@
 #include "sql_utils.h"
 #include "sql_forum.h"
 #include "sql_message.h"
+#include "sql_user.h"
 
 #define extern
 #include "sql_userforum.h"
@@ -34,16 +36,16 @@ mono_sql_uf_unread_room(unsigned int usernum)
     int ret = 0;
 
     ret = mono_sql_query(&res, "SELECT forum_id FROM %s,%s WHERE %s.user_id=%u AND %s.id=%s.forum_id AND %s.lastseen < %s.highest",
-      F_TABLE, UF_TABLE, UF_TABLE, usernum, F_TABLE, UF_TABLE, UF_TABLE, F_TABLE );
+			 F_TABLE, UF_TABLE, UF_TABLE, usernum, F_TABLE, UF_TABLE, UF_TABLE, F_TABLE);
 
-    if ( ret == -1 ) return -1;
+    if (ret == -1)
+	return -1;
 
     if (mysql_num_rows(res) == 0) {
-        return -1;
+	return -1;
     }
-
     row = mysql_fetch_row(res);
-    sscanf(row[0],"%d", &ret);
+    sscanf(row[0], "%d", &ret);
     (void) mono_sql_u_free_result(res);
 
     return ret;
@@ -56,23 +58,21 @@ mono_sql_uf_update_lastseen(unsigned int usernum, unsigned int forum)
     MYSQL_ROW row;
     int ret = 0, lastseen = 0;
 
-    ret = mono_sql_query( &res, "SELECT highest FROM %s WHERE id=%u", F_TABLE, forum);
-    if(ret == -1) {
-        return -1;
+    ret = mono_sql_query(&res, "SELECT highest FROM %s WHERE id=%u", F_TABLE, forum);
+    if (ret == -1) {
+	return -1;
     }
-
     if (mysql_num_rows(res) == 0) {
-        return -1;
+	return -1;
     }
-
     row = mysql_fetch_row(res);
 
 
 
-    sscanf( row[0], "%u", &lastseen);
+    sscanf(row[0], "%u", &lastseen);
     (void) mono_sql_u_free_result(res);
 
-    (void) mono_sql_query( &res, "UPDATE %s SET lastseen=%u WHERE forum_id=%u AND user_id=%u", UF_TABLE, lastseen, forum, usernum);
+    (void) mono_sql_query(&res, "UPDATE %s SET lastseen=%u WHERE forum_id=%u AND user_id=%u", UF_TABLE, lastseen, forum, usernum);
     (void) mono_sql_u_free_result(res);
     return 0;
 }
@@ -86,12 +86,11 @@ mono_sql_uf_get_unread(unsigned int forum, unsigned int lastseen)
 
     ret = mono_sql_query(&res, "SELECT COUNT(*) FROM %s WHERE message_id>%u AND forum_id=%u", M_TABLE, lastseen, forum);
     if (ret == -1) {
-        (void) mono_sql_u_free_result(res);
-        return -1;
+	(void) mono_sql_u_free_result(res);
+	return -1;
     }
-
     row = mysql_fetch_row(res);
-    sscanf(row[0],"%u", &ret);
+    sscanf(row[0], "%u", &ret);
     (void) mono_sql_u_free_result(res);
 
     return ret;
@@ -184,7 +183,7 @@ mono_sql_uf_add_entry(unsigned int user_id, unsigned int forum_id)
     /* make this into an sql query that also checks if room & user exist */
     ret = mono_sql_query(&res,
 			 "SELECT user_id,username FROM %s"
-		     "WHERE forum_id=%u AND user_id=%u", UF_TABLE, forum_id, user_id);
+	   "WHERE forum_id=%u AND user_id=%u", UF_TABLE, forum_id, user_id);
     mono_sql_u_free_result(res);
 
     if (ret != 0) {
@@ -233,7 +232,7 @@ mono_sql_uf_list_hosts_by_forum(unsigned int forumnumber, userlist_t ** p)
 }
 
 int
-mono_sql_uf_list_hosts_by_user(unsigned int usernumber , forumlist_t ** p)
+mono_sql_uf_list_hosts_by_user(unsigned int usernumber, forumlist_t ** p)
 {
     int ret, rows, i;
     unsigned int forum_id;
@@ -241,11 +240,7 @@ mono_sql_uf_list_hosts_by_user(unsigned int usernumber , forumlist_t ** p)
     MYSQL_RES *res;
     MYSQL_ROW row;
 
-    ret = mono_sql_query(&res, "SELECT forum_id,forum.name "
-                               "FROM forum,userforum "
-                               "WHERE forum.id = userforum.forum_id "
-                                 "AND userforum.user_id=%u "
-                                 "AND userforum.host='y'", usernumber);
+    ret = mono_sql_query(&res, "SELECT forum_id,f.name FROM %s AS f,%s AS uf WHERE f.id = uf.forum_id AND uf.user_id=%u AND uf.host='y'", F_TABLE, UF_TABLE, usernumber);
 
     if (ret == -1) {
 	return -1;
@@ -261,8 +256,8 @@ mono_sql_uf_list_hosts_by_user(unsigned int usernumber , forumlist_t ** p)
 	if (sscanf(row[0], "%u", &forum_id) == -1)
 	    continue;
 
-        e.forum_id = forum_id;
-        strcpy(e.name, row[1] );
+	e.forum_id = forum_id;
+	strcpy(e.name, row[1]);
 	add_to_forumlist(e, p);
     }
     mono_sql_u_free_result(res);
@@ -673,5 +668,47 @@ mono_sql_uf_new_user(unsigned int user_id)
     return 0;
 }
 
+int
+mono_sql_uf_whoknows(unsigned int forum_id, char **result)
+{
+
+    MYSQL_RES *res;
+    MYSQL_ROW row;
+    int i = 0, rows = 0, ret = 0;
+    char line[100];
+
+    ret = mono_sql_query(&res, "SELECT u.username FROM %s AS u LEFT JOIN %s "
+    " AS uf ON u.id=uf.user_id WHERE uf.forum_id=%u AND uf.status='invited'"
+			 ,U_TABLE, UF_TABLE, forum_id);
+
+    if (ret == -1) {
+	fprintf(stdout, "Query error\n");
+	fflush(stdout);
+	(void) mono_sql_u_free_result(res);
+	return -1;
+    }
+    if ((rows = mysql_num_rows(res)) == 0) {
+	(void) mono_sql_u_free_result(res);
+	return 0;
+    }
+    *result = (char *) xmalloc(sizeof(char));
+
+    for (i = 0; i < rows; i++) {
+	row = mysql_fetch_row(res);
+	if (row == NULL)
+	    break;
+	sprintf(line, "%-24s", row[0]);
+	if ((i % 3) == 0) {
+	    strcat(line, "\n");
+	    *result = (char *) xrealloc(*result, strlen(*result) + strlen(line));
+	    strcat(*result, line);
+	}
+    }
+    *result = (char *) xrealloc(*result, strlen(*result) + strlen("\n"));
+    strcat(*result, "\n");
+
+    return rows;
+
+}
 
 /* eof */
