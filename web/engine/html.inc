@@ -207,12 +207,13 @@ function html_print_foot($username, $starttime, $location) {
 
     echo "<hr size=\"1\" width=\"400\" align=\"center\">\n";
     echo "<p class=\"footer\">\n";
-    echo "  <a href=\"$location\">Check X Messages</a> <b>|</b>\n";
+    if($location)
+        echo "  <a href=\"$location\">Check X Messages</a> <b>|</b>\n";
     echo "  <a href=\"/bbs/index.phtml/w\">View Wholist</a> <b>|</b>\n";
     echo "  <a href=\"/bbs/index.phtml/l\">All Quadrants</a> <b>|</b>\n";
     echo "  <a href=\"/bbs/index.phtml/u\">Unread Messages</a>\n";
     echo "<p class=\"footer\">\n";
-    echo "  <a href=\"/bbs/index.phtml/\">Main Page</a> |\n";
+    echo "  <a href=\"/bbs/index.phtml/\">Main Page</a> <b>|</b>\n";
     echo "  <a href=\"/bbs/index.phtml/q\">Log out $username</a>\n";
     echo "<hr size=\"1\" width=\"400\" align=\"center\">\n";
 
