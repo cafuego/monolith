@@ -5,7 +5,7 @@
 #include "defs.h"
 #include "global.h"
 #include "typedefs.h"
-#include "version.h"
+/* #include "version.h" */
 
 int cprintf( const char *format, ... );
 
