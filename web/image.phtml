@@ -1,6 +1,6 @@
 <?php
 
-    Header( "Content-type: image/gif" );
+    // Header( "Content-type: image/gif" );
 
     // Image, font and string data passed through.
     //
@@ -11,6 +11,11 @@
     $font_info = explode(",", $url_array[3]);
     $font = "/usr/bbs/www/bbs/font/". $font_info[0] .".ttf";
     $size = $font_info[1];
+
+    echo "<p>$url_array[3]\n";
+    echo "<p>$url_array[4]\n";
+    echo "<p>$font_info[0]\n";
+    echo "<p>$font_info[1]\n";
 
     // Then, get the string to display.
     //
