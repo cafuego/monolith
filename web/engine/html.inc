@@ -217,8 +217,8 @@ function html_print_foot($username, $starttime, $location) {
         addbutton("Wholist", "/bbs/index.phtml/w");
         addbutton("Unread", "/bbs/index.phtml/u");
         addbutton("Quadrants", "/bbs/index.phtml/l");
-        addbutton("   ", null);
-        addbutton("Monolith", "/");
+        addbutton("       ", null);
+        addbutton("Main Page", "/bbs/");
         addbutton("Log out", "/bbs/index.phtml/q");
         echo "</div>\n";
 

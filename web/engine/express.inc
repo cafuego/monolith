@@ -46,8 +46,6 @@ function express_message($username, $recipient, $interface, $location) {
 
     addimage( "Sending an eXpress message to $recipient@$interface" );
 
-    PRINT "<div style=\"margin-left: 150;\">\n";
-
     // Reply form.
     //
     PRINT "<form action=\"/bbs/sendx.phtml\" method=\"post\">\n";
@@ -71,7 +69,6 @@ function express_message($username, $recipient, $interface, $location) {
     PRINT "<input type=\"reset\" value=\"Clear\">\n";
 
     PRINT "</form>\n";
-    PRINT "</div>\n";
 
 }
 

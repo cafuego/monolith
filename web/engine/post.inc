@@ -69,8 +69,7 @@ function post_reply($username,$quad,$current) {
     // Show message.
     //
     addimage( "Replying to message $m_id in $forum" );
-    PRINT "<div style=\"margin-left: 150;\">\n";
-    PRINT "<p class=\"reply\"><font color=\"#00CC00\">Original from</font> $user <font color=\"#00CC00\">on</font> <font color=\"#00CC00\">$date CET</font></p>\n";
+    PRINT "<p align=\"left\"><font color=\"#00CC00\">Original from</font> $user <font color=\"#00CC00\">on</font> <font color=\"#00CC00\">$date CET</font></p>\n";
     PRINT "<pre><font color=\"#00ffff\">$content</font></pre>\n";
     PRINT "<hr size=\"1\" width=\"400\">\n<br>\n";
 
@@ -100,7 +99,6 @@ function post_reply($username,$quad,$current) {
     PRINT "<input type=\"reset\" value=\"Clear\">\n";
 
     PRINT "</form>\n";
-    PRINT "</div>\n";
 
 }
 
@@ -122,7 +120,6 @@ function post_new($username,$quad) {
     $now = mysql_result($result,0,"now");
 
     addimage( "Entering new message in $forum" );
-    PRINT "<div style=\"margin-left: 150;\">\n";
 
     // Reply form.
     //
@@ -147,7 +144,6 @@ function post_new($username,$quad) {
     PRINT "<input type=\"reset\" value=\"Clear\">\n";
 
     PRINT "</form>\n";
-    PRINT "</div>\n";
 
 }
 
