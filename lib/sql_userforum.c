@@ -695,6 +695,7 @@ mono_sql_uf_whoknows(unsigned int forum_id, char **result)
     }
 
     *result = (char *) xmalloc( (rows * BUFFSIZE) * sizeof(char));
+    strcpy(*result, "\n");
 
     for (i = 0; i < rows; i++) {
 	row = mysql_fetch_row(res);
