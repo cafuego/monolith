@@ -54,6 +54,7 @@ check_user(const char *name)
     return fexists(work);
 }
 
+#ifdef USED
 /* returns TRUE is password is correct, FALSE otherwise */
 int
 check_password(const user_t * user, const char *password)
@@ -75,6 +76,7 @@ check_password(const user_t * user, const char *password)
     else
 	return FALSE;
 }
+#endif
 
 /* accepts usre and plaintext passwd and stores it encrypted */
 /* returns -1 on error */

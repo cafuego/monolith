@@ -144,6 +144,25 @@ mono_sql_u_kill_user(unsigned int user_id)
 }
 
 int
+mono_sql_u_check_user( const char *username )
+{
+    int i;
+    MYSQL_RES *res;
+
+    i = mono_sql_query(&res, "SELECT id FROM " U_TABLE " WHERE username='%s'", username);
+
+    if (i == -1) {
+	fprintf(stderr, "No results from query.\n");
+	return FALSE;
+    }
+    if (mysql_num_rows(res) != 1) {
+	return FALSE;
+    }
+    mono_sql_u_free_result(res);
+    return TRUE;
+}
+
+int
 mono_sql_u_id2name(unsigned int userid, char *username)
 {
     int i;
