@@ -175,31 +175,31 @@ msgstr ""
 msgid "\001f\001rError trying to send clipboard to %s."
 msgstr "\001f\001rFout tijdens versturen van klembord naar %s."
 
-#: src/commands.c:499
+#: src/commands.c:503
 msgid "\001f\001wEdit %s Description.\001a\n"
 msgstr "\001f\001wBewerk %s beschrijving.\001a\n"
 
-#: src/commands.c:504
+#: src/commands.c:508
 msgid "\001f\001wEdit %s.\001a\n"
 msgstr "\001f\001wBewerk %s.\001a\n"
 
-#: src/commands.c:523
+#: src/commands.c:527
 msgid "\001f\001wKickout %s from %s.\001a\n"
 msgstr "\001f\001wTrap %s uit %s.\001a\n"
 
-#: src/commands.c:666
+#: src/commands.c:670
 msgid "\001f\001gLock Terminal.\n"
 msgstr "\001f\001gTerminal op slot.\n"
 
-#: src/commands.c:700
+#: src/commands.c:704
 msgid "\001f\001cMark messages as read.\n"
 msgstr "\001f\001cMarkeer berichten als gelezen.\n"
 
-#: src/commands.c:718
+#: src/commands.c:722
 msgid "\001f\001cSystem Configuration.\n"
 msgstr "\001f\001cSysteem Configuratie.\n"
 
-#: src/commands.c:734
+#: src/commands.c:738
 msgid "\001f\001w(\001gMisc. Options\001w)\n"
 msgstr "\001f\001w(\001gOverige Opties\001w)\n"
 
@@ -772,7 +772,7 @@ msgstr ""
 "Sorry, maar de sleutel was niet correct..\n"
 "\n"
 
-#: src/main.c:166
+#: src/main.c:167
 msgid ""
 "OH NO!!!!!!! A SEGFAULT!!!!!\n"
 " "
@@ -780,40 +780,39 @@ msgstr ""
 "OH NEE!!!!!!! EEN SEGMENTATIEFOUT!!!!!\n"
 " "
 
-#: src/main.c:205
+#: src/main.c:211
 msgid "No such user.\n"
 msgstr "\001f\001rDeze gebruiker bestaat niet.\001a\n"
 
-#: src/main.c:224 src/main.c:326
+#: src/main.c:229 src/main.c:332
 msgid "Incorrect login.\n"
 msgstr "Incorrecte login.\n"
 
-#: src/main.c:242
+#: src/main.c:248
 msgid "\001f\001gPlease enter your \001rcurrent\001g password: "
 msgstr "\001f\001gType je \001rhuidige\001g wachtwoord: "
 
-#: src/main.c:251
+#: src/main.c:257
 msgid "Password changed.\n"
 msgstr "Wachtwoord gewijzigd.\n"
 
-#: src/main.c:253
+#: src/main.c:259
 msgid "Password unchanged.\n"
 msgstr "Wachtwoord niet gewijzigd.\n"
 
-#: src/main.c:273
+#: src/main.c:279
 msgid "Please enter a password: "
 msgstr "Type je wachtwoord: "
 
-#: src/main.c:277
+#: src/main.c:283
 msgid "Please enter it again: "
 msgstr "Type het nogmaals: "
 
-#: src/main.c:281
+#: src/main.c:287
 msgid "The passwords you typed didn't match.  Please try again.\n"
 msgstr "De wachtwoorden waren niet gelijk. Probeer het nogmaals.\n"
 
-#. loop until we get a real username
-#: src/main.c:307
+#: src/main.c:313
 msgid ""
 "\n"
 "Username: "
@@ -821,15 +820,16 @@ msgstr ""
 "\n"
 "Gebruikersnaam: "
 
-#: src/main.c:311
+#: src/main.c:317
 msgid "Enter \"Off\" to quit or \"New\" to enter as a new user.\n"
 msgstr "Type \"Off\" om te stoppen of \"New\" om een nieuwe gebruiker te creeren\n"
 
-#: src/main.c:324
+#. if this user does not exist, fake a password-entry
+#: src/main.c:330
 msgid "%s's Password: "
 msgstr "%s's Wachtwoord: "
 
-#: src/main.c:557
+#: src/main.c:568
 msgid ""
 "\n"
 "*** Registration is required. ***\n"
@@ -839,13 +839,13 @@ msgstr ""
 "*** Registratie is vereist. ***\n"
 "\n"
 
-#: src/main.c:561
+#: src/main.c:572
 msgid ""
 "\001f\001yNow \001w<\001ry\001w>\001yell to the admin to be granted full access.\n"
 "\n"
 msgstr ""
 
-#: src/main.c:660
+#: src/main.c:671
 msgid ""
 "\n"
 "\n"
@@ -857,11 +857,11 @@ msgstr ""
 "\001g\001f%s \001yis is nog bezig je een %s %s te sturen.\n"
 "\001a"
 
-#: src/main.c:661
+#: src/main.c:672
 msgid "\001f\001gHit any key to continue...\001a"
 msgstr "\001f\001gDruk om een toets om door te gaan...\001a"
 
-#: src/main.c:666
+#: src/main.c:677
 msgid ""
 "\n"
 "\001f\001gAre you sure you want to leave %s? \001w(\001gy\001w/\001gn\001w/\001gm\001w/\001g?\001w)\001g "
@@ -869,19 +869,19 @@ msgstr ""
 "\n"
 "\001f\001gWeet je zeker dat je %s wilt verlaten? \001w(\001gy\001w/\001gn\001w/\001gm\001w/\001g?\001w)\001g "
 
-#: src/main.c:671
+#: src/main.c:682
 msgid "\001f\001gHelp.\001a\n"
 msgstr ""
 
-#: src/main.c:676
+#: src/main.c:687
 msgid "\001f\001gYes.\n"
 msgstr "\001f\001gJa.\n"
 
-#: src/main.c:680
+#: src/main.c:691
 msgid "\001f\001gNo.\n"
 msgstr "\001f\001gNee.\n"
 
-#: src/main.c:783
+#: src/main.c:794
 msgid ""
 "\n"
 "\001a\001f\001gWelcome to %s, \001g%s! \001gThis is your \001w#%d \001glogin.\n"
@@ -889,23 +889,23 @@ msgstr ""
 "\n"
 "\001a\001f\001gWelkom op %s, \001g%s! \001gDit is je \001w%de \001glogin.\n"
 
-#: src/main.c:787
+#: src/main.c:798
 msgid "\001f\001gLast login: %s \001g\001ffrom \001r%-16.16s\n"
 msgstr "\001f\001gLaatste login: %s \001g\001fvanaf \001r%-16.16s\n"
 
-#: src/main.c:807
+#: src/main.c:818
 msgid "\001f\001gYour friends online\001w:\001a\n"
 msgstr "\001f\001gJe aanwezige vrienden\001w:\001a\n"
 
-#: src/main.c:846
+#: src/main.c:857
 msgid "\001f\001gYou have a new private %s in \001pMail>\n"
 msgstr "\001f\001gJe hebt een nieuw privé %s in \001pMail>\n"
 
-#: src/main.c:848
+#: src/main.c:859
 msgid "\001f\001gYou have \001r%d \001gnew private %s in \001pMail>\n"
 msgstr "\001f\001gJe hebt \001r%d \001gnieuwe poststukken in \001pMail>\n"
 
-#: src/main.c:850
+#: src/main.c:861
 msgid "\001f\001gYou have \001rno\001g new Mail %s.\001a\n"
 msgstr "\001f\001gJe hebt \001rgeen\001g nieuwe poststukken.\001a\n"
 
@@ -921,133 +921,133 @@ msgstr "\001f\001rERROR: '\001y%s\001r' is geen geldig zoekpatroon...\001a\n"
 msgid "\001f\001r\001eSearching..."
 msgstr "\001f\001r\001eZoeken..."
 
-#: src/read_menu.c:130
+#: src/read_menu.c:131
 msgid "\001f\001gRead messages backwards.\001a\n"
 msgstr "\001f\001gLees berichten achteruit.\001a\n"
 
-#: src/read_menu.c:151
+#: src/read_menu.c:152
 msgid "\001f\001pSubscribe to %s: \001a"
 msgstr "\001f\001pAbonneer op %s: \001a"
 
-#: src/read_menu.c:156
+#: src/read_menu.c:157
 msgid "\001f\001gEnter message.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:173
+#: src/read_menu.c:174
 msgid "\001f\001gRead messages forward.\001a\n"
 msgstr "\001f\001gLees berichten vooruit.\001a\n"
 
-#: src/read_menu.c:178
+#: src/read_menu.c:179
 msgid "\001f\001gYour friends online.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:208 src/usertools.c:1080
+#: src/read_menu.c:209 src/usertools.c:1080
 msgid "\001f\001gHelpfiles.\001a\n"
 msgstr "\001f\001gHelp bestanden.\001a\n"
 
-#: src/read_menu.c:213
+#: src/read_menu.c:214
 msgid "\001f\001g%s Info.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:229
+#: src/read_menu.c:230
 msgid "\001f\001gJump to %s name/number: \001a"
 msgstr ""
 
-#: src/read_menu.c:238
+#: src/read_menu.c:239
 msgid "\001f\001gAll %s\001w:\n"
 msgstr "\001f\001gAlle %s\001w:\n"
 
-#: src/read_menu.c:243
+#: src/read_menu.c:244
 msgid "\001f\001gKnown %s.\n"
 msgstr "\001f\001gBekende %s.\n"
 
-#: src/read_menu.c:259
+#: src/read_menu.c:260
 msgid "\001f\001gLogout.\001a"
 msgstr "\001f\001gUitloggen.\001a"
 
-#: src/read_menu.c:296
+#: src/read_menu.c:297
 msgid "\001f\001gProfile an %s.\001a\n"
 msgstr "\001f\001gBekijk een %s.\001a\n"
 
-#: src/read_menu.c:302
+#: src/read_menu.c:303
 msgid "\001f\001rAsk a Question.\001a\n"
 msgstr "\001f\001rStel een vraag.\001a\n"
 
-#: src/read_menu.c:312
+#: src/read_menu.c:313
 msgid "\001f\001gRead %s reverse.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:317
+#: src/read_menu.c:318
 msgid "\001f\001gInterBBS Wholist.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:324
+#: src/read_menu.c:325
 msgid "\001f\001gSearch %s\n"
 msgstr "\001f\001gZoek %s\n"
 
-#: src/read_menu.c:335
+#: src/read_menu.c:336
 msgid "\001f\001gDate: \001w%s\001a"
 msgstr "\001f\001gDatum: \001w%s\001a"
 
 #. Holodeck Wholist
-#: src/read_menu.c:357
+#: src/read_menu.c:358
 msgid "\001f\001g%s Wholist.\n"
 msgstr "\001f\001g%s Wie-lijst.\n"
 
-#: src/read_menu.c:362
+#: src/read_menu.c:363
 msgid "\001f\001gWhich %s are online?\001a\n"
 msgstr "\001f\001gWelke %s zijn aanwezig?\001a\n"
 
-#: src/read_menu.c:367 src/read_menu.c:877
+#: src/read_menu.c:368 src/read_menu.c:888
 msgid "\001f\001gShort Wholist.\001a\n"
 msgstr "\001f\001gKorte Wie-lijst.\001a\n"
 
 #. <ctrl-w>
-#: src/read_menu.c:373 src/read_menu.c:890
+#: src/read_menu.c:374 src/read_menu.c:901
 msgid "\001f\001gSend \001pWeb \001g%s %s.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:384 src/read_menu.c:896
+#: src/read_menu.c:385 src/read_menu.c:907
 msgid "\001f\001gSend %s %s.\001a\n"
 msgstr "\001f\001gStuur %s %s.\001a\n"
 
-#: src/read_menu.c:407
+#: src/read_menu.c:408
 msgid "\001f\001gRead %s-Log.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:412
+#: src/read_menu.c:413
 msgid "\001f\001gYell-menu.\001a \n"
 msgstr "\001f\001gSchreeuw-menu.\001a \n"
 
-#: src/read_menu.c:418
+#: src/read_menu.c:419
 msgid "\001f\001gZap %s.\001a\n"
 msgstr "\001f\001gVergeet %s.\001a\n"
 
-#: src/read_menu.c:437
+#: src/read_menu.c:438
 msgid "\001f\001gJump a number of %s back from the Last Read %s.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:438 src/read_menu.c:450 src/read_menu.c:929
+#: src/read_menu.c:439 src/read_menu.c:451 src/read_menu.c:940
 msgid "\001f\001gHow many %s back shall I jump?\001c "
 msgstr ""
 
-#: src/read_menu.c:443 src/read_menu.c:455 src/read_menu.c:934 src/read_menu.c:949
+#: src/read_menu.c:444 src/read_menu.c:456 src/read_menu.c:945 src/read_menu.c:960
 msgid "\001f\001rThat is not a valid entry.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:449
+#: src/read_menu.c:450
 msgid "\001f\001rJump a number of %s back from the Last %s in this %s.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:485
+#: src/read_menu.c:486
 msgid "\001f\001gRandom Quote!\n"
 msgstr "\001f\001gWillekeurig citaat!\n"
 
-#: src/read_menu.c:491
+#: src/read_menu.c:492
 msgid "\001a\001f\001gDonator List.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:531 src/read_menu.c:992
+#: src/read_menu.c:532 src/read_menu.c:1003
 msgid ""
 "\001f\001gChange your Friends-list.\001a\n"
 "\n"
@@ -1055,7 +1055,7 @@ msgstr ""
 "\001f\001gVerander je vrienden-lijst.\001a\n"
 "\n"
 
-#: src/read_menu.c:536 src/read_menu.c:997
+#: src/read_menu.c:537 src/read_menu.c:1008
 msgid ""
 "\001f\001gChange your Enemylist.\001a\n"
 "\n"
@@ -1063,28 +1063,27 @@ msgstr ""
 "\001f\001gVeranderd je vijanden-lijst.\001a\n"
 "\n"
 
-#: src/read_menu.c:545
+#: src/read_menu.c:546
 msgid "\001f\001gList all commands.\001a\n"
 msgstr "\001f\001gLijst van alle commandos.\001a\n"
 
-#: src/read_menu.c:883
+#: src/read_menu.c:894
 msgid "\001f\001gWhich aliens are online?\001a\n"
 msgstr "\001f\001gWelke gebruikers zijn online?\001a\n"
 
-#: src/read_menu.c:928
+#: src/read_menu.c:939
 msgid "\001f\001gJump a number of %s back from the current %s.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:943
+#: src/read_menu.c:954
 msgid "\001f\001gJump a number of %s forward from the current %s.\001a\n"
 msgstr ""
 
-#: src/read_menu.c:944
+#: src/read_menu.c:955
 msgid "\001f\001gHow many %s forward shall I jump?\001c "
 msgstr ""
 
-#. read X-Log
-#: src/routines2.c:545
+#: src/routines2.c:546
 msgid ""
 "\n"
 "\001f\001gRead X-Log.\001a\n"
@@ -1128,7 +1127,7 @@ msgstr "Verjaardag: \001g"
 
 #: src/usertools.c:730
 msgid "\001f\001cConfiguration\001w: \001g%s \001cMonoholic Rating\001w: \001g"
-msgstr ""
+msgstr "\001f\001cConfiguratiie\001w: \001g%s \001cMonoholicus Score\001w: \001g"
 
 #: src/usertools.c:733
 msgid "\001f\001cUsernum\001w: \001g%d \001cFirst login\001w: \001g%s\n"
