@@ -377,6 +377,15 @@ function colorize($doing) {
     return rawurldecode($doing);
 }
 
+function errorsound() {
+
+    echo "<object data=\"/bbs/sound/error.au\">\n";
+    echo "</object>\n";
+
+}
+
+}
+
 function addimage( $text ) {
 
     // To change all images in one go.
@@ -448,6 +457,7 @@ function main_menu($username, $current_url) {
     switch ($action) {
 
         case "a":	// PHP info.
+            errorsound();
             echo "<pre>\n" . phpinfo() . "</pre>\n";
             break;
 
