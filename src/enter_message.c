@@ -606,7 +606,7 @@ quad_lizard(message_header_t * header)
 {
     FILE *fp1, *fp2;
     char filename[L_FILENAME + 1];
-    int i, ql_ctr, idle_for;
+    int i, ql_ctr, idle_for, mail_the_lamer_qls;
     long j;
     room_t quad;
     time_t timenow;
@@ -617,6 +617,9 @@ quad_lizard(message_header_t * header)
 
     time(&timenow);
     log_it("quadlizard", "Starting up!");
+
+    cprintf("\n\1f\1rMail idle forum ql's?  (y/n) ");
+    mail_the_lamer_qls = yesno();
 
     strcpy(header->author, "Quad Lizard");
     strcpy(header->subject, "\1rList of quad \"issues\"");
@@ -655,7 +658,7 @@ quad_lizard(message_header_t * header)
 		  "\1f\1w%d.\1g%s\1w: \1gLast post \1w%d\1g days ago.\1a\n",
 		    i, quad.name, idle_for);
 
-	    for (j = 0; j < NO_OF_QLS; j++) {
+	    for (j = 0; j < NO_OF_QLS && mail_the_lamer_qls; j++) {
 		if ((strlen(quad.qls[j]) <= 0) || (strcmp(quad.qls[j], "Sysop") == 0))
 		    continue;
 		else if (check_user(quad.qls[j])) {
