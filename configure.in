@@ -217,6 +217,14 @@ MYSQL_PASSWORD=${with_sql_pass}
 MYSQL_DATABASE=${with_sql_db}
 MYSQL_SOCKET=${with_sql_sock}
 
+dnl Echo to user.
+dnl
+echo "checking mysql server... ${with_sql_host}"
+echo "checking mysql user... ${with_sql_user}"
+echo "checking mysql password... ${with_sql_pass}"
+echo "checking mysql database... ${with_sql_db}"
+echo "checking mysql socket file... ${with_sql_sock}"
+
 dnl Define properly.
 dnl
 AC_SUBST(MYSQL_SERVER)
@@ -283,12 +291,29 @@ AC_OUTPUT(cgi/Makefile lib/Makefile daemons/Makefile src/Makefile \
     web/script/Makefile web/sound/Makefile web/flash/Makefile \
     po/Makefile.in intl/Makefile include/Makefile Makefile build-defs.h)
 
+dnl Create PHP include file with MYSQL settings.
+dnl
+PHP_CONFIG_FILE=web/config.inc
+echo "creating $PHP_CONFIG_FILE"
+echo "<?php" > $PHP_CONFIG_FILE
+echo >> $PHP_CONFIG_FILE
+echo "/* config.inc.  Generated automatically by configure.  */" >> $PHP_CONFIG_FILE
+echo >> $PHP_CONFIG_FILE
+echo "\$BBSNAME        = \"$with_name\"" >> $PHP_CONFIG_FILE
+echo >> $PHP_CONFIG_FILE
+echo "\$MYSQL_SERVER   = \"$MYSQL_SERVER\"" >> $PHP_CONFIG_FILE
+echo "\$MYSQL_USER     = \"$MYSQL_USER\"" >> $PHP_CONFIG_FILE
+echo "\$MYSQL_PASS     = \"$MYSQL_PASS\"" >> $PHP_CONFIG_FILE
+echo "\$MYSQL_DATABASE = \"$MYSQL_DATABASE\"" >> $PHP_CONFIG_FILE
+echo >> $PHP_CONFIG_FILE
+echo "?>" >> $PHP_CONFIG_FILE
+
 dnl Only do this if we're not called from the makefile.
 dnl
 if test "$no_create" != "yes" ; then
 
-  dnl Update or create version stamp, but only if it' not
-  dnl automagically running.
+
+  dnl Update or create version stamp, but only if it' not automagically running.
   /bin/sh ./mkversion-sh
 
   dnl Linux newbie stuff.
