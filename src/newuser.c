@@ -102,7 +102,7 @@ new_user(const char *hostname)
     fflush(stdout);
 
     generate_new_key(usersupp);
-    i = send_key(usersupp);
+    i = send_key(usersupp->username, usersupp->RGemail, usersupp->validation_key);
 
     switch (i) {
 

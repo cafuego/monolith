@@ -66,7 +66,7 @@ key_menu()
 	switch (c) {
 	    case 's':
 		cprintf("Send another validation key.\n");
-		i = send_key(usersupp);
+		i = send_key(usersupp->username, usersupp->RGemail, usersupp->validation_key);
 		switch (i) {
 		    case 0:
 			cprintf("\nYour validation key was sent to `%s'.\n", usersupp->RGemail);
@@ -118,7 +118,7 @@ enter_key()
 }
 
 int
-send_key(const user_type * user)
+send_key(const char *username, const char *email, long key)
 {
 
 #define ACCEPTED "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@1234567890_%.-"
@@ -131,45 +131,45 @@ send_key(const user_type * user)
 #endif
     size_t accepted;
 
-    accepted = strspn(user->RGemail, ACCEPTED);
+    accepted = strspn(email, ACCEPTED);
 
-    if (accepted < strlen(user->RGemail)) {
+    if (accepted < strlen(email)) {
 	log_it("email", "%s has invalid chars in the email address. Validation key not sent.", usersupp->username);
 	return 1;
     }
 
 #ifdef HAVE_SENDMAIL
     if( (sendmail = popen( SENDMAIL " -t", "w" )) == NULL ) {
-	log_it("email", "Error trying to send validation key to %s.\nCan't popen(%s).", user->RGemail, SENDMAIL);
+	log_it("email", "Error trying to send validation key to %s.\nCan't popen(%s).", email, SENDMAIL);
 	return 2;
     }
     if ((message = map_file(VALIDATION_EMAIL)) == NULL) {
         xfree(message);
-	log_it("email", "Error trying to send validation key to %s.\nCan't mmap %s.", user->RGemail, VALIDATION_EMAIL);
+	log_it("email", "Error trying to send validation key to %s.\nCan't mmap %s.", email, VALIDATION_EMAIL);
 	return 2;
     }
 
-    fprintf(sendmail, "To: %s <%s>\n", user->RGname, user->RGemail);
+    fprintf(sendmail, "To: %s <%s>\n", username, email);
     fprintf(sendmail, "Subject: %s BBS validation key.\n", BBSNAME);
     fprintf(sendmail, "%s\n", message);
-    fprintf(sendmail, "\n*** Your %s BBS validation key is: %lu ***\n", BBSNAME, user->validation_key);
+    fprintf(sendmail, "\n*** Your %s BBS validation key is: %lu ***\n", BBSNAME, key);
 
     xfree(message);
     if( pclose(sendmail) == -1 ) {
-	log_it("email", "Error trying to send validation key to %s.\nCan't pclose(%X).", user->RGemail, sendmail);
+	log_it("email", "Error trying to send validation key to %s.\nCan't pclose(%X).", email, sendmail);
 	return 2;
     }
 #else
     sprintf(cmd, "/bin/mail -s \"%s BBS Validation Key: %ld\" \'%s\' < %s &"
-	    ,BBSNAME, user->validation_key, user->RGemail, VALIDATION_EMAIL);
+	    ,BBSNAME, key, email, VALIDATION_EMAIL);
 
     if (system(cmd) == -1) {
-	log_it("email", "Error trying to send validation key to %s.\nCommand: %s.", user->RGemail, cmd);
+	log_it("email", "Error trying to send validation key to %s.\nCommand: %s.", email, cmd);
 	return 2;
     }
 #endif
 
-    log_it("email", "Validation key sent to %s at %s.", usersupp->username, usersupp->RGemail);
+    log_it("email", "Validation key sent to %s at %s.", username, email);
     return 0;
 }
 
