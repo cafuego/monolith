@@ -132,9 +132,9 @@
             $website = strtr($website, "'", "\\'");
 
             $result = mysql_query("UPDATE user SET hiddeninfo='$hiddeninfo' WHERE username='$username'");
-            if($result) echo "<h2 align=\"center\">1: ". mysql_error() ."</h2>\n";
+            if(!$result) echo "<h2 align=\"center\">1: ". mysql_error() ."</h2>\n";
             $result = mysql_query("UPDATE user SET url='$website' WHERE username='$username'");
-            if($result) echo "<h2 align=\"center\">2: ". mysql_error() ."</h2>\n";
+            if(!$result) echo "<h2 align=\"center\">2: ". mysql_error() ."</h2>\n";
             break;
 
         // Save profile image.
