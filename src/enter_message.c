@@ -69,9 +69,18 @@ enter_message(unsigned int forum, int mode, unsigned long banner_flag, const cha
     nox = TRUE;
     reply = (mode == REPLY_MODE) ? 1 : 0;
 
+    quad = read_quad(forum);
+
+    /* priv checking */
+    if ((quad.flags & QR_READONLY) && ((usersupp->priv < PRIV_SYSOP) || (!(is_ql(usersupp->username, quad))))) {
+	if (((int) rand() % 2) == 1)
+	    cprintf("\1f\1rThe pod bay door remains closed.\1a\n");
+	else
+	    cprintf("\1f\1gYou cannot enter %s in read-only %s.\1a\n", config.message_pl, config.forum_pl);
+	return 0;
+    }
     header = (message_header_t *) xmalloc(sizeof(message_header_t));
     init_message_header(header);
-    quad = read_quad(forum);
 
     strcpy(header->author, usersupp->username);
     strcpy(header->forum_name, quad.name);
