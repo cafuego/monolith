@@ -90,9 +90,9 @@ class user_t {
         if( (!(strstr( $this->hiddeninfo, "phone" ))) && (strlen($this->phone)))
             echo "<br>\nPhone: $this->phone";
         if( (!(strstr( $this->hiddeninfo, "email" ))) && (strlen($this->email)))
-            echo "<br>\nEmail: <a href=\"mailto:$this->email\">$this->email</a>";
+            echo "<br>\nEmail: <a href=\"mailto:$this->email\"".mouseover("Send $this->username an email at $this->email.").">$this->email</a>";
         if( (!(strstr( $this->hiddeninfo, "url" ))) && (strlen($this->url)))
-            echo "<br>\nWebpage: <a href=\"$this->url\" target=\"_new\">$this->url</a>";
+            echo "<br>\nWebpage: <a href=\"$this->url\" target=\"_new\"".mouseover("View $this->username's home page.").">$this->url</a>";
         echo "<br clear=\"all\">\n";
         return;
     }
