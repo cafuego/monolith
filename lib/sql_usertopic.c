@@ -31,16 +31,18 @@ mono_sql_ut_update_lastseen( unsigned int user_id, unsigned int forum_id,
                              unsigned int topic_id, unsigned int message_id )
 {
     int ret;
+    unsigned int dummy;
     MYSQL_RES *res;
 
-    if ( mono_sql_ut_query_lastseen( user_id, forum_id, topic_id, &ret ) == -1 ) {
-                if ( forum_id < MAXQUADS )
-                 mono_sql_ut_add_entry( user_id, forum_id, topic_id );
-      }
+    ret = mono_sql_ut_query_lastseen( user_id, forum_id, topic_id, &dummy ) ;
+    if ( ret == -1 ) {
+          if ( forum_id < MAXQUADS )
+                mono_sql_ut_add_entry( user_id, forum_id, topic_id );
+    }
 
     /* make this into an sql query that also checks if room & user exist */
     ret = mono_sql_query(&res,
-			 "UPDATE " UT_TABLE " SET lastseen=%u "
+			 "UPDATE " UT_TABLE " SET lastread=%u "
                          "WHERE topic_id=%u AND user_id=%u AND forum_id=%u"
                 , message_id, topic_id, user_id, forum_id );
     mono_sql_u_free_result(res);
@@ -62,7 +64,7 @@ mono_sql_ut_query_lastseen( unsigned int user_id, unsigned int forum_id,
 
     /* make this into an sql query that also checks if room & user exist */
     ret = mono_sql_query(&res,
-		 "SELECT lasteen FROM " UT_TABLE " "
+		 "SELECT lastread FROM " UT_TABLE " "
                  "WHERE topic_id=%u AND user_id=%u AND forum_id=%u"
                 , topic_id, user_id, forum_id );
 
