@@ -45,10 +45,8 @@ extern void ColourChar(char key);
 int
 bing(int c)
 {
-#ifdef PORT
-    if ( /* PORT_MODE && */ c == '\n')
+    if ( c == '\n')
 	putchar('\r');
-#endif
     return putchar(c);
 }
 
@@ -167,26 +165,26 @@ number(long num, int base, int size, int precision
     size -= precision;
     if (!(type & (ZEROPAD + LEFT)))
 	while (size-- > 0)
-	    bing(' ');
+	    putchar(' ');
     if (sign)
-	bing(sign);
+	putchar(sign);
     if (type & SPECIAL) {
 	if (base == 8)
-	    bing('0');
+	    putchar('0');
 	else if (base == 16) {
-	    bing('0');
-	    bing(digits[33]);
+	    putchar('0');
+	    putchar(digits[33]);
 	}
     }
     if (!(type & LEFT))
 	while (size-- > 0)
 	    bing(c);
     while (i < precision--)
-	bing('0');
+	putchar('0');
     while (i-- > 0)
 	bing(tmp[i]);
     while (size-- > 0)
-	bing(' ');
+	putchar(' ');
     return;
 }
 
@@ -299,14 +297,14 @@ vcprintf(const char *fmt, va_list args)
 	    case 'c':
 		if (!(flags & LEFT))
 		    while (--field_width > 0)
-			bing(' ');
+			putchar(' ');
 		if (DynamicColourFlag) {
 		    DynamicColourFlag = 0;
 		    ColourChar((unsigned char) va_arg(args, int));
 		} else
 		    bing((unsigned char) va_arg(args, char));
 		while (--field_width > 0)
-		    bing(' ');
+		    putchar(' ');
 		continue;
 
 	    case 's':
@@ -321,7 +319,7 @@ vcprintf(const char *fmt, va_list args)
 
 		if (!(flags & LEFT))
 		    while (len < field_width--)
-			bing(' ');
+			putchar(' ');
 		for (i = 0; i < len; ++i) {
 		    if (!*s) {
 			i = len;
@@ -346,7 +344,7 @@ vcprintf(const char *fmt, va_list args)
 					 */
 		}
 		while (len < (field_width-- + (ColourCount * 2)))
-		    bing(' ');
+		    putchar(' ');
 		continue;
 
 	    case 'p':
@@ -387,7 +385,7 @@ vcprintf(const char *fmt, va_list args)
 
 	    default:
 		if (*fmt != '%')
-		    bing('%');
+		    putchar('%');
 		if (*fmt)
 		    bing(*fmt);
 		else
