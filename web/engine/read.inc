@@ -63,13 +63,17 @@ function read_message($username, $quad, $current, $direction) {
                 $subject = htmlspecialchars($subject);
                 $content = htmlspecialchars($content);
                 $content = colorize($content);
-                $forum = htmlspecialchars($forum);
                 $user = format_username($username,$user,$alias,$flag);
                 $subject = format_subject($subject);
 
+                addimage( "Reading message $m_id in $forum" );
+
+                // Convert *after* generating image.
+                //
+                $forum = htmlspecialchars($forum);
+
                 // Show message.
                 //
-                addimage( "Reading message $m_id in $forum" );
                 echo "<p align=\"left\"><font color=\"#00CC00\">From</font> $user";
                 if( $flag != "anon" )
                     echo " <font color=\"#00CC00\">on</font> <font color=\"#00CC00\">$date CET</font><br>\n";
