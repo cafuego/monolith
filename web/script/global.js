@@ -12,10 +12,8 @@ function logout() {
     // If not to a link on the BBS pages, then we go and
     // visit our logout page.
     //
-    alert(location);
-    url = location;
-    alert(url);
-    if( url.indexOf('/bbs/') == -1 ) {
+    alert(window.location);
+    if( window.location.indexOf('/bbs/') == -1 ) {
         confirm("You are leaving Monolith BBS\n\nYou must log out first and will\nnow be taken to the logout page.");
         self.location = "/bbs/index.phtml/q";
     }
