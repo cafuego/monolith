@@ -85,15 +85,15 @@
         //
         case "i":
             $hiddenarg = "";
-            if($name) $hiddenarg .= ",name";
-            if($address) $hiddenarg .= ",address";
-            if($city) $hiddenarg .= ",city";
-            if($state) $hiddenarg .= ",state";
-            if($zip) $hiddenarg .= ",zip";
-            if($country) $hiddenarg .= ",country";
-            if($phone) $hiddenarg .= ",phone";
-            if($email) $hiddenarg .= ",email";
-            if($url) $hiddenarg .= ",url";
+            if(!$name) $hiddenarg .= "name";
+            if((!$address) && strlen($hiddenarg))
+                $hiddenarg .= ",address";
+            else
+                $hiddenarg .= "address";
+            if((!$city) && strlen($hiddenarg))
+                $hiddenarg .= ",city";
+            else
+                $hiddenarg .= "city";
             echo "String sofar: $hiddenarg<br>\n";
             if($website) echo "Website: $website<br>\n";
 
