@@ -21,7 +21,6 @@
 #endif
 
 #include "monolith.h"
-#include "monosql.h"
 #include "routines.h"
 #include "log.h"
 
@@ -36,7 +35,7 @@ static MYSQL mp;
 static int connected = FALSE;
 static int logqueries = FALSE;
 
-static int query_length(const char *format, va_list arg);
+static unsigned int query_length(const char *format, va_list arg);
 
 int
 mono_sql_connect()
@@ -65,7 +64,8 @@ int
 mono_sql_query(MYSQL_RES ** result, const char *format,...)
 {
     va_list ptr;
-    int ret, length = 0;
+    int ret;
+    unsigned int length = 0;
     char *query = NULL;
     sigset_t set;
 
@@ -265,7 +265,7 @@ time_to_date(time_t time, char *datetime)
 }
 #endif
 
-static int
+static unsigned int
 query_length(const char *format, va_list arg)
 {
     int d, length = 0;

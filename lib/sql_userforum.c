@@ -21,12 +21,15 @@
 #endif
 
 #include "monolith.h"
-#include "libmono.h"
-#include "monosql.h"
+#include "routines.h"
+#include "libfriends.h"
 #include "sql_utils.h"
-#include "sql_userforum.h"
 #include "sql_forum.h"
 #include "sql_message.h"
+
+#define extern
+#include "sql_userforum.h"
+#undef extern
 
 int
 mono_sql_uf_unread_room(unsigned int usernum)

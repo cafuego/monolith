@@ -301,6 +301,7 @@ taboo(const char *iname)
 {
     FILE *fp;
     char *aaa, bbb[30];
+    size_t s;
     int frog;
     int a;
 
@@ -314,7 +315,8 @@ taboo(const char *iname)
 	mono_errno = E_NOMEM;
 	return 0;
     }
-    for (a = 0; a <= strlen(iname); ++a)
+    s = strlen( iname );
+    for (a = 0; a <= s; ++a)
 	aaa[a] = tolower(iname[a]);
 
     frog = 0;
