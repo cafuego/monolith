@@ -562,7 +562,7 @@ mono_search_guide()
 {
 
     btmp_t *record = NULL, *p = NULL;
-    int i, total_sgnumber = 0, sysguide_number = 0, sysguide_count = 0;
+    int i, count = 0, total_sgnumber = 0, sysguide_number = 0;
 
     if (!shm) {
 	mono_errno = E_NOSHM;
@@ -581,25 +581,22 @@ mono_search_guide()
     if (total_sgnumber < 1)
 	return NULL;
 
+    sysguide_number = ((time(0) * rand()) % total_sgnumber);
 
-    do {
-        sysguide_number = ((time(0) * rand()) % total_sgnumber);
-        i = shm->first;
-        while (i != -1) {
-	    p = &(shm->wholist[i]);
-	    if ((p->flags & B_GUIDEFLAGGED)
-	        && ((p->flags & B_XDISABLED) == 0)
-	        && (p->pid != getpid())) {
-	        if (sysguide_count++ == sysguide_number) {
-	   	    record = (btmp_t *) xcalloc(1, sizeof(btmp_t));
-		    memcpy(record, p, sizeof(btmp_t));
-		    return record;
-	        } 
-	    }
-	    i = p->next;
-        }
-    } while (! _mono_guide_ok(record));
-    return NULL;
+    i = shm->first;
+    while (i != -1) {
+       p = &(shm->wholist[i]);
+          if ( _mono_guide_ok(p)) {
+              if( count == sysguide_number ) {
+   	          record = (btmp_t *) xcalloc(1, sizeof(btmp_t));
+	          memcpy(record, p, sizeof(btmp_t));
+	          return record;
+              }
+              count++;
+	  }
+	  i = p->next;
+     }
+     return NULL;
 }
 
 static int
