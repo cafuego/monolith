@@ -12,6 +12,8 @@
 #include <fcntl.h>
 #include <time.h>
 
+#include <mysql.h>
+
 #include "monolith.h"
 #include "libmono.h"
 #include "cgi.h"
