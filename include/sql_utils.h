@@ -30,6 +30,7 @@ int mono_sql_logqueries( void );
 int mono_sql_logqueries_toggle( void );
 
 extern int escape_string(const char *old_string, char **new_string);
-
+extern char * mono_mysql_server_info( void );
+extern char * mono_mysql_host_info( void );
 
 /* eof */
