@@ -582,7 +582,7 @@ dnl Do some SVN defining (because we can!)
 dnl
 AC_PATH_PROG(svn_path, svn, no)
 if test "x$svn_path" != "xno" ; then
-  AC_DEFINE(HAVE_SVN)
+  AC_DEFINE([HAVE_SVN], [], [Subversion is installed])
   SVN_URL=`svn info | grep URL | awk  -F ': ' '{print $2}'`
   SVN_REVISION=`svn info | grep Revision | awk -F ': ' '{print $2}'`
   SVN_DATE=`svn info | grep "Changed Date" | awk -F ': ' '{print $2}'`

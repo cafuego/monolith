@@ -1,5 +1,5 @@
 bin_PROGRAMS = yawc_port yawc_client
-AM_CFLAGS = -O3 -Wall -g 
+AM_CFLAGS = -O2 -Wall -g 
 
 INCLUDES = -I../include
 

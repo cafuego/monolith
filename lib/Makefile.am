@@ -9,7 +9,7 @@ libyawc_a_SOURCES = btmp.c libcache.c libdexi.c \
   sql_usertopic.c sql_message.c sql_rating.c sql_llist.c sql_convert.c \
   sql_online.c sql_web.c sql_forumtopic.c
 
-AM_CFLAGS = -O3 -Wall -g
+AM_CFLAGS = -O2 -Wall -g
 INCLUDES = -I../include
 
 #ifdef USE_MYSQL

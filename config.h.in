@@ -253,6 +253,9 @@
 /* Define to 1 if you have the `strtoul' function. */
 #undef HAVE_STRTOUL
 
+/* Subversion is installed */
+#undef HAVE_SVN
+
 /* Define to 1 if you have the <sys/dir.h> header file, and it defines `DIR'.
    */
 #undef HAVE_SYS_DIR_H
@@ -344,9 +347,6 @@
 
 /* My name is Linux Torvalds and I pronounce Linux as Linux */
 #undef LINUX
-
-/* Is subversion installed? */
-#undef HAVE_SVN
 
 /* Name of package */
 #undef PACKAGE
