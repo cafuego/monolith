@@ -397,8 +397,11 @@ format_content(message_t *message, char **string )
     /*
      * Set content colour.
      */
-    *string = (char *)xrealloc( *string, strlen(*string)+strlen("\1a\1c") );
-    strcat( *string, "\1a\1c" );
+    *string = (char *)xrealloc( *string, strlen(*string)+strlen("\1a\1x") );
+    if( message->score > 2 )
+        strcat( *string, "\1a\1w" );
+    else
+        strcat( *string, "\1a\1c" );
 
      /*
       * Open temp file.

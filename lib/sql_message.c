@@ -125,7 +125,7 @@ mono_sql_mes_retrieve(unsigned int id, unsigned int forum, message_t *data)
     message_t message;
     int ret = 0;
 
-    ret = mono_sql_query(&res, "SELECT message_id,topic_id,forum_id,author,alias,subject,UNIX_TIMESTAMP(date),content,type,priv,deleted FROM " M_TABLE " WHERE message_id=%u AND forum_id=%u", id, forum);
+    ret = mono_sql_query(&res, "SELECT message_id,topic_id,forum_id,author,alias,subject,UNIX_TIMESTAMP(date),content,type,priv,deleted,score FROM " M_TABLE " WHERE message_id=%u AND forum_id=%u", id, forum);
 
     if (ret == -1) {
  	(void) mysql_free_result(res);
@@ -174,6 +174,8 @@ mono_sql_mes_retrieve(unsigned int id, unsigned int forum, message_t *data)
     sscanf( row[8], "%s", message.type);
     sscanf( row[9], "%s", message.priv);
     sscanf( row[10], "%c", &message.deleted);
+
+    sscanf( row[11], "%d", &message.score);
 
     (void) mysql_free_result(res);
 

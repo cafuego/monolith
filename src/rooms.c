@@ -1595,11 +1595,21 @@ low_traffic_quad_list(void)
 		break;
 	    }
 	    if (post.date <= (timenow - 2592000)) {
-		if (counted)
-		    fprintf(mesg_fp, "\1f\1w%d.\1g%s\1w: \1gLast post \1w%d\1g days ago.\1a\n",
-		      i, scratch.name, (int) (timenow - post.date) / 86400);
-		else
+		if (counted) {
+		    fprintf(mesg_fp, "\1f\1w%d.\1g%s\1w: \1gLast post \1w%d\1g days ago.\1a\n", i, scratch.name, (int) (timenow - post.date) / 86400);
+	            for (j = 0; j < NO_OF_QLS; j++) {
+		        if ((strlen(scratch.qls[j]) <= 0) || (strcmp(scratch.qls[j], "Sysop") == 0))
+		            continue;
+		        else
+                            if (check_user(scratch.qls[j])) {
+		                qlPtr = readuser(scratch.qls[j]);
+                                (void) notify_ql(qlPtr->username, scratch.name, (int) (timenow - post.date) / 86400 );
+		                fprintf(mesg_fp, "    \1f\1gMailed QL[%d]: %s.\1a\n",j, qlPtr->username);
+                            }
+                    }
+                } else {
 		    line_ctr++;
+                }
 	    }
 	    /* QL absentee, missing, screwed, etc. */
 

@@ -1760,6 +1760,47 @@ x_to_mail(const char *x, char *to_user)
     fclose(fp);
 }
 
+void
+notify_ql(char *to_user, char *quadname, int nopost)
+{
+    FILE *fp;
+    post_t mesg;
+    char filename[120], *p;
+    int no_of_lines = 6;
+
+    filename[0] = '\0';
+    mesg.type = MES_SYSOP;
+    strcpy(mesg.author, "Sysop");
+    time(&mesg.date);
+
+    strcpy(mesg.subject, quadname);
+
+    sprintf(filename, "%s%s%ld", getuserdir(to_user), "/mail/", 
+				 get_new_mail_number(to_user));
+
+    if ((fp = xfopen(filename, "a", FALSE)) == NULL)
+	return;
+
+/* write file header */
+
+    fprintf(fp, "%c%c%c", 255, (int) mesg.type, 0);
+    fprintf(fp, "L%3d%c", no_of_lines, 0);
+    fprintf(fp, "T%ld%c", mesg.date, 0);
+    fprintf(fp, "A%s%c", mesg.author, 0);
+    fprintf(fp, "S%s%c", mesg.subject, 0);
+    putc('M', fp);
+
+/* body of post */
+
+    fprintf(fp, "\n\1a\1cHi %s,\n\nYour quadrant, %s, has not had any new posts for \1f\1r%d\1a\1c days.\nPerhaps you should make a post and get users interested again.\n", to_user, nopost);
+
+/* end of post */
+    fprintf(fp, "\n%c", 0);
+    fclose(fp);
+
+    return;
+}
+
 /* ------------ NEW EMSSAGE SYSTEM ------------- */
 
 /*

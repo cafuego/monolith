@@ -1,6 +1,6 @@
 # quads
 
-DROP TABLE message;
+# DROP TABLE message;
 
 CREATE TABLE message (
 
@@ -19,6 +19,8 @@ CREATE TABLE message (
    type		ENUM( 'anon', 'alias', 'normal' ),
    priv		ENUM( 'emp', 'sysop', 'tech', 'host', 'normal' ),
    deleted	ENUM( 'y', 'n' ),
+
+   score	INT DEFAULT 0,
   
    stamp	TIMESTAMP,
 
