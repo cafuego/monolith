@@ -112,13 +112,12 @@ display_message(unsigned int forum, unsigned int num, const unsigned int mode)
 #endif
     }
 
-/*    if (!(header->banner_type & INFO_BANNER)) {  
-     modified by kirth after MMM's post in privy> */
-    if (!(header->banner_type & (INFO_BANNER | ANON_BANNER))) {
-	message_reply_name(header->author);
+    if (!(header->banner_type & (INFO_BANNER | ANON_BANNER))) 
 	strcpy(profile_default, header->author);
-	message_reply_id(header->m_id);
-    }
+
+    message_reply_name(header->author);
+    message_reply_id(header->m_id);
+
     xfree(header);
     xfree(header_string);
     fflush(stdout);
