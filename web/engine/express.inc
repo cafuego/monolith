@@ -71,7 +71,7 @@ function express_message($username, $recipient) {
 
     // Form buttons.
     //
-    PRINT "<input type=\"submit\" value=\"Send X!\">\n";
+    PRINT "<br><input type=\"submit\" value=\"Send X!\">\n";
     PRINT "<input type=\"reset\" value=\"Clear\">\n";
 
     PRINT "</form>\n";
