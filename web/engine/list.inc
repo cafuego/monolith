@@ -71,7 +71,7 @@ function list_quads($username, $listunread) {
             else {
                 if($unread > $total)
                     $unread = $total;
-                PRINT "    <p align=\"left\">(<font color=\"#00cc00\">$total messages,</font> <font color=\"#ffff00\">$unread unread</font>)<br>\n";
+                PRINT "    <p align=\"left\">(<font color=\"#00cc00\">$total messages,</font> <a href=\"/bbs/index.phtml/n/$id\">$unread unread</a>)<br>\n";
             }
             PRINT "  </td>\n";
             PRINT "</tr>\n";
