@@ -672,7 +672,7 @@ check_passwd(void)
 	yell_menu();
 	return;
     }
-    if (check_password(usersupp, pwtest) == TRUE) {
+    if (mono_sql_u_check_passwd(usersupp->usernum, pwtest) == TRUE) {
 	usersupp->priv ^= PRIV_DELETED;
 	writeuser(usersupp, 0);
 /*** nasty message that tells you not to come back... ***/
