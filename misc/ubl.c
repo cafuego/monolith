@@ -360,7 +360,7 @@ update_admin_lists()
 	    u++;
 	    continue;
 	}
-	/*printf( "%s..", u->username ); fflush( stdout ); */
+	printf( "%s..", u->username ); fflush( stdout );
 
 	away = (currtime - u->laston) / (24 * 60 * 60);
 
