@@ -279,7 +279,7 @@ enter_name(char *usernm)
     char pwordshit[20];
 
     for (;;) {			/* loop until we get a real username */
-	cprintf("\n%s %s: ", USER, USERNAME);
+	cprintf("\nUsername: ", USER, USERNAME);
 	strcpy(usernm, get_name(1));
 
 	if (!strlen(usernm)) {
