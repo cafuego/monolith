@@ -99,6 +99,7 @@ display_header(message_t *message)
     memset( string, 0, sizeof(string) );
  
     (void) format_username(message, &string);
+    (void) format_title(message, &string );
 
     more_string( string );
     xfree(string);
@@ -324,7 +325,6 @@ format_title(message_t *message, char **string)
 
     }
     fmt_title[strlen(fmt_title)] = '\0';
-    cprintf("DEBUG: %s\n", fmt_title);
 
     *string = (char *)xrealloc( *string, strlen(*string)+strlen(fmt_title) );
     strcat( *string, fmt_title );

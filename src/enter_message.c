@@ -1,10 +1,19 @@
-/* $Id$
+/*
+ * $Id$
  */
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/mman.h>
+#ifdef HAVE_SYS_MMAN_H	/* configure checks for this */
+  #include <sys/mman.h>
+#else
+  #include <asm/mman.h>
+#endif
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -61,6 +70,7 @@ enter_message(unsigned int forum, unsigned int flag)
     message->deleted = 'n';
 
     (void) get_priv(message, flag);
+    flag = 1;
     (void) get_alias(quad, message);
 
     /*
@@ -237,7 +247,11 @@ fill_buffer(char **content)
      /*
       * mmap() tempfile.
       */ 
+#ifdef HAVE_SYS_MMAN_H
+     if( (post = mmap(post, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED ) { 
+#else
      if( (post = mmap(post, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == -1 ) { 
+#endif
          log_it("sqlpost", "Can't mmap() temp file %s!", temp);
          return -1;
      }

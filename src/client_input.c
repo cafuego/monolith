@@ -258,9 +258,9 @@ connect_socket()
 * I wonder why such a strange name for this
 * function?
 *
-* how:	1 -> normal entering (EDIT_NORMAL)
-*	2 -> Upload Ctrl-D entering (EDIT_CTRLD)
-*       3 -> _real_ editor. (local) (EDIT_EDITOR)
+* how:	1 -> normal message.
+*	2 -> upload message.
+*       3 -> editor message.
 *
 *	5 -> reply'ing, but with no difference.
 *       9 -> normal entering, FORCED!

@@ -3,23 +3,28 @@ CFLAGS += -Wall
 
 yawc_port_SOURCES = clipboard.c friends.c chat.c fun.c help.c menu.c \
   normal_input.c newuser.c quadcont.c registration.c key.c inter.c vote.c \
-  uadmin.c wholist.c rooms.c bbsconfig.c
+  uadmin.c wholist.c rooms.c bbsconfig.c enter_message.c
 
 yawc_client_SOURCES = clipboard.c friends.c chat.c fun.c help.c menu.c \
   client_input.c newuser.c quadcont.c registration.c key.c inter.c \
-  vote.c wholist.c uadmin.c rooms.c bbsconfig.c
+  vote.c wholist.c uadmin.c rooms.c bbsconfig.c enter_message.c
 
 yawc_port_LDADD = p_commands.o p_express.o p_main.o p_messages.o cprintf.o \
-  routines2.o p_statusbar.o p_usertools.o -L../lib -L../shix -lyawc -lm -lshix -L/usr/local/mysql/lib
+  routines2.o p_statusbar.o p_usertools.o p_display_message.o \
+  -L../lib -L../shix -lyawc -lm -lshix -L/usr/local/mysql/lib
 
 yawc_client_LDADD =  c_commands.o c_express.o c_main.o c_messages.o \
-  c_routines2.o c_statusbar.o c_usertools.o -L../lib -L../shix -lyawc -lm -lshix -L/usr/local/mysql/lib
+  c_routines2.o c_statusbar.o c_usertools.o c_display_message.o \
+  -L../lib -L../shix -lyawc -lm -lshix -L/usr/local/mysql/lib
 
 c_commands.o: commands.c
 	$(COMPILE) -DCLIENTSRC -c commands.c -o c_commands.o
 
 c_express.o: express.c
 	$(COMPILE) -DCLIENTSRC -c express.c -o c_express.o
+
+c_display_message.o: display_message.c
+	$(COMPILE) -DCLIENTSRC -c display_message.c -o c_display_message.o
 
 c_messages.o: messages.c
 	$(COMPILE) -DCLIENTSRC -c messages.c -o c_messages.o
@@ -36,9 +41,6 @@ c_statusbar.o: statusbar.c
 c_main.o: main.c
 	$(COMPILE) -DCLIENTSRC -c main.c -o c_main.o
 
-c_display_message.o: display_message.c
-	$(COMPILE) -DCLIENTSRC -c display_message.c -o c_display_message.o
-
 # port
 
 cprintf.o: cprintf.c
@@ -46,6 +48,9 @@ cprintf.o: cprintf.c
 
 p_commands.o: commands.c
 	$(COMPILE) -c commands.c -o p_commands.o
+
+p_display_message.o: display_message.c
+	$(COMPILE) -DCLIENTSRC -c display_message.c -o p_display_message.o
 
 p_express.o: express.c
 	$(COMPILE) -c express.c -o p_express.o
@@ -64,7 +69,4 @@ p_statusbar.o: statusbar.c
 
 p_main.o: main.c
 	$(COMPILE) -c main.c -o p_main.o
-
-p_display_message.o: display_message.c
-	$(COMPILE) -DCLIENTSRC -c display_message.c -o p_display_message.o
 

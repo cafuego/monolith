@@ -21,6 +21,7 @@
 #include "libquad.h"
 #include "ext.h"
 #include "setup.h"
+#include "sql_message.h"
 #include "sql_forum.h"
 #include "sql_userforum.h"
 
@@ -1257,7 +1258,8 @@ gotonext()
 
     /* goto next quad that's !skipped, !zapped, and can_read */
     old_rm = curr_rm;
-    curr_rm = unread_room();
+    i = unread_room();
+    curr_rm = i;
     gotocurr();
 
     if (old_rm != curr_rm) {	/* new messages? */
@@ -1493,10 +1495,9 @@ check_generation()
 *************************************************/
 
 int
-check_messages(room_t room, int which)
+check_messages(int room)
 {
-    int i = room.highest - usersupp->lastseen[which];
-    return (i < 0) ? 0 : i;
+    return mono_sql_mes_get_unread(room, usersupp->lastseen[room]);
 }
 
 int

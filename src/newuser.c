@@ -34,6 +34,8 @@
 #include "routines2.h"
 #include "userfile.h"
 
+#include "sql_user.h"
+
 static void newuser_getname(user_t * user);
 static void newuser_getpasswd(user_t * user);
 static void newuser_registration(user_t * user);

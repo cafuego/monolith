@@ -1269,24 +1269,7 @@ reset_lastseen()
 int
 unread_room()
 {
-    int i;
-    room_t scratch;
-
-    for (i = 0; i < MAXQUADS; i++) {
-	scratch = readquad(i);
-	/* if the user is allowed in the room */
-	if (may_read_room(*usersupp, scratch, i)
-	/* and they didn't skip it */
-	    && (skipping[i] == 0)
-	/* and they didn't zap it */
-	    && (!is_zapped(i))) {
-	    /* see if there are new messages to read */
-	    if (check_messages(scratch, i) > 0) {
-		return i;
-	    }
-	}
-    }
-    return 0;
+    return mono_sql_mes_unread_room(usersupp->usernum);
 }
 
 /*************************************************
