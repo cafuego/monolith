@@ -251,12 +251,13 @@ menu_friend_add(int param)
 {
 
     char *name, user[L_USERNAME + 1], bbs[L_BBSNAME + 1];
-    unsigned int flag;
+    unsigned int flag, flag2;
     unsigned int id2;
 
     nox = 1;
     cprintf("\1f\1gEnter username\1w: \1c");
     flag = (param == FRIEND) ? L_FRIEND : L_ENEMY;
+    flag2 = (param == FRIEND) ? L_ENEMY : L_FRIEND;
 
     name = get_name(5);
 
@@ -277,8 +278,13 @@ menu_friend_add(int param)
 	return;
     }
     if (mono_sql_uu_is_on_list(usersupp->usernum, id2, flag) == TRUE) {
-	cprintf("\1f\1y%s \1gis already on your %slist.\n", name,
+	cprintf("\1f\1y%s \1ris already on your %slist.\n", name,
 		(param == FRIEND) ? "friends" : "enemy");
+	return;
+    }
+    if (mono_sql_uu_is_on_list(usersupp->usernum, id2, flag2) == TRUE) {
+	cprintf("\1f\1y%s \1rshould be removed from your %slist first.\n", name,
+		(param == FRIEND) ? "enemy" : "friends");
 	return;
     }
     mono_sql_uu_add_entry(usersupp->usernum, id2, flag);
