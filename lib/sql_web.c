@@ -18,6 +18,14 @@
   #endif
 #endif
 
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#include <locale.h>
+#define _(String) gettext (String)
+#else
+#define _(String) (String)
+#endif
+
 #include "monolith.h"
 #include "monosql.h"
 #include "routines.h"
@@ -152,11 +160,11 @@ mono_sql_web_wholist(int level)
     strcpy(p, "");
 
     if(count == 0) {
-        (void) sprintf(p, "\n\1f\1gThere are no users online via the web.\n");
+        (void) sprintf(p, _("\n\1f\1gThere are no users online via the web.\n"));
         mono_sql_ll_free_wulist(list);
         return p;
     } else {
-        (void) sprintf(p, "\n\1f\1gThere %s \1y%d\1g user%s online via the web.\n"
+        (void) sprintf(p, _("\n\1f\1gThere %s \1y%d\1g user%s online via the web.\n")
             , (count == 1) ? "is" : "are", count, (count == 1) ? "" : "s" );
  
         switch(level) {
