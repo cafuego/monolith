@@ -176,7 +176,7 @@ mono_sql_u_id2name(unsigned int userid, char *username)
 	return -1;
     }
     row = mysql_fetch_row(res);
-    strncpy(username, L_USERNAME, row[0]);
+    strncpy(username, row[0], L_USERNAME );
     mono_sql_u_free_result(res);
     return 0;
 }
@@ -282,7 +282,6 @@ mono_sql_u_update_registration( unsigned int user_id,
     int i;
     MYSQL_RES *res;
     char *p1, *p2, *p3, *p4, *p5, *p6, *p7;
-
     
     i = escape_string( name, &p1 );
     i = escape_string( address, &p2 );

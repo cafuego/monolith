@@ -46,7 +46,6 @@
 #define WHOLISTMODE     0664
 
 #define S_BUSYWHOLIST	1	/* set when the wholist is "busy"       */
-#define S_BUSYQUEUE	2	/* set when the queue is "busy"         */
 #define S_BUSYROOMS	4	/* set when roomslist is busy */
 
 static int _mono_initialize_shm(void);
@@ -327,26 +326,6 @@ mono_change_online(const char *user, const char *tmp_string, int ch)
 }
 
 /*************************************************
-* send_signal_to_the_queue()
-*
-* tell the first person in the queue it's time to
-* enter the bbs
-*************************************************/
-
-int
-mono_send_signal_to_the_queue()
-{
-    if (!shm) {
-	mono_errno = E_NOSHM;
-	return -1;
-    }
-    if (shm->queue_count == 0)
-	return 0;
-
-    kill(shm->queue[0].pid, SIGALRM);
-    return 0;
-}
-/*************************************************
 * mono_lock_shm()
 *
 * 1 -> wait until unlocked, then LOCK
@@ -371,27 +350,6 @@ mono_lock_shm(int key)
 	shm->status |= S_BUSYWHOLIST;	/* set the lock-flag */
     } else {
 	shm->status &= ~S_BUSYWHOLIST;	/* unset the lock-flag */
-    }
-    return 0;
-}
-
-/* ------------------ */
-int
-mono_lock_queue(int key)
-{
-    unsigned int a;
-
-    if (!shm) {
-	mono_errno = E_NOSHM;
-	return -1;
-    }
-    if (key == WHO_LOCK) {
-	for (a = 0; (a < 50 && (shm->status & S_BUSYQUEUE)); a++)
-	    usleep(100000);
-
-	shm->status |= S_BUSYQUEUE;	/* set the lock-flag */
-    } else {
-	shm->status &= ~S_BUSYQUEUE;	/* unset the lock-flag */
     }
     return 0;
 }
@@ -540,7 +498,6 @@ _mono_initialize_shm()
     shm->status = 0;
     shm->first = -1;
     shm->user_count = 0;
-    shm->queue_count = 0;
 
     /* Initialize holodeck room names and types */
     _mono_initialize_holodeck();
