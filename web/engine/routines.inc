@@ -262,10 +262,20 @@ main_screen($username)
     addimage("Hello, $username. Welcome to Monolith BBS");
 
     if ($number && ($username != "Guest"))
-	print "<p class=\"footer\">Your last login was on $date at $time CET from host '$hostname'.</p>\n";
+	echo "<p class=\"footer\">Your last login was on $date at $time CET from host '$hostname'.</p>\n";
     else
-	print "<p class=\"footer\">Unable to retrieve your previous login details.</p>\n";
-    print "<p align=\"center\"><img align=\"center\" src=\"/bbs/pix/monolith.jpg\" width=\"300\" height =\"300\" alt=\"[ image: Monolith BBS Logo ]\"></p>\n";
+	echo "<p class=\"footer\">Unable to retrieve your previous login details.</p>\n";
+    echo "<p align=\"center\">\n";
+    echo "<object classid=\"clsid:D27CDB6E-AE6D-11cf-96B8-444553540000\" codebase=\"http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#3,0,0,0\" width=\"400\" height=\"300\" align=\"middle\" border=\"0\">\n";
+    echo "  <param name=\"SRC\" value=\"/bbs/flash/mono.swf\">\n";
+    echo "  <param name=\"LOOP\" value=\"false\">\n";
+    echo "  <param name=\"BGCOLOR\" value=\"#000000\">\n";
+    echo "  <embed src=\"/bbs/flash/mono.swf\" pluginspage=\"http://www.macromedia.com/shockwave/download/\" type=\"application/x-shockwave-flash\" width=\"400\" height=\"300\" align=\"middle\" loop=\"false\" border=\"0\" bgcolor=\"#000000\">\n";
+    echo "    <noembed>\n";
+    echo "      <img align=\"center\" src=\"/bbs/pix/monolith.jpg\" width=\"300\" height =\"300\" alt=\"[ image: Monolith BBS Logo ]\"></p>\n";
+    echo "    </noembed>\n";
+    echo "  </embed> \n";
+    echo "</object>\n";
 
 }
 
