@@ -14,8 +14,8 @@
     echo $url_array[2];
     
     // Connect to the database.
-    require('../engine/routines.inc');
-    connect_db();
+    MYSQL_CONNECT("localhost", "root", "") OR DIE("");
+    @mysql_select_db("bbs") or die("");
 
     // Fetch the encoded image data.
     //
