@@ -74,10 +74,6 @@
     switch ($action) {
 
         case "a":	// PHP info.
-            echo "<div align=\"center\">\n";
-            require( 'engine/image.inc' );
-            pagetitle( "Current Configuration", "/usr/bbs/www/bbs/font/Times_B.ttf" );
-            echo "</div>\n";
             echo "<pre>\n" . phpinfo() . "</pre>\n";
             break;
 
