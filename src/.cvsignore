@@ -38,3 +38,5 @@ vote.o
 wholist.o
 yawc_port
 yawc_client
+Makefile
+Makefile.in
