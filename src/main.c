@@ -32,6 +32,11 @@
 #include "setup.h"
 #include "telnet.h"
 
+#define extern
+#include "ext.h"
+#include "main.h"
+#undef extern
+
 #include "commands.h"
 #include "input.h"
 #include "express.h"
@@ -42,16 +47,13 @@
 #include "qc.h"
 #include "statusbar.h"
 #include "newuser.h"
+#include "sql_config.h"
+#include "sql_login.h"
+#include "sql_useruser.h"
 #include "registration.h"
 #include "rooms.h"
 #include "routines2.h"
 #include "vote.h"
-
-#define extern
-#include "ext.h"
-#include "main.h"
-#undef extern
-
 
 int connecting_flag;
 

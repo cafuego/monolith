@@ -12,16 +12,8 @@
 
 #include "monolith.h"
 
-#include "libfriends.h"
-#include "routines.h"
-#include "libcache.h"
-#include "userfile.h"
-#include "libquad.h"
-#include "sql_user.h"
-
-#define extern
-#include "msg_file.h"
-#undef extern
+#include "libmono.h"
+#include "sql_message.h"
 
 static char * get_flag(unsigned long mod_banner);
 static char * get_reason(int mod_reason);

@@ -26,24 +26,32 @@
 
 #include "monolith.h"
 #include "libmono.h"
+#include "libquad.h"
 #include "ext.h"
 #include "setup.h"
-
-#include "display_message.h"
-#include "fun.h"
-#include "input.h"
-#include "messages.h"
-#include "uadmin.h"
-#include "menu.h"
-#include "qc.h"
-#include "read_menu.h"  // display_short_prompt()
-#include "commands.h"
-#include "routines2.h"
-#include "enter_message.h"
+#include "sql_forum.h"
+#include "sql_userforum.h"
 
 #define extern
 #include "rooms.h"
 #undef extern
+
+#include "btmp.h"
+#include "display_message.h"
+#include "fun.h"
+#include "input.h"
+#include "log.h"
+#include "messages.h"
+#include "uadmin.h"
+#include "libquad.h"
+#include "menu.h"
+#include "qc.h"
+#include "routines.h"
+#include "read_menu.h"  // display_short_prompt()
+#include "commands.h"
+#include "routines2.h"
+#include "enter_message.h"
+#include "userfile.h"
 
 int need_rewrite;
 
