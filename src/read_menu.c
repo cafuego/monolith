@@ -1177,37 +1177,46 @@ ungoto(void)
 }
 
 void
-copy_messages_to_sql()
+bingle(unsigned int forum)
 {
     room_t quad;
+    int i = 0;
+
+    if (forum == 1)
+        return;
+    quad = readquad(forum);
+
+    if(!(quad.flags & QR_INUSE ))
+        return;
+
+    cprintf("\rWorking on %d.%s", i, quad.name); fflush(stdout);
+    for (i = quad.lowest; i <= quad.highest; i++) {
+       (void)copy_message_to_sql(forum,i);
+       cprintf("."); fflush(stdout);
+    }
+    cprintf(" done.\n"); fflush(stdout);
+
+}
+
+void
+copy_message_to_sql(unsigned int forum, unsigned int message)
+{
+
     message_header_t *header;
-    FILE *fp;
     char filename[1000], content[1000];
-    int i, j;
 
-    for (i = 0; i < MAXQUADS; i++) {
-	if (i == 1)
-	    continue;
-	quad = readquad(i);
-	cprintf("\nWorking on %d.%s", i, quad.name);
-	for (j = quad.lowest; j <= quad.highest; j++) {
+    header = (message_header_t *) xmalloc(sizeof(message_header_t));
+    memset(header, 0, sizeof(message_header_t));
 
-	    header = (message_header_t *) xmalloc(sizeof(message_header_t));
-	    memset(header, 0, sizeof(message_header_t));
+    message_header_filename(&filename, forum, message);
+    if ((read_message_header(filename, header)) == -1)
+	return;
+    // message_filename(&content, forum, message);
+    sprintf(content, "/usr/bbs/save/forums/%d/%d.t", forum, message);
 
-	    message_header_filename(&filename, i, j);
-	    if ((read_message_header(filename, header)) == -1)
-		continue;
-	    strcpy(content, "");
-	    sprintf(content, "/usr/bbs/save/forums/%u/%u.t", i, j);
-
-	    /* Now save it. */
-	    (void) save_to_sql(header, content);
-	    xfree(header);
-	    cprintf(".");
-
-	}			/* mes */
-    }				/* quad */
+    /* Now save it. */
+    (void) save_to_sql(header, content);
+    xfree(header);
 
     return;
 }

@@ -58,6 +58,7 @@ sysop_menu()
 {
 
     register char cmd = '\0';
+    int i = 0;
 
     /* extra security */
     if ((usersupp->priv & (PRIV_WIZARD | PRIV_SYSOP)) == 0)
@@ -81,7 +82,8 @@ sysop_menu()
 
             case 'A':
                 cprintf("Dump all posts into SQL.\n");
-                copy_messages_to_sql();
+                for (i = 0; i < MAXQUADS; i++)
+                    bingle(i);
                 break;
 
 	    case 'B':

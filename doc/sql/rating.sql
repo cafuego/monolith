@@ -1,7 +1,7 @@
 # quads
 
 # Do not drop, contains live data!
-# DROP TABLE rating;
+DROP TABLE rating;
 
 CREATE TABLE rating (
 
