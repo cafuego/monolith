@@ -21,9 +21,13 @@
 
 #include "monolith.h"
 #include "log.h"
+#include "btmp.h"
 #include "routines.h"
 #include "sql_message.h"
 #include "sql_user.h"
+#include "userfile.h"
+#include "libquad.h"
+#include "libcache.h"
 
 #define extern
 #include "msg_file.h"
