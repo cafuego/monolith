@@ -4,11 +4,6 @@
 
     global $MYSQL_SERVER, $MYSQL_USER, $MYSQL_PASS, $MYSQL_DATABASE;
 
-    echo "<!-- $MYSQL_SERVER -->\n";
-    echo "<!-- $MYSQL_USER -->\n";
-    echo "<!-- $MYSQL_PASS -->\n";
-    echo "<!-- $MYSQL_DATABASE -->\n";
-
     @mysql_connect($MYSQL_SERVER, $MYSQL_USER, $MYSQL_PASS) or die("Unable to connect to MySQL server");
     @mysql_select_db($MYSQL_DATABASE) or die("Unable to select BBS database");
 
