@@ -178,7 +178,6 @@ AC_OUTPUT(cgi/Makefile lib/Makefile daemons/Makefile src/Makefile \
      web/sound/Makefile web/flash/Makefile po/Makefile.in intl/Makefile \
      Makefile)
 
-echo "creating include/version.h"
 /bin/sh ./mkversion-sh
 
 if test "x$with_overview" = "xyes"; then
