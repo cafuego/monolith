@@ -1,6 +1,6 @@
 # quads
 
-# DROP TABLE message;
+DROP TABLE message;
 
 CREATE TABLE message (
 
@@ -9,36 +9,31 @@ CREATE TABLE message (
    topic_id	INT UNSIGNED NOT NULL,
    forum_id	INT UNSIGNED NOT NULL,
 
-   # Extra display info.
-   flag		ENUM( 'normal','anon','alias','forced','yell','auto','roomaide','tech','sysop','emp' ),
-   date		DATETIME NOT NULL,
-
    # Actual useful info.
    author	INT UNSIGNED NOT NULL,
-   alias	VARCHAR(20) NOT NULL,
+   alias	VARCHAR(20),
    subject	VARCHAR(100),
    content	BLOB NOT NULL,
 
+   # Extra display info.
+   date		DATETIME NOT NULL,
+   flag		ENUM( 'normal','anon','alias','forced','yell','auto','roomaide','tech','sysop','emp' ),
    deleted	ENUM( 'y', 'n' ),
 
    # Reply info.
-   r_messge_id	INT UNSIGNED,
+   r_message_id	INT UNSIGNED,
    r_forum_id	INT UNSIGNED,
    r_topic_id	INT UNSIGNED,
-   r_flag	ENUM( 'normal','anon','alias','forced','yell','auto','roomaide','tech','sysop','emp' ),
-   r_date	DATETIME,
    r_author	INT UNSIGNED,
    r_alias	VARCHAR(20),
-   r_subject	VARCHAR(100),
 
    # Modification info.
-   m_messge_id	INT UNSIGNED,
+   m_message_id	INT UNSIGNED,
    m_forum_id	INT UNSIGNED,
    m_topic_id	INT UNSIGNED,
-   m_date	TIMESTAMP,
-   m_flag	ENUM( 'normal','anon','alias','forced','yell','auto','roomaide','tech','sysop','emp' ),
    m_author	INT UNSIGNED,
-   m_reason	ENUM( 'copied','moved' ),
+   m_date	TIMESTAMP,
+   m_reason	ENUM( 'copied','moved','' ),
 
    stamp	TIMESTAMP,
 
