@@ -122,8 +122,6 @@ if test "x$with_mysql" = "xyes" ; then
   echo
 fi
 
-AC_CHECK_DEFINE
-
 dnl Use superhero generator?
 echo -n "Probing superhero powers..."
 if test "x$with_hero" = "xyes"; then
