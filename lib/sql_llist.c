@@ -117,4 +117,51 @@ mono_sql_ll_free_sr_list(sr_list_t *list)
     return;
 }
 
+/*
+ * Add xlist_t to linked list.
+ * Used for storing list of express messages.
+ *
+ */
+int
+mono_sql_ll_add_xlist_to_list(xlist_t x, xlist_t ** list)
+{
+    xlist_t *p, *q;
+
+    /*
+     * Note mono_sql_ll_free_xlist()
+     */
+    p = (xlist_t *) xmalloc(sizeof(xlist_t));
+
+    if (p == NULL)
+	return -1;
+
+    *p = x;
+    p->next = NULL;
+    p->prev = NULL;
+
+    q = *list;
+    if (q == NULL) {
+	*list = p;
+    } else {
+	while (q->next != NULL)
+	    q = q->next;
+	q->next = p;
+        p->prev = q;
+    }
+    return 0;
+}
+
+void
+mono_sql_ll_free_xlist(xlist_t *list)
+{
+    xlist_t *ref;
+
+    while (list != NULL) {
+        ref = list->next;
+        (void) xfree(list->x);
+        (void) xfree(list);
+        list = ref;
+    }
+    return;
+}
 /* eof */
