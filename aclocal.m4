@@ -489,6 +489,16 @@ fi
 AC_SUBST($1)dnl
 ])
 
+define(AC_CHECK_DEFINE,[dnl
+AC_CACHE_CHECK(for $1 in $2, ac_cv_define_$1,
+AC_EGREP_CPP([YES_IS_DEFINED], [
+#include <$2>
+#ifdef $1
+YES_IS_DEFINED
+#endif
+], ac_cv_define_$1=yes; AC_DEFINE(HAVE_$1), ac_cv_define_$1=no)
+)])dnl
+
 # Check whether LC_MESSAGES is available in <locale.h>.
 # Ulrich Drepper <drepper@cygnus.com>, 1995.
 #

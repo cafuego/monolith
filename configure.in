@@ -96,22 +96,9 @@ AC_FUNC_STRFTIME
 AC_FUNC_MMAP
 AC_CHECK_FUNCS(uname gettimeofday gethostname mkdir regcomp socket putenv strcspn strdup strspn strstr)
 
-dnl check if MAP_FAILED is defined...
-if test "x$grep_path" != "xno" ; then
-  AC_CHECK_HEADERS(sys/mman.h)
-  if test "x$ac_cv_header_sys_mman_h" != "xno" ; then
-    AC_DEFINE(HAVE_SYS_MMAN_H)
-    if test -r /usr/include/sys/mman.h; then
-      echo -n "checking whether sys/mman.h defines MAP_FAILED..."
-      result=`grep MAP_FAILED /usr/include/sys/mman.h`
-      if test "x$result" != "x"; then
-        echo " yes"
-        AC_DEFINE(HAVE_MAP_FAILED)
-      else
-        echo " no"
-      fi
-    fi
-  fi
+AC_CHECK_HEADERS(sys/mman.h)
+if test ! "x$ac_cv_header_sys_mman_h" = "xno" ; then
+  AC_CHECK_DEFINE(MAP_FAILED, sys/mman.h)
 fi
 
 dnl make sure a BBS name was specified.
@@ -165,6 +152,7 @@ if test ! x${with_mysql} = x && test -d "${with_mysql}"; then
         AC_SUBST(MYSQL_LIB)
         AC_SUBST(MYSQL_BIN)
         mysql_app=${MYSQL_BIN}/mysql
+        FOUND_MYSQL=yes
     else
         echo
         echo "ARGH: Unable to locate mysql! Take cover! Self destructing in 3 seconds!"
@@ -182,14 +170,203 @@ else
     if test "x$ac_cv_header_mysql_h" = "xno" ; then
         AC_CHECK_HEADERS(mysql/mysql.h)
         if test "x$ac_cv_header_mysql_mysql_h" = "xno" ; then
+
+dnl No MySQL specified and not found in standard locations, nearly time to argh.
+dnl
             echo
-            echo "ARGH: Unable to locate mysql! Take cover! Self destructing in 3 seconds!"
+            echo "Could not find MySQL and no directory was specified. I'm going to"
+            echo "have a little look around your system and check a few standard"
+            echo "locations, before I start running around in a panicking frenzy."
             echo
-            echo "Please install the MySQL database system, which is available for free from"
-            echo "http://www.mysql.org/ and run this program again. If you do have MySQL in-"
-            echo "stalled, use the option --with-mysql=DIR so that $0 can find it."
-            echo
-            exit 1
+dnl ##
+dnl ##
+            if test ! x${with_mysql} = x; then
+                if test -d "/opt/mysql"; then
+                    echo "Found directory /opt/mysql"
+                    echo "checking MySQL installation..."
+                    mysql_dir=/opt/mysql
+                    echo -n "  -> headers..."
+                    if test -d "${mysql_dir}/include"; then
+                        MYSQL_INCLUDE="-I${mysql_dir}/include"
+                        echo " ok"
+                    else
+                        echo " uh-oh"
+                    fi
+                    echo -n "  -> libraries..."
+                    if test -d "${mysql_dir}/lib"; then
+                        MYSQL_LIB="-L${mysql_dir}/lib"
+                        echo " ok"
+                    else
+                        echo " uh-oh"
+                    fi
+                    echo -n "  -> binaries..."
+                    if test -d "${mysql_dir}/bin"; then
+                        MYSQL_BIN="${mysql_dir}/bin"
+                        echo " ok"
+                    else
+                        echo " uh-oh"
+                    fi
+                    if test -f "${mysql_dir}/include/mysql.h"; then
+                        MYSQL_HEADER="<mysql.h>"
+                        AC_SUBST(MYSQL_HEADER)
+                        AC_DEFINE(USE_MYSQL)
+                        AC_SUBST(MYSQL_INCLUDE)
+                        AC_SUBST(MYSQL_LIB)
+                        AC_SUBST(MYSQL_BIN)
+                        mysql_app=${MYSQL_BIN}/mysql
+                        FOUND_MYSQL=yes
+                    fi
+                else
+                    if ! test x${FOUND_MYSQL} = "xyes"; then
+                        echo "no joy in /opt/mysql..."
+                    fi
+                fi
+                if test -d "/usr/mysql"; then
+                    echo "Found directory /usr/mysql"
+                    echo "checking MySQL installation..."
+                    mysql_dir=/usr/mysql
+                    echo -n "  -> headers..."
+                    if test -d "${mysql_dir}/include"; then
+                        MYSQL_INCLUDE="-I${mysql_dir}/include"
+                        echo " ok"
+                    else
+                        echo " uh-oh"
+                    fi
+                    echo -n "  -> libraries..."
+                    if test -d "${mysql_dir}/lib"; then
+                        MYSQL_LIB="-L${mysql_dir}/lib"
+                        echo " ok"
+                    else
+                        echo " uh-oh"
+                    fi
+                    echo -n "  -> binaries..."
+                    if test -d "${mysql_dir}/bin"; then
+                        MYSQL_BIN="${mysql_dir}/bin"
+                        echo " ok"
+                    else
+                        echo " uh-oh"
+                    fi
+                    if test -f "${mysql_dir}/include/mysql.h"; then
+                        MYSQL_HEADER="<mysql.h>"
+                        AC_SUBST(MYSQL_HEADER)
+                        AC_DEFINE(USE_MYSQL)
+                        AC_SUBST(MYSQL_INCLUDE)
+                        AC_SUBST(MYSQL_LIB)
+                        AC_SUBST(MYSQL_BIN)
+                        mysql_app=${MYSQL_BIN}/mysql
+                        FOUND_MYSQL=yes
+                    fi
+                else
+                    if ! test x${FOUND_MYSQL} = "xyes"; then
+                        echo "no joy in /usr/mysql..."
+                    fi
+                fi
+                if test -d "/usr/local/mysql"; then
+                    echo "Found directory /usr/local/mysql"
+                    echo "checking MySQL installation..."
+                    mysql_dir=/usr/local/mysql
+                    echo -n "  -> headers..."
+                    if test -d "${mysql_dir}/include"; then
+                        MYSQL_INCLUDE="-I${mysql_dir}/include"
+                        echo " ok"
+                    else
+                        echo " uh-oh"
+                    fi
+                    echo -n "  -> libraries..."
+                    if test -d "${mysql_dir}/lib"; then
+                        MYSQL_LIB="-L${mysql_dir}/lib"
+                        echo " ok"
+                    else
+                        echo " uh-oh"
+                    fi
+                    echo -n "  -> binaries..."
+                    if test -d "${mysql_dir}/bin"; then
+                        MYSQL_BIN="${mysql_dir}/bin"
+                        echo " ok"
+                    else
+                        echo " uh-oh"
+                    fi
+                    if test -f "${mysql_dir}/include/mysql.h"; then
+                        MYSQL_HEADER="<mysql.h>"
+                        AC_SUBST(MYSQL_HEADER)
+                        AC_DEFINE(USE_MYSQL)
+                        AC_SUBST(MYSQL_INCLUDE)
+                        AC_SUBST(MYSQL_LIB)
+                        AC_SUBST(MYSQL_BIN)
+                        mysql_app=${MYSQL_BIN}/mysql
+                        FOUND_MYSQL=yes
+                    fi
+                else
+                    if ! test x${FOUND_MYSQL} = "xyes"; then
+                        echo "no joy in /usr/local/mysql..."
+                    fi
+                fi
+                if test -d "/var/mysql"; then
+                    echo "Found directory /var/mysql"
+                    echo "checking MySQL installation..."
+                    mysql_dir=/var/mysql
+                    echo -n "  -> headers..."
+                    if test -d "${mysql_dir}/include"; then
+                        MYSQL_INCLUDE="-I${mysql_dir}/include"
+                        echo " ok"
+                    else
+                        echo " uh-oh"
+                    fi
+                    echo -n "  -> libraries..."
+                    if test -d "${mysql_dir}/lib"; then
+                        MYSQL_LIB="-L${mysql_dir}/lib"
+                        echo " ok"
+                    else
+                        echo " uh-oh"
+                    fi
+                    echo -n "  -> binaries..."
+                    if test -d "${mysql_dir}/bin"; then
+                        MYSQL_BIN="${mysql_dir}/bin"
+                        echo " ok"
+                    else
+                        echo " uh-oh"
+                    fi
+                    if test -f "${mysql_dir}/include/mysql.h"; then
+                        MYSQL_HEADER="<mysql.h>"
+                        AC_SUBST(MYSQL_HEADER)
+                        AC_DEFINE(USE_MYSQL)
+                        AC_SUBST(MYSQL_INCLUDE)
+                        AC_SUBST(MYSQL_LIB)
+                        AC_SUBST(MYSQL_BIN)
+                        mysql_app=${MYSQL_BIN}/mysql
+                        FOUND_MYSQL=yes
+                    fi
+                else
+                    if ! test x${FOUND_MYSQL} = "xyes"; then
+                        echo "no joy in /var/mysql..."
+                    fi
+                fi
+
+
+                if ! test x${FOUND_MYSQL} = "xyes"; then
+                    dnl REALLY can't find MySQL anywhere!
+                    echo
+                    echo "ARGH: Unable to locate mysql! Take cover! Self destructing in 3 seconds!"
+                    echo
+                    echo "Please install the MySQL database system, which is available for free from"
+                    echo "http://www.mysql.org/ and run this program again. If you do have MySQL in-"
+                    echo "stalled, use the option --with-mysql=DIR so that $0 can find it."
+                    echo
+                    exit 1
+                fi
+dnl ##
+dnl ##
+
+            else
+                echo
+                echo "ARGH: Unable to locate mysql! Take cover! Self destructing in 3 seconds!"
+                echo
+                echo "Please install the MySQL database system, which is available for free from"
+                echo "http://www.mysql.org/ and run this program again. If you do have MySQL in-"
+                echo "stalled, use the option --with-mysql=DIR so that $0 can find it."
+                echo
+                exit 1
+            fi
         else
             MYSQL_HEADER="<mysql/mysql.h>"
             AC_DEFINE(USE_MYSQL)
@@ -203,6 +380,7 @@ else
         AC_CHECK_LIB(mysqlclient, mysql_connect)
     fi
     mysql_app=mysql
+    FOUND_MYSQL=yes
 fi
 
 dnl Additional MySQL options.
