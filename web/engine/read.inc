@@ -167,13 +167,15 @@ function read_message($username, $quad, $current, $direction)
  */
 function mes_link_urls( $text ) {
 
-    $url_list[];
+    eregi("http://.* ", $text, $url_list);
 
-    eregi("http://* ", $text, $url_list);
-    
-    do {
-       echo "<a href=\"$url\">$url</a>";
-    } while($url = next($url_list));
+    if(isset($url_list)) {
+        do {
+            echo "<a href=\"$url\">$url</a>\n";
+        } while($url = next($url_list));
+    } else {
+       echo "<p>No links found.\n";
+    }
 
     return $text;
 }
