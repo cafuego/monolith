@@ -314,7 +314,7 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
 		cprintf("%d ", user->RA_rooms[a]);
 	    }
     cprintf("\1a\1f\1c\n");
-    IFSYSOP mono_sql_uf_list_hosts_by_user( user->usernum );
+//    IFSYSOP mono_sql_uf_list_hosts_by_user( user->usernum );
 }
 
 
@@ -791,7 +791,7 @@ toggle_away(void)
 	mono_change_online(usersupp->username, usersupp->awaymsg, 16);
 	change_atho(-1);
     } else {
-	cprintf("\1f\1wYou are \1rnot\1w anymore marked as \1gAWAY\1w.\1a");
+	cprintf("\1f\1wYou are \1rno longer\1w marked as \1gAWAY\1w.\1a");
 	mono_change_online(usersupp->username, "", 16);
     }
     xfree(user);

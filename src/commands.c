@@ -467,7 +467,7 @@ main_menu()
 
 	    case '.':
 		if (usersupp->priv & (PRIV_WIZARD | PRIV_SYSOP))
-		    SILC();
+		    send_silc();
 		break;
 
 	    case '*':

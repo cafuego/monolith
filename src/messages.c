@@ -1111,7 +1111,7 @@ read_menu(long number, int direction)
 
 		case '.':
 		    IFSYSOP
-			SILC();
+			send_silc();
 		    break;
 
 		case '~':

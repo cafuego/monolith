@@ -136,7 +136,7 @@ sendx(char *to, const char *send_string, char override)
 	    p = &(shm->wholist[i]);
 	    if (strcasecmp(p->username, usersupp->username) != 0) {
 		if (override == OR_SILC) {
-		    if (p->priv >= PRIV_SYSOP)
+		    IFSYSOP
 			(void) kill(p->pid, SIGUSR1);
 		} else if (override == OR_CHAT) {
 		    if (p->chat & 1 << (channel))
@@ -266,10 +266,16 @@ catchx(int key)
 
     override = Catchxs->override;
 
-    if (override == OR_SILC && (cmdflags & C_NOSILC))
+    if (override == OR_SILC && (cmdflags & C_NOSILC)) {
+        IFSYSOP
+	    cprintf("\1f\1r\nSilc Debug: Silc disable flag found, skipping\n");
 	return;
-    if (override == OR_SILC && (usersupp->priv < PRIV_SYSOP))
+    }
+    if (override == OR_SILC && (usersupp->priv < PRIV_SYSOP)) {
+	IFSYSOP
+	    cprintf("\n\1r\1fSilc Error!\n\1a");
 	return;
+    }
 
 /* inter bbs stuff */
     if (strchr(Catchxs->sender, '@')) {
@@ -989,7 +995,7 @@ Quit what you're doing now, and log off!!!\n");
 
 /*************************************************/
 void
-SILC()
+send_silc()
 {
     if (cmdflags & C_NOSILC) {
 	cprintf("\1rNot when you have SILC disabled\n");
@@ -1199,10 +1205,7 @@ format_express(express_t * Catchxs)
 
 /* an x from whom? */
     if ((vriend = is_cached_friend(Catchxs->sender))) {
-//        mono_sql_u_name2id( Catchxs->sender, &id2 );
-//	mono_sql_uu_user2quickx( usersupp->usernum, id2, &i );
-	i = cached_name_to_x(Catchxs->sender);
-	if (i == -1)
+	if ((i = cached_name_to_x(Catchxs->sender)) == -1)
 	    sprintf(from, "\1c\1n%s\1N", Catchxs->sender);
 	else
 	    sprintf(from, "\1c\1n%s\1N \1w(\1g%d\1w)", Catchxs->sender, i);
