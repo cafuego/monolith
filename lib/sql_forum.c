@@ -232,7 +232,7 @@ mono_sql_f_fix_quickroom()
     int i = 0, rows = 0, ret = 0;
     unsigned int forum = 0, highest = 0;
 
-    ret = mono_sql_query(&res, "SELECT forum_id,highest FROM topic");
+    ret = mono_sql_query(&res, "SELECT forum_id,max(message_id) FROM message group by forum_id");
 
     if (ret == -1) {
         (void) mysql_free_result(res);
@@ -251,8 +251,12 @@ mono_sql_f_fix_quickroom()
         sscanf(row[0], "%u", &forum);
         sscanf(row[1], "%u", &highest);
 
-        shm->rooms[forum].highest=highest;
-        shm->rooms[forum].lowest=(highest-(shm->rooms[forum].maxmsg));
+        if( shm->rooms[forum].highest != highest) {
+            fprintf(stdout("\rQuadrant %u is fucked, updating..."); fflush(stdout);
+            shm->rooms[forum].highest=highest;
+            shm->rooms[forum].lowest=(highest-(shm->rooms[forum].maxmsg));
+            fprintf(stdout(" ok.\n"); fflush(stdout);
+        }
     }
 
     (void) mysql_free_result(res);
