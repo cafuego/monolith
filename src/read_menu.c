@@ -12,13 +12,13 @@
 
 
 #ifdef HAVE_MYSQL_H
-  #undef HAVE_MYSQL_MYSQL_H
-  #include <mysql.h>
+#undef HAVE_MYSQL_MYSQL_H
+#include <mysql.h>
 #else
-  #ifdef HAVE_MYSQL_MYSQL_H
-    #undef HAVE_MYSQL_H
-    #include <mysql/mysql.h>
-  #endif
+#ifdef HAVE_MYSQL_MYSQL_H
+#undef HAVE_MYSQL_H
+#include <mysql/mysql.h>
+#endif
 #endif
 
 #include "monolith.h"
@@ -68,21 +68,21 @@ int not_my_post = TRUE;
 /* ---------------------------------------------------- */
 
 void
-new_message_system (void)
+new_message_system(void)
 {
 
 
-#ifdef CONVERT_STUFF_YET_AGAIN_ARGH_COMMA_ARGH    
+#ifdef CONVERT_STUFF_YET_AGAIN_ARGH_COMMA_ARGH
 //    int j;
-//    for (j = 0; j < MAXQUADS; j++) {
-//	cprintf("\nquad %d\n", j);
-//	convert_message_base(j);
- //   }
- //   logoff(0);
+    //    for (j = 0; j < MAXQUADS; j++) {
+    //      cprintf("\nquad %d\n", j);
+    //      convert_message_base(j);
+    //   }
+    //   logoff(0);
 
 #else
 
-short_prompt();
+    short_prompt();
 
 #endif
 
@@ -103,9 +103,9 @@ short_prompt(void)
 	display_short_prompt();
 
 #ifdef SUPERHERO
-        cmd = get_single_quiet("~aAbBcCdefEFGHiIjJkKlLMNOPQqrRsSTUvVwWxXYZ0123456789!<>-_+:#.,*\"@`$&a([]% /?\005\006\011\014\016\022\030\'");
+	cmd = get_single_quiet("~aAbBcCdefEFGHiIjJkKlLMNOPQqrRsSTUvVwWxXYZ0123456789!<>-_+:#.,*\"@`$&a([]% /?\005\006\011\014\016\022\030\'");
 #else
-        cmd = get_single_quiet("~aAbBcCdefEFGHiIjJkKlLMNOPQqrRsSTUvVwWxXYZ0123456789!<>-_+:#.,*\"@$&a([]% /?\005\006\011\014\016\022\030\'");
+	cmd = get_single_quiet("~aAbBcCdefEFGHiIjJkKlLMNOPQqrRsSTUvVwWxXYZ0123456789!<>-_+:#.,*\"@$&a([]% /?\005\006\011\014\016\022\030\'");
 #endif
 
 	cmd = validate_read_command(cmd);	/* priv check */
@@ -196,20 +196,20 @@ short_prompt(void)
 		break;
 
 	    case 'F':
-		  cprintf("\1f\1gYour friends online.\1a\n");
-	  	  friends_online();
-	  	  break;
+		cprintf("\1f\1gYour friends online.\1a\n");
+		friends_online();
+		break;
 
-	    case 006: 
-		 cprintf("\1f\1gYour friends online.\1a\n");
-	         friends_online();
-		 break;
+	    case 006:
+		cprintf("\1f\1gYour friends online.\1a\n");
+		friends_online();
+		break;
 
 	    case 'G':
 		cmdflags &= ~C_ROOMLOCK;
 		skipping[curr_rm] = 0;
-                ungoto_message_id(usersupp->lastseen[curr_rm]);
-                ungoto_forum_id(curr_rm);  
+		ungoto_message_id(usersupp->lastseen[curr_rm]);
+		ungoto_forum_id(curr_rm);
 		mark_as_read(curr_rm);
 		writeuser(usersupp, 0);
 		gotonext();
@@ -240,8 +240,8 @@ short_prompt(void)
 	    case 'j':
 		cprintf("\1f\1gJump to %s name/number: \1a", config.forum);
 		fflush(stdout);
-                ungoto_message_id(usersupp->lastseen[curr_rm]);
-                ungoto_forum_id(curr_rm);  
+		ungoto_message_id(usersupp->lastseen[curr_rm]);
+		ungoto_forum_id(curr_rm);
 		skipping[curr_rm] = 0;
 		jump(1);
 		break;
@@ -332,9 +332,9 @@ short_prompt(void)
 		break;
 
 	    case 'S':
-                nox = 1;
-                cprintf("\1f\1gSearch %s\n", config.message_pl);
-                search_via_sql(curr_rm);
+		nox = 1;
+		cprintf("\1f\1gSearch %s\n", config.message_pl);
+		search_via_sql(curr_rm);
 		break;
 
 	    case 's':
@@ -595,7 +595,7 @@ long_prompt(long number, int direction)
 	    if (usersupp->flags & US_NOPROMPT)	/* dump quad to screen */
 		break;
 
-            not_my_post = strcmp(usersupp->username, message_reply_name(NULL));
+	    not_my_post = strcmp(usersupp->username, message_reply_name(NULL));
 
 	    read_command = get_single_quiet("1234567890 aAbBcCdDeEfFgGhHiIjJlkKLpPrRqQmMnNsStTvVWwxXyYzZ?!#\006\005\014\018\022\030<>%\":~,.*");
 
@@ -656,7 +656,7 @@ long_prompt(long number, int direction)
 		    break;
 
 		case '*':
-                    cprintf("\1f\1gClip %s.\n", config.message );
+		    cprintf("\1f\1gClip %s.\n", config.message);
 		    display_message(curr_rm, current, DISPLAY_2_CLIP);
 		    break;
 
@@ -681,7 +681,7 @@ long_prompt(long number, int direction)
 		    direction = 1;
 		    status_bar_off();
 		    enter_message(curr_rm, EDIT_EDITOR, NO_BANNER, NULL);
-		    status_bar_on();	    
+		    status_bar_on();
 		    break;
 
 		case 005:
@@ -705,8 +705,8 @@ long_prompt(long number, int direction)
 		case 'G':
 		    cprintf("\1f\1gGoto.\1a\n");
 		    cmdflags &= ~C_ROOMLOCK;
-                    ungoto_message_id(current);
-                    ungoto_forum_id(curr_rm);  
+		    ungoto_message_id(current);
+		    ungoto_forum_id(curr_rm);
 		    mark_as_read(curr_rm);
 		    gotonext();
 		    return;
@@ -737,8 +737,8 @@ long_prompt(long number, int direction)
 
 		case 'j':
 		    cprintf("\1f\1gJump to %s name/number\1w: \1c", config.forum);
-                    ungoto_message_id(current);
-                    ungoto_forum_id(curr_rm);  
+		    ungoto_message_id(current);
+		    ungoto_forum_id(curr_rm);
 		    fflush(stdout);
 		    if (!jump(1))
 			break;
@@ -822,13 +822,13 @@ long_prompt(long number, int direction)
 
 		case 'R':
 		    cprintf("\1f\1gRate %s.\1a\n", config.message);
-                    rate_message(NULL, current, curr_rm);
-                    break;
+		    rate_message(NULL, current, curr_rm);
+		    break;
 
 		case 'S':
-                    nox = 1;
-                    cprintf("\1f\1wSearch %s\n", config.message_pl);
-                    search_via_sql(curr_rm);
+		    nox = 1;
+		    cprintf("\1f\1wSearch %s\n", config.message_pl);
+		    search_via_sql(curr_rm);
 		    break;
 
 		case 's':
@@ -844,8 +844,9 @@ long_prompt(long number, int direction)
 			cprintf("\1f\1r Trash Message.\1a\n");
 			message_move(curr_rm, TRASH_FORUM, current, "");
 			read_position_modified = TRUE;
-		    } else
-			cprintf("\1f\1gDate: \1w%s \1f\1w(\1gCET\1w)\1a\n", printdate(time(0), 0));
+		    }
+		    else
+		    cprintf("\1f\1gDate: \1w%s \1f\1w(\1gCET\1w)\1a\n", printdate(time(0), 0));
 		    break;
 
 		case 'v':
@@ -884,16 +885,16 @@ long_prompt(long number, int direction)
 		    yell_menu();
 		    break;
 
-		case 'z':  /* ugly, probably shouldn't be allowed at long */
-		case 'Z':  /* prompt */
+		case 'z':	/* ugly, probably shouldn't be allowed at long */
+		case 'Z':	/* prompt */
 		    cprintf("\1f\1gZap %s.\1a\n", config.forum);
 		    forget();
 		    direction = 1;
 		    start = get_read_start_number(0, direction);
 		    if (start == -6666)
-			return;	
+			return;
 		    if (start < 0)
-		        start = 0;
+			start = 0;
 		    current = start - 1;
 		    set_read_bounds(&temp_lowest, &temp_highest);
 		    read_position_modified = TRUE;
@@ -1026,7 +1027,7 @@ numeric_read(const long current_post)
     if (curr_rm == MAIL_FORUM)
 	highest_id = usersupp->mailnum;
     else {
-        quad = read_quad(curr_rm);
+	quad = read_quad(curr_rm);
 	highest_id = quad.highest;
 	lowest_id = quad.lowest;
     }
@@ -1136,7 +1137,7 @@ no_new_posts_here(const long highest, const int direction, const long current)
 {
     return
 	(((curr_rm == MAIL_FORUM) && (direction > 0) && (current == usersupp->mailnum)) ||
-       ((curr_rm != MAIL_FORUM) && (direction > 0) && (current == highest))) ? 1 : 0;
+	 ((curr_rm != MAIL_FORUM) && (direction > 0) && (current == highest))) ? 1 : 0;
 }
 
 void
@@ -1146,10 +1147,9 @@ display_short_prompt(void)
     static int last_prompt_forum = -1;
 
     if (curr_rm != last_prompt_forum) {
-        quad = read_quad(curr_rm);
+	quad = read_quad(curr_rm);
 	last_prompt_forum = curr_rm;
     }
-
     if (curr_rm == MAIL_FORUM) {
 	cprintf("\1a\n\1f\1w%d.\1%c%s's %s\1w> ", curr_rm,
 		(quad.flags & QR_PRIVATE) ? 'r' :
@@ -1172,6 +1172,42 @@ ungoto(void)
     curr_rm = ungoto_forum_id(0);
     gotocurr();
     if (curr_rm != 0)
-        usersupp->lastseen[curr_rm] = ungoto_message_id(0);
+	usersupp->lastseen[curr_rm] = ungoto_message_id(0);
 
+}
+
+void
+copy_messages_to_sql()
+{
+    room_t quad;
+    message_header_t *header;
+    FILE *fp;
+    char filename[1000], content[1000];
+    int i, j;
+
+    for (i = 0; i < MAXQUADS; i++) {
+	if (i == 1)
+	    continue;
+	quad = readquad(i);
+	cprintf("\nWorking on %d.%s", i, quad.name);
+	for (j = quad.lowest; j <= quad.highest; j++) {
+
+	    header = (message_header_t *) xmalloc(sizeof(message_header_t));
+	    memset(header, 0, sizeof(message_header_t));
+
+	    message_header_filename(&filename, i, j);
+	    if ((read_message_header(filename, header)) == -1)
+		continue;
+	    strcpy(content, "");
+	    sprintf(content, "/usr/bbs/save/forums/%u/%u.t", i, j);
+
+	    /* Now save it. */
+	    (void) save_to_sql(header, content);
+	    xfree(header);
+	    cprintf(".");
+
+	}			/* mes */
+    }				/* quad */
+
+    return;
 }

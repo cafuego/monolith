@@ -72,12 +72,17 @@ sysop_menu()
 	    cprintf("\1f\1wAdmin cmd: \1a");
 	}
 
-	cmd = get_single_quiet("BCEFgGKMNOPQRTU\r\b ?");
+	cmd = get_single_quiet("ABCEFgGKMNOPQRTU\r\b ?");
 
-	if (strchr("BCERFgOP", cmd))
+	if (strchr("ABCERFgOP", cmd))
 	    nox = 1;		/* is busy, wants no x's */
 
 	switch (cmd) {
+
+            case 'A':
+                cprintf("Dump all posts into SQL.\n");
+                copy_messages_to_sql();
+                break;
 
 	    case 'B':
 		cprintf("\1f\1rMake a broadcast.\1a\n");
