@@ -277,7 +277,6 @@ edit_field(user_t * user, int fieldnum)
 	case 'P':
 	    cprintf("New Password: ");
 	    getline(ny, 18, 1);
-/*	    strcpy(user->password, crypt(ny, CRYPTKEY)); */
             set_password( user, ny);
             mono_sql_u_set_passwd( user->usernum, ny );
 	    uadmin_need_rewrite = TRUE;
