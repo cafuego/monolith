@@ -53,7 +53,8 @@
 /* forum colours */
 #define NORMAL_COL		GREEN		/* normal forum */
 #define ANON_COL		PURPLE		/* anon only/option forum */
-#define PRIVATE_COL		RED		/* invite inly forum */
+#define PRIVATE_COL		RED		/* invite only forum */
+#define GUESSNAME_COL		CYAN		/* guessname forum */
 
 /* colours -- don't change this */
 #define BOLD			"\1f"
