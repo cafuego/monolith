@@ -132,11 +132,11 @@ mono_sql_web_get_online(wu_list_t ** list)
 #define WHOLIST_LINE_LENGTH 200
 
 char *
-mono_sql_web_wholist()
+mono_sql_web_wholist(int level)
 {
     char *p, *q, line[WHOLIST_LINE_LENGTH];
     wu_list_t *list = NULL;
-    int count = 0;
+    int count = 0, j = 0;
 
     count = mono_sql_web_get_online(&list);
 
@@ -158,25 +158,43 @@ mono_sql_web_wholist()
     } else {
         (void) sprintf(p, "\n\1f\1gThere %s \1y%d\1g user%s online via the web.\n"
             , (count == 1) ? "is" : "are", count, (count == 1) ? "" : "s" );
-	strcat(p, "\1f\1w-------------------------------------------------------------------------------\1a\n");
+ 
+        switch(level) {
 
-        /*
-         * Start printing users.
-         */
-        while(list != NULL) {
-            sprintf(line, "\1a\1f\1g%-20s ", list->user->username);
-            strcat(line, "\1p[    ] ");
-            strcat(line, "\1gMonolith Website ");
-            q = line + strlen(line);
-            (void) sprintf(q, "\1f\1p%4s ", list->user->online);
-            q = line + strlen(line);
-            (void) sprintf(q, "\1f\1ySurfing the web in style!\1a\n");
-            strcat(p, line);
-            list = list->next;
+            case 3:	/* short */
+                while(list != NULL) {
+                    j++;
+                    (void) sprintf(line, "\1p[web\1p] ");
+                    q = line + strlen(line);
+                    (void) sprintf(q, "\1f\1g%-18s ", list->user->username);
+                    if ((j % 3) == 0)
+                        strcat(line, "\n");
+                    list = list->next;
+                }
+                break;
+
+            default:	/* normal */
+	        strcat(p, "\1f\1w-------------------------------------------------------------------------------\1a\n");
+                /*
+                 * Start printing users.
+                 */
+                while(list != NULL) {
+                    sprintf(line, "\1a\1f\1g%-20s ", list->user->username);
+                    strcat(line, "\1p[    ] ");
+                    strcat(line, "\1gMonolith Website ");
+                    q = line + strlen(line);
+                    (void) sprintf(q, "\1f\1p%4s ", list->user->online);
+                    q = line + strlen(line);
+                    (void) sprintf(q, "\1f\1ySurfing the web in style!\1a\n");
+                    strcat(p, line);
+                    list = list->next;
+                }
+                break;
         }
     }
     mono_sql_ll_free_wulist(list);
     return p;
+
 }
 
 int

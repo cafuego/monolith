@@ -52,7 +52,7 @@ main(int argc, char *argv[] )
     xfree(p);
 
     mono_sql_connect();
-    strremcol(p = mono_sql_web_wholist());
+    strremcol(p = mono_sql_web_wholist(1));
     mono_sql_detach();
 
     printf("%s", p);

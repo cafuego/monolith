@@ -1184,7 +1184,7 @@ show_online(int type)
 #endif
 
     /* Web! */
-    p = mono_sql_web_wholist();
+    p = mono_sql_web_wholist(type);
     more_string(p);
     xfree(p);
 
