@@ -228,16 +228,18 @@ void
 print_system_config()
 {
 #ifdef LINUX
-    struct sysinfo *info;
+    struct sysinfo *info = NULL;
 #endif
 #ifdef HAVE_SYS_UTSNAME_H
     struct utsname buf2;
     char *domain_name = NULL;
 #endif
 #ifdef HAVE_ANIMAL
-    int fd = -1;
     char *kernel_name = NULL;
 #endif
+    char *loadavg = NULL;
+    float l1 = 0, l2 = 0, l3 = 0;
+    int fd = -1, aproc = 0, iproc = 0;
     struct stat buf;
 
 #ifdef USE_MYSQL
@@ -261,10 +263,11 @@ print_system_config()
      * 65 is defined in sys/utsname.h, so why not eh?
      * I can't be bothered looking up the RFC...
      */
-    domain_name = (char *) xmalloc(65);
+    domain_name = (char *) xmalloc(65 * sizeof(char));
+    strcpy(domain_name, "");
     if ((getdomainname(domain_name, 64)) == -1) {
 	cprintf("\1f\1rError getting domain name!\n");
-	(void) xfree(domain_name);
+        (void) xfree(domain_name);
 	return;
     }
 #endif
@@ -276,7 +279,7 @@ print_system_config()
     info = xmalloc(sizeof(struct sysinfo));
     if ((sysinfo(info)) == -1) {
 	cprintf("\1f\1rError getting current system info!\n");
-	(void) xfree(info);
+        (void) xfree(info);
 	return;
     }
 #endif
@@ -294,7 +297,8 @@ print_system_config()
     /*
      * Bit arbitrary, but better too big than too small ;)
      */
-    kernel_name = (char *) xmalloc(65);
+    kernel_name = (char *) xmalloc(65 * sizeof(char));
+    strcpy(kernel_name, "");
     (void) read(fd, kernel_name, 64);
 
     /*
@@ -303,6 +307,18 @@ print_system_config()
     kernel_name[strlen(kernel_name) - 1] = '\0';
     (void) close(fd);
 #endif
+
+    if ((fd = open("/proc/loadavg", O_RDONLY)) == -1) {
+	cprintf("\1f\1rError getting system load!\n");
+	return;
+    }
+    loadavg = (char *) xmalloc(42 * sizeof(char));
+    strcpy(loadavg, "");
+    (void) read(fd, loadavg, 41);
+    loadavg[strlen(loadavg)-1] = '\0';
+    (void) close(fd);
+    sscanf(loadavg, "%f %f %f %d/%d", &l1, &l2, &l3, &aproc, &iproc);
+    xfree(loadavg);
 
     /*
      * Compile times.
@@ -333,10 +349,11 @@ print_system_config()
 #endif
 
     cprintf("\n\1wLast compiled                 : %s\n\1f", printdate(buf.st_mtime, 0));
-    (void) fflush(stdout);
+    cprintf("\1wMachine load                  :\1g ");
+    printf("%.2f %.2f %.2f", l1, l2, l3);
+    cprintf(" \1w(\1g%d\1w/\1g%d\1w)\n", aproc, iproc);
 
 #ifdef LINUX
-    cprintf("\1wMachine load                  :\1g %ld %ld %ld\n\r", info->loads[0], info->loads[1], info->loads[2]);
     cprintf("\1wTotal memory                  :\1g %ld Mb\n\r", info->totalram / 1000000);
     cprintf("\1wTotal swap memory             :\1g %ld Mb\n\n\r", info->totalswap / 1000000);
     xfree(info);
