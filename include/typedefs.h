@@ -211,10 +211,11 @@ typedef struct {
 
 /****************************************************************************/
 
+#define L_CATEGORY	59
 typedef struct quickroom {
     char name[L_QUADNAME + 1];	/* Max. len is 40, plus null term       */
     char qls[NO_OF_QLS][L_USERNAME + 1];	/* RA's username                */
-    char category[60];		/* room category */
+    char category[L_CATEGORY + 1];		/* room category */
     unsigned long highest;	/* Highest message NUMBER in room       */
     unsigned long lowest;	/* This was the dirname before. notused */
     char generation;		/* Generation number of room            */

@@ -19,5 +19,6 @@ extern void send_update_to_client ( void );
 #define EDIT_NORMAL 1
 #define EDIT_CTRLD  2
 #define EDIT_EDITOR 3
+#define EDIT_NOEDIT 4
 
 /* eof */

@@ -1,1 +1,1 @@
-#define VERSION	"Mono 2.010 Alpha for Tonka Truck (TM)"
+#define VERSION	"Mono 2.061 - MySQL 3.22.19"

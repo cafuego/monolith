@@ -2,7 +2,6 @@
 
 /* prototypes */
 
-extern void fmout2(FILE *, char );
 extern int increment(int );
 extern void interr ( const char *);
 extern int yesno (void);
@@ -15,6 +14,11 @@ extern void execute_unix_command( const char * );
 extern void print_system_config( void );
 extern int print_birthday(date_t bday);
 extern void modify_birthday(date_t * bday);
-extern int  qc_get_pos_int(const char, int);
+extern int qc_get_pos_int(const char, int);
 
-/* not properly defined in kernel include, so override here... */
+#define PORCUPINE
+#ifdef PORCUPINE
+
+extern void fmout2(FILE *, char );
+
+#endif

@@ -16,5 +16,6 @@ extern int mono_detach_shm(void);
 extern btmp_t *mono_search_guide(void);
 extern express_t *mono_find_xslot(const char *name);
 extern int mono_find_x_ing( const char *name, char *xer );
+extern char * who_am_i(const char *);
 
 extern bigbtmp_t *shm;

@@ -172,10 +172,11 @@
 #define CO_USEALIAS	2			/* User wants to use standard alias	*/
 #define CO_WHAKFILTER	4			/* general post filter */
 #define CO_NEATMESSAGES 8			/* empty lines around messages */
-#define CO_EXPANDHEADER 16			/* expanded (long) headers */
-#define CO_LONGDATE	32			/* long date format */
-#define CO_EUROPEANDATE	64			/* european (as opposed to US) date format */
-#define CO_DELETEDINFO	128			/* Notify user when encountyering deleted msg */
+#define CO_EXPANDHEADER 16	/* expanded (long) headers */
+#define CO_LONGDATE	32	/* long date format */
+#define CO_EUROPEANDATE	64	/* european (as opposed to US) date format */
+#define CO_DELETEDINFO	128	/* Notify user when encountyering deleted msg */
+#define CO_MONOHEADER	256	/* traditional mono-style message header */
 /*
  * rest is unused sofar
  */

@@ -2,7 +2,6 @@
 
 /* prototypes */
 extern void change_host (user_t *);
-extern void yell_menu (void);
 extern void q_menu (void);
 extern void change_profile ( const user_t *);
 extern void edit_profile ( const user_t *);
@@ -21,10 +20,8 @@ extern void kickout_user( void );
 extern void menu_options( void );
 extern void test_ansi_colours(user_t * );  /* russ */
 extern void mono_show_config( unsigned int num);
+extern void menu_message(void);
 
 /*** variables ***/
 extern char profile_default[L_USERNAME+L_BBSNAME+2];
 
-/* more vars */
-
-static char *_locale[] = { "European", "American" };
