@@ -1,0 +1,41 @@
+<html>
+<head>
+<title>Test</title>
+</head>
+<body bgcolor="#ffffff">
+
+<?
+
+    require('engine/routines.inc');
+
+    $username = getenv( "REMOTE_USER" );
+    $usernum = get_usernum( $username );
+
+    if($usernum != 1151) {
+        echo "<h3 align=\"center\">Go away, this is a test page for developers only</h3>\n";
+        exit;
+    }
+
+    if($userfile) {
+        echo "<form enctype=\"multipart/form-data\" action=\"/bbs/test.phtml\" method=\"post\"\n";
+        echo "  <input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"10000\">\n";
+        echo "  Send this file: <input name=\"userfile\" type=\"file\">\n";
+        echo "  <input type=\"submit\" value=\"Upload File\">\n";
+        echo "</form>\n";
+    } else {
+        if( file_exists($userfile) ) {
+            connect_db();
+            $fp = fopen($userfile);
+            $contents = fread( $fp, filesize( $userfile ) );
+            fclose($fp);
+            unlink ($userfile);
+            $result = mysql_query("UPDATE user SET picture='$contents' WHERE id=$usernum");
+            $result = mysql_query("UPDATE user SET content_type='$userfile_type' WHERE id=$usernum");
+        }
+        echo "<p>Hopefully saved your file \"$userfile_name\" ($userfile_size bytes) into the database.\n";
+    }
+
+?>
+
+</body>
+</html>
