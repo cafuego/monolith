@@ -267,7 +267,7 @@ mono_sql_write_profile(unsigned int user_id, const char * profile )
 	return -1;
     }
 
-    mono_sql_u_free_result(res);
+    // mono_sql_u_free_result(res);
     return 0;
 }
 

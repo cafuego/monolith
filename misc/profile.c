@@ -121,6 +121,8 @@ read_all_users()
 
         strcpy(work, "");
         sprintf(work, "%s/profile", getuserdir(user->username) );
+        fprintf(stdout, "mmap() ");
+        fflush(stdout);
         if( (profile = map_file( work )) == NULL) {
             fprintf(stdout, "Error: map_file(%s)\n", work);
             fflush(stdout);
@@ -128,6 +130,8 @@ read_all_users()
 	    xfree(user);
             continue;
         }
+        fprintf(stdout, "save() ");
+        fflush(stdout);
         if( (mono_sql_write_profile(user->usernum, profile)) == -1) {
             fprintf(stdout, "Error: write_profile(%u, %X)\n", user->usernum, *profile);
             fflush(stdout);
