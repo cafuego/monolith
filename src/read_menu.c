@@ -43,6 +43,7 @@
 #include "rooms.h"
 #include "setup.h"
 #include "statusbar.h"
+#include "edit_message.h"
 #include "enter_message.h"
 #include "help.h"
 #include "fun.h"
@@ -701,8 +702,18 @@ long_prompt(long number, int direction)
 		    break;
 
 		case 005:
-		    nox = 1;
-		    enter_admin_message();
+		    // nox = 1;
+		    // enter_admin_message();
+                    if( ! not_my_post ) {
+		        cprintf("\1f\1gEdit current %s.\1a\n", config.message);
+		        direction = 1;
+		        status_bar_off();
+		        (void) edit_message(curr_rm, current);
+		        status_bar_on();
+			nox= FALSE;
+                    } else {
+		        cprintf("\1f\1rCurrent %s is not yours.\1a\n", config.message);
+                    }
 		    break;
 
 		case 'f':

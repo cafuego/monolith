@@ -337,7 +337,7 @@ x_message_to_mail(const char *x, char *to_user)
 void
 message_clip(const char *header_string)
 {
-    FILE *fp;
+    FILE *fp = NULL;
 
     fp = xfopen(CLIPFILE, "a", TRUE);
 
@@ -350,7 +350,7 @@ message_clip(const char *header_string)
 void
 message_2_temp(const char *header_string, char mode)
 {
-    FILE *fp;
+    FILE *fp = NULL;
 
     if (mode == 'a')
 	fp = xfopen(temp, "a", TRUE);

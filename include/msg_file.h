@@ -55,6 +55,7 @@
 #define REPLY_MODE	5
 #define MOD_MOVE	1
 #define MOD_COPY	2
+#define MOD_EDIT	4
 #define L_BANNER	60
 #define L_FILENAME	120
 #define L_RECIPIENT	100

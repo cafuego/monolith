@@ -56,5 +56,9 @@ extern int mono_sql_u_set_icq_number( unsigned int user_id, unsigned long number
 extern int mono_sql_u_set_icq_pass( unsigned int user_id, char *pass );
 extern unsigned long mono_sql_u_icq_get_number( unsigned int user_id );
 
+#ifdef HAVE_MEMFROB
+extern void *memfrob(void *s, size_t n);
+#endif
+
 #define U_TABLE	"user"
 /* eof */

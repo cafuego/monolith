@@ -90,7 +90,7 @@ display_message(unsigned int forum, unsigned int num, const unsigned int mode)
     if (m_exists == -1) {
 	xfree(header_string);
 	xfree(header);
-	return 0;
+	return 1;
     }
     header_string = format_header(header, forum, header_string);
     header_string = format_content(header, forum, header_string);
@@ -621,6 +621,11 @@ format_mod_line(message_header_t * header, char *header_string)
 		 "\1f\1gOrigin\1w: %s \1w[\1r#%u\1w]\1g in \1y%s \1w[\1r%s: %s\1w]\1a\n",
 		 datestring, header->orig_m_id, header->orig_forum,
 		 (usersupp->config_flags & CO_EXPANDHEADER) ? "Copied" : "C",
+		 header->modified_by);
+    else if (header->mod_type & MOD_EDIT)
+	snprintf(mod_line, sizeof(mod_line) - 1,
+		 "\1f\1gOriginally posted\1w: %s \1w[\1r%s: %s\1w]\1a\n",
+		 datestring, (usersupp->config_flags & CO_EXPANDHEADER) ? "Edited" : "E",
 		 header->modified_by);
     else
 	strcpy(mod_line, "\1f\1rUnknown mod_type!\1a\n");
