@@ -22,6 +22,13 @@
     $handler = rawurldecode($handler);
     switch($handler) {
 
+        // Update account info.
+        //
+        case "i":
+            $username = rawurldecode($username);
+            echo "<title>$username@Monolith BBS: Updating account details</title>\n";
+            break;
+
         // Store picture in profile.
         case "p":
             $username = rawurldecode($username);
@@ -47,6 +54,12 @@
             echo "<meta http-equiv=\"Refresh\" content=\"5; url=http://monolith.student.utwente.nl$location\">\n";
             echo "<title>$username@Monolith BBS: Sending eXpress message to $recipient@$interface</title>\n";
             break;
+
+        // Ummm... what?
+        default:
+            $username = rawurldecode($username);
+            echo "<title>$username@Monolith BBS: Discovering unexplored bugs</title>\n";
+            break;
     }
 
     echo "<link rev=\"made\" href=\"mailto:webmaster@monolith.student.utwente.nl\">\n";
@@ -67,6 +80,21 @@
     echo "<body bgcolor=\"#000000\" text=\"#FFFFFF\" style=\"margin-left: 0; margin-top: 0;\">\n\n";
 
     switch($handler) {
+
+        // Update account details.
+        //
+        case "i":
+            echo "Name: $name<br>\n";
+            echo "Address: $address<br>\n";
+            echo "City: $city<br>\n";
+            echo "State: $state<br>\n";
+            echo "Zip: $zip<br>\n";
+            echo "Country: $country<br>\n";
+            echo "Phone: $phone<br>\n";
+            echo "Email: $email<br>\n";
+            echo "Url: $url<br>\n";
+            echo "Website: $website<br>\n";
+            break;
 
         // Save profile image.
         case "p":
@@ -160,6 +188,12 @@
             }
 
             addimage( "You will be taken back in 5 seconds." );
+            break;
+
+        // Unsupported call.
+        default:
+            errorimage( "No handler is defined for '$handler'!" );
+            echo "<h4 align=\"center\">You just discovered a bug. Please report it to <a href=\"/bbs/index.phtml/p/Cafuego/\">Cafuego</a>.</h4>\n";
             break;
     }
 

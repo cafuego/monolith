@@ -23,7 +23,7 @@ function config_account( $username ) {
     echo "  Simply check the box for each item you want to be <b>visible</b> and click on <b>Update</b>.\n";
 
     echo "<form action=\"/bbs/handler.phtml\" method=\"post\">\n";
-    echo "  <input type=\"hidden\" name=\"handler\" value=\"h\">\n";
+    echo "  <input type=\"hidden\" name=\"handler\" value=\"i\">\n";
     echo "  <input type=\"hidden\" name=\"username\" value=\"$username\">\n";
 
     echo "  <table align=\"left\" border=\"0\" cellpadding=\"2\" cellspacing=\"2\">\n";
