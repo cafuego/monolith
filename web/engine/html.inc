@@ -185,6 +185,7 @@ function html_print_foot($username, $starttime) {
 
     print "<hr size=\"1\" width=\"400\" align=\"center\">\n";
     print "<p class=\"footer\">\n";
+    print "  <a href=\"/bbs/index.phtml/\">Main</a> |\n";
     print "  <a href=\"/bbs/index.phtml/w\">Wholist</a> |\n";
     print "  <a href=\"/bbs/index.phtml/l\">Quadrants</a> |\n";
     print "  <a href=\"/bbs/index.phtml/q\">Log out $username</a>\n";
