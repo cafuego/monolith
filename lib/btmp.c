@@ -571,9 +571,7 @@ mono_search_guide()
     i = shm->first;
     while (i != -1) {
 	p = &(shm->wholist[i]);
-	if ((p->flags & B_GUIDEFLAGGED) &&
-	    ((p->flags & B_XDISABLED) == 0) &&
-	    (p->pid != getpid()))
+	if (_mono_guide_ok(p))
 	    total_sgnumber++;
 	i = p->next;
     }
@@ -581,7 +579,7 @@ mono_search_guide()
     if (total_sgnumber < 1)
 	return NULL;
 
-    sysguide_number = ((getpid() * rand()) % total_sgnumber);
+    sysguide_number = rand() % total_sgnumber;
     printf("DEBUG: Guide %d of %d\n\r", sysguide_number, total_sgnumber );
     fflush(stdout);
 
