@@ -141,41 +141,38 @@ menu_message(void)
 
     for (;;) {
 	MENU_INIT;
-	strcpy(tempstr, "");
 	sprintf(tempstr, "\n\1f\1w[\1g%s Options\1w]\n\n", mesname);
 	strcpy(the_menu_format.menu_title, tempstr);
 
-	strcpy(tempstr, "");
 	sprintf(tempstr, "Empty lines around %s", config.message_pl);
 	MENU_ADDITEM(set_usersupp_config_flag, CO_NEATMESSAGES, 0, tempstr,
 	     "tv", tempstr, (usersupp->config_flags & CO_NEATMESSAGES) ? "1" : "0");
 
-	strcpy(tempstr, "");
 	sprintf(tempstr, "Expanded %s headers", config.message);
 	MENU_ADDITEM(set_usersupp_config_flag, CO_EXPANDHEADER, 0, tempstr,
 	     "tv", tempstr, (usersupp->config_flags & CO_EXPANDHEADER) ? "1" : "0");
 
-	strcpy(tempstr, "");
-
 	sprintf(tempstr, "Display \1w%s\1g date", 
 		(usersupp->config_flags & CO_LONGDATE) ? "long" : "short");
-	MENU_ADDITEM(_set_date_display, 0, 0, "", "t", tempstr);
+	MENU_ADDITEM(_set_date_display, 0, 0, "", 
+		"tv", tempstr, "0");
 
-        if( usersupp-> priv < PRIV_SYSOP )
+        if (usersupp-> priv < PRIV_SYSOP)
             sprintf(tempstr, "Notify on deleted %s", config.message_pl);
         else
             sprintf(tempstr, "Display deleted %s", config.message_pl);
 	MENU_ADDITEM(set_usersupp_config_flag, CO_DELETEDINFO, 0, tempstr,
 	     "tv", tempstr, (usersupp->config_flags & CO_DELETEDINFO) ? "1" : "0");
 
-	strcpy(tempstr, "");
 	sprintf(tempstr, "Monolith-Style %s headers", config.message);
 	MENU_ADDITEM(set_usersupp_config_flag, CO_MONOHEADER, 0, 
 	   tempstr, "tv", tempstr,
 	   (usersupp->config_flags & CO_MONOHEADER) ? "1" : "0");
 
-	sprintf(tempstr, "\1w%s\1g date format", _locale[_get_locale(usersupp->config_flags)]);
-	MENU_ADDITEM(_set_locale, 0, 0, "", "t", tempstr);
+	sprintf(tempstr, "\1w%s\1g date format", 
+		_locale[_get_locale(usersupp->config_flags)]);
+	MENU_ADDITEM(_set_locale, 0, 0, "",
+		"tv", tempstr, "0");
 
 	the_menu_format.auto_columnize = 1;
 	the_menu_format.gen_1_idx = 1;
@@ -278,8 +275,6 @@ menu_options(void)
 		     "Receipt of all login event notifies",
 		     "tiv", "Receive all logon events",
 		     "K", (usersupp->flags & US_NOTIFY_ALL) ? "1" : "0");
-//      MENU_ADDITEM(_tgl_friend_notify,"tiv", "Receive friend logon notifies", 
-	//              "L", (usersupp->flags & US_NOTIFY_FR) ? "1" : "0");
 
 	if ((usersupp->flags & US_ROOMAIDE) || (usersupp->priv >= PRIV_SYSOP)
 	    || (usersupp->flags & US_GUIDE))
@@ -297,11 +292,6 @@ menu_options(void)
 		     "tiv", "Online Help",
 		     "?", "0");
 
-#ifdef KNOB_FILTER
-	if (EQ(usersupp->username, "Guest")) {
-	    cprintf(" \1f\1w[\1r%c\1w] \1gO. Bing Filter enabled.\1a\n", (usersupp->config_flags & CO_WHAKFILTER) ? '*' : ' ');
-	}
-#endif
 
 	MENU_PROCESS_INTERNALS;
 	MENU_DISPLAY(2);

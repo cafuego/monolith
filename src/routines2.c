@@ -663,6 +663,7 @@ qc_get_pos_int(const char first, int digits)
         input = get_single_quiet("1234567890\n\r");
     for (;;) {
         switch (input) {
+	    case ' ':
             case '\n':
             case '\r':
                 return -1;

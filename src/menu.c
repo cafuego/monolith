@@ -297,6 +297,7 @@ menu_command(M_LN_t * the_menu, M_display_t * m_fmt)
     menu_command_prompt(m_fmt);
     strcpy(cmdstr, "");
     if (m_fmt->gen_0_idx || m_fmt->gen_1_idx) {
+	command = get_single(m_fmt->menu_valid_input);
 	bing = qc_get_pos_int(command, m_fmt->idx_emax);
 	if (bing > -1)
 	    snprintf(cmdstr, sizeof(cmdstr), "%d", bing);
