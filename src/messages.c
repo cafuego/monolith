@@ -420,7 +420,7 @@ search_via_sql()
     int count = 0, forum = 0;
     sr_list_t *list = NULL;
     room_t quad;
-    char needle[21];
+    char needle[21], tempuser[L_USERNAME+1];
     struct timeval tv_start;
     struct timeval tv_end;
     struct timezone tz;
@@ -492,12 +492,13 @@ search_via_sql()
 		cprintf("  \1f\1g%5d \1w%3d.\1y%-20s \1g%-18s \1y%-20s \1r",
 		    list->result->m_id, list->result->f_id, list->result->forum,
 		    list->result->author, ((list->result->subject == NULL) || (EQ(list->result->subject, "(null)"))) ? "[no subject]" : list->result->subject);
-	    else if (EQ(list->result->flag, "anon") && (strlen(list->result->alias) > 6))
-		cprintf("  \1f\1g%5d \1w%3d.\1y%-20s \1bAnon \1g'%-12s' \1y%-20s \1r",
+	    else if (EQ(list->result->flag, "anon") && (strlen(list->result->alias) > 6)) {
+                sprintf(tempuser, "'%s'", list->result->alias );
+		cprintf("  \1f\1g%5d \1w%3d.\1y%-20s \1g%-18s \1y%-20s \1r",
 		    list->result->m_id, list->result->f_id, list->result->forum,
-		    list->result->alias, ((list->result->subject == NULL) || (EQ(list->result->subject, "(null)"))) ? "[no subject]" : list->result->subject);
-	    else
-		cprintf("  \1f\1g%5d \1w%3d.\1y%-20s \1bAnonymous %-9s \1y%-20s \1r",
+		    tempuser, ((list->result->subject == NULL) || (EQ(list->result->subject, "(null)"))) ? "[no subject]" : list->result->subject);
+	    } else
+		cprintf("  \1f\1g%5d \1w%3d.\1y%-20s \1bAnonymous %-8s \1y%-20s \1r",
 		    list->result->m_id, list->result->f_id, list->result->forum,
 		    config.user, ((list->result->subject == NULL) || (EQ(list->result->subject, "(null)"))) ? "[no subject]" : list->result->subject);
 
