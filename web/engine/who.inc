@@ -11,7 +11,7 @@ function show_wholist($username,$location) {
     switch(check_priv($username,0)) {
 
         case -1:
-            print "<h3 align=\"center\">You are not currently logged in. Log in first.</h3>\n";
+            errorimage( "You are not currently logged in. Log in first!" );
             return;
         default:
             break;
@@ -32,9 +32,7 @@ function show_wholist($username,$location) {
             $text = "Listing 1 user online";
         $text = rawurlencode($text);
 
-        echo "<div align=\"center\">\n";
-        echo "<img src=\"/bbs/image.phtml/Tahoma_B,30/$text/\" alt=\"[ image: ". rawurldecode($text) ." ]\">\n";
-        echo "</div>\n";
+        addimage( $text );
 
         print "<table border=\"0\" cellpadding=\"4\" cellspacing=\"2\" align=\"center\">\n";
         print "<tr>\n";
@@ -82,7 +80,7 @@ function show_wholist($username,$location) {
         }
         print "</table>\n";
     } else {
-        print "<h3 align=\"center\">Noone is online.</h3>\n";
+        addimage "Noone is online";
     }
 }
 

@@ -318,4 +318,25 @@ function colorize($doing) {
     return rawurldecode($doing);
 }
 
+function addimage( $text ) {
+
+    // To change all images in one go.
+    // Image parser only knows basics tho!
+    //
+    $colour = "white";
+
+    echo "<div align=\"center\">\n";
+    echo "<img src=\"/bbs/image.phtml/Tahoma_B,24,$colour/$text/\" alt=\"[ image: ". rawurldecode($text) ." ]\">\n";
+    echo "</div>\n";
+
+}
+
+function errorimage( $text ) {
+
+    echo "<div align=\"center\">\n";
+    echo "<img src=\"/bbs/image.phtml/Tahoma_B,24,red/$text/\" alt=\"[ image: ". rawurldecode($text) ." ]\">\n";
+    echo "</div>\n";
+
+}
+
 ?>
