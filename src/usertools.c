@@ -95,9 +95,9 @@ profile_user(void)
     char rbbs[L_BBSNAME + 1], ruser[L_USERNAME + 1];
 
     if (strlen(profile_default))
-	cprintf("\1f\1gProfile user \1w(\1y%s\1w): \1c", profile_default);
+	cprintf(_("\1f\1gProfile user \1w(\1y%s\1w): \1c"), profile_default);
     else
-	cprintf("\1g\1fProfile user\1w: \1c");
+	cprintf(_("\1g\1fProfile user\1w: \1c"));
 
     strncpy(p_name, get_name(5), L_BBSNAME + L_USERNAME - 2);
     p_name[L_BBSNAME + L_USERNAME - 1] = '\0';	/* no overflow, please */
@@ -109,7 +109,7 @@ profile_user(void)
 
     if (strchr(p_name, '@') != NULL) {
 	if (parse_inter_address(p_name, ruser, rbbs) == 0) {
-	    cprintf("\1r\1fNot a valid InterBBS name.\n");
+	    cprintf(_("\1r\1fNot a valid InterBBS name.\n"));
 	    return;
 	}
 	dexi_profile(ruser, rbbs);
@@ -122,7 +122,7 @@ profile_user(void)
 	xfree(user);
 	strcpy(profile_default, p_name);
     } else
-	cprintf("\1f\1rNo such user.\1a\n");
+	cprintf(_("\1f\1rNo such user.\1a\n"));
     return;
 }
 
@@ -698,7 +698,7 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
 	    /* do nothing */ ;
 	}
     } else {
-	cprintf("Birthday: \1g");
+	cprintf(_("Birthday: \1g"));
 	print_birthday(user->birthday);
 	cprintf("\1c ");
     }
@@ -860,9 +860,8 @@ _edit_profile(const unsigned int a, const long b, void *c)
 {
     char filename[L_FILENAME];
 
-    cprintf("Are you sure you want to Edit your profile? (y/n) ");
+    cprintf(_("Are you sure you want to edit your profile? (y/n) "));
     if (yesno() == NO) {
-        cprintf("Okay, not changing it then.\n");
         return;
     }
 
@@ -881,13 +880,12 @@ _change_profile(const unsigned int a, const long b, void *c)
     char tempstr[300];
 #endif
 
-    cprintf("Are you sure you want to change your profile? (y/n) ");
+    cprintf(_("Are you sure you want to change your profile? (y/n) "));
     if (yesno() == NO) {
-        cprintf("Okay, not changing it then.\n");
         return;
     }
 
-    cprintf("\1yYou now have seven lines to create a nice profile of yourself.\1g\n\n");
+    cprintf(_("\1yYou now have seven lines to create a nice profile of yourself.\1g\n\n"));
 
 #ifdef CLIENTSRC
     client_input(G_LINES, 2);
@@ -939,7 +937,7 @@ _change_flying(const unsigned int a, const long b, void *c)
 void
 _change_address(const unsigned int a, const long b, void *c)
 {
-    cprintf("\1f\1gChange address.\n");
+    cprintf(_("\1f\1gChange address.\n"));
     if ((usersupp->priv & PRIV_DEGRADED) || (!(usersupp->priv & PRIV_VALIDATED))) {
         enter_reginfo();
     } else
@@ -1088,17 +1086,17 @@ toggle_away(void)
 	return;
 
     if (user->flags & B_AWAY) {
-	cprintf("\1f\1wYou are now marked as \1gAWAY\1w.\n");
+	cprintf(_("\1f\1wYou are now marked as \1gAWAY\1w.\n"));
 	if (strlen(usersupp->awaymsg))
-	    cprintf("\1gDefault away message: \1y%s\1a\n", usersupp->awaymsg);
-	cprintf("\1f\1gNew Away message: \1c");
+	    cprintf(_("\1gDefault away message: \1y%s\1a\n"), usersupp->awaymsg);
+	cprintf(_("\1f\1gNew Away message: \1c"));
 	getline(away, 99, TRUE);
 	if (strlen(away))
 	    strcpy(usersupp->awaymsg, away);
 	mono_change_online(who_am_i(NULL), usersupp->awaymsg, 16);
 	change_atho(-1);
     } else {
-	cprintf("\1f\1wYou are \1rno longer\1w marked as \1gAWAY\1w.\1a");
+	cprintf(_("\1f\1wYou are \1rno longer\1w marked as \1gAWAY\1w.\1a"));
 	mono_change_online(who_am_i(NULL), "", 16);
     }
     xfree(user);

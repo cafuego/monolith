@@ -263,12 +263,12 @@ short_prompt(void)
 		break;
 
 	    case 'K':
-		cprintf("\1f\1gAll %s\1w:\n", config.forum_pl);
+		cprintf(_("\1f\1gAll %s\1w:\n"), config.forum_pl);
 		show_known_rooms(0);
 		break;
 
 	    case 'k':
-		cprintf("\1f\1gKnown %s.\n", config.forum_pl);
+		cprintf(_("\1f\1gKnown %s.\n"), config.forum_pl);
 		show_known_rooms(1);
 		break;
 
@@ -284,7 +284,7 @@ short_prompt(void)
 		break;
 
 	    case 'l':
-		cprintf("\1f\1gLogout.\1a");
+		cprintf(_("\1f\1gLogout.\1a"));
 		if (user_terminate() == TRUE)
 		    return;
 		break;
@@ -342,7 +342,7 @@ short_prompt(void)
 		break;
 
 	    case 'R':
-		cprintf("\1f\1gInterBBS Wholist.\1a\n");
+		cprintf(_("\1f\1gInterBBS Wholist.\1a\n"));
 		nox = 1;
 		menu_inter();
 		break;
@@ -380,7 +380,7 @@ short_prompt(void)
 		break;
 
 	    case ',':		/* Holodeck Wholist */
-		cprintf("\1f\1g%s Wholist.\n", config.chatmode);
+		cprintf(_("\1f\1g%s Wholist.\n"), config.chatmode);
 		show_online(2);
 		break;
 
@@ -390,7 +390,7 @@ short_prompt(void)
 		break;
 
 	    case 'W':
-		cprintf("\1f\1gShort Wholist.\1a\n");
+		cprintf(_("\1f\1gShort Wholist.\1a\n"));
 		show_online(3);
 		break;
 
@@ -407,7 +407,7 @@ short_prompt(void)
 
 	    case 'x':
 		nox = 1;
-		cprintf("\1f\1gSend %s %s.\1a\n", config.express, config.x_message);
+		cprintf(_("\1f\1gSend %s %s.\1a\n"), config.express, config.x_message);
 		express(0);
 		if (((int) rand() % 500000) == 42) {
 		    cprintf("\1f\1b\n*** \1g%s %s from \1yThe House Spirit \1gto \1y%s \1gat \1w(\1g%02d:%02d\1w) \1b***\1a\n", config.express, config.x_message, usersupp->username, tp->tm_hour, tp->tm_min);
