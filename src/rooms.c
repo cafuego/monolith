@@ -285,7 +285,7 @@ known_rooms_list(const user_t * user, int long_k_list)
     sprintf(line, "\n\1f\1g           You have \1c%d \1g%s with unread %s", unseen_ctr,
      (unseen_ctr == 1) ? config.forum : config.forum_pl, config.message_pl);
 
-    if (!long_k_list)
+    if (long_k_list)
 	sprintf(line, ".\n");
     else
 	sprintf(line, " and \1c%d \1gzapped %s.\n", zapped_ctr, (zapped_ctr == 1) ? config.forum : config.forum_pl);
