@@ -8,3 +8,5 @@ extern int mono_sql_uu_remove_entry(unsigned int , unsigned int );
 extern int mono_sql_uu_add_quickx(unsigned int, unsigned int, unsigned int);
 extern int mono_sql_uu_remove_quickx(unsigned int , unsigned int );
 extern int mono_sql_uu_clear_list_by_type(unsigned int , int );
+extern int mono_sql_uu_write_list(unsigned int , friend_t * const );
+extern int mono_sql_uu_kill_user(unsigned int);
