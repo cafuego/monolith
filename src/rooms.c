@@ -804,27 +804,24 @@ editroom()
     while (!done) {
 	/* display room information */
 	cprintf("\1w\1f------------------------------------------------------------------\n");
-	cprintf("\1g%s #%d\1w: \1g%-40.40s\n", config.forum, curr_rm, quickroom.name);
-
-	cprintf("\n\1w[\1r1\1w] \1gEdit %s Name\1w : \1%c%s\1g.", config.forum,
+	cprintf("\n\1r[\1w1\1r] \1gEdit %s Name\1w : \1%c%s\1g.", config.forum,
 		(quickroom.flags & QR_PRIVATE) ? 'r' :
 		(quickroom.flags & (QR_ANONONLY | QR_ANON2)) ? 'p' : 'g',
 		quickroom.name);
 
-	cprintf("\n\1w[\1r2\1w] \1gEdit %s(s)", config.roomaide);
-	cprintf("\n\1w[\1r3\1w] \1gEdit %s Type\1w: ", config.forum);
+	cprintf("\n\1r[\1w3\1r] \1gEdit %s Type\1w: ", config.forum);
 	cprintf("%s", (quickroom.flags & QR_PRIVATE) ? "\1rPRIVATE " : "\1gPUBLIC ");
 	cprintf("\1g %s.", config.forum);
 
-	cprintf("\n\1w[\1r4\1w] \1gEdit Message Type\1w: ");
+	cprintf("\n\1r[\1w4\1r] \1gEdit Message Type\1w: ");
 	cprintf("%s %s", (quickroom.flags & QR_ANONONLY) ? "\1bANONYMOUS ONLY" :
 	((quickroom.flags & QR_ANON2) ? "\1bANONYMOUS OPTION" : "\1gNORMAL"),
 	    (quickroom.flags & QR_ALIASNAME) ? "\1w(\1bALIASNAME\1w)" : "");
 
-	cprintf("\n\1w[\1r5\1w] \1gSubjectLines \1w: ");
+	cprintf("\n\1r[\1w5\1r] \1gSubjectLines \1w: ");
 	cprintf("%s", (quickroom.flags & QR_SUBJECTLINE) ? "\1gYEP." : "\1rNOOOOOOOOO!");
 
-	cprintf("\n\1w[\1r6\1w] \1gDescribed    \1w: ");
+	cprintf("\n\1r[\1w6\1r] \1gDescribed    \1w: ");
 	cprintf("%s", (quickroom.flags & QR_DESCRIBED) ? "\1gYEP." : "\1rNOOOOOOOOO!");
 
 	IFSYSOP {
@@ -836,6 +833,9 @@ editroom()
 
 	    cprintf("\n\1r[\1w9\1r] \1gIN-USE       \1w: ");
 	    cprintf("%s", (quickroom.flags & QR_INUSE) ? "\1gYEP." : "\1rNOOOOOOOOO!");
+
+	    cprintf("\n\1r[\1w0\1r] \1gGuessname    \1w: ");
+	    cprintf("%s", (quickroom.flags & QR_GUESSNAME) ? "\1gYEP." : "\1rNOOOOOOOOO!");
 
 	    cprintf("\n\1r[\1wA\1r] \1gMaximum number of %s\1w: %d.",
 		    config.message_pl, quickroom.maxmsg);
@@ -850,7 +850,7 @@ editroom()
 
 	cprintf("\1rField to change \1w:\n");
 	cprintf("\1w<\1renter\1w>\1g to exit. ");
-	command = get_single("123456789ABCD\n\r");
+	command = get_single("134567890ABCD\n\r");
 
 	if (command == '\n' || command == '\r')
 	    done = TRUE;
@@ -905,13 +905,6 @@ edit_room_field(room_t * QRedit, unsigned int forum_id, int fieldnum)
 		need_rewrite = TRUE;
 	    }
 	    break;
-
-/*--------------------------------------------------------------------*/
-
-	case '2':
-	    cprintf("\1rFunctionality has been removed, please use <a><r><h>\n");
-	    break;
-
 
 /*-------------------------------------------------------------------*/
 
@@ -1001,6 +994,13 @@ edit_room_field(room_t * QRedit, unsigned int forum_id, int fieldnum)
 
 	case '9':
 	    QRedit->flags ^= QR_INUSE;
+	    need_rewrite = TRUE;
+	    break;
+
+/*--------------------------------------------------------------------*/
+
+	case '0':
+	    QRedit->flags ^= QR_GUESSNAME;
 	    need_rewrite = TRUE;
 	    break;
 
