@@ -29,12 +29,14 @@
 #include "sql_utils.h"
 #undef extern
 
-#define SQLQUERY_BUFFER_SIZE 1000
+#define SQLQUERY_BUFFER_SIZE 10
 #undef SQL_DEBUG
 
 static MYSQL mp;
 static int connected = FALSE;
 static int logqueries = TRUE;
+
+static int query_size(char *format, va_list arg);
 
 int
 mono_sql_connect()
@@ -63,8 +65,8 @@ int
 mono_sql_query(MYSQL_RES ** result, const char *format,...)
 {
     va_list ptr;
-    int ret;
-    char query[SQLQUERY_BUFFER_SIZE];
+    int ret, length = 0;
+    char *query = NULL;
     sigset_t set;
 
     if (connected == FALSE) {
@@ -85,15 +87,22 @@ mono_sql_query(MYSQL_RES ** result, const char *format,...)
     if (sigprocmask(SIG_BLOCK, &set, NULL) < 0)
 	perror("sigprocmask");
 
+    /* determine length, including varargs */
+    va_start(ptr, format);
+    length = query_size(format, ptr);
+    va_end(ptr);
+
+    query = (char *) xmalloc( length * sizeof(char) );
 
     /* create query string */
     va_start(ptr, format);
-    ret = vsnprintf(query, SQLQUERY_BUFFER_SIZE, format, ptr);
+    ret = vsnprintf(query, length, format, ptr);
     va_end(ptr);
 
     /* error check & log */
     if (ret == -1) {		/* query doesn't fit in string. */
 	log_it("sql", "too long query: %s", query);
+        xfree(query);
 	return -1;
     }
 #ifdef SQL_DEBUG
@@ -112,10 +121,13 @@ mono_sql_query(MYSQL_RES ** result, const char *format,...)
 #endif
         log_it( "sqlerr", "%s", query);
 	log_it( "sqlerr", "errno: %d error: %s\n", mysql_errno(&mp), mysql_error(&mp));
+        xfree(query);
 	return -1;		/* no results */
     }
     if ( logqueries == TRUE )
         log_it("queries", "%s", query);
+
+    xfree(query);
 
     *result = mysql_store_result(&mp);
 
@@ -141,6 +153,17 @@ mono_sql_logqueries_toggle()
      return logqueries;
 }
 
+char *
+mono_mysql_server_info()
+{
+    return mysql_get_server_info(&mp);
+}
+
+char *
+mono_mysql_host_info()
+{
+    return mysql_get_host_info(&mp);
+}
 
 /* this is a useful, if dangerous function */
 /* it mallocs its own memroy. be sure to free this !! */
@@ -175,23 +198,6 @@ escape_string(const char *old_string, char **new_string)
 
     return 0;
 }
-
-/*
- * Small funcs for use in print_system_info()
- */
-
-char *
-mono_mysql_server_info()
-{
-    return mysql_get_server_info(&mp);
-}
-
-char *
-mono_mysql_host_info()
-{
-    return mysql_get_host_info(&mp);
-}
-
 
 #ifdef MICHELS_TIME_FUNCS
 /* convert MySQL date format to UNIX time_t */
@@ -252,5 +258,45 @@ time_to_date(time_t time, char *datetime)
     return 0;
 }
 #endif
+
+static int
+query_size(char *format, va_list arg)
+{
+    int d, length = 0;
+    char c, *s, tmp[20];
+
+    length = strlen(format);
+
+    while(*format) {
+        if(*format == '%') {
+            strcpy(tmp,"");
+            format++;
+            switch(*format) {
+            case 'u':
+                d = va_arg(arg, unsigned int);
+                sprintf(tmp, "%u", d);
+                length += strlen(tmp);
+                break;
+            case 'd':
+                d = va_arg(arg, int);
+                sprintf(tmp, "%d", d);
+                length += strlen(tmp);
+                break;
+            case 'c':
+                c = va_arg(arg, char);
+                sprintf(tmp, "%c", c);
+                length += strlen(tmp);
+                break;
+            case 's':
+                s = va_arg(arg, char *);
+                if( s != NULL )
+                    length += strlen(s);
+                break;
+            }
+        }
+        format++;
+    }
+    return length;
+}
 
 /* eof */
