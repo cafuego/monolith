@@ -77,7 +77,6 @@ enter_message(unsigned int forum, int mode, unsigned long banner_flag, const cha
     header->quad_flags = quad.flags;
     header->banner_type = banner_flag;
 
-
     if (banner_flag & AUTOBANNER) {
 	get_autobanner_info(header);
 
@@ -117,18 +116,18 @@ enter_message(unsigned int forum, int mode, unsigned long banner_flag, const cha
 	    get_custom_banner(header);
 
 	if (quad.flags & QR_SUBJECTLINE || reply) {
-	    if (reply) {    /* yells are saved via save_new_mail */
-		if (forum == YELL_FORUM) {  
+	    if (reply) {	/* yells are saved via save_new_mail */
+		if (forum == YELL_FORUM) {
 		    get_mail_names(reply, &recipient_list, header);
 		    header->banner_type |= (ADMIN_BANNER | YELL_REPLY_BANNER | MAIL_BANNER);
 		} else if (quad.flags & QR_SUBJECTLINE && reply)
 		    get_reply_info(header, quad.flags);
 	    } else {
 		get_subject(header);
-            }
-        }
+	    }
+	}
     }
-    if ( ! (mode == EDIT_NOEDIT && banner_flag & AUTOBANNER)) {
+    if (!(mode == EDIT_NOEDIT && banner_flag & AUTOBANNER)) {
 	size_t filesize;
 
 	set_wholist_posting_flag(header->banner_type);
@@ -136,28 +135,27 @@ enter_message(unsigned int forum, int mode, unsigned long banner_flag, const cha
 	abort = get_content(mode);
 	clear_wholist_posting_flag(header->banner_type);
 	filesize = get_filesize(temp);
-
-	if (abort < 0 || !filesize) {
-	    size_t filesize;
-	    filesize = get_filesize(temp);
-
-	    if (abort == -1 || !filesize)
-		cprintf("\1f\1rEmpty %s not saved!\n", config.message_pl);
-	    else if (abort == -2)
-		cprintf("\1f\1r%s aborted.\n", config.message);
-	    xfree(header);
-	    dest_userlist(recipient_list);
-	    if (fexists(temp))
-		unlink(temp);
-	    return -1;
-	}
     }
 
+    if (abort < 0 || !filesize) {
+	size_t filesize;
+	filesize = get_filesize(temp);
+
+	if (abort == -1 || !filesize)
+	    cprintf("\1f\1rEmpty %s not saved!\n", config.message_pl);
+	else if (abort == -2)
+	    cprintf("\1f\1r%s aborted.\n", config.message);
+	xfree(header);
+	dest_userlist(recipient_list);
+	if (fexists(temp))
+	    unlink(temp);
+	return -1;
+    }
     if (header->banner_type & YELL_REPLY_BANNER)
 	message_move(YELL_FORUM, HANDLED_YELL_FORUM, message_reply_id(0), "");
 
     if (header->banner_type & (MAIL_BANNER | YELL_BANNER) &&
-	!(header->banner_type & INFO_BANNER))  
+	!(header->banner_type & INFO_BANNER))
 	save_new_mail(header, &recipient_list);
     else
 	save_new_message(header, forum);
@@ -198,7 +196,7 @@ save_new_message(message_header_t * header, unsigned int forum)
 	    unlink(filename);
 	copy(temp, filename);
     } else {
-        time_function(TIME_START);
+	time_function(TIME_START);
 	header->m_id = get_new_message_id(forum);
 	if (header->m_id == 0)
 	    cprintf("\n\1f\1rget_new_message_id() returned 0.  aborting\n\1a");
@@ -207,20 +205,20 @@ save_new_message(message_header_t * header, unsigned int forum)
 	    message_header_filename(filename, forum, header->m_id);
 	    write_message_header(filename, header);
 	    copy(temp, message_filename(filename, forum, header->m_id));
-        }
+	}
 	if (usersupp->priv >= PRIV_TECHNICIAN) {
 	    cprintf("\n\1a\1wFilesystem time elapsed: ");
-            printf("%f", time_function(TIME_STOP));
+	    printf("%f", time_function(TIME_STOP));
 	} else {
 	    time_function(TIME_STOP);
-        }
+	}
     }
-    
+
     time_function(TIME_START);
     save_to_sql(header, temp);
     if (usersupp->priv >= PRIV_TECHNICIAN) {
-        cprintf("\n\1a\1wSQL time elapsed: ");
-        printf("%f\n", time_function(TIME_STOP));
+	cprintf("\n\1a\1wSQL time elapsed: ");
+	printf("%f\n", time_function(TIME_STOP));
     } else {
 	time_function(TIME_STOP);
     }
@@ -343,9 +341,9 @@ get_reply_info(message_header_t * header, const unsigned quad_flags)
     header->reply_t_id = reply_header.t_id;
 
     if (quad_flags & QR_SUBJECTLINE) {
-        if (!strlen(reply_header.subject))
+	if (!strlen(reply_header.subject))
 	    sprintf(header->subject, "[No subject]");
-        else
+	else
 	    snprintf(header->subject, L_SUBJECT, "%s", reply_header.subject);
 	snprintf(header->reply_to_author, L_USERNAME, "%s",
 		 (reply_header.banner_type & ANON_BANNER) ? "Anonymous" :
@@ -369,8 +367,7 @@ get_autobanner_info(message_header_t * header)
 	    header->banner_type |= MAIL_BANNER;
 	return;
     }
-
-	/* note:  quad_lizard() runs enter_message recursively */
+    /* note:  quad_lizard() runs enter_message recursively */
     if (header->banner_type & QUADLIZARD_BANNER)
 	quad_lizard(header);
 
@@ -378,13 +375,11 @@ get_autobanner_info(message_header_t * header)
 	header->banner_type |= SYSTEM_BANNER;
 	strcpy(header->author, "Quad Lizard\1a");
     }
-
     if (header->banner_type & QUADCONT_MAIL_BANNER) {
 	header->banner_type |= SYSTEM_BANNER;
 	strcpy(header->author, "HAL");
 	strcpy(header->subject, "\1f\1yQuadrant evaluation results.\1a");
     }
-
     if (header->banner_type & DELETE_MAIL_BANNER) {
 	header->banner_type |= QL_BANNER;
 	strcpy(header->author, usersupp->username);
@@ -509,29 +504,28 @@ get_mail_names(const int reply, userlist_t ** name_list, message_header_t * head
 	    } else
 		continue;
 	}
-				/* check for duplicates */
+	/* check for duplicates */
 	duplicate = FALSE;
-	for (p = *name_list; p; p = p->next) 
+	for (p = *name_list; p; p = p->next)
 	    if (strcmp(p->name, mailname) == 0) {
 		duplicate = TRUE;
 		break;
 	    }
-	
 	if (duplicate)
 	    continue;
 
 	strcpy(element.name, mailname);
 	add_to_userlist(element, name_list);
 
-	if (reply) 
+	if (reply)
 	    break;
-    }  
+    }
 
     strcpy(header->recipient, "");
     for (p = *name_list; p; p = p->next) {
 	strcat(header->recipient, p->name);
 	if (p->next)
-	   strcat(header->recipient, ", ");
+	    strcat(header->recipient, ", ");
 	if (strlen(header->recipient) >= L_RECIPIENT - (L_USERNAME + 3)) {
 	    header->recipient[L_RECIPIENT - 12] = '\0';
 	    strcat(header->recipient, " CC: More");
@@ -763,7 +757,7 @@ your_forum_is_boring_zzzz_form_letter(FILE * fp, char *quadname, int idle)
 void
 i_deleted_your_post_haha_mail(const unsigned int current_post)
 {
-    FILE* fp;
+    FILE *fp;
     char filename[L_FILENAME + 1], name[L_USERNAME + 1];
     message_header_t message;
     room_t quad;
@@ -779,7 +773,6 @@ i_deleted_your_post_haha_mail(const unsigned int current_post)
 	cprintf("\1f\1rOriginal author \1w`\1y%s\1w' \1rdoes not exist.\1a\n", name);
 	return;
     }
-    
     if (fexists(temp))
 	unlink(temp);
 
@@ -788,12 +781,11 @@ i_deleted_your_post_haha_mail(const unsigned int current_post)
 	cprintf("\1gEnter text.  Deleted message will be appended to reason.\n\n\1a\1c");
 	get_content(EDIT_NORMAL);
     }
-
     quad = read_quad(curr_rm);
     fp = xfopen(temp, "a", TRUE);
 
     if (fp != NULL) {
-	fprintf(fp, "%s%s%s", 
+	fprintf(fp, "%s%s%s",
 		"\1a\1w\n-- The following message was deleted from \1f\1y",
 		quad.name, "\1a\1w --\n");
 	fclose(fp);
@@ -803,9 +795,9 @@ i_deleted_your_post_haha_mail(const unsigned int current_post)
 }
 
 void
-mail_myself_quadcont_results(int ** eval)
+mail_myself_quadcont_results(int **eval)
 {
-    FILE* fp;
+    FILE *fp;
     room_t quad;
     int i, items_left = 0;
 
@@ -814,7 +806,6 @@ mail_myself_quadcont_results(int ** eval)
 	cprintf("\n\1f\1rTempfile write error.\1a");
 	return;
     }
-
     for (i = 0; i < MAXQUADS; i++) {
 	if (*eval[i] == -1) {
 	    quad = readquad(i);
@@ -841,6 +832,6 @@ mail_myself_quadcont_results(int ** eval)
     }
 
     fclose(fp);
-    
+
     enter_message(MAIL_FORUM, EDIT_NOEDIT, QUADCONT_MAIL_BANNER, who_am_i(NULL));
 }
