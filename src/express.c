@@ -104,6 +104,7 @@ sendx(char *to, const char *send_string, char override)
 	    cprintf("\1f\1gSuccessfully saved \1pWeb\1g %s %s for \1y%s.\1a\n", config.express, config.x_message, to);
         else
 	    cprintf("\1f\1rUnable to save \1pWeb\1g %s %s for \1y%s to database.\1a\n", config.express, config.x_message, to);
+        return;
     } else {
 	Sendxs = mono_find_xslot(to);
 	tuser = mono_read_btmp(to);

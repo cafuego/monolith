@@ -39,10 +39,12 @@ mono_sql_web_send_x(unsigned int sender, unsigned int recipient, const char *mes
     MYSQL_RES *res;
     char *fmt_message = NULL;
 
-    (void) escape_string( message, &fmt_message );
+    (void) escape_string(message, &fmt_message );
+
+    printf("Starting query!\n"); fflush(stdout);
 
     ret = mono_sql_query(&res, "INSERT INTO " WEB_X_TABLE 
-     " (sender,recipient,message,date,status) VALUES (%u,'%s','%s',NOW(),'unread')"
+     " (sender,recipient,message,date,status) VALUES (%u,%u,'%s',NOW(),'unread')"
      , sender,recipient,message);
 
     if (ret == -1) {
