@@ -344,7 +344,7 @@ short_prompt(void)
 		break;
 
 	    case 'T':
-		cprintf("\1f\1gDate: \1w%s \1f\1w(\1gCET\1w)\1a", printdate(time(0), 0));
+		cprintf("\1f\1gDate: \1w%s\1a", printdate(time(0), 0));
 		break;
 
 	    case 'U':
@@ -836,7 +836,7 @@ long_prompt(long number, int direction)
 		    return;
 
 		case 't':
-		    cprintf("\1f\1gDate: \1w%s \1f\1w(\1gCET\1w)\1a\n", printdate(time(0), 0));
+		    cprintf("\1f\1gDate: \1w%s\1a\n", printdate(time(0), 0));
 		    break;
 
 		case 'T':
@@ -846,7 +846,7 @@ long_prompt(long number, int direction)
 			read_position_modified = TRUE;
 		    }
 		    else
-		    cprintf("\1f\1gDate: \1w%s \1f\1w(\1gCET\1w)\1a\n", printdate(time(0), 0));
+		    cprintf("\1f\1gDate: \1w%s\1a\n", printdate(time(0), 0));
 		    break;
 
 		case 'v':

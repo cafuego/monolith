@@ -832,7 +832,7 @@ misc_menu()
 	    cprintf("\1gMisc: \1w");
 	}
 
-	cmd = get_single_quiet("lLmMrsxz\r\b ?/");
+	cmd = get_single_quiet("lLmMrstxz\r\b ?/");
 
 	switch (cmd) {
             case 'l':
@@ -840,6 +840,17 @@ misc_menu()
                 nox = 1;
                 cprintf("\1f\1gLock Terminal.\n");
                 lock_terminal();
+                break;
+
+	    case 't':
+	    case 'T':
+		nox = 1;
+		cprintf( "\1f\1gTime Zone\1w:\1c " );
+		{ char str[40];
+		  getline( str, 10, 1 );
+                setenv( "TZ", str, 1 );
+                  tzset();
+                    }
                 break;
 
 	    case 'm':
