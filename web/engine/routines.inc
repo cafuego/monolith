@@ -675,6 +675,8 @@ function valid_image( $file_type ) {
         return 1;
     if($file_type == "image/jpg")
         return 1;
+    if($file_type == "image/pjpeg")
+        return 1;
     if($file_type == "image/png")
         return 1;
     return 0;

@@ -31,7 +31,7 @@ function profile_user($username, $victim) {
         if (valid_image( $content_type )) {
             if( $content_type == "image/gif")
                 echo "<img align=\"center\" src=\"/bbs/pix/gif.php3?$victim_id\">\n";
-            else if ($content_type == "image/jpeg")
+            else if ($content_type == "image/jpg" || $content_type == "image/jpeg" || $content_type == "image/pjpeg")
                 echo "<img align=\"center\" src=\"/bbs/pix/jpeg.php3?$victim_id\">\n";
             else if ($content_type == "image/png")
                 echo "<img align=\"center\" src=\"/bbs/pix/png.php3?$victim_id\">\n";
