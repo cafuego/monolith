@@ -179,17 +179,17 @@ function main_screen($username) {
 
     $usernum = get_usernum($username);
 
-    $result = MYSQL_QUERY("SELECT logout,online,host FROM login WHERE user_id=$usernum ORDER BY logout DESC");
+    $result = MYSQL_QUERY("SELECT logoff,online,host,DATE_FORMAT(stamp, '%W, %e %M %Y %H:%i:%S CET') AS date FROM login WHERE user_id=$usernum ORDER BY logout DESC");
     $number = MYSQL_NUMROWS($result);
     if ($number) {
-        $logout = mysql_result($result,0,"logout");
+        $date = mysql_result($result,0,"date");
         $online = mysql_result($result,0,"online");
         $hostname = mysql_result($result,0,"host");
     }
 
     print "<h3 align=\"center\">Hello, $username. Welcome to Monolith BBS.</h3>\n";
     if($number)
-        print "<p align=\"center\">Your last login on $logout lasted for $online and was from $hostname.</p>\n";
+        print "<p align=\"center\">Your last login was on $date from host '$hostname' and lasted for $online.</p>\n";
     else
         print "<p align=\"center\">Unable to retrieve your previous login details.</p>\n";
     print "<p align=\"center\"><img align=\"center\" src=\"/bbs/pix/monolith.jpg\" width=\"300\" height =\"300\" alt=\"[ image: Monolith BBS Logo ]\"></p>\n";
