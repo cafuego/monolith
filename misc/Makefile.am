@@ -31,6 +31,7 @@ LDADD = -lyawc -L/usr/local/mysql/lib -L../lib
 
 CFLAGS = -g -O3 -Wall -DBBSDIR=\"$(prefix)\"
 
+INCLUDES += -I../include
 #ifdef USE_MYSQL
 INCLUDES += $(MYSQL_INCLUDE)
 #endif
