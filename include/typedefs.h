@@ -140,7 +140,7 @@ struct sr_list {
  */
 typedef struct wu {
     char username[L_USERNAME+1];
-    char online[16];
+    long login;
 } wu_t;
 
 /*

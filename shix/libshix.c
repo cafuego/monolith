@@ -108,9 +108,16 @@ shix_strmatch( char *input, char *match )
     expr = regcomp(match);
     if( regexec(expr, input) != 0 ) {
         xfree(expr);
+#ifdef DEBUG
+        fprintf( stdout, "\n'%s' -> '%s': YES\n", input, match);
+        fflush(stdout);
+#endif
         return TRUE;
     }
-    fflush(stdout);
     xfree(expr);
+#ifdef DEBUG
+    printf("\n'%s' -> '%s': YES\n", input, match);
+    fflush(stdout);
+#endif
     return FALSE;
 }

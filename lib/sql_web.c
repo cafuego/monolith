@@ -104,7 +104,7 @@ mono_sql_web_get_online(wu_list_t ** list)
     MYSQL_ROW row;
     wu_list_t entry;
 
-    ret = mono_sql_query(&res, "SELECT u.username AS name,SEC_TO_TIME(NOW()-o.date) AS online FROM online AS o LEFT JOIN user AS u ON o.user_id=u.id WHERE o.interface='web' ORDER by online DESC");
+    ret = mono_sql_query(&res, "SELECT u.username AS name,UNIX_TIMESTAMP(o.date) AS online FROM online AS o LEFT JOIN user AS u ON o.user_id=u.id WHERE o.interface='web' ORDER by online ASC");
 
     if (ret == -1) {
 	(void) mono_sql_u_free_result(res);
@@ -132,6 +132,7 @@ mono_sql_web_get_online(wu_list_t ** list)
     return rows;
 }
 
+#ifdef OLD
 #define WHOLIST_LINE_LENGTH 200
 
 char *
@@ -188,7 +189,7 @@ mono_sql_web_wholist(int level)
                  */
                 while(list != NULL) {
                     sprintf(line, "\1a\1f\1g%-20s ", list->user->username);
-                    strcat(line, "\1p[    ] ");
+                    strcat(line, "\1p[   \1yW] ");
                     strcat(line, "\1gMonolith Website ");
                     q = line + strlen(line);
                     (void) sprintf(q, "\1f\1p%4s ", list->user->online);
@@ -204,6 +205,7 @@ mono_sql_web_wholist(int level)
     return p;
 
 }
+#endif
 
 int
 mono_sql_web_get_xes(unsigned int user_id, wx_list_t ** list)

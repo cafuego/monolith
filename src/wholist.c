@@ -40,6 +40,13 @@
 #include "wholist.h"
 #undef extern
 
+#ifdef USE_MYSQL
+#include "sql_convert.h"
+#include "sql_llist.h"
+#include "sql_online.h"
+#include "sql_web.h"
+#endif
+
 
 #undef NO_WHOLIST
 
@@ -69,6 +76,10 @@ wholist(int level, const user_t * user)
     time_t t;
     struct tm *tp;
     btmp_t *r;
+#ifdef USE_MYSQL
+    int web_count = 0;
+    wu_list_t *list = NULL;
+#endif
 
     if (!shm) {
 	mono_errno = E_NOSHM;
@@ -79,6 +90,17 @@ wholist(int level, const user_t * user)
 
     if (tp == NULL)
 	return "";
+
+#ifdef USE_MYSQL
+    /*
+     * Fetch our web users.
+     */
+    if((web_count = mono_sql_web_get_online(&list)) == -1) {
+        log_it("errors", "Failed getting web users.");
+        (void) mono_sql_ll_free_wulist(list);
+        return NULL;
+    }
+#endif
 
     /* first malloc some memory! */
     p = (char *) xmalloc(WHOLIST_LINE_LENGTH * (shm->user_count + 5));
@@ -93,9 +115,15 @@ wholist(int level, const user_t * user)
 	    (void) sprintf(p, _("\1f\1gHey! What do you think you are doing here?\1a\n"));
 	    return p;
 	} else if (shm->queue_count <= 0) {
+#ifdef USE_SQL
+	    (void) sprintf(p, _("\n\1g\1fThere are \1y%u\1g %s online"
+			   " at \1y%02d:%02d\1g local time.\n"),
+		  (shm->user_count+web_count), config.user_pl, tp->tm_hour, tp->tm_min);
+#else
 	    (void) sprintf(p, _("\n\1g\1fThere are \1y%u\1g %s online"
 			   " at \1y%02d:%02d\1g local time.\n"),
 		  shm->user_count, config.user_pl, tp->tm_hour, tp->tm_min);
+#endif
 	} else {
 	    (void) sprintf(p, _("\n\1g\1fThere are \1y%ud\1g %s online"
 	     " \1c( \1y%ud \1cqueued ) \1gat \1y%02d:%02d\1g local time.\n"),
@@ -104,7 +132,11 @@ wholist(int level, const user_t * user)
     }
     strcat(p, "\n");
 
+#ifdef USE_MYSQL
+    (void) sprintf(string, "%u %s", (shm->user_count+web_count), ((shm->user_count+web_count) == 1) ? config.user : config.user_pl);
+#else
     (void) sprintf(string, "%u %s", shm->user_count, (shm->user_count == 1) ? config.user : config.user_pl);
+#endif
 
     switch (level) {
 	case 1:
@@ -137,6 +169,30 @@ wholist(int level, const user_t * user)
 
 	r = &(shm->wholist[i]);
 	strcpy(line, "");
+
+#ifdef USE_MYSQL
+
+        /*
+         * If the SQL user has been online longer, add them here.
+         */
+        if(level == 1) {
+            while((list != NULL) && (list->user->login < r->logintime)) {
+                tdif = time(0) - (list->user->login);
+                tdif /= 60;
+    	        min = tdif % 60;
+    	        hour = tdif / 60;
+                sprintf(line, "\1a\1f\1g%-20s ", list->user->username);
+                strcat(line, "\1p[   \1yw\1p] ");
+                strcat(line, "\1gMonolith Website ");
+                q = line + strlen(line);
+                (void) sprintf(q, "\1f\1p%2d:%02d ", hour, min);
+                q = line + strlen(line);
+                (void) sprintf(q, "\1f\1ySurfing the web in style!\1a\n");
+                strcat(p, line);
+                list = list->next;
+            }
+        }
+#endif
 
 	/* several useless variables */
 	tdif = time(0) - r->logintime;
@@ -278,6 +334,29 @@ wholist(int level, const user_t * user)
 
     }				/* for */
     (void) mono_lock_shm(0);
+
+    /*
+     * Add any left over SQL users.
+     */
+    if(level == 1) {
+        while(list != NULL) {
+            tdif = time(0) - (list->user->login);
+            tdif /= 60;
+            min = tdif % 60;
+            hour = tdif / 60;
+            sprintf(line, "\1a\1f\1g%-20s ", list->user->username);
+            strcat(line, "\1p[   \1yw\1p] ");
+            strcat(line, "\1gMonolith Website ");
+            q = line + strlen(line);
+            (void) sprintf(q, "\1f\1p%2d:%02d ", hour, min);
+            q = line + strlen(line);
+            (void) sprintf(q, "\1f\1ySurfing the web in style!\1a\n");
+            strcat(p, line);
+            list = list->next;
+        }
+        (void) mono_sql_ll_free_wulist(list);
+    }
+
 
     if ((j % 3) != 0 && (level == 3 || level == 6))
 	strcat(p, "\n");

@@ -466,6 +466,9 @@ main(int argc, char *argv[])
     my_name = (char *) xmalloc(sizeof(char) * (L_USERNAME + 1));
     strcpy(my_name, usersupp->username);
 
+    fprintf(stdout, "Got to here!\n");
+    fflush(stdout);
+
     set_timezone(usersupp->timezone);
     mono_setuid(my_name);
     connecting_flag = 0;
@@ -590,6 +593,7 @@ main(int argc, char *argv[])
 #else
     mono_sql_onl_add(usersupp->usernum, "client", usersupp->doing);
 #endif
+
     setup_express();		/* setup express stuff */
 
     xfree(my_name);		/* not needed, who_am_i() in btmp.c knows who i am now */

@@ -45,6 +45,7 @@ CREATE TABLE user (
    icq_pass	VARCHAR(64) NOT NULL,
 
    PRIMARY KEY  ( id ),
+   INDEX( id ),
    INDEX( username ),
    UNIQUE ( username )
 )

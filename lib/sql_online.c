@@ -40,7 +40,7 @@ mono_sql_onl_add(unsigned int user_id, const char *interface, const char *doing)
 
     ret = mono_sql_query(&res, "INSERT INTO " ONLINE_TABLE 
      " (user_id,interface,doing,date) VALUES (%u,'%s','%s',NOW())"
-     , user_id, interface,(fmt_doing == NULL) ? "Nothing" : fmt_doing);
+     , user_id, interface,(!strlen(fmt_doing)) ? "Nothing" : fmt_doing);
 
     if (ret == -1) {
         xfree(fmt_doing);
