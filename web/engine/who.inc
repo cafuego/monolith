@@ -65,7 +65,7 @@ function show_wholist($username,$location) {
             print "    <p align=\"left\"><font color=\"#00cc00\">$doing</font>\n";
             print "  </td>\n";
             print "  <td align=\"right\">\n";
-            print "    <p align=\"right\"><font color=\"#00cc00\">". strftime("%H:%i", $online) ."</font>\n";
+            print "    <p align=\"right\"><font color=\"#00cc00\">$online</font>\n";
             print "  </td>\n";
             print "  <td align=\"right\">\n";
             print "    <p align=\"right\"><font color=\"#ff00ff\">&nbsp;$interface</font>\n";
