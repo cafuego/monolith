@@ -21,6 +21,7 @@
 
 #include "monolith.h"
 #include "routines.h"
+#include "log.h"
 #include "libquad.h"
 #include "sql_utils.h"
 #include "sql_llist.h"
