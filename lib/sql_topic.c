@@ -44,7 +44,7 @@ mono_sql_t_create_topic( const topic_t * top)
     }
 
     ret = mono_sql_query(&res, "INSERT INTO " T_TABLE
-	 " (topic_id,name) " "VALUES (%u,%u,'%s')" 
+	 " (topic_id,name) " "VALUES (%u,'%s')" 
 	   ,top->topic_id, esc_name );
 
     xfree(esc_name);
