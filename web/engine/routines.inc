@@ -196,4 +196,41 @@ function main_screen($username) {
 
 }
 
+function list_x_messages($username) {
+
+    $user_id = get_usernum($username);
+
+    connect_db();
+
+    $result = MYSQL_QUERY("SELECT w.id AS id,u.username AS user,w.sender AS sender,w.recipient AS recipient,w.message AS message,DATE_FORMAT(w.date, '%H:%i') AS date FROM webx AS w LEFT JOIN user AS u ON(w.sender=u.username) WHERE w.recipient=$user_id AND w.status='unread' ORDER BY w.date ASC");
+    $number = MYSQL_NUMROWS($result);
+    if ($number) {
+        print "<h3 align=\"center\">You have $number eXpress messages</h3>\n<p> </p>\n";
+        print "<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\" align=\"center\">\n";
+        $i = 0;
+        while ($i < $number) {
+
+            $id = mysql_result($result,$i,"id");
+            $user = mysql_result($result,$i,"user");
+            $sender = mysql_result($result,$i,"sender");
+            $recipient = mysql_result($result,$i,"recipient");
+            $message = mysql_result($result,$i,"message");
+            $date = mysql_result($result,$i,"date");
+
+            print "<tr>\n";
+            print "  <td align=\"left\">\n";
+            print "    <p align=\"left\"><font color=\"#00cc00\">eXpress Message from <a href=\"/bbs/index.phtml/x/$user/\">$user</a> at </font>(<font color=\"#00cc00\">$date</font>)\n";
+            print "    <font color=\"#00cccc\"><pre>$message</pre></font>\n";
+            print "  </td>\n";
+            print "</tr>\n";
+
+            $i++;
+        }
+        print "</table>\n";
+
+
+    }
+
+}
+
 ?>
