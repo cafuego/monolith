@@ -768,10 +768,6 @@ sysop_menu()
 		notebook(2);
 		break;
 
-	    case 'Q':
-		cprintf("\1f\1r convert QL's\1a" );
-                convert_quick();
-
 	    case 'R':
 		cprintf("\1f\1r%s cmd: \1a", config.forum);
 		sysoproom_menu();
