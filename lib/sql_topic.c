@@ -87,12 +87,12 @@ mono_sql_kill_topic(int topic_id)
 }
 
 int
-mono_sql_t_updated_highest( unsigned int forum, unsigned int topic, unsigned int m_id )
+mono_sql_t_updated_highest( unsigned int topic, unsigned int m_id )
 {
     MYSQL_RES *res;
     int ret;
 
-    ret = mono_sql_query(&res, "UPDATE " T_TABLE " SET highest=%u WHERE forum_id=%u AND topic_id=%u", m_id, forum, topic );
+    ret = mono_sql_query(&res, "UPDATE " T_TABLE " SET highest=%u WHERE topic_id=%u", m_id, topic );
 
     if( ret == -1 ) {
 //        (void) mono_sql_u_free_result(res);

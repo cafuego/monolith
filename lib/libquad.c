@@ -222,7 +222,7 @@ get_new_message_id(const unsigned int quadno)
     }
     (void) mono_lock_rooms(0);
 
-    mono_sql_t_updated_highest( quadno, 0, p->highest );
+    mono_sql_t_updated_highest( quadno, p->highest );
     return p->highest;
 }
 
