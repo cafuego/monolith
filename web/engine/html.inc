@@ -16,10 +16,10 @@ function html_print_title($username, $location) {
     switch(html_check_priv($action,$username,$quad)) {
 
         case -1:
-            PRINT "<title>Unknown user: Log in first.</title>\n";
+            print "<title>Unknown user: Log in first.</title>\n";
             return 1;
         case 0:
-            PRINT "<title>$username@Monolith BBS: Bad, bad $username - Permission denied.</title>\n";
+            print "<title>$username@Monolith BBS: Bad, bad $username - Permission denied.</title>\n";
             return 1;
         default:
             break;
@@ -32,34 +32,35 @@ function html_print_title($username, $location) {
 
         case "e":
             $name = html_get_quadname($username,$quad);
-            PRINT "<title>$username@Monolith BBS: Entering message in $name</title>\n";
+            print "<title>$username@Monolith BBS: Entering message in $name</title>\n";
             break;
         case "f":
             $name = html_get_quadname($username,$quad);
-            PRINT "<title>$username@Monolith BBS: Replying to message in $name</title>\n";
+            print "<title>$username@Monolith BBS: Replying to message in $name</title>\n";
             break;
         case "l":
-            PRINT "<title>$username@Monolith BBS: Listing available quadrants</title>\n";
+            print "<title>$username@Monolith BBS: Listing available quadrants</title>\n";
             break;
         case "m":
             $name = html_get_quadname($username,$quad);
-            PRINT "<title>$username@Monolith BBS: Listing messages in $name</title>\n";
+            print "<title>$username@Monolith BBS: Listing messages in $name</title>\n";
             break;
         case "q":
-            PRINT "<title>$username@Monolith BBS: Logging out</title>\n";
+            print "<title>$username@Monolith BBS: Logging out</title>\n";
             break;
         case "r":
             $name = html_get_quadname($username,$quad);
-            PRINT "<title>$username@Monolith BBS: Reading message in $name</title>\n";
+            print "<title>$username@Monolith BBS: Reading message in $name</title>\n";
             break;
         case "w":
-            PRINT "<title>$username@Monolith BBS: Looking at the Wholist</title>\n";
+            print "<title>$username@Monolith BBS: Looking at the Wholist [autorefresh: 30 seconds]</title>\n";
+            print "<meta http-equiv=\"Refresh\" content=\"30; url=http://monolith.yawc.net/bbs/index.phtml/w/\">\n";
             break;
         case "x":
-            PRINT "<title>$username@Monolith BBS: Sending eXpress message to $quad</title>\n";
+            print "<title>$username@Monolith BBS: Sending eXpress message to $quad</title>\n";
             break;
         default:
-            PRINT "<title>$username@Monolith BBS: Logged in</title>\n";
+            print "<title>$username@Monolith BBS: Logged in</title>\n";
             break;
     }
 
