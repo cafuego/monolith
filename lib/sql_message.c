@@ -324,29 +324,29 @@ mono_sql_mes_search_forum(int forum, const char *string, sr_list_t **list)
     if(forum >= 0)
         ret = mono_sql_query( &res,
             "SELECT " 
-                "m.message_id,m.forum_id,m.topic_id,f.name,t.name," 
+                "m.message_id,m.forum_id,f.name,t.name," 
                 "u.username,m.alias,m.subject,m.flag " 
             "FROM " M_TABLE " AS m " 
                 "LEFT JOIN " U_TABLE " AS u ON u.id=m.author " 
                 "LEFT JOIN " F_TABLE " AS f ON f.id=m.forum_id " 
-                "LEFT JOIN " T_TABLE " AS t ON m.topic_id=t.topic_id " 
             "WHERE " 
                 "(m.content REGEXP '%s' OR m.subject REGEXP '%s') " 
-                "AND m.forum_id=%u " 
+                "AND m.forum_id=%u and m.deleted='n'" 
                 "GROUP BY m.message_id " 
             "ORDER BY m.forum_id, m.message_id",
                 needle, needle, forum );
     else
         ret = mono_sql_query( &res,
             "SELECT " 
-                "m.message_id,m.forum_id,m.topic_id,f.name,t.name," 
+                "m.message_id,m.forum_id,f.name,t.name," 
                 "u.username,m.alias,m.subject,m.flag " 
             "FROM " M_TABLE " AS m " 
                 "LEFT JOIN " U_TABLE " AS u ON u.id=m.author " 
                 "LEFT JOIN " F_TABLE " AS f ON f.id=m.forum_id " 
-                "LEFT JOIN " T_TABLE " AS t ON m.topic_id=t.topic_id " 
             "WHERE " 
                 "m.content REGEXP '%s' OR m.subject REGEXP '%s' " 
+                "AND m.deleted='n' ",
+                "GROUP BY m.forum_id ",
             "ORDER BY m.forum_id, m.message_id",
                 needle, needle );
 

@@ -256,6 +256,11 @@ int message_delete(const unsigned int from_forum, const unsigned int message_id)
     else {
 	ret = -1;
     }
+
+    /* Mark SQL message as deleted. */
+    if (from_forum != MAIL_FORUM)
+        (void) mono_sql_mes_mark_deleted(message_id, from_forum);
+
     return ret;
 }
 
