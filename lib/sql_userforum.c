@@ -668,6 +668,8 @@ mono_sql_uf_new_user(unsigned int user_id)
     return 0;
 }
 
+#define BUFFZISE	100
+
 int
 mono_sql_uf_whoknows(unsigned int forum_id, char **result)
 {
@@ -675,7 +677,7 @@ mono_sql_uf_whoknows(unsigned int forum_id, char **result)
     MYSQL_RES *res;
     MYSQL_ROW row;
     int i = 0, rows = 0, ret = 0;
-    char line[100], username[26];
+    char line[BUFFSIZE];
 
     ret = mono_sql_query(&res, "SELECT u.username FROM %s AS u LEFT JOIN %s "
     " AS uf ON u.id=uf.user_id WHERE uf.forum_id=%u AND uf.status='invited'"
@@ -691,23 +693,19 @@ mono_sql_uf_whoknows(unsigned int forum_id, char **result)
 	(void) mono_sql_u_free_result(res);
 	return 0;
     }
-    *result = (char *) xmalloc(sizeof(char));
+
+    *result = (char *) xmalloc( (rows * BUFFSIZE) * sizeof(char));
 
     for (i = 0; i < rows; i++) {
 	row = mysql_fetch_row(res);
 	if (row == NULL)
 	    break;
-        strcpy(username,"");
-	sprintf(username, "%-24s", row[0]);
-        strcat(line, username);
+	sprintf(line, "%-24s", row[0]);
 	if ((i % 3) == 0) {
 	    strcat(line, "\n");
-	    *result = (char *) xrealloc(*result, strlen(*result) + strlen(line));
-	    strcat(*result, line);
-            strcpy(line,"");
 	}
+        strcat(*result, line);
     }
-    *result = (char *) xrealloc(*result, strlen(*result) + strlen("\n"));
     strcat(*result, "\n");
 
     return rows;
