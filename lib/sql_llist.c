@@ -59,12 +59,6 @@ mono_sql_ll_free_mlist(mlist_t *list)
 {
     mlist_t *ref;
 
-    /*
-     * rewind list
-     */
-    while (list->prev != NULL)
-        list = list->prev;
-
     while (list != NULL) {
         ref = list->next;
         (void) xfree(list->message->content);
@@ -112,12 +106,6 @@ void
 mono_sql_ll_free_sr_list(sr_list_t *list)
 {
     sr_list_t *ref;
-
-    /*
-     * rewind list
-     */
-    while (list->prev != NULL)
-        list= list->prev;
 
     while (list != NULL) {
         ref = list->next;

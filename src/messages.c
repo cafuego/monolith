@@ -514,10 +514,9 @@ search_via_sql(unsigned int forum)
 
 	if (EQ(list->result->flag, "normal")) {
             if( (list->result->author == NULL) || (!strlen(list->result->author)) || (EQ(list->result->author,"(null)")) )
-	        sprintf(tempuser, "\1rDeleted %s", config.user);
+	        sprintf(line, "\1f\1rDeleted %-10s \1w%3d.\1y%-25s \1g%7d \1y%-22s\n", config.user, list->result->f_id, list->result->forum, list->result->m_id, ((list->result->subject == NULL) || (EQ(list->result->subject, "(null)"))) ? "[no subject]" : list->result->subject);
             else
-	        sprintf(tempuser, "\1g%s", list->result->author );
-	    sprintf(line, "\1f%-18s \1w%3d.\1y%-25s \1g%7d \1y%-22s\n", list->result->author, list->result->f_id, list->result->forum, list->result->m_id, ((list->result->subject == NULL) || (EQ(list->result->subject, "(null)"))) ? "[no subject]" : list->result->subject);
+	        sprintf(line, "\1f\1g%-18s \1w%3d.\1y%-25s \1g%7d \1y%-22s\n", list->result->author, list->result->f_id, list->result->forum, list->result->m_id, ((list->result->subject == NULL) || (EQ(list->result->subject, "(null)"))) ? "[no subject]" : list->result->subject);
 	} else if ((EQ(list->result->flag, "anon") && (strlen(list->result->alias) > 6)) || EQ(list->result->flag, "alias")) {
 	    sprintf(tempuser, "'%s'", list->result->alias);
 	    sprintf(line, "\1f\1g%-18s \1w%3d.\1y%-25s \1g%7d \1y%-22s\n", tempuser, list->result->f_id, list->result->forum, list->result->m_id, ((list->result->subject == NULL) || (EQ(list->result->subject, "(null)"))) ? "[no subject]" : list->result->subject);
