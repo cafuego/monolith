@@ -2,7 +2,7 @@
 
     // Print content type first.
     //
-    Header( "Content-type: image/gif" );
+    // Header( "Content-type: image/gif" );
 
     // Image, font and string data passed through.
     //
@@ -24,6 +24,10 @@
     $bounds = ImageTTFBBox( $size, 0, $font, $text );
     $width = $bounds[4] + 10;
     $height = $bounds[3] + 10;
+
+    echo <p>H: $height\n";
+    echo <p>W: $width\n";
+    exit;
 
     // Create the image and set fore and background colours.
     //
