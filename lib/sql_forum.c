@@ -99,7 +99,6 @@ mono_sql_f_add_old_forum(unsigned int forum_id, room_t * const q)
 			 ,q->generation, q->roominfo, q->maxmsg);
 
     xfree(esc_name);
-    mysql_free_result(res);
 
     return ret;
 

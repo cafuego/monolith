@@ -42,7 +42,6 @@ mono_sql_ut_add_entry(unsigned int user_id, unsigned int topic_id)
 	return -1;
     }
     ret = mono_sql_query(&res, "INSERT INTO " UT_TABLE " (user_id,topic_id) VALUES (%u,%u)", user_id, topic_id);
-    mysql_free_result(res);
     return ret;
 }
 

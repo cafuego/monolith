@@ -192,7 +192,6 @@ mono_sql_uf_add_entry(unsigned int user_id, unsigned int forum_id)
 	return -1;
     }
     ret = mono_sql_query(&res, "INSERT INTO " UF_TABLE " (user_id,forum_id) VALUES (%u,%u)", user_id, forum_id);
-    mysql_free_result(res);
     return ret;
 }
 

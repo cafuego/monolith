@@ -77,13 +77,13 @@ mono_sql_query(MYSQL_RES ** result, const char *format,...)
     sigemptyset(&set);
     sigaddset(&set, SIGUSR1);
     sigaddset(&set, SIGIO);
-    sigaddset(&set, SIGALRM);
-    sigaddset(&set, SIGUSR2);
+    sigaddset(&set, SIGUSR2); 
     sigaddset(&set, SIGINT);
     sigaddset(&set, SIGQUIT);
-    sigaddset(&set, SIGHUP);
+/*    sigaddset(&set, SIGHUP); don't block dropcarr */
+/*    sigaddset(&set, SIGALRM); don't block idle timer */
+/*    sigaddset(&set, SIGABRT); don't block kickout */
     sigaddset(&set, SIGTERM);
-    sigaddset(&set, SIGABRT);
     if (sigprocmask(SIG_BLOCK, &set, NULL) < 0)
 	perror("sigprocmask");
 
