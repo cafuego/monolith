@@ -306,7 +306,6 @@ function colorize($doing) {
     $doing = ereg_replace("%01B", "", $doing);	// Blue.
     $doing = ereg_replace("%01P", "", $doing);	// Purple.
     $doing = ereg_replace("%01R", "", $doing);	// Red.
-    $doing = ereg_replace("%01r", "</font><font color=\"#ff0000\">", $doing);	// Red.
 
     // Fix fg colours.
     //
