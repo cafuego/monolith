@@ -1672,6 +1672,8 @@ show_web_xes(wx_list_t *list)
 
     while(list != NULL) {
         tp = localtime(&(list->x->date));
+	if (usersupp->flags & US_BEEP)
+	    putchar('\007');
         cprintf("\1f\1b\n*** \1pWeb \1g%s %s from \1y%s@web \1gto \1y%s \1gat \1w(\1g%02d:%02d\1w) \1b***\n\1a\1c%s\n"
             ,config.express, config.x_message, list->x->sender
             ,usersupp->username, tp->tm_hour, tp->tm_min, list->x->message );
