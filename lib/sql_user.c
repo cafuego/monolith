@@ -927,7 +927,7 @@ mono_sql_u_set_icq_number( unsigned int user_id, unsigned long number )
 
 /* SET ICQ PASSWORD */
 int
-mono_sql_u_set_icq_pass( unsigned int user_id, const char *pass )
+mono_sql_u_set_icq_pass( unsigned int user_id, char *pass )
 {
     MYSQL_RES *res;
     int ret;
