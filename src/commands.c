@@ -404,8 +404,8 @@ sysopuser_menu()
 		if ( yesno() == YES ) {
    	 		del_user( user );
 		}
-		}
 		break;
+		}
 
 
 	    case 'E':
