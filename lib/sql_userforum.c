@@ -375,7 +375,7 @@ mono_sql_uf_kill_user(unsigned int userid)
     int ret;
     MYSQL_RES *res;
 
-    ret = mono_sql_query(&res, "DELETE FROM " UF_TABLE " WHERE (user_id='%u')", userid);
+    ret = mono_sql_query(&res, "DELETE FROM " UF_TABLE " WHERE user_id=%u", userid);
 
     if (ret != 0) {
 	fprintf(stderr, "Some sort of error.\n");

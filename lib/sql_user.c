@@ -149,7 +149,7 @@ mono_sql_u_kill_user(unsigned int user_id)
     MYSQL_RES *res;
     int ret;
 
-    ret = mono_sql_query(&res, "DELETE FROM " U_TABLE " WHERE (id='%u')", user_id);
+    ret = mono_sql_query(&res, "DELETE FROM " U_TABLE " WHERE id=%u", user_id);
 
     return ret;
 }

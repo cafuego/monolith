@@ -186,7 +186,7 @@ mono_sql_uu_kill_user(unsigned int user_id)
     MYSQL_RES *res;
     int ret;
 
-    ret = mono_sql_query(&res, "DELETE FROM " UU_TABLE " WHERE (user_id='%u' OR friend_id='%u')", user_id, user_id);
+    ret = mono_sql_query(&res, "DELETE FROM " UU_TABLE " WHERE (user_id=%u OR friend_id=%u)", user_id, user_id);
     return ret;
 }
 
