@@ -134,7 +134,8 @@ copy_message_wrapper(const unsigned int current_post, const int is_not_my_post, 
     read_forum( curr_rm, &scratch );
 
     if (!copy && !(!is_not_my_post
-		   || is_ql(who_am_i(NULL), scratch)
+/*		   || is_ql(who_am_i(NULL), scratch) */
+		   || mono_sql_uf_is_host( usersupp->usernum, curr_rm )
 		   || usersupp->priv >= PRIV_SYSOP || curr_rm == MAIL_FORUM))
 	return -1;
 
@@ -248,7 +249,8 @@ delete_message_wrapper(const unsigned int current_post, const int is_not_my_post
     int tempint;
 
     if ((!is_not_my_post)
-	|| (is_ql(who_am_i(NULL), readquad(curr_rm)))
+/*	|| (is_ql(who_am_i(NULL), readquad(curr_rm))) */
+	|| ( mono_sql_uf_is_host( usersupp->usernum, curr_rm ) )
 	|| (usersupp->priv >= PRIV_SYSOP)
 	|| (curr_rm == MAIL_FORUM)) {
 
@@ -285,7 +287,10 @@ lookup_anon_author(const unsigned int current_post)
     read_forum( curr_rm, &scratch );
 
     if ((usersupp->priv >= PRIV_SYSOP)
-	|| is_ql(who_am_i(NULL), scratch)) {
+/*	|| is_ql(who_am_i(NULL), scratch) */
+	|| mono_sql_uf_is_host( usersupp->usernum, curr_rm )
+	
+    ) {
 
 	message_header_filename(filename, curr_rm, current_post);
 	read_message_header(filename, &message);
