@@ -1,5 +1,17 @@
 #!/bin/sh
+#
+# $Id$
+#
+# Creates BBS banner with BBS software version, MySQL version and number of
+# compiles. (hopefully) Should still be modified to run from `make' rather
+# than from `./configure'.
+# Also, this should trap ctrl-c and whatnot and create the version regardless
+# of being interrupted.
 
+# Check for .version file.
+# If exists, read in, add one and save. If doesn't exist, set version to 1
+# and create the file for next time.
+#
 if [ -f .version ]; then
     echo "updating include/version.h"
     typeset -i bbs_version=`/bin/cat .version`
@@ -8,8 +20,14 @@ else
     echo "creating include/version.h"
     typeset -i bbs_version=1
 fi
+
+# Save new version number back into file.
+#
 echo $bbs_version > .version
 
+# Nasty call to MySQL which is prolly absolutely not cross-platform to
+# get the MySQL version. (If it is installed)
+#
 MYSQL=x`which mysql`
 if [ $MYSQL = x ]; then 
      echo "#define VERSION	\"Mono 2.061 (#$bbs_version) - `uname -m` `uname -s` `uname -r`\"" > include/version.h
@@ -18,3 +36,5 @@ else
     SQLVERSION="MySQL `$MYSQL | awk '{print $5}' | awk -F',' '{print $1}'`"
      echo "#define VERSION	\"Mono 2.061 (#$bbs_version) - `uname -m` `uname -s` `uname -r` - $SQLVERSION\"" > include/version.h
 fi
+
+# And we're all done.
