@@ -1650,7 +1650,9 @@ are_there_held_web_xs()
     wx_list_t *list = NULL;
     int count = 0;
 
+    printf("Checking web x-es... "); fflush(stdout);
     count = mono_sql_web_get_xes(usersupp->usernum, &list);
+    printf("%d found!\n", count); fflush(stdout);
 
     if(count == -1)
        cprintf("\1f\1rAn error occurrect trying to retrieve \1pweb \1rx-es.\n");

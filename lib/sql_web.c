@@ -199,7 +199,7 @@ mono_sql_web_get_xes(unsigned int user_id, wx_list_t ** list)
 	return 0;
     }
 
-    printf("Query worked, %d entries found.\n", count); fflush(stdout);
+    printf("Query worked, %d entries found.\n", rows); fflush(stdout);
 
     for (i = 0; i < rows; i++) {
 	row = mysql_fetch_row(res);
@@ -217,7 +217,7 @@ mono_sql_web_get_xes(unsigned int user_id, wx_list_t ** list)
     }
     (void) mono_sql_u_free_result(res);
 
-    printf("%d entries stored.\n", count); fflush(stdout);
+    printf("%d entries stored.\n", rows); fflush(stdout);
 
     return rows;
 }
