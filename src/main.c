@@ -58,7 +58,6 @@
 #include "registration.h"
 #include "rooms.h"
 #include "routines2.h"
-#include "vote.h"
 
 int connecting_flag;
 int first_login = FALSE;
@@ -874,18 +873,6 @@ getwindowsize(int sig)
 #endif
 }
 #endif
-
-void
-admin_info()
-{
-
-    cprintf("\1f\1gThere are items in the Voting Booth. Vote now? \1w(\1gy\1w/\1gn\1w) \1c");
-    if (yesno() == YES) {
-	nox = 1;
-	voting_booth();
-	are_there_held_xs();
-    }
-}
 
 /*
  * Set wholist flag if profile updated within past 2 days

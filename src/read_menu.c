@@ -346,10 +346,12 @@ short_prompt(void)
 		express(-1);
 		break;
 
+/*
 	    case 'V':
 		cprintf("\1f\1gVote.\n");
 		voting_booth();
 		break;
+*/
 
 	    case ',':		/* Holodeck Wholist */
 		cprintf(_("\1f\1g%s Wholist.\n"), config.chatmode);
