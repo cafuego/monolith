@@ -380,8 +380,8 @@ function colorize($doing) {
 function errorsound() {
 
     echo "<div align=\"center\">\n";
-    echo "<object src=\"/bbs/sound/error.aiff\" type=\"\audio/x-aiff\" autostart=\"true\" hidden=\"true\" loop=\"false\">\n";
-    echo "  <embed src=\"/bbs/sound/error.aiff\" type=\"\audio/x-aiff\" autostart=\"true\" hidden=\"true\" loop=\"false\">\n";
+    echo "<object src=\"/bbs/sound/error.aiff\" type=\"audio/x-aiff\" autostart=\"true\" hidden=\"true\" loop=\"false\">\n";
+    echo "  <embed src=\"/bbs/sound/error.aiff\" type=\"audio/x-aiff\" autostart=\"true\" hidden=\"true\" loop=\"false\">\n";
     echo "  </embed>\n";
     echo "</object>\n";
     echo "</div>\n";
