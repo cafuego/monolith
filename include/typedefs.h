@@ -52,7 +52,7 @@ typedef struct {
     unsigned int num;
     unsigned int topic;
     unsigned int forum;
-    unsigned int author;
+    char author[L_USERNAME+1];
     char alias[L_USERNAME+1];
     char subject[L_SUBJECT];
     time_t date;

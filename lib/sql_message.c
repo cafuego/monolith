@@ -29,6 +29,7 @@
 #include "monosql.h"
 #include "sql_utils.h"
 #include "sql_forum.h"
+#include "sql_user.h"
 #include "sql_userforum.h"
 #ifdef USE_RATING
   #include "sql_rating.h"
@@ -40,16 +41,16 @@ static int _mono_sql_mes_add_mes_to_list(mlist_t entry, mlist_t ** list);
 static message_t * _mono_sql_mes_row_to_mes(MYSQL_ROW row);
 
 int
-mono_sql_mes_add(message_t *message, unsigned int forum, const char *tmpfile)
+mono_sql_mes_add(message_t *message, unsigned int usernum, const char *tmpfile)
 {
     MYSQL_RES *res;
     int ret = 0;
     char *alias = NULL, *subject = NULL;
 
-    if( (message->num = mono_sql_f_get_new_message_id(forum)) == 0)
+    if( (message->num = mono_sql_f_get_new_message_id(message->forum)) == 0)
         return -1;
 
-    (void) copy(tmpfile, mono_sql_mes_make_file(forum, message->num));
+    (void) copy(tmpfile, mono_sql_mes_make_file(message->forum, message->num));
 
     (void) escape_string(message->alias, &alias);
     (void) escape_string(message->subject, &subject);
@@ -62,7 +63,7 @@ mono_sql_mes_add(message_t *message, unsigned int forum, const char *tmpfile)
     message->date = time(0);
 
     ret = mono_sql_query(&res, "INSERT INTO " M_TABLE " (message_id,topic_id,forum_id,author,alias,subject,date,type,priv,deleted) VALUES (%u,%u,%u,%u,'%s','%s',FROM_UNIXTIME(%u),'%s','%s','%c')",
-        message->num, message->topic, message->forum, message->author,
+        message->num, message->topic, message->forum, usernum,
         alias, subject, message->date, message->type,
         message->priv, message->deleted );
 
@@ -74,7 +75,7 @@ mono_sql_mes_add(message_t *message, unsigned int forum, const char *tmpfile)
     /*
      * To prevent an autor from uprating their own posts.
      */
-    (void) mono_sql_rat_add_rating(message->author, message->num, message->forum, 0);
+    (void) mono_sql_rat_add_rating(usernum, message->num, message->forum, 0);
 #endif
 
     return ret;
@@ -125,7 +126,7 @@ mono_sql_mes_retrieve(unsigned int id, unsigned int forum, message_t *data)
     message_t message;
     int ret = 0;
 
-    ret = mono_sql_query(&res, "SELECT m.message_id,m.topic_id,m.forum_id,m.author,m.alias,m.subject,UNIX_TIMESTAMP(m.date) AS date,m.type,m.priv,m.deleted,AVG(r.score) AS score FROM %s AS m,%s AS r WHERE m.message_id IN (r.message_id) AND m.forum_id=%u AND m.message_id=%u GROUP BY m.message_id", M_TABLE, R_TABLE, forum, id);
+    ret = mono_sql_query(&res, "SELECT m.message_id,m.topic_id,m.forum_id,u.username AS author,m.alias,m.subject,UNIX_TIMESTAMP(m.date) AS date,m.type,m.priv,m.deleted,AVG(r.score) AS score FROM %s AS m LEFT JOIN %s AS u ON m.author=u.id,%s AS r WHERE m.message_id IN (r.message_id) AND m.forum_id=%u AND m.message_id=%u GROUP BY m.message_id", M_TABLE, U_TABLE, R_TABLE, forum, id);
 
 #ifdef OLD_SHIT
     ret = mono_sql_query(&res, "SELECT message_id,topic_id,forum_id,author,alias,subject,UNIX_TIMESTAMP(date),type,priv,deleted FROM " M_TABLE " WHERE message_id=%u AND forum_id=%u", id, forum);
@@ -161,7 +162,7 @@ mono_sql_mes_retrieve(unsigned int id, unsigned int forum, message_t *data)
     /*
      * Header info.
      */
-    sscanf(row[3], "%u", &message.author);
+    sprintf(message.author, row[3]);
     sprintf(message.alias, row[4]);
     sprintf(message.subject, row[5]);
     sscanf(row[6], "%lu", &message.date);
@@ -206,7 +207,7 @@ mono_sql_mes_list_forum(unsigned int forum, unsigned int start, mlist_t ** list)
     /*
      * Coolest query in the BBS sofar :)
      */
-    ret = mono_sql_query(&res, "SELECT m.message_id,m.topic_id,m.forum_id,m.author,m.alias,m.subject,UNIX_TIMESTAMP(m.date) AS date,m.type,m.priv,m.deleted,AVG(r.score) AS score FROM %s AS m,%s AS r WHERE m.message_id IN (r.message_id) AND m.forum_id=%u AND m.message_id>%u GROUP BY m.message_id", M_TABLE, R_TABLE, forum, start);
+    ret = mono_sql_query(&res, "SELECT m.message_id,m.topic_id,m.forum_id,u.username AS author,m.alias,m.subject,UNIX_TIMESTAMP(m.date) AS date,m.type,m.priv,m.deleted,AVG(r.score) AS score FROM %s AS m LEFT JOIN %s AS u ON m.author=u.id,%s AS r WHERE m.message_id IN (r.message_id) AND m.forum_id=%u AND m.message_id>=%u GROUP BY m.message_id", M_TABLE, U_TABLE, R_TABLE, forum, start);
 
 #ifdef OLD_SHIT
     ret = mono_sql_query(&res, "SELECT message_id,topic_id,forum_id,author,alias,subject,UNIX_TIMESTAMP(date) AS date,type,priv,deleted FROM " M_TABLE " WHERE message_id>%u AND forum_id=%u ORDER BY message_id", start, forum);
@@ -255,7 +256,7 @@ mono_sql_mes_list_topic(unsigned int topic, unsigned int start, mlist_t ** list)
     /*
      * Second coolest query in the BBS sofar.
      */
-    ret = mono_sql_query(&res, "SELECT m.message_id,m.topic_id,m.forum_id,m.author,m.alias,m.subject,UNIX_TIMESTAMP(m.date) AS date,m.type,m.priv,m.deleted,AVG(r.score) AS score FROM %s AS m,%s AS r WHERE m.message_id IN (r.message_id) AND m.topic_id=%u AND m.message_id>%u GROUP BY m.message_id", M_TABLE, R_TABLE, topic, start);
+    ret = mono_sql_query(&res, "SELECT m.message_id,m.topic_id,m.forum_id,u.username AS author,m.alias,m.subject,UNIX_TIMESTAMP(m.date) AS date,m.type,m.priv,m.deleted,AVG(r.score) AS score FROM %s AS m LEFT JOIN %s AS u ON m.author=u.id,%s AS r WHERE m.message_id IN (r.message_id) AND m.topic_id=%u AND m.message_id>=%u GROUP BY m.message_id", M_TABLE, U_TABLE, R_TABLE, topic, start);
 
 #ifdef OLD_SHIT
     ret = mono_sql_query(&res, "SELECT message_id,topic_id,forum_id,author,alias,subject,UNIX_TIMESTAMP(date) AS date,type,priv,deleted FROM " M_TABLE " WHERE message_id>%u AND topic_id=%u ORDER BY message_id", start, topic);
@@ -355,7 +356,7 @@ _mono_sql_mes_row_to_mes(MYSQL_ROW row)
     /*
      * Header info.
      */
-    sscanf(row[3], "%u", &message->author);
+    sprintf(message->author, row[3]);
     sprintf(message->alias, row[4]);
     sprintf(message->subject, row[5]);
     sscanf(row[6], "%lu", &message->date);

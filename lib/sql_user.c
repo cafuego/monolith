@@ -34,8 +34,6 @@
 #include "sql_user.h"
 #undef extern
 
-#define U_TABLE "user"
-
 /* ADD USER */
 int
 mono_sql_u_add_user_new(const char *username, unsigned int num)
