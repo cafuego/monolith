@@ -218,7 +218,7 @@ save_new_message(message_header_t * header, unsigned int forum)
     time_function(TIME_START);
     save_to_sql(header, temp);
     if (usersupp->priv >= PRIV_TECHNICIAN)
-        cprintf("\n\1a\1wSQL time elapsed: %f", time_function(TIME_STOP));
+        cprintf("\n\1a\1wSQL time elapsed: %f\n", time_function(TIME_STOP));
     else
 	time_function(TIME_STOP);
     return 0;
