@@ -315,9 +315,9 @@ get_anon_banner(unsigned int anon_type, message_header_t * header)
     if (!(anon_type & QR_ALIASNAME))
 	return;
 
-    cprintf("\1f\1gDo you want to add an aliasname to this %s? \1w(\1rY/n\1w) \1c",
+    cprintf("\1f\1gDo you want to add an aliasname to this %s? \1w(\1ry/N\1w) \1c",
 	    config.message);
-    if (yesno_default(YES) == YES) {
+    if (yesno_default(NO) == YES) {
 	if ((usersupp->config_flags & CO_USEALIAS) && strlen(usersupp->alias)) {
 	    strcpy(header->alias, usersupp->alias);
 	} else {
