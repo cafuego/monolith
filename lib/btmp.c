@@ -580,8 +580,6 @@ mono_search_guide()
 	return NULL;
 
     sysguide_number = rand() % total_sgnumber;
-    printf("DEBUG: Guide %d of %d\n\r", sysguide_number, total_sgnumber );
-    fflush(stdout);
 
     i = shm->first;
     while (i != -1) {
