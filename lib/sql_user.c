@@ -9,6 +9,7 @@
 #include <build-defs.h>
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>	/* for strncpy */
 #include <assert.h>
 #include <unistd.h>
@@ -906,6 +907,7 @@ mono_sql_u_get_xtrapflag( unsigned int user_id, char *xtrapflag )
     return 0;
 }
 
+#ifdef USE_ICQ
 
 /* SET ICQ NUMBER */
 int
@@ -935,3 +937,33 @@ mono_sql_u_set_icq_pass( unsigned int user_id, const char *pass )
 
     return ret;
 }
+
+unsigned long
+mono_sql_u_icq_get_number( unsigned int user_id )
+{
+
+    int i;
+    MYSQL_RES *res;
+    MYSQL_ROW row;
+    unsigned long icq_num = 0;
+
+    i = mono_sql_query(&res, "SELECT icq_number FROM " U_TABLE
+        " WHERE id=%u", user_id );
+
+    if (i == -1) {
+        fprintf(stderr, "No results from query.\n");
+        return -1;
+    }
+
+    if (mysql_num_rows(res) != 1) {
+        return -1;
+    }
+
+    row = mysql_fetch_row(res);
+    icq_num = atol(row[0]);
+    mono_sql_u_free_result(res);
+
+    return icq_num;
+}
+
+#endif

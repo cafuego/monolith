@@ -75,6 +75,11 @@ static char *_get_monoholic_flag(const user_t * user);
 static void _print_priv_flags(const user_t * user, forumlist_t * p);
 static void _print_user_flags(const user_t * user);
 
+#ifdef USE_ICQ
+static void _change_icq_number(const unsigned int a, const long b, void *c);
+static void _change_icq_password(const unsigned int a, const long b, void *c);
+#endif
+
 
 /*************************************************
 * profile_user()
@@ -494,6 +499,16 @@ _config_personal_info_menu(const unsigned int a, const long b, void *c)
 	sprintf(tempstr, "Change %s", config.doing);
 	MENU_ADDITEM(_change_flying, 0, 0, NULL,
 		     "ti", tempstr, "Y");
+
+#ifdef USE_ICQ
+IFSYSOP {
+	MENU_ADDITEM(_change_icq_number, 0, 0, NULL,
+		     "ti", "Change ICQ Number", "u");
+
+	MENU_ADDITEM(_change_icq_password, 0, 0, NULL,
+		     "ti", "Change ICQ Password", "p");
+}
+#endif
 
 	MENU_ADDITEM(do_nothing, 0, 0, NULL, "ti", "-----------", "");
 
@@ -2179,3 +2194,76 @@ _tz2str(const unsigned int a, const long b, void *tzstring)
 {
     strcpy(usersupp->timezone, tzstring);
 }
+
+#ifdef USE_ICQ
+
+static void
+_change_icq_number(const unsigned int a, const long b, void *c)
+{
+
+    char tmpstr[16];
+    unsigned long icq_number = 0;
+
+    cprintf(_("\1f\1gEnter ICQ Number.\n"));
+    if ((usersupp->priv & PRIV_DEGRADED) || (!(usersupp->priv & PRIV_VALIDATED))) {
+        more(UNVALIDMSG, 0);
+        return;
+    }
+
+    if( (icq_number = mono_sql_u_icq_get_number( usersupp->usernum )) <= 0) {
+        cprintf(_("\1f\1gYou have not set an ICQ Number.\n"));
+        cprintf(_("\1f\1gWould you like to set one now? \1w(\1gy\1w/\1gn\1w)\1c "));
+    } else {
+        cprintf(_("\1f\1gYour current ICQ Number is \1y%ul\1g\n"), icq_number);
+        cprintf(_("\1f\1gDo you want to change this? \1w(\1gy\1w/\1gn\1w)\1c "));
+    }
+    if (yesno() == YES) {
+        cprintf(_("\1gEnter your ICQ number\1w: \1f\1c"));
+        strcpy(tmpstr, "");
+        getline(tmpstr, 15, 0);
+        if(strlen(tmpstr) == 0)
+            return;
+        cprintf("\1a");
+        if((icq_number = atol(tmpstr)) == 0) {
+            cprintf(_("\1f\1rSorry, that is not a valid ICQ number.\n"));
+            return;
+        }
+        if( (mono_sql_u_set_icq_number(usersupp->usernum, icq_number)) == -1)
+            cprintf(_("\1f\1rSomething went wrong saving your ICQ Number.\n"));
+        else
+            cprintf(_("\1f\1gYour ICQ Number was saved.\n"));
+    }
+    return;
+}
+
+static void
+_change_icq_password(const unsigned int a, const long b, void *c)
+{
+
+    char icq_pw[255];
+
+    cprintf(_("\1f\1gEnter ICQ Password.\n"));
+    if ((usersupp->priv & PRIV_DEGRADED) || (!(usersupp->priv & PRIV_VALIDATED))) {
+        more(UNVALIDMSG, 0);
+        return;
+    }
+
+    cprintf(_("\1f\1gDo you want to change your ICQ Password? \1w(\1gy\1w/\1gn\1w)\1c "));
+    if (yesno() == NO)
+        return;
+
+    cprintf(_("\1f\1gPlease enter your ICQ Password: \1c"));
+    getline(icq_pw, -254, 1);
+
+    if (strlen(icq_pw) == 0)
+        return;
+
+    if( (mono_sql_u_set_icq_pass(usersupp->usernum, icq_pw)) == -1)
+        cprintf(_("\1f\1rSomething went wrong saving your ICQ Password.\n"));
+    else
+        cprintf(_("\1f\1gYour ICQ Password was saved.\n"));
+
+    return;
+}
+
+#endif
