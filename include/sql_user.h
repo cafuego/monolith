@@ -15,6 +15,7 @@ extern int mono_sql_u_update_registration( unsigned int user_id,
   const char *name, const char *address, const char *zip, const char *city,
   const char *state, const char *country, const char *phone );
 
+extern int mono_sql_read_profile(unsigned int user_id, char ** profile );
 extern int mono_sql_write_profile(unsigned int user_id, const char * profile );
 
 #define U_TABLE	"user"

@@ -46,7 +46,7 @@
 #include "friends.h"
 #include "input.h"
 #include "inter.h"
-#include "key.h"  
+#include "key.h"
 #include "main.h"
 #include "menu.h"
 #include "messages.h"
@@ -59,6 +59,7 @@
 #include "uadmin.h"
 #include "wholist.h"
 
+#include "sql_user.h"
 #include "sql_web.h"
 
 #define extern
@@ -71,17 +72,18 @@
 
 /* static vars */
 
-static char *_locale[] = { "European", "American" };
+static char *_locale[] =
+{"European", "American"};
 
 /* file wide static prototypes */
 
 static void set_usersupp_flag(const unsigned int, const long, void *);
 static void set_usersupp_config_flag(const unsigned int, const long, void *);
 static unsigned int _get_locale(const unsigned long);
-static float _get_monoholic_rating(const user_t *user);
-static char * _get_monoholic_flag(const user_t *user);
-static void _print_priv_flags(const user_t *user, forumlist_t *p);
-static void _print_user_flags(const user_t *user);
+static float _get_monoholic_rating(const user_t * user);
+static char *_get_monoholic_flag(const user_t * user);
+static void _print_priv_flags(const user_t * user, forumlist_t * p);
+static void _print_user_flags(const user_t * user);
 
 
 /*************************************************
@@ -117,7 +119,7 @@ profile_user(void)
 	sprintf(profile_default, "%s@%s", ruser, rbbs);
 	return;
     }
-    p_name[L_USERNAME-1] = '\0';	/* no overflow, please */
+    p_name[L_USERNAME - 1] = '\0';	/* no overflow, please */
 
     /*
      * This fails horribly if a user has an entry in the database, but
@@ -127,13 +129,13 @@ profile_user(void)
      */
     if (check_user(p_name) == TRUE) {
 	user = readuser(p_name);
-        if ( user == NULL ) {
-	   cprintf( "Error reading userfile.\n" );
-        } else {
-	print_user_stats(user, usersupp);
-	xfree(user);
-	strcpy(profile_default, p_name);
-        }
+	if (user == NULL) {
+	    cprintf("Error reading userfile.\n");
+	} else {
+	    print_user_stats(user, usersupp);
+	    xfree(user);
+	    strcpy(profile_default, p_name);
+	}
     } else
 	cprintf(_("\1f\1rNo such user.\1a\n"));
     return;
@@ -148,34 +150,34 @@ void
 config_menu(void)
 {
 
-static void _config_display_options(const unsigned int, const long, void *);
-static void _config_message_menu(const unsigned int, const long, void *);
-static void _config_express_menu(const unsigned int, const long, void *);
-static void _config_personal_info_menu(const unsigned int, const long, void *);
+    static void _config_display_options(const unsigned int, const long, void *);
+    static void _config_message_menu(const unsigned int, const long, void *);
+    static void _config_express_menu(const unsigned int, const long, void *);
+    static void _config_personal_info_menu(const unsigned int, const long, void *);
 
     char *context;
     MENU_DECLARE;
 
     for (;;) {
 	MENU_INIT;
-	strcpy(the_menu_format.menu_title, 
-		"\n\1f\1w[\1gMain Configuration Menu\1w]\n\n");
+	strcpy(the_menu_format.menu_title,
+	       "\n\1f\1w[\1gMain Configuration Menu\1w]\n\n");
 	MENU_ADDITEM(_config_display_options, 0, 0, NULL,
-		    "ti", "General Configuration    \1w[\1rmenu\1w]", "G");  
+		     "ti", "General Configuration    \1w[\1rmenu\1w]", "G");
 	MENU_ADDITEM(_config_message_menu, 0, 0, NULL,
-		    "ti", "Message System Options   \1w[\1rmenu\1w]", "M");
+		     "ti", "Message System Options   \1w[\1rmenu\1w]", "M");
 	MENU_ADDITEM(_config_express_menu, 0, 0, NULL,
-		    "ti", "Express Message Options  \1w[\1rmenu\1w]", "X");
+		     "ti", "Express Message Options  \1w[\1rmenu\1w]", "X");
 	MENU_ADDITEM(_config_personal_info_menu, 0, 0, NULL,
-		    "ti", "Personal Information     \1w[\1rmenu\1w]", "P");
+		     "ti", "Personal Information     \1w[\1rmenu\1w]", "P");
 
-        MENU_ADDITEM(do_nothing, 0, 0, NULL, "ti", "-----------", "");
+	MENU_ADDITEM(do_nothing, 0, 0, NULL, "ti", "-----------", "");
 
-        context = (char *) xmalloc(sizeof(char) * 2);
+	context = (char *) xmalloc(sizeof(char) * 2);
 	strcpy(context, "m");
 
 	MENU_ADDITEM(online_help_wrapper, 0, 0, (char *) context,
-		    "ti", "Online Help:  This Menu", "?");
+		     "ti", "Online Help:  This Menu", "?");
 
 	MENU_PROCESS_INTERNALS;
 	MENU_DISPLAY(1);
@@ -200,8 +202,8 @@ _config_display_options(const unsigned int a, const long b, void *c)
 
     for (;;) {
 	MENU_INIT;
-	strcpy(the_menu_format.menu_title, 
-		"\n\1f\1w[\1gGeneral Configuration Menu\1w]\n\n");
+	strcpy(the_menu_format.menu_title,
+	       "\n\1f\1w[\1gGeneral Configuration Menu\1w]\n\n");
 	MK_TMPSTR("ANSI Colour Display");
 	MENU_ADDITEM(set_usersupp_flag, US_ANSI, 0, (char *) tmpstr,
 		     "tiv", "Display ANSI Colours", "1",
@@ -219,7 +221,7 @@ _config_display_options(const unsigned int a, const long b, void *c)
 	MK_TMPSTR("Display Hostnames in the Wholist");
 	MENU_ADDITEM(set_usersupp_flag, US_IPWHOLIST, 0,
 		     (char *) tmpstr,
-		     "tiv", "Show hostnames in the wholist", "4", 
+		     "tiv", "Show hostnames in the wholist", "4",
 		     (usersupp->flags & US_IPWHOLIST) ? "\1yYes" : " No");
 	MENU_ADDITEM(_tgl_status_bar, 0, 0, NULL, "tiv", "Display Status Bar", "5",
 		     (usersupp->flags & US_STATUSBAR) ? "\1yYes" : " No");
@@ -240,7 +242,7 @@ _config_display_options(const unsigned int a, const long b, void *c)
 
 #ifdef CLIENTSRC
 	MENU_ADDITEM(_client_local_config, 0, 0, NULL,
-		    "tiv", "Local Client Configuration", "C", "---");
+		     "tiv", "Local Client Configuration", "C", "---");
 #endif
 
 	if ((usersupp->flags & US_ROOMAIDE) || (usersupp->priv >= PRIV_SYSOP)
@@ -249,10 +251,9 @@ _config_display_options(const unsigned int a, const long b, void *c)
 	    MENU_ADDITEM(set_usersupp_flag, US_ADMINHELP, 0,
 			 (char *) tmpstr,
 			 "tiv", "Extra Admin Help", "H",
-			 (usersupp->flags & US_ADMINHELP) ? "\1yYes" : " No");
+		       (usersupp->flags & US_ADMINHELP) ? "\1yYes" : " No");
 	}
-
-        MENU_ADDITEM(do_nothing, 0, 0, NULL, "tiv", "-----------", "", " ");
+	MENU_ADDITEM(do_nothing, 0, 0, NULL, "tiv", "-----------", "", " ");
 
 	MK_TMPSTR("g");
 	MENU_ADDITEM(online_help_wrapper, 0, 0, (char *) tmpstr,
@@ -260,7 +261,7 @@ _config_display_options(const unsigned int a, const long b, void *c)
 
 	the_menu_format.auto_columnize = 1;
 	the_menu_format.no_boolean_values = 1;
-	
+
 	MENU_PROCESS_INTERNALS;
 	MENU_DISPLAY(2);
 	if (!MENU_EXEC_COMMAND)
@@ -289,70 +290,70 @@ _config_message_menu(const unsigned int a, const long b, void *c)
 
     for (;;) {
 	MENU_INIT;
-	strcpy(the_menu_format.menu_title, 
-		"\n\1f\1w[\1gMessage System Configuration Menu\1w]\n\n");
+	strcpy(the_menu_format.menu_title,
+	       "\n\1f\1w[\1gMessage System Configuration Menu\1w]\n\n");
 	MK_TMPSTR("Viewing of last old post");
 	MENU_ADDITEM(set_usersupp_flag, US_LASTOLD, 0,
-		    (char *) tmpstr,
-		    "tiv", "See last old post", "0",
-		    (usersupp->flags & US_LASTOLD) ? "\1yYes" : " No");
+		     (char *) tmpstr,
+		     "tiv", "See last old post", "0",
+		     (usersupp->flags & US_LASTOLD) ? "\1yYes" : " No");
 	MK_TMPSTR("Prompting after each post");
 	MENU_ADDITEM(set_usersupp_flag, US_NOPROMPT, 1,
-		    (char *) tmpstr,
-		    "tiv", "Prompt after each post", "1",
-		    (usersupp->flags & US_NOPROMPT) ? " No" : "\1yYes");
+		     (char *) tmpstr,
+		     "tiv", "Prompt after each post", "1",
+		     (usersupp->flags & US_NOPROMPT) ? " No" : "\1yYes");
 	MK_TMPSTR("Pause after each screen");
 	MENU_ADDITEM(set_usersupp_flag, US_PAUSE, 0, (char *) tmpstr,
-		    "tiv", "Pause after each screenfull", "2",
-		    (usersupp->flags & US_PAUSE) ? "\1yYes" : " No");
+		     "tiv", "Pause after each screenfull", "2",
+		     (usersupp->flags & US_PAUSE) ? "\1yYes" : " No");
 	MENU_ADDITEM(_tgl_use_alias, 0, 0, NULL,
-		    "tiv", "Use a default alias", "3",
-		    (usersupp->config_flags & CO_USEALIAS) ? "\1yYes" : " No");
+		     "tiv", "Use a default alias", "3",
+		 (usersupp->config_flags & CO_USEALIAS) ? "\1yYes" : " No");
 	MENU_ADDITEM(_change_alias, 0, 0, NULL,
-		    "tiv", "Change your default alias", "4", "---");
+		     "tiv", "Change your default alias", "4", "---");
 
 	sprintf(tempstr, "Empty lines around %s", config.message_pl);
 	MK_TMPSTR(tempstr);
 	MENU_ADDITEM(set_usersupp_config_flag, CO_NEATMESSAGES, 0, (char *) tmpstr,
-		    "tiv", tempstr, "5",
-		    (usersupp->config_flags & CO_NEATMESSAGES) ? "\1yYes" : " No");
+		     "tiv", tempstr, "5",
+	     (usersupp->config_flags & CO_NEATMESSAGES) ? "\1yYes" : " No");
 
 	sprintf(tempstr, "Expanded %s headers", config.message);
 	MK_TMPSTR(tempstr);
 	MENU_ADDITEM(set_usersupp_config_flag, CO_EXPANDHEADER, 0, (char *) tmpstr,
-		    "tiv", tempstr, "6",
-		    (usersupp->config_flags & CO_EXPANDHEADER) ? "\1yYes" : " No");
+		     "tiv", tempstr, "6",
+	     (usersupp->config_flags & CO_EXPANDHEADER) ? "\1yYes" : " No");
 
-	sprintf(tempstr, "Display \1w%s\1g date", 
+	sprintf(tempstr, "Display \1w%s\1g date",
 		(usersupp->config_flags & CO_LONGDATE) ? "long" : "short");
-	MENU_ADDITEM(_set_date_display, 0, 0, NULL, 
-		    "tiv", tempstr, "7", "---");
+	MENU_ADDITEM(_set_date_display, 0, 0, NULL,
+		     "tiv", tempstr, "7", "---");
 
-        if (usersupp-> priv < PRIV_SYSOP)
-            sprintf(tempstr, "Notify on deleted %s", config.message_pl);
-        else
-            sprintf(tempstr, "Display deleted %s", config.message_pl);
+	if (usersupp->priv < PRIV_SYSOP)
+	    sprintf(tempstr, "Notify on deleted %s", config.message_pl);
+	else
+	    sprintf(tempstr, "Display deleted %s", config.message_pl);
 	MK_TMPSTR(tempstr);
 	MENU_ADDITEM(set_usersupp_config_flag, CO_DELETEDINFO, 0, (char *) tmpstr,
-	     	    "tiv", tempstr, "8", 
-		    (usersupp->config_flags & CO_DELETEDINFO) ? "\1yYes" : " No");
+		     "tiv", tempstr, "8",
+	      (usersupp->config_flags & CO_DELETEDINFO) ? "\1yYes" : " No");
 
 	sprintf(tempstr, "%s-Style %s headers", BBSNAME, config.message);
 	MK_TMPSTR(tempstr);
-	MENU_ADDITEM(set_usersupp_config_flag, CO_MONOHEADER, 0, 
-	   	    (char *) tmpstr, "tiv", tempstr, "9", 
-	   	    (usersupp->config_flags & CO_MONOHEADER) ? "\1yYes" : " No");
+	MENU_ADDITEM(set_usersupp_config_flag, CO_MONOHEADER, 0,
+		     (char *) tmpstr, "tiv", tempstr, "9",
+	       (usersupp->config_flags & CO_MONOHEADER) ? "\1yYes" : " No");
 
-	sprintf(tempstr, "\1w%s\1g date format", 
+	sprintf(tempstr, "\1w%s\1g date format",
 		_locale[_get_locale(usersupp->config_flags)]);
 	MENU_ADDITEM(_set_locale, 0, 0, NULL,
-		    "tiv", tempstr, "A", "---");
+		     "tiv", tempstr, "A", "---");
 
-        MENU_ADDITEM(do_nothing, 0, 0, NULL, "tiv", "-----------", "", "\1g--");
+	MENU_ADDITEM(do_nothing, 0, 0, NULL, "tiv", "-----------", "", "\1g--");
 
 	MK_TMPSTR("p");
 	MENU_ADDITEM(online_help_wrapper, 0, 0, (char *) tmpstr,
-		    "ti", "Online Help:  This Menu", "?");
+		     "ti", "Online Help:  This Menu", "?");
 
 	the_menu_format.no_boolean_values = 1;
 	MENU_PROCESS_INTERNALS;
@@ -388,7 +389,7 @@ _config_express_menu(const unsigned int a, const long b, void *c)
 	MENU_ADDITEM(set_usersupp_flag, US_NOTIFY_FR, 0,
 		     (char *) tmpstr,
 		     "tiv", "Receive logon/off notifies",
-		     "2", (usersupp->flags & US_NOTIFY_FR) ? "\1yYes" : " No");
+		  "2", (usersupp->flags & US_NOTIFY_FR) ? "\1yYes" : " No");
 	MK_TMPSTR("SHIX Filter");
 	MENU_ADDITEM(set_usersupp_flag, US_SHIX, 0, (char *) tmpstr,
 		     "tiv", "Use the SHIX Filter",
@@ -397,17 +398,17 @@ _config_express_menu(const unsigned int a, const long b, void *c)
 	MENU_ADDITEM(set_usersupp_flag, US_NOINTERXS, 1,
 		     (char *) tmpstr,
 		     "tiv", "InterBBS Access",
-		     "4", (usersupp->flags & US_NOINTERXS) ? " No" : "\1yYes");
+		  "4", (usersupp->flags & US_NOINTERXS) ? " No" : "\1yYes");
 	MK_TMPSTR("Showing of friends online at login");
 	MENU_ADDITEM(set_usersupp_config_flag, CO_SHOWFRIENDS, 0,
 		     (char *) tmpstr,
 		     "tiv", "Show friends online when you login",
-		     "5", (usersupp->config_flags & CO_SHOWFRIENDS) ? "\1yYes" : " No");
+	 "5", (usersupp->config_flags & CO_SHOWFRIENDS) ? "\1yYes" : " No");
 	MK_TMPSTR("Display of all logon/off events");
 	MENU_ADDITEM(set_usersupp_flag, US_NOTIFY_ALL, 0,
 		     (char *) tmpstr,
 		     "tiv", "Display all logon/off events",
-		     "6", (usersupp->flags & US_NOTIFY_ALL) ? "\1yYes" : " No");
+		 "6", (usersupp->flags & US_NOTIFY_ALL) ? "\1yYes" : " No");
 	MENU_ADDITEM(_menu_friend_wrapper, 0, FRIEND, NULL,
 		     "tiv", "Friends List   \1w[\1rmenu\1w]",
 		     "7", "---");
@@ -421,14 +422,14 @@ _config_express_menu(const unsigned int a, const long b, void *c)
 
 	if (usersupp->priv >= PRIV_SYSOP)
 	    MENU_ADDITEM(_tgl_silc, C_NOSILC, 0, NULL,
-		         "tiv", "SILC Enabled",
+			 "tiv", "SILC Enabled",
 			 "S", (cmdflags & C_NOSILC) ? " No" : "\1yYes");
 
-        MENU_ADDITEM(do_nothing, 0, 0, NULL, "tiv", "-----------", "", "\1g--");
+	MENU_ADDITEM(do_nothing, 0, 0, NULL, "tiv", "-----------", "", "\1g--");
 
 	MK_TMPSTR("x");
 	MENU_ADDITEM(online_help_wrapper, 0, 0, (char *) tmpstr,
-		     "tiv", "Online Help:  This Menu", 
+		     "tiv", "Online Help:  This Menu",
 		     "?", "---");
 
 	the_menu_format.no_boolean_values = 1;
@@ -444,21 +445,21 @@ _config_express_menu(const unsigned int a, const long b, void *c)
 }
 
 
-void 
+void
 _config_personal_info_menu(const unsigned int a, const long b, void *c)
 {
 
-static void _hidden_info_menu (const unsigned int, const long, void *);
-static void _timezone_menu (const unsigned int, const long, void*);
-static void _change_address (const unsigned int, const long, void*);
-static void _change_birthday (const unsigned int, const long, void*);
-static void _change_flying (const unsigned int, const long, void*);
-static void _change_host (const unsigned int, const long, void*);
-static void _change_profile (const unsigned int, const long, void*);
-static void _edit_profile (const unsigned int, const long, void*);
-static void _key_menu_wrapper (const unsigned int, const long, void*);
-static void _change_password (const unsigned int, const long, void*);
-static void _change_url (const unsigned int, const long, void*);
+    static void _hidden_info_menu(const unsigned int, const long, void *);
+    static void _timezone_menu(const unsigned int, const long, void *);
+    static void _change_address(const unsigned int, const long, void *);
+    static void _change_birthday(const unsigned int, const long, void *);
+    static void _change_flying(const unsigned int, const long, void *);
+    static void _change_host(const unsigned int, const long, void *);
+    static void _change_profile(const unsigned int, const long, void *);
+    static void _edit_profile(const unsigned int, const long, void *);
+    static void _key_menu_wrapper(const unsigned int, const long, void *);
+    static void _change_password(const unsigned int, const long, void *);
+    static void _change_url(const unsigned int, const long, void *);
 
 
     char *tmpstr, tempstr[100];
@@ -467,44 +468,44 @@ static void _change_url (const unsigned int, const long, void*);
     for (;;) {
 	MENU_INIT;
 	strcpy(the_menu_format.menu_title,
-	      "\n\1f\1w[\1gPersonal Info Configuration Menu\1w]\n\n");
-		     
-        MENU_ADDITEM(_change_address, 0, 0, NULL,
+	       "\n\1f\1w[\1gPersonal Info Configuration Menu\1w]\n\n");
+
+	MENU_ADDITEM(_change_address, 0, 0, NULL,
 		     "ti", "Change Address Information", "A");
-		     
-        MENU_ADDITEM(_change_birthday, 0, 0, NULL,
+
+	MENU_ADDITEM(_change_birthday, 0, 0, NULL,
 		     "ti", "Update Birthday", "B");
-		     
-	MENU_ADDITEM(_change_password, 0, 0, NULL,	
+
+	MENU_ADDITEM(_change_password, 0, 0, NULL,
 		     "ti", "Change account password", "D");
-		     
+
 	MENU_ADDITEM(_hidden_info_menu, 0, 0, NULL,
 		     "ti", "Toggle Hidden Info \1w[\1rmenu\1w]", "H");
 
 	MENU_ADDITEM(_change_profile, 0, 0, NULL,
 		     "ti", "Change your profile", "i");
-		     
+
 	MENU_ADDITEM(_edit_profile, 0, 0, NULL,
 		     "ti", "Edit your profile", "I");
-		     
-	sprintf(tempstr, "Change %s", LOCATION);	     
+
+	sprintf(tempstr, "Change %s", LOCATION);
 	MENU_ADDITEM(_change_host, 0, 0, NULL,
 		     "ti", tempstr, "L");
-		     
+
 	MENU_ADDITEM(_timezone_menu, 0, 0, NULL,
 		     "ti", "Timezone Setup  \1w[\1rmenu\1w]", "T");
 
-	MENU_ADDITEM(_key_menu_wrapper, 0, 0, NULL,	
+	MENU_ADDITEM(_key_menu_wrapper, 0, 0, NULL,
 		     "ti", "Validation Key \1w[\1rmenu\1w]", "V");
-		     
+
 	MENU_ADDITEM(_change_url, 0, 0, NULL,
 		     "ti", "Change URL (homepage)", "W");
-		
+
 	sprintf(tempstr, "Change %s", config.doing);
-        MENU_ADDITEM(_change_flying, 0, 0, NULL,
+	MENU_ADDITEM(_change_flying, 0, 0, NULL,
 		     "ti", tempstr, "Y");
 
-        MENU_ADDITEM(do_nothing, 0, 0, NULL, "ti", "-----------", "");
+	MENU_ADDITEM(do_nothing, 0, 0, NULL, "ti", "-----------", "");
 
 	MK_TMPSTR("a");
 	MENU_ADDITEM(online_help_wrapper, 0, 0, (char *) tmpstr,
@@ -538,11 +539,11 @@ _menu_friend_wrapper(const unsigned int a, const long which, void *c)
 void
 _chat_subscribe_wrapper(const unsigned int a, const long b, void *c)
 {
-		cprintf(_("\1f\1pSubscribe to channel: \1a"));
-		chat_subscribe();
+    cprintf(_("\1f\1pSubscribe to channel: \1a"));
+    chat_subscribe();
 }
 
- 
+
 void
 _bbs_appearance_wrapper(const unsigned int a, const long b, void *c)
 {
@@ -552,7 +553,7 @@ _bbs_appearance_wrapper(const unsigned int a, const long b, void *c)
     if (yesno() == NO)
 	return;
 
-    usersupp->configuration = select_config("\n\n\1f\1gUse configuration\1w: \1c" );
+    usersupp->configuration = select_config("\n\n\1f\1gUse configuration\1w: \1c");
     mono_sql_read_config(usersupp->configuration, &config);
 
     cprintf("\1f\1gConfiguration set to \1y`%s'\1g.\n", config.bbsname);
@@ -566,11 +567,11 @@ _client_local_config(const unsigned int a, const long b, void *c)
     while (netget(0) != '\n') ;
 #else
     cprintf("%s%s%s%s%s%s",
-	    "\n\n\1f\1rThis option is disabled since you are not using the client.",
+    "\n\n\1f\1rThis option is disabled since you are not using the client.",
 	    "\nThe client is available at:\n\n",
 	    "  http://monolith.yawc.net/bbs/info/download_client.html",
-	    "\n\nFor information about obtaining the client, or for help installing",
-	    "\nthe client, ask in Monolith Client>  which is room #15, or ask a",
+    "\n\nFor information about obtaining the client, or for help installing",
+       "\nthe client, ask in Monolith Client>  which is room #15, or ask a",
 	    "\nSystem Guide by pressing <shift-Q>.\n\n");
 #endif
 }
@@ -610,7 +611,7 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
      * Time to rearrange flags a wee bit...
      * print monoholic/vanify flags right behind username and
      * move actual flags to a line of their own (Except newbie flag).
-    *
+     *
      * First off, print actual priv flags (if they exist)
      */
     (void) _print_priv_flags(user, p);
@@ -632,7 +633,7 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
 
     cprintf("\1f\1cFlying: %s\1a\n", user->doing);
     if (user->timezone)
-        if (strlen(user->timezone)) {
+	if (strlen(user->timezone)) {
 	    struct tm *tp;
 	    time_t now;
 	    char str[40], datestr[60];
@@ -641,13 +642,12 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
 	    set_timezone(str);
 	    time(&now);
 	    tp = localtime(&now);
- 	    strftime(datestr, sizeof(datestr) - 1,
-                 _("\1f\1cUser's localtime:\1g %A \1w(\1g%H:%M\1w) (%Z)\1a\n"), tp);
+	    strftime(datestr, sizeof(datestr) - 1,
+		     _("\1f\1cUser's localtime:\1g %A \1w(\1g%H:%M\1w) (%Z)\1a\n"), tp);
 	    cprintf("%s", datestr);
 	    strcpy(str, usersupp->timezone);
 	    set_timezone(str);
-        }
-
+	}
     if ((viewing_user->priv >= PRIV_SYSOP) && (strlen(user->aideline) > 0))
 	cprintf(_("\1f\1yAideline:%s\n"), user->aideline);
 #ifdef OLD
@@ -717,12 +717,12 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
     }
 
     if (viewing_user->priv >= PRIV_SYSOP) {	/* a sysop profiles */
-        (void) mono_sql_read_config(user->configuration, &frog);
-        cprintf(_("\1f\1cConfiguration\1w: \1g%s \1cMonoholic Rating\1w: \1g"), frog.bbsname);
-        printf("%.3f",_get_monoholic_rating(user));
-        cprintf("\n");
-	cprintf(_("\1f\1cUsernum\1w: \1g%d \1cFirst login\1w: \1g%s\n"),user->usernum, printdate(user->firstcall, 1) );
-        cprintf(_("\1f\1cLogins\1w: \1g%-5d \1cPosts: \1g%-5d \1cOnlinetime: \1g%2ld:%2.2ld   \1cPriv: \1g%5d  \1cX's: \1g%5ld \n"),
+	(void) mono_sql_read_config(user->configuration, &frog);
+	cprintf(_("\1f\1cConfiguration\1w: \1g%s \1cMonoholic Rating\1w: \1g"), frog.bbsname);
+	printf("%.3f", _get_monoholic_rating(user));
+	cprintf("\n");
+	cprintf(_("\1f\1cUsernum\1w: \1g%d \1cFirst login\1w: \1g%s\n"), user->usernum, printdate(user->firstcall, 1));
+	cprintf(_("\1f\1cLogins\1w: \1g%-5d \1cPosts: \1g%-5d \1cOnlinetime: \1g%2ld:%2.2ld   \1cPriv: \1g%5d  \1cX's: \1g%5ld \n"),
 		user->timescalled,
 		user->posted, user->online / 60, user->online % 60,
 		user->priv, user->x_s);
@@ -802,7 +802,7 @@ change_atho(int i)
     if ((tmpbtmp->flags & B_GUIDEFLAGGED) && (i == 0 || i == -1)) {
 	if (usersupp->flags & US_ADMINHELP)
 	    more(HELPTERM "/toggle_off", 1);
-	mono_change_online(who_am_i(NULL), "", -7);		/* deguideflagize */
+	mono_change_online(who_am_i(NULL), "", -7);	/* deguideflagize */
 	change = -1;
     } else if ((!(tmpbtmp->flags & B_GUIDEFLAGGED)) && (i == 0 || i == 1)) {
 	if (usersupp->flags & US_ADMINHELP)
@@ -831,12 +831,12 @@ test_ansi_colours(user_t * user)
     cprintf("\n\n\nTesting ANSI colour mode.. Currently set to: %s.\n",
 	    (user->flags & US_ANSI) ? "ON" : "OFF");
     cprintf("%s%s%s%s%s%s",
-            "\n\nTest Paragraph 1:\n   Now, we're going to check and ",
+	    "\n\nTest Paragraph 1:\n   Now, we're going to check and ",
 	    "see if your terminal programme is\n   capable of ",
 	    "displaying colours properly.  This paragraph is being\n",
-            "   displayed with the ANSI colours off.  This paragraph", 
-            " should\n   look correct.\n\n", 
-            "Press a key to continue.. ");
+	    "   displayed with the ANSI colours off.  This paragraph",
+	    " should\n   look correct.\n\n",
+	    "Press a key to continue.. ");
     inkey();
     user->flags ^= US_ANSI;
     cprintf("\n\n\1f\1cToggling ANSI colour mode configuration..");
@@ -845,8 +845,8 @@ test_ansi_colours(user_t * user)
     cprintf("%s%s%s%s%s",
 	    "\n\nTest Paragraph 2:\n\1f\1g   Now, we're going to check",
 	    " and see if your terminal programme is\n   capable of ",
-            "displaying colours properly.  This paragraph is being\n",
-            "   displayed with the \1cA\1bN\1cS\1gI colours \1rON\1g.",
+	    "displaying colours properly.  This paragraph is being\n",
+	    "   displayed with the \1cA\1bN\1cS\1gI colours \1rON\1g.",
 	    " This paragraph might\n   not look correct.\1a\n\n");
 
     user->flags ^= US_ANSI;
@@ -870,33 +870,29 @@ void
 _edit_profile(const unsigned int a, const long b, void *c)
 {
     FILE *fp = NULL;
-    char filename[L_FILENAME];
-    char *profile = NULL;
+    char filename[L_FILENAME], *profile = NULL;
 
     cprintf(_("Are you sure you want to edit your profile? (y/n) "));
     if (yesno() == NO) {
-        return;
+	return;
     }
-
     sprintf(filename, "%s/profile", getuserdir(who_am_i(NULL)));
 
     /*
      * Get profile data from SQL and store in file.
      */
-    if((fp = fopen(filename, "w") == NULL) {
-        log_it("errors", "Can't open profile: %s", filename);
-        cprintf(_("\1f\1rUnable to fopen() profile file!\n"));
-        return;
+    if ((fp = fopen(filename, "w")) == NULL) {
+	log_it("errors", "Can't open profile: %s", filename);
+	cprintf(_("\1f\1rUnable to fopen() profile file!\n"));
+	return;
     }
-
-    if( (mono_sql_read_profile(user->usernum, &profile)) == -1) {
-        xfree(profile);
-        log_it("errors", "mono_sql_read_profile() returned -1");
-        cprintf(_("\1f\1rUnble to fetch profile from database!\n"));
-        return;
+    if ((mono_sql_read_profile(usersupp->usernum, &profile)) == -1) {
+	xfree(profile);
+	log_it("errors", "mono_sql_read_profile() returned -1");
+	cprintf(_("\1f\1rUnble to fetch profile from database!\n"));
+	return;
     }
-
-    fprintf(fp, "%s", profile );
+    fprintf(fp, "%s", profile);
     fclose(fp);
     xfree(profile);
 
@@ -908,18 +904,17 @@ _edit_profile(const unsigned int a, const long b, void *c)
     /*
      * Dump profile data back into database.
      */
-    if( (profile = map_file( filename )) == NULL) {
-        xfree(profile);
-        log_it("errors", "Can't edit profile: %s", filename);
-        cprintf(_("\1f\1rUnable to mmap() profile file contents!\n"));
-        return;
+    if ((profile = map_file(filename)) == NULL) {
+	xfree(profile);
+	log_it("errors", "Can't edit profile: %s", filename);
+	cprintf(_("\1f\1rUnable to mmap() profile file contents!\n"));
+	return;
     }
-
-    if( (mono_sql_write_profile(user->usernum, profile)) == -1) {
-        xfree(profile);
-        log_it("errors", "mono_sql_write_profile() returned -1");
-        cprintf(_("\1f\1rUnble to mmap() file contents!\n"));
-        return;
+    if ((mono_sql_write_profile(usersupp->usernum, profile)) == -1) {
+	xfree(profile);
+	log_it("errors", "mono_sql_write_profile() returned -1");
+	cprintf(_("\1f\1rUnble to mmap() file contents!\n"));
+	return;
     }
     xfree(profile);
     check_profile_updated();
@@ -938,9 +933,8 @@ _change_profile(const unsigned int a, const long b, void *c)
 
     cprintf(_("Are you sure you want to change your profile? (y/n) "));
     if (yesno() == NO) {
-        return;
+	return;
     }
-
     cprintf(_("\1yYou now have seven lines to create a nice profile of yourself.\1g\n\n"));
 
 #ifdef CLIENTSRC
@@ -995,11 +989,11 @@ _change_address(const unsigned int a, const long b, void *c)
 {
     cprintf(_("\1f\1gChange address.\n"));
     if ((usersupp->priv & PRIV_DEGRADED) || (!(usersupp->priv & PRIV_VALIDATED))) {
-        enter_reginfo();
+	enter_reginfo();
     } else
-        cprintf("\1y\1f%s%s",
-	    "You can not change your address info once you are validated.\n",
-            "\1y(You can \1w<\1ry\1w>\1yell to ask the sysops to change it.)\n");
+	cprintf("\1y\1f%s%s",
+	   "You can not change your address info once you are validated.\n",
+	"\1y(You can \1w<\1ry\1w>\1yell to ask the sysops to change it.)\n");
 
 }
 
@@ -1166,7 +1160,7 @@ void
 toggle_beeps(void)
 {
     usersupp->flags ^= US_BEEP;
-    cprintf("Your %sBeeps are now %sabled.", config.express, 
+    cprintf("Your %sBeeps are now %sabled.", config.express,
 	    usersupp->flags & US_BEEP ? "\1gen" : "\1rdis");
     writeuser(usersupp, 0);
     return;
@@ -1385,7 +1379,7 @@ static unsigned int
 _get_locale(const unsigned long config_flags)
 {
     if (config_flags & CO_EUROPEANDATE)
-        return 0;
+	return 0;
     return 1;
 }
 
@@ -1412,66 +1406,66 @@ _set_date_display(const unsigned int bongo, const long bouncing, void *horse)
 }
 
 static float
-_get_monoholic_rating(const user_t *user)
+_get_monoholic_rating(const user_t * user)
 {
-    return ((float) user->posted / (float) user->timescalled) + ((float) user->x_s / (float) user->timescalled / 100) + ((float) user->timescalled/4000) + ((float) user->priv / 20000);
+    return ((float) user->posted / (float) user->timescalled) + ((float) user->x_s / (float) user->timescalled / 100) + ((float) user->timescalled / 4000) + ((float) user->priv / 20000);
 }
 
 static char *
-_get_monoholic_flag(const user_t *user)
+_get_monoholic_flag(const user_t * user)
 {
     float var = 0;
 
     var = _get_monoholic_rating(user);
 
-    if((var < 1.8) || (user->timescalled < 666))
-        return "";
-    if(var < 1.8)
-        return "\1f\1w* \1yAspiring Monoholic \1w* ";
-    if(var < 2)
-        return "\1f\1w* \1yMonoholic \1w* ";
-    if(var < 2.5)
-        return "\1f\1w* \1gDetermined Monoholic \1w* ";
-    if(var < 3)
-        return "\1f\1w* \1gDedicated Monoholic \1w* ";
-    if(var < 3.5)
-        return "\1f\1w* \1gCommitted Monoholic \1w* ";
-    if(var < 4)
-        return "\1f\1w* \1gGreat Monoholic \1w* ";
-    if(var < 5)
-        return "\1f\1w* \1gGrand Monoholic \1w* ";
-    if(var < 6)
-        return "\1f\1w* \1gHigh Monoholic \1w* ";
-    if(var < 7)
-        return "\1f\1w* \1gSupreme Monoholic \1w* ";
-    if(var < 8)
-        return "\1f\1w* \1bGreat High Monoholic \1w* ";
-    if(var < 9)
-        return "\1f\1w* \1bGrand High Monoholic \1w* ";
-    if(var < 10)
-        return "\1f\1w* \1bSupreme High Monoholic \1w* ";
-    if(var < 11)
-        return "\1f\1w* \1bExalted Great Monoholic \1w* ";
-    if(var < 12)
-        return "\1f\1w* \1bExalted Grand Monoholic \1w* ";
-    if(var < 13)
-        return "\1f\1w* \1bExalted High Monoholic \1w* ";
-    if(var < 14)
-        return "\1f\1w* \1bExalted Supreme Monoholic \1w* ";
-    if(var < 15)
-        return "\1f\1w* \1pSupreme Exalted High Monoholic \1w* ";
-    if(var < 16)
-        return "\1f\1w* \1pSupreme Exalted Great Monoholic \1w* ";
-    if(var < 17)
-        return "\1f\1w* \1pSupreme Exalted Grand Monoholic \1w* ";
-    if(var < 18)
-        return "\1f\1w* \1pSupreme Exalted High Monoholic \1w* ";
+    if ((var < 1.8) || (user->timescalled < 666))
+	return "";
+    if (var < 1.8)
+	return "\1f\1w* \1yAspiring Monoholic \1w* ";
+    if (var < 2)
+	return "\1f\1w* \1yMonoholic \1w* ";
+    if (var < 2.5)
+	return "\1f\1w* \1gDetermined Monoholic \1w* ";
+    if (var < 3)
+	return "\1f\1w* \1gDedicated Monoholic \1w* ";
+    if (var < 3.5)
+	return "\1f\1w* \1gCommitted Monoholic \1w* ";
+    if (var < 4)
+	return "\1f\1w* \1gGreat Monoholic \1w* ";
+    if (var < 5)
+	return "\1f\1w* \1gGrand Monoholic \1w* ";
+    if (var < 6)
+	return "\1f\1w* \1gHigh Monoholic \1w* ";
+    if (var < 7)
+	return "\1f\1w* \1gSupreme Monoholic \1w* ";
+    if (var < 8)
+	return "\1f\1w* \1bGreat High Monoholic \1w* ";
+    if (var < 9)
+	return "\1f\1w* \1bGrand High Monoholic \1w* ";
+    if (var < 10)
+	return "\1f\1w* \1bSupreme High Monoholic \1w* ";
+    if (var < 11)
+	return "\1f\1w* \1bExalted Great Monoholic \1w* ";
+    if (var < 12)
+	return "\1f\1w* \1bExalted Grand Monoholic \1w* ";
+    if (var < 13)
+	return "\1f\1w* \1bExalted High Monoholic \1w* ";
+    if (var < 14)
+	return "\1f\1w* \1bExalted Supreme Monoholic \1w* ";
+    if (var < 15)
+	return "\1f\1w* \1pSupreme Exalted High Monoholic \1w* ";
+    if (var < 16)
+	return "\1f\1w* \1pSupreme Exalted Great Monoholic \1w* ";
+    if (var < 17)
+	return "\1f\1w* \1pSupreme Exalted Grand Monoholic \1w* ";
+    if (var < 18)
+	return "\1f\1w* \1pSupreme Exalted High Monoholic \1w* ";
     return "\1f\1w(* \1rPenultimate Monoholic \1w*)";
 
 }
 
 static void
-_print_priv_flags(const user_t *user, forumlist_t *p)
+_print_priv_flags(const user_t * user, forumlist_t * p)
 {
     cprintf("\n");
     if (user->priv & PRIV_WIZARD)
@@ -1498,7 +1492,7 @@ _print_priv_flags(const user_t *user, forumlist_t *p)
 }
 
 static void
-_print_user_flags(const user_t *user)
+_print_user_flags(const user_t * user)
 {
 
 #ifndef NO_MONOHOLIC_FLAG
@@ -1563,7 +1557,7 @@ _timezone_menu(const unsigned int a, const long b, void *c)
     strcpy(the_menu_format.menu_title, "\1f\1g\nTimezone Setup Menu:  Continent\n\n");
     the_menu_format.gen_1_idx = 1;
     strcpy(the_menu_format.menu_prompt,
-               "\1f\1gSelect Continent: \1w--");
+	   "\1f\1gSelect Continent: \1w--");
 
     MENU_PROCESS_INTERNALS;
     MENU_DISPLAY(1);
@@ -1574,12 +1568,12 @@ _timezone_menu(const unsigned int a, const long b, void *c)
 	char str[40];
 	strcpy(str, usersupp->timezone);
 	set_timezone(str);
-	cprintf( "\n\1f\1gTimezone set to \1w[\1y%s\1w]\1g\1c\n", usersupp->timezone );
-    } else 
-	cprintf( "\1f\1gTimezone not set, using %s timezone.", BBSNAME );
+	cprintf("\n\1f\1gTimezone set to \1w[\1y%s\1w]\1g\1c\n", usersupp->timezone);
+    } else
+	cprintf("\1f\1gTimezone not set, using %s timezone.", BBSNAME);
 }
 
-static void _tz2str(const unsigned int, const long, void*);
+static void _tz2str(const unsigned int, const long, void *);
 
 void
 _tzones_africa(const unsigned int a, const long b, void *c)
@@ -1697,7 +1691,7 @@ _tzones_africa(const unsigned int a, const long b, void *c)
     the_menu_format.gen_1_idx = 1;
     the_menu_format.auto_columnize = 1;
     strcpy(the_menu_format.menu_prompt,
-               "\1f\1gCity/Country in your Timezone: \1w--");
+	   "\1f\1gCity/Country in your Timezone: \1w--");
 
     MENU_PROCESS_INTERNALS;
     MENU_DISPLAY(1);
@@ -1816,12 +1810,12 @@ _tzones_america(const unsigned int a, const long b, void *c)
     MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Winnipeg");
     MK_TMPSTR(":America/Yellowknife");
     MENU_ADDITEM(_tz2str, 0, 0, (char *) tmpstr, "t", "Yellowknife");
-	
+
     the_menu_format.gen_1_idx = 1;
     strcpy(the_menu_format.menu_title, "\1f\1g\n\nTimezone Setup Menu:  City/Country\n\n");
     the_menu_format.auto_columnize = 1;
     strcpy(the_menu_format.menu_prompt,
-               "\1f\1gCity/Country in your Timezone: \1w--");
+	   "\1f\1gCity/Country in your Timezone: \1w--");
 
     MENU_PROCESS_INTERNALS;
     MENU_DISPLAY(1);
@@ -1853,7 +1847,7 @@ _tzones_antarctica(const unsigned int a, const long b, void *c)
     the_menu_format.gen_1_idx = 1;
     the_menu_format.auto_columnize = 1;
     strcpy(the_menu_format.menu_prompt,
-               "\1f\1cCool!\1g  Antarctica region: \1w--");
+	   "\1f\1cCool!\1g  Antarctica region: \1w--");
 
     MENU_PROCESS_INTERNALS;
     MENU_DISPLAY(1);
@@ -1985,7 +1979,7 @@ _tzones_asia(const unsigned int a, const long b, void *c)
     the_menu_format.gen_1_idx = 1;
     the_menu_format.auto_columnize = 1;
     strcpy(the_menu_format.menu_prompt,
-               "\1f\1gCity/Country in your Timezone: \1w--");
+	   "\1f\1gCity/Country in your Timezone: \1w--");
 
     MENU_PROCESS_INTERNALS;
     MENU_DISPLAY(1);
@@ -2048,7 +2042,7 @@ _tzones_australlia(const unsigned int a, const long b, void *c)
     the_menu_format.gen_1_idx = 1;
     the_menu_format.auto_columnize = 1;
     strcpy(the_menu_format.menu_prompt,
-               "\1f\1gCity/Region in your Timezone: \1w--");
+	   "\1f\1gCity/Region in your Timezone: \1w--");
 
     MENU_PROCESS_INTERNALS;
     MENU_DISPLAY(1);
@@ -2164,7 +2158,7 @@ _tzones_europe(const unsigned int a, const long b, void *c)
     the_menu_format.gen_1_idx = 1;
     the_menu_format.auto_columnize = 1;
     strcpy(the_menu_format.menu_prompt,
-               "\1f\1gCity/Country in your Timezone: \1w--");
+	   "\1f\1gCity/Country in your Timezone: \1w--");
 
     MENU_PROCESS_INTERNALS;
     MENU_DISPLAY(1);
@@ -2173,7 +2167,7 @@ _tzones_europe(const unsigned int a, const long b, void *c)
 }
 
 void
-_tz2str(const unsigned int a, const long b, void* tzstring)
+_tz2str(const unsigned int a, const long b, void *tzstring)
 {
     strcpy(usersupp->timezone, tzstring);
 }
