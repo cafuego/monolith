@@ -234,17 +234,7 @@ edit_field(user_t * user, int fieldnum)
 		uadmin_need_rewrite = TRUE;
 	    }
 	    break;
-/*
- * case 'E':
- * change_friend_enemy_list(user, -1);
- * log_sysop_action("changed %s's friend list\n", user->username);
- * break;
- * 
- * case 'F':
- * change_friend_enemy_list(user, 1);
- * log_sysop_action("changed %s's enemy list\n", user->username);
- * break;
- */
+
 	case 'f':
 	    cprintf("Enter new Flying: ");
 	    getline(user->doing, 30, 0);

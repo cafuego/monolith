@@ -10,13 +10,13 @@
 #include <signal.h>
 #include <stdio.h>
 #include <time.h>
-#include <unistd.h>		/* added by michel */
-#include <string.h>		/* dito */
-#include <stdlib.h>		/* too */
+#include <unistd.h>	
+#include <string.h>
+#include <stdlib.h>
 #include <sys/file.h>
 
 #ifdef USE_MYSQL
-  #include MYSQL_HEADER
+#include MYSQL_HEADER
 #endif
 
 #ifdef ENABLE_NLS
@@ -55,14 +55,13 @@
 #include "menu.h"
 #include "qc.h"
 #include "routines.h"
-#include "read_menu.h"  // display_short_prompt()
+#include "read_menu.h"
 #include "commands.h"
 #include "routines2.h"
 #include "enter_message.h"
 #include "userfile.h"
 
 int need_rewrite;
-
 
 static void show_qls(void);
 static int print_hosts_simple( unsigned int forum_id );

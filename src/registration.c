@@ -49,12 +49,12 @@ enter_reginfo()
 	change_info(usersupp, FALSE);
 	toggle_hidden_info(usersupp);
 	writeuser(usersupp, 0);
-    mono_sql_u_update_registration( usersupp->usernum,
-        usersupp->RGname, usersupp->RGaddr, usersupp->RGzip, usersupp->RGcity,
-	usersupp->RGstate, usersupp->RGcountry, usersupp->RGphone );
-	mono_sql_u_update_hidden( usersupp->usernum, usersupp->hidden_info );
-    mono_sql_u_update_email( usersupp->usernum, usersupp->RGemail );
-    mono_sql_u_update_url( usersupp->usernum, usersupp->RGurl );
+	mono_sql_u_update_registration(usersupp->usernum,
+	       usersupp->RGname, usersupp->RGaddr, usersupp->RGzip, usersupp->RGcity,
+		 usersupp->RGstate, usersupp->RGcountry, usersupp->RGphone);
+	mono_sql_u_update_hidden(usersupp->usernum, usersupp->hidden_info);
+	mono_sql_u_update_email(usersupp->usernum, usersupp->RGemail);
+	mono_sql_u_update_url(usersupp->usernum, usersupp->RGurl);
     }
 }
 
@@ -96,7 +96,7 @@ change_info(user_t * user, int override)
 #define ADDR_EMAIL	128
 #define ADDR_URL	256
 
-static void _address_edit(const unsigned int, const long, void *);
+    static void _address_edit(const unsigned int, const long, void *);
 
     char tempstr[100];
     user_t *tempuser;
@@ -106,57 +106,57 @@ static void _address_edit(const unsigned int, const long, void *);
 
     for (;;) {
 	MENU_INIT;
-   /* 
-    * WARNING: since all menu object's void pointer function arg
-    * point at the same thing in memory, in this case, a pointer
-    * to a malloc'd user_t, we -DO NOT- want MENU_DESTROY to try
-    * and free one for each menu item!  instead we set 
-    * destroy_void_object in the menu format struct to off, and
-    * free() the object explicitly at the end of the function.
-    */
+	/* 
+	 * WARNING: since all menu object's void pointer function arg
+	 * point at the same thing in memory, in this case, a pointer
+	 * to a malloc'd user_t, we -DO NOT- want MENU_DESTROY to try
+	 * and free one for each menu item!  instead we set 
+	 * destroy_void_object in the menu format struct to off, and
+	 * free() the object explicitly at the end of the function.
+	 */
 	the_menu_format.destroy_void_object = 0;
 
 	memcpy(tempuser, user, sizeof(user_t));
 
-	strcpy(the_menu_format.menu_title, 
-		"\n\1f\1w[\1gRegistration Information Menu\1w]\n\n");
+	strcpy(the_menu_format.menu_title,
+	       "\n\1f\1w[\1gRegistration Information Menu\1w]\n\n");
 
 	if (override || (user->priv & PRIV_DEGRADED)) {
 	    sprintf(tempstr, "REAL name: %s", tempuser->RGname);
 	    MENU_ADDITEM(_address_edit, ADDR_NAME, RGnameLEN,
-		      (user_t *) tempuser, "t", tempstr);
+			 (user_t *) tempuser, "t", tempstr);
 	}
 	sprintf(tempstr, "Address:   %s", tempuser->RGaddr);
 	MENU_ADDITEM(_address_edit, ADDR_ADDRESS, RGaddrLEN,
-		      (user_t *) tempuser, "t", tempstr);
+		     (user_t *) tempuser, "t", tempstr);
 
 	sprintf(tempstr, "City/town: %s", tempuser->RGcity);
 	MENU_ADDITEM(_address_edit, ADDR_CITY, RGcityLEN,
-		      (user_t *) tempuser, "t", tempstr);
+		     (user_t *) tempuser, "t", tempstr);
 
 	sprintf(tempstr, "ZIP code:  %s", tempuser->RGzip);
 	MENU_ADDITEM(_address_edit, ADDR_ZIP, RGzipLEN,
-		      (user_t *) tempuser, "t", tempstr);
+		     (user_t *) tempuser, "t", tempstr);
 
 	sprintf(tempstr, "State:     %s", tempuser->RGstate);
 	MENU_ADDITEM(_address_edit, ADDR_STATE, RGstateLEN,
-		      (user_t *) tempuser, "t", tempstr);
+		     (user_t *) tempuser, "t", tempstr);
 
 	sprintf(tempstr, "Country:   %s", tempuser->RGcountry);
 	MENU_ADDITEM(_address_edit, ADDR_COUNTRY, RGcountryLEN,
-		      (user_t *) tempuser, "t", tempstr);
+		     (user_t *) tempuser, "t", tempstr);
 
 	sprintf(tempstr, "Phone:     %s", tempuser->RGphone);
 	MENU_ADDITEM(_address_edit, ADDR_PHONE, RGphoneLEN,
-		      (user_t *) tempuser, "t", tempstr);
+		     (user_t *) tempuser, "t", tempstr);
 
 	sprintf(tempstr, "Email:     %s", tempuser->RGemail);
 	MENU_ADDITEM(_address_edit, ADDR_EMAIL, RGemailLEN,
-		      (user_t *) tempuser, "t", tempstr);
+		     (user_t *) tempuser, "t", tempstr);
 
 	sprintf(tempstr, "URL:       %s", tempuser->RGurl);
 	MENU_ADDITEM(_address_edit, ADDR_URL, RGurlLEN,
-		      (user_t *) tempuser, "t", tempstr);
+		     (user_t *) tempuser, "t", tempstr);
 
 	the_menu_format.gen_1_idx = 1;
 	MENU_PROCESS_INTERNALS;
@@ -165,14 +165,14 @@ static void _address_edit(const unsigned int, const long, void *);
 	if (!MENU_EXEC_COMMAND)
 	    break;
 
-	memcpy(user, tempuser, sizeof(user_t));  
+	memcpy(user, tempuser, sizeof(user_t));
 	MENU_DESTROY;
     }
     MENU_DESTROY;
     xfree(tempuser);
 }
 
-void 
+void
 _address_edit(const unsigned int fieldname, const long fieldlen, void *user)
 {
     user_t *t_user;
@@ -181,68 +181,68 @@ _address_edit(const unsigned int fieldname, const long fieldlen, void *user)
     t_user = (user_t *) user;
 
     switch (fieldname) {
-	case ADDR_NAME:	
-	    cprintf("\1f\1g\nNew Name \1w[\1g%s\1w]:\1g ",t_user->RGname);
+	case ADDR_NAME:
+	    cprintf("\1f\1g\nNew Name \1w[\1g%s\1w]:\1g ", t_user->RGname);
 	    break;
-	case ADDR_ADDRESS:	
-	    cprintf("\1f\1g\nNew Address \1w[\1g%s\1w]:\1g ",t_user->RGaddr);
+	case ADDR_ADDRESS:
+	    cprintf("\1f\1g\nNew Address \1w[\1g%s\1w]:\1g ", t_user->RGaddr);
 	    break;
-	case ADDR_CITY:	
-	    cprintf("\1f\1g\nNew City \1w[\1g%s\1w]:\1g ",t_user->RGcity);
+	case ADDR_CITY:
+	    cprintf("\1f\1g\nNew City \1w[\1g%s\1w]:\1g ", t_user->RGcity);
 	    break;
-	case ADDR_ZIP:	
-	    cprintf("\1f\1g\nNew ZIP \1w[\1g%s\1w]:\1g ",t_user->RGzip);
+	case ADDR_ZIP:
+	    cprintf("\1f\1g\nNew ZIP \1w[\1g%s\1w]:\1g ", t_user->RGzip);
 	    break;
-	case ADDR_STATE:	
-	    cprintf("\1f\1g\nNew State \1w[\1g%s\1w]:\1g ",t_user->RGstate);
+	case ADDR_STATE:
+	    cprintf("\1f\1g\nNew State \1w[\1g%s\1w]:\1g ", t_user->RGstate);
 	    break;
-	case ADDR_COUNTRY:	
-	    cprintf("\1f\1g\nNew Country \1w[\1g%s\1w]:\1g ",t_user->RGcountry);
+	case ADDR_COUNTRY:
+	    cprintf("\1f\1g\nNew Country \1w[\1g%s\1w]:\1g ", t_user->RGcountry);
 	    break;
-	case ADDR_PHONE:	
-	    cprintf("\1f\1g\nNew Phone \1w[\1g%s\1w]:\1g ",t_user->RGphone);
+	case ADDR_PHONE:
+	    cprintf("\1f\1g\nNew Phone \1w[\1g%s\1w]:\1g ", t_user->RGphone);
 	    break;
-	case ADDR_EMAIL:	
-	    cprintf("\1f\1g\nNew Email \1w[\1g%s\1w]:\1g ",t_user->RGemail);
+	case ADDR_EMAIL:
+	    cprintf("\1f\1g\nNew Email \1w[\1g%s\1w]:\1g ", t_user->RGemail);
 	    break;
-	case ADDR_URL:	
-	    cprintf("\1f\1g\nNew URL \1w[\1g%s\1w]:\1g ",t_user->RGurl);
+	case ADDR_URL:
+	    cprintf("\1f\1g\nNew URL \1w[\1g%s\1w]:\1g ", t_user->RGurl);
 	    break;
     }
 
     string[0] = '\0';
     getline(string, fieldlen, 1);
     if (strlen(string))
-        strremcol(string);
+	strremcol(string);
     else
 	return;
 
     switch (fieldname) {
-	case ADDR_NAME:	
+	case ADDR_NAME:
 	    strcpy(t_user->RGname, string);
 	    break;
-	case ADDR_ADDRESS:	
+	case ADDR_ADDRESS:
 	    strcpy(t_user->RGaddr, string);
 	    break;
-	case ADDR_CITY:	
+	case ADDR_CITY:
 	    strcpy(t_user->RGcity, string);
 	    break;
-	case ADDR_ZIP:	
+	case ADDR_ZIP:
 	    strcpy(t_user->RGzip, string);
 	    break;
-	case ADDR_STATE:	
+	case ADDR_STATE:
 	    strcpy(t_user->RGstate, string);
 	    break;
-	case ADDR_COUNTRY:	
+	case ADDR_COUNTRY:
 	    strcpy(t_user->RGcountry, string);
 	    break;
-	case ADDR_PHONE:	
+	case ADDR_PHONE:
 	    strcpy(t_user->RGphone, string);
 	    break;
-	case ADDR_EMAIL:	
+	case ADDR_EMAIL:
 	    strcpy(t_user->RGemail, string);
 	    break;
-	case ADDR_URL:	
+	case ADDR_URL:
 	    strcpy(t_user->RGurl, string);
 	    break;
     }
@@ -260,28 +260,28 @@ toggle_hidden_info(user_t * user)
 	user->flags ^= US_NOHIDE;
     }
     do {
-        time_t online_for;
+	time_t online_for;
 
-        online_for = (time(0) - user->laston_from) / 60;
+	online_for = (time(0) - user->laston_from) / 60;
 
 	cprintf("\1f\1c---- This is your info as it is visible for other users:\n");
-    
+
 	cprintf("\1f\1y%s\1g\n", user->username);
 	dis_regis(user, FALSE);
 
-        cprintf("\1r\1fONLINE \1cfor \1y%ld:%2.2ld \1c",
-		 online_for / 60, online_for % 60);
+	cprintf("\1r\1fONLINE \1cfor \1y%ld:%2.2ld \1c",
+		online_for / 60, online_for % 60);
 
-        if (!(usersupp->flags & US_HIDDENHOST))
-            cprintf("from \1r%s\1c", user->lasthost);
+	if (!(usersupp->flags & US_HIDDENHOST))
+	    cprintf("from \1r%s\1c", user->lasthost);
 
 	cprintf("\n\n\1f\1c---- This is your full info:\n");
 
 	cprintf("\1f\1y%s\1g\n", user->username);
 	dis_regis(user, TRUE);
-        cprintf("\1r\1fONLINE \1cfor \1y%ld:%2.2ld \1c",
-		 online_for / 60, online_for % 60);
-        cprintf("from \1r%s\1c\n", user->lasthost);
+	cprintf("\1r\1fONLINE \1cfor \1y%ld:%2.2ld \1c",
+		online_for / 60, online_for % 60);
+	cprintf("from \1r%s\1c\n", user->lasthost);
 
 	more(MENUDIR "/menu_hide_info", 1);
 	cmd = get_single_quiet("1234567890anq? ");
@@ -342,21 +342,22 @@ is_allowed_email(const char *email)
     FILE *fp;
     char buf[80];
 
-    fp = xfopen( BBSDIR "/etc/banned_email", "r", FALSE );
-    if ( fp == NULL )  return TRUE;
+    fp = xfopen(BBSDIR "/etc/banned_email", "r", FALSE);
+    if (fp == NULL)
+	return TRUE;
 
     while (fgets(buf, 79, fp) != NULL) {
 	if (buf[0] == '#')
 	    continue;
 	buf[(strlen(buf))] = '\0';
 	if (EQ(email, buf)) {
-	    more( BBSDIR "/share/newuser/prohibemail", 0);
+	    more(BBSDIR "/share/newuser/prohibemail", 0);
 	    fclose(fp);
 	    logoff(0);
 	    return FALSE;
 	}
 	if (strstr(email, buf) != NULL) {
-	    more( BBSDIR "/share/newuser/email_not_accepted", 0);
+	    more(BBSDIR "/share/newuser/email_not_accepted", 0);
 	    fclose(fp);
 	    return FALSE;
 	}

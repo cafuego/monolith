@@ -60,10 +60,6 @@
 #include "usertools.h"
 #undef extern
 
-/* PR additions for debugging */
-#define UID_MathFox 23
-#define PR_DEBUG (usersupp->usernum == UID_MathFox)
-
 /* static vars */
 
 static char *_locale[] =
@@ -665,9 +661,6 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
 	    dest_forumlist(p);
 	}
     }
-
-/*    IFSYSOP mono_sql_uf_list_hosts_by_user( user->usernum ); */
-
 
     /* IS ONLINE */
     if (mono_return_pid(user->username) != -1) {
