@@ -15,6 +15,7 @@
 
 #include "monolith.h"
 #include "libmono.h"
+#include "sql_userforum.h"
 #include "ext.h"
 #include "setup.h"
 #include "telnet.h"

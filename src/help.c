@@ -6,6 +6,7 @@
 
 #include <time.h>
 #include <stdio.h>
+#include <string.h>
 #include <sys/types.h>
 
 #include "monolith.h"
@@ -78,6 +79,13 @@ more_wrapper(const unsigned int col, const long bing, const char *filename)
  * 
  */
 #define M_FILENAME filename[0]='\0'; sprintf(filename, "%s%s"
+
+static void
+online_help_wrapper(const unsigned int a, const long b, const char *string)
+{
+if (strlen(string))
+    online_help(string[0]);
+}
 
 
 void
@@ -454,6 +462,7 @@ online_help(const char context)
 	if (strchr("lsBH", context)) {
 	    M_FILENAME, HELPDIR, "commands/short_helplist");
 	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Online Help", "\?");
+//	MENU_ADDITEM(online_help_wrapper, 1, 0, "s", "ti", "Online Help", "\?");
 	}
 	if (strchr("sBH", context)) {
 	    M_FILENAME, HELPDIR, "commands/commands_longlist");
@@ -484,8 +493,10 @@ online_help(const char context)
 	    break;
 	}
 	MENU_DESTROY;
-	cprintf("\nPress a key when done..");
-	inkey();
+	if (!strlen(filename)) {
+    	    cprintf("\nPress a key when done..");
+	    inkey();
+	}
 
     }
 }

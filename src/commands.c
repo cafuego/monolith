@@ -21,6 +21,8 @@
 #include "telnet.h"
 #include "ext.h"
 #include "setup.h"
+#include "sql_config.h"
+#include "sql_userforum.h"
 
 #define extern
 #include "commands.h"
@@ -40,6 +42,7 @@
 #include "key.h"
 #include "rooms.h"
 #include "messages.h"
+#include "sql_goto.h"
 #include "statusbar.h"
 #include "usertools.h"
 #include "registration.h"
@@ -87,8 +90,6 @@ main_menu()
     int cmd = 0;
 
     for (;;) {
-
-test_dlist_code();
 
 #ifdef DEBUG_MEMORY_LEAK
 /*      cprintf("\n\1a\1wMemory Debug: %d objects, Total xmalloc() calls: %lu \1a", allocated_ctr, allocated_total); */
@@ -1370,7 +1371,7 @@ config_menu()
 	    case '?':
 
 		cprintf("(Config Options)\n");
-		// more(MENUDIR "/menu_config", 1);
+		more(MENUDIR "/menu_config", 1);
 
 		online_help('c');
 		break;

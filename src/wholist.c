@@ -124,7 +124,6 @@ wholist(int level, const user_t * user)
     i = shm->first;
     while (i != -1) {
 	int xing, chat;
-	unsigned int id2;
 
 	r = &(shm->wholist[i]);
 	strcpy(line, "");
@@ -136,7 +135,7 @@ wholist(int level, const user_t * user)
 	hour = tdif / 60;
 	xing = (EQ(r->x_ing_to, username) || EQ(r->x_ing_to, "Everyone"));
 	chat = (is_chat_subscribed(user->chat, r->x_ing_to));
-	if ((user != NULL) && is_my_friend(r->username))
+	if ((user != NULL) && is_cached_friend(r->username))
 	    (void) sprintf(col, "%s", FRIENDCOL);
 	else
 	    (void) sprintf(col, "%s", USERCOL);
@@ -164,8 +163,9 @@ wholist(int level, const user_t * user)
 				   ,((r->flags & B_POSTING) ? "\1y+" : ((xing) ? "\1yx" : ((chat) ? "\1pc" : " "))));
 
 		    q = line + strlen(line);
-		    j = -1;
+/*		    j = -1;
 		    if ( mono_sql_u_name2id( r->username, &id2 ) == -1 ) {
+		    if (is_cached_friend(r->username) {
 		       j = -1;
                     } else {
          	       if ( mono_sql_uu_user2quickx( user->usernum, id2, &j ) == -1 ){ 
@@ -174,6 +174,9 @@ wholist(int level, const user_t * user)
                           }                     
 
                     }
+*/
+		    j = cached_name_to_x(r->username);
+
 		    if ((user != NULL) && (j >= 0)) {
 			(void) sprintf(q, "\1c%d\1p] ", j);
 		    } else {

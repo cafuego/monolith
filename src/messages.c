@@ -1657,7 +1657,7 @@ count_mail_messages(void)
 }
 
 void
-x_to_mail( char *x, char *to_user )
+x_to_mail( const char *x, char *to_user )
 {
 
     FILE *fp;

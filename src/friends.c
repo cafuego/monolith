@@ -14,11 +14,12 @@
 
 #include "monolith.h"
 #include "libmono.h"
+#include "sql_useruser.h"
 
 #include "ext.h"
-#include "help.h"
 #include "input.h"
 #include "inter.h"
+#include "help.h"
 #include "routines2.h"
 
 #define extern
@@ -26,9 +27,11 @@
 #undef extern
 
 static void menu_friend_add(int param);
-char * menu_friend_list(int param);
+char *menu_friend_list(int param);
 static void menu_friend_remove(int param);
 static void menu_friend_quick_add(void);
+
+friend_t *friend_cache = NULL;
 
 /*
  * ------------------------------------------------ 
@@ -40,26 +43,77 @@ static void menu_friend_quick_add(void);
 int
 is_my_enemy(const char *person)
 {
-    return is_enemy( username, person );
+    return is_enemy(username, person);
 }
 
 int
 is_my_friend(const char *person)
 {
-    return is_friend( username, person );
+    return is_friend(username, person);
+}
+
+void
+update_friends_cache(void)
+{
+    if (friend_cache != NULL)	/* flush any existing cache to /dev/null */
+        dest_friends_list(friend_cache);
+	
+    mono_sql_uu_read_list(usersupp->usernum, &friend_cache, L_FRIEND);
+}
+
+int
+is_cached_friend(const char *name)
+{
+    friend_t *p;
+
+    p = friend_cache;
+    while(p) {
+        if (strlen(p->name))
+	    if (!strcmp(name, p->name))
+	        return 1;
+	p = p->next;
+    }
+    return 0;
+}
+
+char *
+cached_x_to_name(const int slot)
+{
+    friend_t *p;
+    
+    p = friend_cache;
+    while(p) {
+        if (p->quickx == slot)
+            return (strlen(p->name)) ? p->name : "";
+        p = p->next;
+    }
+    return "";
+}
+
+int
+cached_name_to_x(const char * bobs_name)
+{
+    friend_t *p;
+    
+    p = friend_cache;
+    while(p) {
+	if (!strcmp(p->name, bobs_name))
+	    return p->quickx;
+	p = p->next;
+    }
+    return -1;
 }
 
 void
 friends_online()
 {
     unsigned int j = 0, k = 0;
-    char name[L_USERNAME + 1], bbs[L_BBSNAME + 1];
     friend_t *p;
-    int i, x;
+    int i;
 
     cprintf("\n");
 
-    mono_sql_uu_read_list( usersupp->usernum, &p, L_FRIEND );
+    mono_sql_uu_read_list(usersupp->usernum, &p, L_FRIEND);
 
     while (p) {
 	k = 0;
@@ -67,7 +121,7 @@ friends_online()
 	    k = 1;
 	}
 	if (k == 1) {
-	    mono_sql_uu_user2quickx( usersupp->usernum, p->usernum, &i );
+	    mono_sql_uu_user2quickx(usersupp->usernum, p->usernum, &i);
 	    if (i != -1)
 		cprintf("\1f\1w<\1g%d\1w> \1c%-35s%c", i, p->name, j++ % 2 ? '\n' : ' ');
 	    else
@@ -80,7 +134,7 @@ friends_online()
 	cprintf("\n");
     cprintf("\n");
 
-    dest_friends_list( p );
+    dest_friends_list(p);
 
     return;
 }
@@ -114,10 +168,10 @@ menu_friend(int param)
 		cprintf("Help!\n");
 		if (param == FRIEND)
 		    online_help('f');
-		  //  more(MENUDIR "/menu_friend", 1);
+//                  more(MENUDIR "/menu_friend", 1);
 		else
 		    online_help('e');
-		  //  more(MENUDIR "/menu_enemy", 1);
+//                  more(MENUDIR "/menu_enemy", 1);
 		break;
 
 	    case '\n':
@@ -125,6 +179,7 @@ menu_friend(int param)
 	    case ' ':
 	    case 'q':
 		cprintf("\1f\1gQuit.\n");
+		update_friends_cache();
 		return;
 		break;
 
@@ -148,10 +203,10 @@ menu_friend(int param)
 		cprintf("\1f\1g%s \1w-> \1c", (param == FRIEND) ? "Edit X-Friends" : "Edit X-Enemies");
 		cprintf("\1f\1gClearing %slist.\n", (param == FRIEND) ? "friends" : "enemy");
 		if (param == FRIEND) {
-    		    mono_sql_uu_clear_list_by_type( usersupp->usernum, L_FRIEND );
+		    mono_sql_uu_clear_list_by_type(usersupp->usernum, L_FRIEND);
 		} else {
-		    mono_sql_uu_clear_list_by_type( usersupp->usernum, L_ENEMY );
-                }
+		    mono_sql_uu_clear_list_by_type(usersupp->usernum, L_ENEMY);
+		}
 		break;
 
 	    case 'd':
@@ -164,8 +219,8 @@ menu_friend(int param)
 	    case 's':
 		cprintf("\1f\1gList %s.\n", (param == FRIEND) ? "friends" : "enemies");
 		str = menu_friend_list(param);
-                more_string(str);
-                xfree(str);
+		more_string(str);
+		xfree(str);
 		break;
 
 	    case 't':
@@ -190,13 +245,11 @@ menu_friend_add(int param)
     char *name, user[L_USERNAME + 1], bbs[L_BBSNAME + 1];
     int flag;
     unsigned int id2;
-    friend_t frog;
-    user_t *userst;
 
     nox = 1;
     cprintf("\1f\1gEnter username\1w: \1c");
-    if ( param == FRIEND ) flag = L_FRIEND;
-    else if ( param == ENEMY) flag = L_ENEMY;
+    flag = (param == FRIEND) ? L_FRIEND : L_ENEMY;
+
     name = get_name(5);
 
     if (strlen(name) == 0)
@@ -211,17 +264,16 @@ menu_friend_add(int param)
 	    /* reformat name, so we get the full bbs name if they used an abbrev. */
 	    sprintf(name, "%s@%s", user, bbs);
 	}
-    } else if ( mono_sql_u_name2id( name, &id2 ) == -1 ) {
+    } else if (mono_sql_u_name2id(name, &id2) == -1) {
 	cprintf("\1f\1rNo such user.\n");
 	return;
     }
-
-    if (  mono_sql_uu_is_on_list( usersupp->usernum, id2, flag ) == TRUE ) {
+    if (mono_sql_uu_is_on_list(usersupp->usernum, id2, flag) == TRUE) {
 	cprintf("\1f\1y%s \1gis already on your %slist.\n", name,
 		(param == FRIEND) ? "friends" : "enemy");
 	return;
     }
-    mono_sql_uu_add_entry( usersupp->usernum, id2, flag );
+    mono_sql_uu_add_entry(usersupp->usernum, id2, flag);
 
     cprintf("\1f\1y%s \1ghas been added to your %slist.\n", name,
 	    (param == FRIEND) ? "friends" : "enemy");
@@ -233,8 +285,8 @@ menu_friend_quick_add()
 {
 
     char command;
-    char *name, user[L_USERNAME + 1], bbs[L_BBSNAME + 1];
-    char old[L_USERNAME+1];
+    char *name;
+    char old[L_USERNAME + 1];
     friend_t f;
     int i;
     unsigned int id2;
@@ -249,17 +301,16 @@ menu_friend_quick_add()
 	return;
 
     i = command - '0';
-	if ( mono_sql_uu_quickx2user( usersupp->usernum, i, &id2 ) == -1 ) {
-          strcpy( old, "" );
-        } else if  ( mono_sql_u_id2name( id2, old ) == -1 ){
-          strcpy( old, "" );
-        }
-
-    if ( strlen( old ) != 0 ) {
+    if (mono_sql_uu_quickx2user(usersupp->usernum, i, &id2) == -1) {
+	strcpy(old, "");
+    } else if (mono_sql_u_id2name(id2, old) == -1) {
+	strcpy(old, "");
+    }
+    if (strlen(old) != 0) {
 	cprintf("\1gDo you want to remove \1y%s \1gfrom slot \1w(\1g%d\1w)\1g ?\1c ", old, i);
 	if (yesno() == NO)
 	    return;
-	mono_sql_uu_remove_quickx( usersupp->usernum, id2 );
+	mono_sql_uu_remove_quickx(usersupp->usernum, id2);
     }
     /* ask new name! */
 
@@ -270,18 +321,18 @@ menu_friend_quick_add()
 	return;
 
     if (strchr(name, '@') != NULL) {
-	cprintf( "\1f\1rSorry, InterBBS names are not allowed.\n" );
+	cprintf("\1f\1rSorry, InterBBS names are not allowed.\n");
 	return;
-    } else if ( mono_sql_u_name2id( name, &id2 ) == -1 ) {
+    } else if (mono_sql_u_name2id(name, &id2) == -1) {
 	cprintf("\1f\1rNo such user.\n");
 	return;
     }
     if (!is_my_friend(name)) {
 	strcpy(f.name, name);
 	f.quickx = i;
-	mono_sql_uu_add_entry( usersupp->usernum, id2, L_FRIEND );
+	mono_sql_uu_add_entry(usersupp->usernum, id2, L_FRIEND);
     } else
-	mono_sql_uu_add_quickx( usersupp->usernum, id2, i );
+	mono_sql_uu_add_quickx(usersupp->usernum, id2, i);
 
     cprintf("\1f\1gUser \1y%s \1gwas added to slot \1w(\1g%d\1w)\1g.\n", name, i);
 
@@ -296,8 +347,7 @@ menu_friend_remove(int param)
     int flag;
 
     nox = 1;
-    if ( param == FRIEND ) flag = L_FRIEND;
-    else if ( param == ENEMY) flag = L_ENEMY;
+    flag = (param == FRIEND) ? L_FRIEND : L_ENEMY;
 
     cprintf("\1f\1gEnter username\1w: \1c");
     name = get_name(5);
@@ -305,14 +355,14 @@ menu_friend_remove(int param)
     if (strlen(name) == 0)
 	return;
 
-    mono_sql_u_name2id( name, &id2 );
+    mono_sql_u_name2id(name, &id2);
 
-    if (  mono_sql_uu_is_on_list( usersupp->usernum, id2, flag ) == FALSE ) {
+    if (mono_sql_uu_is_on_list(usersupp->usernum, id2, flag) == FALSE) {
 	cprintf("\1f\1y%s \1gis not on your %slist.\n", name,
 		(param == FRIEND) ? "friends" : "enemy");
 	return;
     }
-    mono_sql_uu_remove_entry( usersupp->usernum, id2 );
+    mono_sql_uu_remove_entry(usersupp->usernum, id2);
     cprintf("\1f\1y%s \1ghas been removed from your %slist.\n", name,
 	    (param == FRIEND) ? "friends" : "enemy");
     return;
@@ -323,17 +373,15 @@ menu_friend_list(int param)
 {
     unsigned int j = 0;
     friend_t *p;
-    friend_t *list;
     unsigned int flag;
     char line[100], *q;
 
-    q = (char *) xmalloc( 100 * 100 );
+    q = (char *) xmalloc(100 * 100);
     strcpy(q, "");
 
-    if ( param == FRIEND ) flag = L_FRIEND;
-    else if ( param == ENEMY) flag = L_ENEMY;
+    flag = (param == FRIEND) ? L_FRIEND : L_ENEMY;
 
-    mono_sql_uu_read_list( usersupp->usernum, &p, flag );
+    mono_sql_uu_read_list(usersupp->usernum, &p, flag);
 
     sprintf(q, "\n\1g\1f");
     while (p) {
@@ -344,13 +392,13 @@ menu_friend_list(int param)
 	p = p->next;
 	if ((j++ % 3) == 2)
 	    strcat(line, "\n");
-        strcat(q, line);
+	strcat(q, line);
     }
     strcat(q, "\n");
     if (j % 3 != 0)
 	strcat(q, "\n");
 
-    dest_friends_list( p );
+    dest_friends_list(p);
 
     return q;
 }

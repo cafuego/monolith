@@ -6,6 +6,9 @@
 #include <ctype.h>
 #include <string.h>
 #include <mysql.h>
+ 
+#include "sql_goto.h"
+
 #define HERO_GENERATOR 1
 
 #ifdef HERO_GENERATOR
@@ -402,12 +405,15 @@ void
 random_goto()
 {
 
-    char thegoto[200];
+    char *thegoto;
   
     if((rand() % 10) == 1) {
-        if( (mono_sql_random_goto(&thegoto)) == -1 )
+	thegoto = mono_sql_random_goto();
+        if(strlen(thegoto))
+            cprintf("\1f\1g%s\1a", thegoto);
+	else
             cprintf("\1f\1gNo unread %s.\1a", config.message_pl );
-        cprintf("\1f\1g%s\1a", thegoto);
+	xfree(thegoto);
     } else {
         cprintf("\1f\1gNo unread %s.\1a", config.message_pl );
     }

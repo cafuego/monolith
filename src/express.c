@@ -294,7 +294,7 @@ catchx(int key)
 	return;
     }
 /* friend logon/off notify */
-    friendb = is_my_friend(Catchxs->sender);
+    friendb = is_cached_friend(Catchxs->sender);
     if (Catchxs->override == OR_LOGIN || Catchxs->override == OR_LOGOUT
 	|| Catchxs->override == OR_KICKOFF) {
 	if (!((usersupp->flags & US_NOTIFY_ALL) ||
@@ -538,15 +538,16 @@ get_xmessage_destination(char *xmg_dest, const int X_PARAM, char *override)
 {
     char ruser[L_USERNAME + 1], rbbs[L_BBSNAME + 1];
     char namePtr[L_USERNAME+1]; 
-    unsigned int id2;
 
     strcpy(xmg_dest, "");
 
     if (!BROADCAST) {
 	if (QUICKX) {
-	    mono_sql_uu_quickx2user( usersupp->usernum, X_PARAM-10, &id2 );
-	    mono_sql_u_id2name( id2, namePtr );
-	    if ( strlen( namePtr ) == 0 ) {
+
+//	    mono_sql_uu_quickx2user( usersupp->usernum, X_PARAM-10, &id2 );
+//	    mono_sql_u_id2name( id2, namePtr );
+	    strcpy(namePtr, cached_x_to_name(X_PARAM-10));
+	    if (!strlen( namePtr )) {
 		cprintf("\1f\1rThere's no X-Friend in slot #%d.\1a", X_PARAM - 10);
 		return xmg_dest;
 	    }
@@ -692,7 +693,7 @@ check_x_permissions(const char *x_recip_name, const int X_PARAM, char override)
 #endif
 /* x-disabled sender trying to x non-friends ? */
 	    if (cmdflags & C_XDISABLED && X_PARAM != 1)
-		if (is_my_friend(x_recip_name) == FALSE) {
+		if (is_cached_friend(x_recip_name) == FALSE) {
 		    cprintf("\1f\1gSorry, you are \1rX-disabled\1g right now, and you cannot");
 		    cprintf(" X users that are not\non your X-friends-list.\1a\n");
 		    override = OR_NO_PERMS;
@@ -702,7 +703,7 @@ check_x_permissions(const char *x_recip_name, const int X_PARAM, char override)
 	    if ((is_enemy(x_recip_name, usersupp->username))
 		|| (is_enemy(usersupp->username, x_recip_name))) {
 		if (is_enemy(usersupp->username, x_recip_name))
-		    if (is_my_friend(x_recip_name))
+		    if (is_cached_friend(x_recip_name))
 			cprintf("\1f\1y\n%s is on both your friend and enemy lists, how odd..  (:\1a\n"
 				,x_recip_name);
 		    else
@@ -776,22 +777,16 @@ void
 ping(char *to)
 {
     sendx(to, "", OR_PING);
-}				/************************************************************//*
+}			
 
-				 * 
-				 * * 
-				 * * * 
-				 * * * * * 
-				 * * * * * * * 
-				 * * * * * * * * 
-				 * * * * * * * * * 
-				 * * * * * * * * * * 
-				 * * * * * * * * * * * * setup_express()
-				 * * * * * * * * * * * *
-				 * * * * * * * * * * * * sets up some things needed for X's to work
-				 * * * * * * * * * * * * properly; only called once at login.
-				 * * * * * * * * * * * * it should not be called BEFORE the user is added to the wholist
-				 */ void
+/*------------------------------------------*/
+/*
+ * setup_express()
+ * sets up some things needed for X's to work
+ * properly; only called once at login.
+ * it should not be called BEFORE the user is added to the wholist
+ */
+void
 setup_express()
 {
     int i;
@@ -800,8 +795,11 @@ setup_express()
 	xmsgb[i] = NULL;
     xmsgp = XLIMIT;
     mono_find_xslot(usersupp->username)->override = OR_FREE;
+    update_friends_cache();
     return;
-}				/**************************************************************//* void remove_express()
+}
+/*----------------------------------*/
+/* void remove_express()
 				 * * * * * * * * * * * * removes xmsg buffer from memory
 				 */
 void
@@ -1174,14 +1172,14 @@ format_express(express_t * Catchxs)
 {
     int i, vriend;
     struct tm *tp;
-    unsigned int id2;
     char from[40];		/* the formatted from header */
     static char buf[X_BUFFER + 100];
 
 /* an x from whom? */
-    if ((vriend = is_my_friend(Catchxs->sender))) {
-        mono_sql_u_name2id( Catchxs->sender, &id2 );
-	mono_sql_uu_user2quickx( usersupp->usernum, id2, &i );
+    if ((vriend = is_cached_friend(Catchxs->sender))) {
+//        mono_sql_u_name2id( Catchxs->sender, &id2 );
+//	mono_sql_uu_user2quickx( usersupp->usernum, id2, &i );
+	i = cached_name_to_x(Catchxs->sender);
 	if (i == -1)
 	    sprintf(from, "\1c\1n%s\1N", Catchxs->sender);
 	else
