@@ -1418,8 +1418,6 @@ static int
 	    break;
     }
     cprintf("\n\nfg     Saving idiocy index for alien y%sg.\n     Index isw: y%dg.", usersupp->username, idiocy);
-    cprintf("\n\n     fgPress a key...a");
-    inkey();
     return 0;
 }
 
