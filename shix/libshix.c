@@ -140,7 +140,7 @@ shix_valid( char *input)
     }
     xfree(expr);
 
-    expr1 = regcomp("^.*\\[.*$");
+    expr1 = regcomp("^.*[^\\]\\[.*$");
     expr2 = regcomp("^.*\\].*$");
     if(regexec(expr1,input) && (!regexec(expr2,input))) {
         xfree(expr1);
