@@ -108,7 +108,7 @@ profile_user(void)
 	sprintf(profile_default, "%s@%s", ruser, rbbs);
 	return;
     }
-    if (check_user(p_name) == TRUE) {
+    if (mono_sql_u_check_user(p_name) == TRUE) {
 	user = readuser(p_name);
 	print_user_stats(user, usersupp);
 	xfree(user);
@@ -1211,7 +1211,7 @@ _change_alias(const unsigned int a, const long b, void *c)
 	strcpy(usersupp->alias, "");
 	return;
     } else {
-	if (check_user(aliasstr) == TRUE) {
+	if (mono_sql_u_check_user(aliasstr) == TRUE) {
 	    if (EQ(usersupp->username, aliasstr)) {
 		strcpy(usersupp->alias, aliasstr);
 		cprintf("\1f\1gYour alias is set to \1y`%s'\1g.\n", usersupp->alias);
