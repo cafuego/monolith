@@ -354,7 +354,7 @@ wholist(int level, const user_t * user)
     /*
      * Add any left over SQL users.
      */
-    switch( level 1) {
+    switch( level ) {
         case 1:
             while(list != NULL) {
                 tdif = time(0) - (list->user->login);
