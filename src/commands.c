@@ -766,7 +766,7 @@ config_menu()
 		break;
 
 	    case 'W':
-		cprintf(", NULLf, NULLgChange WWW url.\n");
+		cprintf("\1f\1gChange WWW url.\n");
 		change_url();
 		break;
 
