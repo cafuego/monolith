@@ -48,15 +48,6 @@ struct forumlist {
     forumlist_t *next;
 };
 
-/* a short list with message numbers. To be used when reading
-   messages in a forum. */
-typedef struct mlist mlist_t;
-struct mlist {
-    unsigned int id;
-    mlist_t *next;
-    mlist_t *prev;
-};
-
 typedef struct {
     unsigned int num;
     unsigned int topic;
@@ -70,6 +61,15 @@ typedef struct {
     char deleted;
     float score;
 } message_t;
+
+/* a linked list with messages. To be used when reading
+   messages in a forum. */
+typedef struct mlist mlist_t;
+struct mlist {
+    mlist_t *next;
+    mlist_t *prev;
+    message_t *message;
+};
 
 typedef struct xfriend friend_t;
 struct xfriend {

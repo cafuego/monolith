@@ -36,7 +36,8 @@
 
 #include "sql_message.h"
 
-static int _mono_sql_mes_add_num_to_list(mlist_t entry, mlist_t ** list);
+static int _mono_sql_mes_add_mes_to_list(mlist_t entry, mlist_t ** list);
+static message_t * _mono_sql_mes_row_to_mes(MYSQL_ROW row);
 
 int
 mono_sql_mes_add(message_t *message, unsigned int forum, const char *tmpfile)
@@ -196,26 +197,28 @@ mono_sql_mes_list_forum(unsigned int forum, unsigned int start, mlist_t ** list)
     MYSQL_ROW row;
     int ret = 0, rows = 0, i = 0;
     mlist_t entry;
+    message_t *message;
 
-    ret = mono_sql_query(&res, "SELECT (message_id) FROM " M_TABLE " WHERE forum_id=%u AND message_id>=%u ORDER BY message_id", forum, start);
-
+    ret = mono_sql_query(&res, "SELECT message_id,topic_id,forum_id,author,alias,subject,UNIX_TIMESTAMP(date),type,priv,deleted FROM " M_TABLE " WHERE message_id>%u AND forum_id=%u ORDER BY message_id", start, forum);
+    
     if (ret == -1) {
 	(void) mysql_free_result(res);
 	return -1;
     }
     if ((rows = mysql_num_rows(res)) == 0) {
 	(void) mysql_free_result(res);
-	return -1;
+	return -2;
     }
     for (i = 0; i < rows; i++) {
 	row = mysql_fetch_row(res);
 	if (row == NULL)
 	    break;
-	/* Get message_id */
-	if (sscanf(row[0], "%u", &(entry.id)) == -1)
-	    continue;
-	/* Add this one to the linked list */
-	if (_mono_sql_mes_add_num_to_list(entry, list) == -1)
+	/*
+         * Get message and add to list.
+         */
+        if( (entry.message = _mono_sql_mes_row_to_mes(row)) == NULL )
+            break;
+	if( _mono_sql_mes_add_mes_to_list(entry, list) == -1 )
 	    break;
     }
     mysql_free_result(res);
@@ -235,7 +238,7 @@ mono_sql_mes_list_topic(unsigned int topic, unsigned int start, mlist_t ** list)
     int ret = 0, rows = 0, i = 0;
     mlist_t entry;
 
-    ret = mono_sql_query(&res, "SELECT FROM " M_TABLE " WHERE topic_id=%u AND message_id>=%u ORDER BY message_id", topic, start);
+    ret = mono_sql_query(&res, "SELECT message_id,topic_id,forum_id,author,alias,subject,UNIX_TIMESTAMP(date),type,priv,deleted FROM " M_TABLE " WHERE message_id>%u AND topic_id=%u ORDER BY message_id", start, topic);
 
     if (ret == -1) {
 	(void) mysql_free_result(res);
@@ -249,11 +252,12 @@ mono_sql_mes_list_topic(unsigned int topic, unsigned int start, mlist_t ** list)
 	row = mysql_fetch_row(res);
 	if (row == NULL)
 	    break;
-	/* Get message_id */
-	if (sscanf(row[0], "%u", &(entry.id)) == -1)
-	    continue;
-	/* Add this one to the linked list */
-	if (_mono_sql_mes_add_num_to_list(entry, list) == -1)
+	/*
+         * Get message and add to list.
+         */
+        if( (entry.message = _mono_sql_mes_row_to_mes(row)) == NULL )
+            break;
+	if (_mono_sql_mes_add_mes_to_list(entry, list) == -1)
 	    break;
     }
     mysql_free_result(res);
@@ -268,7 +272,7 @@ mono_sql_mes_list_topic(unsigned int topic, unsigned int start, mlist_t ** list)
  * God, I HATE linked lists.
  */
 static int
-_mono_sql_mes_add_num_to_list(mlist_t entry, mlist_t ** list)
+_mono_sql_mes_add_mes_to_list(mlist_t entry, mlist_t ** list)
 {
 
     mlist_t *p, *q;
@@ -304,10 +308,53 @@ mono_sql_mes_free_list(mlist_t *list)
 
     while (list != NULL) {
         ref = list->next;
-        xfree(list);
+        (void) xfree(list->message);
+        (void) xfree(list);
         list = ref;
     }
     return;
+}
+
+message_t *
+_mono_sql_mes_row_to_mes(MYSQL_ROW row)
+{
+    message_t *message = NULL;
+
+    message = (message_t *) xmalloc(sizeof(message_t));
+    memset(message, 0, sizeof(message_t));
+
+    /*
+     * Admin info
+     */
+    sscanf(row[0], "%u", &message->num);
+    sscanf(row[1], "%u", &message->topic);
+    sscanf(row[2], "%u", &message->forum);
+
+    /*
+     * Header info.
+     */
+    sscanf(row[3], "%u", &message->author);
+    sprintf(message->alias, row[4]);
+    sprintf(message->subject, row[5]);
+    sscanf(row[6], "%lu", &message->date);
+
+    /*
+     * And more admin info.
+     */
+    sscanf(row[7], "%s", &message->type);
+    sscanf(row[8], "%s", &message->priv);
+    sscanf(row[9], "%c", &message->deleted);
+
+#ifdef USE_RATING
+    /*
+     * Score!
+     */
+    message->score = mono_sql_rat_get_rating(message->num, message->forum);
+#else
+    message->score = 0;
+#endif
+
+    return message;
 }
 
 /* eof */

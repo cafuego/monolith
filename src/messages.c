@@ -1894,7 +1894,7 @@ new_read_menu(unsigned int forum, int direction)
 #ifdef USE_RATING
            case 'R':
                cprintf("\1f\1gRate this %s.\n", config.message );
-               rate_message(forum, list->id);
+               rate_message(message);
                direction = 0;
                break;
 #endif
@@ -1911,7 +1911,7 @@ new_read_menu(unsigned int forum, int direction)
         } /* switch */
 
         if(list != NULL)
-            display_message(list->id, forum);
+            display_message(list->message);
 
     } /* while */
 
@@ -1922,12 +1922,12 @@ new_read_menu(unsigned int forum, int direction)
 
 #ifdef USE_RATING
 void
-rate_message(unsigned int forum, unsigned int message)
+rate_message(message_t *message)
 {
     char buf_str[3];
     int score = 0;
 
-    if( (mono_sql_rat_check_rating(usersupp->usernum, message, forum )) == -1 ) {
+    if( (mono_sql_rat_check_rating(usersupp->usernum, message->num, message->forum )) == -1 ) {
         cprintf("\1f\1rYou have already rated this %s.\1a\n", config.message);
         return;
     }
@@ -1951,7 +1951,7 @@ rate_message(unsigned int forum, unsigned int message)
     if( yesno() == NO )
         return;
 
-    if( (mono_sql_rat_add_rating(usersupp->usernum, message, forum, score )) == -1 )
+    if( (mono_sql_rat_add_rating(usersupp->usernum, message->num, message->forum, score )) == -1 )
         cprintf("\1f\1rAn internal SQL error occurred.\1a\n");
     else
         cprintf("\1f\1gScore saved.\1a\n");

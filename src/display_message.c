@@ -42,62 +42,38 @@
   #include "telnet.h"
 #endif
 
-static char * format_message(message_t * message, unsigned int forum);
+static char * format_message(message_t * message);
 static int format_header(message_t *message, char **string );
 static int format_date(message_t *message, char **string);
 static int format_username(message_t *message, char **string );
 static int format_title(message_t *message, char **string );
 static int format_subject(message_t *message, char **string );
 static int format_content(message_t *message, char **string );
-static int format_footer(unsigned int forum, message_t *message, char **string );
+static int format_footer(message_t *message, char **string );
 static int get_message_type( const char *type );
 static int get_message_priv( const char *priv );
 
 void
-display_message(unsigned int num, unsigned int forum)
+display_message(message_t *message)
 {
-    message_t message;
     char *string = NULL;
 
-    memset( &message, 0, sizeof(message_t) );
-
-    switch (mono_sql_mes_retrieve(num, forum, &message)) {
-
-        case 0:
-            break;
-        case -1:
-            cprintf("\1f\1rError retrieving message.\1a\n");
-            return;
-            break;
-        case -2:
-            cprintf("\1f\1rNo such message.\1a\n");
-            return;
-            break;
-        case -3:
-            cprintf("\1f\1rInternal Error.\1a\n");
-            return;
-            break;
-        default:
-            cprintf("\1f\1rInternal Error.\1a\n");
-            return;
-
-    }
 
 #ifdef USE_RATING
     cprintf("\n\1f\1wDEBUG: Rating: ");
-    if(message.score < 0)
+    if(message->score < 0)
         cprintf("\1r");
-    else if(message.score < 2)
+    else if(message->score < 2)
         cprintf("\1a\1y");
-    else if(message.score < 4)
+    else if(message->score < 4)
         cprintf("\1y");
     else
         cprintf("\1g");
-    printf("%.3f", message.score );
+    printf("%.3f", message->score );
     fflush(stdout);
 #endif
 
-    string = format_message( &message, forum );
+    string = format_message( message );
 
 #ifdef CLIENTSRC
     putchar(IAC);
@@ -118,7 +94,7 @@ display_message(unsigned int num, unsigned int forum)
 }
 
 static char *
-format_message( message_t *message, unsigned int forum)
+format_message( message_t *message)
 {
     char *string = NULL;
 
@@ -130,7 +106,7 @@ format_message( message_t *message, unsigned int forum)
 
     (void) format_header(message, &string);
     (void) format_content(message, &string);
-    (void) format_footer(forum, message, &string);
+    (void) format_footer(message, &string);
 
     return string;
 
@@ -440,7 +416,7 @@ format_content(message_t *message, char **string )
 }
 
 static int
-format_footer(unsigned int forum, message_t *message, char **string )
+format_footer(message_t *message, char **string )
 {
     char fmt_footer[200], col;
     room_t *quad;
@@ -448,7 +424,7 @@ format_footer(unsigned int forum, message_t *message, char **string )
     quad = (room_t *)xmalloc( sizeof(room_t) );
     memset(quad, 0, sizeof(room_t) );
 
-    (void) mono_sql_f_read_quad(forum, quad);
+    (void) mono_sql_f_read_quad(message->forum, quad);
 
     if((quad->flags & QR_ANONONLY) || (quad->flags & QR_ANON2) || (quad->flags & QR_ALIASNAME)) col = 'p';
     else if (quad->flags & QR_PRIVATE) col = 'r';
@@ -505,21 +481,3 @@ get_message_priv( const char *priv )
         return MES_NORMAL;
 }
 /* eof */
-
-void
-showmessages()
-{
-    mlist_t *list = NULL;
-   
-    (void) mono_sql_mes_list_forum(1,0,&list);
-
-    while(list != NULL) {
-        display_message(list->id,1);
-        inkey();
-        cprintf("\1f\1gRead next %s\1a\n", config.message);
-        list = list->next;
-    }
-    mono_sql_mes_free_list(list);
-
-    return;
-}
