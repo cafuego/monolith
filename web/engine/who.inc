@@ -1,7 +1,7 @@
 <?
 
  /*
-  * $id$
+  * $Id$
   */
 
 function show_wholist($username,$location) {
@@ -27,10 +27,13 @@ function show_wholist($username,$location) {
     $number = MYSQL_NUMROWS($result);
     if ($number) {
         if($number > 1)
-            // print "<h3 align=\"center\">Listing $number users online</h3>\n<p> </p>\n";
-            echo "<img align=\"center\" src=\"/bbs/image.phtml/Arial/Listing $number users online/\" height=\"30\" width=\"500\">\n";
+            $text = "Listing $number users online";
         else
-            // print "<h3 align=\"center\">Listing $number user online</h3>\n<p> </p>\n";
+            $text = "Listing 1 user online";
+        $text = rawurlencode($text);
+
+        echo "<img align=\"center\" src=\"/bbs/image.phtml/Arial/$text/\" height=\"30\" width=\"500\">\n";
+
         print "<table border=\"0\" cellpadding=\"4\" cellspacing=\"2\" align=\"center\">\n";
         print "<tr>\n";
         print "  <th align=\"left\"><p align=\"left\">Username</th>\n";
