@@ -95,7 +95,7 @@ main(int argc, char **argv)
     sttybbs(0);
 
     printf("\r");
-    printf("Welcome to %s. (%s)\n", BBSNAME, BBS_VERSION);
+    printf("Welcome to %s.\nRunning %s\n", BBSNAME, BBS_VERSION);
     fflush(stdout);
 
     /* if the bbs is down no reason to do anything else */

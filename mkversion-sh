@@ -12,6 +12,10 @@
 #
 VERSIONFILE=include/version.h
 
+# Check the current directory.
+#
+BUILD_DIR=`pwd`
+
 # Check for .version file.
 # If exists, read in, add one and save. If doesn't exist, set version to 1
 # and create the file for next time.
@@ -30,17 +34,20 @@ fi
 echo $bbs_version > .version
 
 # Nasty call to MySQL which is prolly absolutely not cross-platform to
-# get the MySQL version. (If it is installed)
+# get the MySQL version. (If it is installed) and re-create version.h
 #
 MYSQL=x`which mysql`
 if [ $MYSQL = x ]; then 
     echo -e "#define BBS_VERSION\t\"Mono 2.061 (#$bbs_version) - `uname -m` `uname -s` `uname -r`\"" > $VERSIONFILE
-    echo -e "#define COMPILE_NUM\t$bbs_version" >> $VERSIONFILE
 else
     MYSQL="`which mysql` --version"
     SQLVERSION="MySQL `$MYSQL | awk '{print $5}' | awk -F',' '{print $1}'`"
     echo -e "#define BBS_VERSION\t\"Mono 2.061 (#$bbs_version) - `uname -m` `uname -s` `uname -r` - $SQLVERSION\"" > $VERSIONFILE
-    echo -e "#define COMPILE_NUM\t$bbs_version" >> $VERSIONFILE
 fi
+
+# Add build base dir and version as integer.
+#
+echo -e "#define BUILD_DIR\t\"$BUILD_DIR\"" >> $VERSIONFILE
+echo -e "#define COMPILE_NUM\t$bbs_version" >> $VERSIONFILE
 
 # And we're all done.
