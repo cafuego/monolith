@@ -165,11 +165,8 @@ function format_subject($subject) {
 
 function do_logout($username) {
 
-    $usernum = get_usernum($username);
-
-    connect_db();
-
-    $result = MYSQL_QUERY("DELETE FROM online WHERE user_id=$usernum AND interface='web'");
+    print "<h3 align=\"center\">$username was logged out</h3>\n";
+    print "<h3 align=\"center\">In 5 seconds you will be taken to Monoliths main page.</h3>\n";
 
 }
 

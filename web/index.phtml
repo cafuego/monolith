@@ -8,8 +8,10 @@
     // Get username and print off proper title.
     //
     require('engine/html.inc');
-    html_print_title( getenv("REMOTE_USER"), $REQUEST_URI );
-    html_do_login( getenv("REMOTE_USER") );
+    if( html_print_title( getenv("REMOTE_USER"), $REQUEST_URI ) )
+        html_do_login( getenv("REMOTE_USER") );
+    else
+        html_do_logout( getenv("REMOTE_USER") );
 
 ?>
 
@@ -59,6 +61,10 @@
         case "l":
             require ('engine/quad.inc');
             list_messages($username,$quad);
+            break;
+
+        case "q":
+            do_logout($username);
             break;
 
         case "r":

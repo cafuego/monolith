@@ -17,10 +17,10 @@ function html_print_title($username, $location) {
 
         case -1:
             PRINT "<title>Unknown user: Log in first.</title>\n";
-            return;
+            return 1;
         case 0:
             PRINT "<title>$username@Monolith BBS: Bad, bad $username - Permission denied.</title>\n";
-            return;
+            return 1;
         default:
             break;
 
@@ -42,6 +42,9 @@ function html_print_title($username, $location) {
             $name = html_get_quadname($username,$quad);
             PRINT "<title>$username@Monolith BBS: Listing messages in $name</title>\n";
             break;
+        case "q":
+            PRINT "<title>$username@Monolith BBS: Logging out</title>\n";
+            break;
         case "r":
             $name = html_get_quadname($username,$quad);
             PRINT "<title>$username@Monolith BBS: Reading message in $name</title>\n";
@@ -62,6 +65,8 @@ function html_print_title($username, $location) {
     $fmt_time = strftime("%a, %d %b %Y %H:%M:%S %Z", time());
     print "<meta http-equiv=\"Pragma\" content=\"no-cache\">\n";
     print "<meta http-equiv=\"Expires\" content=\"$fmt_time\">\n";
+
+    return ($action != "q") ? 1 : 0;
 
 }
 
@@ -89,6 +94,20 @@ function html_do_login($username) {
     @mysql_select_db("bbs") or die( "Unable to select database");
 
     $result = MYSQL_QUERY("INSERT INTO online (user_id,interface,doing) VALUES ($usernum,'web','<font color=\"#ffff00\">Surfing the web</font>')");
+
+}
+
+
+function html_do_logout($username) {
+
+    $usernum = html_get_usernum($username);
+
+    MYSQL_CONNECT("localhost", "root", "")  OR DIE("Unable to connect to SQL server");
+    @mysql_select_db("bbs") or die( "Unable to select database");
+
+    $result = MYSQL_QUERY("DELETE FROM online WHERE user_id=$usernum AND interface='web'");
+
+    print "<meta http-equiv=\"Refresh\" content=\"5; url=http://monolith.yawc.net/\">\n";
 
 }
 
@@ -150,7 +169,7 @@ function html_check_priv($action, $username, $forum_id) {
 
 }
 
-function html_print_foot($starttime) {
+function html_print_foot($username, $starttime) {
 
     $currtime = strftime("%B %d %Y, %H:%M %Z", time());
     $endtime = microtime();
@@ -160,6 +179,8 @@ function html_print_foot($starttime) {
 
     $elapsed = ($end[0]-$start[0])+($end[1]-$start[1]);
 
+    print "<hr size=\"1\" width=\"400\" align=\"center\">\n";
+    print "<p class=\"footer\"><a href=\"/bbs/index.phtml/q\">Log out $username</a>\n";
     print "<hr size=\"1\" width=\"400\" align=\"center\">\n";
 
     print "<table border=\"0\" cellspacing=\"3\" align=\"center\">\n";
