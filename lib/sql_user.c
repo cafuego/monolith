@@ -352,7 +352,7 @@ mono_sql_u_update_hidden( unsigned int user_id, int hiddeninfo )
     MYSQL_RES *res;
 
     i = mono_sql_query(&res, "UPDATE " U_TABLE 
-        " set hidden=MAKE_SET('%d','name','address','city','country','phone','email','url','birthday','zip','state') "
+        " set hiddeninfo=MAKE_SET('%d','name','address','city','country','phone','email','url','birthday','zip','state') "
 	" WHERE id=%u", hiddeninfo, user_id );
 
     if (i == -1) {
