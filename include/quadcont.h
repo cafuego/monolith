@@ -6,9 +6,9 @@
 
 /* #define QC_DEBUG */
 
-#define QC_FILEDIR BBSDIR "save/quads/"  
-#define QC_EDIT_LOCKDIR BBSDIR "save/quads/"  
-#define QC_LOCKOUT BBSDIR "save/quads/lockout.all"  /*lockout file */
+#define QC_FILEDIR BBSDIR "save/forums/"  
+#define QC_EDIT_LOCKDIR BBSDIR "save/forums/"  
+#define QC_LOCKOUT BBSDIR "save/forums/lockout.all"  /*lockout file */
   /*docs*/
 #define QC_NEWUSER_HELP BBSDIR "share/quadcont/newuser.doc"
 #define QC_NEWUSER_DONE "share/quadcont/newuser.done"
