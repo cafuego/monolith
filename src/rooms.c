@@ -1548,7 +1548,7 @@ low_traffic_quad_list(void)
 {
     post_t post, mesg;
     FILE *fp, *mesg_fp = NULL;
-    int i, counted, ql_ctr, line_ctr = 2;
+    int i, counted, ql_ctr, line_ctr = 2, mail_qls = 0;
     long j;
     char tempstr[80];
     room_t scratch;
@@ -1558,6 +1558,11 @@ low_traffic_quad_list(void)
     time(&timenow);
 
     log_it("quadlizard", "Starting up!");
+
+    cprintf("\n\1f\1gDo you want the Lizard to send a notification mail to %ss\nof %s that have not had any traffic for over 2 weeks? \1w(\1gy\1w/\1gN\1w) \1c"
+        ,config.roomaide, config.forum_pl);
+    if(yesno_default(NO) == YES)
+        mail_qls = 1;
 
     for (counted = 0; counted <= 1; counted++) {
 	if (counted) {
@@ -1603,14 +1608,16 @@ low_traffic_quad_list(void)
 #endif
 		if (counted) {
 		    fprintf(mesg_fp, "\1f\1w%d.\1g%s\1w: \1gLast post \1w%d\1g days ago.\1a\n", i, scratch.name, (int) (timenow - post.date) / 86400);
-	            for (j = 0; j < NO_OF_QLS; j++) {
-		        if ((strlen(scratch.qls[j]) <= 0) || (strcmp(scratch.qls[j], "Sysop") == 0))
-		            continue;
-		        else
-                            if (check_user(scratch.qls[j])) {
-                                (void) notify_ql(scratch.qls[j], scratch.name, (int) ((timenow - post.date) / 86400) );
-		                fprintf(mesg_fp, "    \1f\1gNotified QL %d, \1y%s\1g, via mail.\1a\n",j, scratch.qls[j]);
-                            }
+                    if(mail_qls) {
+	                for (j = 0; j < NO_OF_QLS; j++) {
+		            if ((strlen(scratch.qls[j]) <= 0) || (strcmp(scratch.qls[j], "Sysop") == 0))
+		                continue;
+		            else
+                                if (check_user(scratch.qls[j])) {
+                                    (void) notify_ql(scratch.qls[j], scratch.name, (int) ((timenow - post.date) / 86400) );
+		                    fprintf(mesg_fp, "    \1f\1gNotified QL %d, \1y%s\1g, via mail.\1a\n",j, scratch.qls[j]);
+                                }
+                        }
                     }
                 } else {
 		    line_ctr++;
