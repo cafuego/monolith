@@ -16,12 +16,13 @@
       return false;
 
     $sql_pass = mysql_result($res, 0, "password");
+    $enc_pass = crypt($password, substr($sql_pass, 0, 2));
 
     echo "<!-- $password -->\n";
     echo "<!-- $sql_pass -->\n";
-    echo "<!-- ". crypt($password, substr($sql_pass, 0, 2)) ." -->\n";
+    echo "<!-- $enc_pass -->\n";
 
-    if( (crypt($password, substr($sql_pass, 0, 2))) == $sql_pass)
+    if($enc_pass == $sql_pass)
       return true;
 
     return false;
