@@ -222,7 +222,7 @@ function list_x_messages($username) {
     $number = MYSQL_NUMROWS($result);
     if ($number) {
         print "<h3 align=\"center\">You have $number eXpress messages</h3>\n<p> </p>\n";
-        print "<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\" align=\"center\">\n";
+        print "<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\" align=\"center\" bgcolor=\"#333333\">\n";
         $i = 0;
         while ($i < $number) {
 

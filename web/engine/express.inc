@@ -45,12 +45,7 @@ function express_message($username, $recipient) {
     }
 
     print "<h3 align=\"center\">Sending an eXpress message to $recipient</h3>\n";
-    print "<h3 align=\"center\">.. but not quite yet. We're working on it, though.</h3>\n";
-    if($username != "Cafuego")
-    return;
 
-    // Show message.
-    //
     PRINT "<div style=\"margin-left: 150;\">\n";
 
     // Reply form.
