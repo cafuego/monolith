@@ -297,10 +297,10 @@ function x_log($username,$location) {
     if ($number) {
         if($number == 1) {
             addimage( "You have 1 eXpress message in your log" );
-            $text = "(This will be removed when you log out)";
+            $text = rawurlencode("(This will be removed when you log out)");
         } else {
             addimage( "You have $number eXpress messages in your log" );
-            $text = "(These will be removed when you log out)";
+            $text = rawurlencode("(These will be removed when you log out)");
         }
         echo "<div align=\"center\">\n";
         echo "<img src=\"/bbs/image.phtml/Tahoma_B,12,white/$text/\" alt=\"[ image: ". rawurldecode($text) ." ]\">\n";
@@ -322,7 +322,7 @@ function x_log($username,$location) {
 
             print "<tr>\n";
             print "  <td align=\"left\" bgcolor=\"#333333\">\n";
-            print "    <p align=\"left\"><font color=\"#00cc00\">eXpress Message from <a href=\"/bbs/index.phtml/x/$reply/$i_sender/$location\">$user@$i_sender</a> to <font color=\"#ffff00\">$username@web</font> at </font>(<font color=\"#00cc00\">$date</font>) <font color=\"#00cc00\">$date</font>(read at $stamp)</font>\n";
+            print "    <p align=\"left\"><font color=\"#00cc00\">eXpress Message from <a href=\"/bbs/index.phtml/x/$reply/$i_sender/$location\">$user@$i_sender</a> to <font color=\"#ffff00\">$username@web</font> at </font>(<font color=\"#00cc00\">$date</font>) <font color=\"#00cc00\">(read at $stamp)</font>\n";
             print "    <font color=\"#00cccc\"><pre>$message</pre></font>\n";
             print "  </td>\n";
             print "</tr>\n";
