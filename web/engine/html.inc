@@ -34,6 +34,9 @@ function html_print_title($username, $location)
     //
     switch ($action) {
 
+	case "c":
+	    print "<title>$username@Monolith BBS: Account configuration</title>\n";
+	    break;
 	case "e":
 	    $name = html_get_quadname($username, $quad);
 	    print "<title>$username@Monolith BBS: Entering message in $name</title>\n";
