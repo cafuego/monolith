@@ -14,11 +14,10 @@ CREATE TABLE message (
    subject	VARCHAR(100),
    date		DATETIME NOT NULL,
 
-   nolines 	INT,
    content	MEDIUMTEXT,
 
    type		ENUM( 'anon', 'alias', 'normal' ),
-   priv		ENUM( 'emp', 'sysop', 'host', 'normal' ),
+   priv		ENUM( 'emp', 'sysop', 'tech', 'host', 'normal' ),
    deleted	ENUM( 'y', 'n' ),
   
    stamp	TIMESTAMP,

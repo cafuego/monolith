@@ -13,6 +13,7 @@ CREATE TABLE login (
 
    login	DATETIME NOT NULL,
    logout	DATETIME NOT NULL,
+   online	TIME NOT NULL,
 
    host		VARCHAR(255) NOT NULL,
 
@@ -20,5 +21,5 @@ CREATE TABLE login (
 
    PRIMARY KEY ( id, stamp ),
    INDEX ( stamp ),
-   INDEX ( usernum )
+   INDEX ( user_id )
 )

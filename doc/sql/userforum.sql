@@ -18,6 +18,9 @@ CREATE TABLE userforum (
 # last post read by this user.
    readinfo	ENUM ('y','n') DEFAULT 'n',
 
+# last seen post in forum by user.
+   lastseen	INT UNSIGNED DEFAULT 0,
+
 # timestamp
    stamp        TIMESTAMP,
 
