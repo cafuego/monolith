@@ -197,7 +197,7 @@ wholist(int level, const user_t * user)
             case 3:	/*** Short Wholist ***/
                 j++;
                 while((list != NULL) && (list->user->login < r->logintime)) {
-                    (void) sprintf(line, "\1p[\1wwww\1p] ");
+                    (void) sprintf(line, "\1p[\1ywww\1p] ");
                     q = line + strlen(line);
                     (void) sprintf(q, "\1f%s%-18s ", col, list->user->username);
                     q = line + strlen(line);
@@ -377,7 +377,7 @@ wholist(int level, const user_t * user)
         case 3: 
             j++;
             while((list != NULL) && (list->user->login < r->logintime)) {
-                (void) sprintf(line, "\1p[\1www\1p] ");
+                (void) sprintf(line, "\1p[\1ywww\1p] ");
                 q = line + strlen(line);
                 (void) sprintf(q, "\1f%s%-18s ", col, list->user->username);
                 q = line + strlen(line);
