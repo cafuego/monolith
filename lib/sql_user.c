@@ -299,11 +299,49 @@ mono_sql_u_update_registration( unsigned int user_id,
     return 0;
 }
 
+int
+mono_sql_u_get_registration( unsigned int user_id,
+		char *name, char *address, char *zip, char *city, 
+		char *state, char *country, char *phone
+) {
+
+    int ret;
+    MYSQL_RES *res;
+    MYSQL_ROW row;
+
+    ret = mono_sql_query(&res, "SELECT "
+	" name,address,zip,city,state,country,phone "
+	" FROM " U_TABLE
+	" WHERE id=%u", user_id );
+
+    if (ret == -1) {
+	fprintf(stderr, "No results from query.\n");
+        return -1;
+    }   
+
+    if (mysql_num_rows(res) != 7) {
+        return -1;
+    }
+
+    row = mysql_fetch_row(res);
+
+    ret = sscanf(row[0], "%s", name);
+    ret = sscanf(row[1], "%s", address);
+    ret = sscanf(row[2], "%s", zip);
+    ret = sscanf(row[3], "%s", city);
+    ret = sscanf(row[4], "%s", state);
+    ret = sscanf(row[5], "%s", country);
+    ret = sscanf(row[6], "%s", phone);
+
+    mono_sql_u_free_result(res);
+
+    return 0;
+}
+
 
 int
-mono_sql_u_update_email( unsigned int user_id,
-		const char *email
-) {
+mono_sql_u_update_email( unsigned int user_id, const char *email )
+{
 
     int i;
     MYSQL_RES *res;
@@ -321,12 +359,36 @@ mono_sql_u_update_email( unsigned int user_id,
     return 0;
 }
 
-/* eof */
+int
+mono_sql_u_get_email( unsigned int user_id, char *email )
+{
+    int i;
+    int ret;
+    MYSQL_RES *res;
+    MYSQL_ROW row;
+
+    i = mono_sql_query(&res, "SELECT email FROM " U_TABLE 
+	" WHERE id=%u", user_id );
+
+    if (i == -1) {
+        fprintf(stderr, "No results from query.\n");
+        return -1;
+    }
+
+    if (mysql_num_rows(res) != 1) {
+        return -1;
+    }
+
+    row = mysql_fetch_row(res);
+    ret = sscanf(row[0], "%s", email);
+    mono_sql_u_free_result(res);
+
+    return 0;
+}
 
 int
-mono_sql_u_update_url( unsigned int user_id,
-		const char *url
-) {
+mono_sql_u_update_url( unsigned int user_id, const char *url )
+{
 
     int i;
     MYSQL_RES *res;
@@ -341,6 +403,33 @@ mono_sql_u_update_url( unsigned int user_id,
     }   
 
     mono_sql_u_free_result(res);
+    return 0;
+}
+
+int
+mono_sql_u_get_url( unsigned int user_id, char *url )
+{
+    int i;
+    int ret;
+    MYSQL_RES *res;
+    MYSQL_ROW row;
+
+    i = mono_sql_query(&res, "SELECT url FROM " U_TABLE 
+	" WHERE id=%u", user_id );
+
+    if (i == -1) {
+        fprintf(stderr, "No results from query.\n");
+        return -1;
+    }
+
+    if (mysql_num_rows(res) != 1) {
+        return -1;
+    }
+
+    row = mysql_fetch_row(res);
+    ret = sscanf(row[0], "%s", url);
+    mono_sql_u_free_result(res);
+
     return 0;
 }
 
@@ -365,5 +454,27 @@ mono_sql_u_update_hidden( unsigned int user_id, int hiddeninfo )
 
 }
 
-/* eof */
+int
+mono_sql_u_get_hidden( unsigned int user_id, int *hiddeninfo )
+{
+
+    int i;
+    MYSQL_RES *res;
+    MYSQL_ROW *row;
+
+    return -1;
+
+    i = mono_sql_query(&res, "SELECT hiddeninfo FROM " U_TABLE 
+	" WHERE id=%u", user_id );
+
+    if (i == -1) {
+	fprintf(stderr, "No results from query.\n");
+        return -1;
+    }   
+
+    mono_sql_u_free_result(res);
+    return 0;
+
+}
+
 /* eof */
