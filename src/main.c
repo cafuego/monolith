@@ -640,7 +640,7 @@ main(int argc, char *argv[])
 	mono_sql_uu_clear_list(usersupp->usernum);
     }
 #ifndef CLIENTSRC
-    more(BBSDIR "share/try_client", TRUE);
+    more(BBSDIR "/share/try_client", TRUE);
 #endif
 
     short_prompt();

@@ -737,7 +737,7 @@ getuserdir(const char *name)
     return userdir;
 }
 
-#define USERNUM		BBSDIR "etc/userkey"
+#define USERNUM		BBSDIR "/etc/userkey"
 #define LOCK		1
 #define UNLOCK		0
 #define S_BUSYUSERNUM	8	/* set status as busy */

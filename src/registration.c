@@ -331,7 +331,7 @@ is_allowed_email(const char *email)
     FILE *fp;
     char buf[80];
 
-    fp = xfopen( BBSDIR "etc/banned_email", "r", FALSE );
+    fp = xfopen( BBSDIR "/etc/banned_email", "r", FALSE );
     if ( fp == NULL )  return TRUE;
 
     while (fgets(buf, 79, fp) != NULL) {
@@ -339,13 +339,13 @@ is_allowed_email(const char *email)
 	    continue;
 	buf[(strlen(buf))] = '\0';
 	if (EQ(email, buf)) {
-	    more( BBSDIR "share/newuser/prohibemail", 0);
+	    more( BBSDIR "/share/newuser/prohibemail", 0);
 	    fclose(fp);
 	    logoff(0);
 	    return FALSE;
 	}
 	if (strstr(email, buf) != NULL) {
-	    more( BBSDIR "share/newuser/email_not_accepted", 0);
+	    more( BBSDIR "/share/newuser/email_not_accepted", 0);
 	    fclose(fp);
 	    return FALSE;
 	}

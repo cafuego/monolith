@@ -14,7 +14,7 @@
 
 FILE *_dexifp = NULL;
 
-#define REMOTE_HOSTS BBSDIR "etc/hosts"
+#define REMOTE_HOSTS BBSDIR "/etc/hosts"
 
 void
 mono_setdexient()

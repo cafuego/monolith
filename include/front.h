@@ -1,10 +1,10 @@
 /* $Id$ */
 
 /* defines */
-#define EXECUTABLE	BBSDIR "bin/yawc_port"
-#define ALLOWFILE	BBSDIR "etc/front.ALLOW"
-#define PROHIBMSG	BBSDIR "share/messages/prohib"
-#define FULLMSG		BBSDIR "share/messages/full"
+#define EXECUTABLE	BBSDIR "/bin/yawc_port"
+#define ALLOWFILE	BBSDIR "/etc/front.ALLOW"
+#define PROHIBMSG	BBSDIR "/share/messages/prohib"
+#define FULLMSG		BBSDIR "/share/messages/full"
 
 #define QUEUE_FULL	9
 

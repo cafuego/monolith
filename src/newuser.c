@@ -60,16 +60,16 @@ new_user(const char *hostname)
         logoff(0);
     usersupp = newuser_makesupp();
 
-    more(BBSDIR "share/newuser/welcome_about", 0);
+    more(BBSDIR "/share/newuser/welcome_about", 0);
     cprintf("\1f\1gPress a key..");
     inkey();	
-    more(BBSDIR "share/newuser/welcome_commands", 0);
+    more(BBSDIR "/share/newuser/welcome_commands", 0);
     cprintf("\1f\1gPress a key..");
     inkey();
-    more(BBSDIR "share/newuser/welcome_rules", 0);
+    more(BBSDIR "/share/newuser/welcome_rules", 0);
     cprintf("\1f\1gPress a key..");
     inkey();
-    more(BBSDIR "share/newuser/welcome_username", 0);
+    more(BBSDIR "/share/newuser/welcome_username", 0);
  
     newuser_getname(usersupp);
 
@@ -82,7 +82,7 @@ new_user(const char *hostname)
 
     test_ansi_colours(usersupp);
     cprintf("\1f\1g");
-    more(BBSDIR "share/newuser/hideinfo", 0);
+    more(BBSDIR "/share/newuser/hideinfo", 0);
     usersupp->hidden_info = H_REALNAME | H_ADDRESS | H_CITY | H_COUNTRY
 		    | H_PHONE | H_EMAIL | H_URL | H_BIRTHDAY;
     usersupp->flags |= US_HIDDENHOST;
@@ -106,15 +106,15 @@ new_user(const char *hostname)
     switch (i) {
 
 	case 0:
-	    more(BBSDIR "share/newuser/key_done", 0);
+	    more(BBSDIR "/share/newuser/key_done", 0);
 	    break;
 
 	case 1:
-            more(BBSDIR "share/newuser/key_invalid_chars", 0);
+            more(BBSDIR "/share/newuser/key_invalid_chars", 0);
 	    break;
 
 	default:
-            more(BBSDIR "share/newuser/key_unknown_error", 0);
+            more(BBSDIR "/share/newuser/key_unknown_error", 0);
 	    break;
     }
 
@@ -124,7 +124,7 @@ new_user(const char *hostname)
     /* final message to the new user */
     cprintf("Press a key to continue.. ");
     inkey();
-    more(BBSDIR "share/newuser/final", 1);
+    more(BBSDIR "/share/newuser/final", 1);
 
     strcpy(username, usersupp->username);
     log_it("newuserlog", "Created user '%s' from host '%s'", usersupp->username, hname);
@@ -218,7 +218,7 @@ newuser_getpasswd(user_t * user)
     char pwread[20], pwtest[20];	/* for password validation */
     int done = FALSE;
 
-    more(BBSDIR "share/newuser/password", 1);
+    more(BBSDIR "/share/newuser/password", 1);
 
     while (!done) {
 	cprintf("\1f\1gPlease enter a password: ");
@@ -249,7 +249,7 @@ newuser_registration(user_t * user)
 {
     char p[RGurlLEN];
     cprintf("\1f\1g");
-    more(BBSDIR "share/newuser/registration", 0);
+    more(BBSDIR "/share/newuser/registration", 0);
 
     cprintf("\1gPlease enter your real name.\n");
     do {
@@ -287,7 +287,7 @@ newuser_registration(user_t * user)
 	getline(user->RGphone, RGphoneLEN, 1);
     } while (strlen(user->RGphone) < 4);
 
-    more(BBSDIR "share/newuser/email", 0);
+    more(BBSDIR "/share/newuser/email", 0);
 
     cprintf("\n\1f\1gPlease enter your e-mail address in the form: \1wuser@host.domain.edu\n");
     fflush(stdout);
@@ -353,7 +353,7 @@ check_lockout(const char *hostname) {
             if (strstr(hostname, frog) != NULL) {
                 fclose(fp);
                 cprintf("\n\rYou are not welcome here. Your login attempt has been logged.\n\r");
-                more(BBSDIR "share/newuser/prohibnew", 0);
+                more(BBSDIR "/share/newuser/prohibnew", 0);
                 log_it("prohiblog", "Failed new user login from %s", hostname);
                 sleep(2);
                 return 0;

@@ -415,7 +415,7 @@ search_msgbase(char *string, unsigned int room, unsigned long start, user_t * us
 	if (room == 1)
 	    snprintf(work, 80, "%s/mail/%ld", getuserdir(user->username), i);
 	else
-	    snprintf(work, 80, BBSDIR "save/quads/%d/%ld", room, i);
+	    snprintf(work, 80, BBSDIR "/save/quads/%d/%ld", room, i);
 
 	fp = fopen(work, "r");
 	if (fp == NULL)

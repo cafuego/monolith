@@ -41,7 +41,7 @@
 #define WHO_LOCK 1
 #define WHO_UNLOCK 0
 
-#define SHMKEY BBSDIR "etc/geheugensleutel"
+#define SHMKEY BBSDIR "/etc/geheugensleutel"
 #define WHOLISTMODE     0664
 
 #define S_BUSYWHOLIST	1	/* set when the wholist is "busy"       */
