@@ -82,7 +82,8 @@
             if($userfile == null || $userfile == "" || (valid_image($userfile_type) == 0)) {
                 if ($userfile != null && $userfile != "") {
                     // Remove tempfile.
-                    unlink($userfile);
+                    if(file_exists($userfile))
+                        unlink($userfile);
                     errorsound();
                     errorimage("Cannot cope with a file of type $userfile_type!");
                     errorimage("The image must be GIF, JPEG or PNG.");
@@ -101,7 +102,8 @@
                 } else {
                     if($userfile_size > 20000) {
                         // Remove tempfile.
-                        unlink($userfile);
+                        if(file_exists($userfile))
+                            unlink($userfile);
                         errorsound();
                         errorimage("The file you uploaded is larger than the allowed 20 Kb!");
                         echo "<p align=\"center\">\n";
@@ -113,7 +115,8 @@
                         $contents = fread($fp, filesize($userfile));
                         fclose($fp);
                         // Remove tempfile.
-                        unlink($userfile);
+                        if(file_exists($userfile))
+                            unlink($userfile);
                         // Encode into something MySQL can deal with.
                         $contents = rawurlencode($contents);
                         $result = mysql_query("UPDATE user SET content_type='$userfile_type' WHERE id=$usernum");
