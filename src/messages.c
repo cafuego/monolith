@@ -417,11 +417,11 @@ rate_message(message_t * message)
 #define SEARCH_RES_LEN	1000
 
 void
-search_via_sql( unsigned int forum )
+search_via_sql(unsigned int forum)
 {
     int count = 0;
     sr_list_t *list = NULL;
-    char needle[31], tempuser[L_USERNAME+1], *p = NULL, line[SEARCH_RES_LEN];
+    char needle[31], tempuser[L_USERNAME + 1], *p = NULL, line[SEARCH_RES_LEN];
     struct timeval tv_start;
     struct timeval tv_end;
     struct timezone tz;
@@ -430,26 +430,24 @@ search_via_sql( unsigned int forum )
     tz.tz_minuteswest = 0;
     tz.tz_dsttime = 0;
 
-    IFSYSOP {    
-        cprintf("\1f\1gSearch only this %s? \1w(\1gY\1w/\1gn\1w) \1c", config.forum);
-        if(yesno_default(YES) == NO)
-            forum = -1;
+    IFSYSOP {
+	cprintf("\1f\1gSearch only this %s? \1w(\1gY\1w/\1gn\1w) \1c", config.forum);
+	if (yesno_default(YES) == NO)
+	    forum = -1;
     }
-    if(forum==1) {
-        cprintf("\1f\1rCan't search Mail yet, sorry.\n");
-        return;
+    if (forum == 1) {
+	cprintf("\1f\1rCan't search Mail yet, sorry.\n");
+	return;
     }
-
     cprintf("\n\1f\1gFind \1w(\1gmax 30 chars\1w): \1c");
     strcpy(needle, "");
     getline(needle, 30, FALSE);
     needle[strlen(needle)] = '\0';
 
-    if( needle[0] == '*' || needle[0] == '?' ) {
+    if (needle[0] == '*' || needle[0] == '?') {
 	cprintf("\1f\1rIllegal character '%c' at start of search string.\1a\n", needle[0]);
 	return;
     }
-
     if (!(strlen(needle))) {
 	cprintf("\1f\1rCan't search for nothing...\1a\n");
 	return;
@@ -467,54 +465,54 @@ search_via_sql( unsigned int forum )
 	cprintf("\r\1a\1f\1rSearching... An error occurred after ");
 	printf("%.4f", (float) working / 1000000);
 	cprintf(" seconds.\n");
-        mono_sql_ll_free_sr_list(list);
-        return;
+	mono_sql_ll_free_sr_list(list);
+	return;
     } else if (count == 0) {
-        cprintf("\r\1a\1f\1gSearching... nothing found.\n");
-        mono_sql_ll_free_sr_list(list);
-        return;
-    } else { 
-        cprintf("\r\1a\1f\1gSearching... \1y%d\1g match%s.\nPress any key to display results...", count, (count != 1) ? "es" : "" );
-        fflush(stdout);
-        inkey();
+	cprintf("\r\1a\1f\1gSearching... nothing found.\n");
+	mono_sql_ll_free_sr_list(list);
+	return;
+    } else {
+	cprintf("\r\1a\1f\1gSearching... \1y%d\1g match%s.\nPress any key to display results...", count, (count != 1) ? "es" : "");
+	fflush(stdout);
+	inkey();
     }
 
-    p = (char *) xmalloc(SEARCH_RES_LEN * (count+5));
-    strcpy(p,"");
+    p = (char *) xmalloc(SEARCH_RES_LEN * (count + 5));
+    strcpy(p, "");
 
     sprintf(line, "\n\1f\1g\nFound \1y%d \1gmatch%s in %.6f seconds. Listing by %s and %s number.\n\n", count, (count != 1) ? "es" : "", (float) working / 1000000, config.forum, config.message);
-    strcat(p,line);
+    strcat(p, line);
 
     sprintf(line, "\1f\1g%-18s     \1y%-23s      \1gId \1y%-18s \1rScore\n\1w--------------------------------------------------------------------------------\n", config.user, config.forum, "Subject");
-    strcat(p,line);
+    strcat(p, line);
 
     while (list != NULL) {
-        if( strlen(list->result->forum) > 23){
-            list->result->forum[20] = '.';
-            list->result->forum[21] = '.';
-            list->result->forum[22] = '.';
-        }
-        if( strlen(list->result->subject) > 18){
-            list->result->subject[15] = '.';
-            list->result->subject[16] = '.';
-            list->result->subject[17] = '.';
-        }
-        list->result->forum[23] = '\0';
-        list->result->subject[18] = '\0';
+	if (strlen(list->result->forum) > 23) {
+	    list->result->forum[20] = '.';
+	    list->result->forum[21] = '.';
+	    list->result->forum[22] = '.';
+	}
+	if (strlen(list->result->subject) > 18) {
+	    list->result->subject[15] = '.';
+	    list->result->subject[16] = '.';
+	    list->result->subject[17] = '.';
+	}
+	list->result->forum[23] = '\0';
+	list->result->subject[18] = '\0';
 
-        if (EQ(list->result->flag, "normal")) {
-            sprintf(line, "\1f\1g%-18s \1w%3d.\1y%-23s \1g%7d \1y%-18s \1r%.3f\n", list->result->author, list->result->f_id, list->result->forum, list->result->m_id, ((list->result->subject == NULL) || (EQ(list->result->subject, "(null)"))) ? "[no subject]" : list->result->subject, list->result->score);
-        } else if (EQ(list->result->flag, "anon") && (strlen(list->result->alias) > 6)) {
-            sprintf(tempuser, "'%s'", list->result->alias );
-            sprintf(line, "\1f\1g%-18s \1w%3d.\1y%-23s \1g%7d \1y%-18s \1r%.3f\n", tempuser, list->result->f_id, list->result->forum, list->result->m_id, ((list->result->subject == NULL) || (EQ(list->result->subject, "(null)"))) ? "[no subject]" : list->result->subject, list->result->score);
-        } else {
-            sprintf(line, "\1f\1bAnonymous %-8s \1w%3d.\1y%-23s \1g%7d \1y%-18s \1r%.3f\n", config.user, list->result->f_id, list->result->forum, list->result->m_id, ((list->result->subject == NULL) || (EQ(list->result->subject, "(null)"))) ? "[no subject]" : list->result->subject, list->result->score);
-        }
-        strcat(p,line);
-        list = list->next;
+	if (EQ(list->result->flag, "normal")) {
+	    sprintf(line, "\1f\1g%-18s \1w%3d.\1y%-23s \1g%7d \1y%-18s \1r%.3f\n", list->result->author, list->result->f_id, list->result->forum, list->result->m_id, ((list->result->subject == NULL) || (EQ(list->result->subject, "(null)"))) ? "[no subject]" : list->result->subject, list->result->score);
+	} else if ((EQ(list->result->flag, "anon") && (strlen(list->result->alias) > 6)) || EQ(list->result->flag, "alias")) {
+	    sprintf(tempuser, "'%s'", list->result->alias);
+	    sprintf(line, "\1f\1g%-18s \1w%3d.\1y%-23s \1g%7d \1y%-18s \1r%.3f\n", tempuser, list->result->f_id, list->result->forum, list->result->m_id, ((list->result->subject == NULL) || (EQ(list->result->subject, "(null)"))) ? "[no subject]" : list->result->subject, list->result->score);
+	} else {
+	    sprintf(line, "\1f\1bAnonymous %-8s \1w%3d.\1y%-23s \1g%7d \1y%-18s \1r%.3f\n", config.user, list->result->f_id, list->result->forum, list->result->m_id, ((list->result->subject == NULL) || (EQ(list->result->subject, "(null)"))) ? "[no subject]" : list->result->subject, list->result->score);
+	}
+	strcat(p, line);
+	list = list->next;
     }
     sprintf(line, "\1f\1w--------------------------------------------------------------------------------\n\1gFound \1y%d \1gmatch%s in %.6f seconds. Listing by %s and %s number.\n", count, (count != 1) ? "es" : "", (float) working / 1000000, config.forum, config.message);
-    strcat(p,line);
+    strcat(p, line);
     mono_sql_ll_free_sr_list(list);
 
     more_string(p);
