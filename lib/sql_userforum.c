@@ -711,8 +711,59 @@ mono_sql_uf_whoknows(unsigned int forum_id, char **result)
     }
     strcat(*result, "\n");
 
+    (void) mono_sql_u_free_result(res);
+
     return rows;
 
 }
+
+int
+mono_sql_uf_kicked(unsigned int forum_id, char **result)
+{
+
+    MYSQL_RES *res;
+    MYSQL_ROW row;
+    int i = 0, j = 0, rows = 0, ret = 0;
+    char line[BUFFSIZE];
+
+    ret = mono_sql_query(&res, "SELECT u.username FROM %s AS u LEFT JOIN %s "
+    " AS uf ON u.id=uf.user_id WHERE uf.forum_id=%u AND uf.status='kicked'"
+    " ORDER BY u.username ASC" ,U_TABLE, UF_TABLE, forum_id);
+
+    if (ret == -1) {
+	fprintf(stdout, "Query error\n");
+	fflush(stdout);
+	(void) mono_sql_u_free_result(res);
+	return -1;
+    }
+    if ((rows = mysql_num_rows(res)) == 0) {
+	(void) mono_sql_u_free_result(res);
+	return 0;
+    }
+
+    *result = (char *) xmalloc( (rows * BUFFSIZE) * sizeof(char));
+    strcpy(*result, "\n");
+
+    for (i = 0; i < rows; i++) {
+        j++;
+	row = mysql_fetch_row(res);
+	if (row == NULL)
+	    break;
+
+	sprintf(line, "%-24s", row[0]);
+	if ((j % 3) == 0) {
+	    strcat(line, "\n");
+	}
+        strcat(*result, line);
+    }
+    strcat(*result, "\n");
+
+    (void) mono_sql_u_free_result(res);
+
+    return rows;
+
+}
+
+/* eof */
 
 /* eof */

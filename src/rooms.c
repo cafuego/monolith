@@ -695,14 +695,16 @@ gotocurr()
 void
 whoknows()
 {
-    char *string = NULL;
-    int ret = 0;
+    char *invited = NULL;
+    char *kicked = NULL;
+    int i = 0, k = 0;
     room_t bing;
 
     bing = readquad(curr_rm);
-    ret = mono_sql_uf_whoknows( curr_rm, &string );
+    i = mono_sql_uf_whoknows( curr_rm, &invited );
+    k = mono_sql_uf_kicked( curr_rm, &kicked );
 
-    switch(ret) {
+    switch(i) {
         case -1:
             cprintf("\n\1f\1rAn error occurred in the SQL query.\n");
             break;
@@ -710,12 +712,25 @@ whoknows()
             cprintf("\n\1f\1rNo users currently know this %s.\n", config.forum);
             break;
         default:
-            cprintf("\n\1f\1g%d users can currently read \1y'%s'\1w:\n", ret, bing.name );
-            more_string(string);
-            break;
+            cprintf("\n\1f\1g%d user%s can currently read \1y'%s'\1w:\n", i, bing.name );
+            more_string(invited);
+            switch(i) {
+                case -1:
+                    cprintf("\n\1f\1rAn error occurred in the SQL query.\n");
+                    break;
+                case 0:
+                    cprintf("\n\1f\1rNo users have been kicked from this %s.\n", config.forum);
+                    break;
+                default:
+                    cprintf("\n\1f\1g%d user%s %s been kicked from \1y'%s'\1w:\n",
+                        i, (i == 1) ? "" : "s", (i == 1) ? "has": "have", bing.name );
+                    more_string(kicked);
+                    break;
+           }
     }
 
-    xfree(string);
+    xfree(invited);
+    xfree(kicked);
     return;
 }
 
