@@ -46,8 +46,12 @@ mono_sql_mes_add(message_t *message)
     int ret = 0;
     char *alias = NULL, *subject = NULL, *content = NULL, *reply_alias = NULL;
 
-    if( (message->m_id = mono_sql_f_get_new_message_id(message->f_id)) == 0)
-        return -1;
+    /*
+     * Disabled - message_id assigned from message_header_t.
+     *
+     * if( (message->m_id = mono_sql_f_get_new_message_id(message->f_id)) == 0)
+     *     return -1;
+     */
 
     (void) escape_string(message->alias, &alias);
     (void) escape_string(message->subject, &subject);

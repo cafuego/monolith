@@ -255,6 +255,11 @@ save_to_sql(const message_header_t *header, const char *filename)
     message_t *message = NULL;
 
     message = (message_t *)xcalloc( 1, sizeof(message_t) );
+
+    /*
+     * BEWARE! SQL messages do _not_ generate their own ID!!!
+     */
+    message->m_id = header->m_id;
     message->f_id = header->f_id;
     message->t_id = 0;
     mono_cached_sql_u_name2id(who_am_i(NULL), &message->a_id);
