@@ -44,7 +44,7 @@
 #define B_CLIENTUSER	32	/* is using the CLient	 -> '-'		*/
 #define B_DONATOR       64      /* is a donator  ->  '$'                */
 /* #define B_UNUSED    128       * is cloaked (emps only)               */
-/* #define B_UNUSED    256       * invisible in the who list (emponly)  */
+#define B_LOCK		256     /* this user has locked their terminal  */
 #define B_AWAY	       512	/* this user is afk */
 #define B_FRIENDS_DISABLED 1024     /* this user has friends disabled  */
 
