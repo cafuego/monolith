@@ -53,7 +53,7 @@ function list_messages($username, $quad, $listunread) {
             else
                 addimage( "Listing 1 message in $forum" );
 
-        PRINT "<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\" align=\"center\">\n";
+        echo "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" align=\"center\">\n";
         $i = 0;
         while ($i < $number) {
             $m_id = mysql_result($result,$i,"m_id");
@@ -66,23 +66,22 @@ function list_messages($username, $quad, $listunread) {
             $user = format_username($username,$user,$alias,$flag);
             $subject = format_subject($subject);
 
-            PRINT "<tr>\n";
-            PRINT "  <td align=\"left\">\n";
+            echo "<tr>\n";
+            echo "  <td align=\"right\" valign=\"top\">\n";
             if($m_id <= $lastseen)
-                PRINT "    <p align=\"right\" class=\"green\">$m_id\n";
+                echo "    <p align=\"right\" class=\"green\">$m_id&nbsp;&nbsp&nbsp;\n";
             else
-                PRINT "    <p align=\"right\" class=\"green\"><font color=\"#ff0000\">New:</font> $m_id\n";
-            PRINT "  </td>\n";
-            PRINT "  <td align=\"left\">\n";
-            PRINT "    <p align=\"left\"><a href=\"/bbs/index.phtml/r/$quad/$m_id\">$subject</a>\n";
-            PRINT "    <font color=\"#00cc00\">by</font> $user\n";
-            PRINT "    <font color=\"#00cc00\">on $date CET</font>\n";
-            PRINT "  </td>\n";
-            PRINT "</tr>\n";
+                echo "    <p align=\"right\" class=\"green\"><font color=\"#ff0000\">New:</font> $m_id&nbsp;&nbsp&nbsp;\n";
+            echo "  </td>\n";
+            echo "  <td align=\"left\" valign=\"top\">\n";
+            echo "    <p align=\"left\"><font color=\"#00cc00\">Posted on $date CET</font>\n";
+            echo "     <li><a href=\"/bbs/index.phtml/r/$quad/$m_id\">$subject</a> <font color=\"#00cc00\">by</font> $user\n";
+            echo "  </td>\n";
+            echo "</tr>\n";
 
             $i++;
         }
-        PRINT "</table>\n";
+        echo "</table>\n";
     } else {
         if($listunread)
             errorimage( "No unread messages found!" );
