@@ -32,11 +32,13 @@ int
 write_message_header(const char *header_filename, message_header_t *header)
 {
     FILE *fp = NULL;
+    int ret;
+    size_t sz;
 
     if ((fp = xfopen(header_filename, "w", FALSE)) == NULL)
 	return -1;
 
-    fwrite(header, sizeof(message_header_t), 1, fp);
+    sz = fwrite(header, sizeof(message_header_t), 1, fp);
 
     if (ferror(fp)) {
 	printf("\n\1f\1rError: File error at write_message_header()\n");

@@ -31,7 +31,7 @@ log_it(const char *type, const char *event,...)
     va_list ptr;
     char work[80];
 
-    (void) sprintf(work, "%s/%s", LOGDIR, type);
+    (void) snprintf(work, 80, "%s/%s", LOGDIR, type);
 
     fp = fopen(work, "a");
     if (fp == NULL) {

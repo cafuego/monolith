@@ -525,8 +525,9 @@ copy(const char *source, const char *dest)
 
     if (fexists(dest)) {
 	(void) log_it("errors", "copy(), %s->%s failed, file already exists", source, dest);
-	return 1;
+	return -1;
     }
+
     fd1 = xopen(source, O_RDONLY, FALSE);
     if (fd1 == -1) {
 	mono_errno = E_NOFILE;
@@ -619,7 +620,7 @@ map_file(const char *filename)
      */
     if( (munmap(tmpbuf, buf.st_size)) == -1) {
         (void) xfree(tmpbuf);
-        (void) log_it("errors", "Can't munmap() file %s!", filename);
+        (void) log_it("errors", "Can't munmap() file %s; err=%s", filename,strerror(errno));
     }
 
     return message;
