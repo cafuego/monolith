@@ -141,13 +141,12 @@ sendx(char *to, const char *send_string, char override)
     strcpy(xmessage.message, send_string);
     time(&xmessage.time);
 
+    /* Very dirty hack to store Web Xes to xlog. */
     if( IS_WEB ) {
-        cprintf("Trying to save... "); fflush(stdout);
         Sendxs = (x_str *) xmalloc( sizeof(x_str) );
         memcpy(Sendxs, &xmessage, sizeof(xmessage));
 	add_x_to_personal_xlog(SENDX, Sendxs, override);
         xfree( Sendxs );
-        cprintf("ok!\n"); fflush(stdout);
         return;
     }
 
@@ -1372,6 +1371,11 @@ from \1y\1n%s\1N \1gat \1w(\1g%02d:%02d\1w) \1r?????\1a\n\1c%s",
 	    case OR_FEEL:
 		sprintf(buf, "\n\1f\1b*** \1gFeeling from %s \1gat \1w(\1g%02d:%02d\1w) \1b***\1a\n%s\1a", from, tp->tm_hour, tp->tm_min, Catchxs->message);
 		break;
+
+	    case OR_WEB:
+		sprintf(buf, "\n\1f\1b*** \1pWeb\1g %s %s from %s \1gto \1y%s \1gat \1w(\1g%02d:%02d\1w) \1b***\1a\n\1c%s", config.express, config.x_message, from, Catchxs->recipient
+			,tp->tm_hour, tp->tm_min, Catchxs->message);
+                break;
 
 	    case OR_ENABLED:
 	    default:
