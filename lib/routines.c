@@ -372,7 +372,7 @@ printdate(time_t timetoprint, int format)
 	    (void) strftime(whole, sizeof(whole), "%a %d %b %Y %H:%M (%Z)", tp);
 	    break;
 	case 0:
-	    (void) strftime(whole, sizeof(whole), "\1f\1g%a %d %b, %Y \1w(\1g%H:%M\1w) \1w(\1g%Z\1w)\1a", tp);
+	    (void) strftime(whole, sizeof(whole), "\1f\1g%a %d %b, %Y %H:%M:S %Z\1a", tp);
 	    break;
 	case 1:
 	    (void) strftime(whole, sizeof(whole), "%d %b %Y %H:%M (%Z)", tp);
