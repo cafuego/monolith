@@ -73,11 +73,11 @@ function config_account( $username ) {
         echo "<tr><td><input type=\"checkbox\" name=\"url\" checked> Webpage:</td><td><input type=\"text\" size=\"50\" name=\"website\" value=\"$user->url\"></td></tr>\n";
     echo "  </table>\n";
 
-    echo "  <p align=\"center\">\n";
+    echo "  <br clear=\"all\">\n";
     echo "  <input type=\"submit\" value=\"Update\">\n";
     echo "</form>\n";
 
-    echo "<br clear=\"all\">\n";
+    echo "<hr align=\"center\" size=\"1\" width=\"400\">\n";
 
     // Image.
     //
