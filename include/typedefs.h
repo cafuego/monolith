@@ -86,7 +86,7 @@ typedef struct {	/* User record */
     date_t birthday; 		/* birthday */
     long online;		/* total time the user has been online  */
     char doing[40];		/* The User's Doing-field               */
-    char xtrapflag[40];		/* The User's Extra "Title-thing"       */
+    char xtrapflag[60];		/* The User's Extra "Title-thing"       */
     char aideline[162];		/* The User's Aideline                  */
     char lasthost[80];		/* utmp name of last host on from       */
     char awaymsg[100];		/* away message */
