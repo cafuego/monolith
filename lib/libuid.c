@@ -19,7 +19,6 @@
 #endif
 
 #include "monolith.h"
-#include "libmono.h"
 
 #define extern
 #include "libuid.h"

@@ -20,7 +20,10 @@
 #include "sql_user.h"
 #include "sql_useruser.h"
 #include "userfile.h"
+
+#define extern
 #include "libfriends.h"
+#undef extern
 
 int
 add_friend_to_list(friend_t element, friend_t ** list)
