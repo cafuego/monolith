@@ -1522,7 +1522,7 @@ lock_terminal()
     mono_change_online(usersupp->username, " ", 17);
     cprintf("c");
     fflush(stdout);
-    cprintf("\1f\1w[ Terminal locked for %s@%s ]", usersupp->username, config.bbsname );
+    cprintf("\n\1f\1w[ \1gTerminal locked for \1y%s@%s \1w]", usersupp->username, config.bbsname );
     fflush(stdout);
     inkey();
     unlock_terminal();
@@ -1537,22 +1537,29 @@ unlock_terminal()
     unsigned int done = FALSE, failures = 0;
 
     do {
-        cprintf("\r\1f\1gPlease enter your password\1w: \1c");
+        cprintf("c");
+        fflush(stdout);
+        cprintf("\n\1f\1gUnlock terminal.\1a\n\n");
+        cprintf("\1f\1gPlease enter your password\1w: \1c");
         (void) getline(pwtest, -19, 1);
 
         if (strlen(pwtest) == 0) {
+            cprintf("\001\1f\1rPassword incorrect!\1a");
+            fflush(stdout);
             failures++;
             done = FALSE;
         } else {
             if ( check_password( usersupp, pwtest ) == TRUE ) {
                done = TRUE;
             } else {
+               cprintf("\001\1f\1rPassword incorrect!\1a");
+               fflush(stdout);
                failures++;
                done = FALSE;
             }
         }
         if( failures >= 4 ) {
-            cprintf("\n\1f\1rToo many failures, logging off!\1a\n");
+            cprintf("\n\n\1f\1rToo many failures, logging off!\1a\n");
             logoff(0);
          }
     } while( done != TRUE );
