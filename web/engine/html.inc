@@ -306,15 +306,15 @@ html_print_buttons($username, $location)
 
     // Guests may not configure.
     // 
-    if ($username != "Guest" )
+    if ($username != "Guest")
         echo "".addbutton("Configuration", "/bbs/index.phtml/c", "Configure your account")."<br>\n";
     
     // Don't call a reload if we just submitted data via a form.
     //
-    if ($url_array[2] != "handler.phtml" && $username != "Guest)
+    if ($url_array[2] != "handler.phtml" && $username != "Guest")
         echo "".addbutton("Check Xes", "$location", "Check for new eXpress messages")."<br>\n";
 
-    if ($username != "Guest" )
+    if ($username != "Guest")
         echo "".addbutton("Old X Log", "/bbs/index.phtml/o", "View your old eXpress messages")."<br>\n";
 
     echo "".addbutton("Wholist", "/bbs/index.phtml/w", "View who's online right now")."<br>\n";
