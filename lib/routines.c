@@ -184,6 +184,10 @@ xrealloc(void *pointer, size_t size)
 void
 xfree(void *pointer)
 {
+
+    fprintf(stderr, "\n\rTrying to free %lu bytes at 0x%x\n", sizeof(pointer), pointer);
+    fflush(stderr);
+
     if (pointer == NULL)
 	return;
 

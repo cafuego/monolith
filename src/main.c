@@ -437,14 +437,13 @@ main(int argc, char *argv[])
 	usersupp = readuser(argv[2]);
     } else {
 	while (!done) {
+	    xfree(usersupp);		/* free before each attempt.	*/
 	    enter_name(username);	/* find out who the user is     */
 	    if (EQ(username, "new")) {	/* a new user?                  */
-		xfree(usersupp);	/* free guest struct */
 		new_user(hname);
 		usersupp = readuser(username);
 		done = TRUE;
 	    } else {
-		xfree(usersupp);
 		if (strcasecmp(username, "Guest") != 0) {
 		    if( (done = enter_passwd(username)) == TRUE )
 		        usersupp = readuser(username);
