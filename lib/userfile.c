@@ -53,19 +53,6 @@ check_user(const char *name)
     return fexists(work);
 }
 
-#ifdef USED
-/* accepts usre and plaintext passwd and stores it encrypted */
-/* returns -1 on error */
-int
-set_password(user_t * user, const char *password)
-{
-    if (user == NULL || password == NULL || password[0] == '\0')
-	return -1;
-    strcpy(user->password, crypt(password, CRYPTKEY));
-    return 0;
-}
-#endif
-
 /*************************************************
 * readuser()
 * on error NULL is returned. 
@@ -113,10 +100,6 @@ readuser(const char *name)
 	    p = strtok(NULL, DELIM);
 	    if (p)
 		strcpy(user->username, p);
-	} else if (strcmp("password", type) == 0) {
-	    p = strtok(NULL, DELIM);
-	    if (p)
-		strcpy(user->password, p);
         } else if (strcmp("lang", type ) == 0 ) {
             p = strtok(NULL, DELIM);
             if (p)
@@ -204,10 +187,6 @@ readuser(const char *name)
 		if (p)
 		    user->RA_rooms[i] = atoi(p);
 	    }
-	} else if (strcmp("validation_key", type) == 0) {
-	    p = strtok(NULL, DELIM);
-	    if (p)
-		user->validation_key = atol(p);
 	} else if (strcmp("x_s", type) == 0) {
 	    p = strtok(NULL, DELIM);
 	    if (p)
@@ -382,7 +361,6 @@ writeuser(user_t * user, int update)
     /* okay..now the saving starts... */
 
     (void) fprintf(fp, "username|%s\n", user->username);
-    (void) fprintf(fp, "password|%s\n", user->password);
     (void) fprintf(fp, "usernum|%lu\n", (unsigned long) user->usernum);
     (void) fprintf(fp, "priv|%u\n", user->priv);
 
@@ -424,7 +402,6 @@ writeuser(user_t * user, int update)
 	(void) fprintf(fp, "|%d", user->RA_rooms[i]);
     (void) fprintf(fp, "\n");
 
-    (void) fprintf(fp, "validation_key|%ld\n", user->validation_key);
     (void) fprintf(fp, "x_s|%lu\n", user->x_s);
     (void) fprintf(fp, "hidden_info|%d\n", user->hidden_info);
     (void) fprintf(fp, "firstcall|%ld\n", user->firstcall);
