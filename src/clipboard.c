@@ -80,22 +80,22 @@ clip_board()
 		break;
 
 	    case 'R':
-		cprintf("\01f\01gRemove Colorcodes.\n");
+		cprintf(_("\01f\01gRemove Colorcodes.\n"));
 		if (de_colorize(CLIPFILE) != 0)
-		    cprintf("\01f\01r\nWarning\01w:\01g Couldn't remove colours.");
+		    cprintf(_("\01f\01r\nWarning\01w:\01g Couldn't remove colours."));
 		break;
 
 	    case 'S':
-		cprintf("\01f\01gShow ClipBoard contents.\01c\n\n");
-		cprintf("\01w----- CLIPBOARD -----\n\01g");
+		cprintf(_("\01f\01gShow ClipBoard contents.\01c\n\n"));
+		cprintf(_("\01w----- CLIPBOARD -----\n\01g"));
 		more(CLIPFILE, 1);
-		cprintf("\01f\01w----- CLIPBOARD -----\n");
+		cprintf(_("\01f\01w----- CLIPBOARD -----\n"));
 		break;
 
 	    case 'Q':
 	    case ' ':
 	    case '\r':
-		cprintf("\01f\01gQuit.\n");
+		cprintf(_("\01f\01gQuit.\n"));
 		break;
 
 
@@ -128,10 +128,10 @@ wacky_email_stuff()
     char recipient[60];
     char work[150];
 
-    cprintf("\01g\01f\nWould you like to remove the color codes? \01w(\01gy/n\01w)\01g ");
+    cprintf(_("\01g\01f\nWould you like to remove the color codes? \01w(\01gy/n\01w)\01g "));
     if (yesno() == YES) {
 	if (de_colorize(CLIPFILE) != 0)
-	    cprintf("\01f\01rWarning\01w:\01g Couldn't remove colours.");
+	    cprintf(_("\01f\01rWarning\01w:\01g Couldn't remove colours."));
     }
     cprintf("\01f\01g\nEnter a recipient:\01c ");
     getline(recipient, sizeof(recipient), 1);
@@ -151,7 +151,7 @@ wacky_email_stuff()
 	log_it("email", "%s sent clipboard to %s", usersupp->username, recipient);
 	(void) sprintf(work, "/bin/mail -s '%s' %s < %s", subject, recipient, CLIPFILE);
 	(void) system(work);
-	cprintf("\01g\01fMail was sent to \01c%s\01a\n", recipient);
+	cprintf(_("\01g\01fMail was sent to \01c%s\01a\n"), recipient);
     }
 }
 
@@ -172,7 +172,7 @@ clip_log(const char *line)
 
     fp = xfopen(CLIPFILE, "a", FALSE);
     if (fp == NULL) {
-	cprintf("\1fCould not open your clipboard file.\n");
+	cprintf(_("\1fCould not open your clipboard file.\n"));
 	return -1;
     }
     fprintf(fp, "%s", line);
@@ -220,14 +220,14 @@ notebook(int for_who)
 
 	switch (cmd) {
 	    case 'C':
-		cprintf("Copy'ing the NoteBook to the end of the ClipBoard.\n");
+		cprintf(_("Copy'ing the NoteBook to the end of the ClipBoard.\n"));
 		sprintf(tempstr, "cat %s >> %s", nbname, CLIPFILE);
 		system(tempstr);
 		break;
 
 	    case 'D':
-		cprintf("Delete NoteBook!\n");
-		cprintf("Are you sure? ");
+		cprintf(_("Delete NoteBook!\n"));
+		cprintf(_("Are you sure? "));
 		if (yesno_default(NO) == YES)
 		    fclose(fopen(nbname, "w"));
 		break;

@@ -88,7 +88,7 @@ chat_subscribe()
 	    }
 	}
 
-	cprintf("\n\1gSelect a number, <n> for none, or <space> to quit:\1c ");
+	cprintf(_("\n\1gSelect a number, <n> for none, or <space> to quit:\1c "));
 
 	c = get_single("123456789nq \r\n");
 	if (c >= '1' && c <= '9')

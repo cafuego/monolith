@@ -125,7 +125,7 @@ sendx(char *to, const char *send_string, char override)
 	    strcpy(save_to, to);
 	    strcpy(save_x, send_string);
 
-	    cprintf("\1f\1y%s \1glogged off before you finished typing.\1a\n", to);
+	    cprintf(_("\1f\1y%s \1glogged off before you finished typing.\1a\n"), to);
             /* ask user if perhaps mail to the user that logged off... */
             x_message_to_mail(save_x, save_to);
 	    xfree(save_to);
@@ -208,13 +208,13 @@ sendx(char *to, const char *send_string, char override)
 
 	if (Sendxs->ack == NO_ACK) {
 	    if (mono_return_pid(to) == -1)
-		cprintf("\1f\1y%s \1rlogged off before you finished typing, sorry.\1a\n"
+		cprintf(_("\1f\1y%s \1rlogged off before you finished typing, sorry.\1a\n")
 			,tuser->username);
 	    else if (override == OR_PING)
-		cprintf("\1f\1rPING to %s timed out waiting for ACK.\1a\n",
+		cprintf(_("\1f\1rPING to %s timed out waiting for ACK.\1a\n"),
 			tuser->username);
 	    else
-		cprintf("\1f\1g%s %s received by \1y%s\1g.\1a\n", config.express
+		cprintf(_("\1f\1g%s %s received by \1y%s\1g.\1a\n"), config.express
 			,config.x_message, tuser->username);
 	}
     }
@@ -646,10 +646,10 @@ get_xmessage_destination(char *xmg_dest, const int X_PARAM, char *override)
 	    /* web X */
         } else if (WEB) {
 	    if (web_default[0]) {
-		cprintf("\1f\1gRecipient \1w(\1y%s\1w): \1c", web_default);
+		cprintf(_("\1f\1gRecipient \1w(\1y%s\1w): \1c"), web_default);
 		strcpy(xmg_dest, web_default);
 	    } else
-		cprintf("\1f\1gRecipient\1w: \1c");
+		cprintf(_("\1f\1gRecipient\1w: \1c"));
 	    strcpy( namePtr, get_name(5)); /* was assignment */
             if(*namePtr)
 	        strcpy(xmg_dest, namePtr);
@@ -661,10 +661,10 @@ get_xmessage_destination(char *xmg_dest, const int X_PARAM, char *override)
 	    /* normal/feeling */
 	} else if (NORMAL || FEEL || EMOTE) {
 	    if (strlen(x_default)) {
-		cprintf("\1f\1gRecipient \1w(\1y%s\1w): \1c", x_default);
+		cprintf(_("\1f\1gRecipient \1w(\1y%s\1w): \1c"), x_default);
 		strcpy(xmg_dest, x_default);
 	    } else
-		cprintf("\1f\1gRecipient\1w: \1c");
+		cprintf(_("\1f\1gRecipient\1w: \1c"));
 	    strcpy( namePtr, get_name(5)); /* was assignment */
 	    if (*namePtr) {
 	        if (strchr(namePtr, '@')) 
@@ -684,10 +684,10 @@ get_xmessage_destination(char *xmg_dest, const int X_PARAM, char *override)
 	    int channel, i;
 
 	    if (chat_default[0]) {
-		cprintf("\1f\1gSend %s %s \1w(\1p%s\1w): \1c", config.chatmode, config.chatroom, chat_default);
+		cprintf(_("\1f\1gSend %s %s \1w(\1p%s\1w): \1c"), config.chatmode, config.chatroom, chat_default);
 		strcpy(xmg_dest, chat_default);
 	    } else
-		cprintf("\1f\1gSend %s %s\1w: \1c", config.chatmode, config.chatroom);
+		cprintf(_("\1f\1gSend %s %s\1w: \1c"), config.chatmode, config.chatroom);
 	    strcpy( namePtr, get_name(5) );
 	    if (*namePtr)
 		strcpy(xmg_dest, namePtr);
@@ -705,14 +705,14 @@ get_xmessage_destination(char *xmg_dest, const int X_PARAM, char *override)
 		    channel = i - 1;
 	    }
 	    if (channel == -1) {
-		cprintf("\1r\1fNo such %s %s.\1a\n", config.chatmode, config.chatroom);
+		cprintf(_("\1r\1fNo such %s %s.\1a\n"), config.chatmode, config.chatroom);
 		strcpy(xmg_dest, "");
 		return xmg_dest;
 	    }
 	    strcpy(xmg_dest, shm->holodeck[channel].name);
 
 	    if (!(usersupp->chat & (1 << channel))) {
-		cprintf("\1r\1gYou're not listening to %s \1p%s\1g.\n", config.chatroom, xmg_dest);
+		cprintf(_("\1r\1gYou're not listening to %s \1p%s\1g.\n"), config.chatroom, xmg_dest);
 		strcpy(xmg_dest, "");
 	    }
 	    strcpy(chat_default, xmg_dest);
@@ -738,7 +738,7 @@ check_x_permissions(const char *x_recip_name, const int X_PARAM, char override)
 	    is_my_vnemy = is_my_enemy(x_recip_name);
 
 	    if (EQ("guest", x_recip_name)) {
-		cprintf("\1rYou cannot send %s to Guests.\n\1a", config.x_message_pl);
+		cprintf(_("\1rYou cannot send %s to Guests.\n\1a"), config.x_message_pl);
 		override = OR_NO_PERMS;
 		break;
 	    }
@@ -783,7 +783,7 @@ check_x_permissions(const char *x_recip_name, const int X_PARAM, char override)
 	    }
 /* deleted/degraded recipient? */
 	    if (x_recip_btmp->priv & (PRIV_DELETED | PRIV_DEGRADED)) {
-		cprintf("\1f\1rYou cannot send messages to degraded users.\1a\n");
+		cprintf(_("\1f\1rYou cannot send messages to degraded users.\1a\n"));
 		override = OR_NO_PERMS;
 		break;
 	    }
@@ -800,8 +800,8 @@ check_x_permissions(const char *x_recip_name, const int X_PARAM, char override)
 /* x-disabled sender trying to x non-friends ? */
 	    if (cmdflags & C_XDISABLED && X_PARAM != 1)
 		if (is_cached_friend(x_recip_name) == FALSE) {
-		    cprintf("\1f\1gSorry, you are \1rX-disabled\1g right now, and you cannot");
-		    cprintf(" X users that are not\non your X-friends-list.\1a\n");
+		    cprintf(_("\1f\1gSorry, you are \1rX-disabled\1g right now, and you cannot"));
+		    cprintf(_(" X users that are not\non your X-friends-list.\1a\n"));
 		    override = OR_NO_PERMS;
 		    break;
 		}
@@ -937,7 +937,7 @@ old_express()
     FILE *fp;
 
     if (xmsgb[XLIMIT - 1] == NULL) {
-	cprintf("\1f\1rThere are no %s %s in your log.\1a\n", config.express, config.x_message_pl);
+	cprintf(_("\1f\1rThere are no %s %s in your log.\1a\n"), config.express, config.x_message_pl);
 	return;
     }
     i = XLIMIT - 1;
@@ -1029,7 +1029,7 @@ are_there_held_xs()
 	return;
 
     if (xmsgp < XLIMIT) {
-	cprintf("\1f\1gThese %s %s were held for you while you were busy:\1a\n", config.express, config.x_message_pl);
+	cprintf(_("\1f\1gThese %s %s were held for you while you were busy:\1a\n"), config.express, config.x_message_pl);
 	while (xmsgp < XLIMIT) {
 	    if ((usersupp->flags & US_BEEP))
 		cprintf("\007");
@@ -1192,31 +1192,31 @@ format_ack(express_t * Catchxs)
     switch (Catchxs->ack) {
         
 	case ACK_LOCK:
-	    cprintf("\1f\1g%s %s received by \1y%s\1g.\n", config.express
+	    cprintf(_("\1f\1g%s %s received by \1y%s\1g.\n"), config.express
 		    ,config.x_message, Catchxs->recipient);
-	    cprintf("\1f\1y%s\1g is marked as \1clocked\1g though.\1a\n"
+	    cprintf(_("\1f\1y%s\1g is marked as \1clocked\1g though.\1a\n")
 		    ,Catchxs->recipient);
 	    break;
 
 	case ACK_AWAY:
-	    cprintf("\1f\1g%s %s received by \1y%s\1g.\n", config.express
+	    cprintf(_("\1f\1g%s %s received by \1y%s\1g.\n"), config.express
 		    ,config.x_message, Catchxs->recipient);
-	    cprintf("\1f\1y%s\1g is marked as \1raway\1g from keyboard though.\1a\n"
+	    cprintf(_("\1f\1y%s\1g is marked as \1raway\1g from keyboard though.\1a\n")
 		    ,Catchxs->recipient);
 	    break;
 
 	case ACK_OOPS:
-	    cprintf("\1f\1gOops! Something went wrong.\n");
-	    cprintf("\1y%s\1g did \1rnot\1g receive your %s %s.\1a\n", Catchxs->recipient
+	    cprintf(_("\1f\1gOops! Something went wrong.\n"));
+	    cprintf(_("\1y%s\1g did \1rnot\1g receive your %s %s.\1a\n"), Catchxs->recipient
 		    ,config.express, config.x_message);
 	    break;
 
 	case ACK_NOTBUSY:	/* ping */
-	    cprintf("\1f\1y%s \1gis not busy.\n\1a", Catchxs->recipient);
+	    cprintf(_("\1f\1y%s \1gis not busy.\n\1a"), Catchxs->recipient);
 	    break;
 
 	case ACK_SHIX:
-	    cprintf("\1f\1y%s\1g does not wish to receive that %s.\1a\n"
+	    cprintf(_("\1f\1y%s\1g does not wish to receive that %s.\1a\n")
 		    ,Catchxs->recipient, config.x_message);
 	    break;
 
@@ -1231,45 +1231,45 @@ format_ack(express_t * Catchxs)
 			idling /= 60;
 			cprintf("\1f\1g%s %s received by \1y%s\1g.\n\1y%s\1g has been %s for \1y%2.2d:%2.2d\1g though.\1a\n", config.express, config.x_message, idleuser->username, idleuser->username, (usersupp->timescalled > 50) ? config.idle : "idle", idling / 60, idling % 60);
 		    } else
-			cprintf("\1f\1g%s %s received by \1y%s\1g.\1a\n"
+			cprintf(_("\1f\1g%s %s received by \1y%s\1g.\1a\n")
 				,config.express, config.x_message
 				,Catchxs->recipient);
 		    xfree(idleuser);
 		} else
-		    cprintf("\1f\1g%s %s received by \1y%s\1g.\1a\n"
+		    cprintf(_("\1f\1g%s %s received by \1y%s\1g.\1a\n")
 			    ,config.express, config.x_message
 			    ,Catchxs->recipient);
 		break;
 	    }
 
 	case ACK_DISABLED:
-	    cprintf("\1f\1gSorry, \1y%s \1ghas \1rX-disabled\1g you!!!\1a\n"
+	    cprintf(_("\1f\1gSorry, \1y%s \1ghas \1rX-disabled\1g you!!!\1a\n")
 		    ,Catchxs->recipient);
 	    break;
 
 	case ACK_BUFFFULL:
-	    cprintf("\1f\1gOops! \1y%s\1g's buffer is full.\n", Catchxs->recipient);
-	    cprintf("Your %s was /1rnot/1g received, try re-sending it in a moment.\1a\n"
+	    cprintf(_("\1f\1gOops! \1y%s\1g's buffer is full.\n"), Catchxs->recipient);
+	    cprintf(_("Your %s was /1rnot/1g received, try re-sending it in a moment.\1a\n")
 		    ,config.x_message);
 	    break;
 
 	case ACK_TURNEDOFF:
-	    cprintf("\1f\1y%s \1gturned off %s %s before you finished typing.\1a\n"
+	    cprintf(_("\1f\1y%s \1gturned off %s %s before you finished typing.\1a\n")
 		  ,config.express, config.x_message_pl, Catchxs->recipient);
 	    break;
 
 	case ACK_PING_BUSY:
-	    cprintf("\1f\1y%s \1gis \1rbusy\1g.\1a\n", Catchxs->recipient);
+	    cprintf(_("\1f\1y%s \1gis \1rbusy\1g.\1a\n"), Catchxs->recipient);
 	    break;
 
 	case ACK_BUSY:
-	    cprintf("\1f\1y%s \1gis \1rbusy\1g", Catchxs->recipient);
-	    cprintf(" and will receive your %s when done.\1a\n", config.x_message);
+	    cprintf(_("\1f\1y%s \1gis \1rbusy\1g"), Catchxs->recipient);
+	    cprintf(_(" and will receive your %s when done.\1a\n"), config.x_message);
 	    break;
 
 	default:
-	    cprintf("\1f\1gOops, \1y%s\1g is not making sense.\n", Catchxs->recipient);
-	    cprintf("The %s %s may /1rnot/1g have arrived.\1a\n", config.express, config.x_message);
+	    cprintf(_("\1f\1gOops, \1y%s\1g is not making sense.\n"), Catchxs->recipient);
+	    cprintf(_("The %s %s may /1rnot/1g have arrived.\1a\n"), config.express, config.x_message);
 	    break;
 
     }				/* switch */
