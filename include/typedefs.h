@@ -353,6 +353,8 @@ typedef struct {
 
 typedef struct {
     unsigned int user_count;
+    unsigned int login_count;
+    time_t boot_time;
     int first; /* array index to first user in wholist */
     btmp_t wholist[MAXUSERS];
     express_t xslot[MAXUSERS];
