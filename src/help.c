@@ -58,6 +58,11 @@ static int utility_commands_menu(void);
  * e = enemies menu
  * f = friends menu
  * i = misc menu
+ * m = main config menu
+ * g = general config menu
+ * p = message config menu
+ * x = express message config menu
+ * a = personal information config menu
  * 
  * B = basic
  * I = intermediate
@@ -69,8 +74,9 @@ static int utility_commands_menu(void);
  * H = help related
  * U = utility related
  * 
- * NOTE:  If adding helpfiles, keep them in alphabetical order bu COMMAND KEY.
- * makes it easier to maintain this..
+ * NOTE:  If adding helpfiles, keep them in alphabetical order by COMMAND KEY.
+ * makes it easier to maintain this.  Config menu stuff might well be indexed
+ * separately, to make it easier to keep that up to date.  
  * 
  */
 #define M_FILENAME filename[0]='\0'; sprintf(filename, "%s%s"
@@ -101,95 +107,269 @@ online_help(char context)
 	       "\n\n\1f\1w[\1r Online Help\1w: \1g");
 	switch (context) {
 	    case 'l':
-		strcat(the_menu_format.menu_title, "Long Prompt ");
+		strcat(the_menu_format.menu_title, "Long Prompt HELP ");
 		break;
 	    case 's':
-		strcat(the_menu_format.menu_title, "Short Prompt ");
+		strcat(the_menu_format.menu_title, "Short Prompt HELP ");
 		break;
-	    case 'c':
-		strcat(the_menu_format.menu_title, "\1w<\1rC\1w>\1gonfig Menu ");
+	    case 'm':
+		strcat(the_menu_format.menu_title, "\1w<\1rC\1w>\1gonfig Menu HELP ");
 		break;
 	    case 'o':
 		strcat(the_menu_format.menu_title, "\1w<\1rC\1w>\1gonfig \1w<\1ro\1w>\1gptions Menu ");
 		break;
+	    case 'g':
+		strcat(the_menu_format.menu_title, "General Config HELP ");
+		break;
+	    case 'p':
+		strcat(the_menu_format.menu_title, "Message System Config HELP ");
+		break;
+	    case 'x':
+		strcat(the_menu_format.menu_title, "Express Message Config HELP ");
+		break;
+	    case 'a':
+		strcat(the_menu_format.menu_title, "Personal Info Config HELP ");
+		break;
 	    case 'e':
-		strcat(the_menu_format.menu_title, "Enemies Menu ");
+		strcat(the_menu_format.menu_title, "Enemies Menu HELP ");
 		break;
 	    case 'f':
-		strcat(the_menu_format.menu_title, "Friends Menu ");
+		strcat(the_menu_format.menu_title, "Friends Menu HELP ");
 		break;
 	    case 'i':
-		strcat(the_menu_format.menu_title, "Misc Menu ");
+		strcat(the_menu_format.menu_title, "Misc Menu HELP ");
 		break;
 	    case 'B':
-		strcat(the_menu_format.menu_title, "Basic ");
+		strcat(the_menu_format.menu_title, "Basic HELP ");
 		break;
 	    case 'I':
-		strcat(the_menu_format.menu_title, "Intermediate ");
+		strcat(the_menu_format.menu_title, "Intermediate HELP ");
 		break;
 	    case 'A':
-		strcat(the_menu_format.menu_title, "Advanced ");
+		strcat(the_menu_format.menu_title, "Advanced HELP ");
 		break;
 	    case 'P':
-		strcat(the_menu_format.menu_title, "Posting ");
+		strcat(the_menu_format.menu_title, "Posting HELP ");
 		break;
 	    case 'R':
-		strcat(the_menu_format.menu_title, "Reading ");
+		strcat(the_menu_format.menu_title, "Reading HELP ");
 		break;
 	    case 'X':
-                sprintf(tempstr, "%s %s ", config.express, config.x_message);
+                sprintf(tempstr, "%s %s HELP ", config.express, config.x_message);
 		strcat(the_menu_format.menu_title, tempstr);
 		break;
 	    case 'C':
-		strcat(the_menu_format.menu_title, "Account Configuration ");
+		strcat(the_menu_format.menu_title, "Account Configuration HELP ");
 		break;
 	    case 'H':
-		strcat(the_menu_format.menu_title, "Help ");
+		strcat(the_menu_format.menu_title, "Help HELP ");
 		break;
 	    case 'U':
-		strcat(the_menu_format.menu_title, "Utility ");
+		strcat(the_menu_format.menu_title, "Utility HELP ");
 		break;
 	}
 	strcat(the_menu_format.menu_title, "Commands \1w]\n");
 	strcpy(the_menu_format.menu_prompt,
-	       "\1f\1gPress \1w<\1rkey\1w> \1gfor more help \1w--");
+	       "\1f\1rHELP:  \1gPress \1w<\1rkey\1w> \1gfor help \1w--");
+/*  Config menu  m */
 
-	if (strchr("o", context)) {
+	if (strchr("m", context)) {
+	    M_FILENAME, HELPDIR, "commands/gen_config");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "General Configuration", "1");
+	}
+	if (strchr("m", context)) {
+	    M_FILENAME, HELPDIR, "commands/mes_config");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Message System Configuration", "2");
+	}
+	if (strchr("m", context)) {
+	    M_FILENAME, HELPDIR, "commands/express_config");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Express Message Configuration", "3");
+	}
+	if (strchr("m", context)) {
+	    M_FILENAME, HELPDIR, "commands/info_config");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Personal Info Configuration", "4");
+	}
+
+/*  general account config  g */
+
+	if (strchr("g", context)) {
 	    M_FILENAME, HELPDIR, "commands/co_ansi");
 	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "ANSI Colors Enabled", "1");
 	}
-	if (strchr("o", context)) {
-	    M_FILENAME, HELPDIR, "commands/co_expert");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Expert User Mode", "2");
+	if (strchr("g", context)) {
+	    M_FILENAME, HELPDIR, "commands/co_flash");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Flashing text enabled", "2");
 	}
-	if (strchr("o", context)) {
-	    M_FILENAME, HELPDIR, "commands/co_lastold");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "See last old post", "3");
+	if (strchr("g", context)) {
+	    M_FILENAME, HELPDIR, "commands/co_bold");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Bold text enabled", "3");
 	}
-	if (strchr("o", context)) {
-	    M_FILENAME, HELPDIR, "commands/co_promptafter");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Prompt after each post", "4");
+	if (strchr("g", context)) {
+	    M_FILENAME, HELPDIR, "commands/co_showip");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Show hostnames in the wholist", "4");
 	}
-	if (strchr("o", context)) {
-	    M_FILENAME, HELPDIR, "commands/co_pauseafter");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Pause after each screenful", "5");
+	if (strchr("g", context)) {
+	    M_FILENAME, HELPDIR, "commands/co_statusbar");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Status Bar", "5");
 	}
-	if (strchr("o", context)) {
-	    M_FILENAME, HELPDIR, "commands/co_hideinfo");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Hidden info menu", "6");
+	if (strchr("g", context)) {
+	    M_FILENAME, HELPDIR, "commands/Config_Llama");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Set BBS Appearance", "6");
 	}
-	if (strchr("o", context)) {
+	if (strchr("g", context)) {
 	    M_FILENAME, HELPDIR, "commands/co_screenlen");
 	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Set screen length", "7");
 	}
-	if (strchr("o", context)) {
-	    M_FILENAME, HELPDIR, "commands/co_flash");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Flashing text enabled", "8");
+	if (strchr("g", context)) {
+	    M_FILENAME, HELPDIR, "commands/co_expert");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Expert User Mode", "8");
 	}
-	if (strchr("o", context)) {
-	    M_FILENAME, HELPDIR, "commands/co_bold");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Bold text enabled", "9");
+	if (strchr("g", context)) {
+	    M_FILENAME, HELPDIR, "commands/co_disable_cmdlist");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Extra command help enabled", "9");
 	}
+	if (strchr("g", context)) {
+	    M_FILENAME, HELPDIR, "commands/CLient");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Configure Client", "C");
+	}
+/*  message system config  p */
+
+	if (strchr("p", context)) {
+	    M_FILENAME, HELPDIR, "commands/co_lastold");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "See last old post", "0");
+	}
+	if (strchr("p", context)) {
+	    M_FILENAME, HELPDIR, "commands/co_promptafter");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Prompt after each post", "1");
+	}
+	if (strchr("p", context)) {
+	    M_FILENAME, HELPDIR, "commands/co_pauseafter");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Pause after each screenful", "2");
+	}
+	if (strchr("p", context)) {
+	    M_FILENAME, HELPDIR, "commands/co_std_alias");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Use a default alias", "3");
+	}
+	if (strchr("p", context)) {
+	    M_FILENAME, HELPDIR, "commands/alias");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Set an Alias", "4");
+	}
+	if (strchr("p", context)) {
+	    M_FILENAME, HELPDIR, "commands/neatmessages");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Empty lines around messages", "5");
+	}
+	if (strchr("p", context)) {
+	    M_FILENAME, HELPDIR, "commands/expand_header");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Expanded message headers", "6");
+	}
+	if (strchr("p", context)) {
+	    M_FILENAME, HELPDIR, "commands/date_len");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Display short/long date", "7");
+	}
+	if (strchr("p", context)) {
+	    M_FILENAME, HELPDIR, "commands/show_deleted");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Display deleted messages", "8");
+	}
+	if (strchr("p", context)) {
+	    M_FILENAME, HELPDIR, "commands/mono_header");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Monolith-style message headers", "9");
+	}
+	if (strchr("p", context)) {
+	    M_FILENAME, HELPDIR, "commands/date_format");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "American/European date format", "A");
+	}
+
+/*  express message config  x */
+
+	if (strchr("x", context)) {
+            strcpy(tempstr,"");
+            sprintf(tempstr, "Disabled %s at login", config.express);
+	    M_FILENAME, HELPDIR, "commands/co_disx");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", tempstr, "1");
+	}
+	if (strchr("x", context)) {
+	    M_FILENAME, HELPDIR, "commands/co_frnd_notify");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Receive logon/off notifies", "2");
+	}
+	if (strchr("x", context)) {
+	    M_FILENAME, HELPDIR, "commands/co_shix");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "SHIX filter enabled", "3");
+	}
+	if (strchr("x", context)) {
+	    M_FILENAME, HELPDIR, "commands/co_interbbs");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "InterBBS access enabled", "4");
+	}
+	if (strchr("x", context)) {
+	    M_FILENAME, HELPDIR, "commands/co_show_fr");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Show friends online at login", "5");
+	}
+	if (strchr("x", context)) {
+	    M_FILENAME, HELPDIR, "commands/co_all_logons");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Receive all logon events", "6");
+	}
+	if (strchr("xX", context)) {
+	    M_FILENAME, HELPDIR, "commands/friendsls");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Edit friendslist", "7");
+	}
+	if (strchr("xX", context)) {
+	    M_FILENAME, HELPDIR, "commands/enemylst");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Edit enemylist", "8");
+	}
+	if (strchr("lsx", context)) {
+	    M_FILENAME, HELPDIR, "commands/chatconf");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Chat config \1w[\1rmenu\1w]", "9");
+	}
+
+/*  personal info config  a */
+
+
+	if (strchr("a", context)) {
+	    M_FILENAME, HELPDIR, "commands/flying");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Edit Flying", "1");
+	}
+	if (strchr("a", context)) {
+	    M_FILENAME, HELPDIR, "commands/co_hideinfo");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Hidden info menu", "2");
+	}
+	if (strchr("a", context)) {
+	    M_FILENAME, HELPDIR, "commands/profile");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Edit Profile", "3");
+	}
+	if (strchr("a", context)) {
+	    M_FILENAME, HELPDIR, "commands/edit_profile");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Editor-Edit profile", "4");
+	}
+	if (strchr("a", context)) {
+	    M_FILENAME, HELPDIR, "commands/address_change");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Address Change \1w<\1ry\1w>\1gell", "5");
+	}
+	if (strchr("a", context)) {
+	    M_FILENAME, HELPDIR, "commands/password");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Set Password", "6");
+	}
+	if (strchr("a", context)) {
+	    M_FILENAME, HELPDIR, "commands/timezone");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Set Timezone menu", "7");
+	}
+	if (strchr("a", context)) {
+	    M_FILENAME, HELPDIR, "commands/birthday");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Set birthday", "8");
+	}
+	if (strchr("a", context)) {
+	    M_FILENAME, HELPDIR, "commands/url");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Set Homepage URL", "9");
+	}
+	if (strchr("a", context)) {
+	    M_FILENAME, HELPDIR, "commands/planet");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Edit Location", "A");
+	}
+	if (strchr("a", context)) {
+	    M_FILENAME, HELPDIR, "commands/validation");
+	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Validation Menu", "V");
+	}
+
+/* end config help */
+
 	if (strchr("lsIX", context)) {
             strcpy(tempstr,"");
             sprintf(tempstr, "Send quick %s", config.express);
@@ -208,10 +388,6 @@ online_help(char context)
 	    M_FILENAME, HELPDIR, "commands/add_enemy");
 	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Add user to Enemies List", "a");
 	}
-	if (strchr("cCA", context)) {
-	    M_FILENAME, HELPDIR, "commands/alias");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Set an Alias", "a");
-	}
 	if (strchr("lsIUX", context)) {
 	    M_FILENAME, HELPDIR, "commands/away");
 	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Change away status", "A");
@@ -220,35 +396,13 @@ online_help(char context)
 	    M_FILENAME, HELPDIR, "commands/add_quick_xfriend");
 	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Add user to Quick Friends List", "A");
 	}
-	if (strchr("cCA", context)) {
-	    M_FILENAME, HELPDIR, "commands/address_change");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Address Change \1w<\1ry\1w>\1gell", "A");
-	}
-	if (strchr("o", context)) {
-            strcpy(tempstr,"");
-            sprintf(tempstr, "Disabled %s at login", config.express);
-	    M_FILENAME, HELPDIR, "commands/co_disx");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", tempstr, "A");
-	}
 	if (strchr("lRB", context)) {
 	    M_FILENAME, HELPDIR, "commands/backwards");
 	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Toggle read direction", "b");
 	}
-	if (strchr("cC", context)) {
-	    M_FILENAME, HELPDIR, "commands/birthday");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Set birthday", "b");
-	}
 	if (strchr("sXI", context)) {
 	    M_FILENAME, HELPDIR, "commands/xbeep");
 	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Toggle X beeps", "B");
-	}
-	if (strchr("o", context)) {
-	    M_FILENAME, HELPDIR, "commands/co_frnd_notify");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Receive logon/off notifies", "B");
-	}
-	if (strchr("cCI", context)) {
-	    M_FILENAME, HELPDIR, "commands/CLient");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Configure Client", "c");
 	}
 	if (strchr("lsXB", context)) {
             strcpy(tempstr,"");
@@ -264,21 +418,9 @@ online_help(char context)
 	    M_FILENAME, HELPDIR, "commands/clear_enemies");
 	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Clear Enemies List", "c");
 	}
-	if (strchr("cCI", context)) {
-	    M_FILENAME, HELPDIR, "commands/Config_Llama");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Set BBS Appearance", "C");
-	}
 	if (strchr("sB", context)) {
 	    M_FILENAME, HELPDIR, "commands/configmenu");
 	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Configuration \1w[\1rmenu\1w]", "C");
-	}
-	if (strchr("o", context)) {
-	    M_FILENAME, HELPDIR, "commands/co_shix");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "SHIX filter enabled", "C");
-	}
-	if (strchr("lsXB", context)) {
-	    M_FILENAME, HELPDIR, "commands/chatconf");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Chat config \1w[\1rmenu\1w]", "d");
 	}
 	if (strchr("lPI", context)) {
 	    M_FILENAME, HELPDIR, "commands/delete");
@@ -292,61 +434,25 @@ online_help(char context)
 	    M_FILENAME, HELPDIR, "commands/enter");
 	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Enter a post", "e");
 	}			/* post a flame */
-	if (strchr("cCIX", context)) {
-	    M_FILENAME, HELPDIR, "commands/enemylst");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Edit enemylist", "e");
-	}
 	if (strchr("lsPB", context)) {
 	    M_FILENAME, HELPDIR, "commands/Editor_post");
 	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Editor-Enter post", "E");
-	}
-	if (strchr("o", context)) {
-	    M_FILENAME, HELPDIR, "commands/co_statusbar");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Status Bar", "E");
 	}
 	if (strchr("lRB", context)) {
 	    M_FILENAME, HELPDIR, "commands/forward");
 	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Read forward", "f");
 	}
-	if (strchr("cCIX", context)) {
-	    M_FILENAME, HELPDIR, "commands/friendsls");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Edit friendslist", "f");
-	}
-	if (strchr("o", context)) {
-	    M_FILENAME, HELPDIR, "commands/co_interbbs");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "InterBBS access enabled", "F");
-	}
 	if (strchr("lsRB", context)) {
 	    M_FILENAME, HELPDIR, "commands/goto");
 	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Goto next Quad", "g");
-	}
-	if (strchr("o", context)) {
-	    M_FILENAME, HELPDIR, "commands/co_disable_cmdlist");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Extra command help enabled", "G");
-	}
-	if (strchr("o", context)) {
-	    M_FILENAME, HELPDIR, "commands/co_showip");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Show hostnames in the wholist", "H");
 	}
 	if (strchr("lsRPB", context)) {
 	    M_FILENAME, HELPDIR, "commands/quadinfo");
 	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Read Quad Rules", "i");
 	}
-	if (strchr("cCI", context)) {
-	    M_FILENAME, HELPDIR, "commands/profile");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Edit Profile", "i");
-	}
-	if (strchr("cCI", context)) {
-	    M_FILENAME, HELPDIR, "commands/edit_profile");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Editor-Edit profile", "I");
-	}
 	if (strchr("lsAX", context)) {
 	    M_FILENAME, HELPDIR, "commands/intBBS_toggle");
 	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "InterBBS access", "I");
-	}
-	if (strchr("o", context)) {
-	    M_FILENAME, HELPDIR, "commands/co_show_fr");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Show friends online at login", "I");
 	}
 	if (strchr("lsRB", context)) {
 	    M_FILENAME, HELPDIR, "commands/jump");
@@ -356,29 +462,13 @@ online_help(char context)
 	    M_FILENAME, HELPDIR, "commands/Jump");
 	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Jump through Quad", "J");
 	}
-	if (strchr("o", context)) {
-	    M_FILENAME, HELPDIR, "commands/co_std_alias");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Use a default alias", "J");
-	}
 	if (strchr("lsRB", context)) {
 	    M_FILENAME, HELPDIR, "commands/knownlist");
 	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "List your Quads", "k");
 	}
-	if (strchr("cC", context)) {
-	    M_FILENAME, HELPDIR, "commands/validation");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Validation Menu", "k");
-	}
 	if (strchr("lsRB", context)) {
 	    M_FILENAME, HELPDIR, "commands/K_unreadrooms");
 	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "List ALL Quads", "K");
-	}
-	if (strchr("o", context)) {
-	    M_FILENAME, HELPDIR, "commands/co_all_logons");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Receive all logon events", "K");
-	}
-	if (strchr("cCA", context)) {
-	    M_FILENAME, HELPDIR, "commands/planet");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Edit Location", "l");
 	}
 	if (strchr("lsBU", context)) {
 	    M_FILENAME, HELPDIR, "commands/logoff_mono");
@@ -412,12 +502,6 @@ online_help(char context)
 	    M_FILENAME, HELPDIR, "commands/mi_markall");
 	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Mark all posts as Read", "M");
 	}
-	if (strchr("cCA", context)) {
-            strcpy(tempstr,"");
-            sprintf(tempstr, "%s menu \1w[\1rmenu\1w]", mesname);
-	    M_FILENAME, HELPDIR, "commands/message_options");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", tempstr, "m");
-	}
 	if (strchr("lsRB", context)) {
             strcpy(tempstr,"");
             sprintf(tempstr, "Read next %s", config.message);
@@ -433,10 +517,6 @@ online_help(char context)
 	if (strchr("cCB", context)) {
 	    M_FILENAME, HELPDIR, "commands/options");
 	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Set options \1w[\1rmenu\1w]", "o");
-	}
-	if (strchr("cC", context)) {
-	    M_FILENAME, HELPDIR, "commands/password");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Set Password", "p");
 	}
 	if (strchr("lsB", context)) {
 	    M_FILENAME, HELPDIR, "commands/profile_user");
@@ -510,10 +590,6 @@ online_help(char context)
 	    M_FILENAME, HELPDIR, "commands/xreply");
 	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Reply to X", "v");
 	}
-	if (strchr("cCI", context)) {
-	    M_FILENAME, HELPDIR, "commands/url");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Set Homepage URL", "w");
-	}
 	if (strchr("lsB", context)) {
 	    M_FILENAME, HELPDIR, "commands/who");
 	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "See who is online", "w");
@@ -534,10 +610,6 @@ online_help(char context)
  * M_FILENAME, HELPDIR, "commands/xlog");
  * MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "", "");
  * } */
-	if (strchr("cCB", context)) {
-	    M_FILENAME, HELPDIR, "commands/flying");
-	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Edit Flying", "y");
-	}
 	if (strchr("lsH", context)) {
 	    M_FILENAME, HELPDIR, "commands/yell");
 	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Yell for help", "y");
@@ -612,8 +684,10 @@ online_help(char context)
 	    M_FILENAME, HELPDIR, "commands/clip");
 	    MENU_ADDITEM(more_wrapper, 1, 0, filename, "ti", "Clip post", "*");
 	}
+
+	if (!strchr("mgpxa", context)) 
+	    the_menu_format.auto_columnize = 1;
 	MENU_PROCESS_INTERNALS;
-	the_menu_format.auto_columnize = 1;
 	MENU_DISPLAY(1);
 
 	if (!MENU_EXEC_COMMAND) {

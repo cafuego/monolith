@@ -9,7 +9,6 @@ extern void sysoproom_menu(void);
 extern void sysopuser_menu(void);
 extern void roomaide_menu(void);
 extern void emperor_menu(void);
-extern void config_menu(void);
 extern void misc_menu(void);
 extern void userlist_menu(void);
 extern void lock_terminal(void);

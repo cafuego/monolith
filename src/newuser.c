@@ -89,7 +89,7 @@ new_user(const char *hostname)
 
     strcpy(username, usersupp->username);
 
-    menu_options();
+    config_menu();
 
     cprintf("\1f\1g\nA personal validation key is being generated and sent to the\n");
     cprintf("following email address: `%s'.\n\n", usersupp->RGemail);

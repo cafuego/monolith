@@ -196,7 +196,6 @@ edit_field(user_t * user, int fieldnum)
 	    break;
 
 	case '%':
-	    change_host(user);
 	    break;
 
 	case 'A':
