@@ -1,5 +1,5 @@
 extern int mono_sql_uu_read_list(unsigned int, friend_t **, int);
-extern unsigned int mono_sql_uu_user2quickx(unsigned int, unsigned int, int *);
+extern int mono_sql_uu_user2quickx(unsigned int, unsigned int, int *);
 extern int mono_sql_uu_clear_list(unsigned int);
 extern int mono_sql_uu_is_on_list(unsigned int , unsigned int, int);
 extern int mono_sql_uu_add_entry(unsigned int , unsigned int , unsigned int );

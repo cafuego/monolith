@@ -26,6 +26,7 @@
 #endif
 
 #include "monolith.h"
+#include "routines.h"
 
 #ifdef extern
 #include "sql_convert.h"
