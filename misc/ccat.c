@@ -14,14 +14,6 @@
 #include <unistd.h>
 #include <getopt.h>
 
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#include <locale.h>
-#define _(String) gettext (String)
-#else
-#define _(String) (String)
-#endif
-
 #define BUFSIZE 1024
 
 int main(int argc, char *argv[]);
@@ -55,12 +47,12 @@ main(int argc, char *argv[])
     int optc;
     int lose = 0;
 
-#ifdef ENABLE_NLS
+/*
        printf( "setting locale\n" );
        setlocale (LC_ALL, "");
        bindtextdomain ( PACKAGE, "/usr/bbs/share/locale");
        textdomain ( PACKAGE );
-#endif
+*/
 
     progname = argv[0];
 
@@ -84,8 +76,8 @@ main(int argc, char *argv[])
     if (lose || optind < argc - 1) {
 	/* Print error message and exit.  */
 	if (optind < argc)
-	    fputs(_("Too many arguments\n"), stderr);
-	fprintf(stderr, _("Try `%s --help' for more information\n"),
+	    fputs("Too many arguments\n", stderr);
+	fprintf(stderr, "Try `%s --help' for more information\n",
 		progname);
 	exit(1);
     }
@@ -93,13 +85,13 @@ main(int argc, char *argv[])
      * options. */
     if (h) {
 	/* Print help info and exit.  */
-	printf(_("\
+	printf("\
 This is Monolith ccat.\n\
 Usage: %s [OPTION] [FILE]\n\
   -h, --help          display this help and exit\n\
   -v, --version       display version information and exit\n\
 \n\
-Report bugs to bugs@monolith.yawc.net.\n"),
+Report bugs to bugs@monolith.yawc.net.\n",
 	       progname);
 
 	exit(0);
@@ -125,10 +117,10 @@ Report bugs to bugs@monolith.yawc.net.\n"),
 	}
 
 	if (CURRCOL != 'a' && CURRCOL != '\0') {
-	    fprintf(stderr, _("Warning: File ends in colour `%s'. Please fix this\n"), getcolour(CURRCOL));
+	    fprintf(stderr, "Warning: File ends in colour `%s'. Please fix this\n", getcolour(CURRCOL));
 	    cprintf("\1a");
 	}
-/*    fprintf(stderr, _("[%s: %ld line%s]\n"), argv[optind], lines, (lines == 1) ? "" : "s"); */
+/*    fprintf(stderr, "[%s: %ld line%s]\n", argv[optind], lines, (lines == 1) ? "" : "s"); */
 	fclose(fp);
 	return 0;
     }
