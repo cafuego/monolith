@@ -251,7 +251,7 @@ menu_friend_add(int param)
 {
 
     char *name, user[L_USERNAME + 1], bbs[L_BBSNAME + 1];
-    int flag;
+    unsigned int flag;
     unsigned int id2;
 
     nox = 1;

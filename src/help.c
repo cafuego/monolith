@@ -76,7 +76,7 @@ static int utility_commands_menu(void);
 #define M_FILENAME filename[0]='\0'; sprintf(filename, "%s%s"
 
 void
-online_help_wrapper(const unsigned int a, const long b, const char *string)
+online_help_wrapper(unsigned int a, long b, const char *string)
 {
 if (strlen(string))
     online_help(string[0]);
@@ -84,7 +84,7 @@ if (strlen(string))
 
 
 void
-online_help(const char context)
+online_help(char context)
 {
 
     MENU_DECLARE;
