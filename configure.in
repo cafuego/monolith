@@ -30,6 +30,7 @@ AC_PROG_MAKE_SET
 dnl Check for awk/gawk - used to determine if we're linux or not.
 AC_PATH_PROG(awk_path,awk,no)
 AC_PATH_PROG(gawk_path,gawk,no)
+AC_PATH_PROG(grep_path,grep,no)
 
 dnl Checks for libraries.
 dnl Replace `main' with a function in -lgdbm:
@@ -69,6 +70,19 @@ else
     os=`echo $target_os | awk -F'-' '{print $1}'`
     if test "x$os" = "xlinux" ; then
       AC_DEFINE(LINUX)
+    fi
+  fi
+fi
+
+dnl Check if MAP_FAILED is defined...
+if test "x$grep_path" != "xno" ; then
+  AC_CHECK_HEADERS(sys/mman.h)
+  if test "x$ac_cv_header_sys_mman_h" != "xno" ; then
+    if test -r /usr/include/sys/mman.h; then
+      result=`grep MAP_FAILED /usr/include/sys/mman.h`
+      if test "x$result" != "x"; then
+        AC_DEFINE(HAVE_SYS_MMAN_H)
+      fi
     fi
   fi
 fi

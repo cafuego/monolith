@@ -35,7 +35,7 @@
 
 static char * format_message(message_t * message, unsigned int forum);
 static int format_header(message_t *message, char **string );
-static int format_date(unsigned int locale, message_t *message, char **string);
+static int format_date(message_t *message, char **string);
 static int format_username(message_t *message, char **string );
 static int format_title(message_t *message, char **string );
 static int format_subject(message_t *message, char **string );
@@ -150,13 +150,13 @@ format_header( message_t *message, char **string )
      */
 
     if(usersupp->config_flags & CO_EXPANDHEADER) {
-        (void) format_date(LOCALE_DEFAULT, message, string);
+        (void) format_date(message, string);
         (void) format_username(message, string);
         (void) format_title(message, string);
     } else {
         (void) format_username(message, string);
         (void) format_title(message, string);
-        (void) format_date(LOCALE_DEFAULT, message, string);
+        (void) format_date(message, string);
     }
 
     (void) format_subject(message, string);
@@ -168,7 +168,7 @@ format_header( message_t *message, char **string )
  * Puts formatted date into string according to locale rules.
  */
 static int
-format_date(unsigned int locale, message_t *message, char **string)
+format_date(message_t *message, char **string)
 {
 
     struct tm *tp;
@@ -176,29 +176,36 @@ format_date(unsigned int locale, message_t *message, char **string)
 
     tp = localtime(&message->date);
 
-    switch(locale) {
-
-        case LOCALE_US:
-            if(usersupp->config_flags & CO_EXPANDHEADER)
-                strftime( fmt_date, 1000, "\n\1f\1gPosted\1w: \1g%A %B %d, %Y \1w(\1g%I:%M %p\1w)\1a", tp );
-            else
-                strftime( fmt_date, 1000, " \1f\1g%a %b %d, %Y \1w(\1g%I:%M %p\1w)\1a", tp );
-            break;
-
-        case LOCALE_DEFAULT:
-        case LOCALE_EUROPE:
-            if(usersupp->config_flags & CO_EXPANDHEADER)
+    if( usersupp->config_flags & CO_LONGDATE ) {
+        if( usersupp->config_flags & CO_EUROPEANDATE ) {
+            if(usersupp->config_flags & CO_EXPANDHEADER) {
                 strftime( fmt_date, 1000, "\n\1f\1gPosted\1w: \1g%A %d %B, %Y \1w(\1g%H:%M\1w)\1a", tp );
-            else
+            } else {
+                strftime( fmt_date, 1000, " \1f\1g%A %d %B, %Y \1w(\1g%H:%M\1w)\1a", tp );
+            }
+        } else {
+            if(usersupp->config_flags & CO_EXPANDHEADER) {
+                strftime( fmt_date, 1000, "\n\1f\1gPosted\1w: \1g%A %B %d, %Y \1w(\1g%I:%M %p\1w)\1a", tp );
+            } else {
+                strftime( fmt_date, 1000, " \1f\1g%A %b %D, %Y \1w(\1g%I:%M %p\1w)\1a", tp );
+            }
+        }
+    } else {
+        if( usersupp->config_flags & CO_EUROPEANDATE ) {
+            if(usersupp->config_flags & CO_EXPANDHEADER) {
+                strftime( fmt_date, 1000, "\n\1f\1gPosted\1w: \1g%A %d %B, %Y \1w(\1g%H:%M\1w)\1a", tp );
+            } else {
                 strftime( fmt_date, 1000, " \1f\1g%a %d %b, %Y \1w(\1g%H:%M\1w)\1a", tp );
-            break;
-
-        case NO_LOCALE:
-        default:
-            return 0;
-            break;
-
+            }
+        } else {
+            if(usersupp->config_flags & CO_EXPANDHEADER) {
+                strftime( fmt_date, 1000, "\n\1f\1gPosted\1w: \1g%A %B %d, %Y \1w(\1g%I:%M %p\1w)\1a", tp );
+            } else {
+                strftime( fmt_date, 1000, " \1f\1g%a %b %d, %Y \1w(\1g%I:%M %p\1w)\1a", tp );
+            }
+        }
     }
+
     fmt_date[strlen(fmt_date)] = '\0';
 
     *string = (char *)xrealloc( *string, strlen(*string)+strlen(fmt_date) );
