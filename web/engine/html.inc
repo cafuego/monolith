@@ -198,8 +198,9 @@ function html_check_priv($action, $username, $forum_id) {
 
 }
 
-function html_print_foot($username, $starttime) {
+function html_print_foot($username, $starttime, $location) {
 
+    $location = strstr($location, "-", "/");
     $endtime = microtime();
 
     $start = explode( " ", $starttime);
@@ -207,12 +208,12 @@ function html_print_foot($username, $starttime) {
 
     echo "<hr size=\"1\" width=\"400\" align=\"center\">\n";
     echo "<p class=\"footer\">\n";
-    echo "  <a href=\"/bbs/index.phtml/\">Main</a> |\n";
-    echo "  <a href=\"$REQUEST_URI\">Check X Messages</a> |\n";
-    echo "  <a href=\"/bbs/index.phtml/w\">Wholist</a> |\n";
-    echo "  <a href=\"/bbs/index.phtml/l\">All Quadrants</a> |\n";
+    echo "  <a href=\"$location\">Check X Messages</a> <b>|</b>\n";
+    echo "  <a href=\"/bbs/index.phtml/w\">View Wholist</a> <b>|</b>\n";
+    echo "  <a href=\"/bbs/index.phtml/l\">All Quadrants</a> <b>|</b>\n";
     echo "  <a href=\"/bbs/index.phtml/u\">Unread Messages</a>\n";
     echo "<p class=\"footer\">\n";
+    echo "  <a href=\"/bbs/index.phtml/\">Main Page</a> |\n";
     echo "  <a href=\"/bbs/index.phtml/q\">Log out $username</a>\n";
     echo "<hr size=\"1\" width=\"400\" align=\"center\">\n";
 
