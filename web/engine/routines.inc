@@ -294,7 +294,7 @@ function x_log($username,$location) {
 
     connect_db();
 
-    $result = MYSQL_QUERY("SELECT id,sender,i_sender,recipient,i_recipient,message,DATE_FORMAT(date, '%H:%i') AS date,DATE_FORMAT(stamp, '%H:%i') AS stamp FROM webx AS w WHERE ((recipient=$user_id AND i_recipient='web') OR (sender=$user_id AND i_sender='web')) AND status='read' ORDER BY date DESC");
+    $result = MYSQL_QUERY("SELECT id,sender,i_sender,recipient,i_recipient,message,DATE_FORMAT(date, '%H:%i') AS date,DATE_FORMAT(stamp, '%H:%i') AS stamp FROM webx AS w WHERE ((recipient=$user_id AND i_recipient='web') OR (sender=$user_id AND i_sender='web')) AND status='read' ORDER BY date ASC");
     $number = MYSQL_NUMROWS($result);
     if ($number) {
         if($number == 1) {

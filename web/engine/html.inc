@@ -134,7 +134,7 @@ function html_do_logout($username, $hostname) {
     $online = mysql_result($result, 0, "online");
 
     $result = MYSQL_QUERY("DELETE FROM online WHERE user_id=$usernum AND interface='web'");
-    $result = MYSQL_QUERY("DELETE FROM webx WHERE recipient=$usernum AND i_recipient='web'");
+    $result = MYSQL_QUERY("DELETE FROM webx WHERE (recipient=$usernum AND i_recipient='web') OR (sender=$usernum AND i_sender='web'");
     $result = MYSQL_QUERY("INSERT INTO login (user_id,login,logout,host) VALUES($user_id,FROM_UNIXTIME($login),FROM_UNIXTIME($logout),SEC_TO_TIME($online),'$hostname')");
 
     print "<meta http-equiv=\"Refresh\" content=\"10; url=http://monolith.yawc.net/\">\n";
