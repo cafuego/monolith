@@ -1177,14 +1177,22 @@ _get_monoholic_flag(user_t *user)
     if(var < 2)
         return "\1f\1w* \1yMonoholic \1w*";
     if(var < 2.5)
-        return "\1f\1w* \1gDedicated Monoholic \1w*";
+        return "\1f\1w* \1gDetermined Monoholic \1w*";
     if(var < 3)
+        return "\1f\1w* \1gDedicated Monoholic \1w*";
+    if(var < 3.5)
         return "\1f\1w* \1gCommitted Monoholic \1w*";
     if(var < 4)
         return "\1f\1w* \1bGreat Monoholic \1w*";
-    if(var < 6)
+    if(var < 5)
         return "\1f\1w* \1bHigh Monoholic \1w*";
+    if(var < 6)
+        return "\1f\1w* \1bExalted Monoholic \1w*";
+    if(var < 7)
+        return "\1f\1w* \1bSupreme Monoholic \1w*";
     if(var < 8)
+        return "\1f\1w* \1pGreat High Monoholic \1w*";
+    if(var < 9)
         return "\1f\1w* \1pExalted High Monoholic \1w*";
     if(var < 10)
         return "\1f\1w* \1pSupreme High Monoholic \1w*";
