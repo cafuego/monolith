@@ -50,6 +50,9 @@ function html_print_title($username, $location) {
             $name = html_get_quadname($username,$quad);
             print "<title>$username@Monolith BBS: Listing unread messages in $name</title>\n";
             break;
+        case "o":
+            print "<title>$username@Monolith BBS: Listing old eXpress messages</title>\n";
+            break;
         case "q":
             print "<title>$username@Monolith BBS: Logging out</title>\n";
             break;

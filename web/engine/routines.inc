@@ -292,13 +292,19 @@ function x_log($username,$location) {
 
     connect_db();
 
-    $result = MYSQL_QUERY("SELECT w.id AS id,u.username AS user,w.sender AS sender,w.i_sender AS i_sender,w.recipient AS recipient,w.message AS message,DATE_FORMAT(w.date, '%H:%i') AS date,DATE_FORMAT(w.stamp, '%H:%i') AS stamp FROM webx AS w LEFT JOIN user AS u ON u.id=w.sender WHERE w.recipient=$user_id AND w.status='read' AND w.i_recipient='web' ORDER BY w.date ASC");
+    $result = MYSQL_QUERY("SELECT w.id AS id,u.username AS user,w.sender AS sender,w.i_sender AS i_sender,w.recipient AS recipient,w.message AS message,DATE_FORMAT(w.date, '%H:%i') AS date,DATE_FORMAT(w.stamp, '%H:%i') AS stamp FROM webx AS w LEFT JOIN user AS u ON u.id=w.sender WHERE w.recipient=$user_id AND w.status='read' AND w.i_recipient='web' ORDER BY w.date DESC");
     $number = MYSQL_NUMROWS($result);
     if ($number) {
-        if($number == 1)
+        if($number == 1) {
             addimage( "You have 1 eXpress message in your log" );
-        else
+            $text = "(This will be removed when you log out)";
+        } else {
             addimage( "You have $number eXpress messages in your log" );
+            $text = "(These will be removed when you log out)";
+        }
+        echo "<div align=\"center\">\n";
+        echo "<img src=\"/bbs/image.phtml/Tahoma_B,12,white/$text/\" alt=\"[ image: ". rawurldecode($text) ." ]\">\n";
+        echo "</div>\n";
 
         print "<table border=\"0\" cellpadding=\"2\" cellspacing=\"4\" align=\"center\">\n";
         $i = 0;
@@ -324,6 +330,8 @@ function x_log($username,$location) {
             $i++;
         }
         print "</table>\n";
+    } else {
+        errorimage( "There are no old Xes in your log" );
     }
 }
 
