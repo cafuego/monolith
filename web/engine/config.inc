@@ -23,7 +23,7 @@ function config_account( $username ) {
     $result = mysql_query("SELECT content_type FROM user WHERE id=$usernum");
     $number = MYSQL_NUMROWS($result);
     if ($number) {
-        echo "<p align=\"left\">This is the image that is currently in your profile:<p align=\"left\">&nbsp;\n";
+        echo "<p align=\"left\">This is the image that is currently in your profile:<p align=\"center\">&nbsp;\n";
 
         $content_type = mysql_result($result, 0, "content_type");
         if ($content_type == "image/gif")

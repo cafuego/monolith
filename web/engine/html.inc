@@ -236,6 +236,7 @@ html_print_foot($username, $starttime, $location)
 	echo "<hr size=\"1\" width=\"400\" align=\"center\">\n";
 
 	echo "<div align=\"center\">\n";
+        addbutton("Configuration", "/bbs/index.phtml/c", "Configure your account");
         if($location != "handler" )
 	    addbutton("Check Xes", "$location", "Check for new eXpress messages");
 	addbutton("Old X Log", "/bbs/index.phtml/o", "View your old eXpress messages");
@@ -299,6 +300,7 @@ html_print_buttons($username, $location)
     echo "".addbutton("Monolith", "/bbs/index.phtml/q", "Log off and go to our main page")."<br>\n";
     echo "".addbutton("Main Page", "/bbs/index.phtml/", "Go to the main page")."<br>\n";
     echo "".addbutton(" ", "", "")."<br>\n";
+    echo "".addbutton("Configuration", "/bbs/index.phtml/c", "Configure your account")."<br>\n";
     
     // Don't call a reload if we just submitted data via a form.
     //

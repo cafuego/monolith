@@ -71,6 +71,14 @@
         // Save profile image.
         case "p":
 
+            echo "<div align=\"left\">\n";
+            echo "<table border=\"0\" cellpadding=\"5\" cellspacing=\"5\">\n";
+            echo "  <tr>\n";
+            echo "    <td width=\"120\" align=\"left\" valign=\"top\">\n";
+            html_print_buttons($username, $REQUEST_URI);
+            echo "    </td>\n";
+            echo "    <td align=\"center\" valign=\"top\" width=\"500\">\n";
+
             if($userfile == null || $userfile == "" || (valid_image($userfile_type) == 0)) {
                 if ($userfile != null && $userfile != "") {
                     // Remove tempfile.
@@ -82,11 +90,13 @@
                     errorsound();
                     errorimage("Image was not sucessfully uploaded");
                 }
+                echo "<p align=\"center\">\n";
                 addbutton("Try again", "/bbs/index.phtml/c", "Try uploading an image again");
             } else {
                 if (!file_exists($userfile)) {
                     errorsound();
                     errorimage("The file was not successfully uploaded");
+                    echo "<p align=\"center\">\n";
                     addbutton("Try again", "/bbs/index.phtml/c", "Try uploading this image again");
                 } else {
                     if($userfile_size > 20000) {
@@ -94,6 +104,7 @@
                         unlink($userfile);
                         errorsound();
                         errorimage("The file you uploaded is larger than the allowed 20 Kb");
+                        echo "<p align=\"center\">\n";
                         addbutton("Try a smaller image", "/bbs/index.phtml/c", "Try uploading a smaller image");
                     } else {
                         // If we get to here, we can actually save the image.
@@ -109,33 +120,28 @@
                         if($result != true) {
                             errorsound();
                             errorimage("Could not save image type into database");
+                            echo "<p align=\"center\">\n";
                             addbutton("Try again", "/bbs/index.phtml/c", "Try again");
                         } else {
                             $result = mysql_query("UPDATE user SET picture='$contents' WHERE id=$usernum");
                             if($result != true) {
                                 errorsound();
                                 errorimage("Could not save image into database");
+                                echo "<p align=\"center\">\n";
                                 addbutton("Try again", "/bbs/index.phtml/c", "Try again");
                             } else {
                                 // So now it should be saved.
-                                echo "<div align=\"left\">\n";
-                                echo "<table border=\"0\" cellpadding=\"5\" cellspacing=\"5\">\n";
-                                echo "  <tr>\n";
-                                echo "    <td width=\"120\" align=\"left\" valign=\"top\">\n";
-                                html_print_buttons($username, $REQUEST_URI);
-                                echo "    </td>\n";
-                                echo "    <td align=\"center\" valign=\"top\" width=\"500\">\n";
                                 addimage("Image $userfile_name was");
                                 addimage("successfully saved into $username's Profile");
-                                echo "    </td>\n";
-                                echo "  </tr>\n";
-                                echo "</table>\n";
-                                echo "</div>\n";
                             }
                         }
                     }
                 }
             }
+            echo "    </td>\n";
+            echo "  </tr>\n";
+            echo "</table>\n";
+            echo "</div>\n";
             break;
 
         // Send eXpress message.
