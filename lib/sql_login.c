@@ -40,7 +40,7 @@ mono_sql_log_logout(unsigned int user_id, time_t login, time_t logout, const cha
     (void) time_to_datetime(logout, logouttime);
 
     ret = mono_sql_query(&res, "INSERT INTO " LOGIN_TABLE 
-     " (usernum,login,logout,host,reason) VALUES (%u,'%s','%s','%s',%d)"
+     " (user_id,login,logout,host,reason) VALUES (%u,'%s','%s','%s',%d)"
      , user_id, logintime, logouttime, host, reason);
 
     if (ret == -1)
