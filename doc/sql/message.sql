@@ -1,6 +1,6 @@
 # quads
 
-# DROP TABLE message;
+DROP TABLE message;
 
 CREATE TABLE message (
 
@@ -18,7 +18,6 @@ CREATE TABLE message (
    priv		ENUM( 'emp', 'sysop', 'tech', 'host', 'normal' ),
    deleted	ENUM( 'y', 'n' ),
 
-   score	INT DEFAULT 0,
    stamp	TIMESTAMP,
 
    PRIMARY KEY  ( forum_id, topic_id, message_id ),

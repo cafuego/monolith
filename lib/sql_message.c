@@ -30,6 +30,7 @@
 #include "sql_utils.h"
 #include "sql_forum.h"
 #include "sql_userforum.h"
+#include "sql_rating.h"
 
 #include "sql_message.h"
 
@@ -65,6 +66,11 @@ mono_sql_mes_add(message_t *message, unsigned int forum, const char *tmpfile)
     (void) mysql_free_result(res);
     xfree(alias);
     xfree(subject);
+
+    /*
+     * To prevent an autor from uprating their own posts.
+     */
+    (void) mono_sql_rat_add_rating(message->author, message->num, message->forum, 0);
 
     return ret;
 
@@ -114,7 +120,7 @@ mono_sql_mes_retrieve(unsigned int id, unsigned int forum, message_t *data)
     message_t message;
     int ret = 0;
 
-    ret = mono_sql_query(&res, "SELECT message_id,topic_id,forum_id,author,alias,subject,UNIX_TIMESTAMP(date),type,priv,deleted,score FROM " M_TABLE " WHERE message_id=%u AND forum_id=%u", id, forum);
+    ret = mono_sql_query(&res, "SELECT message_id,topic_id,forum_id,author,alias,subject,UNIX_TIMESTAMP(date),type,priv,deleted FROM " M_TABLE " WHERE message_id=%u AND forum_id=%u", id, forum);
 
     if (ret == -1) {
  	(void) mysql_free_result(res);
@@ -139,27 +145,29 @@ mono_sql_mes_retrieve(unsigned int id, unsigned int forum, message_t *data)
     /*
      * Admin info
      */
-    message.num = atoi(row[0]);
-    sscanf( row[0], "%d", &message.num);
-    message.topic = atoi(row[1]);
-    message.forum = atoi(row[2]);
+    sscanf(row[0], "%u", &message.num);
+    sscanf(row[1], "%u", &message.topic);
+    sscanf(row[2], "%u", &message.forum);
 
     /*
-     * Header info
+     * Header info.
      */
-    sscanf( row[3], "%u", &message.author);
+    sscanf(row[3], "%u", &message.author);
     sprintf(message.alias, row[4]);
     sprintf(message.subject, row[5]);
-    sscanf( row[6], "%lu", &message.date);
+    sscanf(row[6], "%lu", &message.date);
 
     /*
      * And more admin info.
      */
-    sscanf( row[7], "%s", message.type);
-    sscanf( row[8], "%s", message.priv);
-    sscanf( row[9], "%c", &message.deleted);
+    sscanf(row[7], "%s", message.type);
+    sscanf(row[8], "%s", message.priv);
+    sscanf(row[9], "%c", &message.deleted);
 
-    sscanf( row[10], "%d", &message.score);
+    /*
+     * Score!
+     */
+    message.score = mono_sql_rat_get_rating(message.num, message.forum);
 
     (void) mysql_free_result(res);
 

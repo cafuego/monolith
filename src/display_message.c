@@ -82,6 +82,7 @@ display_message(unsigned int num, unsigned int forum)
             return;
 
     }
+    printf("DEBUG: Rating: %.2f\n", message.score );
     string = format_message( &message, forum );
 
 #ifdef CLIENTSRC
@@ -112,7 +113,6 @@ format_message( message_t *message, unsigned int forum)
      */
     string = (char *)xmalloc( sizeof(char) );
     memset( string, 0, sizeof(string) );
-
 
     (void) format_header(message, &string);
     (void) format_content(message, &string);
@@ -401,7 +401,7 @@ format_content(message_t *message, char **string )
 
     /* Set content colour, based on score (TODO) */
     *string = (char *)xrealloc( *string, strlen(*string)+strlen("\1a\1x") );
-    if( message->score > 2 )
+    if( message->score > 1.99 )
         strcat( *string, "\1a\1w" );
     else
         strcat( *string, "\1a\1c" );

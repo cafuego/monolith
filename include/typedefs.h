@@ -68,7 +68,7 @@ typedef struct {
     char type[8];
     char priv[8];
     char deleted;
-    int score;
+    float score;
 } message_t;
 
 typedef struct xfriend friend_t;

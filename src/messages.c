@@ -54,6 +54,7 @@
 
 #include "sql_message.h"
 #include "sql_userforum.h"
+#include "sql_rating.h"
 
 #define MODIFICATION_TIME
 
@@ -1842,7 +1843,7 @@ new_read_menu(unsigned int forum, int direction)
 
     while( list != NULL ) {
 
-        cmd = get_single_quiet("abfnsq ");
+        cmd = get_single_quiet("abfnsqR ");
 
         switch(cmd) {
 
@@ -1886,6 +1887,12 @@ new_read_menu(unsigned int forum, int direction)
                return;
                break;
 
+           case 'R':
+               cprintf("\1f\1gRate this %s.\n", config.message );
+               rate_message(forum, list->id);
+               direction = 0;
+               break;
+
         } /* switch */
   
         switch(direction) {
@@ -1903,6 +1910,44 @@ new_read_menu(unsigned int forum, int direction)
     } /* while */
 
     (void) mono_sql_mes_free_list(list);
+
+    return;
+}
+
+void
+rate_message(unsigned int forum, unsigned int message)
+{
+    char buf_str[3];
+    int score = 0;
+
+    if( (mono_sql_rat_check_rating(usersupp->usernum, message, forum )) == -1 ) {
+        cprintf("\1f\1rYou have already rated this %s.\1a\n", config.message);
+        return;
+    }
+
+    cprintf("\n\1f\1gRatings vary from \1y-9\1g for a horrible %s to \1y9\1g for an excellent %s\n", config.message, config.message);
+    cprintf("\1f\1gThe overall score is based on the average of all ratings for this %s.\n\n", config.message);
+    cprintf("\1f\1gYour rating for this %s \1w(\1g-9 thru 9\1w): \1c", config.message);
+
+    strcpy(buf_str, "");
+    getline(&buf_str, 2, TRUE);
+
+    if( (sscanf(buf_str, "%d", &score)) != 1) {
+        cprintf("\1f\1rSorry, but `\1y%s\1r' is not a valid entry.\1a\n", buf_str);
+        return;
+    } else if( (score < -9) || (score > 9) ) {
+        cprintf("\1f\1rSorry, but `\1y%d\1r' is not a valid entry.\1a\n", score);
+        return;
+   }
+
+    cprintf("\1f\1gSave a rating of \1y%d\1g for this %s? \1w(\1gy\1w/\1gn\1w) \1c", score, config.message);
+    if( yesno() == NO )
+        return;
+
+    if( (mono_sql_rat_add_rating(usersupp->usernum, message, forum, score )) == -1 )
+        cprintf("\1f\1rAn internal SQL error occurred.\1a\n");
+    else
+        cprintf("\1f\1gScore saved.\1a\n");
 
     return;
 }
