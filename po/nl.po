@@ -837,7 +837,7 @@ msgstr ""
 #: src/fun.c:61 src/fun.c:69 src/fun.c:71
 #, fuzzy
 msgid "fgNo unread messages.a"
-msgstr "fgGeen ongelezen %s.a"
+msgstr "fgGeen ongelezen berichten.a"
 
 #: src/fun.c:121
 msgid ""
@@ -1124,7 +1124,7 @@ msgstr "fgLees berichten vooruit.a\n"
 #: src/read_menu.c:297
 #, fuzzy
 msgid "fgProfile a user.a\n"
-msgstr "fgBekijk een %s.a\n"
+msgstr "fgBekijk een gebruiker.a\n"
 
 #: src/read_menu.c:303
 msgid "frAsk a Question.a\n"
@@ -1142,7 +1142,7 @@ msgstr ""
 #: src/read_menu.c:325
 #, fuzzy
 msgid "fgSearch messages\n"
-msgstr "fgZoek %s\n"
+msgstr "fgZoek berichten\n"
 
 #: src/read_menu.c:330
 #, fuzzy, c-format
@@ -1165,7 +1165,7 @@ msgstr "fg%s Wie-lijst.\n"
 #: src/read_menu.c:363
 #, fuzzy
 msgid "fgWho is online?a\n"
-msgstr "fgWelke %s zijn aanwezig?a\n"
+msgstr "fgWelke gebruikers zijn aanwezig?a\n"
 
 #: src/read_menu.c:368 src/read_menu.c:888
 msgid "fgShort Wholist.a\n"
