@@ -556,9 +556,9 @@ main(int argc, char *argv[])
     mono_remove_ghosts();
     mono_add_loggedin(usersupp);	/* put user to into sharedmem */
 #ifdef PORT
-    mono_sql_onl_add(usersupp->usernum, "telnet");
+    mono_sql_onl_add(usersupp->usernum, "telnet", usersupp->doing);
 #else
-    mono_sql_onl_add(usersupp->usernum, "client");
+    mono_sql_onl_add(usersupp->usernum, "client", usersupp->doing);
 #endif
     setup_express();		/* setup express stuff */
 

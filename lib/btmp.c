@@ -34,6 +34,7 @@
 #include "routines.h"
 
 #include "sql_forum.h"
+#include "sql_online.h"
 
 #include "telnet.h"
 
@@ -296,6 +297,7 @@ mono_change_online(const char *user, const char *tmp_string, int ch)
 		case 14:
 		    strncpy(p->doing, tmp_string, 29);
 		    p->doing[30] = '\0';
+                    (void) mono_sql_onl_doing( p->username, p->doing);
 		    break;
 
 		case 15:

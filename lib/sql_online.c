@@ -21,7 +21,9 @@
 
 #include "monolith.h"
 #include "monosql.h"
+#include "routines.h"
 
+#include "sql_user.h"
 #include "sql_utils.h"
 
 #define extern
@@ -32,15 +34,15 @@
  * Adds an entry into the `online' table.
  */
 int
-mono_sql_onl_add(unsigned int user_id, const char *interface)
+mono_sql_onl_add(unsigned int user_id, const char *interface, const char *doing)
 {
 
     int ret;
     MYSQL_RES *res;
 
     ret = mono_sql_query(&res, "INSERT INTO " ONLINE_TABLE 
-     " (user_id,interface) VALUES (%u,'%s')"
-     , user_id, interface);
+     " (user_id,interface,doing) VALUES (%u,'%s','%s')"
+     , user_id, interface,doing);
 
     if (ret == -1)
 	return FALSE;
@@ -80,6 +82,31 @@ mono_sql_onl_status(unsigned int user_id, unsigned int status)
 	return FALSE;
 
     mono_sql_u_free_result(res);
+    return TRUE;
+}
+
+int
+mono_sql_onl_doing(const char* username, const char *doing)
+{
+
+    int ret;
+    MYSQL_RES *res;
+    unsigned int user_id = 0;
+    char *fmt_doing = NULL;
+
+    (void) mono_sql_u_name2id( username, &user_id );
+    (void) escape_string( doing, &fmt_doing );
+
+    ret = mono_sql_query(&res, "UPDATE " ONLINE_TABLE 
+     " SET doing='%s' WHERE user_id=%u", user_id, fmt_doing);
+
+    if (ret == -1) {
+        xfree(fmt_doing);
+	return FALSE;
+    }
+
+    mono_sql_u_free_result(res);
+    xfree(fmt_doing);
     return TRUE;
 }
 
