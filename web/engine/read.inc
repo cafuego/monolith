@@ -167,12 +167,11 @@ function read_message($username, $quad, $current, $direction)
  */
 function mes_link_urls( $text ) {
 
-    // Turn text into an array.
-    while( ereg("href=\"[^\"]*\"", $text, $url) ) {
-        echo "<li>$url[0]";
-        $replace = ereg_replace( "\?", "\?", $url[0] );
-        $text = ereg_replace( $replace, "", $text );
-    }
+    eregi("http://* ", $text, $url_list);
+    
+    do {
+       echo "<a href=\"$url">$url</a>";
+    } while($url = next($url_list));
     return $text;
 }
 
