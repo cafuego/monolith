@@ -1,13 +1,13 @@
 # Topics
 # sub-areas inside forums.
 
-DROP TABLE topic;
+# DROP TABLE topics;
 
-CREATE TABLE topic (
+CREATE TABLE topics (
 
 # topic name/number
-   topic_id	INT UNSIGNED NOT NULL AUTO_INCREMENT,
-   forum_id	INT  UNSIGNED NOT NULL,
+   forum_id	INT UNSIGNED NOT NULL,
+   topic_id	INT UNSIGNED NOT NULL,
 
    name		VARCHAR(40) NOT NULL,
 
@@ -17,6 +17,5 @@ CREATE TABLE topic (
 # timestamp
    stamp	TIMESTAMP,
 
-   PRIMARY KEY ( topic_id ),
-   UNIQUE( name )
+   PRIMARY KEY ( forum_id, topic_id )
 )
