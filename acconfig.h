@@ -18,6 +18,8 @@
 /* Define as 1 if you have the memfrob function. (Linux only)  */
 #undef HAVE_MEMFROB
 
+
+#undef HAVE_CAT
 #undef HAVE_ANIMAL
 #undef HAVE_MAP_FAILED
 #undef MYSQL_DIR
