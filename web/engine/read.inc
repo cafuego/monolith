@@ -28,15 +28,15 @@ function read_message($username, $quad, $current, $direction) {
             switch ($direction) {
 
                 case "p":
-                    $query_string = "SELECT m.message_id AS m_id,m.forum_id AS f_id,m.topic_id,m.author AS a_id,t.highest AS highest,u.username AS username,m.flag AS flag,m.alias AS alias,m.subject AS subject,m.content AS content,DATE_FORMAT(m.date,'%W, %e %M %Y %H:%i:%S') AS date,f.name AS forum FROM message AS m LEFT JOIN topics AS t ON t.forum_id=m.forum_id LEFT JOIN user AS u ON u.id=m.author LEFT JOIN forum AS f ON f.id=m.forum_id WHERE forum_id=$quad AND m.message_id<$current AND m.deleted='n' ORDER BY m.message_id DESC";
+                    $query_string = "SELECT m.message_id AS m_id,m.forum_id AS f_id,m.topic_id,m.author AS a_id,t.highest AS highest,u.username AS username,m.flag AS flag,m.alias AS alias,m.subject AS subject,m.content AS content,DATE_FORMAT(m.date,'%W, %e %M %Y %H:%i:%S') AS date,f.name AS forum FROM message AS m LEFT JOIN topics AS t ON t.forum_id=m.forum_id LEFT JOIN user AS u ON u.id=m.author LEFT JOIN forum AS f ON f.id=m.forum_id WHERE m.forum_id=$quad AND m.message_id<$current AND m.deleted='n' ORDER BY m.message_id DESC";
                     break;
 
                 case "n":
-                    $query_string = "SELECT m.message_id AS m_id,m.forum_id AS f_id,m.topic_id,m.author AS a_id,t.highest AS highest,u.username AS username,m.flag AS flag,m.alias AS alias,m.subject AS subject,m.content AS content,DATE_FORMAT(m.date,'%W, %e %M %Y %H:%i:%S') AS date,f.name AS forum FROM message AS m LEFT JOIN topics AS t ON t.forum_id=m.forum_id LEFT JOIN user AS u ON u.id=m.author LEFT JOIN forum AS f ON f.id=m.forum_id WHERE forum_id=$quad AND m.message_id>$current AND m.deleted='n' ORDER BY m.message_id ASC";
+                    $query_string = "SELECT m.message_id AS m_id,m.forum_id AS f_id,m.topic_id,m.author AS a_id,t.highest AS highest,u.username AS username,m.flag AS flag,m.alias AS alias,m.subject AS subject,m.content AS content,DATE_FORMAT(m.date,'%W, %e %M %Y %H:%i:%S') AS date,f.name AS forum FROM message AS m LEFT JOIN topics AS t ON t.forum_id=m.forum_id LEFT JOIN user AS u ON u.id=m.author LEFT JOIN forum AS f ON f.id=m.forum_id WHERE m.forum_id=$quad AND m.message_id>$current AND m.deleted='n' ORDER BY m.message_id ASC";
                     break;
 
                 default:
-                    $query_string = "SELECT m.message_id AS m_id,m.forum_id AS f_id,m.topic_id,m.author AS a_id,t.highest AS highest,u.username AS username,m.flag AS flag,m.alias AS alias,m.subject AS subject,m.content AS content,DATE_FORMAT(m.date,'%W, %e %M %Y %H:%i:%S') AS date,f.name AS forum FROM message AS m LEFT JOIN topics AS t ON t.forum_id=m.forum_id LEFT JOIN user AS u ON u.id=m.author LEFT JOIN forum AS f ON f.id=m.forum_id WHERE forum_id=$quad AND m.message_id=$current";
+                    $query_string = "SELECT m.message_id AS m_id,m.forum_id AS f_id,m.topic_id,m.author AS a_id,t.highest AS highest,u.username AS username,m.flag AS flag,m.alias AS alias,m.subject AS subject,m.content AS content,DATE_FORMAT(m.date,'%W, %e %M %Y %H:%i:%S') AS date,f.name AS forum FROM message AS m LEFT JOIN topics AS t ON t.forum_id=m.forum_id LEFT JOIN user AS u ON u.id=m.author LEFT JOIN forum AS f ON f.id=m.forum_id WHERE m.forum_id=$quad AND m.message_id=$current";
                     break;
 
             }
