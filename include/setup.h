@@ -1,7 +1,7 @@
 /* $Id$ */
 
 /* name definitions */
-#define BBSNAME			"Coffee BBS"	/* full name of the BBS */
+#define BBSNAME			"Monolith BBS"	/* full name of the BBS */
 #define FORUM			"Quadrant"	/* name for a forum */
 #define FORUM_PL		"Quadrants"	/* plural */
 #define MESSAGE			"message"	/* name for a post */
