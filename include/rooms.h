@@ -37,3 +37,7 @@ extern char * unread_rooms_list(const user_t * );
 extern void erase_all_messages( long );
 extern void low_traffic_quad_list( void );
 extern room_t readquad( int ); /*EEK!*/
+extern void edithosts_menu(void);
+extern void invite_menu(void);
+extern void kickout_menu(void);
+extern void print_forumlist_list(forumlist_t *);

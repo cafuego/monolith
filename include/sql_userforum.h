@@ -17,3 +17,5 @@ extern int mono_sql_uf_list_kicked_by_user(unsigned int, forumlist_t **p );
 extern int mono_sql_uf_is_kicked(unsigned int , unsigned int );
 extern int mono_sql_uf_add_kicked(unsigned int , unsigned int );
 extern int mono_sql_uf_remove_kicked(unsigned int , unsigned int );
+extern int dest_userlist(userlist_t *);
+extern int dest_forumlist(forumlist_t *);
