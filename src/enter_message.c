@@ -221,6 +221,9 @@ save_new_message(message_header_t * header, unsigned int forum)
         cprintf("\n\1a\1wSQL time elapsed: %f\n", time_function(TIME_STOP));
     else
 	time_function(TIME_STOP);
+
+    usersupp->posted++;
+
     return 0;
 }
 
