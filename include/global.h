@@ -59,7 +59,7 @@
  * <w>ho <n>ext <j>ump m<e>ssage <s>top (Press ? for commands or h for help)
  */
 
-#define SHORT_HELPPROMPT	"\1f\1w<\1rw\1w>\1gho \1w<\1rc\1w>\1ghat e\1w<\1rx\1w>\1gpress \1w<\1rj\1w>\1gump  \1w(\1gPress \1r?\1g for commands or \1rh\1g for help\1w)"
-#define LONG_HELPPROMPT		"\1f\1w<\1rw\1w>\1gho \1w<\1rn\1w>\1gext \1w<\1rj\1w>\1gump m\1w<\1re\1w>\1gssage \1w<\1rs\1w>\1gtop \1w(\1gPress \1r?\1g for commands or \1rh\1g for help\1w)"
-#define FRIEND_CMDS		"\1f\1w<\1ra\1w>\1gdd \1w<\1rd\1w>\1gelete \1w<\1rl\1w>\1gist \1w<\1rq\1w>\1guit \1w(\1gPress \1r?\1g for commands\1w)"
-#define ENEMY_CMDS		"\1f\1w<\1ra\1w>\1gdd \1w<\1rd\1w>\1gelete \1w<\1rl\1w>\1gist \1w<\1rq\1w>\1guit \1w(\1gPress \1r?\1g for commands\1w)"
+#define SHORT_HELPPROMPT	"\1f\1w<\1rw\1w>\1gho \1w<\1rc\1w>\1ghat e\1w<\1rx\1w>\1gpress \1w<\1rj\1w>\1gump  \1w(\1gPress \1r?\1g for online help\1w)"
+#define LONG_HELPPROMPT		"\1f\1w<\1rw\1w>\1gho \1w<\1rn\1w>\1gext \1w<\1rj\1w>\1gump m\1w<\1re\1w>\1gssage \1w<\1rs\1w>\1gtop \1w(\1gPress \1r?\1g for online help\1w)"
+#define FRIEND_CMDS		"\1f\1w<\1ra\1w>\1gdd \1w<\1rd\1w>\1gelete \1w<\1rl\1w>\1gist \1w<\1rq\1w>\1guit \1w(\1gPress \1r?\1g for online help\1w)"
+#define ENEMY_CMDS		"\1f\1w<\1ra\1w>\1gdd \1w<\1rd\1w>\1gelete \1w<\1rl\1w>\1gist \1w<\1rq\1w>\1guit \1w(\1gPress \1r?\1g for online help\1w)"

@@ -1,5 +1,8 @@
 /* $Id$ */
 
+#ifndef MYSQL_RES
+#include <mysql.h>
+#endif
 extern int mono_sql_query(MYSQL_RES ** result, const char *format,...);
 
 extern int mono_sql_connect(void);
