@@ -147,6 +147,17 @@ mono_sql_query(MYSQL_RES ** result, const char *format,...)
     return 0;
 }
 
+void
+mono_sql_u_free_result(MYSQL_RES *res)
+{
+    if(res == NULL) {
+        log_it("sqlmem", "Tried to free NULL value at 0x%x", res);
+        return;
+    }
+    mysql_free_result(res);
+    return;
+}
+
 int
 mono_sql_connected()
 {

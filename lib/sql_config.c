@@ -46,11 +46,11 @@ mono_sql_read_config(int num, config_t * data)
     mono_sql_query(&res, "SELECT * FROM %s WHERE id=%d", CONFIG_TABLE, num);
 
     if (mysql_num_rows(res) == 0) {
-	(void) mysql_free_result(res);
+	(void) mono_sql_u_free_result(res);
 	return -1;
     }
     if (mysql_num_rows(res) > 1) {
-	(void) mysql_free_result(res);
+	(void) mono_sql_u_free_result(res);
 	return -1;
     }
     row = mysql_fetch_row(res);
@@ -81,7 +81,7 @@ mono_sql_read_config(int num, config_t * data)
     strcpy(config.roomaide, row[21]);
     strcpy(config.guide, row[22]);
 
-    (void) mysql_free_result(res);
+    (void) mono_sql_u_free_result(res);
 
     *data = config;
     return 0;
@@ -106,7 +106,7 @@ mono_sql_save_config(int num, config_t * config)
 			    config->chatroom, config->admin, config->wizard,
 			config->sysop, config->programmer, config->roomaide,
 			    config->guide)) == -1) {
-	    (void) mysql_free_result(res);
+	    (void) mono_sql_u_free_result(res);
 	    return -1;
 	}
     } else {
@@ -120,13 +120,13 @@ mono_sql_save_config(int num, config_t * config)
 			    config->chatroom, config->admin, config->wizard,
 			config->sysop, config->programmer, config->roomaide,
 			    config->guide)) == -1) {
-	    (void) mysql_free_result(res);
+	    (void) mono_sql_u_free_result(res);
 	    return -1;
 	}
     }
 
 
-    (void) mysql_free_result(res);
+    (void) mono_sql_u_free_result(res);
     return 0;
 }
 
@@ -142,10 +142,10 @@ mono_sql_delete_config(int num)
     return -1;
 
     if ((mono_sql_query(&res, "DELETE FROM " CONFIG_TABLE " WHERE id=%d", num)) == -1) {
-	(void) mysql_free_result(res);
+	(void) mono_sql_u_free_result(res);
 	return -1;
     }
-    (void) mysql_free_result(res);
+    (void) mono_sql_u_free_result(res);
     return 0;
 }
 
@@ -161,10 +161,10 @@ mono_sql_config_exists(const char *name)
     mono_sql_query(&res, "SELECT * FROM %s WHERE name='%s'", CONFIG_TABLE, name);
 
     if (mysql_num_rows(res) == 0) {
-	(void) mysql_free_result(res);
+	(void) mono_sql_u_free_result(res);
 	return FALSE;
     }
-    (void) mysql_free_result(res);
+    (void) mono_sql_u_free_result(res);
     return TRUE;
 }
 /* eof */

@@ -41,7 +41,7 @@ mono_sql_rat_add_rating(unsigned int user_id, unsigned int message_id, unsigned 
     ret = mono_sql_query(&res, "INSERT INTO %s (user_id,message_id,forum_id,score) VALUES (%u,%u,%u,%d)",
         R_TABLE, user_id, message_id, forum_id, rating);
 
-    (void) mysql_free_result(res);
+    (void) mono_sql_u_free_result(res);
 
     return ret;
 }
@@ -58,15 +58,15 @@ mono_sql_rat_get_rating(unsigned int message_id, unsigned int forum_id)
         R_TABLE, forum_id, message_id );
 
     if (ret == -1) {
-        (void) mysql_free_result(res);
+        (void) mono_sql_u_free_result(res);
         return 0;
     }
     if (mysql_num_rows(res) == 0) {
-        (void) mysql_free_result(res);
+        (void) mono_sql_u_free_result(res);
         return 0;
     }
     if (mysql_num_rows(res) > 1) {
-        (void) mysql_free_result(res);
+        (void) mono_sql_u_free_result(res);
         return 0;
     }
     row = mysql_fetch_row(res);
@@ -74,7 +74,7 @@ mono_sql_rat_get_rating(unsigned int message_id, unsigned int forum_id)
     if( (sscanf(row[0], "%f", &rating)) != 1)
          rating = 0;
 
-    (void) mysql_free_result(res);
+    (void) mono_sql_u_free_result(res);
 
     return rating;
 }
@@ -91,10 +91,10 @@ mono_sql_rat_check_rating(unsigned int user_id, unsigned int message_id, unsigne
 
     if(ret != -1)
         if(mysql_num_rows(res) != 0) {
-            (void) mysql_free_result(res);
+            (void) mono_sql_u_free_result(res);
             return -1;
         }
-    (void) mysql_free_result(res);
+    (void) mono_sql_u_free_result(res);
     return 0;
 }
 #endif /* USE_RATING */

@@ -125,7 +125,7 @@ mono_sql_u_check_passwd( unsigned int user_id, const char *passwd )
 
 /* michel: putting this free statement here gives a segfaul.t
      don't know why, but it should really be here */
-/*    mysql_free_result(res); */
+/*    mono_sql_u_free_result(res); */
 
     if ( ret == 0 ) return TRUE;
     return FALSE;
@@ -161,7 +161,7 @@ mono_sql_u_id2name(unsigned int userid, char *username)
     }
     row = mysql_fetch_row(res);
     strcpy(username, row[0]);
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return 0;
 }
 
@@ -185,7 +185,7 @@ mono_sql_u_name2id(const char *username, unsigned int *userid)
     }
     row = mysql_fetch_row(res);
     sscanf(row[0], "%u", userid);
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return 0;
 
 }

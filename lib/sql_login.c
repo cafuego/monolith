@@ -50,7 +50,7 @@ mono_sql_log_logout(unsigned int user_id, time_t login, time_t logout, const cha
     if (ret == -1)
 	return FALSE;
 
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return TRUE;
 }
 

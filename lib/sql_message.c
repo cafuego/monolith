@@ -82,7 +82,7 @@ mono_sql_mes_add(message_t *message)
             message->orig_f_id, message->orig_t_id, message->orig_a_id,
             message->orig_date, message->mod_reason );
 
-    (void) mysql_free_result(res);
+    (void) mono_sql_u_free_result(res);
 
     xfree(alias);
     xfree(subject);
@@ -112,7 +112,7 @@ mono_sql_mes_mark_deleted(unsigned int id, unsigned int forum)
 
     ret = mono_sql_query(&res, "UPDATE " M_TABLE " SET deleted='y' WHERE message_id=%u AND forum_id=%u", id, forum );
 
-    (void) mysql_free_result(res);
+    (void) mono_sql_u_free_result(res);
 
     return ret;
 }
@@ -125,7 +125,7 @@ mono_sql_mes_remove(unsigned int id, unsigned int forum)
     int ret = 0;
 
     ret = mono_sql_query(&res, "DELETE FROM " M_TABLE " WHERE message_id=%u AND forum_id=%u", id, forum);
-    (void) mysql_free_result(res);
+    (void) mono_sql_u_free_result(res);
 
     return ret;
 }
@@ -161,20 +161,20 @@ mono_sql_mes_retrieve(unsigned int id, unsigned int forum, message_t *data)
 #endif
 
     if (ret == -1) {
- 	(void) mysql_free_result(res);
+ 	(void) mono_sql_u_free_result(res);
 	return -1;
     }
     if (mysql_num_rows(res) == 0) {
-	(void) mysql_free_result(res);
+	(void) mono_sql_u_free_result(res);
 	return -2;
     }
     if (mysql_num_rows(res) > 1) {
-	(void) mysql_free_result(res);
+	(void) mono_sql_u_free_result(res);
 	return -3;
     }
     row = mysql_fetch_row(res);
     message = mono_sql_convert_row_to_mes(row);
-    (void) mysql_free_result(res);
+    (void) mono_sql_u_free_result(res);
 
     *data = *message;
 
@@ -220,11 +220,11 @@ mono_sql_mes_list_forum(unsigned int forum, unsigned int start, mlist_t ** list)
 
     
     if (ret == -1) {
-	(void) mysql_free_result(res);
+	(void) mono_sql_u_free_result(res);
 	return -1;
     }
     if ((rows = mysql_num_rows(res)) == 0) {
-	(void) mysql_free_result(res);
+	(void) mono_sql_u_free_result(res);
 	return -2;
     }
 
@@ -243,7 +243,7 @@ mono_sql_mes_list_forum(unsigned int forum, unsigned int start, mlist_t ** list)
 	    continue;
         }
     }
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return 0;
 }
 
@@ -285,11 +285,11 @@ mono_sql_mes_list_topic(unsigned int topic, unsigned int start, mlist_t ** list)
 #endif
 
     if (ret == -1) {
-	(void) mysql_free_result(res);
+	(void) mono_sql_u_free_result(res);
 	return -1;
     }
     if ((rows = mysql_num_rows(res)) == 0) {
-	(void) mysql_free_result(res);
+	(void) mono_sql_u_free_result(res);
 	return -1;
     }
     for (i = 0; i < rows; i++) {
@@ -305,7 +305,7 @@ mono_sql_mes_list_topic(unsigned int topic, unsigned int start, mlist_t ** list)
 	if (mono_sql_ll_add_mlist_to_list(entry, list) == -1)
 	    break;
     }
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return 0;
 
 }
@@ -353,12 +353,12 @@ mono_sql_mes_search_forum(int forum, const char *string, sr_list_t **list)
     xfree(needle);
 
     if (ret == -1) {
-        (void) mysql_free_result(res);
+        (void) mono_sql_u_free_result(res);
         return -1;
     }
 
     if ((rows = mysql_num_rows(res)) == 0) {
-        (void) mysql_free_result(res);
+        (void) mono_sql_u_free_result(res);
         return 0;
     }
 
@@ -377,7 +377,7 @@ mono_sql_mes_search_forum(int forum, const char *string, sr_list_t **list)
             continue;
         }
     }
-    (void) mysql_free_result(res);
+    (void) mono_sql_u_free_result(res);
     return rows;
 }
 
@@ -400,7 +400,7 @@ _mono_sql_mes_cleanup(unsigned int forum)
      */
     (void) mono_sql_query( &res, "DELETE FROM " M_TABLE " WHERE forum_id=%u AND message_id<%d",
         forum, lowest );
-    (void) mysql_free_result(res);
+    (void) mono_sql_u_free_result(res);
 
 #ifdef USE_RATING
     /*
@@ -408,7 +408,7 @@ _mono_sql_mes_cleanup(unsigned int forum)
      */
     (void) mono_sql_query( &res, "DELETE FROM " R_TABLE " WHERE forum_id=%u AND message_id<%d",
         forum, lowest );
-    (void) mysql_free_result(res);
+    (void) mono_sql_u_free_result(res);
 #endif
 
     return;

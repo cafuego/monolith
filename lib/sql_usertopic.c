@@ -36,7 +36,7 @@ mono_sql_ut_add_entry(unsigned int user_id, unsigned int topic_id)
     ret = mono_sql_query(&res,
 			 "SELECT user_id,username FROM usertopic"
 		     "WHERE topic_id=%u AND user_id=%u", topic_id, user_id);
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
 
     if (ret != 0) {
 	return -1;
@@ -57,7 +57,7 @@ mono_sql_ut_kill_topic(unsigned int topicnumber)
 	fprintf(stderr, "Some sort of error.\n");
 	return -1;
     }
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return 0;
 }
 
@@ -73,7 +73,7 @@ mono_sql_ut_kill_user(unsigned int userid)
 	fprintf(stderr, "Some sort of error.\n");
 	return -1;
     }
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return 0;
 }
 
@@ -91,7 +91,7 @@ mono_sql_ut_new_user(unsigned int user_id)
 	if (ret == -1)
 	    printf("\nInsert error");
     }
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return 0;
 }
 

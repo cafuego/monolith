@@ -72,7 +72,7 @@ mono_sql_uu_read_list(unsigned int user_id, friend_t ** first, int flag)
 	    strcpy(q.name, row[2]);
 	    add_friend_to_list(q, first);
 	}
-	mysql_free_result(res);
+	mono_sql_u_free_result(res);
 	return 0;
     }
 }
@@ -119,7 +119,7 @@ mono_sql_uu_is_on_list(unsigned int user_id, unsigned int friend_id, int flags)
 	return FALSE;
     } else {
 	count = mysql_num_rows(res);
-	mysql_free_result(res);
+	mono_sql_u_free_result(res);
 	if (count == 1)
 	    return TRUE;
 	else
@@ -227,13 +227,13 @@ mono_sql_uu_quickx2user(unsigned int user_id, int quickx, unsigned int *friend_i
     ret = mono_sql_query(&res, "SELECT friend_id FROM " UU_TABLE " WHERE (user_id='%u' AND quickx='%u')", user_id, quickx);
 
     if (ret == -1) {
-	mysql_free_result(res);
+	mono_sql_u_free_result(res);
 	return -1;
     } else {
 	row = mysql_fetch_row(res);
 	if (row)
 	    sscanf(row[0], "%u", friend_id);
-	mysql_free_result(res);
+	mono_sql_u_free_result(res);
 	return 0;
     }
 }
@@ -256,7 +256,7 @@ mono_sql_uu_user2quickx(unsigned int user_id, unsigned int friend_id, int *quick
 	row = mysql_fetch_row(res);
 	if (row)
 	    sscanf(row[0], "%d", quickx);
-	mysql_free_result(res);
+	mono_sql_u_free_result(res);
 	return 0;
     }
 }

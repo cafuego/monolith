@@ -62,7 +62,7 @@ mono_sql_t_rename_topic( unsigned int topic_id, const char *newname )
     ret = mono_sql_query(&res, "UPDATE " T_TABLE
 	 " SET name='%s' WHERE topic_id=%u", esc_name, topic_id );
 
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     xfree(esc_name);
 
     return ret;
@@ -77,7 +77,7 @@ mono_sql_kill_topic(int topic_id)
     ret = mono_sql_query(&res, "DELETE " T_TABLE " WHERE topic_id=%u",
 			 topic_id);
 
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
 
     if (ret != 0) {
 	return -1;
@@ -94,10 +94,10 @@ mono_sql_t_updated_highest( unsigned int forum, unsigned int topic, unsigned int
     ret = mono_sql_query(&res, "UPDATE " T_TABLE " SET highest=%u WHERE forum_id=%u AND topic_id=%u", m_id, forum, topic );
 
     if( ret == -1 ) {
-//        (void) mysql_free_result(res);
+//        (void) mono_sql_u_free_result(res);
         return -1;
     }
-//    (void) mysql_free_result(res);
+//    (void) mono_sql_u_free_result(res);
     return 0;
 }
 
@@ -113,28 +113,28 @@ mono_sql_t_get_new_message_id( unsigned int forum, unsigned int topic, unsigned 
     ret = mono_sql_query(&res, "SELECT highest FROM " T_TABLE " WHERE forum_id=%u AND topic_id=%u", forum, topic );
 
     if (ret == -1) {
-        (void) mysql_free_result(res);
+        (void) mono_sql_u_free_result(res);
         return -1;
     }
     if ( mysql_num_rows(res) == 0) {
-        (void) mysql_free_result(res);
+        (void) mono_sql_u_free_result(res);
         return -1;
     }
     if ( mysql_num_rows(res) > 1) {
-        (void) mysql_free_result(res);
+        (void) mono_sql_u_free_result(res);
         return -1;
     }
 
     row = mysql_fetch_row(res);
     sscanf( row[0], "%u", &max );
-    (void) mysql_free_result(res);
+    (void) mono_sql_u_free_result(res);
 
     max++;
 
     ret = mono_sql_query(&res, "UPDATE " T_TABLE 
           " SET highest=%u WHERE id=%u", max, forum);
 
-    (void) mysql_free_result(res);
+    (void) mono_sql_u_free_result(res);
 
     if ( ret == -1 ) {
         return -1;

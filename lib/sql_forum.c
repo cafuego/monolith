@@ -52,12 +52,12 @@ mono_sql_f_read_quad(unsigned int num, room_t * room)
 
     if (i == -1) {
 	fprintf(stderr, "Error: no results from query\n");
-	mysql_free_result(res);
+	mono_sql_u_free_result(res);
 	return -1;
     }
     rows = mysql_num_rows(res);
     if (rows != 1) {
-	mysql_free_result(res);
+	mono_sql_u_free_result(res);
 	return -1;
     }
     row = mysql_fetch_row(res);
@@ -72,7 +72,7 @@ mono_sql_f_read_quad(unsigned int num, room_t * room)
     sscanf(row[6], "%c", &r.roominfo);
     sscanf(row[7], "%u", &r.maxmsg);
 
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
 
     *room = r;
     return 0;
@@ -120,7 +120,7 @@ mono_sql_f_rename_forum( unsigned int forum_id, char *newname )
            esc_name, forum_id );
 
     xfree(esc_name);
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
 
     if (ret != 0) {
 	return -1;
@@ -143,10 +143,10 @@ mono_sql_f_update_forum(unsigned int forum_id, const room_t * q)
 
     if (ret == -1) {
 	fprintf(stderr, "No results from query.\n");
-	mysql_free_result(res);
+	mono_sql_u_free_result(res);
 	return -1;
     }
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return 0;
 
 }
@@ -159,7 +159,7 @@ mono_sql_f_kill_forum(unsigned int forum_id)
 
     ret = mono_sql_query(&res, "DELETE FROM " F_TABLE " WHERE (id='%u')",
 			 forum_id);
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return ret;
 
     return 0;
@@ -184,13 +184,13 @@ mono_sql_f_name2id(const char *forumname, unsigned int *forumid)
 	return -1;
     }
     if (mysql_num_rows(res) != 1) {
-	mysql_free_result(res);
+	mono_sql_u_free_result(res);
 	return -1;
     }
     row = mysql_fetch_row(res);
     sscanf(row[0], "%u", forumid);
 
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return 0;
 }
 
@@ -213,13 +213,13 @@ mono_sql_f_partname2id(const char *forumname, unsigned int *forumid)
 	return -1;
     }
     if (mysql_num_rows(res) < 1) {
-	mysql_free_result(res);
+	mono_sql_u_free_result(res);
 	return -1;
     }
     row = mysql_fetch_row(res);
     sscanf(row[0], "%u", forumid);
 
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return 0;
 }
 
@@ -234,11 +234,11 @@ mono_sql_f_fix_quickroom()
     ret = mono_sql_query(&res, "SELECT forum_id,max(message_id) FROM message group by forum_id");
 
     if (ret == -1) {
-        (void) mysql_free_result(res);
+        (void) mono_sql_u_free_result(res);
         return;
     }
     if ((rows = mysql_num_rows(res)) == 0) {
-        (void) mysql_free_result(res);
+        (void) mono_sql_u_free_result(res);
         return;
     }
 
@@ -258,7 +258,7 @@ mono_sql_f_fix_quickroom()
         }
     }
 
-    (void) mysql_free_result(res);
+    (void) mono_sql_u_free_result(res);
     return;
 }
 

@@ -44,7 +44,7 @@ mono_sql_express_add(unsigned int user_id, express_t *x)
        user_id,x->time,x->sender,x->recipient,message,x->sender_priv,
        x->override,x->ack);
 
-    (void) mysql_free_result(res);
+    (void) mono_sql_u_free_result(res);
 
     xfree(message);
     return ret;
@@ -70,11 +70,11 @@ mono_sql_express_list_xlog(unsigned int user_id, xlist_t **list)
         "sender_priv,override,ack FROM " X_TABLE " WHERE user_id=%u", user_id );
 
     if (ret == -1) {
-	(void) mysql_free_result(res);
+	(void) mono_sql_u_free_result(res);
 	return -1;
     }
     if ((rows = mysql_num_rows(res)) == 0) {
-	(void) mysql_free_result(res);
+	(void) mono_sql_u_free_result(res);
 	return -2;
     }
 
@@ -93,7 +93,7 @@ mono_sql_express_list_xlog(unsigned int user_id, xlist_t **list)
 	    continue;
         }
     }
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return 0;
 }
 
@@ -141,12 +141,12 @@ mono_sql_express_search_xlog(unsigned int user_id, const char *string, sr_list_t
     xfree(needle);
 
     if (ret == -1) {
-        (void) mysql_free_result(res);
+        (void) mono_sql_u_free_result(res);
         return -1;
     }
 
     if ((rows = mysql_num_rows(res)) == 0) {
-        (void) mysql_free_result(res);
+        (void) mono_sql_u_free_result(res);
         return 0;
     }
 
@@ -165,7 +165,7 @@ mono_sql_express_search_xlog(unsigned int user_id, const char *string, sr_list_t
             continue;
         }
     }
-    (void) mysql_free_result(res);
+    (void) mono_sql_u_free_result(res);
     return rows;
 }
 
@@ -179,7 +179,7 @@ mono_sql_express_expire(unsigned int user_id)
      */
     (void) mono_sql_query( &res, "DELETE FROM " X_TABLE " WHERE user_id=%u AND date<%u",
         user_id, today-14 );
-    (void) mysql_free_result(res);
+    (void) mono_sql_u_free_result(res);
 
     return;
 }

@@ -45,7 +45,7 @@ main( int argc, char *argv[])
         else
             printf("Saved\n");
 
-         mysql_free_result(res);
+         mono_sql_u_free_result(res);
     }
     (void) mono_sql_detach();
     fclose(fp);

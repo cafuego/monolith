@@ -45,13 +45,13 @@ mono_sql_uf_unread_room(unsigned int usernum)
      * No unread messages...
      */
     if (mysql_num_rows(res) == 0) {
-        (void) mysql_free_result(res);
+        (void) mono_sql_u_free_result(res);
         return 0;
     }
 
     row = mysql_fetch_row(res);
     sscanf(row[0],"%d", &ret);
-    (void) mysql_free_result(res);
+    (void) mono_sql_u_free_result(res);
 
     return ret;
 }
@@ -65,16 +65,16 @@ mono_sql_uf_update_lastseen(unsigned int usernum, unsigned int forum)
 
     ret = mono_sql_query( &res, "SELECT highest FROM %s WHERE id=%u", F_TABLE, forum);
     if(ret == -1) {
-        (void) mysql_free_result(res);
+        (void) mono_sql_u_free_result(res);
         return -1;
     }
 
     row = mysql_fetch_row(res);
     sscanf( row[0], "%u", &lastseen);
-    (void) mysql_free_result(res);
+    (void) mono_sql_u_free_result(res);
 
     (void) mono_sql_query( &res, "UPDATE %s SET lastseen=%u WHERE forum_id=%u AND user_id=%u", UF_TABLE, lastseen, forum, usernum);
-    (void) mysql_free_result(res);
+    (void) mono_sql_u_free_result(res);
     return 0;
 }
 
@@ -87,13 +87,13 @@ mono_sql_uf_get_unread(unsigned int forum, unsigned int lastseen)
 
     ret = mono_sql_query(&res, "SELECT COUNT(*) FROM %s WHERE message_id>%u AND forum_id=%u", M_TABLE, lastseen, forum);
     if (ret == -1) {
-        (void) mysql_free_result(res);
+        (void) mono_sql_u_free_result(res);
         return -1;
     }
 
     row = mysql_fetch_row(res);
     sscanf(row[0],"%u", &ret);
-    (void) mysql_free_result(res);
+    (void) mono_sql_u_free_result(res);
 
     return ret;
 }
@@ -186,7 +186,7 @@ mono_sql_uf_add_entry(unsigned int user_id, unsigned int forum_id)
     ret = mono_sql_query(&res,
 			 "SELECT user_id,username FROM %s"
 		     "WHERE forum_id=%u AND user_id=%u", UF_TABLE, forum_id, user_id);
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
 
     if (ret != 0) {
 	return -1;
@@ -229,7 +229,7 @@ mono_sql_uf_list_hosts_by_forum(unsigned int forumnumber, userlist_t ** p)
 	add_to_userlist(e, p);
 
     }
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return 0;
 }
 
@@ -266,7 +266,7 @@ mono_sql_uf_list_hosts_by_user(unsigned int usernumber , forumlist_t ** p)
         strcpy(e.name, row[1] );
 	add_to_forumlist(e, p);
     }
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return 0;
 }
 
@@ -291,7 +291,7 @@ mono_sql_uf_is_host(unsigned int usernumber, unsigned int forumnumber)
     row = mysql_fetch_row(res);
     if (sscanf(row[0], "%d", &host) == -1)
 	return FALSE;
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     if (host == 0)
 	return FALSE;
     return TRUE;
@@ -319,7 +319,7 @@ mono_sql_uf_is_a_host(unsigned int usernumber)
     row = mysql_fetch_row(res);
     if (sscanf(row[0], "%d", &host) == -1)
 	return FALSE;
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     if (host == 0)
 	return FALSE;
     return TRUE;
@@ -334,12 +334,12 @@ mono_sql_uf_add_host(unsigned int user_id, unsigned int forum_id)
     ret = mono_sql_query(&res, "UPDATE " UF_TABLE " SET "
 			 " host='y' WHERE user_id=%u AND forum_id=%u"
 			 ,user_id, forum_id);
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     if (ret != 0) {
 	fprintf(stderr, "Some sort of error (addhost).\n");
 	return -1;
     }
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return 0;
 }
 
@@ -355,7 +355,7 @@ mono_sql_uf_remove_host(unsigned int usernumber, unsigned int forumnumber)
 	fprintf(stderr, "Some sort of error.\n");
 	return -1;
     }
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return 0;
 }
 
@@ -371,7 +371,7 @@ mono_sql_uf_kill_forum(unsigned int forumnumber)
 	fprintf(stderr, "Some sort of error.\n");
 	return -1;
     }
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return 0;
 }
 
@@ -387,7 +387,7 @@ mono_sql_uf_kill_user(unsigned int userid)
 	fprintf(stderr, "Some sort of error.\n");
 	return -1;
     }
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return 0;
 }
 
@@ -427,7 +427,7 @@ mono_sql_uf_list_invited_by_forum(unsigned int forumnumber, userlist_t ** p)
 	add_to_userlist(e, p);
 
     }
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return 0;
 }
 
@@ -463,7 +463,7 @@ mono_sql_uf_list_invited_by_user(unsigned int usernumber, forumlist_t ** p)
 
 	/* do something ! */
     }
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return 0;
 }
 
@@ -483,10 +483,10 @@ mono_sql_uf_is_invited(unsigned int usernumber, unsigned int forumnumber)
     rows = mysql_num_rows(res);
     if (rows != 1) {
 	fprintf(stderr, "internal error\n");
-	mysql_free_result(res);
+	mono_sql_u_free_result(res);
 	return FALSE;
     }
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return TRUE;
 }
 
@@ -500,7 +500,7 @@ mono_sql_uf_add_invited(unsigned int user_id, unsigned int forum_id)
 			 " status='invited' WHERE user_id=%u AND forum_id=%u"
 			 ,user_id, forum_id);
 
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     if (ret != 0) {
 	fprintf(stderr, "Some sort of error (addinvited).\n");
 	return -1;
@@ -520,7 +520,7 @@ mono_sql_uf_remove_invited(unsigned int usernumber, unsigned int forumnumber)
 	fprintf(stderr, "Some sort of error.\n");
 	return -1;
     }
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return 0;
 }
 
@@ -561,7 +561,7 @@ mono_sql_uf_list_kicked_by_forum(unsigned int forumnumber, userlist_t ** p)
 	add_to_userlist(e, p);
 
     }
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return 0;
 }
 
@@ -596,7 +596,7 @@ mono_sql_uf_list_kicked_by_user(unsigned int usernumber, forumlist_t ** p)
 
 	/* do something ! */
     }
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return 0;
 }
 
@@ -615,10 +615,10 @@ mono_sql_uf_is_kicked(unsigned int user_id, unsigned int forum_id)
     rows = mysql_num_rows(res);
     if (rows != 1) {
 	fprintf(stderr, "internal error\n");
-	mysql_free_result(res);
+	mono_sql_u_free_result(res);
 	return FALSE;
     }
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return TRUE;
 }
 
@@ -631,7 +631,7 @@ mono_sql_uf_add_kicked(unsigned int user_id, unsigned int forum_id)
     ret = mono_sql_query(&res, "UPDATE " UF_TABLE " SET "
 			 " status='kicked' WHERE user_id=%u AND forum_id=%u"
 			 ,user_id, forum_id);
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
 
     if (ret != 0) {
 	fprintf(stderr, "Some sort of error (addkicked).\n");
@@ -652,7 +652,7 @@ mono_sql_uf_remove_kicked(unsigned int usernumber, unsigned int forumnumber)
 	fprintf(stderr, "Some sort of error.\n");
 	return -1;
     }
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return 0;
 }
 
@@ -670,7 +670,7 @@ mono_sql_uf_new_user(unsigned int user_id)
 	if (ret == -1)
 	    printf("\nInsert error");
     }
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return 0;
 }
 

@@ -42,19 +42,19 @@ mono_sql_random_goto(void)
     (void) mono_sql_query(&res, "SELECT COUNT(*) FROM " GOTO_TABLE);
     
     if ((mysql_num_rows(res)) != 1) {
-	(void) mysql_free_result(res);
+	(void) mono_sql_u_free_result(res);
 	return NULL;
     }
 
     row = mysql_fetch_row(res);
     num = atoi(row[0]);
-    (void) mysql_free_result(res);
+    (void) mono_sql_u_free_result(res);
 
     (void) mono_sql_query(&res, "SELECT goto FROM " GOTO_TABLE " WHERE ID=%d", 
 		((rand() % num) + 1));
 
     if (mysql_num_rows(res) != 1) {
-	(void) mysql_free_result(res);
+	(void) mono_sql_u_free_result(res);
 	return NULL;
     }
 
@@ -62,7 +62,7 @@ mono_sql_random_goto(void)
 
     string = (char *) xmalloc(strlen(row[0]) + 1);
     strcpy(string, row[0]);
-    (void) mysql_free_result(res);
+    (void) mono_sql_u_free_result(res);
 
     return string;
 }
@@ -81,7 +81,7 @@ mono_sql_add_goto(char *thegoto)
 
     (void) mono_sql_query(&res, "INSERT INTO " GOTO_TABLE " VALUES(0,'%s')", mygoto);
 
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     xfree(mygoto);
 
     return 0;

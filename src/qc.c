@@ -115,7 +115,7 @@ _sql_qc_count_categories(int *num)
     if (ret == 0) {
 	row = mysql_fetch_row(res);
 	sscanf(row[0], "%u", num);
-	mysql_free_result(res);
+	mono_sql_u_free_result(res);
     }
     return ret;
 }
@@ -138,7 +138,7 @@ _sql_qc_add_user(const int id)
 	if (ret == -1)
 	    return -1;
 	else
-	    mysql_free_result(res);
+	    mono_sql_u_free_result(res);
     }
     return 0;
 }
@@ -173,7 +173,7 @@ _sql_qc_add_category(const char *name)
 		   "\nDelete it immediately!\n\n");
 	    return -1;
 	} else
-	    mysql_free_result(res);
+	    mono_sql_u_free_result(res);
     }
 
     ret = _sql_qc_get_user_id_list(&u_id_list);
@@ -188,7 +188,7 @@ _sql_qc_add_category(const char *name)
 		       " category.\nDelete it immediately!\n\n");
 		break;
 	    } else
-		mysql_free_result(res);
+		mono_sql_u_free_result(res);
 	}
 
 	for (i = 0; i < count; i++)
@@ -220,7 +220,7 @@ _sql_qc_name2id(const char *name, unsigned int *id)
     row = mysql_fetch_row(res);
     sscanf(row[0], "%u", id);
 
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return 0;
 
 }
@@ -245,7 +245,7 @@ _sql_qc_id2name(char *name, const unsigned int id)
     row = mysql_fetch_row(res);
     strcpy(name, row[0]);
 
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return 0;
 
 }
@@ -259,7 +259,7 @@ _sql_qc_rename_category(const char *name, const unsigned int id)
     ret = mono_sql_query(&res,
 			 "UPDATE %s SET cat_name='%s' WHERE cat_id=%u",
 			 QC_TABLE, name, id);
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return ret;
 }
 
@@ -272,7 +272,7 @@ _sql_qc_update_u_quotient(const unsigned int id, const unsigned int new_val, con
     ret = mono_sql_query(&res,
 		      "UPDATE %s SET cat_quot=%u WHERE cat_id=%u AND id=%u",
 			 USER_QC_TABLE, new_val, id, user_id);
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return ret;
 }
 
@@ -285,7 +285,7 @@ _sql_qc_update_f_quotient(const unsigned int id, const unsigned int new_val, con
     ret = mono_sql_query(&res,
 		    "UPDATE %s SET cat_quot=%u WHERE cat_id=%u AND f_id=%u",
 			 QC_TABLE, new_val, id, forum);
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return ret;
 }
 
@@ -298,7 +298,7 @@ _sql_qc_fiddle_with_flags(const unsigned int newflags, const unsigned int forum)
     ret = mono_sql_query(&res,
 			 "UPDATE %s SET flags=%u WHERE f_id=%u",
 			 QC_TABLE, newflags, forum);
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return ret;
 }
 
@@ -311,7 +311,7 @@ _sql_qc_set_newbie_unread(const unsigned int new_unread, const unsigned int foru
     ret = mono_sql_query(&res,
 			 "UPDATE %s SET newbie_r=%u WHERE f_id=%u",
 			 QC_TABLE, new_unread, forum);
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return ret;
 }
 
@@ -327,24 +327,24 @@ _sql_qc_delete_category(const unsigned int id)
     if (ret != -1) {
 	row = mysql_fetch_row(res);
 	sscanf(row[0], "%u", &highest_id);
-	mysql_free_result(res);
+	mono_sql_u_free_result(res);
     } else
 	return -1;
 
     ret = mono_sql_query(&res, "DELETE FROM %s WHERE cat_id=%u",
 			 QC_TABLE, id);
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     ret = mono_sql_query(&res, "DELETE FROM %s WHERE cat_id=%u",
 			 USER_QC_TABLE, id);
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
 
     if (id < highest_id) {
 	ret = mono_sql_query(&res, "UPDATE %s SET cat_id=%u WHERE cat_id=%u",
 			     QC_TABLE, id, highest_id);
-	mysql_free_result(res);
+	mono_sql_u_free_result(res);
 	ret = mono_sql_query(&res, "UPDATE %s SET cat_id=%u WHERE cat_id=%u",
 			     USER_QC_TABLE, id, highest_id);
-	mysql_free_result(res);
+	mono_sql_u_free_result(res);
     }
     return ret;
 }
@@ -361,7 +361,7 @@ _sql_qc_get_user_id_list(int ***id_list)
     if (ret == 0) {
 	row = mysql_fetch_row(res);
 	sscanf(row[0], "%u", &alloc_count);
-	mysql_free_result(res);
+	mono_sql_u_free_result(res);
     }
     if (ret == -1 || alloc_count < 1) {
 	printf("\nSome sort of sql error.\n");
@@ -390,7 +390,7 @@ _sql_qc_get_user_id_list(int ***id_list)
 	else if (sscanf(row[0], "%u", u_id_list[i]) == -1)
 	    break;
     }
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
 
     if (count != alloc_count) {	/* error */
 	cprintf("\n\1f\1rSQL error\n\1a");
@@ -418,7 +418,7 @@ _sql_qc_fetch_all_quads_qc(qc_record *** qc_list)
     if (ret == 0) {
 	row = mysql_fetch_row(res);
 	sscanf(row[0], "%u", &alloc_count);
-	mysql_free_result(res);
+	mono_sql_u_free_result(res);
     }
     /* alloc_count *should* be MAXQUADS.. but it's not an error. */
     if (ret == -1 || alloc_count < 1) {
@@ -462,7 +462,7 @@ _sql_qc_fetch_all_quads_qc(qc_record *** qc_list)
 	sscanf(row[5], "%u", &(rec_list[tmp]->cat_quot[cat_count]));
 	cat_count++;
     }
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
 
     if (count != alloc_count) {	/* error */
 	cprintf("\n\1f\1rSQL error at _sql_qc_fetch_all()\n\1a");
@@ -511,7 +511,7 @@ _sql_qc_fetch_quad_qc(const unsigned int quad, qc_record * qc)
 	}
     }
 
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return 0;
 
 }
@@ -536,7 +536,7 @@ _sql_qc_get_f_max_and_slot(unsigned int *c_id, const unsigned int forum, unsigne
 	if (sscanf(row[0], "%u", max) == -1)
 	    continue;
     }
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
 
     if (*max == 0)
 	return 0;
@@ -555,7 +555,7 @@ _sql_qc_get_f_max_and_slot(unsigned int *c_id, const unsigned int forum, unsigne
 	if (sscanf(row[0], "%u", c_id) == -1)
 	    continue;
     }
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
 
     return 0;
 }
@@ -570,7 +570,7 @@ _sql_qc_user_on_file(const unsigned int u_id, int *rows)
 			 "SELECT id FROM % s WHERE cat_id = 0 AND id = %u ",
 			 USER_QC_TABLE, u_id);
     *rows = mysql_num_rows(res);
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return ret;
 }
 
@@ -583,7 +583,7 @@ _sql_qc_zero_forum_categories(const unsigned int forum)
     ret = mono_sql_query(&res,
 			 "UPDATE %s SET cat_quot=0 WHERE f_id = %u ",
 			 QC_TABLE, forum);
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return ret;
 }
 
@@ -616,7 +616,7 @@ _sql_qc_fetch_user_qc(const unsigned int u_id, qc_record * qc)
 	sscanf(row[2], "%u", &(qc->cat_quot[i]));
 	strcpy(qc->cat_name[i], row[3]);
     }
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
 
     if (i != rows)
 	return -1;
@@ -638,7 +638,7 @@ _sql_qc_get_u_last_mod(const unsigned int id, unsigned long *timeval)
 	return -1;
     row = mysql_fetch_row(res);
     sscanf(row[0], "%lu", timeval);
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return 0;
 }
 
@@ -654,7 +654,7 @@ _sql_qc_get_f_last_mod(unsigned long *timeval)
 	return -1;
     row = mysql_fetch_row(res);
     sscanf(row[0], "%lu", timeval);
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return 0;
 }
 
@@ -670,7 +670,7 @@ _sql_qc_get_t_last_mod(unsigned long *timeval)
 	return -1;
     row = mysql_fetch_row(res);
     sscanf(row[0], "%lu", timeval);
-    mysql_free_result(res);
+    mono_sql_u_free_result(res);
     return 0;
 }
 
@@ -1205,13 +1205,14 @@ qc_user_menu(int newbie)
     for (i = 0; i < MAXQUADS; i++) {
 	if (*eval[i] == -5)	/* skip these, regardless */
 	    continue;
-	if (newbie)
+	if (newbie) {
 	    if ((*eval[i] == -1) || (*eval[i] == -2)) {	/* stuff to zap */
 		scratch = readquad(i);
 		usersupp->forget[i] = scratch.generation;
 		usersupp->generation[i] = -1;
 	    } else
 		leave_n_unread_posts(i, *eval[i]);
+        }
     }
 
     if (newbie) {
@@ -1598,11 +1599,12 @@ qc_evaluate(const unsigned int eval_flags, int ***eval_list)
 		*kazam = list[index]->newbie_r;
 	    else if (!s_accept && s_reject)
 		*kazam = -1;
-	    else if (!(s_accept || s_reject))	/* all zero */
+	    else if (!(s_accept || s_reject)) {	/* all zero */
 		if (!(w_accept || w_reject))
 		    *kazam = ((zero_set) ? 0 : -1);
 		else
 		    *kazam = ((w_accept) ? list[index]->newbie_r : -1);
+            }
 
 	}			/* if (*kazam == -5) */
     }				/* i */
