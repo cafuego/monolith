@@ -713,7 +713,6 @@ logoff(int code)
 #endif
 
     if (connecting_flag) {
-	(void) mono_send_signal_to_the_queue();		/* if there's a queue, let 1 in */
 	(void) mono_detach_shm();
 	(void) mono_sql_detach();
 	(void) exit(0);
@@ -736,7 +735,6 @@ logoff(int code)
 	} else
 	    sendx(NULL, "PWRout", OR_KICKOFF);
 
-	(void) mono_send_signal_to_the_queue();		/* if there's a queue, let 1 in */
 	(void) mono_detach_shm();
 	(void) mono_sql_detach();
     }
