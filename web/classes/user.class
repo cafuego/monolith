@@ -74,7 +74,7 @@ class user_t {
 
     // Add user's info. (if available)
     function add_info() {
-        echo "<p align=\"left\">\n";
+        echo "<p align=\"left\" style=\"font-family: Monospace;\">\n";
         if( (!(strstr( $this->hiddeninfo, "name" ))) && (strlen($this->realname)))
             echo "Name: $this->realname";
         if( (!(strstr( $this->hiddeninfo, "address" ))) && (strlen($this->address)))
