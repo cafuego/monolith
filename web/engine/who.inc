@@ -46,6 +46,9 @@ function show_wholist($username) {
             $url_user = rawurlencode($user);
             $url_user = strtr($url_user, " ", "+");
 
+            if($doing == "(null)")
+                $doing == "";
+
             print "<tr>\n";
             print "  <td align=\"left\">\n";
             if($interface == "web" )
