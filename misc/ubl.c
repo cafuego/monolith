@@ -83,11 +83,12 @@ main(int argc, char *argv[] )
     /* update lists */
     update_whoknows();
     update_admin_lists();
-    printf("Posting results to Fleet headquarters...");
+    fprintf(stdout, "Posting results to Fleet headquarters...");
     fflush(stdout);
     if (post_ubl_results() == -1)
 	log_it("ubl", "Couldn't post results to Fleet Headquarters");
-    printf("done.\n");
+    fprintf(stdout, "done.\n");
+    fflush(stdout);
 
     /* end */
     xfree(all_users);
@@ -346,12 +347,12 @@ update_admin_lists()
     }
     printf("Opened admin list files.\n");
 
-    fprintf(af, "%s, %s, %s, %s\n\1f\1w================ \1g%s\1w )==============\n\n\1f\1gUsername              \1rAway \1yTitles\n\1w------------------------------------------------------------------------------", WIZARDTITLE, SYSOPTITLE, ROOMAIDETITLE, GUIDETITLE, add_date());
-    fprintf(ax, "\1f%s, %s, %s, %s\n\1w=============( \1g%s\1w )============\n\n\1r*************************************\n******** \1wThe Unofficial List \1r********\n*************************************\n\n\1gUsername              \1rAway \1yTitles\n------------------------------------------------------------------------------", WIZARDTITLE, SYSOPTITLE, ROOMAIDETITLE, GUIDETITLE, add_date());
-    fprintf(au, "The NewUser-List\n==( %s )==\n\nUsername              Logins   Absent\n-------------------------------------------\n", add_date());
-    fprintf(at, "The TWIT&Deleted-List\n=====( %s )====\n\nUsername                       Absent\n-------------------------------------------\n", add_date());
-    fprintf(as, "The Purge-List\n=( %s )=\n\nUsername               Logins  Absent\n-------------------------------------------\n", add_date());
-    fprintf(ad, "\1f\1wThe Donator-List    \n==( \1g%s\1w )==\1a\n\n\1f\1rUsername              Logins   Absent\1a\n-------------------------------------------\n", add_date());
+    // fprintf(af, "%s, %s, %s, %s\n\1f\1w================ \1g%s\1w )==============\n\n\1f\1gUsername              \1rAway \1yTitles\n\1w------------------------------------------------------------------------------", WIZARDTITLE, SYSOPTITLE, ROOMAIDETITLE, GUIDETITLE, add_date());
+    // fprintf(ax, "\1f%s, %s, %s, %s\n\1w=============( \1g%s\1w )============\n\n\1r*************************************\n******** \1wThe Unofficial List \1r********\n*************************************\n\n\1gUsername              \1rAway \1yTitles\n------------------------------------------------------------------------------", WIZARDTITLE, SYSOPTITLE, ROOMAIDETITLE, GUIDETITLE, add_date());
+    // fprintf(au, "The NewUser-List\n==( %s )==\n\nUsername              Logins   Absent\n-------------------------------------------\n", add_date());
+    // fprintf(at, "The TWIT&Deleted-List\n=====( %s )====\n\nUsername                       Absent\n-------------------------------------------\n", add_date());
+    // fprintf(as, "The Purge-List\n=( %s )=\n\nUsername               Logins  Absent\n-------------------------------------------\n", add_date());
+    // fprintf(ad, "\1f\1wThe Donator-List    \n==( \1g%s\1w )==\1a\n\n\1f\1rUsername              Logins   Absent\1a\n-------------------------------------------\n", add_date());
 
     currtime = time(NULL);
 
@@ -620,6 +621,8 @@ post_ubl_results()
     fprintf(fp, "%d users have SHIX enabled. (%d%%)\n", shix_users, (shix_users * 100) / usercount);
 
     fclose(fp);
+
+    (void) save_to_sql(&header, filename);
 
     return 0;
 }

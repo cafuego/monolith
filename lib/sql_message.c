@@ -15,13 +15,13 @@
 #include <fcntl.h>
 
 #ifdef HAVE_MYSQL_H
-  #undef HAVE_MYSQL_MYSQL_H
-  #include <mysql.h>
+#undef HAVE_MYSQL_MYSQL_H
+#include <mysql.h>
 #else
-  #ifdef HAVE_MYSQL_MYSQL_H
-    #undef HAVE_MYSQL_H
-    #include <mysql/mysql.h>
-  #endif
+#ifdef HAVE_MYSQL_MYSQL_H
+#undef HAVE_MYSQL_H
+#include <mysql/mysql.h>
+#endif
 #endif
 
 #include "monolith.h"
@@ -45,7 +45,7 @@
 static void _mono_sql_mes_cleanup(unsigned int forum);
 
 int
-mono_sql_mes_add(message_t *message)
+mono_sql_mes_add(message_t * message)
 {
     MYSQL_RES *res;
     int ret = 0;
@@ -70,18 +70,18 @@ mono_sql_mes_add(message_t *message)
      */
     message->date = time(0);
 
-    ret = mono_sql_query(&res, "INSERT INTO " M_TABLE " (message_id," 
-       "forum_id,topic_id,author,alias,subject,content,date,flag," 
-       "r_message_id,r_forum_id,r_topic_id,r_author,r_alias," 
-       "m_message_id,m_forum_id,m_topic_id,m_author,m_date,m_reason,deleted) " 
-       "VALUES (%u,%u,%u,%u,'%s','%s','%s',FROM_UNIXTIME(%u),'%s'," 
-       "%u,%u,%u,%u,'%s',%u,%u,%u,%u,FROM_UNIXTIME(%u),'%s','n')",
-            message->m_id, message->f_id, message->t_id, message->a_id,
-            alias, subject, content, message->date, message->flag,
-            message->reply_m_id, message->reply_f_id, message->reply_t_id,
-            message->reply_a_id, reply_alias, message->orig_m_id,
-            message->orig_f_id, message->orig_t_id, message->orig_a_id,
-            message->orig_date, message->mod_reason );
+    ret = mono_sql_query(&res, "INSERT INTO " M_TABLE " (message_id,"
+		 "forum_id,topic_id,author,alias,subject,content,date,flag,"
+		      "r_message_id,r_forum_id,r_topic_id,r_author,r_alias,"
+     "m_message_id,m_forum_id,m_topic_id,m_author,m_date,m_reason,deleted) "
+		"VALUES (%u,%u,%u,%u,'%s','%s','%s',FROM_UNIXTIME(%u),'%s',"
+		 "%u,%u,%u,%u,'%s',%u,%u,%u,%u,FROM_UNIXTIME(%u),'%s','n')",
+		 message->m_id, message->f_id, message->t_id, message->a_id,
+		      alias, subject, content, message->date, message->flag,
+	      message->reply_m_id, message->reply_f_id, message->reply_t_id,
+		       message->reply_a_id, reply_alias, message->orig_m_id,
+		 message->orig_f_id, message->orig_t_id, message->orig_a_id,
+			 message->orig_date, message->mod_reason);
 
     (void) mono_sql_u_free_result(res);
 
@@ -111,13 +111,13 @@ mono_sql_mes_mark_deleted(unsigned int id, unsigned int forum)
     MYSQL_RES *res;
     int ret = 0;
 
-    ret = mono_sql_query(&res, "UPDATE " M_TABLE " SET deleted='y' WHERE message_id=%u AND forum_id=%u", id, forum );
+    ret = mono_sql_query(&res, "UPDATE " M_TABLE " SET deleted='y' WHERE message_id=%u AND forum_id=%u", id, forum);
 
     (void) mono_sql_u_free_result(res);
 
     return ret;
 }
-    
+
 
 int
 mono_sql_mes_remove(unsigned int id, unsigned int forum)
@@ -132,7 +132,7 @@ mono_sql_mes_remove(unsigned int id, unsigned int forum)
 }
 
 int
-mono_sql_mes_retrieve(unsigned int id, unsigned int forum, message_t *data)
+mono_sql_mes_retrieve(unsigned int id, unsigned int forum, message_t * data)
 {
 
     MYSQL_RES *res = NULL;
@@ -140,29 +140,29 @@ mono_sql_mes_retrieve(unsigned int id, unsigned int forum, message_t *data)
     message_t *message;
     int ret = 0;
 
-    ret = mono_sql_query(&res, "SELECT m.message_id,m.forum_id,m.topic_id," 
-        "m.author,u.username,m.alias,m.subject,m.content,UNIX_TIMESTAMP(m.date)," 
-        "m.flag,f.name,t.name,m.r_message_id,m.r_forum_id,m.r_topic_id," 
-        "m.r_author,ur.username,m.r_alias,fr.name,tr.name,m.m_message_id," 
-        "m.m_forum_id,m.m_topic_id,m.m_author,um.username,UNIX_TIMESTAMP(m.m_date)," 
-        "fm.name,tm.name,m.m_reason FROM " M_TABLE " AS m " 
-        "LEFT JOIN " U_TABLE " AS u ON u.id=m.author " 
-        "LEFT JOIN " U_TABLE " AS ur ON ur.id=m.r_author " 
-        "LEFT JOIN " U_TABLE " AS um ON um.id=m.m_author "
-        "LEFT JOIN " F_TABLE " AS f ON f.id=m.forum_id " 
-        "LEFT JOIN " F_TABLE " AS fr ON fr.id=m.r_forum_id " 
-        "LEFT JOIN " F_TABLE " AS fm ON f.id=m.m_forum_id " 
-        "LEFT JOIN " T_TABLE " AS t ON t.topic_id=m.topic_id " 
-        "LEFT JOIN " T_TABLE " AS tr ON tr.topic_id=m.r_topic_id " 
-        "LEFT JOIN " T_TABLE " AS tm ON tm.topic_id=m.m_topic_id " 
-        "WHERE m.forum_id=%u AND m.message_id=%u", forum, id );
+    ret = mono_sql_query(&res, "SELECT m.message_id,m.forum_id,m.topic_id,"
+    "m.author,u.username,m.alias,m.subject,m.content,UNIX_TIMESTAMP(m.date),"
+	    "m.flag,f.name,t.name,m.r_message_id,m.r_forum_id,m.r_topic_id,"
+	  "m.r_author,ur.username,m.r_alias,fr.name,tr.name,m.m_message_id,"
+			 "m.m_forum_id,m.m_topic_id,m.m_author,um.username,UNIX_TIMESTAMP(m.m_date),"
+			 "fm.name,tm.name,m.m_reason FROM " M_TABLE " AS m "
+			 "LEFT JOIN " U_TABLE " AS u ON u.id=m.author "
+			 "LEFT JOIN " U_TABLE " AS ur ON ur.id=m.r_author "
+			 "LEFT JOIN " U_TABLE " AS um ON um.id=m.m_author "
+			 "LEFT JOIN " F_TABLE " AS f ON f.id=m.forum_id "
+			 "LEFT JOIN " F_TABLE " AS fr ON fr.id=m.r_forum_id "
+			 "LEFT JOIN " F_TABLE " AS fm ON f.id=m.m_forum_id "
+		      "LEFT JOIN " T_TABLE " AS t ON t.topic_id=m.topic_id "
+		  "LEFT JOIN " T_TABLE " AS tr ON tr.topic_id=m.r_topic_id "
+		  "LEFT JOIN " T_TABLE " AS tm ON tm.topic_id=m.m_topic_id "
+		      "WHERE m.forum_id=%u AND m.message_id=%u", forum, id);
 
 #ifdef OLD_SHIT
     ret = mono_sql_query(&res, "SELECT message_id,topic_id,m.forum_id,author,alias,subject,UNIX_TIMESTAMP(date),type,priv,deleted FROM " M_TABLE " WHERE m.message_id=%u AND m.forum_id=%u", id, forum);
 #endif
 
     if (ret == -1) {
- 	(void) mono_sql_u_free_result(res);
+	(void) mono_sql_u_free_result(res);
 	return -1;
     }
     if (mysql_num_rows(res) == 0) {
@@ -198,28 +198,28 @@ mono_sql_mes_list_forum(unsigned int forum, unsigned int start, mlist_t ** list)
     /*
      * Coolest query in the BBS sofar :)
      */
-    ret = mono_sql_query(&res, "SELECT m.message_id,m.forum_id,m.topic_id," 
-        "m.author,u.username,m.alias,m.subject,m.content,UNIX_TIMESTAMP(m.date)," 
-        "m.flag,f.name,t.name,m.r_message_id,m.r_forum_id,m.r_topic_id," 
-        "m.r_author,ur.username,m.r_alias,fr.name,tr.name,m.m_message_id," 
-        "m.m_forum_id,m.m_topic_id,m.m_author,um.username,UNIX_TIMESTAMP(m.m_date)," 
-        "fm.name,tm.name,m.m_reason FROM " M_TABLE " AS m " 
-        "LEFT JOIN " U_TABLE " AS u ON u.id=m.author " 
-        "LEFT JOIN " U_TABLE " AS ur ON ur.id=m.r_author " 
-        "LEFT JOIN " U_TABLE " AS um ON um.id=m.m_author " 
-        "LEFT JOIN " F_TABLE " AS f ON f.id=m.forum_id " 
-        "LEFT JOIN " F_TABLE " AS fr ON fr.id=m.r_forum_id " 
-        "LEFT JOIN " F_TABLE " AS fm ON f.id=m.m_forum_id " 
-        "LEFT JOIN " T_TABLE " AS t ON t.topic_id=m.topic_id " 
-        "LEFT JOIN " T_TABLE " AS tr ON tr.topic_id=m.r_topic_id " 
-        "LEFT JOIN " T_TABLE " AS tm ON tm.topic_id=m.m_topic_id " 
-        "WHERE m.forum_id=%u AND m.message_id>%u ", forum, start );
+    ret = mono_sql_query(&res, "SELECT m.message_id,m.forum_id,m.topic_id,"
+    "m.author,u.username,m.alias,m.subject,m.content,UNIX_TIMESTAMP(m.date),"
+	    "m.flag,f.name,t.name,m.r_message_id,m.r_forum_id,m.r_topic_id,"
+	  "m.r_author,ur.username,m.r_alias,fr.name,tr.name,m.m_message_id,"
+			 "m.m_forum_id,m.m_topic_id,m.m_author,um.username,UNIX_TIMESTAMP(m.m_date),"
+			 "fm.name,tm.name,m.m_reason FROM " M_TABLE " AS m "
+			 "LEFT JOIN " U_TABLE " AS u ON u.id=m.author "
+			 "LEFT JOIN " U_TABLE " AS ur ON ur.id=m.r_author "
+			 "LEFT JOIN " U_TABLE " AS um ON um.id=m.m_author "
+			 "LEFT JOIN " F_TABLE " AS f ON f.id=m.forum_id "
+			 "LEFT JOIN " F_TABLE " AS fr ON fr.id=m.r_forum_id "
+			 "LEFT JOIN " F_TABLE " AS fm ON f.id=m.m_forum_id "
+		      "LEFT JOIN " T_TABLE " AS t ON t.topic_id=m.topic_id "
+		  "LEFT JOIN " T_TABLE " AS tr ON tr.topic_id=m.r_topic_id "
+		  "LEFT JOIN " T_TABLE " AS tm ON tm.topic_id=m.m_topic_id "
+		  "WHERE m.forum_id=%u AND m.message_id>%u ", forum, start);
 
 #ifdef OLD_SHIT
     ret = mono_sql_query(&res, "SELECT message_id,topic_id,forum_id,author,alias,subject,UNIX_TIMESTAMP(date) AS date,type,priv,deleted FROM " M_TABLE " WHERE message_id>%u AND forum_id=%u ORDER BY message_id", start, forum);
 #endif
 
-    
+
     if (ret == -1) {
 	(void) mono_sql_u_free_result(res);
 	return -1;
@@ -228,21 +228,19 @@ mono_sql_mes_list_forum(unsigned int forum, unsigned int start, mlist_t ** list)
 	(void) mono_sql_u_free_result(res);
 	return -2;
     }
-
     for (i = 0; i < rows; i++) {
 	row = mysql_fetch_row(res);
 	if (row == NULL)
 	    break;
 	/*
-         * Get message and add to list.
-         */
-        if( (entry.message = mono_sql_convert_row_to_mes(row)) == NULL ) {
-            continue;
-        }
-
-	if( mono_sql_ll_add_mlist_to_list(entry, list) == -1 ) {
+	 * Get message and add to list.
+	 */
+	if ((entry.message = mono_sql_convert_row_to_mes(row)) == NULL) {
 	    continue;
-        }
+	}
+	if (mono_sql_ll_add_mlist_to_list(entry, list) == -1) {
+	    continue;
+	}
     }
     mono_sql_u_free_result(res);
     return 0;
@@ -264,22 +262,22 @@ mono_sql_mes_list_topic(unsigned int topic, unsigned int start, mlist_t ** list)
     /*
      * Second coolest query in the BBS sofar.
      */
-    ret = mono_sql_query(&res, "SELECT m.message_id,m.forum_id,m.topic_id," 
-        "m.author,u.username,m.alias,m.subject,m.content,UNIX_TIMESTAMP(m.date)," 
-        "m.flag,f.name,t.name,m.r_message_id,m.r_forum_id,m.r_topic_id," 
-        "m.r_author,ur.username,m.r_alias,fr.name,tr.name,m.m_message_id," 
-        "m.m_forum_id,m.m_topic_id,m.m_author,um.username,UNIX_TIMESTAMP(m.m_date)," 
-        "fm.name,tm.name,m.m_reason FROM " M_TABLE " AS m " 
-        "LEFT JOIN " U_TABLE " AS u ON u.id=m.author " 
-        "LEFT JOIN " U_TABLE " AS ur ON ur.id=m.r_author " 
-        "LEFT JOIN " U_TABLE " AS um ON um.id=m.m_author " 
-        "LEFT JOIN " F_TABLE " AS f ON f.id=m.forum_id " 
-        "LEFT JOIN " F_TABLE " AS fr ON fr.id=m.r_forum_id " 
-        "LEFT JOIN " F_TABLE " AS fm ON f.id=m.m_forum_id " 
-        "LEFT JOIN " T_TABLE " AS t ON t.topic_id=m.topic_id " 
-        "LEFT JOIN " T_TABLE " AS tr ON tr.topic_id=m.r_topic_id " 
-        "LEFT JOIN " T_TABLE " AS tm ON tm.topic_id=m.m_topic_id " 
-        "WHERE m.topic_id=%u AND m.message_id>%u", topic, start );
+    ret = mono_sql_query(&res, "SELECT m.message_id,m.forum_id,m.topic_id,"
+    "m.author,u.username,m.alias,m.subject,m.content,UNIX_TIMESTAMP(m.date),"
+	    "m.flag,f.name,t.name,m.r_message_id,m.r_forum_id,m.r_topic_id,"
+	  "m.r_author,ur.username,m.r_alias,fr.name,tr.name,m.m_message_id,"
+			 "m.m_forum_id,m.m_topic_id,m.m_author,um.username,UNIX_TIMESTAMP(m.m_date),"
+			 "fm.name,tm.name,m.m_reason FROM " M_TABLE " AS m "
+			 "LEFT JOIN " U_TABLE " AS u ON u.id=m.author "
+			 "LEFT JOIN " U_TABLE " AS ur ON ur.id=m.r_author "
+			 "LEFT JOIN " U_TABLE " AS um ON um.id=m.m_author "
+			 "LEFT JOIN " F_TABLE " AS f ON f.id=m.forum_id "
+			 "LEFT JOIN " F_TABLE " AS fr ON fr.id=m.r_forum_id "
+			 "LEFT JOIN " F_TABLE " AS fm ON f.id=m.m_forum_id "
+		      "LEFT JOIN " T_TABLE " AS t ON t.topic_id=m.topic_id "
+		  "LEFT JOIN " T_TABLE " AS tr ON tr.topic_id=m.r_topic_id "
+		  "LEFT JOIN " T_TABLE " AS tm ON tm.topic_id=m.m_topic_id "
+		   "WHERE m.topic_id=%u AND m.message_id>%u", topic, start);
 
 #ifdef OLD_SHIT
     ret = mono_sql_query(&res, "SELECT message_id,topic_id,forum_id,author,alias,subject,UNIX_TIMESTAMP(date) AS date,type,priv,deleted FROM " M_TABLE " WHERE message_id>%u AND topic_id=%u ORDER BY message_id", start, topic);
@@ -298,11 +296,11 @@ mono_sql_mes_list_topic(unsigned int topic, unsigned int start, mlist_t ** list)
 	if (row == NULL)
 	    break;
 	/*
-         * Get message and add to list.
-         */
-        if( (entry.message = mono_sql_convert_row_to_mes(row)) == NULL ) {
-            break;
-        }
+	 * Get message and add to list.
+	 */
+	if ((entry.message = mono_sql_convert_row_to_mes(row)) == NULL) {
+	    break;
+	}
 	if (mono_sql_ll_add_mlist_to_list(entry, list) == -1)
 	    break;
     }
@@ -312,7 +310,7 @@ mono_sql_mes_list_topic(unsigned int topic, unsigned int start, mlist_t ** list)
 }
 
 int
-mono_sql_mes_search_forum(int forum, const char *string, sr_list_t **list)
+mono_sql_mes_search_forum(int forum, const char *string, sr_list_t ** list)
 {
     MYSQL_RES *res;
     MYSQL_ROW row;
@@ -322,61 +320,58 @@ mono_sql_mes_search_forum(int forum, const char *string, sr_list_t **list)
 
     (void) escape_string(string, &needle);
 
-    if(forum >= 0)
-        ret = mono_sql_query( &res,
-            "SELECT " 
-                "m.message_id,m.forum_id,f.name," 
-                "u.username,m.alias,m.subject,m.flag " 
-            "FROM " M_TABLE " AS m " 
-                "LEFT JOIN " U_TABLE " AS u ON u.id=m.author " 
-                "LEFT JOIN " F_TABLE " AS f ON f.id=m.forum_id " 
-            "WHERE " 
-                "(m.content REGEXP '%s' OR m.subject REGEXP '%s') " 
-                "AND m.forum_id=%u AND m.deleted='n'" 
-                "GROUP BY m.message_id " 
-            "ORDER BY m.forum_id, m.message_id",
-                needle, needle, forum );
+    if (forum >= 0)
+	ret = mono_sql_query(&res,
+			     "SELECT "
+			     "m.message_id,m.forum_id,f.name,"
+			     "u.username,m.alias,m.subject,m.flag "
+			     "FROM " M_TABLE " AS m "
+			     "LEFT JOIN " U_TABLE " AS u ON u.id=m.author "
+			     "LEFT JOIN " F_TABLE " AS f ON f.id=m.forum_id "
+			     "WHERE "
+			 "(m.content REGEXP '%s' OR m.subject REGEXP '%s') "
+			     "AND m.forum_id=%u AND m.deleted='n'"
+			     "GROUP BY m.message_id "
+			     "ORDER BY m.forum_id, m.message_id",
+			     needle, needle, forum);
     else
-        ret = mono_sql_query( &res,
-            "SELECT " 
-                "m.message_id,m.forum_id,f.name," 
-                "u.username,m.alias,m.subject,m.flag " 
-            "FROM " M_TABLE " AS m " 
-                "LEFT JOIN " U_TABLE " AS u ON u.id=m.author " 
-                "LEFT JOIN " F_TABLE " AS f ON f.id=m.forum_id " 
-            "WHERE " 
-                "m.content REGEXP '%s' OR m.subject REGEXP '%s' " 
-                "AND m.deleted='n' ",
-                "GROUP BY m.forum_id ",
-            "ORDER BY m.forum_id, m.message_id",
-                needle, needle );
+	ret = mono_sql_query(&res,
+			     "SELECT "
+			     "m.message_id,m.forum_id,f.name,"
+			     "u.username,m.alias,m.subject,m.flag "
+			     "FROM " M_TABLE " AS m "
+			     "LEFT JOIN " U_TABLE " AS u ON u.id=m.author "
+			     "LEFT JOIN " F_TABLE " AS f ON f.id=m.forum_id "
+			     "WHERE "
+			   "m.content REGEXP '%s' OR m.subject REGEXP '%s' "
+			     "AND m.deleted='n' ",
+			     "GROUP BY m.forum_id ",
+			     "ORDER BY m.forum_id, m.message_id",
+			     needle, needle);
 
     xfree(needle);
 
     if (ret == -1) {
-        (void) mono_sql_u_free_result(res);
-        return -1;
+	(void) mono_sql_u_free_result(res);
+	return -1;
     }
-
     if ((rows = mysql_num_rows(res)) == 0) {
-        (void) mono_sql_u_free_result(res);
-        return 0;
+	(void) mono_sql_u_free_result(res);
+	return 0;
     }
-
     for (i = 0; i < rows; i++) {
-        row = mysql_fetch_row(res);
-        if (row == NULL)
-            break;
-        /*
-         * Get result and add to list.
-         */
-        if( (entry.result = mono_sql_convert_row_to_sr(row)) == NULL ) {
-            continue;
-        }
-
-        if( mono_sql_ll_add_srlist_to_list(entry, list) == -1) {
-            continue;
-        }
+	row = mysql_fetch_row(res);
+	if (row == NULL)
+	    break;
+	/*
+	 * Get result and add to list.
+	 */
+	if ((entry.result = mono_sql_convert_row_to_sr(row)) == NULL) {
+	    continue;
+	}
+	if (mono_sql_ll_add_srlist_to_list(entry, list) == -1) {
+	    continue;
+	}
     }
     (void) mono_sql_u_free_result(res);
     return rows;
@@ -392,23 +387,23 @@ _mono_sql_mes_cleanup(unsigned int forum)
     /*
      * Yuck.
      */
-    read_forum( forum, &scratch );
-    if( (lowest = scratch.highest - scratch.maxmsg) < 0)
-        lowest = 0;
+    read_forum(forum, &scratch);
+    if ((lowest = scratch.highest - scratch.maxmsg) < 0)
+	lowest = 0;
 
     /*
      * Delete old messages from message table.
      */
-    (void) mono_sql_query( &res, "DELETE FROM " M_TABLE " WHERE forum_id=%u AND message_id<%d",
-        forum, lowest );
+    (void) mono_sql_query(&res, "DELETE FROM " M_TABLE " WHERE forum_id=%u AND message_id<%d",
+			  forum, lowest);
     (void) mono_sql_u_free_result(res);
 
 #ifdef USE_RATING
     /*
      * Delete old messages from message table.
      */
-    (void) mono_sql_query( &res, "DELETE FROM " R_TABLE " WHERE forum_id=%u AND message_id<%d",
-        forum, lowest );
+    (void) mono_sql_query(&res, "DELETE FROM " R_TABLE " WHERE forum_id=%u AND message_id<%d",
+			  forum, lowest);
     (void) mono_sql_u_free_result(res);
 #endif
 
@@ -416,20 +411,47 @@ _mono_sql_mes_cleanup(unsigned int forum)
 }
 
 int
-mono_sql_mes_erase_forum( unsigned int forum )
+mono_sql_mes_erase_forum(unsigned int forum)
 {
 
     MYSQL_RES *res;
     int ret = 0;
 
-    ret = mono_sql_query(&res, "DELETE FROM %s WHERE forum_id=%u", M_TABLE, forum );
+    ret = mono_sql_query(&res, "DELETE FROM %s WHERE forum_id=%u", M_TABLE, forum);
     if (ret != 0) {
-        (void) log_it("sqlerr", "Unable to erase messages from quad %d.", forum);
+	(void) log_it("sqlerr", "Unable to erase messages from quad %d.", forum);
     }
-
     (void) mono_sql_u_free_result(res);
     return ret;
 }
 
+int
+mono_sql_mes_count()
+{
+    MYSQL_RES *res;
+    MYSQL_ROW row;
+    int ret = 0, rows = 0, i = 0;
+
+    ret = mono_sql_query(&res, "SELECT COUNT(*) FROM %s", M_TABLE);
+
+    if (ret != 0) {
+	(void) log_it("sqlerr", "Unable to count messages.");
+	(void) mono_sql_u_free_result(res);
+	return -1;
+    }
+    if ((rows = mysql_num_rows(res)) == 0) {
+	(void) mono_sql_u_free_result(res);
+	return -2;
+    }
+    row = mysql_fetch_row(res);
+    if (row == NULL) {
+	(void) mono_sql_u_free_result(res);
+	return -3;
+    }
+    sscanf(row[0], "%d", &i);
+
+    (void) mono_sql_u_free_result(res);
+    return i;
+}
 
 /* eof */
