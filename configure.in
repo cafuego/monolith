@@ -31,6 +31,7 @@ fi
 umask 002
 
 dnl Checks for programs.
+AC_PROG_AWK
 AC_PROG_CC
 AC_PROG_RANLIB
 AC_PROG_INSTALL
@@ -59,14 +60,16 @@ AC_C_CONST
 AC_TYPE_OFF_T
 AC_TYPE_PID_T
 AC_TYPE_SIZE_T
+AC_HEADER_TIME
 AC_STRUCT_TM
 
 dnl Checks for library functions.
 AC_PROG_GCC_TRADITIONAL
 AC_TYPE_SIGNAL
 AC_FUNC_VPRINTF
+AC_FUNC_STRFTIME
 AC_FUNC_MMAP
-AC_CHECK_FUNCS(uname gethostname mkdir regcomp socket strcspn strdup strftime strspn strstr)
+AC_CHECK_FUNCS(uname gettimeofday gethostname mkdir regcomp socket putenv strcspn strdup strspn strstr)
 
 dnl check if MAP_FAILED is defined...
 if test "x$grep_path" != "xno" ; then
