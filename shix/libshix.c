@@ -34,14 +34,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#ifdef HAVE_MYSQL_H
-  #undef HAVE_MYSQL_MYSQL_H
-  #include <mysql.h>
-#else
-  #ifdef HAVE_MYSQL_MYSQL_H
-    #undef HAVE_MYSQL_H
-    #include <mysql/mysql.h>
-  #endif
+#ifdef USE_MYSQL
+  #include MYSQL_HEADER
 #endif
 
 #include "monolith.h"

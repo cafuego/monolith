@@ -1,3 +1,4 @@
 #define BBSDIR		"@prefix@"
 #define BBSNAME		"@BBSNAME@"
 #define SENDMAIL	"@SENDMAIL@"
+#define MYSQL_HEADER	@MYSQL_HEADER@

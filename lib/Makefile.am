@@ -13,7 +13,7 @@ CFLAGS += -O3 -Wall -g
 INCLUDES += -I../include
 
 #ifdef USE_MYSQL
-CFLAGS += $(MYSQL_INCLUDE)
+INCLUDES += $(MYSQL_INCLUDE)
 #endif
 
 #-w -W -pedantic \

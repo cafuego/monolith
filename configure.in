@@ -123,32 +123,33 @@ else
 fi
 
 dnl Do a bit of mysql checking.
-if test ! x${withval} = x && test -d "${withval}" && test -d "${withval}/include"; then
-    echo "checking MySQL installation in ${withval}..."
-    mysql_dir=${withval}
+if test ! x${with_mysql} = x && test -d "${with_mysql}"; then
+    echo "checking MySQL installation in ${with_mysql}..."
+    mysql_dir=${with_mysql}
     echo -n "  -> headers..."
-    if test -d "${withval}/include"; then
-        MYSQL_INCLUDE="-I${withval}/include"
+    if test -d "${with_mysql}/include"; then
+        MYSQL_INCLUDE="-I${with_mysql}/include"
         echo " ok"
     else
         echo " uh-oh"
     fi
     echo -n "  -> libraries..."
-    if test -d "${withval}/lib"; then
-        MYSQL_LIB="-L${withval}/lib"
+    if test -d "${with_mysql}/lib"; then
+        MYSQL_LIB="-L${with_mysql}/lib"
         echo " ok"
     else
         echo " uh-oh"
     fi
     echo -n "  -> binaries..."
-    if test -d "${withval}/bin"; then
-        MYSQL_BIN="${withval}/bin"
+    if test -d "${with_mysql}/bin"; then
+        MYSQL_BIN="${with_mysql}/bin"
         echo " ok"
     else
         echo " uh-oh"
     fi
-    if test -f "${withval}/include/mysql.h"; then
-        AC_DEFINE(HAVE_MYSQL_H)
+    if test -f "${with_mysql}/include/mysql.h"; then
+        MYSQL_HEADER="<mysql.h>"
+        AC_SUBST(MYSQL_HEADER)
         AC_DEFINE(USE_MYSQL)
         AC_SUBST(MYSQL_INCLUDE)
         AC_SUBST(MYSQL_LIB)
@@ -180,14 +181,16 @@ else
             echo
             exit 1
         else
-            AC_DEFINE(HAVE_MYSQL_MYSQL_H)
-            AC_CHECK_LIB(mysqlclient, mysql_connect)
+            MYSQL_HEADER="<mysql/mysql.h>"
             AC_DEFINE(USE_MYSQL)
+            AC_SUBST(MYSQL_HEADER)
+            AC_CHECK_LIB(mysqlclient, mysql_connect)
         fi
     else
-        AC_DEFINE(HAVE_MYSQL_H)
-        AC_CHECK_LIB(mysqlclient, mysql_connect)
+        MYSQL_HEADER="<mysql.h>"
         AC_DEFINE(USE_MYSQL)
+        AC_SUBST(MYSQL_HEADER)
+        AC_CHECK_LIB(mysqlclient, mysql_connect)
     fi
     mysql_app=mysql
 fi

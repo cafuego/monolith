@@ -11,14 +11,8 @@
 #include <sys/types.h>
 #include <time.h>
 
-#ifdef HAVE_MYSQL_H
-#undef HAVE_MYSQL_MYSQL_H
-#include <mysql.h>
-#else
-#ifdef HAVE_MYSQL_MYSQL_H
-#undef HAVE_MYSQL_H
-#include <mysql/mysql.h>
-#endif
+#ifdef USE_MYSQL
+  #include MYSQL_HEADER
 #endif
 
 #ifdef ENABLE_NLS

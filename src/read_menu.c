@@ -13,15 +13,8 @@
 #include <time.h>
 #include <unistd.h>
 
-
-#ifdef HAVE_MYSQL_H
-#undef HAVE_MYSQL_MYSQL_H
-#include <mysql.h>
-#else
-#ifdef HAVE_MYSQL_MYSQL_H
-#undef HAVE_MYSQL_H
-#include <mysql/mysql.h>
-#endif
+#ifdef USE_MYSQL
+  #include MYSQL_HEADER
 #endif
 
 #ifdef ENABLE_NLS
@@ -625,7 +618,11 @@ long_prompt(long number, int direction)
 
 	    not_my_post = strcmp(usersupp->username, message_reply_name(NULL));
 
+#ifdef USE_RATING
 	    read_command = get_single_quiet("1234567890 aAbBcCdDeEfFgGhHiIjJlkKLpPrRqQmMnNsStTvVWwxXyYzZ?!#\006\005\014\018\022\030<>%\":~,.*^");
+#else
+	    read_command = get_single_quiet("1234567890 aAbBcCdDeEfFgGhHiIjJlkKLpPrqQmMnNsStTvVWwxXyYzZ?!#\006\005\014\018\022\030<>%\":~,.*^");
+#endif
 
 	    read_command = validate_read_command(read_command);		/* priv check */
 
@@ -853,9 +850,11 @@ long_prompt(long number, int direction)
 		    enter_message(curr_rm, REPLY_MODE, NO_BANNER, NULL);
 		    break;
 
+#ifdef USE_RATING
 		case 'R':
 		    cprintf("\1f\1gRate %s.\1a\n", config.message);
 		    rate_message(NULL, current, curr_rm);
+#endif
 		    break;
 
 		case 'S':
