@@ -147,13 +147,11 @@ function format_username($username,$user, $alias, $flag) {
         return format_user($user);
 }
 
-function format_js_username($username,$user, $alias, $flag) {
+function format_js_username($user, $alias, $flag) {
 
-    if( $flag == "anon" ) {
-        $usernum = get_usernum($username);
-        $author = get_usernum($user);
+    if( $flag == "anon" )
         return format_js_alias($alias);
-    } else
+    else
         return format_js_user($user);
 }
 
