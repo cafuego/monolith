@@ -668,7 +668,7 @@ msgstr ""
 
 #: src/usertools.c:683
 msgid "\001f\001cLast on \001g%s "
-msgstr ""
+msgstr "\001f\001cLaatst ingelogd: \001g%s "
 
 #: src/usertools.c:684
 msgid "\001cto \001g%s \001p"
@@ -726,11 +726,11 @@ msgstr ""
 msgid "\001f\001rUnble to fetch profile from database!\n"
 msgstr ""
 
-#: src/usertools.c:904 src/usertools.c:959
+#: src/usertools.c:904 src/usertools.c:958
 msgid "\001f\001rUnable to mmap() profile file contents!\n"
 msgstr ""
 
-#: src/usertools.c:910 src/usertools.c:965
+#: src/usertools.c:910 src/usertools.c:964
 msgid "\001f\001rUnable to store profile in database!\n"
 msgstr ""
 
@@ -744,46 +744,45 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/usertools.c:976
+#: src/usertools.c:975
 msgid "\001f\001gChange birthday/date.\n"
 msgstr "\001f\001gVerander verjaardag.\n"
 
-#: src/usertools.c:984
+#: src/usertools.c:983
 msgid "\001gYour current %s is: \001y`%s\001a'\n"
 msgstr "\001gJe huidige %s is: \001y`%s\001a'\n"
 
-#: src/usertools.c:985
+#: src/usertools.c:984
 msgid "\001f\001gDo you want to change this? \001w(\001gy\001w/\001gn\001w)\001c "
 msgstr ""
 
-#: src/usertools.c:1000
+#: src/usertools.c:999
 msgid "\001f\001gChange address.\n"
 msgstr "\001f\001gVerander adres.\n"
 
-#: src/usertools.c:1015
+#: src/usertools.c:1014
 msgid "\001gYour current url is: \001y`%s'\n"
 msgstr "\001gJe huidige url is: \001y`%s'\n"
 
-#: src/usertools.c:1016
+#: src/usertools.c:1015
 msgid "\001gDo you want to change this? \001w(\001gy\001w/\001gn\001w)\001c "
 msgstr ""
 
-#: src/usertools.c:1018
+#: src/usertools.c:1017
 msgid "\001f\001gEnter the new url\001w: \001chttp://"
 msgstr ""
 
-#: src/usertools.c:1022
+#: src/usertools.c:1021
 msgid "\001f\001gURL not set.\n"
 msgstr ""
 
-#. disable x's in q_menu
-#: src/usertools.c:1050
+#: src/usertools.c:1049
 msgid ""
 "\n"
 "\001f\001gPress \001w<\001rh\001w>\001g to access the helpfiles.\n"
 msgstr ""
 
-#: src/usertools.c:1051
+#: src/usertools.c:1050
 msgid ""
 "\n"
 "\001gPress \001w<\001rc\001w>\001g for help on commands.\n"
@@ -791,11 +790,11 @@ msgstr ""
 "\n"
 "\001gToets \001w<\001rc\001w>\001g voor help over de commando's.\n"
 
-#: src/usertools.c:1052
+#: src/usertools.c:1051
 msgid "\001gPress \001w<\001r?\001w>\001g to get a list of commands.\n"
 msgstr "\001gToets \001w<\001r?\001w>\001g voor een lijst met commando's.\n"
 
-#: src/usertools.c:1053
+#: src/usertools.c:1052
 msgid ""
 "\001gPress \001w<\001rshift-Q\001w>\001g to ask a Question.\n"
 "\n"
@@ -803,7 +802,7 @@ msgstr ""
 "\001gToets \001w<\001rshift-Q\001w>\001g om een vraag te stellen.\n"
 "\n"
 
-#: src/usertools.c:1054
+#: src/usertools.c:1053
 msgid ""
 "\001gPress \001w<\001rq\001w>\001g to exit this menu.\n"
 "\n"
@@ -811,23 +810,23 @@ msgstr ""
 "\001gToets \001w<\001rq\001w>\001g om dit menu te verlaten.\n"
 "\n"
 
-#: src/usertools.c:1055
+#: src/usertools.c:1054
 msgid "\001gChoice\001w:\001g "
 msgstr ""
 
-#: src/usertools.c:1151
+#: src/usertools.c:1150
 msgid "\001f\001wYou are now marked as \001gAWAY\001w.\n"
 msgstr ""
 
-#: src/usertools.c:1153
+#: src/usertools.c:1152
 msgid "\001gDefault away message: \001y%s\001a\n"
 msgstr ""
 
-#: src/usertools.c:1154
+#: src/usertools.c:1153
 msgid "\001f\001gNew Away message: \001c"
 msgstr ""
 
-#: src/usertools.c:1161
+#: src/usertools.c:1160
 msgid "\001f\001wYou are \001rno longer\001w marked as \001gAWAY\001w.\001a"
 msgstr ""
 
