@@ -8,7 +8,7 @@ CREATE TABLE online (
    user_id	INT UNSIGNED NOT NULL,
    status	ENUM( 'yes', 'no' ) DEFAULT 'yes',
    interface	ENUM( 'telnet', 'client', 'web' ) DEFAULT 'telnet' NOT NULL,
-   doing	CHAR(40) NOT NULL,
+   doing	CHAR(64) NOT NULL,
    date        	DATETIME NOT NULL,
    stamp        TIMESTAMP,
 

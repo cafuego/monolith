@@ -26,7 +26,10 @@ function show_wholist($username,$location) {
     $result = MYSQL_QUERY("SELECT u.username AS name,o.interface AS interface,o.doing AS doing,SEC_TO_TIME(NOW()-o.date) AS online FROM online AS o LEFT JOIN user AS u ON o.user_id=u.id ORDER by online DESC");
     $number = MYSQL_NUMROWS($result);
     if ($number) {
-        print "<h3 align=\"center\">Listing $number users online</h3>\n<p> </p>\n";
+        if($number > 1)
+            print "<h3 align=\"center\">Listing $number users online</h3>\n<p> </p>\n";
+        else
+            print "<h3 align=\"center\">Listing $number user online</h3>\n<p> </p>\n";
         print "<table border=\"0\" cellpadding=\"4\" cellspacing=\"2\" align=\"center\">\n";
         print "<tr>\n";
         print "  <th align=\"left\"><p align=\"left\">Username</th>\n";

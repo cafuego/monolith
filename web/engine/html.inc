@@ -109,7 +109,7 @@ function html_do_login($username) {
     $number = MYSQL_NUMROWS($result);
 
     if(!($number))
-        $result = MYSQL_QUERY("INSERT INTO online (user_id,interface,doing,date) VALUES ($usernum,'web','<font color=\"#ffff00\">Surfing the web</font>',NOW())");
+        $result = MYSQL_QUERY("INSERT INTO online (user_id,interface,doing,date) VALUES ($usernum,'web','<font color=\"#ffff00\">Surfing the web in style!</font>',NOW())");
    
 }
 
