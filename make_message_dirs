@@ -1,0 +1,38 @@
+#!/bin/sh
+#
+# Extremely crude util for creating forum directories.
+
+BBSDIR=/usr/bbs
+FILEDIR=$BBSDIR/save/forums
+BBS_ID=bbs
+
+WHOAMI=`/usr/bin/whoami` 
+if [ `whoami` != "bbs" ]; then
+  echo "Must have bbs uid to run.  Exiting."
+  exit 1
+fi
+
+if test ! -d "$FILEDIR"; then
+  echo creating $FILEDIR
+  mkdir $FILEDIR
+fi
+
+cd $FILEDIR
+
+echo -n "enter number of forums to create: "
+read MAXFORUMS
+
+FORUM=0
+while [ "$FORUM" -lt "$MAXFORUMS" ]; do
+  if test ! -d "$FORUM"; then
+    echo "Creating forum $FORUM"
+    mkdir $FORUM
+  fi
+  FORUM=`expr "$FORUM" + 1`
+done
+
+echo
+chown bbs.bbs . -R
+chmod go-rwx . -R
+echo "Your BBS now has $MAXFORUMS forums."
+cd -
