@@ -11,7 +11,7 @@ CREATE TABLE message (
    forum_id	INT UNSIGNED NOT NULL,
 
    # Extra display info.
-   flag		ENUM( 'normal','anon','alias','forced','yell','auto','roomaide','tech','sysop','emp',admin' ),
+   flag		ENUM( 'normal','anon','alias','forced','yell','auto','roomaide','tech','sysop','emp','admin' ),
    date		DATETIME NOT NULL,
 
    # Actual useful info.
