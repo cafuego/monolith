@@ -101,10 +101,17 @@ short_prompt(void)
 
 	are_there_held_xs();	/* HERE! in main menu, mark as not busy */
 	display_short_prompt();
+
 #ifdef SUPERHERO
-	cmd = get_single_quiet("~aAbBcCdefEFGHiIjJkKlLMNOPQqrRsSTUvVwWxXYZ0123456789!<>-_+:#.,*\"@`$&a([]% /?\005\006\011\014\016\022\030\'");
+        IFSYSOP
+	    cmd = get_single_quiet("~aAbBcCdefEFGHiIjJkKlLMNOPQqrRsSTUvVwWxXYZ0123456789!<>-_+:#.,*\"@`$&a([]% /?\005\006\011\014\016\022\030\'");
+        else
+	    cmd = get_single_quiet("~aAbBcCdefEFGHiIjJkKlLMNOPQqrRsTUvVwWxXYZ0123456789!<>-_+:#.,*\"@`$&a([]% /?\005\006\011\014\016\022\030\'");
 #else
-	cmd = get_single_quiet("~aAbBcCdefEFGHiIjJkKlLMNOPQqrRsSTUvVwWxXYZ0123456789!<>-_+:#.,*\"@$&a([]% /?\005\006\011\014\016\022\030\'");
+        IFSYSOP
+	    cmd = get_single_quiet("~aAbBcCdefEFGHiIjJkKlLMNOPQqrRsSTUvVwWxXYZ0123456789!<>-_+:#.,*\"@$&a([]% /?\005\006\011\014\016\022\030\'");
+        else
+	    cmd = get_single_quiet("~aAbBcCdefEFGHiIjJkKlLMNOPQqrRsTUvVwWxXYZ0123456789!<>-_+:#.,*\"@$&a([]% /?\005\006\011\014\016\022\030\'");
 #endif
 
 	cmd = validate_read_command(cmd);	/* priv check */
@@ -822,13 +829,16 @@ long_prompt(long number, int direction)
 		    break;
 
 		case 'R':
-                    IFSYSOP
-                        rate_message(NULL, number, curr_rm);
+                    IFSYSOP {
+                        cprintf("\1f\1rThis would work IF I knew the correct %s Id.\n", config.message);
+                        break;
+                        rate_message(NULL);
+                    }
                     break;
 
 		case 'S':
-		    cprintf("\1f\1gSearch.  (temporarily disabled)\1a\n");
-//		    search();
+                    cprintf("\1f\1wSearch %s\n", config.message_pl);
+                    search_via_sql()
 		    break;
 
 		case 's':
