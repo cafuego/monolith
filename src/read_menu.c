@@ -102,9 +102,9 @@ short_prompt(void)
 	display_short_prompt();
 
 #ifdef SUPERHERO
-	cmd = get_single_quiet("~aAbBcCdefEFGHiIjJkKlLMNOPQqrRsSTUvVwWxXYZ0123456789!<>-_+:#.,*\"@`$&a([]% /?\005\006\011\014\016\022\030\'");
+	cmd = get_single_quiet("~aAbBcCdefEFGHiIjJkKlLMNOPQqrRsSTUvVwWxXYZ0123456789!<>-_+:#.,*\"@`$&a([]% /?\005\006\011\014\016\022\029\030\'");
 #else
-	cmd = get_single_quiet("~aAbBcCdefEFGHiIjJkKlLMNOPQqrRsSTUvVwWxXYZ0123456789!<>-_+:#.,*\"@$&a([]% /?\005\006\011\014\016\022\030\'");
+	cmd = get_single_quiet("~aAbBcCdefEFGHiIjJkKlLMNOPQqrRsSTUvVwWxXYZ0123456789!<>-_+:#.,*\"@$&a([]% /?\005\006\011\014\016\022\029\030\'");
 #endif
 
 	cmd = validate_read_command(cmd);	/* priv check */
@@ -386,6 +386,13 @@ short_prompt(void)
 		show_online(3);
 		break;
 
+            case 029:		/* <ctrl-w> */
+                IFSYSOP {
+		    nox = 1;
+		    cprintf("\1f\1gSend Web %s %s.\1a\n", config.express, config.x_message);
+                }
+                break;
+                
 	    case '!':
 		nox = 1;
 		feeling();	/* the feeling menu */
