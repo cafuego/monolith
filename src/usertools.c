@@ -13,6 +13,8 @@
 #include <time.h>
 #include <unistd.h>
 
+#include <mysql.h>
+
 #include "monolith.h"
 #include "libmono.h"
 #include "sql_userforum.h"

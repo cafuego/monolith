@@ -4,8 +4,6 @@
 #include <config.h>
 #endif
 
-/* define SQL_CONFIGS */
-
 #define HAVE_FUN_C 1
 
 #include <stdio.h>
@@ -14,6 +12,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
+
+#include <mysql.h>
 
 #include "monolith.h"
 #include "libmono.h"

@@ -21,6 +21,8 @@
 #include <linux/sys.h>
 #endif
 
+#include <mysql.h>
+
 #include "monolith.h"
 #include "libmono.h"
 #include "ext.h"
