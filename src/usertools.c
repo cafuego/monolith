@@ -51,7 +51,6 @@
 #include "uadmin.h"
 #include "wholist.h"
 
-char profile_default[L_USERNAME + L_BBSNAME + 2] = "";
 
 /* PR additions for debugging */
 #define UID_MathFox 23

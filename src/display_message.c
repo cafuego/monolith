@@ -38,6 +38,7 @@
 #include "sql_message.h"
 #include "ext.h"
 #include "input.h"
+#include "usertools.h"
 
 #ifdef CLIENTSRC
 #include "telnet.h"
@@ -110,6 +111,7 @@ display_message(unsigned int forum, unsigned int num, const unsigned int mode)
 
     if (!(header->banner_type & INFO_BANNER)) {
 	message_reply_name(header->author);
+	strcpy(profile_default, header->author);
 	message_reply_id(header->m_id);
     }
     xfree(header);
