@@ -11,6 +11,6 @@ CREATE TABLE online (
    doing	CHAR(40) NOT NULL,
    stamp        TIMESTAMP,
 
-   PRIMARY KEY( user_id )
+   PRIMARY KEY( user_id,interface )
 
 )

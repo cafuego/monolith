@@ -1,5 +1,5 @@
 # $Id$
 
 pixdir = $(prefix)/www/bbs/pix
-pix_DATA = logo.jpg
+pix_DATA = monolith.jpg logo.jpg
 

@@ -59,6 +59,11 @@
             break;
 
         case "l":
+            require ('engine/list.inc');
+            list_quads($username);
+            break;
+
+        case "m":
             require ('engine/quad.inc');
             list_messages($username,$quad);
             break;
@@ -83,13 +88,13 @@
             break;
 
         default:
-            require ('engine/list.inc');
-            list_quads($username);
+            main_screen($username);
             break;
 
     }
 
-    html_print_foot($username, $starttime);
+    if( $action != "q" )
+        html_print_foot($username, $starttime);
     
 ?>
 
