@@ -33,7 +33,7 @@ function show_wholist($username,$location) {
         $text = rawurlencode($text);
 
         echo "<div align=\"center\">\n";
-        echo "<img src=\"/bbs/image.phtml/Arial/$text/\" height=\"30\" width=\"500\" alt=\"[ image: ". rawurldecode($test) ." ]\">\n";
+        echo "<img src=\"/bbs/image.phtml/Arial/$text/\" height=\"30\" width=\"500\" alt=\"[ image: ". rawurldecode($text) ." ]\">\n";
         echo "</div>\n";
 
         print "<table border=\"0\" cellpadding=\"4\" cellspacing=\"2\" align=\"center\">\n";

@@ -1,15 +1,16 @@
 <?php
 
-    Header( "Content-type: image/gif" );
+    // Header( "Content-type: image/gif" );
 
     $url_array=explode("/",$REQUEST_URI);
-    $font = "/usr/bbs/www/bbs/font/". url_array[2] .".ttf" );
+    // $font = "/usr/bbs/www/bbs/font/". url_array[2] .".ttf" );
+    $font = "/usr/bbs/www/bbs/font/Arialblack_I.ttf";
     $text = rawurldecode($url_array[3]);
 
     $im = imagecreate( 500, 30 );
     $black = ImageColorAllocate( $im, 0, 0, 0 );
     $white = ImageColorAllocate( $im, 255, 255, 255 );
-    $bounds = ImageTTFBBox( 20, 0, $fontfile, $content );
+    $bounds = ImageTTFBBox( 20, 0, $font, $text );
     $x = 500 - ((500 - ($bounds[4]-$bounds[6]))/2);
     $y = 30 - ((30 - ($bounds[1]-$bounds[7]))/2);
     ImageTTFText( $im, 20, 0, $x, $y, $white, $font, $text );
