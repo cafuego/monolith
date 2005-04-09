@@ -18,6 +18,7 @@
 
 #include "monolith.h"
 #include "libmono.h"
+
 #include "ext.h"
 #include "routines2.h"
 #include "input.h"
@@ -40,7 +41,6 @@ static int num;
 
 static void _config_set_bbsname(const unsigned int, const long, void *);
 static void _config_set_room(const unsigned int, const long, void *);
-static void _config_set_message(const unsigned int, const long, void *);
 static void _config_set_xpress(const unsigned int, const long, void *);
 static void _config_set_xmessage(const unsigned int, const long, void *);
 static void _config_set_doing(const unsigned int, const long, void *);

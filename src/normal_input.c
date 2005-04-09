@@ -31,7 +31,6 @@
 #include "monolith.h"
 #include "libmono.h"
 #include "ext.h"
-#include "setup.h"
 
 #define extern
 #include "input.h"

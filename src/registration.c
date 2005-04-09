@@ -21,6 +21,7 @@
 #endif
 
 #include "monolith.h"
+#include "libmono.h"
 #include "ext.h"
 
 #define extern
@@ -29,12 +30,8 @@
 
 #include "main.h"
 #include "menu.h"
-#include "sql_user.h"
 #include "input.h"
-#include "log.h"
-#include "routines.h"
 #include "routines2.h"
-#include "userfile.h"
 
 void
 enter_reginfo()

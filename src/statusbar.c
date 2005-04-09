@@ -26,16 +26,13 @@
 
 #include "monolith.h"
 #include "ext.h"
-#include "setup.h"
 
 #define extern
 #include "statusbar.h"
 #undef extern
 
-
 #include "btmp.h"
 #include "chat.h"
-#include "routines.h"
 
 int bartmpoff;
 

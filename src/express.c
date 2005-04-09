@@ -26,12 +26,10 @@
 #endif
 
 #include "monolith.h"
-#include "telnet.h"
-#include "ext.h"
 #include "libmono.h"
-#include "libshix.h"
+#include "ext.h"
+#include "telnet.h"
 
-#include "setup.h"
 #include "chat.h"
 #include "enter_message.h"
 #include "express.h"
@@ -45,10 +43,6 @@
 #include "routines2.h"
 #include "statusbar.h"
 #include "usertools.h"
-
-#include "sql_llist.h"
-#include "sql_online.h"
-#include "sql_web.h"
 
 char x_default[L_USERNAME + L_BBSNAME + 2];
 char web_default[L_USERNAME + 1];

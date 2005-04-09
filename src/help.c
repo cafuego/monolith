@@ -20,9 +20,8 @@
 #endif
 
 #include "monolith.h"
-#include "routines.h"
+#include "libmono.h"
 #include "ext.h" 
-#include "setup.h"
 
 #define extern
 #include "help.h"

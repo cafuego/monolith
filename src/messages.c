@@ -33,7 +33,6 @@
 #include "monolith.h"
 #include "libmono.h"
 #include "ext.h"
-#include "setup.h"
 
 #ifdef CLIENTSRC
 #include "telnet.h"
@@ -48,13 +47,6 @@
 #include "rooms.h"
 #include "routines2.h"
 #include "uadmin.h"
-
-#include "sql_message.h"
-#include "sql_userforum.h"
-#include "sql_rating.h"
-#include "sql_llist.h"
-
-#include "libshix.h"
 
 void
 search()

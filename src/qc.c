@@ -31,8 +31,7 @@
 #endif
 
 #include "monolith.h"
-#include "monosql.h"
-#include "sql_utils.h"
+#include "libmono.h"
 
 #define extern
 #include "qc.h"
@@ -45,7 +44,6 @@
 #include "enter_message.h"	/* for self-mail of results */
 #include "ext.h"		/* for curr_rm and such */
 #include "libquad.h"		/* for may_read_room, etc */
-#include "routines.h"		/* for xmalloc, etc */
 #include "input.h"		/* for getline */
 
 static void qc_admin_menu(void);

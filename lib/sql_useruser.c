@@ -23,6 +23,8 @@
 #endif
 
 #include "monolith.h"
+#include "libmono.h"
+
 #include "libfriends.h"
 #include "monosql.h"
 #include "sql_utils.h"

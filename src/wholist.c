@@ -31,7 +31,7 @@
 #include "monolith.h"
 #include "libmono.h"
 #include "ext.h"
-#include "setup.h"
+
 #include "chat.h"
 #include "friends.h"
 #include "routines2.h"
@@ -39,14 +39,6 @@
 #define extern
 #include "wholist.h"
 #undef extern
-
-#ifdef USE_MYSQL
-#include "sql_convert.h"
-#include "sql_llist.h"
-#include "sql_online.h"
-#include "sql_web.h"
-#endif
-
 
 #undef NO_WHOLIST
 

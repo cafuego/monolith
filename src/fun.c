@@ -32,16 +32,13 @@
 #include "monolith.h"
 #include "libmono.h"
 #include "ext.h"
-#include "setup.h"
 
 #define extern
 #include "fun.h"
 #undef extern
 
 #include "input.h"
-#include "sql_goto.h"
 #include "routines2.h"
-#include "libshix.h"
 
 static void cthulhu( void );
 static int _cthulhu_bad(int i, char *str);

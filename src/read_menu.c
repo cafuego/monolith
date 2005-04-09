@@ -13,10 +13,6 @@
 #include <time.h>
 #include <unistd.h>
 
-#ifdef USE_MYSQL
-#include MYSQL_HEADER
-#endif
-
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #include <locale.h>
@@ -41,7 +37,6 @@
 #include "main.h"
 #include "qc.h"
 #include "rooms.h"
-#include "setup.h"
 #include "statusbar.h"
 #include "edit_message.h"
 #include "enter_message.h"

@@ -15,10 +15,6 @@
 #include <time.h>
 #include <unistd.h>
 
-#ifdef USE_MYSQL
-#include MYSQL_HEADER
-#endif
-
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #include <locale.h>
@@ -31,7 +27,6 @@
 #include "libmono.h"
 #include "ext.h"
 #include "telnet.h"
-#include "setup.h"
 
 #include "bbsconfig.h"
 #include "chat.h"
@@ -52,9 +47,6 @@
 #include "statusbar.h"
 #include "uadmin.h"
 #include "wholist.h"
-
-#include "sql_user.h"
-#include "sql_web.h"
 
 #define extern
 #include "usertools.h"

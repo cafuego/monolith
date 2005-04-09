@@ -15,10 +15,6 @@
 #include <stdlib.h>
 #include <sys/file.h>
 
-#ifdef USE_MYSQL
-#include MYSQL_HEADER
-#endif
-
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #include <locale.h>
@@ -29,16 +25,7 @@
 
 #include "monolith.h"
 #include "libmono.h"
-#include "libquad.h"
 #include "ext.h"
-#include "setup.h"
-#include "sql_forum.h"
-#include "sql_message.h"
-#include "sql_userforum.h"
-#ifdef USE_RATING
-#include "sql_rating.h"
-#endif
-
 
 #define extern
 #include "rooms.h"
@@ -48,18 +35,15 @@
 #include "display_message.h"
 #include "fun.h"
 #include "input.h"
-#include "log.h"
 #include "messages.h"
 #include "uadmin.h"
 #include "libquad.h"
 #include "menu.h"
 #include "qc.h"
-#include "routines.h"
 #include "read_menu.h"
 #include "commands.h"
 #include "routines2.h"
 #include "enter_message.h"
-#include "userfile.h"
 
 int need_rewrite;
 

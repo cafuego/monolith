@@ -23,7 +23,6 @@
 #include "routines2.h"
 
 #include "sql_config.h"
-#include "sql_log.h"
 
 void edit_config( void );
 

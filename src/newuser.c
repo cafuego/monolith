@@ -23,6 +23,7 @@
 #endif
 
 #include "monolith.h"
+#include "libmono.h"
 #include "ext.h"
 
 #define extern
@@ -35,11 +36,8 @@
 #include "main.h"
 #include "usertools.h"
 #include "registration.h"
-#include "routines.h"
 #include "routines2.h"
 #include "userfile.h"
-
-#include "sql_user.h"
 
 static void newuser_getname(char * name);
 static void newuser_getpasswd(unsigned int user_id);
