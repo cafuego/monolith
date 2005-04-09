@@ -7,9 +7,9 @@
 #include <build-defs.h>
 
 #include <stdio.h>
+#include <time.h>
+#include <sys/types.h>
 #include <string.h>
-
-#include MYSQL_HEADER
 
 #include "monolith.h"
 #include "libmono.h"

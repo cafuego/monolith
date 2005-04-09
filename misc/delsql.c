@@ -18,7 +18,6 @@
 
 #include "monolith.h"
 #include "libmono.h"
-#include "log.h"
 
 #define extern
 #include "ext.h"

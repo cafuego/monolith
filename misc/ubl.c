@@ -15,19 +15,14 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
-#include <strings.h>
+#include <string.h>
 #include <sys/file.h>
 #include <sys/types.h>
 #include <time.h>
 #include <dirent.h>
 
-#ifdef USE_MYSQL
-  #include MYSQL_HEADER
-#endif
-
 #include "monolith.h"
 #include "libmono.h"
-#include "setup.h"
 
 typedef struct userinfo {
     char username[L_USERNAME + 1];

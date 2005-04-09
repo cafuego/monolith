@@ -32,6 +32,7 @@
 
 #include "monolith.h"
 #include "libmono.h"
+#include "ext.h"		/* for curr_rm and such */
 
 #define extern
 #include "qc.h"
@@ -40,10 +41,7 @@
 #include "menu.h"		/* for dynamic menus */
 #include "rooms.h"		/* for readquad, leave_n_unread_posts, etc. */
 #include "routines2.h"		/* for more, etc. */
-#include "userfile.h"		/* for writeuser */
 #include "enter_message.h"	/* for self-mail of results */
-#include "ext.h"		/* for curr_rm and such */
-#include "libquad.h"		/* for may_read_room, etc */
 #include "input.h"		/* for getline */
 
 static void qc_admin_menu(void);

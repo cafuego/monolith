@@ -25,13 +25,13 @@
 #endif
 
 #include "monolith.h"
+#include "libmono.h"
 #include "ext.h"
 
 #define extern
 #include "statusbar.h"
 #undef extern
 
-#include "btmp.h"
 #include "chat.h"
 
 int bartmpoff;

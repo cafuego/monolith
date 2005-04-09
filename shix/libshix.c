@@ -34,16 +34,14 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#ifdef USE_MYSQL
-  #include MYSQL_HEADER
-#endif
-
 #include "monolith.h"
-#include "libmono.h" 
 
 #define extern
 #include "libshix.h"
 #undef extern
+
+#include "routines.h"
+
 
 /*
  * on TRUE the x will be killed, on FALSE it will not be killed.

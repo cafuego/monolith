@@ -10,14 +10,8 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#ifdef USE_MYSQL
-  #include MYSQL_HEADER
-#endif
-
 #include "monolith.h"
 #include "libmono.h"
-
-#include "sql_web.h"
 
 extern char *wholist(int level, const user_t * user);
 

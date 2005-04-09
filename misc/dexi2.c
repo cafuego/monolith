@@ -13,13 +13,11 @@
 #include <unistd.h>
 
 #include "monolith.h"
-#include "setup.h"
+#include "libmono.h"
 
 #include "btmp.h"
 #include "express.h"
 #include "registration.h"
-#include "routines.h"
-#include "userfile.h"
 #include "dexi2.h"
 
 void log_off(int sig);

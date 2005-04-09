@@ -9,11 +9,11 @@ INCLUDES = -I../include
 
 yawc_port_SOURCES = clipboard.c key.c fun.c friends.c chat.c help.c menu.c \
   normal_input.c newuser.c registration.c inter.c uadmin.c wholist.c \
-  read_menu.c rooms.c bbsconfig.c edit_message.c enter_message.c qc.c
+  read_menu.c rooms.c bbsconfig.c edit_message.c enter_message.c qc.c vote.c
 
 yawc_client_SOURCES = clipboard.c key.c fun.c friends.c chat.c help.c menu.c \
   newuser.c registration.c inter.c wholist.c uadmin.c read_menu.c\
-  rooms.c bbsconfig.c edit_message.c enter_message.c qc.c
+  rooms.c bbsconfig.c edit_message.c enter_message.c qc.c vote.c
 
 yawc_port_LDADD = p_commands.o p_express.o p_main.o p_messages.o p_cprintf.o \
   p_routines2.o p_statusbar.o p_usertools.o p_display_message.o \

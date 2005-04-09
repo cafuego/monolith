@@ -15,14 +15,11 @@
 #endif
 
 #include "monolith.h"
+#include "libmono.h"
 
-#include "defs.h"
-#include "extra.h"
 #include "input.h"
 #include "menu.h"
 #include "routines2.h"
-
-#include "sql_config.h"
 
 void edit_config( void );
 

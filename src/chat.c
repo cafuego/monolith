@@ -34,15 +34,14 @@
 #endif
 
 #include "monolith.h"
+#include "libmono.h"
 #include "ext.h"
 
 #define extern
 #include "chat.h"
 #undef extern
 
-#include "btmp.h"
 #include "routines2.h"
-
 
 int
 is_chat_subscribed(int chat, const char *channel)

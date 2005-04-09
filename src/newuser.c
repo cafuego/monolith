@@ -32,12 +32,10 @@
 
 #include "input.h"
 #include "key.h"
-#include "log.h"
 #include "main.h"
 #include "usertools.h"
 #include "registration.h"
 #include "routines2.h"
-#include "userfile.h"
 
 static void newuser_getname(char * name);
 static void newuser_getpasswd(unsigned int user_id);

@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
-#include <strings.h>
+#include <string.h>
 #include <sys/file.h>
 #include <sys/types.h>
 #include <time.h>
@@ -20,8 +20,6 @@
 
 #include "monolith.h"
 #include "libmono.h"
-#include "setup.h"
-
 
 /* global variables */
 unsigned int usercount = 0;

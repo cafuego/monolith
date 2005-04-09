@@ -31,13 +31,11 @@
 #include "rooms.h"
 #undef extern
 
-#include "btmp.h"
 #include "display_message.h"
 #include "fun.h"
 #include "input.h"
 #include "messages.h"
 #include "uadmin.h"
-#include "libquad.h"
 #include "menu.h"
 #include "qc.h"
 #include "read_menu.h"
