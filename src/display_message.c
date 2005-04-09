@@ -318,7 +318,7 @@ format_info(message_header_t * header, char *header_string)
     header_string = m_strcat(header_string, infostring);
 
     if ((snprintf(infostring, sizeof(infostring) - 1,
-		  "\1g\n%s Options\1w: %s%s %s %s", config.user,
+		  "\1g\nUser Options\1w: %s%s %s %s",
 		  (c == 'p') ? ((quad.flags & QR_ANON2) ?
 			"\1bAnonymous Option\1g " : "\1bAnonymous Only\1g ")
 		  : "",
@@ -421,7 +421,7 @@ format_author(message_header_t * header, char *header_string)
 	    snprintf(authorstring, sizeof(authorstring) - 1,
 		     "\1f\1gFrom \1b*Anonymous%s%s*%s%s%s%s%s\1a",
 		     (usersupp->config_flags & CO_EXPANDHEADER) ? " " : "",
-		     (usersupp->config_flags & CO_EXPANDHEADER) ? config.user : "",
+		     (usersupp->config_flags & CO_EXPANDHEADER) ? "User" : "",
 	      (strlen(header->alias)) ? " \1gAlias: \"" : "",
 		     header->alias,
 		     (strlen(header->alias)) ? "\"" : "",
@@ -632,7 +632,7 @@ format_mod_line(message_header_t * header, char *header_string)
 	        snprintf(mod_line, sizeof(mod_line) - 1,
 		    "\1f\1gOriginally posted\1w: \1gUnknown date \1w[\1r%s: %s %s\1w]\1a\n",
 		    (usersupp->config_flags & CO_EXPANDHEADER) ? "Edited" : "E",
-                    (usersupp->config_flags & CO_EXPANDHEADER) ? "Anonymous" : "Anon", config.user );
+                    (usersupp->config_flags & CO_EXPANDHEADER) ? "Anonymous" : "Anon", "User" );
             }
         } else {
 	    snprintf(mod_line, sizeof(mod_line) - 1,
@@ -985,17 +985,16 @@ format_username(message_t * message, char **string)
 
     if (mono_sql_u_check_user(message->a_name) == FALSE) {
 	if (usersupp->config_flags & CO_EXPANDHEADER)
-	    sprintf(fmt_username, "\n\1f\1gFrom\1w: \1rDeleted %s\1a", config.user);
+	    sprintf(fmt_username, "\n\1f\1gFrom\1w: \1rDeleted user\1a");
 	else
-	    sprintf(fmt_username, "\n\1f\1gFrom \1rDeleted %s\1a", config.user);
+	    sprintf(fmt_username, "\n\1f\1gFrom \1rDeleted user\1a");
     } else {
 
 	switch (type) {
 
 	    case MES_ANON:
 		if (usersupp->config_flags & CO_EXPANDHEADER)
-		    sprintf(fmt_username, "\n\1f\1gFrom\1w: \1bAnonymous %s%s\1a"
-			    ,config.user
+		    sprintf(fmt_username, "\n\1f\1gFrom\1w: \1bAnonymous user%s\1a"
 			    ,EQ(message->a_name, usersupp->username) ? " \1w(\1bthis is your post\1w)" : "");
 		else
 		    sprintf(fmt_username, "\n\1f\1gFrom \1bAnon %s\1a"
@@ -1004,8 +1003,8 @@ format_username(message_t * message, char **string)
 
 	    case MES_AN2:
 		if (usersupp->config_flags & CO_EXPANDHEADER)
-		    sprintf(fmt_username, "\n\1f\1gFrom\1w: \1bAnonymous %s \1w`\1b%s\1w'%s\1a"
-			    ,config.user, message->alias
+		    sprintf(fmt_username, "\n\1f\1gFrom\1w: \1bAnonymous user \1w`\1b%s\1w'%s\1a"
+			    , message->alias
 			    ,EQ(message->a_name, usersupp->username) ? " \1w(\1bthis is your post\1w)" : "");
 		else
 		    sprintf(fmt_username, "\n\1f\1gFrom \1bAnon \1w`\1b%s\1w'%s\1a"

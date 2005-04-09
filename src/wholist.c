@@ -133,7 +133,11 @@ wholist(int level, const user_t * user)
     strcat(p, "\n");
 
 #ifdef USE_MYSQL
-    (void) sprintf(string, "%u %s", (shm->user_count+web_count), ((shm->user_count+web_count) == 1) ? "User" : "Users" );
+    if ( ( shm->user_count + web_count ) == 1 ) {
+    (void) sprintf(string, _("1 User"));
+    } else {
+    (void) sprintf(string, _("%u Users"), (shm->user_count+web_count));
+    }
 #else
     (void) sprintf(string, "%u %s", shm->user_count, (shm->user_count == 1) ? "User" : "Users" );
 #endif

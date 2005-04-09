@@ -189,7 +189,6 @@ typedef struct {
     char express[12];
     char x_message[12];
     char x_message_pl[14];
-    char username[12];
     char doing[L_DOING];
     char location[16];
     char chatmode[20];

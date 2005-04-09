@@ -806,9 +806,15 @@ print_login_banner(time_t laston)
     if (fexists(filename)) {
 	(void) more(filename, TRUE);
     }
-    (void) cprintf("\1f\1gThere %s \1y%d\1g %s%s online right now at %s\n"
-		   ,(shm->user_count == 1) ? "is" : "are", shm->user_count,
-	    config.username, (shm->user_count == 1) ? "" : "s", date());
+
+    if ( shm->user_count == 1 ) {
+    (void) cprintf("\1f\1gThere is \1y1\1g user online right now at %s\n"
+		   , date());
+       } else {
+    (void) cprintf("\1f\1gThere are \1y%d\1g users online right now at %s\n"
+		   , shm->user_count, date());
+       }
+
 
 /*----------- Personal loginfiles ----------------------------------- */
     snprintf(filename, L_FILE, "%s/loginmsg", getuserdir(who_am_i(NULL)));

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Monolith 2.0\n"
 "Report-Msgid-Bugs-To: webmaster@monolith.cc.com.au\n"
-"POT-Creation-Date: 2005-03-27 15:30+0200\n"
+"POT-Creation-Date: 2005-04-10 00:45+0200\n"
 "PO-Revision-Date: 2005-03-21 HO:MI+ZONE\n"
 "Last-Translator: Michel Oosterhof <michel@monolith.cc.com.au>\n"
 "Language-Team: TAALTEAM <LL@monolith.cc.com.au>\n"
@@ -202,7 +202,7 @@ msgstr ""
 
 #: src/commands.c:531
 #, c-format
-msgid "fwKickout %s from %s.a\n"
+msgid "fwKick user from %s.a\n"
 msgstr ""
 
 #: src/commands.c:680
@@ -317,22 +317,16 @@ msgstr ""
 msgid "frYou have disabled InterBBS options.a\n"
 msgstr ""
 
-#: src/express.c:761
-#, c-format
-msgid "frNo such %s.a\n"
+#: src/express.c:761 src/express.c:780 src/usertools.c:135
+msgid "frNo such user.a\n"
 msgstr ""
 
 #: src/express.c:767
-#, c-format
-msgid "frThat %s is not online via the web.a\n"
+msgid "frThat user is not online via the web.a\n"
 msgstr ""
 
 #: src/express.c:780
 msgid "frThat user is not online.a\n"
-msgstr ""
-
-#: src/express.c:780 src/usertools.c:135
-msgid "frNo such user.a\n"
 msgstr ""
 
 #: src/express.c:787
@@ -920,21 +914,21 @@ msgstr ""
 msgid "fgLast login: %s gffrom r%-16.16s\n"
 msgstr ""
 
-#: src/main.c:822
+#: src/main.c:828
 msgid "fgYour friends onlinew:a\n"
 msgstr ""
 
-#: src/main.c:862
+#: src/main.c:868
 #, c-format
 msgid "fgYou have a new private %s in pMail>\n"
 msgstr ""
 
-#: src/main.c:864
+#: src/main.c:870
 #, c-format
 msgid "fgYou have r%d gnew private messages in pMail>\n"
 msgstr ""
 
-#: src/main.c:866
+#: src/main.c:872
 msgid "fgYou have rnog new Mail messages.a\n"
 msgstr ""
 
@@ -1558,7 +1552,17 @@ msgid ""
 "time.\n"
 msgstr ""
 
-#: src/wholist.c:143
+#: src/wholist.c:137
+#, c-format
+msgid "1 User"
+msgstr ""
+
+#: src/wholist.c:139
+#, c-format
+msgid "%u Users"
+msgstr ""
+
+#: src/wholist.c:147
 #, c-format
 msgid ""
 "fg%-19s  pFlags  g%-17s pTime g%-28s\n"

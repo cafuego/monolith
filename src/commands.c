@@ -171,7 +171,7 @@ sysop_menu()
 		continue;
 
 	    case 'U':
-		cprintf("\1f\1r%s cmd: \1a", config.user);
+		cprintf("\1f\1rUser cmd: \1a");
 		sysopuser_menu();
 		continue;
 
@@ -306,7 +306,7 @@ sysoproom_menu()
            
 
 	    case 'k':
-		cprintf("\1f\1rKickout %s from %s.\1a\n", config.user, config.forum);
+		cprintf("\1f\1rKickout user from %s.\1a\n", config.forum);
 		do_kickout();
 		break;
 
@@ -516,7 +516,7 @@ roomaide_menu()
 		break;
 
 	    case 'i':
-		cprintf("\1f\1wInvite %s to %s.\1a\n", config.user, config.forum);
+		cprintf("\1f\1wInvite user to %s.\1a\n", config.forum);
 		if (usersupp->flags & US_ADMINHELP)
 		    more(QUADRANT "/invite", 1);
 		do_invite();
@@ -528,7 +528,7 @@ roomaide_menu()
             
 
 	    case 'k':
-		cprintf(_("\1f\1wKickout %s from %s.\1a\n"), config.user, config.forum);
+		cprintf(_("\1f\1wKick user from %s.\1a\n"), config.forum);
 		if (usersupp->flags & US_ADMINHELP)
 		    more(QUADRANT "/kickout", 1);
 		do_kickout();

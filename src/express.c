@@ -758,13 +758,13 @@ check_x_permissions(const char *x_recip_name, const int X_PARAM, char override)
 /* This must be checked before we try to read a btmp entry!!! */
             if(WEB) {
                 if( mono_sql_u_check_user(x_recip_name) == FALSE ) {
-		    cprintf(_("\1f\1rNo such %s.\1a\n"), config.username);
+		    cprintf(_("\1f\1rNo such user.\1a\n"));
                     flush_input();
                     override = OR_NO_PERMS;
                     return override;
                 }
                 if( mono_sql_onl_check_user(x_recip_name) == FALSE ) {
-		    cprintf(_("\1f\1rThat %s is not online via the web.\1a\n"), config.username);
+		    cprintf(_("\1f\1rThat user is not online via the web.\1a\n"));
                     flush_input();
                     override = OR_NO_PERMS;
                     return override;

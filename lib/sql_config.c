@@ -60,7 +60,6 @@ mono_sql_read_config(int num, config_t * data)
     strcpy(config.express, row[6]);
     strcpy(config.x_message, row[7]);
     strcpy(config.x_message_pl, row[8]);
-    strcpy(config.username, row[11]);
     strcpy(config.doing, row[12]);
     strcpy(config.location, row[13]);
     strcpy(config.idle, row[14]);
@@ -93,7 +92,7 @@ mono_sql_save_config(int num, config_t * config)
 			    config->bbsname, config->forum, config->forum_pl,
 		       config->message, "dummy", config->express,
 		      config->x_message, config->x_message_pl, "dummy",
-			    "dummy", config->username, config->doing,
+			    "dummy", "dummy", config->doing,
 			    config->location, config->idle, config->chatmode,
 			    config->chatroom, config->admin, config->wizard,
 			config->sysop, config->programmer, config->roomaide,
@@ -107,7 +106,7 @@ mono_sql_save_config(int num, config_t * config)
 			    config->bbsname, config->forum, config->forum_pl,
 		       config->message, "dummy", config->express,
 		      config->x_message, config->x_message_pl, "dummy",
-			    "dummies", config->username, config->doing,
+			    "dummies", "dummy", config->doing,
 			    config->location, config->idle, config->chatmode,
 			    config->chatroom, config->admin, config->wizard,
 			config->sysop, config->programmer, config->roomaide,

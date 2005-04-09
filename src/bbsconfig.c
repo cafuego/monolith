@@ -43,8 +43,6 @@ static void _config_set_room(const unsigned int, const long, void *);
 static void _config_set_message(const unsigned int, const long, void *);
 static void _config_set_xpress(const unsigned int, const long, void *);
 static void _config_set_xmessage(const unsigned int, const long, void *);
-static void _config_set_user(const unsigned int, const long, void *);
-static void _config_set_username(const unsigned int, const long, void *);
 static void _config_set_doing(const unsigned int, const long, void *);
 static void _config_set_location(const unsigned int, const long, void *);
 static void _config_set_idle(const unsigned int, const long, void *);
@@ -96,8 +94,6 @@ create_config()
 	MENU_ADDITEM(_config_set_xmessage, 0, 0, NULL, "tiv", str_t, "7", cfg.x_message);
 	sprintf(str_t, "X Message (pl) \1w(\1y%s\1a\1f\1w)", cfg.x_message_pl);
 	MENU_ADDITEM(_config_set_xmessage, 0, 0, NULL, "tiv", str_t, "8", cfg.x_message_pl);
-	sprintf(str_t, "Username \1w(\1y%s\1a\1f\1w)", cfg.username);
-	MENU_ADDITEM(_config_set_username, 0, 0, NULL, "tiv", str_t, "b", cfg.username);
 	sprintf(str_t, "Doing \1w(\1y%s\1a\1f\1w)", cfg.doing);
 	MENU_ADDITEM(_config_set_doing, 0, 0, NULL, "tiv", str_t, "c", cfg.doing);
 	sprintf(str_t, "Location \1w(\1y%s\1a\1f\1w)", cfg.location);
@@ -183,8 +179,6 @@ edit_config()
 	MENU_ADDITEM(_config_set_xmessage, 0, 0, NULL, "tiv", str_t, "7", cfg.x_message);
 	sprintf(str_t, "X Message (pl) \1w(\1y%s\1a\1f\1w)", cfg.x_message_pl);
 	MENU_ADDITEM(_config_set_xmessage, 0, 0, NULL, "tiv", str_t, "8", cfg.x_message_pl);
-	sprintf(str_t, "Username \1w(\1y%s\1a\1f\1w)", cfg.username);
-	MENU_ADDITEM(_config_set_username, 0, 0, NULL, "tiv", str_t, "b", cfg.username);
 	sprintf(str_t, "Doing \1w(\1y%s\1a\1f\1w)", cfg.doing);
 	MENU_ADDITEM(_config_set_doing, 0, 0, NULL, "tiv", str_t, "c", cfg.doing);
 	sprintf(str_t, "Location \1w(\1y%s\1a\1f\1w)", cfg.location);
@@ -380,19 +374,6 @@ _config_set_xmessage(const unsigned int a, const long b, void *string)
 }
 
 void
-_config_set_username(const unsigned int a, const long b, void *string)
-{
-    char tempstr[13];
-
-    strcpy(tempstr, "");
-    cprintf("\1f\1gEnter a new `\1yusername\1g' name \1w(\1g%s\1w): \1c", cfg.username);
-    getline(tempstr, 12, FALSE);
-    if (strlen(tempstr) > 1)
-	strcpy(cfg.username, tempstr);
-    return;
-}
-
-void
 _config_set_doing(const unsigned int a, const long b, void *string)
 {
     char tempstr[21];
@@ -573,10 +554,6 @@ _config_ok()
     }
     if( strlen(cfg.x_message_pl) < 2 ) {
         cprintf("\n\1f\1rYou must change the plural X Message Name before you can save!\n");
-        return FALSE;
-    }
-    if( strlen(cfg.username) < 2 ) {
-        cprintf("\n\1f\1rYou must change the Username Name before you can save!\n");
         return FALSE;
     }
     if( strlen(cfg.doing) < 2 ) {
