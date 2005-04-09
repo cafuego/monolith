@@ -17,7 +17,6 @@
 #include "monolith.h"
 
 #include "defs.h"
-#include "extra.h"
 #include "sysconfig.h"
 
 #include "monosql.h"

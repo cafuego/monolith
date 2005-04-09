@@ -19,8 +19,6 @@
 
 #include "monolith.h"
 
-#include "extra.h"
-
 #include "monosql.h"
 #include "routines.h"
 #include "sql_utils.h"

@@ -18,7 +18,6 @@
 #include <mysql.h>
 
 #include "monolith.h"
-#include "extra.h"
 #include "libmono.h"
 #include "cgi.h"
 #include "registration.h"
