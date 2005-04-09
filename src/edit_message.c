@@ -12,10 +12,6 @@
 #include <sys/stat.h>
 #include <sys/signal.h>
 
-#ifdef USE_MYSQL
-#include MYSQL_HEADER
-#endif
-
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #include <locale.h>

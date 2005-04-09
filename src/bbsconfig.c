@@ -12,10 +12,6 @@
 #include <string.h>
 #include <unistd.h>
 
-#ifdef USE_MYSQL
-  #include MYSQL_HEADER
-#endif
-
 #include "monolith.h"
 #include "libmono.h"
 

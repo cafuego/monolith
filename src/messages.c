@@ -18,10 +18,6 @@
 #include <ctype.h>
 #include <dirent.h>
 
-#ifdef USE_MYSQL
-  #include MYSQL_HEADER
-#endif
-
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #include <locale.h>
