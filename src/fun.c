@@ -63,9 +63,9 @@ random_goto()
 
     } else if ((rand() % 1000) == 666 ) {
         ret = mono_sql_u_get_login_count( usersupp->usernum, &timescalled );
-        if ( ret == 0 && timescalled > 99 ) 
-            cthulhu();
-	else
+        // if ( ret == 0 && timescalled > 99 ) 
+        //     cthulhu();
+	// else
         cprintf(_("\1f\1gNo unread messages.\1a"));
     } else
         cprintf(_("\1f\1gNo unread messages.\1a"));
