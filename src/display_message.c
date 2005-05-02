@@ -712,6 +712,9 @@ show_long_prompt(const unsigned int forum, const unsigned int num, const int dir
 	col = 'p';
     if (quad.flags & QR_PRIVATE) 
 	col =  'r';
+    if (quad.flags & QR_GUESSNAME)
+	col =  'c';
+
 
     if (usersupp->config_flags & CO_EXPANDHEADER &&
 	!(usersupp->config_flags & CO_MONOHEADER))
