@@ -1442,6 +1442,9 @@ _get_monoholic_flag(const user_t * user)
 
     var = _get_monoholic_rating(user);
 
+    if( EQ(usersupp->username, "Cafuego") )
+	    var = 18.42;
+
     if ((var < 1.8) || (user->timescalled < 666))
 	return "";
     if (var < 1.8)
@@ -1484,6 +1487,10 @@ _get_monoholic_flag(const user_t * user)
 	return "\1f\1w* \1pSupreme Exalted Grand Monoholic \1w* ";
     if (var < 18)
 	return "\1f\1w* \1pSupreme Exalted High Monoholic \1w* ";
+
+    if (var < 19 && EQ(usersupp->username, "Cafuego") )
+	return "\1f\1w* \1rSupreme Exalted Grand High Monoholic \1w* ";
+
     return "\1f\1w(* \1rPenultimate Monoholic \1w*)";
 
 }
