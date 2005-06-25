@@ -21,7 +21,7 @@ AC_ARG_WITH(sql_host,AC_HELP_STRING([--with-sql_host=HOST],[Connect to this MySQ
 AC_ARG_WITH(sql_user,AC_HELP_STRING([--with-sql_user=USER],[Connect using this MySQL username (default=bbs)]),,with_sql_user=bbs)
 AC_ARG_WITH(sql_pass,AC_HELP_STRING([--with-sql_pass=PASS],[Connect using this MySQL password (default=bing)]),,with_sql_pass=bing)
 AC_ARG_WITH(sql_db,AC_HELP_STRING([--with-sql_db=DB],[Use this MySQL database (default=bbs)]),,with_sql_db=bbs)
-AC_ARG_WITH(sql_sock,AC_HELP_STRING([--with-sql_sock=SOCK],[Connect via this socket (default=/var/run/mysqld/mysqld.sock)]),,with_sql_sock=/var/run/mysqld/mysql.sock)
+AC_ARG_WITH(sql_sock,AC_HELP_STRING([--with-sql_sock=SOCK],[Connect via this socket (default=/var/run/mysqld/mysqld.sock)]),,with_sql_sock=/var/run/mysqld/mysqld.sock)
 
 AC_ARG_WITH(icq,AC_HELP_STRING([--with-icq],[use icq gateway system (default=yes)]),,with_icq=yes)
 
@@ -591,7 +591,7 @@ if test "x$svn_path" != "xno" ; then
   AC_SUBST(SVN_DATE)
 fi
 
-AC_OUTPUT(cgi/Makefile lib/Makefile daemons/Makefile src/Makefile \
+AC_OUTPUT(lib/Makefile daemons/Makefile src/Makefile \
     misc/Makefile shix/Makefile icq/Makefile \
     share/Makefile share/feelings/Makefile \
     share/loginscreens/Makefile web/Makefile web/classes/Makefile \
