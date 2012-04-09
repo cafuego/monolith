@@ -163,6 +163,7 @@ wholist(int level, const user_t * user)
 	r = &(shm->wholist[i]);
 	strcpy(line, "");
 
+
 #ifdef USE_MYSQL
 
         /*
@@ -171,6 +172,7 @@ wholist(int level, const user_t * user)
         switch( level ) {
             case 1:	/* normal long wholist */
                 while((list != NULL) && (list->user->login < r->logintime)) {
+
                     tdif = time(0) - (list->user->login);
                     tdif /= 60;
         	    min = tdif % 60;
@@ -190,6 +192,7 @@ wholist(int level, const user_t * user)
             case 3:	/*** Short Wholist ***/
                 j++;
                 while((list != NULL) && (list->user->login < r->logintime)) {
+
                     (void) sprintf(line, "\1p[\1ywww\1p] ");
                     q = line + strlen(line);
                     (void) sprintf(q, "\1f%s%-18s ", col, list->user->username);
@@ -351,6 +354,7 @@ wholist(int level, const user_t * user)
     switch( level ) {
         case 1:
             while(list != NULL) {
+
                 tdif = time(0) - (list->user->login);
                 tdif /= 60;
                 min = tdif % 60;
@@ -370,6 +374,7 @@ wholist(int level, const user_t * user)
         case 3: 
             j++;
             while((list != NULL) && (list->user->login < r->logintime)) {
+
                 (void) sprintf(line, "\1p[\1ywww\1p] ");
                 q = line + strlen(line);
                 (void) sprintf(q, "\1f%s%-18s ", col, list->user->username);

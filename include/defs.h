@@ -39,8 +39,8 @@
 #define PURGEDAY	90	/* purge inactive users			*/
 #define SP		32	/* char: space				*/
 #define TAB		9	/* tab is 9 in ascii			*/
-#define TIMEOUT		39	/* timeout&hangup after X mins		*/
-#define TIMEOUTCLIENT	59	/* timeout for all client-users		*/
+#define TIMEOUT		119	/* timeout&hangup after X mins		*/
+#define TIMEOUTCLIENT	179	/* timeout for all client-users		*/
 #define TRUE		1
 #define X_LENGTH	7	/* length in lines of x-message		*/
 #define XLIMIT		60	/* how many X's to store in the XLog	*/

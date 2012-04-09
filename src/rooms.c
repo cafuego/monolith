@@ -1620,10 +1620,10 @@ void
 edithosts_menu()
 {
 
-    static void menu_hostedit_add(const unsigned int, const long, void *);
-    static void menu_hostedit_remove(const unsigned int, const long, void *);
-    static void menu_hostedit_list(const unsigned int, const long, void *);
-    static void menu_hostedit_kill(const unsigned int, const long, void *);
+    void menu_hostedit_add(const unsigned int, const long, void *);
+    void menu_hostedit_remove(const unsigned int, const long, void *);
+    void menu_hostedit_list(const unsigned int, const long, void *);
+    void menu_hostedit_kill(const unsigned int, const long, void *);
     MENU_DECLARE;
 
     MENU_INIT;

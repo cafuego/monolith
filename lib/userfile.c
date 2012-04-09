@@ -71,6 +71,16 @@ readuser(const char *name)
     (void) sprintf(work, "%s/save", getuserdir(name));
     (void) name2file(work);
 
+    // Eh, lets's check that this userdir exists, eh?
+    if( mkdir(getuserdir(name), 0750) == -1 ) {
+	if( errno != EEXIST ) {
+	    fprintf(stderr, "can't create userdir: %s\n", strerror(errno));
+	    xfree(user);
+	    return NULL;
+	}
+    }
+	  
+
     if ((fp = xfopen(work, "r", FALSE)) == NULL) {
 	fprintf(stderr, "can't open userfile: %s\n", strerror(errno));
 	xfree(user);

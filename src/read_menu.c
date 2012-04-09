@@ -1271,6 +1271,8 @@ copy_message_to_sql(unsigned int forum, unsigned int message)
     header = (message_header_t *) xmalloc(sizeof(message_header_t));
     memset(header, 0, sizeof(message_header_t));
 
+    strcpy(content, "");
+
     message_header_filename(&filename, forum, message);
     if ((read_message_header(filename, header)) == -1)
 	return;

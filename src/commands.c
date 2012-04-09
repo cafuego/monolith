@@ -862,7 +862,7 @@ yell_menu(void)
 {
     register char cmd = '\0';
 
-    static void check_passwd(void);
+    void check_passwd(void);
 
     cprintf("\n\1f\1gPress \1w<\1rd\1w>\1g to delete your account.\1a\n");
     cprintf("\1f\1gPress \1w<\1rY\1w>\1g to send a Yell to the Administrators.\1a\n");
@@ -896,7 +896,7 @@ yell_menu(void)
     return;
 }
 
-static void
+void
 check_passwd(void)
 {
     char pwtest[20];

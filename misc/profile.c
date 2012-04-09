@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
-#include <strings.h>
+#include <string.h>
 #include <sys/file.h>
 #include <sys/types.h>
 #include <time.h>
@@ -106,7 +106,7 @@ read_all_users()
 	if (tmpdirent->d_name[0] == '.')	/* ignore . files */
 	    continue;
 
-	strcpy(name, tmpdirent->d_name);
+	strncpy(name, tmpdirent->d_name, L_USERNAME);
 
 	user = readuser(name);
 	if (user == NULL)

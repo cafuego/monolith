@@ -829,8 +829,8 @@ qc_set_values(const int mode)
     int ret = -1, i, count;
     unsigned int id;
 
-    static void _set_qc_f_value(const unsigned int, const long, void *);
-    static void _set_qc_u_value(const unsigned int, const long, void *);
+    void _set_qc_f_value(const unsigned int, const long, void *);
+    void _set_qc_u_value(const unsigned int, const long, void *);
 
     for (;;) {
 	MENU_INIT;
@@ -978,8 +978,8 @@ qc_set_flags(void)
     int ret = -1;
     unsigned int id;
 
-    static void _toggle_qc_flag(const unsigned int, const long, void *);
-    static void _set_qc_newbie_unread(const unsigned int, const long, void *);
+    void _toggle_qc_flag(const unsigned int, const long, void *);
+    void _set_qc_newbie_unread(const unsigned int, const long, void *);
 
     for (;;) {
 	MENU_INIT;

@@ -137,10 +137,10 @@ void
 config_menu(void)
 {
 
-    static void _config_display_options(const unsigned int, const long, void *);
-    static void _config_message_menu(const unsigned int, const long, void *);
-    static void _config_express_menu(const unsigned int, const long, void *);
-    static void _config_personal_info_menu(const unsigned int, const long, void *);
+    void _config_display_options(const unsigned int, const long, void *);
+    void _config_message_menu(const unsigned int, const long, void *);
+    void _config_express_menu(const unsigned int, const long, void *);
+    void _config_personal_info_menu(const unsigned int, const long, void *);
 
     char *context = NULL;
     MENU_DECLARE;
@@ -179,10 +179,10 @@ config_menu(void)
 void
 _config_display_options(const unsigned int a, const long b, void *c)
 {
-    static void _bbs_appearance_wrapper(const unsigned int, const long, void *);
-    static void _client_local_config(const unsigned int, const long, void *);
-    static void _set_screenlength(const unsigned int, const long, void *);
-    static void _tgl_status_bar(const unsigned int, const long, void *);
+    void _bbs_appearance_wrapper(const unsigned int, const long, void *);
+    void _client_local_config(const unsigned int, const long, void *);
+    void _set_screenlength(const unsigned int, const long, void *);
+    void _tgl_status_bar(const unsigned int, const long, void *);
 
     char *tmpstr = NULL;
 
@@ -271,10 +271,10 @@ void
 _config_message_menu(const unsigned int a, const long b, void *c)
 {
 
-    static void _change_alias(const unsigned int, const long, void *);
-    static void _tgl_use_alias(const unsigned int, const long, void *);
-    static void _set_locale(const unsigned int, const long, void *);
-    static void _set_date_display(const unsigned int, const long, void *);
+    void _change_alias(const unsigned int, const long, void *);
+    void _tgl_use_alias(const unsigned int, const long, void *);
+    void _set_locale(const unsigned int, const long, void *);
+    void _set_date_display(const unsigned int, const long, void *);
 
     char *tmpstr, tempstr[100];
     MENU_DECLARE;
@@ -360,9 +360,9 @@ _config_message_menu(const unsigned int a, const long b, void *c)
 void
 _config_express_menu(const unsigned int a, const long b, void *c)
 {
-    static void _menu_friend_wrapper(const unsigned int, const long, void *);
-    static void _chat_subscribe_wrapper(const unsigned int, const long, void *);
-    static void _tgl_silc(const unsigned int, const long, void *);
+    void _menu_friend_wrapper(const unsigned int, const long, void *);
+    void _chat_subscribe_wrapper(const unsigned int, const long, void *);
+    void _tgl_silc(const unsigned int, const long, void *);
 
     MENU_DECLARE;
     char *tmpstr;
@@ -440,17 +440,17 @@ void
 _config_personal_info_menu(const unsigned int a, const long b, void *c)
 {
 
-    static void _hidden_info_menu(const unsigned int, const long, void *);
-    static void _timezone_menu(const unsigned int, const long, void *);
-    static void _change_address(const unsigned int, const long, void *);
-    static void _change_birthday(const unsigned int, const long, void *);
-    static void _change_flying(const unsigned int, const long, void *);
-    static void _change_host(const unsigned int, const long, void *);
-    static void _change_profile(const unsigned int, const long, void *);
-    static void _edit_profile(const unsigned int, const long, void *);
-    static void _key_menu_wrapper(const unsigned int, const long, void *);
-    static void _change_password(const unsigned int, const long, void *);
-    static void _change_url(const unsigned int, const long, void *);
+    void _hidden_info_menu(const unsigned int, const long, void *);
+    void _timezone_menu(const unsigned int, const long, void *);
+    void _change_address(const unsigned int, const long, void *);
+    void _change_birthday(const unsigned int, const long, void *);
+    void _change_flying(const unsigned int, const long, void *);
+    void _change_host(const unsigned int, const long, void *);
+    void _change_profile(const unsigned int, const long, void *);
+    void _edit_profile(const unsigned int, const long, void *);
+    void _key_menu_wrapper(const unsigned int, const long, void *);
+    void _change_password(const unsigned int, const long, void *);
+    void _change_url(const unsigned int, const long, void *);
 
 
     char *tmpstr, tempstr[100];
@@ -1410,7 +1410,7 @@ _get_locale(const unsigned long config_flags)
 /*
  * Toggle date format.
  */
-static void
+void
 _set_locale(const unsigned int frog, const long kiss, void *prince)
 {
     usersupp->config_flags ^= CO_EUROPEANDATE;
@@ -1421,7 +1421,7 @@ _set_locale(const unsigned int frog, const long kiss, void *prince)
 /*
  * Toggle date display.
  */
-static void
+void
 _set_date_display(const unsigned int bongo, const long bouncing, void *horse)
 {
     usersupp->config_flags ^= CO_LONGDATE;
@@ -1429,13 +1429,13 @@ _set_date_display(const unsigned int bongo, const long bouncing, void *horse)
     return;
 }
 
-static float
+float
 _get_monoholic_rating(const user_t * user)
 {
     return ((float) user->posted / (float) user->timescalled) + ((float) user->x_s / (float) user->timescalled / 100) + ((float) user->timescalled / 4000) + ((float) user->priv / 20000);
 }
 
-static char *
+char *
 _get_monoholic_flag(const user_t * user)
 {
     float var = 0;
@@ -1570,12 +1570,12 @@ void
 _timezone_menu(const unsigned int a, const long b, void *c)
 {
 
-    static void _tzones_africa(const unsigned int, const long, void *);
-    static void _tzones_america(const unsigned int, const long, void *);
-    static void _tzones_antarctica(const unsigned int, const long, void *);
-    static void _tzones_asia(const unsigned int, const long, void *);
-    static void _tzones_australlia(const unsigned int, const long, void *);
-    static void _tzones_europe(const unsigned int, const long, void *);
+    void _tzones_africa(const unsigned int, const long, void *);
+    void _tzones_america(const unsigned int, const long, void *);
+    void _tzones_antarctica(const unsigned int, const long, void *);
+    void _tzones_asia(const unsigned int, const long, void *);
+    void _tzones_australlia(const unsigned int, const long, void *);
+    void _tzones_europe(const unsigned int, const long, void *);
 
     MENU_DECLARE;
     MENU_INIT;

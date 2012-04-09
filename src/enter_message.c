@@ -80,6 +80,7 @@ enter_message(unsigned int forum, int mode, unsigned long banner_flag, const cha
 	return 0;
     }
     header = (message_header_t *) xmalloc(sizeof(message_header_t));
+    memset(header, 0, sizeof(message_header_t));
     init_message_header(header);
 
     strcpy(header->author, usersupp->username);
@@ -380,7 +381,7 @@ void
 get_autobanner_info(message_header_t * header)
 {
 
-    static void quad_lizard(message_header_t *);
+    void quad_lizard(message_header_t *);
 
     if (header->banner_type & INFO_BANNER)
 	return;

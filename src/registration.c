@@ -93,7 +93,7 @@ change_info(user_t * user, int override)
 #define ADDR_EMAIL	128
 #define ADDR_URL	256
 
-    static void _address_edit(const unsigned int, const long, void *);
+    void _address_edit(const unsigned int, const long, void *);
 
     char tempstr[100];
     user_t *tempuser;

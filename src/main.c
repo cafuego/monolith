@@ -784,7 +784,7 @@ print_login_banner(time_t laston)
 {
 
     char filename[50];
-    int timescalled = 0;
+    unsigned int timescalled = 0;
     int ret;
 
     ret = mono_sql_u_get_login_count(usersupp->usernum, &timescalled);
@@ -818,6 +818,9 @@ print_login_banner(time_t laston)
     if (fexists(filename)) {
 	(void) more(filename, TRUE);
     }
+
+/*----------- STUPID ----------------------------------- */
+    // banana(usersupp->username);
 
     if ( FALSE ) {
     if (usersupp->config_flags & CO_SHOWFRIENDS) {
