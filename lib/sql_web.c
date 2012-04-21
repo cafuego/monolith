@@ -250,7 +250,7 @@ void
 mono_sql_web_mark_wx_read(wx_list_t *list)
 {
     MYSQL_RES *res;
-    int ret = 0;
+    int ret;
 
     while(list != NULL) {
         ret = mono_sql_query(&res, "UPDATE webx SET status='read' WHERE id=%u", list->x->id);

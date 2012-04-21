@@ -2,10 +2,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Monolith 2.0\n"
 "Report-Msgid-Bugs-To: webmaster@monolith.cc.com.au\n"
-"POT-Creation-Date: 2005-04-10 00:45+0200\n"
+"POT-Creation-Date: 2012-04-22 00:37+0200\n"
 "PO-Revision-Date: 2005-03-21 HO:MI+ZONE\n"
 "Last-Translator: Michel Oosterhof <michel@monolith.cc.com.au>\n"
 "Language-Team: TAALTEAM <LL@monolith.cc.com.au>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -39,463 +40,463 @@ msgstr ""
 "dgettext.c ./intl/finddomain.c ./intl/gettext.c ./intl/intl-compat.c ./intl/"
 "loadmsgcat.c ./intl/localealias.c ./intl/textdomain.c\n"
 
-#: src/chat.c:91
+#: src/chat.c:89
 msgid ""
 "\n"
 "gSelect a number, <n> for none, or <space> to quit:c "
 msgstr ""
 
-#: src/clipboard.c:50
+#: src/clipboard.c:46
 msgid "fgClipboard: a"
 msgstr ""
 
-#: src/clipboard.c:63
+#: src/clipboard.c:59
 msgid "fgDelete ClipBoard.\n"
 msgstr ""
 
-#: src/clipboard.c:64
+#: src/clipboard.c:60
 msgid "fyAre you sure you want to delete your clipboard? (y/N) "
 msgstr ""
 
-#: src/clipboard.c:66
+#: src/clipboard.c:62
 msgid "fgClipboard not deleted.\n"
 msgstr ""
 
-#: src/clipboard.c:69
+#: src/clipboard.c:65
 msgid "fgClipboard deleted.\n"
 msgstr ""
 
-#: src/clipboard.c:74
+#: src/clipboard.c:70
 msgid "fgEdit ClipBoard.\n"
 msgstr ""
 
-#: src/clipboard.c:83
+#: src/clipboard.c:79
 msgid "fgRemove Colorcodes.\n"
 msgstr ""
 
-#: src/clipboard.c:85
+#: src/clipboard.c:81
 msgid ""
 "fr\n"
 "Warningw:g Couldn't remove colours."
 msgstr ""
 
-#: src/clipboard.c:89
+#: src/clipboard.c:85
 msgid ""
 "fgShow ClipBoard contents.c\n"
 "\n"
 msgstr ""
 
-#: src/clipboard.c:90
+#: src/clipboard.c:86
 msgid ""
 "w----- CLIPBOARD -----\n"
 "g"
 msgstr ""
 
-#: src/clipboard.c:92
+#: src/clipboard.c:88
 msgid "fw----- CLIPBOARD -----\n"
 msgstr ""
 
-#: src/clipboard.c:98
+#: src/clipboard.c:94
 msgid "fgQuit.\n"
 msgstr ""
 
-#: src/clipboard.c:131
+#: src/clipboard.c:127
 msgid ""
 "gf\n"
 "Would you like to remove the color codes? w(gy/nw)g "
 msgstr ""
 
-#: src/clipboard.c:134
+#: src/clipboard.c:130
 msgid "frWarningw:g Couldn't remove colours."
 msgstr ""
 
-#: src/clipboard.c:154 src/clipboard.c:357
+#: src/clipboard.c:150 src/clipboard.c:353
 #, c-format
 msgid "gfMail was sent to c%sa\n"
 msgstr ""
 
-#: src/clipboard.c:175
+#: src/clipboard.c:171
 msgid "fCould not open your clipboard file.\n"
 msgstr ""
 
-#: src/clipboard.c:223
+#: src/clipboard.c:219
 msgid "Copy'ing the NoteBook to the end of the ClipBoard.\n"
 msgstr ""
 
-#: src/clipboard.c:229
+#: src/clipboard.c:225
 msgid "Delete NoteBook!\n"
 msgstr ""
 
-#: src/clipboard.c:230
+#: src/clipboard.c:226
 msgid "Are you sure? "
 msgstr ""
 
-#: src/clipboard.c:286
+#: src/clipboard.c:282
 msgid "rfInvalid email address, can't send message!a\n"
 msgstr ""
 
-#: src/clipboard.c:291
+#: src/clipboard.c:287
 msgid ""
 "fg\n"
 "Do you wish to send it to yourself? c"
 msgstr ""
 
-#: src/clipboard.c:298
+#: src/clipboard.c:294
 msgid "fgE-Mail yourself the ClipBoard.\n"
 msgstr ""
 
-#: src/clipboard.c:300
+#: src/clipboard.c:296
 msgid "gfAre you sure you want to email your clipboard? w(gyw/gNw) c"
 msgstr ""
 
-#: src/clipboard.c:305
+#: src/clipboard.c:301
 msgid ""
 "gf\n"
 "Would you like to remove the color codes? w(gY/nw)g c"
 msgstr ""
 
-#: src/clipboard.c:308
+#: src/clipboard.c:304
 msgid ""
 "fr\n"
 "Warningw:g Couldn't remove colours.a"
 msgstr ""
 
-#: src/clipboard.c:316
+#: src/clipboard.c:312
 msgid "rfSubject contains invalid characters, can't send message!a\n"
 msgstr ""
 
-#: src/clipboard.c:327
+#: src/clipboard.c:323
 #, c-format
 msgid ""
 "frError trying to send clipboard to %s.\n"
 "Can't popen(%s)\n"
 msgstr ""
 
-#: src/clipboard.c:333
+#: src/clipboard.c:329
 #, c-format
 msgid ""
 "frError trying to send clipboard to %s.\n"
 "Can't mmap(%s)\n"
 msgstr ""
 
-#: src/clipboard.c:344
+#: src/clipboard.c:340
 #, c-format
 msgid ""
 "frError trying to send clipboard to %s.\n"
 "Can't pclose(%X)\n"
 msgstr ""
 
-#: src/clipboard.c:351
+#: src/clipboard.c:347
 #, c-format
 msgid "frError trying to send clipboard to %s."
 msgstr ""
 
-#: src/commands.c:507
+#: src/commands.c:502
 #, c-format
 msgid "fwEdit %s Description.a\n"
 msgstr ""
 
-#: src/commands.c:512
+#: src/commands.c:507
 #, c-format
 msgid "fwEdit %s.a\n"
 msgstr ""
 
-#: src/commands.c:531
+#: src/commands.c:526
 #, c-format
 msgid "fwKick user from %s.a\n"
 msgstr ""
 
-#: src/commands.c:680
+#: src/commands.c:675
 msgid "fgLock Terminal.\n"
 msgstr ""
 
-#: src/commands.c:712
+#: src/commands.c:707
 msgid "fcMark messages as read.\n"
 msgstr ""
 
-#: src/commands.c:730
+#: src/commands.c:725
 msgid "fcSystem Configuration.\n"
 msgstr ""
 
-#: src/commands.c:746
+#: src/commands.c:741
 msgid "fw(gMisc. Optionsw)\n"
 msgstr ""
 
-#: src/express.c:113
+#: src/express.c:103
 #, c-format
 msgid "fgSuccessfully saved pWebg %s %s for y%s.a\n"
 msgstr ""
 
-#: src/express.c:115
+#: src/express.c:105
 #, c-format
 msgid "frUnable to save pWebg %s %s for y%s to database.a\n"
 msgstr ""
 
-#: src/express.c:128
+#: src/express.c:118
 #, c-format
 msgid "fy%s glogged off before you finished typing.a\n"
 msgstr ""
 
-#: src/express.c:211
+#: src/express.c:201
 #, c-format
 msgid "fy%s rlogged off before you finished typing, sorry.a\n"
 msgstr ""
 
-#: src/express.c:214
+#: src/express.c:204
 #, c-format
 msgid "frPING to %s timed out waiting for ACK.a\n"
 msgstr ""
 
-#: src/express.c:217 src/express.c:1235 src/express.c:1240
+#: src/express.c:207 src/express.c:1225 src/express.c:1230
 #, c-format
 msgid "fg%s %s received by y%sg.a\n"
 msgstr ""
 
-#: src/express.c:440
+#: src/express.c:430
 #, c-format
 msgid "d** bAn X from r%sb has arrived. d** "
 msgstr ""
 
-#: src/express.c:523
+#: src/express.c:513
 #, c-format
 msgid "frg%s %s raborted.a\n"
 msgstr ""
 
-#: src/express.c:587
+#: src/express.c:577
 msgid "rfCould not open feeling file.\n"
 msgstr ""
 
-#: src/express.c:618
+#: src/express.c:608
 #, c-format
 msgid "frThere's no X-Friend in slot #%d.a"
 msgstr ""
 
-#: src/express.c:622
+#: src/express.c:612
 #, c-format
 msgid ""
 "\n"
 "fgSend Quick %s %s to y%sg.a\n"
 msgstr ""
 
-#: src/express.c:650 src/express.c:665
+#: src/express.c:640 src/express.c:655
 #, c-format
 msgid "fgRecipient w(y%sw): c"
 msgstr ""
 
-#: src/express.c:653 src/express.c:668
+#: src/express.c:643 src/express.c:658
 msgid "fgRecipientw: c"
 msgstr ""
 
-#: src/express.c:688
+#: src/express.c:678
 #, c-format
 msgid "fgSend %s %s w(p%sw): c"
 msgstr ""
 
-#: src/express.c:691
+#: src/express.c:681
 #, c-format
 msgid "fgSend %s %sw: c"
 msgstr ""
 
-#: src/express.c:709
+#: src/express.c:699
 #, c-format
 msgid "rfNo such %s %s.a\n"
 msgstr ""
 
-#: src/express.c:716
+#: src/express.c:706
 #, c-format
 msgid "rgYou're not listening to %s p%sg.\n"
 msgstr ""
 
-#: src/express.c:742
+#: src/express.c:732
 #, c-format
 msgid ""
 "rYou cannot send %s to Guests.\n"
 "a"
 msgstr ""
 
-#: src/express.c:750
+#: src/express.c:740
 msgid "frYou have disabled InterBBS options.a\n"
 msgstr ""
 
-#: src/express.c:761 src/express.c:780 src/usertools.c:135
+#: src/express.c:751 src/express.c:770 src/usertools.c:127
 msgid "frNo such user.a\n"
 msgstr ""
 
-#: src/express.c:767
+#: src/express.c:757
 msgid "frThat user is not online via the web.a\n"
 msgstr ""
 
-#: src/express.c:780
+#: src/express.c:770
 msgid "frThat user is not online.a\n"
 msgstr ""
 
-#: src/express.c:787
+#: src/express.c:777
 msgid "frYou cannot send messages to degraded users.a\n"
 msgstr ""
 
-#: src/express.c:795
+#: src/express.c:785
 msgid ""
 "\n"
 "frSorry, that user is unvalidated.a\n"
 msgstr ""
 
-#: src/express.c:804
+#: src/express.c:794
 msgid "fgSorry, you are rX-disabledg right now, and you cannot"
 msgstr ""
 
-#: src/express.c:805
+#: src/express.c:795
 msgid ""
 " X users that are not\n"
 "on your X-friends-list.a\n"
 msgstr ""
 
-#: src/express.c:818
+#: src/express.c:808
 #, c-format
 msgid ""
 "fy\n"
 "%s is on both your friend and enemy lists, how odd..  (:a\n"
 msgstr ""
 
-#: src/express.c:821
+#: src/express.c:811
 #, c-format
 msgid ""
 "fr\n"
 "Sorry. You have y%s rX-disabled.a\n"
 msgstr ""
 
-#: src/express.c:823
+#: src/express.c:813
 #, c-format
 msgid "frSorry, y%s rhas X-disabled you.a\n"
 msgstr ""
 
-#: src/express.c:825 src/express.c:844
+#: src/express.c:815 src/express.c:834
 msgid "fpDo you wish to send the X anyway? w(ry/nw) a"
 msgstr ""
 
-#: src/express.c:841
+#: src/express.c:831
 #, c-format
 msgid ""
 "yf%s ghas disabled %s %s.\n"
 "a"
 msgstr ""
 
-#: src/express.c:858
+#: src/express.c:848
 #, c-format
 msgid "ry%s gis raway gand may not receive your %s %s immediately.\n"
 msgstr ""
 
-#: src/express.c:863
+#: src/express.c:853
 #, c-format
 msgid "gy%s gis clocked gand will not get your %s %s immediately.\n"
 msgstr ""
 
-#: src/express.c:941
+#: src/express.c:931
 #, c-format
 msgid "frThere are no %s %s in your log.a\n"
 msgstr ""
 
-#: src/express.c:1015
+#: src/express.c:1005
 #, c-format
 msgid "fwYour %s %s are %sabledw.a"
 msgstr ""
 
-#: src/express.c:1033
+#: src/express.c:1023
 #, c-format
 msgid "fgThese %s %s were held for you while you were busy:a\n"
 msgstr ""
 
-#: src/express.c:1196 src/express.c:1203
+#: src/express.c:1186 src/express.c:1193
 #, c-format
 msgid "fg%s %s received by y%sg.\n"
 msgstr ""
 
-#: src/express.c:1198
+#: src/express.c:1188
 #, c-format
 msgid "fy%sg is marked as clockedg though.a\n"
 msgstr ""
 
-#: src/express.c:1205
+#: src/express.c:1195
 #, c-format
 msgid "fy%sg is marked as rawayg from keyboard though.a\n"
 msgstr ""
 
-#: src/express.c:1210
+#: src/express.c:1200
 msgid "fgOops! Something went wrong.\n"
 msgstr ""
 
-#: src/express.c:1211
+#: src/express.c:1201
 #, c-format
 msgid "y%sg did rnotg receive your %s %s.a\n"
 msgstr ""
 
-#: src/express.c:1216
+#: src/express.c:1206
 #, c-format
 msgid ""
 "fy%s gis not busy.\n"
 "a"
 msgstr ""
 
-#: src/express.c:1220
+#: src/express.c:1210
 #, c-format
 msgid "fy%sg does not wish to receive that %s.a\n"
 msgstr ""
 
-#: src/express.c:1247
+#: src/express.c:1237
 #, c-format
 msgid "fgSorry, y%s ghas rX-disabledg you!!!a\n"
 msgstr ""
 
-#: src/express.c:1252
+#: src/express.c:1242
 #, c-format
 msgid "fgOops! y%sg's buffer is full.\n"
 msgstr ""
 
-#: src/express.c:1253
+#: src/express.c:1243
 #, c-format
 msgid "Your %s was /1rnot/1g received, try re-sending it in a moment.a\n"
 msgstr ""
 
-#: src/express.c:1258
+#: src/express.c:1248
 #, c-format
 msgid "fy%s gturned off %s %s before you finished typing.a\n"
 msgstr ""
 
-#: src/express.c:1263
+#: src/express.c:1253
 #, c-format
 msgid "fy%s gis rbusyg.a\n"
 msgstr ""
 
-#: src/express.c:1267
+#: src/express.c:1257
 #, c-format
 msgid "fy%s gis rbusyg"
 msgstr ""
 
-#: src/express.c:1268
+#: src/express.c:1258
 #, c-format
 msgid " and will receive your %s when done.a\n"
 msgstr ""
 
-#: src/express.c:1272
+#: src/express.c:1262
 #, c-format
 msgid "fgOops, y%sg is not making sense.\n"
 msgstr ""
 
-#: src/express.c:1273
+#: src/express.c:1263
 #, c-format
 msgid "The %s %s may /1rnot/1g have arrived.a\n"
 msgstr ""
 
-#: src/express.c:1306
+#: src/express.c:1296
 #, c-format
 msgid "\rfw*** gA %s from %s was intercepted by SHIX w***\n"
 msgstr ""
 
-#: src/express.c:1311
+#: src/express.c:1301
 #, c-format
 msgid "\rfb*** %s g%s\n"
 msgstr ""
 
-#: src/express.c:1315
+#: src/express.c:1305
 #, c-format
 msgid ""
 "\n"
@@ -504,7 +505,7 @@ msgid ""
 "y%s\n"
 msgstr ""
 
-#: src/express.c:1319
+#: src/express.c:1309
 #, c-format
 msgid ""
 "\n"
@@ -512,7 +513,7 @@ msgid ""
 "c%s"
 msgstr ""
 
-#: src/express.c:1325
+#: src/express.c:1315
 #, c-format
 msgid ""
 "\n"
@@ -520,7 +521,7 @@ msgid ""
 "c%sa"
 msgstr ""
 
-#: src/express.c:1330
+#: src/express.c:1320
 #, c-format
 msgid ""
 "\n"
@@ -528,7 +529,7 @@ msgid ""
 "c%s"
 msgstr ""
 
-#: src/express.c:1334
+#: src/express.c:1324
 #, c-format
 msgid ""
 "\n"
@@ -536,7 +537,7 @@ msgid ""
 "c%s"
 msgstr ""
 
-#: src/express.c:1338
+#: src/express.c:1328
 #, c-format
 msgid ""
 "\n"
@@ -544,49 +545,49 @@ msgid ""
 "c%s"
 msgstr ""
 
-#: src/express.c:1342
+#: src/express.c:1332
 #, c-format
 msgid ""
-"\n"
+"\a\n"
 "fr*** pIMPORTANT BROADCAST from wn%sN r***\n"
 "w%sa"
 msgstr ""
 
-#: src/express.c:1349
+#: src/express.c:1339
 #, c-format
 msgid "fb*** gYour friend %sg just logged gon w(g%02d:%02dw) b***a\n"
 msgstr ""
 
-#: src/express.c:1351
+#: src/express.c:1341
 #, c-format
 msgid "fb*** gYour friend %sg just logged roff w(g%02d:%02dw) b***a\n"
 msgstr ""
 
-#: src/express.c:1355
+#: src/express.c:1345
 #, c-format
 msgid "fb*** %sg just logged gon w(g%02d:%02dw) b***a\n"
 msgstr ""
 
-#: src/express.c:1357
+#: src/express.c:1347
 #, c-format
 msgid "fb*** %sg just logged roff w(g%02d:%02dw) b***a\n"
 msgstr ""
 
-#: src/express.c:1364
+#: src/express.c:1354
 #, c-format
 msgid ""
 "fb*** gYour friend %sg has been logged off w(g%02d:%02dw) b***\n"
 "a\n"
 msgstr ""
 
-#: src/express.c:1366
+#: src/express.c:1356
 #, c-format
 msgid ""
 "fb*** %sg has been logged off w(g%02d:%02dw) b***\n"
 "a\n"
 msgstr ""
 
-#: src/express.c:1370
+#: src/express.c:1360
 #, c-format
 msgid ""
 "\n"
@@ -594,14 +595,14 @@ msgid ""
 "ac%s"
 msgstr ""
 
-#: src/express.c:1374
+#: src/express.c:1364
 #, c-format
 msgid ""
 "\n"
 "%s\n"
 msgstr ""
 
-#: src/express.c:1378
+#: src/express.c:1368
 #, c-format
 msgid ""
 "\n"
@@ -609,7 +610,7 @@ msgid ""
 "c%s"
 msgstr ""
 
-#: src/express.c:1382
+#: src/express.c:1372
 #, c-format
 msgid ""
 "\n"
@@ -617,7 +618,7 @@ msgid ""
 "c%s"
 msgstr ""
 
-#: src/express.c:1388 src/express.c:1394
+#: src/express.c:1378 src/express.c:1384
 #, c-format
 msgid ""
 "\n"
@@ -625,7 +626,7 @@ msgid ""
 "c%s"
 msgstr ""
 
-#: src/express.c:1400
+#: src/express.c:1390
 #, c-format
 msgid ""
 "\n"
@@ -633,7 +634,7 @@ msgid ""
 "c%s"
 msgstr ""
 
-#: src/express.c:1406
+#: src/express.c:1396
 #, c-format
 msgid ""
 "\n"
@@ -641,7 +642,7 @@ msgid ""
 "%sa"
 msgstr ""
 
-#: src/express.c:1410
+#: src/express.c:1400
 #, c-format
 msgid ""
 "\n"
@@ -649,7 +650,7 @@ msgid ""
 "c%s"
 msgstr ""
 
-#: src/express.c:1416
+#: src/express.c:1406
 #, c-format
 msgid ""
 "\n"
@@ -657,220 +658,220 @@ msgid ""
 "c%s"
 msgstr ""
 
-#: src/express.c:1431
+#: src/express.c:1421
 #, c-format
 msgid "frYou cannot send %s %s.a\n"
 msgstr ""
 
-#: src/express.c:1449
+#: src/express.c:1439
 #, c-format
 msgid ""
 "frYour %s is no longer online.\n"
 "Searching for a new one...a\n"
 msgstr ""
 
-#: src/express.c:1451
+#: src/express.c:1441
 #, c-format
 msgid "frYour %s has his/her messages disabled.a\n"
 msgstr ""
 
-#: src/express.c:1452 src/express.c:1457
+#: src/express.c:1442 src/express.c:1447
 msgid "frSearching for a new one...a\n"
 msgstr ""
 
-#: src/express.c:1456
+#: src/express.c:1446
 #, c-format
 msgid "frYour %s is no longer marked as %s.a\n"
 msgstr ""
 
-#: src/express.c:1465
+#: src/express.c:1455
 #, c-format
 msgid "fgThere are no %s online right now...a\n"
 msgstr ""
 
-#: src/express.c:1466
+#: src/express.c:1456
 msgid "fgYou could try to find the answer in the help files.a\n"
 msgstr ""
 
-#: src/express.c:1467
+#: src/express.c:1457
 msgid ""
 "fgPress w<r?w>g to see all commands, or w<rhw>g to access the helpfiles.\n"
 msgstr ""
 
-#: src/express.c:1477
+#: src/express.c:1467
 #, c-format
 msgid ""
 "fgYou are asking a %s a Question, and therefore\n"
 " a"
 msgstr ""
 
-#: src/express.c:1493
+#: src/express.c:1483
 #, c-format
 msgid ""
 "fgYou are now sending an emote.\n"
 "b*** y%s g"
 msgstr ""
 
-#: src/express.c:1499
+#: src/express.c:1489
 #, c-format
 msgid "fgYou're now asking c%sg a BBS-related Question!a\n"
 msgstr ""
 
-#: src/express.c:1505
+#: src/express.c:1495
 msgid "frYou're now sending a broadcast!a\n"
 msgstr ""
 
-#: src/express.c:1508
+#: src/express.c:1498
 msgid "rWarning: you are still marked as cawayr.a\n"
 msgstr ""
 
-#: src/express.c:1526
+#: src/express.c:1516
 #, c-format
 msgid "fgSend Feeling %s.a\n"
 msgstr ""
 
-#: src/express.c:1528
+#: src/express.c:1518
 msgid "fgPress w<r?w>g for a list of available feelings.a\n"
 msgstr ""
 
-#: src/express.c:1530
+#: src/express.c:1520
 msgid "fgYou're cool. Press w<rfw>g to send the cFREEZEg feeling.a\n"
 msgstr ""
 
-#: src/express.c:1673
+#: src/express.c:1663
 msgid "frAn error occurrect trying to retrieve pweb rx-es.\n"
 msgstr ""
 
-#: src/express.c:1675
+#: src/express.c:1665
 #, c-format
 msgid ""
 "\n"
 "fgYou have y%d gnew pWeb g%s %s w(gHit w<r^w> gto replyw)a\n"
 msgstr ""
 
-#: src/fun.c:61 src/fun.c:69 src/fun.c:71
+#: src/fun.c:54 src/fun.c:62 src/fun.c:64
 msgid "fgNo unread messages.a"
 msgstr ""
 
-#: src/fun.c:121
+#: src/fun.c:114
 msgid ""
 "\n"
 "gI love you too! ;)\n"
 msgstr ""
 
-#: src/fun.c:123
+#: src/fun.c:116
 msgid ""
 "\n"
 "y*MEOW* :-)\n"
 msgstr ""
 
-#: src/fun.c:125
+#: src/fun.c:118
 msgid ""
 "\n"
 "y*whine* Coz I need one! )~:\n"
 msgstr ""
 
-#: src/fun.c:127
+#: src/fun.c:120
 msgid ""
 "\n"
 "g*pout*  ):\n"
 msgstr ""
 
-#: src/fun.c:129
+#: src/fun.c:122
 msgid ""
 "\n"
 "g*buurrRp*  (:\n"
 msgstr ""
 
-#: src/key.c:108
+#: src/key.c:104
 msgid ""
 "\n"
 "Please enter your validation key, if you have received it.\n"
 msgstr ""
 
-#: src/key.c:109
+#: src/key.c:105
 msgid "Otherwise, press return.\n"
 msgstr ""
 
-#: src/key.c:115
+#: src/key.c:111
 msgid ""
 "The key is correct, you are now validated.\n"
 "\n"
 msgstr ""
 
-#: src/key.c:118
+#: src/key.c:114
 msgid ""
 "Sorry, but the key was incorrect..\n"
 "\n"
 msgstr ""
 
-#: src/main.c:167
+#: src/main.c:163
 msgid ""
 "OH NO!!!!!!! A SEGFAULT!!!!!\n"
 " "
 msgstr ""
 
-#: src/main.c:211
+#: src/main.c:207
 msgid "No such user.\n"
 msgstr ""
 
-#: src/main.c:229 src/main.c:332
+#: src/main.c:225 src/main.c:328
 msgid "Incorrect login.\n"
 msgstr ""
 
-#: src/main.c:248
+#: src/main.c:244
 msgid "fgPlease enter your rcurrentg password: "
 msgstr ""
 
-#: src/main.c:257
+#: src/main.c:253
 msgid "Password changed.\n"
 msgstr ""
 
-#: src/main.c:259
+#: src/main.c:255
 msgid "Password unchanged.\n"
 msgstr ""
 
-#: src/main.c:279
+#: src/main.c:275
 msgid "Please enter a password: "
 msgstr ""
 
-#: src/main.c:283
+#: src/main.c:279
 msgid "Please enter it again: "
 msgstr ""
 
-#: src/main.c:287
+#: src/main.c:283
 msgid "The passwords you typed didn't match.  Please try again.\n"
 msgstr ""
 
-#: src/main.c:313
+#: src/main.c:309
 msgid ""
 "\n"
 "Username: "
 msgstr ""
 
-#: src/main.c:317
+#: src/main.c:313
 msgid "Enter \"Off\" to quit or \"New\" to enter as a new user.\n"
 msgstr ""
 
-#: src/main.c:330
+#: src/main.c:326
 #, c-format
 msgid "%s's Password: "
 msgstr ""
 
-#: src/main.c:568
+#: src/main.c:564
 msgid ""
 "\n"
 "*** Registration is required. ***\n"
 "\n"
 msgstr ""
 
-#: src/main.c:572
+#: src/main.c:568
 msgid ""
 "fyNow w<ryw>yell to the admin to be granted full access.\n"
 "\n"
 msgstr ""
 
-#: src/main.c:673
+#: src/main.c:669
 #, c-format
 msgid ""
 "\n"
@@ -879,150 +880,150 @@ msgid ""
 "a"
 msgstr ""
 
-#: src/main.c:674
+#: src/main.c:670
 msgid "fgHit any key to continue...a"
 msgstr ""
 
-#: src/main.c:679
+#: src/main.c:675
 #, c-format
 msgid ""
 "\n"
 "fgAre you sure you want to leave %s? w(gyw/gnw/gmw/g?w)g "
 msgstr ""
 
-#: src/main.c:684
+#: src/main.c:680
 msgid "fgHelp.a\n"
 msgstr ""
 
-#: src/main.c:689
+#: src/main.c:685
 msgid "fgYes.\n"
 msgstr ""
 
-#: src/main.c:693
+#: src/main.c:689
 msgid "fgNo.\n"
 msgstr ""
 
-#: src/main.c:796
+#: src/main.c:792
 #, c-format
 msgid ""
 "\n"
 "afgWelcome to %s, g%s! gThis is your w#%d glogin.\n"
 msgstr ""
 
-#: src/main.c:800
+#: src/main.c:796
 #, c-format
 msgid "fgLast login: %s gffrom r%-16.16s\n"
 msgstr ""
 
-#: src/main.c:828
+#: src/main.c:827
 msgid "fgYour friends onlinew:a\n"
 msgstr ""
 
-#: src/main.c:868
+#: src/main.c:867
 #, c-format
 msgid "fgYou have a new private %s in pMail>\n"
 msgstr ""
 
-#: src/main.c:870
+#: src/main.c:869
 #, c-format
 msgid "fgYou have r%d gnew private messages in pMail>\n"
 msgstr ""
 
-#: src/main.c:872
+#: src/main.c:871
 msgid "fgYou have rnog new Mail messages.a\n"
 msgstr ""
 
-#: src/messages.c:500
+#: src/messages.c:488
 msgid "frERROR: Can't search for nothing...a\n"
 msgstr ""
 
-#: src/messages.c:504
+#: src/messages.c:492
 #, c-format
 msgid "frERROR: 'y%sr' is not a valid search pattern...a\n"
 msgstr ""
 
-#: src/messages.c:508
+#: src/messages.c:496
 msgid "freSearching..."
 msgstr ""
 
-#: src/read_menu.c:131
+#: src/read_menu.c:126
 msgid "fgRead messages backwards.a\n"
 msgstr ""
 
-#: src/read_menu.c:152
+#: src/read_menu.c:147
 #, c-format
 msgid "fpSubscribe to %s: a"
 msgstr ""
 
-#: src/read_menu.c:157
+#: src/read_menu.c:152
 msgid "fgEnter message.a\n"
 msgstr ""
 
-#: src/read_menu.c:174
+#: src/read_menu.c:169
 msgid "fgRead messages forward.a\n"
 msgstr ""
 
-#: src/read_menu.c:179
+#: src/read_menu.c:174
 msgid "fgYour friends online.a\n"
 msgstr ""
 
-#: src/read_menu.c:209 src/usertools.c:1084
+#: src/read_menu.c:204 src/usertools.c:1076
 msgid "fgHelpfiles.a\n"
 msgstr ""
 
-#: src/read_menu.c:214
+#: src/read_menu.c:209
 #, c-format
 msgid "fg%s Info.a\n"
 msgstr ""
 
-#: src/read_menu.c:230
+#: src/read_menu.c:225
 #, c-format
 msgid "fgJump to %s name/number: a"
 msgstr ""
 
-#: src/read_menu.c:239
+#: src/read_menu.c:234
 #, c-format
 msgid "fgAll %sw:\n"
 msgstr ""
 
-#: src/read_menu.c:244
+#: src/read_menu.c:239
 #, c-format
 msgid "fgKnown %s.\n"
 msgstr ""
 
-#: src/read_menu.c:260
+#: src/read_menu.c:255
 msgid "fgLogout.a"
 msgstr ""
 
-#: src/read_menu.c:286
+#: src/read_menu.c:281
 msgid "frCtrlw-rNw-gEnter message.a\n"
 msgstr ""
 
-#: src/read_menu.c:291
+#: src/read_menu.c:286
 msgid "fgRead old messages.a\n"
 msgstr ""
 
-#: src/read_menu.c:297
+#: src/read_menu.c:292
 msgid "fgProfile a user.a\n"
 msgstr ""
 
-#: src/read_menu.c:303
+#: src/read_menu.c:298
 msgid "frAsk a Question.a\n"
 msgstr ""
 
-#: src/read_menu.c:313
+#: src/read_menu.c:308
 msgid "fgRead messages reverse.a\n"
 msgstr ""
 
-#: src/read_menu.c:318
+#: src/read_menu.c:313
 msgid "fgInterBBS Wholist.a\n"
 msgstr ""
 
-#: src/read_menu.c:325
+#: src/read_menu.c:320
 msgid "fgSearch messages\n"
 msgstr ""
 
-#: src/read_menu.c:330
+#: src/read_menu.c:325
 #, c-format
 msgid ""
 "fgSkipping this %s.\n"
@@ -1030,150 +1031,150 @@ msgid ""
 "a"
 msgstr ""
 
-#: src/read_menu.c:336
+#: src/read_menu.c:331
 #, c-format
 msgid "fgDate: w%sa"
 msgstr ""
 
-#: src/read_menu.c:358
+#: src/read_menu.c:353
 #, c-format
 msgid "fg%s Wholist.\n"
 msgstr ""
 
-#: src/read_menu.c:363
+#: src/read_menu.c:358
 msgid "fgWho is online?a\n"
 msgstr ""
 
-#: src/read_menu.c:368 src/read_menu.c:888
+#: src/read_menu.c:363 src/read_menu.c:883
 msgid "fgShort Wholist.a\n"
 msgstr ""
 
-#: src/read_menu.c:374 src/read_menu.c:901
+#: src/read_menu.c:369 src/read_menu.c:896
 #, c-format
 msgid "fgSend pWeb g%s %s.a\n"
 msgstr ""
 
-#: src/read_menu.c:385 src/read_menu.c:907
+#: src/read_menu.c:380 src/read_menu.c:902
 #, c-format
 msgid "fgSend %s %s.a\n"
 msgstr ""
 
-#: src/read_menu.c:408
+#: src/read_menu.c:403
 #, c-format
 msgid "fgRead %s-Log.a\n"
 msgstr ""
 
-#: src/read_menu.c:413
+#: src/read_menu.c:408
 msgid "fgYell-menu.a \n"
 msgstr ""
 
-#: src/read_menu.c:419
+#: src/read_menu.c:414
 #, c-format
 msgid "fgZap %s.a\n"
 msgstr ""
 
-#: src/read_menu.c:438
+#: src/read_menu.c:433
 msgid "fgJump a number of messages back from the Last Read Message.a\n"
 msgstr ""
 
-#: src/read_menu.c:439 src/read_menu.c:451 src/read_menu.c:940
+#: src/read_menu.c:434 src/read_menu.c:446 src/read_menu.c:935
 msgid "fgHow many messages back shall I jump?c "
 msgstr ""
 
-#: src/read_menu.c:444 src/read_menu.c:456 src/read_menu.c:945
-#: src/read_menu.c:960
+#: src/read_menu.c:439 src/read_menu.c:451 src/read_menu.c:940
+#: src/read_menu.c:955
 msgid "frThat is not a valid entry.a\n"
 msgstr ""
 
-#: src/read_menu.c:450
+#: src/read_menu.c:445
 #, c-format
 msgid "frJump a number of messages back from the Last %s in this %s.a\n"
 msgstr ""
 
-#: src/read_menu.c:486
+#: src/read_menu.c:481
 msgid "fgRandom Quote!\n"
 msgstr ""
 
-#: src/read_menu.c:492
+#: src/read_menu.c:487
 msgid "afgDonator List.a\n"
 msgstr ""
 
-#: src/read_menu.c:532 src/read_menu.c:1003
+#: src/read_menu.c:527 src/read_menu.c:998
 msgid ""
 "fgChange your Friends-list.a\n"
 "\n"
 msgstr ""
 
-#: src/read_menu.c:537 src/read_menu.c:1008
+#: src/read_menu.c:532 src/read_menu.c:1003
 msgid ""
 "fgChange your Enemylist.a\n"
 "\n"
 msgstr ""
 
-#: src/read_menu.c:546
+#: src/read_menu.c:541
 msgid "fgList all commands.a\n"
 msgstr ""
 
-#: src/read_menu.c:775
+#: src/read_menu.c:770
 #, c-format
 msgid ""
 "fgKnown %sw:\n"
 "\n"
 msgstr ""
 
-#: src/read_menu.c:780
+#: src/read_menu.c:775
 #, c-format
 msgid ""
 "fgAll %sw:\n"
 "\n"
 msgstr ""
 
-#: src/read_menu.c:859
+#: src/read_menu.c:854
 msgid "fwSearch messages\n"
 msgstr ""
 
-#: src/read_menu.c:894
+#: src/read_menu.c:889
 msgid "fgWhich aliens are online?a\n"
 msgstr ""
 
-#: src/read_menu.c:939
+#: src/read_menu.c:934
 msgid "fgJump a number of messages back from the current message.a\n"
 msgstr ""
 
-#: src/read_menu.c:954
+#: src/read_menu.c:949
 msgid "fgJump a number of messages forward from the current message.a\n"
 msgstr ""
 
-#: src/read_menu.c:955
+#: src/read_menu.c:950
 msgid "fgHow many messages forward shall I jump?c "
 msgstr ""
 
-#: src/rooms.c:534
+#: src/rooms.c:516
 msgid "frErase all messages in this forum? w(rrecommendedw) (rYw/rnw) c"
 msgstr ""
 
-#: src/rooms.c:1402
+#: src/rooms.c:1384
 #, c-format
 msgid "fw(g%ld messagesw)a\n"
 msgstr ""
 
-#: src/rooms.c:1409
+#: src/rooms.c:1391
 #, c-format
 msgid "fgRead next %s with unread messages.\n"
 msgstr ""
 
-#: src/rooms.c:1412
+#: src/rooms.c:1394
 msgid "fw (gpreviously skippedw)"
 msgstr ""
 
-#: src/rooms.c:1415
+#: src/rooms.c:1397
 #, c-format
 msgid ""
 "\n"
 "fw(g%ld messages, %ld unreadw)g  Read new messages.a\n"
 msgstr ""
 
-#: src/rooms.c:1418
+#: src/rooms.c:1400
 #, c-format
 msgid "fb*** gThe %sw<rIw>gnfo has changedb ***a\n"
 msgstr ""
@@ -1184,367 +1185,367 @@ msgid ""
 "fgRead X-Log.a\n"
 msgstr ""
 
-#: src/usertools.c:95
+#: src/usertools.c:87
 #, c-format
 msgid "fgProfile user w(y%sw): c"
 msgstr ""
 
-#: src/usertools.c:97
+#: src/usertools.c:89
 msgid "gfProfile userw: c"
 msgstr ""
 
-#: src/usertools.c:109
+#: src/usertools.c:101
 msgid "rfNot a valid InterBBS name.\n"
 msgstr ""
 
-#: src/usertools.c:554
+#: src/usertools.c:546
 msgid "fpSubscribe to channel: a"
 msgstr ""
 
-#: src/usertools.c:658
+#: src/usertools.c:650
 msgid "fcUser's localtime:g %A w(g%H:%Mw) (%Z)a\n"
 msgstr ""
 
-#: src/usertools.c:664
+#: src/usertools.c:656
 #, c-format
 msgid "fyAideline:%s\n"
 msgstr ""
 
-#: src/usertools.c:698
+#: src/usertools.c:690
 #, c-format
 msgid "fcLast on g%s "
 msgstr ""
 
-#: src/usertools.c:699
+#: src/usertools.c:691
 #, c-format
 msgid "cto g%s p"
 msgstr ""
 
-#: src/usertools.c:723
+#: src/usertools.c:715
 msgid "Birthday: g"
 msgstr ""
 
-#: src/usertools.c:734
+#: src/usertools.c:726
 #, c-format
 msgid "fcConfigurationw: g%s cMonoholic Ratingw: g"
 msgstr ""
 
-#: src/usertools.c:737
+#: src/usertools.c:729
 #, c-format
 msgid "fcUsernumw: g%d cFirst loginw: g%s\n"
 msgstr ""
 
-#: src/usertools.c:738
+#: src/usertools.c:730
 #, c-format
 msgid ""
 "fcLoginsw: g%-5d cPosts: g%-5d cOnlinetime: g%2ld:%2.2ld   cPriv: g%5d  cX's:"
 " g%5ld \n"
 msgstr ""
 
-#: src/usertools.c:745
+#: src/usertools.c:737
 #, c-format
 msgid ""
 "First login: g%sc\n"
 "Logins: g%-5d cPosts: g%-5d cOnlinetime: g%2ld:%2.2ld cX's: g%5ld \n"
 msgstr ""
 
-#: src/usertools.c:755
+#: src/usertools.c:747
 msgid "g*** is available to help others ***\n"
 msgstr ""
 
-#: src/usertools.c:774
+#: src/usertools.c:766
 msgid ""
 "\n"
 "afgPress w<rSPACEw>g to continue or w<rsw>g to skip... a"
 msgstr ""
 
-#: src/usertools.c:810
+#: src/usertools.c:802
 #, c-format
 msgid "gYou're not a %s!"
 msgstr ""
 
-#: src/usertools.c:891
+#: src/usertools.c:883
 msgid "fgAre you sure you want to edit your profile? w(gyw/gnw) c"
 msgstr ""
 
-#: src/usertools.c:902
+#: src/usertools.c:894
 msgid "frUnable to fopen() profile file!\n"
 msgstr ""
 
-#: src/usertools.c:908
+#: src/usertools.c:900
 msgid "frUnble to fetch profile from database!\n"
 msgstr ""
 
-#: src/usertools.c:926 src/usertools.c:980
+#: src/usertools.c:918 src/usertools.c:972
 msgid "frUnable to mmap() profile file contents!\n"
 msgstr ""
 
-#: src/usertools.c:932 src/usertools.c:986
+#: src/usertools.c:924 src/usertools.c:978
 msgid "frUnable to store profile in database!\n"
 msgstr ""
 
-#: src/usertools.c:950
+#: src/usertools.c:942
 msgid "Are you sure you want to change your profile? (y/n) "
 msgstr ""
 
-#: src/usertools.c:954
+#: src/usertools.c:946
 msgid ""
 "yYou now have seven lines to create a nice profile of yourself.g\n"
 "\n"
 msgstr ""
 
-#: src/usertools.c:997
+#: src/usertools.c:989
 msgid "fgChange birthday/date.\n"
 msgstr ""
 
-#: src/usertools.c:1005
+#: src/usertools.c:997
 #, c-format
 msgid "gYour current %s is: y`%sa'\n"
 msgstr ""
 
-#: src/usertools.c:1006 src/usertools.c:2230
+#: src/usertools.c:998 src/usertools.c:2229
 msgid "fgDo you want to change this? w(gyw/gnw)c "
 msgstr ""
 
-#: src/usertools.c:1022
+#: src/usertools.c:1014
 msgid "fgChange address.\n"
 msgstr ""
 
-#: src/usertools.c:1037
+#: src/usertools.c:1029
 #, c-format
 msgid "gYour current url is: y`%s'\n"
 msgstr ""
 
-#: src/usertools.c:1038
+#: src/usertools.c:1030
 msgid "gDo you want to change this? w(gyw/gnw)c "
 msgstr ""
 
-#: src/usertools.c:1040
+#: src/usertools.c:1032
 msgid "fgEnter the new urlw: chttp://"
 msgstr ""
 
-#: src/usertools.c:1044
+#: src/usertools.c:1036
 msgid "fgURL not set.\n"
 msgstr ""
 
-#: src/usertools.c:1072
+#: src/usertools.c:1064
 msgid ""
 "\n"
 "fgPress w<rhw>g to access the helpfiles.\n"
 msgstr ""
 
-#: src/usertools.c:1073
+#: src/usertools.c:1065
 msgid ""
 "\n"
 "gPress w<rcw>g for help on commands.\n"
 msgstr ""
 
-#: src/usertools.c:1074
+#: src/usertools.c:1066
 msgid "gPress w<r?w>g to get a list of commands.\n"
 msgstr ""
 
-#: src/usertools.c:1075
+#: src/usertools.c:1067
 msgid ""
 "gPress w<rshift-Qw>g to ask a Question.\n"
 "\n"
 msgstr ""
 
-#: src/usertools.c:1076
+#: src/usertools.c:1068
 msgid ""
 "gPress w<rqw>g to exit this menu.\n"
 "\n"
 msgstr ""
 
-#: src/usertools.c:1077
+#: src/usertools.c:1069
 msgid "gChoicew:g "
 msgstr ""
 
-#: src/usertools.c:1090
+#: src/usertools.c:1082
 msgid "fgCommand Helpfiles.a\n"
 msgstr ""
 
-#: src/usertools.c:1097
+#: src/usertools.c:1089
 msgid "fgQuit.a\n"
 msgstr ""
 
-#: src/usertools.c:1101
+#: src/usertools.c:1093
 msgid "fgAsk a Question.a\n"
 msgstr ""
 
-#: src/usertools.c:1107
+#: src/usertools.c:1099
 msgid "fgHelp!a\n"
 msgstr ""
 
-#: src/usertools.c:1173
+#: src/usertools.c:1165
 msgid "fwYou are now marked as gAWAYw.\n"
 msgstr ""
 
-#: src/usertools.c:1175
+#: src/usertools.c:1167
 #, c-format
 msgid "gDefault away message: y%sa\n"
 msgstr ""
 
-#: src/usertools.c:1176
+#: src/usertools.c:1168
 msgid "fgNew Away message: c"
 msgstr ""
 
-#: src/usertools.c:1185
+#: src/usertools.c:1177
 msgid "fwYou are rno longerw marked as gAWAYw.a"
 msgstr ""
 
-#: src/usertools.c:1222
+#: src/usertools.c:1214
 msgid "fgKey Menu.\n"
 msgstr ""
 
-#: src/usertools.c:1286
+#: src/usertools.c:1278
 #, c-format
 msgid "fgYour current alias is y`%s'g. Do you want to change it? w(gyw/gnw) c"
 msgstr ""
 
-#: src/usertools.c:1288
+#: src/usertools.c:1280
 msgid "fgAlias unchanged.a\n"
 msgstr ""
 
-#: src/usertools.c:1292
+#: src/usertools.c:1284
 msgid "fgEnter the new aliasw: c"
 msgstr ""
 
-#: src/usertools.c:1297
+#: src/usertools.c:1289
 msgid "fgAlias rnotg set.a\n"
 msgstr ""
 
-#: src/usertools.c:1304 src/usertools.c:1313
+#: src/usertools.c:1296 src/usertools.c:1305
 #, c-format
 msgid "fgYour alias is set to y`%s'g.\n"
 msgstr ""
 
-#: src/usertools.c:1307
+#: src/usertools.c:1299
 msgid "frThat is an existing user!a\n"
 msgstr ""
 
-#: src/usertools.c:1346
+#: src/usertools.c:1338
 msgid "fcToggle hidden info.a\n"
 msgstr ""
 
-#: src/usertools.c:1357
+#: src/usertools.c:1349
 #, c-format
 msgid "fgEnter your screen length w[r%dw]:c "
 msgstr ""
 
-#: src/usertools.c:1388
+#: src/usertools.c:1380
 #, c-format
 msgid "fcToggle usage of default alias %sc.a\n"
 msgstr ""
 
-#: src/usertools.c:1391
+#: src/usertools.c:1383
 msgid "frYou have not set an alias yet!a\n"
 msgstr ""
 
-#: src/usertools.c:1425
+#: src/usertools.c:1417
 #, c-format
 msgid ""
 "\n"
 "fcUsing %s date format."
 msgstr ""
 
-#: src/usertools.c:1436
+#: src/usertools.c:1428
 #, c-format
 msgid ""
 "\n"
 "fcDate display set to %sc."
 msgstr ""
 
-#: src/usertools.c:1606
+#: src/usertools.c:1605
 #, c-format
 msgid ""
 "\n"
 "fgTimezone set to w[y%sw]gc\n"
 msgstr ""
 
-#: src/usertools.c:1608
+#: src/usertools.c:1607
 #, c-format
 msgid "fgTimezone not set, using %s timezone."
 msgstr ""
 
-#: src/usertools.c:2219
+#: src/usertools.c:2218
 msgid "fgEnter ICQ Number.\n"
 msgstr ""
 
-#: src/usertools.c:2226
+#: src/usertools.c:2225
 msgid "fgYou have not set an ICQ Number.\n"
 msgstr ""
 
-#: src/usertools.c:2227
+#: src/usertools.c:2226
 msgid "fgWould you like to set one now? w(gyw/gnw)c "
 msgstr ""
 
-#: src/usertools.c:2229
+#: src/usertools.c:2228
 #, c-format
 msgid "fgYour current ICQ Number is y%ulg\n"
 msgstr ""
 
-#: src/usertools.c:2233
+#: src/usertools.c:2232
 msgid "gEnter your ICQ numberw: fc"
 msgstr ""
 
-#: src/usertools.c:2240
+#: src/usertools.c:2239
 msgid "frSorry, that is not a valid ICQ number.\n"
 msgstr ""
 
-#: src/usertools.c:2244
+#: src/usertools.c:2243
 msgid "frSomething went wrong saving your ICQ Number.\n"
 msgstr ""
 
-#: src/usertools.c:2246
+#: src/usertools.c:2245
 msgid "fgYour ICQ Number was saved.\n"
 msgstr ""
 
-#: src/usertools.c:2257
+#: src/usertools.c:2256
 msgid "fgEnter ICQ Password.\n"
 msgstr ""
 
-#: src/usertools.c:2263
+#: src/usertools.c:2262
 msgid "fgDo you want to change your ICQ Password? w(gyw/gnw)c "
 msgstr ""
 
-#: src/usertools.c:2267
+#: src/usertools.c:2266
 msgid ""
 "fw(gThis password is stored in encrypted formw)\n"
 "\n"
 msgstr ""
 
-#: src/usertools.c:2270
+#: src/usertools.c:2269
 msgid "fgPlease enter your ICQ Passwordw (gMax. 64 charactersw): c"
 msgstr ""
 
-#: src/usertools.c:2279
+#: src/usertools.c:2278
 msgid "frSomething went wrong saving your ICQ Password.\n"
 msgstr ""
 
-#: src/usertools.c:2281
+#: src/usertools.c:2280
 msgid "fgYour ICQ Password was saved.\n"
 msgstr ""
 
-#: src/wholist.c:113
+#: src/wholist.c:102
 #, c-format
 msgid ""
 "\n"
 "gfYou are all alone online at y%02d:%02dg local time.\n"
 msgstr ""
 
-#: src/wholist.c:115
+#: src/wholist.c:104
 #, c-format
 msgid "fgHey! What do you think you are doing here?a\n"
 msgstr ""
 
-#: src/wholist.c:119 src/wholist.c:123
+#: src/wholist.c:108 src/wholist.c:112
 #, c-format
 msgid ""
 "\n"
 "gfThere are y%ug users online at y%02d:%02dg local time.\n"
 msgstr ""
 
-#: src/wholist.c:128
+#: src/wholist.c:117
 #, c-format
 msgid ""
 "\n"
@@ -1552,17 +1553,17 @@ msgid ""
 "time.\n"
 msgstr ""
 
-#: src/wholist.c:137
+#: src/wholist.c:126
 #, c-format
 msgid "1 User"
 msgstr ""
 
-#: src/wholist.c:139
+#: src/wholist.c:128
 #, c-format
 msgid "%u Users"
 msgstr ""
 
-#: src/wholist.c:147
+#: src/wholist.c:136
 #, c-format
 msgid ""
 "fg%-19s  pFlags  g%-17s pTime g%-28s\n"

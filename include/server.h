@@ -39,7 +39,7 @@ int get_btmp(void);
 void mono_login(void);
 char *get_name(void);
 RETSIGTYPE retry(int);
-void getline(char *string, int lim, int frog);
+/* void getline(char *string, int lim, int frog); */
 int getblock(void);
 int netget(void);
 void logoff( int womble );

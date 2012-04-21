@@ -86,7 +86,7 @@ edit_config()
             case '1':	/* bbs name */
                 strcpy(tempstr, "");
                 cprintf("\1f\1gEnter a new `\1yBBS\1g' name \1w(\1g%s\1w): \1c", config->bbsname);
-                getline(tempstr,20,FALSE);
+                xgetline(tempstr,20,FALSE);
                 if( strlen(tempstr) < 1 )
                     strcpy(config->bbsname, tempstr);
                 break;
@@ -95,12 +95,12 @@ edit_config()
             case '3':	/* room (pl) */
                 strcpy(tempstr, "");
                 cprintf("\1f\1gEnter a new `\1yroom\1g' name \1w(\1g%s\1w): \1c", config->forum);
-                getline(tempstr,20,FALSE);
+                xgetline(tempstr,20,FALSE);
                 if( strlen(tempstr) < 1 )
                     strcpy(config->forum, tempstr);
                 strcpy(tempstr, "");
                 cprintf("\1f\1gEnter the plural \1w(\1g%s\1w): \1c", config->forum_pl);
-                getline(tempstr,22,FALSE);
+                xgetline(tempstr,22,FALSE);
                 if( strlen(tempstr) < 1 )
                     strcpy(config->forum_pl, tempstr);
                 break;
@@ -109,12 +109,12 @@ edit_config()
             case '5':	/* message (pl) */
                 strcpy(tempstr, "");
                 cprintf("\1f\1gEnter a new `\1ymessage\1g' name \1w(\1g%s\1w): \1c", config->message);
-                getline(tempstr,12,FALSE);
+                xgetline(tempstr,12,FALSE);
                 if( strlen(tempstr) < 1 )
                     strcpy(config->message, tempstr);
                 strcpy(tempstr, "");
                 cprintf("\1f\1gEnter the plural \1w(\1g%s\1w): \1c", config->message_pl);
-                getline(tempstr,14,FALSE);
+                xgetline(tempstr,14,FALSE);
                 if( strlen(tempstr) < 1 )
                     strcpy(config->message_pl, tempstr);
                 break;
@@ -122,7 +122,7 @@ edit_config()
             case '6':	/* eXpress */
                 strcpy(tempstr, "");
                 cprintf("\1f\1gEnter a new `\1yeXpress\1g' name \1w(\1g%s\1w): \1c", config->express);
-                getline(tempstr,12,FALSE);
+                xgetline(tempstr,12,FALSE);
                 if( strlen(tempstr) < 1 )
                     strcpy(config->express, tempstr);
                 break;
@@ -131,12 +131,12 @@ edit_config()
             case '8':	/* X message (pl) */
                 strcpy(tempstr, "");
                 cprintf("\1f\1gEnter a new `\1yX message\1g' name \1w(\1g%s\1w): \1c", config->x_message);
-                getline(tempstr,12,FALSE);
+                xgetline(tempstr,12,FALSE);
                 if( strlen(tempstr) < 1 )
                     strcpy(config->x_message, tempstr);
                 strcpy(tempstr, "");
                 cprintf("\1f\1gEnter the plural \1w(\1g%s\1w): \1c", config->x_message_pl);
-                getline(tempstr,14,FALSE);
+                xgetline(tempstr,14,FALSE);
                 if( strlen(tempstr) < 1 )
                     strcpy(config->x_message_pl, tempstr);
                 break;
@@ -145,12 +145,12 @@ edit_config()
             case 'A':	/* user (pl) */
                 strcpy(tempstr, "");
                 cprintf("\1f\1gEnter a new `\1yuser\1g' name \1w(\1g%s\1w): \1c", config->user);
-                getline(tempstr,12,FALSE);
+                xgetline(tempstr,12,FALSE);
                 if( strlen(tempstr) < 1 )
                     strcpy(config->user, tempstr);
                 strcpy(tempstr, "");
                 cprintf("\1f\1gEnter the plural \1w(\1g%s\1w): \1c", config->user_pl);
-                getline(tempstr,14,FALSE);
+                xgetline(tempstr,14,FALSE);
                 if( strlen(tempstr) < 1 )
                     strcpy(config->user_pl, tempstr);
                 break;
@@ -158,7 +158,7 @@ edit_config()
             case 'B':	/* username */
                 strcpy(tempstr, "");
                 cprintf("\1f\1gEnter a new `\1yusername\1g' name \1w(\1g%s\1w): \1c", config->username);
-                getline(tempstr,12,FALSE);
+                xgetline(tempstr,12,FALSE);
                 if( strlen(tempstr) < 1 )
                     strcpy(config->username, tempstr);
                 break;
@@ -166,7 +166,7 @@ edit_config()
             case 'C':	/* doing */
                 strcpy(tempstr, "");
                 cprintf("\1f\1gEnter a new `\1ydoing\1g' name \1w(\1g%s\1w): \1c", config->doing);
-                getline(tempstr,20,FALSE);
+                xgetline(tempstr,20,FALSE);
                 if( strlen(tempstr) < 1 )
                     strcpy(config->doing, tempstr);
                 break;
@@ -174,7 +174,7 @@ edit_config()
             case 'D':	/* location */
                 strcpy(tempstr, "");
                 cprintf("\1f\1gEnter a new `\1ylocation\1g' name \1w(\1g%s\1w): \1c", config->location);
-                getline(tempstr,16,FALSE);
+                xgetline(tempstr,16,FALSE);
                 if( strlen(tempstr) < 1 )
                     strcpy(config->location, tempstr);
                 break;
@@ -182,7 +182,7 @@ edit_config()
             case 'E':	/* idle - allow colours */
                 strcpy(tempstr, "");
                 cprintf("\1f\1gEnter a new `\1yidle\1g' message \1w(\1g%s\1w): \1c", config->idle);
-                getline(tempstr,20,TRUE);
+                xgetline(tempstr,20,TRUE);
                 if( strlen(tempstr) < 1 )
                     strcpy(config->idle, tempstr);
                 break;
@@ -190,7 +190,7 @@ edit_config()
             case 'F':	/* chat */
                 strcpy(tempstr, "");
                 cprintf("\1f\1gEnter a new `\1ychat\1g' name \1w(\1g%s\1w): \1c", config->chatmode);
-                getline(tempstr,20,FALSE);
+                xgetline(tempstr,20,FALSE);
                 if( strlen(tempstr) < 1 )
                     strcpy(config->chatmode, tempstr);
                 break;
@@ -198,7 +198,7 @@ edit_config()
             case 'G':	/* channel */
                 strcpy(tempstr, "");
                 cprintf("\1f\1gEnter a new `\1ychannel\1g' name \1w(\1g%s\1w): \1c", config->chatroom);
-                getline(tempstr,20,FALSE);
+                xgetline(tempstr,20,FALSE);
                 if( strlen(tempstr) < 1 )
                     strcpy(config->chatroom, tempstr);
                 break;
@@ -206,7 +206,7 @@ edit_config()
             case 'H':	/* admin */
                 strcpy(tempstr, "");
                 cprintf("\1f\1gEnter a new `\1yadmin\1g' name \1w(%s): \1c", config->admin);
-                getline(tempstr,20,FALSE);
+                xgetline(tempstr,20,FALSE);
                 if( strlen(tempstr) < 1 )
                     strcpy(config->admin, tempstr);
                 break;
@@ -214,7 +214,7 @@ edit_config()
             case 'I':	/* wiz */
                 strcpy(tempstr, "");
                 cprintf("\1f\1gEnter a new `\1ywizard\1g' name \1w(%s): \1c", config->wizard);
-                getline(tempstr,20,FALSE);
+                xgetline(tempstr,20,FALSE);
                 if( strlen(tempstr) < 1 )
                     strcpy(config->wizard, tempstr);
                 break;
@@ -222,7 +222,7 @@ edit_config()
             case 'J':	/* sysop */
                 strcpy(tempstr, "");
                 cprintf("\1f\1gEnter a new `\1ysysop\1g' name \1w(\1p%s\1w): \1c", config->sysop);
-                getline(tempstr,20,FALSE);
+                xgetline(tempstr,20,FALSE);
                 if( strlen(tempstr) < 1 )
                     strcpy(config->sysop, tempstr);
                 break;
@@ -230,7 +230,7 @@ edit_config()
             case 'K':	/* progger */
                 strcpy(tempstr, "");
                 cprintf("\1f\1gEnter a new `\1yprogrammer\1g' name \1w(\1b%s\1w): \1c", config->programmer);
-                getline(tempstr,20,FALSE);
+                xgetline(tempstr,20,FALSE);
                 if( strlen(tempstr) < 1 )
                     strcpy(config->programmer, tempstr);
                 break;
@@ -238,7 +238,7 @@ edit_config()
             case 'L':	/* ql */
                 strcpy(tempstr, "");
                 cprintf("\1f\1gEnter a new `\1yroomaide\1g' name \1w(\1r%s\1w): \1c", config->roomaide);
-                getline(tempstr,20,FALSE);
+                xgetline(tempstr,20,FALSE);
                 if( strlen(tempstr) < 1 )
                     strcpy(config->roomaide, tempstr);
                 break;
@@ -246,7 +246,7 @@ edit_config()
             case 'M':	/* guide */
                 strcpy(tempstr, "");
                 cprintf("\1f\1gEnter a new `\1yguide\1g' name \1w(\1c%s\1w): \1c", config->guide);
-                getline(tempstr,20,FALSE);
+                xgetline(tempstr,20,FALSE);
                 if( strlen(tempstr) < 1 )
                     strcpy(config->guide, tempstr);
                 break;

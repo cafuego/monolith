@@ -307,7 +307,7 @@ _config_set_bbsname(const unsigned int a, const long b, void *string)
 
     strcpy(tempstr, "");
     cprintf("\1f\1gEnter a new `\1yBBS\1g' name \1w(\1g%s\1w): \1c", cfg.bbsname);
-    getline(tempstr, 20, FALSE);
+    xgetline(tempstr, 20, FALSE);
     if (strlen(tempstr) > 1) {
         if(a) { /* new config, check if name is taken... */
             if( mono_sql_config_exists(tempstr) ) {
@@ -327,12 +327,12 @@ _config_set_room(const unsigned int a, const long b, void *string)
 
     strcpy(tempstr, "");
     cprintf("\1f\1gEnter a new `\1yroom\1g' name \1w(\1g%s\1w): \1c", cfg.forum);
-    getline(tempstr, 20, FALSE);
+    xgetline(tempstr, 20, FALSE);
     if (strlen(tempstr) > 1)
 	strcpy(cfg.forum, tempstr);
     strcpy(tempstr, "");
     cprintf("\1f\1gEnter the plural \1w(\1g%s\1w): \1c", cfg.forum_pl);
-    getline(tempstr, 22, FALSE);
+    xgetline(tempstr, 22, FALSE);
     if (strlen(tempstr) > 1)
 	strcpy(cfg.forum_pl, tempstr);
     return;
@@ -345,7 +345,7 @@ _config_set_xpress(const unsigned int a, const long b, void *string)
 
     strcpy(tempstr, "");
     cprintf("\1f\1gEnter a new `\1yeXpress\1g' name \1w(\1g%s\1w): \1c", cfg.express);
-    getline(tempstr, 12, FALSE);
+    xgetline(tempstr, 12, FALSE);
     if (strlen(tempstr) > 1)
 	strcpy(cfg.express, tempstr);
     return;
@@ -358,12 +358,12 @@ _config_set_xmessage(const unsigned int a, const long b, void *string)
 
     strcpy(tempstr, "");
     cprintf("\1f\1gEnter a new `\1yX message\1g' name \1w(\1g%s\1w): \1c", cfg.x_message);
-    getline(tempstr, 12, FALSE);
+    xgetline(tempstr, 12, FALSE);
     if (strlen(tempstr) > 1)
 	strcpy(cfg.x_message, tempstr);
     strcpy(tempstr, "");
     cprintf("\1f\1gEnter the plural \1w(\1g%s\1w): \1c", cfg.x_message_pl);
-    getline(tempstr, 14, FALSE);
+    xgetline(tempstr, 14, FALSE);
     if (strlen(tempstr) > 1)
 	strcpy(cfg.x_message_pl, tempstr);
     return;
@@ -376,7 +376,7 @@ _config_set_doing(const unsigned int a, const long b, void *string)
 
     strcpy(tempstr, "");
     cprintf("\1f\1gEnter a new `\1ydoing\1g' name \1w(\1g%s\1w): \1c", cfg.doing);
-    getline(tempstr, 20, FALSE);
+    xgetline(tempstr, 20, FALSE);
     if (strlen(tempstr) > 1)
 	strcpy(cfg.doing, tempstr);
     return;
@@ -389,7 +389,7 @@ _config_set_location(const unsigned int a, const long b, void *string)
 
     strcpy(tempstr, "");
     cprintf("\1f\1gEnter a new `\1ylocation\1g' name \1w(\1g%s\1w): \1c", cfg.location);
-    getline(tempstr, 16, FALSE);
+    xgetline(tempstr, 16, FALSE);
     if (strlen(tempstr) > 1)
 	strcpy(cfg.location, tempstr);
     return;
@@ -402,7 +402,7 @@ _config_set_idle(const unsigned int a, const long b, void *string)
 
     strcpy(tempstr, "");
     cprintf("\1f\1gEnter a new `\1yidle\1g' message \1w(\1g%s\1w): \1c", cfg.idle);
-    getline(tempstr, 20, TRUE);
+    xgetline(tempstr, 20, TRUE);
     if (strlen(tempstr) > 1)
 	strcpy(cfg.idle, tempstr);
     return;
@@ -415,7 +415,7 @@ _config_set_chat(const unsigned int a, const long b, void *string)
 
     strcpy(tempstr, "");
     cprintf("\1f\1gEnter a new `\1ychat\1g' name \1w(\1g%s\1w): \1c", cfg.chatmode);
-    getline(tempstr, 20, FALSE);
+    xgetline(tempstr, 20, FALSE);
     if (strlen(tempstr) > 1)
 	strcpy(cfg.chatmode, tempstr);
     return;
@@ -428,7 +428,7 @@ _config_set_channel(const unsigned int a, const long b, void *string)
 
     strcpy(tempstr, "");
     cprintf("\1f\1gEnter a new `\1ychannel\1g' name \1w(\1g%s\1w): \1c", cfg.chatroom);
-    getline(tempstr, 20, FALSE);
+    xgetline(tempstr, 20, FALSE);
     if (strlen(tempstr) > 1)
 	strcpy(cfg.chatroom, tempstr);
     return;
@@ -441,7 +441,7 @@ _config_set_admin(const unsigned int a, const long b, void *string)
 
     strcpy(tempstr, "");
     cprintf("\1f\1gEnter a new `\1yadmin\1g' name \1w(%s): \1c", cfg.admin);
-    getline(tempstr, 20, FALSE);
+    xgetline(tempstr, 20, FALSE);
     if (strlen(tempstr) > 1)
 	strcpy(cfg.admin, tempstr);
     return;
@@ -453,7 +453,7 @@ _config_set_wizard(const unsigned int a, const long b, void *string)
 
     strcpy(tempstr, "");
     cprintf("\1f\1gEnter a new `\1ywizard\1g' name \1w(%s): \1c", cfg.wizard);
-    getline(tempstr, 20, FALSE);
+    xgetline(tempstr, 20, FALSE);
     if (strlen(tempstr) > 1)
 	strcpy(cfg.wizard, tempstr);
     return;
@@ -466,7 +466,7 @@ _config_set_sysop(const unsigned int a, const long b, void *string)
 
     strcpy(tempstr, "");
     cprintf("\1f\1gEnter a new `\1ysysop\1g' name \1w(\1p%s\1w): \1c", cfg.sysop);
-    getline(tempstr, 20, FALSE);
+    xgetline(tempstr, 20, FALSE);
     if (strlen(tempstr) > 1)
 	strcpy(cfg.sysop, tempstr);
     return;
@@ -478,7 +478,7 @@ _config_set_progdude(const unsigned int a, const long b, void *string)
 
     strcpy(tempstr, "");
     cprintf("\1f\1gEnter a new `\1yprogrammer\1g' name \1w(\1b%s\1w): \1c", cfg.programmer);
-    getline(tempstr, 20, FALSE);
+    xgetline(tempstr, 20, FALSE);
     if (strlen(tempstr) > 1)
 	strcpy(cfg.programmer, tempstr);
     return;
@@ -490,7 +490,7 @@ _config_set_roomaide(const unsigned int a, const long b, void *string)
 
     strcpy(tempstr, "");
     cprintf("\1f\1gEnter a new `\1yroomaide\1g' name \1w(\1r%s\1w): \1c", cfg.roomaide);
-    getline(tempstr, 20, FALSE);
+    xgetline(tempstr, 20, FALSE);
     if (strlen(tempstr) > 1)
 	strcpy(cfg.roomaide, tempstr);
     return;
@@ -502,7 +502,7 @@ _config_set_guide(const unsigned int a, const long b, void *string)
 
     strcpy(tempstr, "");
     cprintf("\1f\1gEnter a new `\1yguide\1g' name \1w(\1c%s\1w): \1c", cfg.guide);
-    getline(tempstr, 20, FALSE);
+    xgetline(tempstr, 20, FALSE);
     if (strlen(tempstr) > 1)
 	strcpy(cfg.guide, tempstr);
     return;

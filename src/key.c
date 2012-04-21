@@ -105,7 +105,7 @@ enter_key()
     cprintf(_("Otherwise, press return.\n"));
 
     cprintf("\nPlease enter your key: ");
-    getline(key, 5, 0);
+    xgetline(key, 5, 0);
 
     if (atoi(key) == ikey ) {
 	cprintf(_("The key is correct, you are now validated.\n\n"));

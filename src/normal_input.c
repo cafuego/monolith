@@ -211,14 +211,14 @@ get_name(int quit_priv)
 }
 
 /**************************************************
- * getline( char *string, int lim, int nocol )
+ * xgetline( char *string, int lim, int nocol )
  *
  * char *string;		Pointer to string buffer
  * int lim;		Maximum length; if negative, no-show
  * int nocol;		flag: 1 -> no colors allowed
  *************************************************/
 int
-getline(char *string, int lim, int nocol)
+xgetline(char *string, int lim, int nocol)
 {
     int a;
     char noshow = FALSE;

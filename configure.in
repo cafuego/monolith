@@ -6,7 +6,7 @@ AC_CONFIG_AUX_DIR(auto)
 AC_CONFIG_SRCDIR(src/main.c)
 AM_INIT_AUTOMAKE
 
-AC_DEFINE(PACKAGE, monolith)
+AC_DEFINE(PACKAGE, 'monolith')
 AC_DEFINE(VERSION, 1.0)
 
 AM_CONFIG_HEADER(config.h:config.h.in)
@@ -75,7 +75,7 @@ fi
 AC_SUBST(PROG_CAT)
 
 dnl GNU gettext add-ons
-dnl AM_GNU_GETTEXT([external])
+AM_GNU_GETTEXT([external])
 
 dnl Check for awk/gawk - used to determine if we're linux or not.
 AC_PATH_PROG(awk_path,awk,no)
@@ -618,7 +618,7 @@ if test "$no_create" != "yes" ; then
 
 
   dnl Update or create version stamp, but only if it' not automagically running.
-  /bin/sh ./mkversion-sh
+  /bin/bash ./mkversion-sh
 
   dnl Linux newbie stuff.
   dnl

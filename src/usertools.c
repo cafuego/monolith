@@ -998,7 +998,7 @@ _change_flying(const unsigned int a, const long b, void *c)
     cprintf(_("\1f\1gDo you want to change this? \1w(\1gy\1w/\1gn\1w)\1c "));
     if (yesno() == YES) {
 	cprintf("\1gEnter the new %s\1w: \1f\1c", config.doing);
-	getline(usersupp->doing, 28, 0);
+	xgetline(usersupp->doing, 28, 0);
 	usersupp->doing[28] = '\0';
 	writeuser(usersupp, 0);
 	mono_sql_u_update_doing( usersupp->usernum, usersupp->doing );
@@ -1030,7 +1030,7 @@ _change_url(const unsigned int a, const long b, void *c)
     cprintf(_("\1gDo you want to change this? \1w(\1gy\1w/\1gn\1w)\1c "));
     if (yesno() == YES) {
 	cprintf(_("\1f\1gEnter the new url\1w: \1chttp://"));
-	getline(p, RGurlLEN - 7, TRUE);
+	xgetline(p, RGurlLEN - 7, TRUE);
 	if (strlen(p) < 5) {
 	    strcpy(usersupp->RGurl, "");
 	    cprintf(_("\1f\1gURL not set.\n"));
@@ -1166,7 +1166,7 @@ toggle_away(void)
 	if (strlen(usersupp->awaymsg))
 	    cprintf(_("\1gDefault away message: \1y%s\1a\n"), usersupp->awaymsg);
 	cprintf(_("\1f\1gNew Away message: \1c"));
-	getline(away, 99, TRUE);
+	xgetline(away, 99, TRUE);
 	if (strlen(away)) {
 	    strcpy(usersupp->awaymsg, away);
   	    mono_sql_u_update_awaymsg(usersupp->usernum, away );
@@ -1226,7 +1226,7 @@ _change_host(const unsigned int a, const long b, void *c)
     cprintf("\1gDo you really want to change your location? (y/n) ");
     if (yesno() == YES) {
 	cprintf("New location: ");
-	getline(newb, 16, 0);
+	xgetline(newb, 16, 0);
 	strremcol(newb);
 	mono_change_online(who_am_i(NULL), newb, 4);
     }
@@ -1234,7 +1234,7 @@ _change_host(const unsigned int a, const long b, void *c)
 	cprintf("\1gDo you also want to change the 'online from' ? (y/n) ");
 	if (yesno() == YES) {
 	    cprintf("New lasthost: ");
-	    getline(newb, 19, 0);
+	    xgetline(newb, 19, 0);
 	    strcpy(who_am_i(NULL), newb);
 	}
     }
@@ -1283,7 +1283,7 @@ _change_alias(const unsigned int a, const long b, void *c)
     }
     cprintf(_("\1f\1gEnter the new alias\1w: \1c"));
 
-    getline(aliasstr, L_USERNAME, 0);
+    xgetline(aliasstr, L_USERNAME, 0);
 
     if (aliasstr[0] == '\0') {
 	cprintf(_("\1f\1gAlias \1rnot\1g set.\1a\n"));
@@ -1347,7 +1347,7 @@ _set_screenlength(const unsigned int x, const long y, void *z)
     int a;
 
     cprintf(_("\1f\1gEnter your screen length \1w[\1r%d\1w]:\1c "), usersupp->screenlength);
-    getline(tempstr, 3, 1);
+    xgetline(tempstr, 3, 1);
     if (tempstr[0] != 0) {
 	a = atoi(tempstr);
 	usersupp->screenlength = a;
@@ -2231,7 +2231,7 @@ _change_icq_number(const unsigned int a, const long b, void *c)
     if (yesno() == YES) {
         cprintf(_("\1gEnter your ICQ number\1w: \1f\1c"));
         strcpy(tmpstr, "");
-        getline(tmpstr, 15, 0);
+        xgetline(tmpstr, 15, 0);
         if(strlen(tmpstr) == 0)
             return;
         cprintf("\1a");
@@ -2267,7 +2267,7 @@ _change_icq_password(const unsigned int a, const long b, void *c)
     icq_pw = (char *) xmalloc( 65 * sizeof(char) );
     strcpy(icq_pw, "");
     cprintf(_("\1f\1gPlease enter your ICQ Password\1w (\1gMax. 64 characters\1w): \1c"));
-    getline(icq_pw, -64, 1);
+    xgetline(icq_pw, -64, 1);
 
     if (strlen(icq_pw) == 0) {
         xfree(icq_pw);

@@ -2,7 +2,7 @@
 
 /* prototypes */
 extern char * get_name (int quit_priv);
-extern int getline (char *string, int lim, int nocol);
+extern int xgetline (char *string, int lim, int nocol);
 extern int get_string_wr (int lim, char *result, int line, int flag);
 extern int get_buffer (FILE * outputfp, int how, int *lines);
 extern int get_x_lines (char *xstring, int X_PARAM);

@@ -330,7 +330,7 @@ get_anon_banner(unsigned int anon_type, message_header_t * header)
 	    strcpy(header->alias, usersupp->alias);
 	} else {
 	    cprintf("\1f\1gAlias\1w: \1c");
-	    getline(header->alias, L_USERNAME - 1, TRUE);
+	    xgetline(header->alias, L_USERNAME - 1, TRUE);
 	}
     }
 }
@@ -339,7 +339,7 @@ void
 get_subject(message_header_t * header)
 {
     cprintf("\1f\1ySubject\1w: \1c");
-    getline(header->subject, L_SUBJECT - 1, TRUE);
+    xgetline(header->subject, L_SUBJECT - 1, TRUE);
 }
 
 void
@@ -440,7 +440,7 @@ void
 get_custom_banner(message_header_t * header)
 {
     cprintf("\n\1f\1wBanner: ");
-    getline(header->banner, L_BANNER - 1, 0);
+    xgetline(header->banner, L_BANNER - 1, 0);
 }
 
 /*

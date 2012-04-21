@@ -208,7 +208,7 @@ _address_edit(const unsigned int fieldname, const long fieldlen, void *user)
     }
 
     string[0] = '\0';
-    getline(string, fieldlen, 1);
+    xgetline(string, fieldlen, 1);
     if (strlen(string))
 	strremcol(string);
     else

@@ -221,7 +221,7 @@ newuser_getpasswd(unsigned int user_id)
 
     while (!done) {
 	cprintf("\1f\1gPlease enter a password: ");
-	getline(pwread, -19, 1);
+	xgetline(pwread, -19, 1);
 
 #ifdef USED
 /*       have to comment this out. i don't know what it is for
@@ -232,7 +232,7 @@ newuser_getpasswd(unsigned int user_id)
 
 	if (strlen(pwread)) {
 	    cprintf("\1f\1gPlease enter it again: ");
-	    getline(pwtest, -19, 1);
+	    xgetline(pwtest, -19, 1);
 
 	    if (strcmp(pwtest, pwread) != 0)
 		cprintf("\1rThe passwords you typed didn't match.  Please try again.\n");
@@ -258,38 +258,38 @@ newuser_registration(user_t * user)
     cprintf("Please enter your real name.\n");
     do {
 	cprintf("\n* FULL REAL name: ");
-	getline(user->RGname, RGnameLEN, 1);
+	xgetline(user->RGname, RGnameLEN, 1);
     }
     while (strlen(user->RGname) <= 6);
 
     cprintf("\nNext, enter your address (street name, and number).\n\n");
     do {
 	cprintf("* Address:        ");
-	getline(user->RGaddr, RGaddrLEN, 1);
+	xgetline(user->RGaddr, RGaddrLEN, 1);
     } while (strlen(user->RGaddr) < 3);
 
     do {
 	cprintf("* City/Suburb:    ");
-	getline(user->RGcity, RGcityLEN, 1);
+	xgetline(user->RGcity, RGcityLEN, 1);
     } while (strlen(user->RGcity) < 2);
 
     do {
 	cprintf("* Zip code:       ");
-	getline(user->RGzip, RGzipLEN, 1);
+	xgetline(user->RGzip, RGzipLEN, 1);
     } while (strlen(user->RGzip) < 3);
 
 	cprintf("  State/Province: ");
 	strcpy( user->RGstate, "" ); /* initialise, or get garbage */
-	getline(user->RGstate, RGstateLEN, 1);
+	xgetline(user->RGstate, RGstateLEN, 1);
 
     do {
 	cprintf("* Country:        ");
-	getline(user->RGcountry, RGcountryLEN, 1);
+	xgetline(user->RGcountry, RGcountryLEN, 1);
     } while (strlen(user->RGcountry) < 3);
 
 	cprintf("  Phone number:   ");
 	strcpy( user->RGphone, "" ); /* initialise or get garbage! */
-	getline(user->RGphone, RGphoneLEN, 1);
+	xgetline(user->RGphone, RGphoneLEN, 1);
 
     more(BBSDIR "/share/newuser/email", 0);
 
@@ -299,7 +299,7 @@ newuser_registration(user_t * user)
 
     do {
 	cprintf("\n\n* Email address:  ");
-	getline(user->RGemail, RGemailLEN, 1);
+	xgetline(user->RGemail, RGemailLEN, 1);
     }
     while ((strlen(user->RGemail) < 7)
 	   || (is_allowed_email(user->RGemail) == FALSE));
@@ -312,7 +312,7 @@ newuser_registration(user_t * user)
     fflush(stdout);
 
     cprintf("\n\nURL:              http://");
-    getline(p, RGurlLEN - 7, 1);
+    xgetline(p, RGurlLEN - 7, 1);
     if (strlen(p) < 5) {
 	strcpy(user->RGurl, "");
 	cprintf("URL left blank.\n");

@@ -123,7 +123,7 @@ sysop_menu()
 		cprintf("\1f\1wPost a file in this room. Specify absolute pathname.\n");
 		cprintf("Filename:\1a ");
 		fflush(stdout);
-		getline(filename, 80, 1);
+		xgetline(filename, 80, 1);
 		if (!fexists(filename)) {
 		    cprintf("\n\n\1f\1rCouldn't locate file %s", filename);
 		    break;
@@ -391,7 +391,7 @@ sysopuser_menu()
 		char user[L_USERNAME+1];
 		cprintf("\1f\1rDelete a user.\1a\n");
 		cprintf("User to be deleted: ");
-		getline( user, L_USERNAME, 1 );
+		xgetline( user, L_USERNAME, 1 );
 		if ( strlen( user ) < 1 ) break;
 		cprintf( "Are you sure you want to delete %s ? (y/n)", user );
 		if ( yesno() == YES ) {
@@ -682,7 +682,7 @@ misc_menu()
 #ifdef ENABLE_NLS
 		cprintf("Current locale: %s\n", usersupp->lang );
 		cprintf("\1f\1gChoose Language\1w: \1c" );
- 		getline( usersupp->lang, L_LANG, 1 );
+ 		xgetline( usersupp->lang, L_LANG, 1 );
                 { extern int  _nl_msg_cat_cntr;
                   setlocale( LC_MESSAGES, usersupp->lang );
                   ++_nl_msg_cat_cntr;
@@ -831,7 +831,7 @@ unlock_terminal(void)
             cprintf(" \1f\1w(\1r%d failure%s\1w)\1a", failures, (failures > 1) ? "s" : "" );
         cprintf("\n\n");
         cprintf("\1f\1gPlease enter your password\1w: \1c");
-        (void) getline(pwtest, -19, 1);
+        (void) xgetline(pwtest, -19, 1);
 
         if (strlen(pwtest) == 0) {
             cprintf("");
@@ -902,7 +902,7 @@ check_passwd(void)
     char pwtest[20];
 
     cprintf("\r\1f\1gPlease enter your password\1w: \1g");
-    getline(pwtest, -19, 1);
+    xgetline(pwtest, -19, 1);
 
     if (strlen(pwtest) < 1) {
 	cprintf("\1f\1rAccount deletion aborted.\1a");

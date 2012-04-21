@@ -502,7 +502,7 @@ express(int X_PARAM)
 /* get the x buffer */
 
     if (EMOTE) {
-	getline(send_string, 74 - strlen(usersupp->username), FALSE);
+	xgetline(send_string, 74 - strlen(usersupp->username), FALSE);
 	if (strlen(send_string) == 0) {
 	    mono_change_online(who_am_i(NULL), "", 15);
 	    return;

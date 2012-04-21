@@ -55,7 +55,7 @@ search()
     cprintf("\1f\1g\nYou can use wildcards and exclusions such as \1r?\1g and \1r[^St]\1g in your search.\n");
     cprintf("\1f\1gMatches are displayed in \1yyellow\1g.\n");
     cprintf("\1f\1g\nEnter a string to search for\1w:\1a\1c ");
-    getline(string, 24, 0);
+    xgetline(string, 24, 0);
     if (strlen(string) == 0) {
 	cprintf("\1f\1rI'm not going to look for that, that's nothing!\n");
 	return;
@@ -423,7 +423,7 @@ rate_message(message_t * message, unsigned int number, unsigned int forum)
     cprintf("\1f\1gYour rating for this %s \1w(\1g-9 thru 9\1w): \1c", config.message);
 
     strcpy(buf_str, "");
-    getline(buf_str, 3, TRUE);
+    xgetline(buf_str, 3, TRUE);
 
     if ((sscanf(buf_str, "%d", &score)) != 1) {
 	cprintf("\1f\1rSorry, but `\1y%s\1r' is not a valid entry.\1a\n", buf_str);
@@ -481,7 +481,7 @@ search_via_sql(unsigned int forum)
     cprintf("\n\1f\1gNote that the search for a normal string is not case sensitive.");
     cprintf("\n\1f\1gFind \1w(\1gmax 30 chars\1w): \1c");
     strcpy(needle, "");
-    getline(needle, 30, FALSE);
+    xgetline(needle, 30, FALSE);
     needle[strlen(needle)] = '\0';
 
     if (!(strlen(needle))) {

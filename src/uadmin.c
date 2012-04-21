@@ -203,7 +203,7 @@ edit_field(user_t * user, int fieldnum)
 
 	case 'A':
 	    cprintf("Enter new aideline: ");
-	    getline(user->aideline, 80, 0);
+	    xgetline(user->aideline, 80, 0);
 	    uadmin_need_rewrite = TRUE;
 	    log_sysop_action("changed %s's aideline to %s"
 			     ,user->username, user->aideline);
@@ -233,7 +233,7 @@ edit_field(user_t * user, int fieldnum)
 
 	case 'f':
 	    cprintf("Enter new Flying: ");
-	    getline(user->doing, 30, 0);
+	    xgetline(user->doing, 30, 0);
 	    mono_change_online(user->username, user->doing, 14);
 	    uadmin_need_rewrite = TRUE;
 	    log_sysop_action("modified %s's flying to %s."
@@ -266,7 +266,7 @@ edit_field(user_t * user, int fieldnum)
 
 	case 'p':
 	    cprintf("Enter new profileflag (current is %s): ", user->xtrapflag);
-	    getline(user->xtrapflag, 69, 0);
+	    xgetline(user->xtrapflag, 69, 0);
 	    mono_sql_u_update_xtrapflag(user->usernum,user->xtrapflag );
 	    uadmin_need_rewrite = TRUE;
 	    log_sysop_action("changed %s's profileflag to %s."
@@ -275,7 +275,7 @@ edit_field(user_t * user, int fieldnum)
 
 	case 'P':
 	    cprintf("New Password: ");
-	    getline(ny, 18, 1);
+	    xgetline(ny, 18, 1);
             mono_sql_u_set_passwd( user->usernum, ny );
 	    uadmin_need_rewrite = TRUE;
 	    log_sysop_action("changed %s's password."
@@ -312,7 +312,7 @@ edit_field(user_t * user, int fieldnum)
 		    {
 			char newb[6];
 			cprintf("New TotalTime in hours: ");
-			getline(newb, 5, 1);
+			xgetline(newb, 5, 1);
 			user->online = atol(newb) * 60;
 		    }
 		    uadmin_need_rewrite = TRUE;

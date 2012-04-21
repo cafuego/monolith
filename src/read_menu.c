@@ -433,7 +433,7 @@ short_prompt(void)
 		cprintf(_("\1f\1gJump a number of messages back from the Last Read Message.\1a\n"));
 		cprintf(_("\1f\1gHow many messages back shall I jump?\1c "));
 		fflush(stdout);
-		getline(tempstr, 4, 1);
+		xgetline(tempstr, 4, 1);
 		t = atoi(tempstr);
 		if (t <= 0)
 		    cprintf(_("\1f\1rThat is not a valid entry.\1a\n"));
@@ -445,7 +445,7 @@ short_prompt(void)
 		cprintf(_("\1f\1rJump a number of messages back from the Last %s in this %s.\1a\n"), config.forum);
 		cprintf(_("\1f\1gHow many messages back shall I jump?\1c "));
 		fflush(stdout);
-		getline(tempstr, 4, 1);
+		xgetline(tempstr, 4, 1);
 		t = atoi(tempstr);
 		if (t <= 0)
 		    cprintf(_("\1f\1rThat is not a valid entry.\1a\n"));
@@ -934,7 +934,7 @@ long_prompt(long number, int direction)
 		    cprintf(_("\1f\1gJump a number of messages back from the current message.\1a\n"));
 		    cprintf(_("\1f\1gHow many messages back shall I jump?\1c "));
 		    fflush(stdout);
-		    getline(tempstr, 4, 1);
+		    xgetline(tempstr, 4, 1);
 		    t = atoi(tempstr);
 		    if (t <= 0)
 		        cprintf(_("\1f\1rThat is not a valid entry.\1a\n"));
@@ -949,7 +949,7 @@ long_prompt(long number, int direction)
 		    cprintf(_("\1f\1gJump a number of messages forward from the current message.\1a\n"));
 		    cprintf(_("\1f\1gHow many messages forward shall I jump?\1c "));
 		    fflush(stdout);
-		    getline(tempstr, 4, 1);
+		    xgetline(tempstr, 4, 1);
 		    t = atoi(tempstr);
 		    if (t <= 0)
 		        cprintf(_("\1f\1rThat is not a valid entry.\1a\n"));
@@ -1094,7 +1094,7 @@ numeric_read(const long current_post)
     cprintf("\1f\1gJump to a specific message number.\1a\n");
     cprintf("\1f\1gWhich message would you like to read? \1a");
     fflush(stdout);
-    getline(tempstr, 9, 1);
+    xgetline(tempstr, 9, 1);
     templong = atol(tempstr);
     if (templong > highest_id) {
 	cprintf("\1f\1rThat doesn't seem to be a post number, Dave.\1a\n");

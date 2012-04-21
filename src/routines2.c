@@ -737,7 +737,7 @@ modify_birthday(date_t * bday)
 	t.tm_mday = t.tm_mon = t.tm_year = 0;
 
 	cprintf("Birthday: \1c");
-	getline(birthday, 11, TRUE);
+	xgetline(birthday, 11, TRUE);
 	strremcol(birthday);
 
 	if (strlen(birthday) == 0) {
@@ -810,32 +810,32 @@ configure_sql()
 
 	    cprintf("\n\1f\1gServer \1w(\1y%s\1w)\1w: \1c",
 		    (strlen(_sql->host) == 0) ? shm->mysql.host : _sql->host);
-	    getline(_sql->host, L_USERNAME, FALSE);
+	    xgetline(_sql->host, L_USERNAME, FALSE);
 	    strremcol(_sql->host);
 	    if( strlen(_sql->host) == 0)
 		    strncpy(_sql->host, shm->mysql.host, L_USERNAME);
 
 	    cprintf("\1f\1gUsername \1w(\1y%s\1w)\1w: \1c",
 		    (strlen(_sql->user) == 0) ? shm->mysql.user : _sql->user);
-	    getline(_sql->user, L_USERNAME, FALSE);
+	    xgetline(_sql->user, L_USERNAME, FALSE);
 	    strremcol(_sql->user);
 	    if( strlen(_sql->user) == 0)
 		    strncpy(_sql->user, shm->mysql.user, L_USERNAME);
 
 	    cprintf("\1f\1gPassword \1w(\1y%s\1w)\1w: \1c", shm->mysql.pass);
-	    getline(_sql->pass, L_USERNAME, FALSE);
+	    xgetline(_sql->pass, L_USERNAME, FALSE);
 	    strremcol(_sql->pass);
 
 	    cprintf("\1f\1gDatabase \1w(\1y%s\1w)\1w: \1c",
 		    (strlen(_sql->base) == 0) ? shm->mysql.base : _sql->base);
-	    getline(_sql->base, L_USERNAME, FALSE);
+	    xgetline(_sql->base, L_USERNAME, FALSE);
 	    strremcol(_sql->base);
 	    if( strlen(_sql->base) == 0)
 		    strncpy(_sql->base, shm->mysql.base, L_USERNAME);
 
 	    cprintf("\1f\1gSocket \1w(\1y%s\1w)\1w: \1c",
 		    (strlen(_sql->sock) == 0) ? shm->mysql.sock : _sql->sock);
-	    getline(_sql->sock, L_USERNAME, FALSE);
+	    xgetline(_sql->sock, L_USERNAME, FALSE);
 	    strremcol(_sql->sock);
 	    if( strlen(_sql->sock) == 0)
 		    strncpy(_sql->sock, shm->mysql.sock, L_USERNAME);

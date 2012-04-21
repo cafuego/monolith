@@ -130,14 +130,14 @@ wacky_email_stuff()
 	    cprintf(_("\01f\01rWarning\01w:\01g Couldn't remove colours."));
     }
     cprintf("\01f\01g\nEnter a recipient:\01c ");
-    getline(recipient, sizeof(recipient), 1);
+    xgetline(recipient, sizeof(recipient), 1);
     accepted = strspn(recipient, ACCEPTED);
 
     if (accepted < strlen(recipient)) {
 	cprintf("\01r\01f\nInvalid email address, can't send message!\01a\n");
     } else {
 	cprintf("\01f\01gSubject for the email: \01c");
-	getline(subject, sizeof(subject), 1);
+	xgetline(subject, sizeof(subject), 1);
 	if (strspn(subject, ACCEPTED) < strlen(subject)) {
 	    cprintf("\01r\01fSubject contains invalid characters, can't send message!\01a\n");
 	    return;
@@ -304,7 +304,7 @@ mail_clipboard(const char *file)
             cprintf(_("\1f\1r\nWarning\1w:\1g Couldn't remove colours.\1a"));
 
     cprintf("\1f\1gSubject for the email: \1c");
-    getline(subject, sizeof(subject), 1);
+    xgetline(subject, sizeof(subject), 1);
 
 #ifndef HAVE_SENDMAIL
     if (strspn(subject, ACCEPTED) < strlen(subject)) {

@@ -210,7 +210,7 @@ enter_passwd(const char *username)
     }
     user = readuser(username);
     cprintf("\r%s's Password: ", user->username);
-    (void) getline(pwtest, -19, 1);
+    (void) xgetline(pwtest, -19, 1);
 
     if (strlen(pwtest) == 0) {
 	xfree(pwtest);
@@ -242,7 +242,7 @@ do_changepw()
     char pwtest[20];
 
     cprintf(_("\1f\1gPlease enter your \1rcurrent\1g password: "));
-    getline(pwtest, -19, 1);
+    xgetline(pwtest, -19, 1);
 
     if (strlen(pwtest) == 0)
 	return;
@@ -273,11 +273,11 @@ change_passwd(user_t * user)
 
     while (!done) {
 	cprintf(_("Please enter a password: "));
-	getline(pwread, -19, 1);
+	xgetline(pwread, -19, 1);
 
 	if (strlen(pwread)) {
 	    cprintf(_("Please enter it again: "));
-	    getline(pwtest, -19, 1);
+	    xgetline(pwtest, -19, 1);
 
 	    if (strcmp(pwtest, pwread) != 0)
 		cprintf(_("The passwords you typed didn't match.  Please try again.\n"));
@@ -324,7 +324,7 @@ enter_name(char **username)
 	    /* if this user does not exist, fake a password-entry */
 	    if (mono_sql_u_check_user(*username) == FALSE) {
 		cprintf(_("%s's Password: "), *username);
-		(void) getline(pwordshit, -19, 1);
+		(void) xgetline(pwordshit, -19, 1);
 		cprintf(_("Incorrect login.\n"));
 		continue;
 	    } else

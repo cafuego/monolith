@@ -105,7 +105,7 @@ cthulhu()
      */
     do {
         cprintf("\n\1w666.\1yCthulhu\1w> \1rGimme a %s! \1w", munchies[food]);
-        getline(april_fools, 64, 0);
+        xgetline(april_fools, 64, 0);
     } while( _cthulhu_bad(food, april_fools));
 
     april_fools[ strlen(april_fools) ] = '\0';
@@ -157,7 +157,7 @@ add_goto()
         return;
 
     cprintf("\n\1f\1gEnter goto\1f\1w: \1c");
-    getline(mygoto,100,TRUE);
+    xgetline(mygoto,100,TRUE);
 
     if( strlen(mygoto) > 2 ) {
         cprintf("\1f\1gAdd this goto to the database? \1w(\1gy\1w/\1gn\1w)\1c ");
@@ -274,7 +274,7 @@ roll_the_bones(void)
     char *bonehead = NULL;
 
     cprintf("\n\n\1f\1rRolling the bones!  \1w<\1r?\1w>\1g for help : \1y");
-    getline(boner, 7, 1);
+    xgetline(boner, 7, 1);
 
     for (i = 0; i < strlen(boner); i++)		/* idiot check */
 	if (((strlen(boner) > 2) || (boner[0] == '?')) &&

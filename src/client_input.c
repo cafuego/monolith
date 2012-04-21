@@ -101,11 +101,11 @@ get_name(int quit_priv)
 }
 
 /*************************************************
-* getline()
+* xgetline()
 *************************************************/
 
 int
-getline(char *string, int lim, int nocol)
+xgetline(char *string, int lim, int nocol)
 {
     char *str;
     int cnt;

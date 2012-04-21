@@ -42,7 +42,7 @@
 #include "rooms.h"		/* for readquad, leave_n_unread_posts, etc. */
 #include "routines2.h"		/* for more, etc. */
 #include "enter_message.h"	/* for self-mail of results */
-#include "input.h"		/* for getline */
+#include "input.h"		/* for xgetline */
 
 static void qc_admin_menu(void);
 static void qc_categories_menu(void);
@@ -681,7 +681,7 @@ qc_add_category(void)
     char category[L_CONTENT_CATEGORY];
 
     cprintf("\n\1f\1gNew category name or \1w<\1rret\1w>\1g exits: \1a");
-    getline(category, L_CONTENT_CATEGORY - 1, 1);
+    xgetline(category, L_CONTENT_CATEGORY - 1, 1);
     if (strlen(category) == 0)
 	return;
 
@@ -760,7 +760,7 @@ qc_rename_category(void)
     }
     cprintf("\n\1f\1gRename category \1y%s\1g, to: \1a\n\n",
 	    old_category);
-    getline(category, L_CONTENT_CATEGORY - 1, 1);
+    xgetline(category, L_CONTENT_CATEGORY - 1, 1);
     if (strlen(category) == 0)
 	return;
 
