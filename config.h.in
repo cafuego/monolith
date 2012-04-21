@@ -1,9 +1,4 @@
 /* config.h.in.  Generated from configure.in by autoheader.  */
-/* Name of package.  */
-#undef PACKAGE
-
-/* Version of package.  */
-#undef VERSION
 
 /* I've got the animal patch */
 #undef HAVE_ANIMAL
@@ -120,9 +115,6 @@
 /* Define to 1 if you have the `strstr' function. */
 #undef HAVE_STRSTR
 
-/* Subversion is installed */
-#undef HAVE_SVN
-
 /* Define to 1 if you have the <sys/dir.h> header file, and it defines `DIR'.
    */
 #undef HAVE_SYS_DIR_H
@@ -139,6 +131,9 @@
 /* Define to 1 if you have the <sys/ndir.h> header file, and it defines `DIR'.
    */
 #undef HAVE_SYS_NDIR_H
+
+/* Define to 1 if you have the <sys/param.h> header file. */
+#undef HAVE_SYS_PARAM_H
 
 /* Define to 1 if you have the <sys/stat.h> header file. */
 #undef HAVE_SYS_STAT_H
@@ -191,6 +186,9 @@
 /* Define to the one symbol short name of this package. */
 #undef PACKAGE_TARNAME
 
+/* Define to the home page for this package. */
+#undef PACKAGE_URL
+
 /* Define to the version of this package. */
 #undef PACKAGE_VERSION
 
@@ -224,11 +222,11 @@
 /* Define to empty if `const' does not conform to ANSI C. */
 #undef const
 
-/* Define to `long' if <sys/types.h> does not define. */
+/* Define to `long int' if <sys/types.h> does not define. */
 #undef off_t
 
 /* Define to `int' if <sys/types.h> does not define. */
 #undef pid_t
 
-/* Define to `unsigned' if <sys/types.h> does not define. */
+/* Define to `unsigned int' if <sys/types.h> does not define. */
 #undef size_t

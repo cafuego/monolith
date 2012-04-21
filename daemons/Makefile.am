@@ -9,10 +9,11 @@ AM_CFLAGS=-O2 -Wall -I../include
 AM_CFLAGS += $(MYSQL_INCLUDE)
 #endif
 
+LDADD = -L../lib -lyawc
 #ifdef USE_MYSQL
-LDADD = $(MYSQL_LIB) -L../lib -lmysqlclient -lyawc
+LDADD += $(MYSQL_LIB) -lmysqlclient 
 #else
-LDADD = $(MYSQL_LIB) -L../lib -lyawc -lmysqlclient
+LDADD += 
 #endif
 
 #CFLAGS += -W \
