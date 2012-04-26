@@ -1,10 +1,9 @@
+
 bin_PROGRAMS = yawc_port yawc_client
 AM_CFLAGS = -O2 -Wall -g 
 
-INCLUDES = -I../include
-
 #ifdef USE_MYSQL
-  INCLUDES += $(MYSQL_INCLUDE)
+AM_CPPFLAGS = $(MYSQL_INCLUDE)
 #endif
 
 yawc_port_SOURCES = clipboard.c key.c fun.c friends.c chat.c help.c menu.c \
@@ -26,8 +25,7 @@ yawc_client_LDADD = c_commands.o c_client_input.o c_express.o c_main.o \
   -licq @LIBINTL@
 
 c_commands.o: commands.c
-	$(COMPILE) \
-		-DCLIENTSRC -c commands.c -o c_commands.o
+	$(COMPILE) -DCLIENTSRC -c commands.c -o c_commands.o
 
 c_client_input.o: client_input.c
 	$(COMPILE) \

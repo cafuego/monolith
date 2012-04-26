@@ -102,7 +102,7 @@ mono_sql_u_check_passwd(unsigned int user_id, const char *passwd)
     MYSQL_RES *res;
     MYSQL_ROW row;
     int ret;
-    char salt[2];
+    char salt[3];
     char typed[14];
 
     assert(passwd != NULL);

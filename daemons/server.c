@@ -133,7 +133,7 @@ get_hostname()
 
     struct hostent *host;
     char site_num[80];
-    int size;
+    size_t size;
 
 /* according to the manpage, this should be a unsgnd long int, not just
  * an unsigned int.              kirth */

@@ -592,7 +592,8 @@ print_user_stats(const user_t * user, const user_t * viewing_user)
     FILE *fp;
     char work[L_USERNAME + strlen(USERDIR) + 10];
     register char cmd = '\0';
-    int control = 0, timescalled = 0, posted = 0, x_s = 0;
+    int control = 0;
+    unsigned int timescalled = 0, x_s = 0, posted = 0;
     time_t timecall, curtime;
     unsigned int a;
     btmp_t *record;

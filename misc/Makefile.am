@@ -25,15 +25,10 @@ initgoto_SOURCES = initgoto.c
 
 profile_SOURCES = profile.c
 
-# this works:
 LDADD = -lyawc $(MYSQL_LIB) -L../lib -lmysqlclient
 
-# this does not work
-# LDADD = -L../lib -lyawc -L/usr/local/mysql/lib -lintl
+AM_CFLAGS = -Wall 
 
-AM_CFLAGS = -g -O3 -Wall -I../include
-
-INCLUDES = -I../include
 #ifdef USE_MYSQL
-INCLUDES += $(MYSQL_INCLUDE)
+AM_CPPFLAGS = $(MYSQL_INCLUDE)
 #endif

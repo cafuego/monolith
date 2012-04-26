@@ -449,7 +449,9 @@ mono_connect_shm()
     }
     if (fexists(SHMKEY) == TRUE) {
 	fp = xfopen(SHMKEY, "r", TRUE);
-	fgets(bing, 9, fp);
+	if ( fgets(bing, 9, fp) == NULL ) {
+	    exit(EXIT_FAILURE);
+	}
 	shmid = atoi(bing);
 	fclose(fp);
         if ( readonly == TRUE ) {
@@ -540,7 +542,7 @@ _mono_initialize_shm()
     (void) strncpy(shm->mysql.user, MYSQL_USER, L_USERNAME); 
     (void) strncpy(shm->mysql.pass, MYSQL_PASSWORD, L_USERNAME); 
     (void) strncpy(shm->mysql.base, MYSQL_DATABASE, L_USERNAME); 
-    (void) strncpy(shm->mysql.sock, MYSQL_SOCKET, strlen(MYSQL_SOCKET) ); 
+    (void) strncpy(shm->mysql.sock, MYSQL_SOCKET, L_USERNAME);
 
     return 0;
 }

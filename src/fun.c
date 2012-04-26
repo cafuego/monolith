@@ -44,7 +44,7 @@ random_goto()
 {
     char *thegoto;
     int ret;
-    int timescalled;
+    size_t timescalled;
 
     if((rand() % 10) == 1) {
 	thegoto = mono_sql_random_goto();

@@ -34,15 +34,13 @@ print_user_stats(user_t * user)
 {
 
     unsigned int a;
-    int control = 0, found_RA_rooms = 0;
+    int found_RA_rooms = 0;
     time_t timecall, curtime;
     char *p, *profile;
     btmp_t *bp;
 
     time(&curtime);
     timecall = ((curtime - user->laston_from) / 60);
-
-    control = 0;
 
     printf("\n\1y\1f%s\1g ", user->username);
 
@@ -80,7 +78,7 @@ print_user_stats(user_t * user)
     printf("\1a\1g\1D\n");
 
     p = read_regis(user, 0);
-    printf(p);
+    printf("%s", p);
     xfree(p);
 
     printf("\1f\1cFlying: %s\1a   ", user->doing);

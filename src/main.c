@@ -769,9 +769,9 @@ logoff(int code)
     (void) unlink(temp);	/* remove temporary files       */
     (void) unlink(tmpname);
 
-    (void) cprintf("\1a\n");	/* K: this should remove all colors */
+    cprintf("\1a\n");	/* K: this should remove all colors */
     remove_express();
-    (void) fflush(stdout);
+    fflush(stdout);
     exit(0);
 }
 

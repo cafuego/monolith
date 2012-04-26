@@ -182,13 +182,13 @@ mono_sql_logqueries_toggle ()
   return logqueries;
 }
 
-char *
+const char *
 mono_mysql_server_info ()
 {
   return mysql_get_server_info (&mp);
 }
 
-char *
+const char *
 mono_mysql_host_info ()
 {
   return mysql_get_host_info (&mp);

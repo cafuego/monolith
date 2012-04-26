@@ -50,7 +50,6 @@ useradmin( const char *username )
     char oldname[L_USERNAME + 1], f_bef[16], f_aft[16];
     char name[L_USERNAME + 1];
     int command = 0, isonline = 0;
-    unsigned int oldpriv;
     user_t *user;
 
     /* if these were initalized up there, it doesn't work.. */
@@ -84,7 +83,6 @@ useradmin( const char *username )
     mode_string(f_bef, user);
 
     strcpy(oldname, user->username);
-    oldpriv = user->priv;
 
     if (mono_return_pid(oldname) != -1)
 	isonline = TRUE;

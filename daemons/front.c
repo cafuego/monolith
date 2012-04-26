@@ -145,7 +145,7 @@ get_hostname()
 
     struct hostent *host;
     char *site_num;
-    int size;
+    size_t size;
     struct sockaddr_in acc_addr;
     unsigned long int addr;
 

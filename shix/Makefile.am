@@ -9,10 +9,10 @@ LDADD = $(MYSQL_LIB) -lmysqlclient
 
 AM_CFLAGS =-O2 -Wall
 
-INCLUDES = -I../include
+AM_CPPFLAGS = -I../include
 
 #ifdef USE_MYSQL
-INCLUDES += $(MYSQL_INCLUDE)
+AM_CPPFLAGS += $(MYSQL_INCLUDE)
 #endif
 
 #CFLAGS += -pedantic -w -W \

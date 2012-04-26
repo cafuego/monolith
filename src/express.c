@@ -1104,7 +1104,7 @@ quoted_Xmsgs()
 {
     char quoteduser[L_BBSNAME + L_USERNAME + 2];
     char rbbs[L_BBSNAME + 1], ruser[L_USERNAME + 1];
-    int channel, i, matches = 0, flag = 0;
+    int channel, i, matches = 0;
     FILE *fp;
 
     cprintf("\1f\1c\n%s%s%s%s",
@@ -1123,7 +1123,6 @@ quoted_Xmsgs()
 	    return;
 	}
 	sprintf(quoteduser, "%s@%s", ruser, rbbs);
-	flag = 1;
     } else {
 	for (channel = -1, i = 0; i < MAXCHATROOMS; i++)
 	    if (EQ(quoteduser, shm->holodeck[i].name)) {
