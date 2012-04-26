@@ -345,7 +345,7 @@ main(int argc, char *argv[])
     int a;			/* misc                         */
     int newbie;			/* newbieflag, TRUE if newuser  */
     int done = FALSE;		/* True when finished login     */
-    char hellomsg[40], *my_name = NULL;
+    char hellomsg[L_FILE], *my_name = NULL;
     time_t laston;
     pid_t pid;
     char *username = NULL;
@@ -378,10 +378,10 @@ main(int argc, char *argv[])
 	strncpy(hname, "localhost", L_HOSTNAME);
 	exit(0);
     }
-    strncpy(hname, argv[1], 79);
-    hname[79] = '\0';
+    strncpy(hname, argv[1], L_HOSTNAME );
+    hname[L_HOSTNAME-1] = '\0';
     if (hname[0] == '\0')	/* we're from localhost */
-	if (gethostname(hname, 79) == -1)
+	if (gethostname(hname, L_HOSTNAME) == -1)
 	    strncpy(hname, "localhost", L_HOSTNAME);
 
     connecting_flag = 1;
@@ -720,7 +720,7 @@ void
 logoff(int code)
 {
 
-    char quote[40];
+    char quote[L_FILE];
 
 #ifdef MAIL_QUOTA
     if (!code)
@@ -783,7 +783,7 @@ void
 print_login_banner(time_t laston)
 {
 
-    char filename[50];
+    char filename[L_FILE];
     unsigned int timescalled = 0;
     int ret;
 
@@ -905,7 +905,7 @@ getwindowsize(int sig)
 void
 check_profile_updated()
 {
-    char work[L_USERNAME + strlen(USERDIR) + 10];
+    char work[L_FILE];
     time_t timenow;
     struct stat buf;
 
