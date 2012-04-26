@@ -119,7 +119,7 @@ void
 ok_let_in()
 {
 
-    execl(BBSEXECUTABLE, BBSEXECUTABLE, hostname, username, 0);
+    execl(BBSEXECUTABLE, BBSEXECUTABLE, hostname, username, (char *)NULL );
     logoff(0);
 }
 

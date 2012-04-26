@@ -120,7 +120,7 @@ main(int argc, char **argv)
     printf("[Trying to start main program]\n");
 #endif
 
-    execl(EXECUTABLE, EXECUTABLE, hname, username, 0);
+    execl(EXECUTABLE, EXECUTABLE, hname, username, (char *)NULL );
     /* if we can't find yawc just quietly die */
     printf("Horror! The bbs programme has been deleted!\r\n");
     log_off(0);
