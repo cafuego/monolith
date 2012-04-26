@@ -27,7 +27,7 @@ profile_SOURCES = profile.c
 
 LDADD = -lyawc $(MYSQL_LIB) -L../lib -lmysqlclient
 
-AM_CFLAGS = -Wall 
+AM_CFLAGS = -Wall  -g
 
 #ifdef USE_MYSQL
 AM_CPPFLAGS = $(MYSQL_INCLUDE)

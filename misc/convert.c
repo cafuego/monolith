@@ -51,8 +51,6 @@ read_all_users()
     unsigned int i;
     user_t *user;
     DIR *userdir;
-    MYSQL_RES *res;
-    int ret;
     struct dirent *tmpdirent;
 
     printf("Reading the users.\n");

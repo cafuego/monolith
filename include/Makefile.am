@@ -2,7 +2,7 @@
 
 noinst_HEADERS = bbsconfig.h btmp.h cgi.h chat.h clipboard.h commands.h \
 defs.h dexi.h dexi2.h display_message.h enter_message.h express.h \
-ext.h extra.h friends.h front.h fun.h global.h help.h input.h inter.h \
+ext.h friends.h front.h fun.h global.h help.h input.h inter.h \
 key.h libcache.h libfriends.h libmono.h libquad.h libshix.h libuid.h \
 log.h main.h menu.h messages.h monolith.h monosql.h msg_file.h newuser.h \
 qc.h read_menu.h registration.h rooms.h routines.h routines2.h server.h \
