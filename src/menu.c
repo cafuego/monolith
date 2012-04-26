@@ -487,10 +487,10 @@ mono_display_menu_ified(M_LN_t * the_menu, M_display_t * m_fmt, int columns)
 	if (someNode->mi_ptr->MI_ival != NULL) {
 	    snprintf(tmpstr, sizeof(tmpstr), "\1%c", m_fmt->value_color);
 	    if (m_fmt->no_boolean_values)
-		snprintf(tmpstr1, sizeof(tmpstr), "\1%c%s", m_fmt->value_color,
+		snprintf(tmpstr1, sizeof(tmpstr1), "\1%c%s", m_fmt->value_color,
 			 someNode->mi_ptr->MI_ival);
 	    else
-		snprintf(tmpstr1, sizeof(tmpstr), "\1%c%c", m_fmt->value_color,
+		snprintf(tmpstr1, sizeof(tmpstr1), "\1%c%c", m_fmt->value_color,
 			 (strcmp(someNode->mi_ptr->MI_ival, "1")) ? ' ' :
 			 m_fmt->flag_char);
 	    strcat(tmpstr, tmpstr1);
