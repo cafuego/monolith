@@ -48,16 +48,16 @@ typedef struct _menu_linked_list_node {
 
 /* prototypes */
 
-extern M_LN_t *destroy_menu(M_LN_t *, M_display_t *);
-extern M_LN_t * mono_display_menu_ified( M_LN_t *, M_display_t *, int);
-extern M_LNptr add_menu_item(M_LNptr , void (*)(const unsigned int, const long, void *), unsigned int, long, void *, char *, ...);
-extern void test_dlist_code(void);
-extern void set_menu_defaults(M_display_t *);
-extern void do_bing (const unsigned int, const long, void*);
-extern void exec_menu_cmd(M_LN_t *, const char *);
-extern void process_menu_internals(M_LN_t *, M_display_t *);
-extern int menu_command(M_LN_t * , M_display_t * );
-extern void do_nothing(const unsigned int, const long, void *);
+M_LN_t *destroy_menu(M_LN_t *, M_display_t *);
+M_LN_t * mono_display_menu_ified( M_LN_t *, M_display_t *, int);
+M_LNptr add_menu_item(M_LNptr , void (*)(const unsigned int, const long, void *), unsigned int, long, void *, char *, ...);
+void test_dlist_code(void);
+void set_menu_defaults(M_display_t *);
+void do_bing (const unsigned int, const long, void*);
+void exec_menu_cmd(M_LN_t *, const char *);
+void process_menu_internals(M_LN_t *, M_display_t *);
+int menu_command(M_LN_t * , M_display_t * );
+void do_nothing(const unsigned int, const long, void *);
 
 /* macros */
 

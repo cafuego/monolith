@@ -24,13 +24,9 @@
 
 #include "ext.h"
 #include "input.h"
-#include "inter.h"
 #include "help.h"
 #include "routines2.h"
-
-#define extern
-#include "friends.h"		/* friends prototypes */
-#undef extern
+#include "friends.h"
 
 static void menu_friend_add(int param);
 char *menu_friend_list(int param);

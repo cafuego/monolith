@@ -463,7 +463,7 @@ int
 convert_message_base(int forum)
 {
 #define CONVERT_MAIL_QUAD
-//#define CONVERT_INFO
+/* #define CONVERT_INFO */
     room_t quad;
     message_header_t * header;
     post_t post;

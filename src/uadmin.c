@@ -29,14 +29,10 @@
 #include "registration.h"
 #include "routines2.h"
 #include "usertools.h"
-
-#define extern
 #include "uadmin.h"
-#undef extern
 
 static void edit_field(user_t * userdata, int fieldnum);
 static int mode_string(char *, user_t *);
-
 
 static int uadmin_need_rewrite;
 

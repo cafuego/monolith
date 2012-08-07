@@ -1,4 +1,4 @@
-/* config.h.in.  Generated from configure.in by autoheader.  */
+/* include/config.h.in.  Generated from configure.in by autoheader.  */
 
 /* Define to 1 if translation of program messages to the user's native
    language is requested. */
@@ -228,9 +228,6 @@
 
 /* Define to 1 if your <sys/time.h> declares `struct tm'. */
 #undef TM_IN_SYS_TIME
-
-/* I Seek You */
-#undef USE_ICQ
 
 /* My SQL, Your SQL */
 #undef USE_MYSQL

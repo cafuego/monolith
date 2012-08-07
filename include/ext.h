@@ -25,4 +25,7 @@ extern user_t	*usersupp;		/* Logged-in user's user-struct	*/
 
 extern config_t config;			/* Peter's config */
 
+extern char profile_default[L_USERNAME+L_BBSNAME+2];
+
+
 /* eof */

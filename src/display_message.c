@@ -46,9 +46,7 @@
 #include "telnet.h"
 #endif
 
-#define extern
 #include "display_message.h"
-#undef extern
 
 static char *format_header(message_header_t *, unsigned int, char *);
 static char *format_date(message_header_t *, char *);

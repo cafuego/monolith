@@ -22,11 +22,7 @@
 #include "monolith.h"
 #include "libmono.h"
 #include "ext.h" 
-
-#define extern
 #include "help.h"
-#undef extern
-
 #include "input.h"
 #include "routines2.h"
 #include "menu.h"

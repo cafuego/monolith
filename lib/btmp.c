@@ -9,6 +9,7 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+
 #include <build-defs.h>
 
 #include <stdio.h>
@@ -23,17 +24,12 @@
 #include <sys/types.h>
 
 #include "monolith.h"
-
-#define extern
 #include "btmp.h"
-#undef extern
-
 #include "friends.h"
 #include "log.h"
 #include "libuid.h"
 #include "registration.h"
 #include "routines.h"
-
 #include "sql_forum.h"
 #include "sql_online.h"
 
@@ -53,6 +49,8 @@ static int _mono_remove_from_linked_list(const char *user);
 static int _mono_add_to_linked_list(btmp_t user);
 static int _mono_initialize_holodeck(void);
 static int _mono_guide_ok(btmp_t *guide);
+
+bigbtmp_t *shm;
 
 /* -------------------------------------------------------------------- */
 /* return_pid() */

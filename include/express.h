@@ -72,31 +72,32 @@
 #define WEB  	  (X_PARAM == -4)
 
 /* prototypes	*/
-extern void single_catchx( int sig );
-extern void multi_catchx( int sig );
-extern char *format_express( x_struct Catchxs );
-extern void sendx( char *to, const char *send_string, char override );
-extern void ping( char *to );
-extern void quoted_Xmsgs (void);
-extern void setup_express( void );
-extern void remove_express( void );
-extern void are_there_held_xs( void );
-extern void express( int );
-extern void change_express(int how);
-extern void old_express(void);
+void single_catchx( int sig );
+void multi_catchx( int sig );
+char *format_express( x_struct Catchxs );
+void sendx( char *to, const char *send_string, char override );
+void ping( char *to );
+void quoted_Xmsgs (void);
+void setup_express( void );
+void remove_express( void );
+void are_there_held_xs( void );
+void express( int );
+void change_express(int how);
+void old_express(void);
+void emergency_boot_all_users( void );
+void send_silc( void );
+void add_x_to_personal_xlog(char, x_str *, char);
+char *get_guide_name( char * );
+char * get_xmessage_destination(char * , const int, char * );
+int user_not_allowed_to_send_x(const int);
+char check_x_permissions(const char *, const int, char);
+void display_express_prompt(const int);
+void feeling(void);
+void are_there_held_web_xs(void);
+void show_web_xes(wx_list_t *);
+
 extern volatile int xmsgp;
 extern express_t *xmsgb[XLIMIT];
-extern void emergency_boot_all_users( void );
-extern void send_silc( void );
-extern void add_x_to_personal_xlog(char, x_str *, char);
-extern char *get_guide_name( char * );
-extern char * get_xmessage_destination(char * , const int, char * );
-extern int user_not_allowed_to_send_x(const int);
-extern char check_x_permissions(const char *, const int, char);
-extern void display_express_prompt(const int);
-extern void feeling(void);
-extern void are_there_held_web_xs(void);
-extern void show_web_xes(wx_list_t *);
 
 /* eof */
 

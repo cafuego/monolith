@@ -30,10 +30,10 @@
 #include "libmono.h"
 #include "version.h"
 #include "telnet.h"
+#include "main.h"
 
 #define extern
 #include "ext.h"
-#include "main.h"
 #undef extern
 
 #include "commands.h"

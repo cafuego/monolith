@@ -26,10 +26,7 @@
 #include "monolith.h"
 #include "libmono.h"
 #include "ext.h"
-
-#define extern
 #include "rooms.h"
-#undef extern
 
 #include "display_message.h"
 #include "fun.h"

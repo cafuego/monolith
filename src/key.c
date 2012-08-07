@@ -34,11 +34,7 @@
 #include "monolith.h"
 #include "libmono.h"
 #include "ext.h"
-
-#define extern
 #include "key.h"
-#undef extern
-
 #include "input.h"
 #include "sql_user.h"
 #include "routines2.h"

@@ -8,8 +8,8 @@ typedef struct rbbs_type {
 
 /* dexi_routines.c */
 
-extern void mono_setdexient(void);
-extern void mono_enddexient(void);
-extern rbbs_t *mono_getdexient(void);
+void mono_setdexient(void);
+void mono_enddexient(void);
+rbbs_t *mono_getdexient(void);
 
 /* eof */

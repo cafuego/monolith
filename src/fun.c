@@ -28,11 +28,7 @@
 #include "monolith.h"
 #include "libmono.h"
 #include "ext.h"
-
-#define extern
 #include "fun.h"
-#undef extern
-
 #include "input.h"
 #include "routines2.h"
 

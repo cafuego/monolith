@@ -24,9 +24,7 @@
 #include "libmono.h"
 #include "ext.h"
 
-#define extern
 #include "registration.h"
-#undef extern
 
 #include "main.h"
 #include "menu.h"

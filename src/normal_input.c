@@ -27,10 +27,7 @@
 #include "monolith.h"
 #include "libmono.h"
 #include "ext.h"
-
-#define extern
 #include "input.h"
-#undef extern
 
 #include "express.h"
 #include "main.h"

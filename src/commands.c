@@ -48,9 +48,7 @@
 #include "usertools.h"
 #include "uadmin.h"
 
-#define extern
 #include "commands.h"
-#undef extern
 
 void
 sysop_menu()

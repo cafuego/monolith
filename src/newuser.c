@@ -26,9 +26,7 @@
 #include "libmono.h"
 #include "ext.h"
 
-#define extern
 #include "newuser.h"
-#undef extern
 
 #include "input.h"
 #include "key.h"

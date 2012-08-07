@@ -32,14 +32,9 @@
 
 #include "monolith.h"
 #include "telnet.h"
-
-#define extern
 #include "routines.h"
-#undef extern
-
 #include "btmp.h"
 #include "log.h"
-#include "inter.h"
 #include "routines2.h"
 #include "userfile.h"
 
@@ -70,15 +65,9 @@ int
 set_timezone( const char *tmz )
 {
     int ret;
-    // char str[64];
 
     if ( !tmz || !strlen(tmz) )
         return -1;
-
-    // ret = sprintf( str, "TZ=%s", tz );
-    // if ( ret == -1 ) return -1;
-    // ret = putenv( str );
-    // if ( ret == -1 ) return -1;
 
     ret =  setenv("TZ", tmz, 1);
     tzset();

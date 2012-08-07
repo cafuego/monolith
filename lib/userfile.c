@@ -16,11 +16,7 @@
 #include <unistd.h>
 
 #include "monolith.h"
-
-#define extern
 #include "userfile.h"
-#undef extern
-
 #include "btmp.h"
 #include "friends.h"
 #include "log.h"
@@ -71,7 +67,7 @@ readuser(const char *name)
     (void) sprintf(work, "%s/save", getuserdir(name));
     (void) name2file(work);
 
-    // Eh, lets's check that this userdir exists, eh?
+    /* Eh, lets's check that this userdir exists, eh? */
     if( mkdir(getuserdir(name), 0750) == -1 ) {
 	if( errno != EEXIST ) {
 	    fprintf(stderr, "can't create userdir: %s\n", strerror(errno));

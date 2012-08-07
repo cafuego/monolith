@@ -34,9 +34,7 @@
 #include "libmono.h"
 #include "ext.h"		/* for curr_rm and such */
 
-#define extern
 #include "qc.h"
-#undef extern
 
 #include "menu.h"		/* for dynamic menus */
 #include "rooms.h"		/* for readquad, leave_n_unread_posts, etc. */

@@ -1,20 +1,20 @@
 /* $Id$ */
 
-extern RETSIGTYPE dropcarr(int sig);
-extern RETSIGTYPE sleeping(int sig);
-extern RETSIGTYPE segfault( int sig);
-extern RETSIGTYPE updateself(int sig);
-extern RETSIGTYPE kickoutmyself(int sig);
-extern void change_passwd(user_t *user);
-extern void do_changepw(void);
-extern void getwindowsize(int sig);
-extern void enter_name( char **username);
-extern int enter_passwd(const char *username);
-extern void init_system(void);
-extern void logoff(int code);
-extern void mailcheck(void);
-extern int main(int argc, char *argv[] );
-extern void print_login_banner(time_t laston);
-extern int user_terminate(void);
-extern void admin_info( void );
-extern void check_profile_updated( void );
+RETSIGTYPE dropcarr(int sig);
+RETSIGTYPE sleeping(int sig);
+RETSIGTYPE segfault( int sig);
+RETSIGTYPE updateself(int sig);
+RETSIGTYPE kickoutmyself(int sig);
+void change_passwd(user_t *user);
+void do_changepw(void);
+void getwindowsize(int sig);
+void enter_name( char **username);
+int enter_passwd(const char *username);
+void init_system(void);
+void logoff(int code);
+void mailcheck(void);
+int main(int argc, char *argv[] );
+void print_login_banner(time_t laston);
+int user_terminate(void);
+void admin_info( void );
+void check_profile_updated( void );

@@ -50,14 +50,10 @@
 #include "express.h"
 #include "main.h"
 #include "input.h"
-#include "inter.h"
 #include "usertools.h"
 #include "wholist.h"
-
-#define extern
 #include "routines2.h"
 #include "sql_message.h"
-#undef extern
 
 #ifdef CLIENTSRC
 static void _restore_colour(void);
@@ -391,7 +387,6 @@ print_system_config()
     cprintf("\1wMaximum Users Online          : \1g%d.\n", MAXUSERS);
     cprintf("\1wSleeping timeout              : \1g%d minutes.\n", TIMEOUT);
     cprintf("\1wUnused accounts purge after   : \1g%d days.\n", PURGEDAY);
-    print_inter_hosts();
     return;
 }
 

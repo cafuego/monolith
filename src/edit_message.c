@@ -32,9 +32,7 @@
 #include "rooms.h"
 #include "routines2.h"
 
-#define extern
 #include "edit_message.h"
-#undef extern
 
 int
 edit_message(unsigned int forum, unsigned int id)

@@ -14,12 +14,11 @@
 
 #include "monolith.h"
 
-#define extern
 #include "log.h"
-#undef extern
-
 #include "routines.h"
 #include "libuid.h"
+
+int mono_errno;
 
 /* this uses a fixed string of length 80. it shouldn't */
 int
@@ -42,7 +41,7 @@ log_it(const char *type, const char *event,...)
     strcpy(work, ctime(&t));
     /* remove year and trailing '\n' */
     work[strlen(work) - 6] = '\0';
-    (void) fprintf(fp, "%s %s[%d](%s): ", work, program_invocation_short_name, getpid(), mono_uid);
+    (void) fprintf(fp, "%s %s[%d](%s): ", work, get_invocation_short_name(), getpid(), mono_getuid() );
 
     va_start(ptr, event);
     (void) vfprintf(fp, event, ptr);

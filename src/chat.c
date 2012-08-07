@@ -37,9 +37,7 @@
 #include "libmono.h"
 #include "ext.h"
 
-#define extern
 #include "chat.h"
-#undef extern
 
 #include "routines2.h"
 

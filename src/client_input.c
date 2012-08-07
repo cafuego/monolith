@@ -29,11 +29,7 @@
 
 #include "ext.h"
 #include "telnet.h"
-
-#define extern
 #include "input.h"
-#undef extern
-
 #include "express.h"
 #include "main.h"
 #include "routines2.h"

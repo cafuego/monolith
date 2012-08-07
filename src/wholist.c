@@ -28,14 +28,10 @@
 #include "monolith.h"
 #include "libmono.h"
 #include "ext.h"
-
 #include "chat.h"
 #include "friends.h"
 #include "routines2.h"
-
-#define extern
 #include "wholist.h"
-#undef extern
 
 #undef NO_WHOLIST
 

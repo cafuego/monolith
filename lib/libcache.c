@@ -8,26 +8,21 @@
 #include <sys/types.h>
 #include <assert.h>
 
-#ifdef HAVE_MYSQL_H
-  #undef HAVE_MYSQL_MYSQL_H
-  #include <mysql.h>
-#else
-  #ifdef HAVE_MYSQL_MYSQL_H
-    #undef HAVE_MYSQL_H
-    #include <mysql/mysql.h>
-  #endif
-#endif
-
 #include "monolith.h"
 #include "btmp.h"
 #include "routines.h"
 #include "sql_user.h"
 #include "libfriends.h"
 #include "sql_useruser.h"
-
-#define extern
 #include "libcache.h"
-#undef extern
+
+typedef struct user_cache_type {
+    char name[L_USERNAME + L_BBSNAME + 2];
+    unsigned int user_number;
+    int friend;
+    int quickx;
+    struct user_cache_type *next;
+} user_cache_t;
 
 static int destroy_user_cache(void);
 static int add_to_user_cache(user_cache_t);
@@ -37,7 +32,7 @@ static char * cached_user_id2name(const unsigned int );
 static unsigned int cached_user_name2id(const char *);
 static void update_user_cache(const unsigned int );
 
-user_cache_t *user_cache = NULL;  /* global user cache */
+static user_cache_t *user_cache = NULL;  /* global user cache */
 
 /*
  * -  starting the cache:  caches the friends and enemies list

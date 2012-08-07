@@ -99,24 +99,24 @@ typedef struct {
 
 } message_header_t;
 
-extern size_t get_filesize(const char *);
-extern int count_dir_files(const char *);
-extern int write_message_header(const char *, message_header_t *);
-extern int read_message_header(const char *, message_header_t *);
-extern char * message_filename(char *, unsigned int , unsigned int );
-extern char * message_header_filename(char *, unsigned int , unsigned int );
-extern char * mail_header_filename(char *, const char *, const unsigned int);
-extern char * mail_filename(char *, const char *, const unsigned int);
-extern char * info_filename(char *, unsigned int);
-extern char * info_header_filename(char *, unsigned int);
-extern int message_copy(const unsigned int, const unsigned int,
+size_t get_filesize(const char *);
+int count_dir_files(const char *);
+int write_message_header(const char *, message_header_t *);
+int read_message_header(const char *, message_header_t *);
+char * message_filename(char *, unsigned int , unsigned int );
+char * message_header_filename(char *, unsigned int , unsigned int );
+char * mail_header_filename(char *, const char *, const unsigned int);
+char * mail_filename(char *, const char *, const unsigned int);
+char * info_filename(char *, unsigned int);
+char * info_header_filename(char *, unsigned int);
+int message_copy(const unsigned int, const unsigned int,
 			const unsigned int, const char *, const unsigned int);
-extern int message_move(const unsigned int, const unsigned int,
+int message_move(const unsigned int, const unsigned int,
 			const unsigned int, const char *);
-extern int message_delete(const unsigned int, const unsigned int);
-extern void init_message_header(message_header_t *); 
-extern void save_to_sql(const message_header_t *, const char *);
+int message_delete(const unsigned int, const unsigned int);
+void init_message_header(message_header_t *); 
+void save_to_sql(const message_header_t *, const char *);
 
 #ifdef OHH_SHIT_WE_HAVE_TO_CONVERT_AGAIN_ARRRRRRGH
-extern int convert_message_base(int);
+int convert_message_base(int);
 #endif

@@ -208,12 +208,6 @@ typedef struct {
     char bg_colour;		/* background colour */
 } colour_t;
 
-/* Hold user's icq info. */
-typedef struct {
-    unsigned long number;	/* icq number */
-    char password[64];		/* icq pass (memfrobbed if available) */
-} icq_t;
-
 /* typedef struct usersupp {	/ * User record */
 typedef struct {	/* User record */
     char username[L_USERNAME + 1];	/* The User's UserName          */
@@ -257,7 +251,6 @@ typedef struct {	/* User record */
     char RGurl[RGurlLEN + 1];	/* the user's home page  		*/
     char lang[L_LANG + 1]; /* user's lcoale */
     int hidden_info;		/* what parts of the address are hidden */
-    icq_t icq_info;
 } user_t, user_type;
 
 /****************************************************************************/

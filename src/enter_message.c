@@ -36,9 +36,7 @@
 #include "display_message.h"
 #include "uadmin.h"
 
-#define extern
 #include "enter_message.h"
-#undef extern
 
 static void get_subject(message_header_t *);
 static void get_reply_info(message_header_t *, const unsigned);

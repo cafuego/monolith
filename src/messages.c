@@ -34,9 +34,7 @@
 #include "telnet.h"
 #endif
 
-#define extern
 #include "messages.h"
-#undef extern
 
 #include "enter_message.h"
 #include "input.h"

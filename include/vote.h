@@ -1,8 +1,8 @@
 /* $Id$ */
 
-extern void voting_booth( void );
-extern void vote_about( int );
-extern void check_voting_results( int );
+void voting_booth( void );
+void vote_about( int );
+void check_voting_results( int );
 
 /*
 typedef struct {

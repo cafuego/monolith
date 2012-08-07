@@ -17,7 +17,7 @@
 #include "monolith.h"
 #include "monosql.h"
 #include "sql_utils.h"
-// #include "sql_forumtopic.h"
+
 #define FT_TABLE	"forumtopic"
 
 #define extern
@@ -100,10 +100,10 @@ mono_sql_t_updated_highest( unsigned int topic, unsigned int m_id )
     ret = mono_sql_query(&res, "UPDATE " T_TABLE " SET highest=%u WHERE topic_id=%u", m_id, topic );
 
     if( ret == -1 ) {
-//        (void) mono_sql_u_free_result(res);
+/*        (void) mono_sql_u_free_result(res); */
         return -1;
     }
-//    (void) mono_sql_u_free_result(res);
+/*    (void) mono_sql_u_free_result(res); */
     return 0;
 }
 
