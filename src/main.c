@@ -345,6 +345,7 @@ main(int argc, char *argv[])
     int a;			/* misc                         */
     int newbie;			/* newbieflag, TRUE if newuser  */
     int done = FALSE;		/* True when finished login     */
+    int ret;
     char hellomsg[L_FILE], *my_name = NULL;
     time_t laston;
     pid_t pid;
@@ -361,7 +362,12 @@ main(int argc, char *argv[])
 
     set_invocation_name(argv[0]);
     mono_setuid("guest");
-    chdir(BBSDIR);
+
+    ret = chdir(BBSDIR);
+    if ( ret != 0 ) {
+        cprintf( "Can't find BBS directory\n" );
+	exit( 0 );
+    }
 
 #ifdef ENABLE_NLS
     setlocale(LC_ALL, "");
@@ -448,7 +454,7 @@ main(int argc, char *argv[])
 	    if (EQ(username, "new")) {	/* a new user?                  */
 		new_user(hname);
 		first_login = TRUE;
-		// usersupp = readuser(username);
+		/* usersupp = readuser(username); */
 		done = TRUE;
 	    } else {
 		if (strcasecmp(username, "Guest") != 0) {
@@ -480,12 +486,12 @@ main(int argc, char *argv[])
 
 #ifdef ENABLE_NLS
     {
-	char *ret;
+	char *retu;
 	extern int _nl_msg_cat_cntr;
 
-        ret = setlocale(LC_MESSAGES, usersupp->lang );
+        retu = setlocale(LC_MESSAGES, usersupp->lang );
 
-	if (ret == NULL ) {
+	if (retu == NULL ) {
 	    log_it( "errors", "Could not set locale: %s.\n", usersupp->lang );
 	}
 	++_nl_msg_cat_cntr;
@@ -541,7 +547,6 @@ main(int argc, char *argv[])
     strncpy(previous_host, usersupp->lasthost, L_HOSTNAME);
     strncpy(usersupp->lasthost, hname, L_HOSTNAME);
     usersupp->lasthost[L_HOSTNAME] = '\0';
-
 
     IFTWIT
     {

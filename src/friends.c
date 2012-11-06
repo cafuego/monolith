@@ -36,13 +36,11 @@ static void menu_friend_quick_add(void);
 void
 friends_online()
 {
-    unsigned int j = 0, k = 0;
+    unsigned int j = 0;
     friend_t *p;
-    int i = 0;
+    int i = 0, k;
 
     cprintf("\n");
-
-    // return;
 
     mono_sql_uu_read_list(usersupp->usernum, &p, L_FRIEND);
 
@@ -98,10 +96,10 @@ menu_friend(int param)
 		cprintf("Help!\n");
 		if (param == FRIEND)
 		    online_help('f');
-//                  more(MENUDIR "/menu_friend", 1);
+/*                  more(MENUDIR "/menu_friend", 1); */
 		else
 		    online_help('e');
-//                  more(MENUDIR "/menu_enemy", 1);
+/*                  more(MENUDIR "/menu_enemy", 1); */
 		break;
 
 	    case '\n':
@@ -109,7 +107,7 @@ menu_friend(int param)
 	    case ' ':
 	    case 'q':
 		cprintf("\1f\1gQuit.\n");
-//		update_friends_cache();
+/*		update_friends_cache(); */
 		start_user_cache(usersupp->usernum);
 		return;
 		break;
@@ -174,9 +172,6 @@ menu_friend_add(int param)
 {
 
     char *name;
-#ifdef FRIENDS_ENEMIES_LISTS_WORK_WITH_SQL
-    char user[L_USERNAME + 1], bbs[L_BBSNAME + 1];
-#endif
     unsigned int flag, flag2;
     unsigned int id2;
 
@@ -193,16 +188,6 @@ menu_friend_add(int param)
     if (strchr(name, '@') != NULL) {
 	cprintf("\1f\1rInterBBS names aren't supported on friends-enemieslists.\n");
 	return;
-#ifdef FRIENDS_ENEMIES_LISTS_WORK_WITH_SQL
-	parse_inter_address(name, user, bbs);
-	if (check_remote_user(user, bbs) == 'X') {
-	    cprintf("\1f\1rUser \1y%s\1r does not exist at \1y%s\1r.\n", user, bbs);
-	    return;
-	} else {
-	    /* reformat name, so we get the full bbs name if they used an abbrev. */
-	    sprintf(name, "%s@%s", user, bbs);
-	}
-#endif
     } else if (mono_cached_sql_u_name2id(name, &id2) == -1) {
 	cprintf("\1f\1rNo such user.\n");
 	return;

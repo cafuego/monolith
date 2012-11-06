@@ -11,7 +11,7 @@
 #include <string.h>
 
 #ifdef USE_MYSQL
-  #include MYSQL_HEADER
+#include MYSQL_HEADER
 #endif
 
 #include "monolith.h"
@@ -21,10 +21,7 @@
 
 #include "btmp.h"
 #include "log.h"
-
-#define extern
 #include "sql_forum.h"
-#undef extern
 
 /* nasty compatible stuff */
 int

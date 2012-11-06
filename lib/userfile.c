@@ -62,7 +62,7 @@ readuser(const char *name)
     user_t *user;
     int i;
 
-    user = (user_t *) xcalloc(1, sizeof(user_t));
+    user = (user_t *) xmalloc( sizeof(user_t));
 
     (void) sprintf(work, "%s/save", getuserdir(name));
     (void) name2file(work);
@@ -364,7 +364,7 @@ writeuser(user_t * user, int update)
 
     (void) fprintf(fp, "username|%s\n", user->username);
     (void) fprintf(fp, "usernum|%lu\n", (unsigned long) user->usernum);
-    (void) fprintf(fp, "priv|%u\n", user->priv);
+    (void) fprintf(fp, "priv|%d\n", user->priv);
 
     (void) fprintf(fp, "lastseen");
     for (i = 0; i < MAXQUADS; i++)
@@ -711,18 +711,9 @@ getuserdir(const char *name)
     return userdir;
 }
 
-#define USERNUM		BBSDIR "/etc/userkey"
-#define LOCK		1
-#define UNLOCK		0
-#define S_BUSYUSERNUM	8	/* set status as busy */
-
 unsigned int
 get_new_usernum(const char *usernm, unsigned int *num)
 {
-
-    FILE *fp = NULL;
-    char buf[10];
-    unsigned long porqui = 0;
 
     /* michel does it the simple sql way */
     mono_sql_u_add_user(usernm);
@@ -730,89 +721,5 @@ get_new_usernum(const char *usernm, unsigned int *num)
     mono_sql_uf_new_user( *num );
     mono_sql_ut_new_user( *num );
 
-    return *num;
-
-    /* Set a lock to avoid nasty mess */
-    if (mono_lock_usernum(LOCK) == -1) {
-	log_it("errors", "Unable to get new usernumber: Can't get lock");
-	return 0;
-    }
-    /*
-     * Do not segfault if we can't open this file, but whine loud and hard.
-     */
-    fp = xfopen(USERNUM, "r", FALSE);
-    if (fp == NULL) {
-	mono_errno = E_NOFILE;
-	log_it("errors", "Unable to get new usernumber");
-	mono_lock_usernum(UNLOCK);
-	fprintf(stderr, "ERROR: Cannot open the usernumber file! Fix asap!\n");
-	fflush(stderr);
-	return 0;
-    }
-    fgets(buf, 10, fp);
-    buf[strlen(buf) - 1] = '\0';
-
-    /*
-     * make a log entry if we can't get the current usernum and return 0
-     * to make sure the new user gets booted
-     */
-    if (sscanf(buf, "%lu", &porqui) != 1) {
-	fclose(fp);
-	log_it("errors", "Unable to get new usernumber: sscanf() failed");
-	/* remove lock for next victim */
-	mono_lock_usernum(UNLOCK);
-	return 0;
-    }
-    fclose(fp);
-
-    /*
-     * since rewinding doesn't work, we just unlink the damned thing
-     */
-    unlink(USERNUM);
-
-    /*
-     * re-create file with incremented number
-     */
-    fp = xfopen(USERNUM, "a", TRUE);
-
-    if (fp == NULL) {
-	mono_errno = E_NOFILE;
-	log_it("errors", "Unable to get new usernumber");
-	mono_lock_usernum(UNLOCK);
-	return 0;
-    }
-    porqui++;
-
-    fprintf(fp, "%lu\n", porqui);
-    fclose(fp);
-
-    mono_lock_usernum(UNLOCK);
-
-    return porqui;
-
-}
-
-int
-mono_lock_usernum(int key)
-{
-    unsigned int a;
-
-    if (!shm) {
-	mono_errno = E_NOSHM;
-	return -1;
-    }
-/*
- * LOCK = 1
- * UNLOCK = 0
- */
-    if (key == LOCK) {
-	for (a = 0; (a < 50 && (shm->status & S_BUSYUSERNUM)); a++)
-	    usleep(100000);
-
-	shm->status |= S_BUSYUSERNUM;	/* set the lock-flag */
-    } else {
-	shm->status &= ~S_BUSYUSERNUM;	/* unset the lock-flag */
-    }
     return 0;
 }
-/* eof */

@@ -83,7 +83,7 @@ char *
 get_name(int quit_priv)
 {
 
-    static char pbuf[L_USERNAME + L_BBSNAME + 2];
+    static char pbuf[L_USERNAME + 1];
     size_t d;
 
     client_input(G_NAME, quit_priv);

@@ -96,8 +96,5 @@ void feeling(void);
 void are_there_held_web_xs(void);
 void show_web_xes(wx_list_t *);
 
-extern volatile int xmsgp;
-extern express_t *xmsgb[XLIMIT];
-
 /* eof */
 

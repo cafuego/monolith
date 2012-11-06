@@ -4,7 +4,7 @@ int mono_add_loggedin(const user_t *);
 pid_t mono_return_pid(const char *);
 int mono_remove_loggedin( const char *user);
 int mono_remove_ghosts( void );
-int mono_fix_usercount( void );
+unsigned int mono_fix_usercount( void );
 int mono_change_online(const char *, const char *tmp_string, int ch);
 int mono_lock_rooms( int key );
 int mono_lock_shm(int key);

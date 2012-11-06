@@ -30,12 +30,9 @@
 #include "libmono.h"
 #include "setup.h"
 #include "version.h"
-
-#define extern
 #include "server.h"
-#undef extern
 
-char hostname[255];
+char hostname[L_HOSTNAME + 1];
 char username[L_USERNAME + 1];
 FILE *netofp, *netifp;
 struct sockaddr_in acc_addr;

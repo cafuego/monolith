@@ -28,9 +28,9 @@ static int destroy_user_cache(void);
 static int add_to_user_cache(user_cache_t);
 static int remove_from_user_cache(user_cache_t *);
 static int remove_stale_cache_entries(void);
-static char * cached_user_id2name(const unsigned int );
+static char * cached_user_id2name(unsigned int );
 static unsigned int cached_user_name2id(const char *);
-static void update_user_cache(const unsigned int );
+static void update_user_cache(unsigned int );
 
 static user_cache_t *user_cache = NULL;  /* global user cache */
 
@@ -62,7 +62,7 @@ flush_user_cache(void)
 }
 
 void
-update_user_cache(const unsigned int num)
+update_user_cache(unsigned int num)
 {
     user_cache_t the_user;
     static int update_ctr = 0;
@@ -85,7 +85,7 @@ update_user_cache(const unsigned int num)
 }
 
 void
-start_user_cache(const unsigned int the_number)
+start_user_cache(unsigned int the_number)
 {
     friend_t *tmp_flist = NULL, *frPtr;
     user_cache_t the_user;
@@ -140,7 +140,7 @@ is_cached_username(const char *name)
 }
 
 int
-is_cached_usernumber(const unsigned int number)
+is_cached_usernumber(unsigned int number)
 {
     user_cache_t *p;
 
@@ -155,7 +155,7 @@ is_cached_usernumber(const unsigned int number)
 
 /* static wrapper for mono_sql_u_id2name */
 int
-mono_cached_sql_u_id2name(const unsigned int the_id, char * the_name)
+mono_cached_sql_u_id2name(unsigned int the_id, char * the_name)
 {
 
     if (is_cached_usernumber(the_id)) {
@@ -171,7 +171,7 @@ mono_cached_sql_u_id2name(const unsigned int the_id, char * the_name)
 }
 
 char *
-cached_user_id2name(const unsigned int number)
+cached_user_id2name(unsigned int number)
 {
     user_cache_t *p;
 
@@ -338,7 +338,7 @@ is_cached_enemy(const char *name)
 }
 
 char *
-cached_x_to_name(const int slot)
+cached_x_to_name(int slot)
 {
     user_cache_t *p;
 

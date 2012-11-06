@@ -10,19 +10,16 @@
 #include <stdlib.h>
 
 #ifdef USE_MYSQL
-  #include MYSQL_HEADER
+#include MYSQL_HEADER
 #endif
 
 #include "routines.h"
 #include "monolith.h"
 #include "monosql.h"
 #include "sql_utils.h"
+#include "sql_topic.h"
 
 #define FT_TABLE	"forumtopic"
-
-#define extern
-#include "sql_topic.h"
-#undef extern
 
 int
 mono_sql_t_create_topic( const topic_t * top)

@@ -34,8 +34,8 @@ main(int argc, char *argv[] )
     exit(0);
 #endif
 
-    mono_sql_connect();
     mono_connect_shm();
+    mono_sql_connect();
     strremcol(p = wholist(1, NULL));
     mono_detach_shm();
     mono_sql_detach();

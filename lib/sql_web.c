@@ -10,7 +10,7 @@
 #include <unistd.h>
 
 #ifdef USE_MYSQL
-  #include MYSQL_HEADER
+#include MYSQL_HEADER
 #endif
 
 #ifdef ENABLE_NLS
@@ -29,10 +29,7 @@
 #include "sql_llist.h"
 #include "sql_user.h"
 #include "sql_utils.h"
-
-#define extern
 #include "sql_web.h"
-#undef extern 
 
 /*
  * Adds an entry into the `online' table.

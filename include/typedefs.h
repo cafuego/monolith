@@ -16,11 +16,16 @@
 #define MAIL_QUOTA     /* turns mail quota (purge) on for users */
 #define MAX_USER_MAILS 200
 
+typedef unsigned int forum_id_t;
+typedef unsigned int user_id_t;
+typedef unsigned int topic_id_t;
+typedef unsigned int post_id_t;
+
 typedef struct topic_struct {
 	char name[L_TOPICNAME+1]; /* name of topic */
-	unsigned int forum_id; /* the forum that `owns' this thread */
-        unsigned int topic_id;	/* number of topic */
-        unsigned int highest;  /* highest post number */
+	forum_id_t forum_id; /* the forum that `owns' this thread */
+        topic_id_t topic_id;	/* number of topic */
+        post_id_t highest;  /* highest post number */
         unsigned int posttype;
 } topic_t;
 
@@ -35,7 +40,7 @@ typedef struct date_struct {
 typedef struct userlist userlist_t;
 struct userlist {
     char name[L_USERNAME+1];
-    unsigned int usernum;
+    user_id_t usernum;
     userlist_t *next;
 };
 
@@ -44,23 +49,23 @@ struct userlist {
 typedef struct forumlist forumlist_t;
 struct forumlist {
     char name[L_QUADNAME+1];
-    unsigned int forum_id;
+    forum_id_t forum_id;
     forumlist_t *next;
 };
 
 typedef struct topiclist topiclist_t;
 struct topiclist {
     char name[L_TOPICNAME+1];
-    unsigned int topic_id;
+    topic_id_t topic_id;
     topiclist_t *next;
 };
 
 
 typedef struct {
-   unsigned int m_id;			/* messsage number in forum */
-   unsigned int f_id;			/* forum number */
-   unsigned int t_id;			/* topic number */
-   unsigned int a_id;			/* author's usernum */
+   post_id_t  m_id;			/* messsage number in forum */
+   forum_id_t f_id;			/* forum number */
+   topic_id_t t_id;			/* topic number */
+   user_id_t a_id;			/* author's usernum */
    char author[L_USERNAME + 1];		/* author's username */		/* X */
    char alias[L_USERNAME + 1];		/* alias */
    char subject[L_SUBJECT + 1];		/* subject */
@@ -74,10 +79,10 @@ typedef struct {
    /*
     * Reply info.
     */
-   unsigned int reply_m_id;		/* messagenum replied to */
-   unsigned int reply_f_id;		/* forum number replied to */
-   unsigned int reply_t_id;		/* topic number replied to */
-   unsigned int reply_a_id;		/* usernum replied to */
+   post_id_t reply_m_id;		/* messagenum replied to */
+   forum_id_t reply_f_id;		/* forum number replied to */
+   topic_id_t reply_t_id;		/* topic number replied to */
+   user_id_t reply_a_id;		/* usernum replied to */
    char reply_author[L_USERNAME + 1];	/* username replied to */	/* X */
    char reply_alias[L_USERNAME + 1];	/* alias replied to */
    char reply_forum_name[L_QUADNAME + 1];	/* replied to quad name    X */
@@ -86,10 +91,10 @@ typedef struct {
    /*
     * Modification info.
     */
-   unsigned int orig_m_id;		/* original message number */
-   unsigned int orig_f_id;		/* original forum number */
-   unsigned int orig_t_id;		/* original topic number */
-   unsigned int orig_a_id;		/* original author's usernum */
+   post_id_t orig_m_id;		/* original message number */
+   forum_id_t orig_f_id;		/* original forum number */
+   topic_id_t orig_t_id;		/* original topic number */
+   user_id_t orig_a_id;		/* original author's usernum */
    char orig_author[L_USERNAME + 1];	/* original author's username      X */
    time_t orig_date;			/* original posting date */
    char orig_forum[L_QUADNAME + 1];	/* original forum name */	/* X */
@@ -173,8 +178,8 @@ struct wx_list {
 
 typedef struct xfriend friend_t;
 struct xfriend {
-    char name[L_USERNAME + L_BBSNAME + 1];
-    unsigned int usernum;
+    char name[L_USERNAME + 1];
+    user_id_t usernum;
     unsigned int flags;
     int quickx;
     friend_t *next;
@@ -211,16 +216,18 @@ typedef struct {
 /* typedef struct usersupp {	/ * User record */
 typedef struct {	/* User record */
     char username[L_USERNAME + 1];	/* The User's UserName          */
-    unsigned int usernum;	/* The User's UserNumber                */
-    unsigned priv;		/* The User's Access level: PRIV_       */
+    user_id_t usernum;	/* The User's UserNumber                */
     long lastseen[MAXQUADS];	/* Last message seen in each room       */
     char generation[MAXQUADS];	/* Generation # (for private rooms)     */
     char forget[MAXQUADS];	/* Forgotten generation number          */
     char roominfo[MAXQUADS];	/* RoomInfo-number to check if new RI   */
     long mailnum;		/* Highest mail number of user		*/
-    unsigned int flags;		/* See US_flags below                   */
-    unsigned int config_flags;  /* See CO_flags below  			*/
-    unsigned int chat;		/* subscribed chat channels 		*/
+
+    int priv;			/* The User's Access level: PRIV_       */
+    int flags;		/* See US_flags below                   */
+    int config_flags;  /* See CO_flags below  			*/
+    int chat;		/* subscribed chat channels 		*/
+
     char alias[L_USERNAME +1];  /* users' standard aliasname		*/
     unsigned int configuration;	/* number of BBS configuration to use	*/
     unsigned int screenlength;	/* lines before MORE                    */
@@ -282,17 +289,18 @@ typedef struct btmp {
     char doing[L_DOING];		/* user's doing                         */
 
     char curr_room[41];		/* room the user is in right now        */
-    char x_ing_to[L_USERNAME+L_BBSNAME+1]; /* the user this user is x-ing */
+    char x_ing_to[L_USERNAME+1]; /* the user this user is x-ing */
 
     time_t logintime;		/* user's logintime in unix-format      */
     time_t idletime;		/* user's idlestarttime                 */
 
     int chat;			/* if they are in chatmode or not       */
     int status;			/* type of away, for future use         */
+    int priv;			/* user's priv.                         */
+    int flags;			/* different flags: look at B_* below   */
 
-    unsigned int priv;		/* user's priv.                         */
     pid_t pid;			/* user's PID                           */
-    unsigned int flags;		/* different flags: look at B_* below   */
+
     int next;			/* next positionin the linked list      */
 } btmp_t, *btmp_struct;
 
@@ -302,8 +310,8 @@ typedef struct {
     int override;		/* override char                */
     int ack;			/* acknowledgement char         */
     time_t time;		/* the time of sending          */
-    char sender[L_USERNAME + L_BBSNAME + 2];	/* username of sender           */
-    char recipient[L_USERNAME +L_BBSNAME + 2];	/* username of recipient        */
+    char sender[L_USERNAME + 1];	/* username of sender           */
+    char recipient[L_USERNAME + 1];	/* username of recipient        */
     unsigned int sender_priv;	/* priv of sender               */
     char message[X_BUFFER];	/* the whole x-message          */
 } express_t, x_str, *x_struct;

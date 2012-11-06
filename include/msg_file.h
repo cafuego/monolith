@@ -75,7 +75,7 @@ typedef struct {
    char recipient[L_RECIPIENT + 1];
    char forum_name[L_QUADNAME + 1];
    char banner[L_BANNER + 1];
-   unsigned long banner_type;
+   long banner_type;
 
    char reply_to_author[L_USERNAME + 1];
    unsigned int reply_m_id;
@@ -90,7 +90,7 @@ typedef struct {
    time_t orig_date;
    char modified_by[L_USERNAME + 1];
    char orig_forum[L_QUADNAME + 1];
-   unsigned int mod_type;
+   int mod_type;
    unsigned int orig_m_id;
    unsigned int orig_f_id;
    unsigned int orig_t_id;
@@ -105,15 +105,15 @@ int write_message_header(const char *, message_header_t *);
 int read_message_header(const char *, message_header_t *);
 char * message_filename(char *, unsigned int , unsigned int );
 char * message_header_filename(char *, unsigned int , unsigned int );
-char * mail_header_filename(char *, const char *, const unsigned int);
-char * mail_filename(char *, const char *, const unsigned int);
+char * mail_header_filename(char *, const char *, unsigned int);
+char * mail_filename(char *, const char *, unsigned int);
 char * info_filename(char *, unsigned int);
 char * info_header_filename(char *, unsigned int);
-int message_copy(const unsigned int, const unsigned int,
-			const unsigned int, const char *, const unsigned int);
-int message_move(const unsigned int, const unsigned int,
-			const unsigned int, const char *);
-int message_delete(const unsigned int, const unsigned int);
+int message_copy(unsigned int, unsigned int,
+			unsigned int, const char *, int);
+int message_move(unsigned int, unsigned int,
+			unsigned int, const char *);
+int message_delete(unsigned int, unsigned int);
 void init_message_header(message_header_t *); 
 void save_to_sql(const message_header_t *, const char *);
 

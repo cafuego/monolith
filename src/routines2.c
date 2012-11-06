@@ -219,25 +219,16 @@ more_string(char *const string)
  * Shows system info in <m><s> menu.
  */
 
-#ifdef LINUX
-  /*
-   * proto  (see man sysinfo)
-   */
-int sysinfo(struct sysinfo *info);
-#endif
-
 void
 print_system_config()
 {
 #ifdef LINUX
     struct sysinfo *info = NULL;
 #endif
+
 #ifdef HAVE_SYS_UTSNAME_H
     struct utsname buf2;
     char *domain_name = NULL;
-#endif
-#ifdef HAVE_ANIMAL
-    char *kernel_name = NULL;
 #endif
     char *loadavg = NULL;
     float l1 = 0, l2 = 0, l3 = 0;
@@ -290,30 +281,6 @@ print_system_config()
     }
 #endif
 
-#ifdef HAVE_ANIMAL
-    /*
-     * If animal name is reported on /proc filesystem, read it
-     * into mem as opposed to calling /bin/cat.
-     */
-    if ((fd = open("/proc/sys/kernel/name", O_RDONLY)) == -1) {
-	cprintf("\1f\1rError getting kernel name!\n");
-	return;
-    }
-
-    /*
-     * Bit arbitrary, but better too big than too small ;)
-     */
-    kernel_name = (char *) xmalloc(65 * sizeof(char));
-    strcpy(kernel_name, "");
-    len = read(fd, kernel_name, 64);
-
-    /*
-     * Chop trailing \n
-     */
-    kernel_name[len - 1] = '\0';
-    (void) close(fd);
-#endif
-
     if ((fd = open("/proc/loadavg", O_RDONLY)) == -1) {
 	cprintf("\1f\1rError getting system load!\n");
 	return;
@@ -343,11 +310,6 @@ print_system_config()
 	    buf2.sysname, buf2.release);
     cprintf("\1wOS build version              :\1g %s\n", buf2.version);
     (void) xfree(domain_name);
-#endif
-
-#ifdef HAVE_ANIMAL
-    cprintf("\1wOS version                    :\1g %s\n", kernel_name);
-    (void) xfree(kernel_name);
 #endif
 
 #ifdef HAVE_SVN
@@ -796,11 +758,9 @@ configure_sql()
     _sql = (mysql_t *) xmalloc(sizeof(mysql_t));
     memset(_sql, 0, sizeof(mysql_t));
 
-    // Loop this one until we have a config the user is happy with *and* that works.
-    //
+    /* Loop this one until we have a config the user is happy with *and* that works. */
     do {
-	// Loop until we have data and the user is happy with that data.
-	//
+	/* Loop until we have data and the user is happy with that data. */
 	do {
 
 	    cprintf("\n\1f\1gServer \1w(\1y%s\1w)\1w: \1c",
@@ -849,23 +809,21 @@ configure_sql()
 
 	} while (!flag);
 
-	// User is happy with values; test them.
-	//
+	/* User is happy with values; test them. */
 	if (! (flag = mono_sql_test_connection(_sql)) ) {
 	    cprintf("\1f\1rNew configuration cannot connect.\n\n");
 	}
 
     } while ( !flag );
 
-    // Config works!
-    //
+    /* Config works! */
     cprintf("\1f\1gConnection OK.\n\1rSave this new configuration as default? \1w(\1ry\1w/\1rN\1w)\1c ");
     if( yesno_default(NO) == NO) {
 	    xfree(_sql);
 	    return;
     }
 
-    // user wants to save new conn. as default. do so adn then switch all users.
+    /* user wants to save new conn. as default. do so and then switch all users. */
     
     xfree(_sql);
     return;

@@ -21,10 +21,7 @@
 
 #include "sql_user.h"
 #include "sql_utils.h"
-
-#define extern
 #include "sql_online.h"
-#undef extern 
 
 /*
  * Adds an entry into the `online' table.

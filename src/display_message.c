@@ -12,13 +12,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#ifdef HAVE_SYS_MMAN_H
-#include <sys/mman.h>
-#else
-#include <asm/mman.h>
-#endif
-
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -174,7 +167,7 @@ format_header(message_header_t * header, unsigned int forum, char *header_string
 	header_string = format_mod_line(header, header_string);		/* has own "\n" */
     } else {
 	header_string = format_author(header, header_string);
-	// header_string = m_strcat(header_string, " ");
+	/* header_string = m_strcat(header_string, " "); */
 	header_string = format_banner(header, header_string);
 	header_string = m_strcat(header_string, "\n");
 	if (!(header->banner_type & ANON_BANNER)) {

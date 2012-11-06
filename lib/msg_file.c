@@ -28,12 +28,9 @@
 #include "userfile.h"
 #include "libquad.h"
 #include "libcache.h"
-
-#define extern
 #include "msg_file.h"
-#undef extern
 
-static char * get_flag(unsigned long mod_banner);
+static char * get_flag(long mod_banner);
 static char * get_reason(int mod_reason);
 
 
@@ -127,7 +124,7 @@ mail_header_filename(char * filename, const char *name, const unsigned int numbe
 }
 
 int
-message_copy(const unsigned int from_forum, const unsigned int to_forum, const unsigned int message_id, const char *recipient_name, const unsigned int modification_type)
+message_copy(const unsigned int from_forum, const unsigned int to_forum, const unsigned int message_id, const char *recipient_name, const int modification_type)
 {
     char to_file[L_FILE + 1], from_file[L_FILE + 1];
     char to_header_file[L_FILE + 1], from_header_file[L_FILE + 1];
@@ -195,7 +192,7 @@ message_copy(const unsigned int from_forum, const unsigned int to_forum, const u
 
 #ifndef ADDED_BY_PETER_FOR_TESTING
         if (to_forum != MAIL_FORUM ) {
-	    unsigned long temp_banner;
+	    long temp_banner;
 
 /* added this to get rid of potential issues copying mails.  */
 
@@ -320,7 +317,7 @@ save_to_sql(const message_header_t *header, const char *filename)
 }
 
 static char *
-get_flag(unsigned long mod_banner)
+get_flag(long mod_banner)
 {
 
     switch(mod_banner) {

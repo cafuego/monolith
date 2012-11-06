@@ -76,11 +76,9 @@ dnl Check for awk/gawk - used to determine if we're linux or not.
 AC_PATH_PROG(awk_path,awk,no)
 AC_PATH_PROG(gawk_path,gawk,no)
 AC_PATH_PROG(cat_path,cat,no)
-AC_PATH_PROG(grep_path,grep,no)
 
 dnl Checks for libraries.
 dnl Replace `main' with a function in -lgdbm:
-AC_CHECK_LIB(gdbm, gdbm_open)
 AC_CHECK_LIB(crypt, crypt)
 AC_CHECK_LIB(nsl, inet_ntoa)
 AC_CHECK_LIB(socket, getpeername)
@@ -104,8 +102,7 @@ AC_PROG_GCC_TRADITIONAL
 AC_TYPE_SIGNAL
 AC_FUNC_VPRINTF
 AC_FUNC_STRFTIME
-AC_FUNC_MMAP
-AC_CHECK_FUNCS(uname gettimeofday gethostname mkdir regcomp socket putenv strcspn strdup strspn strstr memfrob)
+AC_CHECK_FUNCS(uname gettimeofday regcomp putenv strcspn strspn )
 
 dnl check if MAP_FAILED is defined...
 if test "x$grep_path" != "xno" ; then
@@ -538,15 +535,6 @@ if test "x$with_hero" = "xyes"; then
   echo " found in /dev/he-man"
 else
   echo " need more spinach (sorry)"
-fi
-
-dnl Check if the proc-animal patch is installed.
-echo -n "checking for proc-animal kernel patch..."
-if test -r /proc/sys/kernel/name; then
-    echo " `${PROG_CAT} /proc/sys/kernel/name`"
-    AC_DEFINE(HAVE_ANIMAL, [], [I've got the animal patch])
-else
-    echo " nope"
 fi
 
 dnl Define LINUX if this is a linux system.

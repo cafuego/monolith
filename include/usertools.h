@@ -22,6 +22,3 @@ void test_ansi_colours(user_t * );
 void mono_show_config( unsigned int num);
 void menu_message(void);
 
-/*** variables ***/
-/* extern char profile_default[L_USERNAME+L_BBSNAME+2]; */
-

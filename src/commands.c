@@ -55,6 +55,7 @@ sysop_menu()
 {
 
     register char cmd = '\0';
+    int ret;
 
     /* extra security */
     if ((usersupp->priv & (PRIV_WIZARD | PRIV_SYSOP)) == 0)
@@ -170,7 +171,7 @@ sysop_menu()
 
 	    case 'W':
 		cprintf("\1f\1rWho's on Localhost?\1a\n");
-		system("w");
+		ret = system("w");
 		return;
 
 	    case '?':
@@ -369,6 +370,7 @@ sysopuser_menu()
     user_t *tmpuser;
     char work[90];
     char *p;
+    int ret;
 
     while ((cmd != SP) && (cmd != 13) && (cmd != 'Q')) {
 	IFNEXPERT
@@ -447,7 +449,7 @@ sysopuser_menu()
 		    cprintf("\1f\1rChecking...\1a\1c\n");
 		    fflush(stdout);
 		    sprintf(work, "/usr/local/bin/vrfy %s", tmpuser->RGemail);
-		    system(work);
+		    ret = system(work);
 		    xfree(tmpuser);
 		} else {
 		    cprintf("\1f\1rNo such user.\1a\n");

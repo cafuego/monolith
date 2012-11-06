@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <strings.h>
 
 #ifdef USE_MYSQL
 #include MYSQL_HEADER
@@ -23,10 +24,7 @@
 #include "sql_forum.h"
 #include "sql_message.h"
 #include "sql_user.h"
-
-#define extern
 #include "sql_userforum.h"
-#undef extern
 
 int
 mono_sql_uf_unread_room(unsigned int usernum)
@@ -56,7 +54,8 @@ mono_sql_uf_update_lastseen(unsigned int usernum, unsigned int forum)
 {
     MYSQL_RES *res;
     MYSQL_ROW row;
-    int ret = 0, lastseen = 0;
+    int ret = 0; 
+    unsigned int lastseen = 0;
 
     ret = mono_sql_query(&res, "SELECT highest FROM %s WHERE id=%u", F_TABLE, forum);
     if (ret == -1) {
@@ -66,8 +65,6 @@ mono_sql_uf_update_lastseen(unsigned int usernum, unsigned int forum)
 	return -1;
     }
     row = mysql_fetch_row(res);
-
-
 
     sscanf(row[0], "%u", &lastseen);
     (void) mono_sql_u_free_result(res);

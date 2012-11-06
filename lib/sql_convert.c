@@ -17,15 +17,12 @@
 #include <sys/types.h>
 
 #ifdef USE_MYSQL
-  #include MYSQL_HEADER
+#include MYSQL_HEADER
 #endif
 
 #include "monolith.h"
 #include "routines.h"
-
-#define extern
 #include "sql_convert.h"
-#undef extern
 
 /*
  * Convert MYQSL_ROW to message_t.

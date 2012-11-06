@@ -12,7 +12,7 @@
 #include <unistd.h>
 
 #ifdef USE_MYSQL
-  #include MYSQL_HEADER
+#include MYSQL_HEADER
 #endif
 
 #include "monolith.h"
@@ -21,10 +21,7 @@
 
 #include "sql_utils.h"
 #include "sysconfig.h"
-
-#define extern
 #include "sql_login.h"
-#undef extern 
 
 #define LOGIN_TABLE	"login"
 

@@ -70,7 +70,7 @@ static void _print_user_flags(const user_t * user);
 void
 profile_user(void)
 {
-    char p_name[L_BBSNAME + L_USERNAME + 2];
+    char p_name[L_USERNAME + 1];
     user_t *user;
 
     if (strlen(profile_default))
@@ -78,8 +78,8 @@ profile_user(void)
     else
 	cprintf(_("\1g\1fProfile user\1w: \1c"));
 
-    strncpy(p_name, get_name(5), L_BBSNAME + L_USERNAME - 2);
-    p_name[L_BBSNAME + L_USERNAME - 1] = '\0';	/* no overflow, please */
+    strncpy(p_name, get_name(5), L_USERNAME );
+    p_name[L_USERNAME] = '\0';	/* no overflow, please */
 
     if (!strlen(p_name) && !strlen(profile_default))
 	strcpy(p_name, usersupp->username);

@@ -39,12 +39,10 @@
 #include "statusbar.h"
 #include "usertools.h"
 
-char x_default[L_USERNAME + L_BBSNAME + 2];
-char web_default[L_USERNAME + 1];
-char chat_default[L_USERNAME + 1];
-express_t *xmsgb[XLIMIT];	/* the XLog */
-char *mySysGuide = NULL;
-volatile int xmsgp;
+static char x_default[L_USERNAME + 1];
+static char web_default[L_USERNAME + 1];
+static char chat_default[L_USERNAME + 1];
+static char *mySysGuide = NULL;
 
 static void catchx(int key);
 static void format_ack(express_t * Catchxs);
@@ -461,7 +459,7 @@ catchx(int key)
 void
 express(int X_PARAM)
 {
-    char to[L_USERNAME + L_BBSNAME + 2] = "";
+    char to[L_USERNAME + 1] = "";
     char buffer[120], filename[60];
     FILE *f;
     char override = ' ', tmpoverride;
@@ -872,13 +870,13 @@ setup_express()
     xmsgp = XLIMIT;
     mono_find_xslot(who_am_i(NULL))->override = OR_FREE;
     start_user_cache(usersupp->usernum);
-//    update_friends_cache();
+/*    update_friends_cache(); */
     return;
 }
 /*----------------------------------*/
 /* void remove_express()
-				 * * * * * * * * * * * * removes xmsg buffer from memory
-				 */
+ * removes xmsg buffer from memory
+ */
 void
 remove_express()
 {
@@ -888,7 +886,9 @@ remove_express()
 	if (xmsgb[i] != NULL)
 	    xfree(xmsgb[i]);
     return;
-}				/**************************************************************//* displays old x messages.  <ctrl-x>
+}				
+
+/**************************************************************//* displays old x messages.  <ctrl-x>
 				 */
 void
 old_express()
@@ -1073,7 +1073,7 @@ send_silc()
 void
 quoted_Xmsgs()
 {
-    char quoteduser[L_BBSNAME + L_USERNAME + 2];
+    char quoteduser[L_USERNAME + 1];
     int channel, i, matches = 0;
     FILE *fp;
 

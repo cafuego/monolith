@@ -133,6 +133,7 @@ mono_sql_mes_fetch_content(unsigned int id, unsigned int forum, char **content)
     MYSQL_RES *res = NULL;
     MYSQL_ROW row;
     int ret = 0;
+    size_t sz;
 
     ret = mono_sql_query(&res, "SELECT content FROM message WHERE forum_id=%u AND message_id=%u", forum, id);
 
@@ -150,9 +151,10 @@ mono_sql_mes_fetch_content(unsigned int id, unsigned int forum, char **content)
     }
     row = mysql_fetch_row(res);
 
-    *content = (char *) xmalloc( strlen(row[0]) + 2 );
-    memset(*content, 0, sizeof(*content));
-    snprintf(*content, strlen(row[0])+1, "%s", row[0]);
+    sz = strlen(row[0]) + 1;
+    *content = (char *) xmalloc( sz+1 );
+    memset(*content, 0, sz+1 );
+    snprintf(*content, sz, "%s", row[0]);
     *content[strlen(*content)-1] = '\0';
     (void) mono_sql_u_free_result(res);
 
@@ -416,6 +418,7 @@ _mono_sql_mes_cleanup(unsigned int forum)
      * Yuck.
      */
     read_forum(forum, &scratch);
+
     if ((lowest = scratch.highest - scratch.maxmsg) < 0)
 	lowest = 0;
 

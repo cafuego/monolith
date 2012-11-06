@@ -1,8 +1,6 @@
 
-bin_PROGRAMS = dexi purge ubl finger makeemp ccat initgoto ql_sql fsql convert initdb profile
+bin_PROGRAMS = purge ubl finger makeemp ccat initgoto ql_sql fsql convert initdb profile
 ql_sql SOURCES = ql_sql.c
-
-dexi_SOURCES = dexi.c dexi2.c wholist.c
 
 initdb_SOURCES = initdb.c
 

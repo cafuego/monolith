@@ -12,7 +12,7 @@
 #include <stdio.h>
 
 #ifdef USE_MYSQL
-  #include MYSQL_HEADER
+#include MYSQL_HEADER
 #endif
 
 #include "monolith.h"
@@ -22,11 +22,7 @@
 #include "sql_forum.h"
 #include "sql_topic.h"
 #include "sql_message.h"
-
-#define extern
 #include "sql_forumtopic.h"
-#undef extern
-
 
 int
 add_to_topiclist(topiclist_t element, topiclist_t ** list)

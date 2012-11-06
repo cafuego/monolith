@@ -19,38 +19,25 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-
 #ifdef HAVE_TERMIOS_H
-  #include <termios.h>
-#else
-  #ifdef HAVE_ASM_TERMBITS_H
-    #undef HAVE_TERMBITS_H
-    #include <asm/termbits.h>
-  #else
-    #undef HAVE_ASM_TERMBITS_H
-    #ifdef HAVE_TERMBITS_H
-      #include <termbits.h>
-    #endif
-  #endif
+#include <termios.h>
 #endif
 
 #include <time.h>
 #include <unistd.h>
 
 #ifdef USE_MYSQL
-  #include MYSQL_HEADER
+#include MYSQL_HEADER
 #endif
 
 #include "monolith.h"
 #include "libmono.h"
 #include "setup.h"
 #include "version.h"
-
-#define extern
 #include "front.h"
-#undef extern
 
-char hname[255], username[L_USERNAME + 1];
+char hname[ L_HOSTNAME + 1];
+char username[L_USERNAME + 1];
 unsigned int maxallow;
 char *l_user[] = {
     "Alien species", "Fish species", "LaMeR NiCk", "Cyborg id", "Username"
@@ -65,6 +52,7 @@ static void get_hostname(void);
 int
 main(int argc, char **argv)
 {
+    int ret;
 
     set_invocation_name(argv[0]);
     mono_setuid("guest");
@@ -74,7 +62,9 @@ main(int argc, char **argv)
 
     fflush(stdout);
     umask(0007);
-    chdir(BBSDIR);
+
+    ret = chdir(BBSDIR);
+    if ( ret != 0 ) { exit(1); }
 
     signal(SIGHUP, log_off);
     signal(SIGPIPE, log_off);
@@ -87,14 +77,13 @@ main(int argc, char **argv)
 
     /* if the bbs is down no reason to do anything else */
     if (fexists(DOWNFILE)) {
-	system("/bin/cat " DOWNFILE);
+	ret = system("/bin/cat " DOWNFILE);
 	fflush(stdout);
 	sleep(5);
 	exit(1);
     }
 
     /* check to see if we're coming from a blacklisted host */
-
     get_hostname();
 
 #ifdef DEBUG
@@ -156,9 +145,9 @@ get_hostname()
     addr = inet_addr(site_num);
 
     if ((host = gethostbyaddr((char *) &addr, 4, AF_INET)) != NULL)
-	strncpy(hname, host->h_name, 254 );
+	strncpy(hname, host->h_name, L_HOSTNAME );
     else
-	strncpy(hname, site_num, 254 );
+	strncpy(hname, site_num, L_HOSTNAME );
 
     return;
 }

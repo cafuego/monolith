@@ -348,10 +348,10 @@ both are passed around like joints via pointers.
 
 the functions, in normal order of call:
 
-	extern void test_dlist_code(void);
+	void test_dlist_code(void);
 uninteresting test of "d list code", probably an example of sorts.
 
-	extern M_LNptr add_menu_item(M_LNptr , char *, ...);
+	M_LNptr add_menu_item(M_LNptr , char *, ...);
 calls init_menu_item() to ensure everything is properly NULL, 
 handles allocation of various char arrays, sifts the args into the 
 proper arrays, and calls linked_list_insertNode() to add the item
@@ -360,13 +360,13 @@ to the menu.
 	static M_LNptr linked_list_insertNode(M_LNptr, M_item_t *);
 allocates a node, adds a menu item to that node, adds node to the linked list
 
-	extern void set_menu_display_defaults(M_display_t *);
+	void set_menu_display_defaults(M_display_t *);
 initializes menu-wide struct to default values for a generic menu.
 
-	extern M_LN_t * mono_display_menu_ified( M_LN_t *, M_display_t *, int);
+	M_LN_t * mono_display_menu_ified( M_LN_t *, M_display_t *, int);
 does far too much to be a single function.  (:
 
-	extern M_LN_t *destroy_menu(M_LN_t *);
+	M_LN_t *destroy_menu(M_LN_t *);
 free()'s everything, sets any remaining pointers to NULL.
 
 these four functions are used by mono_display_menu_ified():
