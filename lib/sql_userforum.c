@@ -27,7 +27,7 @@
 #include "sql_userforum.h"
 
 int
-mono_sql_uf_unread_room(unsigned int usernum)
+mono_sql_uf_unread_room( user_id_t usernum)
 {
     MYSQL_RES *res;
     MYSQL_ROW row;
@@ -50,7 +50,7 @@ mono_sql_uf_unread_room(unsigned int usernum)
 }
 
 int
-mono_sql_uf_update_lastseen(unsigned int usernum, unsigned int forum)
+mono_sql_uf_update_lastseen( user_id_t usernum, forum_id_t forum)
 {
     MYSQL_RES *res;
     MYSQL_ROW row;
@@ -75,7 +75,7 @@ mono_sql_uf_update_lastseen(unsigned int usernum, unsigned int forum)
 }
 
 int
-mono_sql_uf_get_unread(unsigned int forum, unsigned int lastseen)
+mono_sql_uf_get_unread( forum_id_t forum, unsigned int lastseen)
 {
     MYSQL_RES *res;
     MYSQL_ROW row;
@@ -172,7 +172,7 @@ add_to_forumlist(forumlist_t element, forumlist_t ** list)
 }
 
 int
-mono_sql_uf_add_entry(unsigned int user_id, unsigned int forum_id)
+mono_sql_uf_add_entry( user_id_t user_id, forum_id_t forum_id)
 {
     int ret;
     MYSQL_RES *res;
@@ -193,11 +193,12 @@ mono_sql_uf_add_entry(unsigned int user_id, unsigned int forum_id)
 int
 mono_sql_uf_list_hosts_by_forum(unsigned int forumnumber, userlist_t ** p)
 {
-    int ret, rows, i;
-    unsigned int user_id;
+    int ret, i;
+    user_id_t user_id;
     userlist_t e;
     MYSQL_RES *res;
     MYSQL_ROW row;
+    my_ulonglong rows;
 
     ret = mono_sql_query(&res,
 			 "SELECT u.id,u.username FROM user u,userforum uf "
@@ -231,11 +232,12 @@ mono_sql_uf_list_hosts_by_forum(unsigned int forumnumber, userlist_t ** p)
 int
 mono_sql_uf_list_hosts_by_user(unsigned int usernumber, forumlist_t ** p)
 {
-    int ret, rows, i;
+    int ret, i;
     unsigned int forum_id;
     forumlist_t e;
     MYSQL_RES *res;
     MYSQL_ROW row;
+    my_ulonglong rows;
 
     ret = mono_sql_query(&res, "SELECT forum_id,f.name FROM %s AS f,%s AS uf WHERE f.id = uf.forum_id AND uf.user_id=%u AND uf.host='y'", F_TABLE, UF_TABLE, usernumber);
 
@@ -262,11 +264,12 @@ mono_sql_uf_list_hosts_by_user(unsigned int usernumber, forumlist_t ** p)
 }
 
 int
-mono_sql_uf_is_host(unsigned int usernumber, unsigned int forumnumber)
+mono_sql_uf_is_host( user_id_t usernumber, forum_id_t forumnumber)
 {
-    int ret, rows, host;
+    int ret, host;
     MYSQL_RES *res;
     MYSQL_ROW row;
+    my_ulonglong rows;
 
     ret = mono_sql_query(&res, "SELECT count(*) FROM " UF_TABLE " WHERE (user_id='%u' AND forum_id='%u' AND host='y')", usernumber, forumnumber);
 
@@ -292,9 +295,10 @@ mono_sql_uf_is_host(unsigned int usernumber, unsigned int forumnumber)
 int
 mono_sql_uf_is_a_host(unsigned int usernumber)
 {
-    int ret, rows, host;
+    int ret, host;
     MYSQL_RES *res;
     MYSQL_ROW row;
+    my_ulonglong rows;
 
     ret = mono_sql_query(&res, "SELECT count(*) FROM " UF_TABLE " WHERE (user_id='%u' AND host='y')", usernumber);
 
@@ -385,11 +389,12 @@ mono_sql_uf_kill_user(unsigned int userid)
 int
 mono_sql_uf_list_invited_by_forum(unsigned int forumnumber, userlist_t ** p)
 {
-    int ret, rows, i;
-    unsigned int user_id;
+    int ret, i;
+    user_id_t user_id;
     userlist_t e;
     MYSQL_RES *res;
     MYSQL_ROW row;
+    my_ulonglong rows;
 
     ret = mono_sql_query(&res,
 			 "SELECT u.id,u.username "
@@ -423,13 +428,14 @@ mono_sql_uf_list_invited_by_forum(unsigned int forumnumber, userlist_t ** p)
 }
 
 int
-mono_sql_uf_list_invited_by_user(unsigned int usernumber, forumlist_t ** p)
+mono_sql_uf_list_invited_by_user( user_id_t usernumber, forumlist_t ** p)
 {
-    int ret, rows, i;
-    unsigned int forum_id;
+    int ret, i;
+    forum_id_t forum_id;
     forumlist_t e;
     MYSQL_RES *res;
     MYSQL_ROW row;
+    my_ulonglong rows;
 
     ret = mono_sql_query(&res, "SELECT forum_id FROM " UF_TABLE
 		      " WHERE user_id=%u AND status='invited'", usernumber);
@@ -461,8 +467,9 @@ mono_sql_uf_list_invited_by_user(unsigned int usernumber, forumlist_t ** p)
 int
 mono_sql_uf_is_invited(unsigned int usernumber, unsigned int forumnumber)
 {
-    int ret, rows;
+    int ret;
     MYSQL_RES *res;
+    my_ulonglong rows;
 
     ret = mono_sql_query(&res, "SELECT count(*) FROM " UF_TABLE
 			 " WHERE (user_id='%u' AND forum_id='%u' AND status='invited' )", usernumber, forumnumber);
@@ -519,11 +526,12 @@ mono_sql_uf_remove_invited(unsigned int usernumber, unsigned int forumnumber)
 int
 mono_sql_uf_list_kicked_by_forum(unsigned int forumnumber, userlist_t ** p)
 {
-    int ret, rows, i;
+    int ret, i;
     unsigned int user_id;
     userlist_t e;
     MYSQL_RES *res;
     MYSQL_ROW row;
+    my_ulonglong rows;
 
     ret = mono_sql_query(&res,
 			 "SELECT u.id,u.username "
@@ -559,11 +567,12 @@ mono_sql_uf_list_kicked_by_forum(unsigned int forumnumber, userlist_t ** p)
 int
 mono_sql_uf_list_kicked_by_user(unsigned int usernumber, forumlist_t ** p)
 {
-    int ret, rows, i;
+    int ret, i;
     unsigned int forum_id;
     forumlist_t e;
     MYSQL_RES *res;
     MYSQL_ROW row;
+    my_ulonglong rows;
 
     ret = mono_sql_query(&res, "SELECT forum_id FROM " UF_TABLE " WHERE user_id=%u AND status='kicked'", usernumber);
 
@@ -594,8 +603,9 @@ mono_sql_uf_list_kicked_by_user(unsigned int usernumber, forumlist_t ** p)
 int
 mono_sql_uf_is_kicked(unsigned int user_id, unsigned int forum_id)
 {
-    int ret, rows;
+    int ret;
     MYSQL_RES *res;
+    my_ulonglong rows;
 
     ret = mono_sql_query(&res, "SELECT count(*) FROM " UF_TABLE " WHERE (user_id='%u' AND forum_id='%u' AND status='kicked')", user_id, forum_id);
 
@@ -673,8 +683,9 @@ mono_sql_uf_whoknows(unsigned int forum_id, char **result)
 
     MYSQL_RES *res;
     MYSQL_ROW row;
-    int i = 0, j = 0, rows = 0, ret = 0;
+    int i = 0, j = 0, ret = 0;
     char line[BUFFSIZE];
+    my_ulonglong rows;
 
     ret = mono_sql_query(&res, "SELECT uf.host,u.username FROM %s AS u LEFT JOIN %s "
     " AS uf ON u.id=uf.user_id WHERE uf.forum_id=%u AND uf.status='invited'"
@@ -720,8 +731,9 @@ mono_sql_uf_kicked(unsigned int forum_id, char **result)
 
     MYSQL_RES *res;
     MYSQL_ROW row;
-    int i = 0, j = 0, rows = 0, ret = 0;
+    int i = 0, j = 0, ret = 0;
     char line[BUFFSIZE];
+    my_ulonglong rows;
 
     ret = mono_sql_query(&res, "SELECT u.username FROM %s AS u LEFT JOIN %s "
     " AS uf ON u.id=uf.user_id WHERE uf.forum_id=%u AND uf.status='kicked'"

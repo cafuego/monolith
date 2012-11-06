@@ -96,7 +96,8 @@ int
 mono_sql_web_get_online(wu_list_t ** list)
 {
 
-    int ret, rows, i;
+    int ret, i;
+    my_ulonglong rows;
     MYSQL_RES *res;
     MYSQL_ROW row;
     wu_list_t entry;
@@ -208,7 +209,8 @@ int
 mono_sql_web_get_xes(unsigned int user_id, wx_list_t ** list)
 {
 
-    int ret, rows, i;
+    int ret, i;
+    my_ulonglong rows;
     MYSQL_RES *res;
     MYSQL_ROW row;
     wx_list_t entry;
@@ -251,7 +253,7 @@ mono_sql_web_mark_wx_read(wx_list_t *list)
 
     while(list != NULL) {
         ret = mono_sql_query(&res, "UPDATE webx SET status='read' WHERE id=%u", list->x->id);
-        (void) mono_sql_u_free_result(res);
+        mono_sql_u_free_result(res);
         list = list->next;
     }
     return;

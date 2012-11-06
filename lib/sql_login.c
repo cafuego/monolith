@@ -29,7 +29,7 @@
  * Writes a log entry into the `login' table.
  */
 int
-mono_sql_log_logout(unsigned int user_id, time_t login, time_t logout, const char *host, int reason)
+mono_sql_log_logout( user_id_t user_id, time_t login, time_t logout, const char *host, int reason)
 {
 
     int ret;

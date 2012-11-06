@@ -439,7 +439,7 @@ int
 del_user(const char *name)
 {
     char work2[61];
-    unsigned int user_id;
+    user_id_t user_id;
     int ret;
 
     /* do this first, delete commands won't matter if the table
@@ -460,7 +460,7 @@ del_user(const char *name)
 }
 
 int
-del_sql_user(unsigned int user_id)
+del_sql_user(user_id_t user_id)
 {
     mono_sql_uf_kill_user(user_id);
     mono_sql_uu_kill_user(user_id);
@@ -711,8 +711,8 @@ getuserdir(const char *name)
     return userdir;
 }
 
-unsigned int
-get_new_usernum(const char *usernm, unsigned int *num)
+int
+get_new_usernum(const char *usernm, user_id_t *num)
 {
 
     /* michel does it the simple sql way */

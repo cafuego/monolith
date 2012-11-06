@@ -52,7 +52,7 @@ mono_sql_t_create_topic( const topic_t * top)
 }
 
 int 
-mono_sql_t_rename_topic( unsigned int topic_id, const char *newname )
+mono_sql_t_rename_topic( topic_id_t topic_id, const char *newname )
 {
     int ret;
     MYSQL_RES *res;

@@ -222,8 +222,9 @@ mono_sql_mes_list_forum(unsigned int forum, unsigned int start, mlist_t ** list)
 
     MYSQL_RES *res;
     MYSQL_ROW row;
-    int ret = 0, rows = 0, i = 0;
+    int ret = 0, i = 0;
     mlist_t entry;
+    my_ulonglong rows = 0;
 
     /*
      * Coolest query in the BBS sofar :)
@@ -286,8 +287,9 @@ mono_sql_mes_list_topic(unsigned int topic, unsigned int start, mlist_t ** list)
 
     MYSQL_RES *res;
     MYSQL_ROW row;
-    int ret = 0, rows = 0, i = 0;
+    int ret = 0, i = 0;
     mlist_t entry;
+    my_ulonglong rows;
 
     /*
      * Second coolest query in the BBS sofar.
@@ -344,9 +346,10 @@ mono_sql_mes_search_forum(int forum, const char *string, sr_list_t ** list)
 {
     MYSQL_RES *res;
     MYSQL_ROW row;
-    int ret = 0, rows = 0, i = 0;
+    int ret = 0, i = 0;
     sr_list_t entry;
     char *needle = NULL;
+    my_ulonglong rows = 0;
 
     (void) escape_string(string, &needle);
 
@@ -412,7 +415,7 @@ _mono_sql_mes_cleanup(unsigned int forum)
 {
     MYSQL_RES *res = NULL;
     room_t scratch;
-    int lowest = 0;
+    unsigned int lowest = 0;
 
     /*
      * Yuck.
@@ -461,7 +464,8 @@ mono_sql_mes_count(int user_id)
 {
     MYSQL_RES *res;
     MYSQL_ROW row;
-    int ret = 0, rows = 0, i = 0;
+    int ret = 0, i = 0;
+    my_ulonglong rows;
 
     if (user_id==0)
         ret = mono_sql_query(&res, "SELECT COUNT(*) FROM %s", M_TABLE);

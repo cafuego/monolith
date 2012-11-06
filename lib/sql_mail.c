@@ -4,12 +4,12 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
-#include <build-defs.h>
 
+#include <build-defs.h>
 #include <stdio.h>
 
 #ifdef USE_MYSQL
-  #include MYSQL_HEADER
+#include MYSQL_HEADER
 #endif
 
 #include "monolith.h"
