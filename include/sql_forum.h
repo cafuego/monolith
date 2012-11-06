@@ -9,6 +9,8 @@ int mono_sql_f_name2id(const char *forumname, unsigned int *forumid);
 int mono_sql_f_partname2id(const char *forumname, unsigned int *forumid);
 int mono_sql_f_update_forum(unsigned int forum_id, const room_t * q);
 
+int mono_sql_f_get_highest( forum_id_t num);
+
 void mono_sql_f_fix_quickroom(void);
 
 #define F_TABLE "forum"
