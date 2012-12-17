@@ -415,7 +415,7 @@ _mono_sql_mes_cleanup(unsigned int forum)
 {
     MYSQL_RES *res = NULL;
     room_t scratch;
-    unsigned int lowest = 0;
+    int lowest = 0;
 
     /*
      * Yuck.
