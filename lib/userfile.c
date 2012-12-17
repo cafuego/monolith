@@ -519,6 +519,7 @@ read_profile(const char *name)
     int fd;
     char *p, work[61];
     struct stat buf;
+    ssize_t res;
 
     if (!mono_sql_u_check_user(name)) {
 	mono_errno = E_NOUSER;
@@ -536,8 +537,16 @@ read_profile(const char *name)
 	return "";
 
     p = (char *) xmalloc((unsigned)buf.st_size);
-    /* needs more error checking */
-    read(fd, p, (unsigned)buf.st_size);
+
+    if ( p == NULL ) return NULL;
+
+    res = read(fd, p, (unsigned)buf.st_size);
+    
+    if ( res < buf.st_size ){
+      free( p );
+      return NULL;
+    }
+
     (void) close(fd);
     return p;
 }
