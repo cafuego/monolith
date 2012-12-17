@@ -101,7 +101,7 @@ edit_message(unsigned int forum, unsigned int id)
     }
 
     // Save the updated header.
-    if(fexists(hdrfile));
+    if(fexists(hdrfile))
         unlink(hdrfile);
 
     if(  write_message_header(hdrfile, header) != 0 ) {
@@ -110,9 +110,9 @@ edit_message(unsigned int forum, unsigned int id)
     }
 
     // Clean up.
-    if(fexists(tmpfile));
+    if(fexists(tmpfile))
         unlink(tmpfile);
-    if(fexists(temp));
+    if(fexists(temp))
         unlink(temp);
     xfree(header);
 
