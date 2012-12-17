@@ -455,7 +455,7 @@ namechange(void)
     char newname[L_USERNAME + 1], oldname[L_USERNAME + 1];
     char command[200];
     unsigned int num;
-    int i;
+    int i, ret;
     user_t *new_userfile = NULL, *old_userfile = NULL;
     btmp_t *btmp_ptr;
     pid_t kick_pid;
@@ -505,7 +505,11 @@ namechange(void)
     sprintf(command, "cp -a %s ",
 	    getuserdir(oldname));
     strcat(command,  getuserdir(newname));
-    system(command);
+    ret = system(command);
+    if ( ret != 0 ) {
+	cprintf( "Copy failed, aborting\n" );
+        return;
+    }
 
     if ((new_userfile = readuser(newname)) == NULL) {
 	xfree(old_userfile);
@@ -541,15 +545,19 @@ namechange(void)
 	}
 
     strcpy(command, "");
-    sprintf(command, "rm -r %s",
+    sprintf(command, "rm -rf %s",
 	    getuserdir(oldname));
     cprintf("\n\n\1f\1rRemove old user dir with command:\n\n\1y%s\1r",
 	command); 
     cprintf("\n\n(y/n) :");
-    if (yesno() == YES)
-        system(command);
-    else
+    if (yesno() == YES) {
+        ret = system(command);
+	if ( ret != 0 ) {
+            cprintf("\nRemoval failed.  Delete by hand.");
+	}
+    } else {
 	cprintf("\nOk..  leaving it.  Delete by hand.");
+    }
     cprintf("\1f\1g\n\nNamechange completed.\n");
 }
 /* eof */
