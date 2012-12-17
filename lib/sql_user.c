@@ -12,11 +12,7 @@
 #include <stdlib.h>
 #include <string.h>		/* for strncpy */
 #include <assert.h>
-#include <unistd.h>
-
-#ifdef HAVE_CRYPT_H
 #include <crypt.h>
-#endif
 
 #ifdef USE_MYSQL
 #include MYSQL_HEADER
