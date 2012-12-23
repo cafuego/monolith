@@ -1,10 +1,10 @@
 /* $Id$ */
 
-RETSIGTYPE dropcarr(int sig);
-RETSIGTYPE sleeping(int sig);
-RETSIGTYPE segfault( int sig);
-RETSIGTYPE updateself(int sig);
-RETSIGTYPE kickoutmyself(int sig);
+void dropcarr(int sig);
+void sleeping(int sig);
+void segfault( int sig);
+void updateself(int sig);
+void kickoutmyself(int sig);
 void change_passwd(user_t *user);
 void do_changepw(void);
 void getwindowsize(int sig);

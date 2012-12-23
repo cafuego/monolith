@@ -16,8 +16,8 @@ void ok_let_in(void);
 
 int wait_in_queue(void);
 int rewrite_queue( int echo );
-RETSIGTYPE retry(int sig);
-RETSIGTYPE log_off(int sig);
+void retry(int sig);
+void log_off(int sig);
 void mono_login(void);
 char *get_uname(void);
 void get_line( char string[], int lim );

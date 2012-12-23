@@ -119,7 +119,7 @@ main(int argc, char **argv)
 /*************************************************
 * log_off()
 *************************************************/
-RETSIGTYPE
+void
 log_off(int sig)
 {
     sig++;			/* to stop compiler warnings */
