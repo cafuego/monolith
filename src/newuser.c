@@ -36,7 +36,7 @@
 #include "routines2.h"
 
 static void newuser_getname(char * name);
-static void newuser_getpasswd(unsigned int user_id);
+static void newuser_getpasswd( user_id_t user_id);
 static void newuser_registration(user_t * user);
 static user_t *newuser_makesupp(void);
 static int check_lockout(const char *hostname);
@@ -209,7 +209,7 @@ newuser_getname(char *name)
 }
 
 static void
-newuser_getpasswd(unsigned int user_id)
+newuser_getpasswd( user_id_t user_id)
 {
     char pwread[20], pwtest[20];	/* for password validation */
     int done = FALSE;

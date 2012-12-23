@@ -70,7 +70,7 @@ char previous_host[L_HOSTNAME + 1];
  * if someone is idle. It also takes care of the alarm clock. 
  * It works with help of the SIGALRM signal that is sent every 60 secs */
 
-RETSIGTYPE
+void
 sleeping(int sig)
 {
     char i;
@@ -125,7 +125,7 @@ sleeping(int sig)
 * Called by the SIGUSR2-signal
 *************************************************/
 
-RETSIGTYPE
+void
 updateself(int sig)
 {
     user_t *user = NULL;
@@ -155,7 +155,7 @@ updateself(int sig)
     return;
 }
 
-RETSIGTYPE
+void
 segfault(int sig)
 {
     sig++;
@@ -170,7 +170,7 @@ segfault(int sig)
     return;
 }
 
-RETSIGTYPE
+void
 dropcarr(int sig)
 {
     sig++;
@@ -178,7 +178,7 @@ dropcarr(int sig)
     return;
 }
 
-RETSIGTYPE
+void
 kickoutmyself(int sig)
 {				/* <auk>ick out user sends a signal to this funct. */
     sig++;
@@ -793,6 +793,8 @@ print_login_banner(time_t laston)
     int ret;
 
     ret = mono_sql_u_get_login_count(usersupp->usernum, &timescalled);
+
+    if ( ret == -1 ) timescalled = 0;
 
     (void) cprintf(_("\n\1a\1f\1gWelcome to %s, \1g%s! \1gThis is your \1w#%d \1glogin.\n")
 		   ,BBSNAME, usersupp->username, timescalled);
