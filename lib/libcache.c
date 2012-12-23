@@ -17,7 +17,7 @@
 #include "libcache.h"
 
 typedef struct user_cache_type {
-    char name[L_USERNAME + L_BBSNAME + 2];
+    char name[L_USERNAME + 1];
     unsigned int user_number;
     int friend;
     int quickx;

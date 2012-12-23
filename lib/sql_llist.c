@@ -8,6 +8,7 @@
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
+#include <build-defs.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -242,7 +243,5 @@ mono_sql_ll_free_wxlist(wx_list_t *list)
     }
     return;
 }
-
-/* eof */
 
 /* eof */

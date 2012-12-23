@@ -12,7 +12,7 @@
 #include <string.h>
 
 #ifdef USE_MYSQL
-  #include MYSQL_HEADER
+#include MYSQL_HEADER
 #endif
 
 #include "monolith.h"

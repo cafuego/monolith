@@ -12,6 +12,8 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
+#include <build-defs.h>
+
 #ifdef USE_MYSQL
 #include MYSQL_HEADER
 #endif
