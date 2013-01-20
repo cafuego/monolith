@@ -2,10 +2,11 @@ dnl Process this file with autoconf to produce a configure script.
 dnl $Id$
 
 AC_PREREQ([2.68])
-
 AC_INIT(monolith, 2.0)
-AC_CONFIG_AUX_DIR(auto)
+
 AC_CONFIG_SRCDIR(src/main.c)
+AC_CONFIG_AUX_DIR(auto)
+
 AM_INIT_AUTOMAKE
 
 AC_DEFINE(PACKAGE, "monolith")
@@ -47,12 +48,6 @@ fi
 umask 002
 
 AC_SUBST(prefix)
-
-PACKAGE="monolith"
-AC_SUBST(PACKAGE)
-
-VERSION="2.0"
-AC_SUBST(VERSION)
 
 dnl Checks for programs.
 AC_PROG_AWK
@@ -514,13 +509,30 @@ fi
 dnl Define LINUX if this is a linux system.
 dnl fixme
 
-AC_OUTPUT(lib/Makefile daemons/Makefile src/Makefile \
-    misc/Makefile shix/Makefile doc/Makefile \
-    doc/sql/Makefile share/Makefile share/feelings/Makefile \
-    share/loginscreens/Makefile web/Makefile web/classes/Makefile \
-    web/engine/Makefile web/pix/Makefile web/style/Makefile \
-    web/script/Makefile web/sound/Makefile web/flash/Makefile \
-    po/Makefile.in include/Makefile Makefile include/build-defs.h)
+AC_CONFIG_FILES([Makefile
+                 daemons/Makefile
+                 doc/Makefile
+                 doc/sql/Makefile
+                 include/Makefile
+		 include/build-defs.h
+                 lib/Makefile
+                 misc/Makefile
+		 po/Makefile.in
+                 share/Makefile
+                 share/etc/Makefile
+                 share/feelings/Makefile
+                 share/loginscreens/Makefile
+                 shix/Makefile
+                 src/Makefile
+                 web/Makefile
+                 web/classes/Makefile
+                 web/engine/Makefile
+                 web/flash/Makefile
+                 web/pix/Makefile
+                 web/script/Makefile
+                 web/sound/Makefile
+                 web/style/Makefile])
+AC_OUTPUT
 
 dnl Create PHP include file with MYSQL settings.
 dnl
