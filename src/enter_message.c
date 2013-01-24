@@ -36,9 +36,7 @@
 #include "display_message.h"
 #include "uadmin.h"
 
-#define extern
 #include "enter_message.h"
-#undef extern
 
 static void get_subject(message_header_t *);
 static void get_reply_info(message_header_t *, const unsigned);
@@ -55,7 +53,7 @@ static int get_automail_info(message_header_t *, userlist_t **);
 static void your_forum_is_boring_zzzz_form_letter(FILE *, char *, int);
 
 int
-enter_message(unsigned int forum, int mode, unsigned long banner_flag, const char *automail_name)
+enter_message( forum_id_t forum, int mode, unsigned long banner_flag, const char *automail_name)
 {
     size_t filesize = 0;
     room_t quad;

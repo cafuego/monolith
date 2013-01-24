@@ -14,9 +14,9 @@
 #define H_STATE	      512
 
 /* prototypes */
-extern void dis_regis( const user_type *userdata, int override );
-extern void enter_reginfo( void );
-extern void enter_info( user_type *user );
-extern void change_info( user_type *user, int override );
-extern void toggle_hidden_info( user_type *user );
-extern int is_allowed_email( const char *email );
+void dis_regis( const user_type *userdata, int override );
+void enter_reginfo( void );
+void enter_info( user_type *user );
+void change_info( user_type *user, int override );
+void toggle_hidden_info( user_type *user );
+int is_allowed_email( const char *email );

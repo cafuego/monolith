@@ -1,4 +1,3 @@
-/* $Id$ */
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -8,21 +7,13 @@
 #include <string.h>
 #include <sys/types.h>
 
-#ifdef HAVE_MYSQL_H
-  #undef HAVE_MYSQL_MYSQL_H
-  #include <mysql.h>
-#else
-  #ifdef HAVE_MYSQL_MYSQL_H
-    #undef HAVE_MYSQL_H
-    #include <mysql/mysql.h>
-  #endif
-#endif
-
 #include "monolith.h"
-
-#define extern
 #include "libuid.h"
-#undef extern
+#include "routines.h"
+
+static char mono_uid[L_USERNAME+1];
+static char *program_invocation_name = NULL;
+static char *program_invocation_short_name = NULL;
 
 int
 mono_setuid(const char *newuid)
@@ -40,11 +31,15 @@ mono_getuid()
 int
 set_invocation_name(const char *name)
 {
-    char *p;
+    char *p, *q;
 
-    program_invocation_name = strdup(name);
-    if (program_invocation_name == NULL)
+    q = strdup(name);
+    if ( q == NULL ) 
 	return -1;
+
+    xfree( program_invocation_name );
+
+    program_invocation_name = q;
 
     p = strrchr(name, '/');
     if (p != NULL) {
@@ -57,6 +52,12 @@ set_invocation_name(const char *name)
 	return -1;
 
     return 0;
+}
+
+char
+*get_invocation_short_name()
+{
+    return program_invocation_short_name;
 }
 
 /* eof */

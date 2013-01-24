@@ -1,4 +1,3 @@
-/* $Id$ */
 
 /* defines			*/
 
@@ -8,17 +7,17 @@
 
 /* prototypes			*/
 
-extern int is_chat_subscribed( int chat,  const char *channel );
-extern void chat_subscribe(void);
+int is_chat_subscribed( int chat,  const char *channel );
+void chat_subscribe(void);
 
-extern int chat_command( void );
-extern int send_chatmsg(void);
-extern void read_holodecks( int how );
-extern void change_holodeck(void);
-extern void lock_function(int semaphore, int key);
-extern void change_type( unsigned int number );
-extern void op_command(void);
-extern void in_chat( void );
-extern int get_alias( void );
-extern int is_allowed( unsigned int );
-extern void edit_programme( void );
+int chat_command( void );
+int send_chatmsg(void);
+void read_holodecks( int how );
+void change_holodeck(void);
+void lock_function(int semaphore, int key);
+void change_type( unsigned int number );
+void op_command(void);
+void in_chat( void );
+int get_alias( void );
+int is_allowed( unsigned int );
+void edit_programme( void );

@@ -28,27 +28,24 @@
 #include "userfile.h"
 #include "libquad.h"
 #include "libcache.h"
-
-#define extern
 #include "msg_file.h"
-#undef extern
 
-static char * get_flag(unsigned long mod_banner);
+static char * get_flag(long mod_banner);
 static char * get_reason(int mod_reason);
 
 
 int
 write_message_header(const char *header_filename, message_header_t *header)
 {
-    size_t sz;
     FILE *fp;
+    size_t sz;
 
     if ((fp = xfopen(header_filename, "w", FALSE)) == NULL)
 	return -1;
 
     sz = fwrite(header, sizeof(message_header_t), 1, fp);
 
-    if (ferror(fp)) {
+    if ( sz != 1 || ferror(fp)) {
 	printf("\n\1f\1rError: File error at write_message_header()\n");
 	unlink(header_filename);
 	fclose(fp);
@@ -63,6 +60,7 @@ int
 read_message_header(const char *header_filename, message_header_t *header)
 {
     FILE *fp;
+    size_t sz;
 
     memset(header, 0, sizeof(message_header_t));
 
@@ -71,9 +69,9 @@ read_message_header(const char *header_filename, message_header_t *header)
     if ((fp = xfopen(header_filename, "r", FALSE)) == NULL) 
 	return -1;
 
-    fread(header, sizeof(message_header_t), 1, fp);
+    sz = fread(header, sizeof(message_header_t), 1, fp);
 
-    if (ferror(fp)) {
+    if ( sz == 0 || ferror(fp)) {
         printf("\n\1r\1fError: File error at read_message_header()\n");
         fclose(fp);
         return -1;
@@ -126,12 +124,12 @@ mail_header_filename(char * filename, const char *name, const unsigned int numbe
 }
 
 int
-message_copy(const unsigned int from_forum, const unsigned int to_forum, const unsigned int message_id, const char *recipient_name, const unsigned int modification_type)
+message_copy(const unsigned int from_forum, const unsigned int to_forum, const unsigned int message_id, const char *recipient_name, const int modification_type)
 {
     char to_file[L_FILE + 1], from_file[L_FILE + 1];
     char to_header_file[L_FILE + 1], from_header_file[L_FILE + 1];
     char to_name[L_USERNAME + 1];
-    unsigned int new_message_id, success = 0;
+    unsigned int new_message_id;
     message_header_t *to_header = NULL;
     room_t forum;
 
@@ -194,7 +192,7 @@ message_copy(const unsigned int from_forum, const unsigned int to_forum, const u
 
 #ifndef ADDED_BY_PETER_FOR_TESTING
         if (to_forum != MAIL_FORUM ) {
-	    unsigned long temp_banner;
+	    long temp_banner;
 
 /* added this to get rid of potential issues copying mails.  */
 
@@ -215,7 +213,6 @@ message_copy(const unsigned int from_forum, const unsigned int to_forum, const u
 	}
 
 	xfree(to_header);
-	success = 1;
 	break;
     }
 
@@ -320,7 +317,7 @@ save_to_sql(const message_header_t *header, const char *filename)
 }
 
 static char *
-get_flag(unsigned long mod_banner)
+get_flag(long mod_banner)
 {
 
     switch(mod_banner) {
@@ -463,7 +460,7 @@ int
 convert_message_base(int forum)
 {
 #define CONVERT_MAIL_QUAD
-//#define CONVERT_INFO
+/* #define CONVERT_INFO */
     room_t quad;
     message_header_t * header;
     post_t post;

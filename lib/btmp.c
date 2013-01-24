@@ -1,5 +1,5 @@
-/*
- * btmp.c 
+
+/* btmp.c 
  * $Id$ 
  *
  * Have to make all pointers relative to the shm->first.
@@ -9,6 +9,7 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+
 #include <build-defs.h>
 
 #include <stdio.h>
@@ -23,17 +24,12 @@
 #include <sys/types.h>
 
 #include "monolith.h"
-
-#define extern
 #include "btmp.h"
-#undef extern
-
 #include "friends.h"
 #include "log.h"
 #include "libuid.h"
 #include "registration.h"
 #include "routines.h"
-
 #include "sql_forum.h"
 #include "sql_online.h"
 
@@ -53,6 +49,8 @@ static int _mono_remove_from_linked_list(const char *user);
 static int _mono_add_to_linked_list(btmp_t user);
 static int _mono_initialize_holodeck(void);
 static int _mono_guide_ok(btmp_t *guide);
+
+bigbtmp_t *shm;
 
 /* -------------------------------------------------------------------- */
 /* return_pid() */
@@ -78,11 +76,12 @@ mono_return_pid(const char *name)
     return -1;
 }
 
-int
+unsigned int
 mono_fix_usercount()
 {
 
-    int p = 0, users = 0;
+    int p = 0;
+    unsigned int users = 0;
 
     (void) mono_lock_shm(WHO_LOCK);
     p = shm->first;
@@ -227,7 +226,7 @@ mono_change_online(const char *user, const char *tmp_string, int ch)
 
 
 		case 1:
-                    sscanf( tmp_string, "%ul", &(p->priv) );
+                    sscanf( tmp_string, "%d", &(p->priv) );
 		    /* p->priv = atoi(tmp_string); */
 		    break;
 
@@ -445,11 +444,14 @@ mono_connect_shm()
 	fflush(stderr);
 	log_it("shmlog", "Attempted connect with euid %d.", geteuid());
 	readonly = TRUE;
-/*	exit(EXIT_FAILURE); */
+	exit(EXIT_FAILURE); 
     }
+
     if (fexists(SHMKEY) == TRUE) {
 	fp = xfopen(SHMKEY, "r", TRUE);
-	fgets(bing, 9, fp);
+	if ( fgets(bing, 9, fp) == NULL ) {
+	    exit(EXIT_FAILURE);
+	}
 	shmid = atoi(bing);
 	fclose(fp);
         if ( readonly == TRUE ) {
@@ -475,6 +477,7 @@ mono_connect_shm()
 	fprintf(fp, "%d\n", shmid);
 	fclose(fp);
 	log_it("shmlog", "New shm ID %d created.", shmid);
+
 	shm = (bigbtmp_t *) shmat(shmid, 0, 0);
 
 	if (-1 == (int) shm) {
@@ -505,7 +508,7 @@ mono_detach_shm()
     return 0;
 }
 
-int
+static int
 _mono_initialize_shm()
 {
     int fd;
@@ -536,11 +539,11 @@ _mono_initialize_shm()
     }
     close(fd);
 
-    (void) strncpy(shm->mysql.host, MYSQL_SERVER, L_USERNAME); 
-    (void) strncpy(shm->mysql.user, MYSQL_USER, L_USERNAME); 
-    (void) strncpy(shm->mysql.pass, MYSQL_PASSWORD, L_USERNAME); 
-    (void) strncpy(shm->mysql.base, MYSQL_DATABASE, L_USERNAME); 
-    (void) strncpy(shm->mysql.sock, MYSQL_SOCKET, strlen(MYSQL_SOCKET) ); 
+    strncpy(shm->mysql.host, MYSQL_SERVER, L_USERNAME); 
+    strncpy(shm->mysql.user, MYSQL_USER, L_USERNAME); 
+    strncpy(shm->mysql.pass, MYSQL_PASSWORD, L_USERNAME); 
+    strncpy(shm->mysql.base, MYSQL_DATABASE, L_USERNAME); 
+    strncpy(shm->mysql.sock, MYSQL_SOCKET, L_USERNAME);
 
     return 0;
 }

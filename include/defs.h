@@ -14,7 +14,8 @@
 #define L_LANG 20 /* locale language length */
 #define L_LOCALE 20 
 #define L_AWAYMSG 100
-
+#define L_FILE		255	/* max length of various filenames */
+#define L_DOING		40	/* max length of 'doing' field */
 
 #define BS		8	/* char: backspace			*/
 #define CR		13	/* char: carriage return		*/
@@ -48,9 +49,6 @@
 #define X_BUFFER	X_MARGIN * X_LENGTH
 #define YES		1
 
-#define L_FILE		255	/* max length of various filenames */
-
-#define L_DOING		40	/* max length of 'doing' field */
 
 	/********************/
 

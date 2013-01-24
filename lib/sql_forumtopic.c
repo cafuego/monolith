@@ -12,7 +12,7 @@
 #include <stdio.h>
 
 #ifdef USE_MYSQL
-  #include MYSQL_HEADER
+#include MYSQL_HEADER
 #endif
 
 #include "monolith.h"
@@ -22,11 +22,7 @@
 #include "sql_forum.h"
 #include "sql_topic.h"
 #include "sql_message.h"
-
-#define extern
 #include "sql_forumtopic.h"
-#undef extern
-
 
 int
 add_to_topiclist(topiclist_t element, topiclist_t ** list)
@@ -70,11 +66,12 @@ dest_topiclist(topiclist_t * list)
 int
 mono_sql_ft_list_topics_by_forum(unsigned int forum_id, topiclist_t ** p)
 {
-    int ret, rows, i;
+    int ret, i;
     unsigned int topic_id;
     topiclist_t e;
     MYSQL_RES *res;
     MYSQL_ROW row;
+    my_ulonglong rows;
 
     ret = mono_sql_query(&res, "SELECT topic_id FROM " FT_TABLE
 		      " WHERE forum_id=%u", forum_id);

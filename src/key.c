@@ -34,11 +34,7 @@
 #include "monolith.h"
 #include "libmono.h"
 #include "ext.h"
-
-#define extern
 #include "key.h"
-#undef extern
-
 #include "input.h"
 #include "sql_user.h"
 #include "routines2.h"
@@ -97,7 +93,7 @@ enter_key()
 {
 
     char key[5];
-    int ikey;
+    unsigned int ikey;
 
     mono_sql_u_get_validation( usersupp->usernum, &ikey );
 
@@ -133,7 +129,8 @@ send_key( unsigned int user_id )
     size_t accepted;
 
     char email[80];
-    int key, ret;
+    int ret;
+    unsigned int key;
     char username[L_USERNAME+1];
   
     ret = mono_sql_u_get_email( user_id, email );

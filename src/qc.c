@@ -19,7 +19,7 @@
 #include <unistd.h>
 
 #ifdef USE_MYSQL
-  #include MYSQL_HEADER
+#include MYSQL_HEADER
 #endif
 
 #ifdef ENABLE_NLS
@@ -34,9 +34,7 @@
 #include "libmono.h"
 #include "ext.h"		/* for curr_rm and such */
 
-#define extern
 #include "qc.h"
-#undef extern
 
 #include "menu.h"		/* for dynamic menus */
 #include "rooms.h"		/* for readquad, leave_n_unread_posts, etc. */
@@ -49,34 +47,34 @@ static void qc_categories_menu(void);
 
 static int _sql_qc_add_category(const char *cat_name);
 static int _sql_qc_name2id(const char *name, unsigned int *id);
-static int _sql_qc_id2name(char *name, const unsigned int id);
-static int _sql_qc_rename_category(const char *cat_name, const unsigned int cat_id);
-static int _sql_qc_delete_category(const unsigned int cat_id);
-static int _sql_qc_fetch_quad_qc(const unsigned int quad, qc_record * qc);
+static int _sql_qc_id2name(char *name, unsigned int id);
+static int _sql_qc_rename_category(const char *cat_name, unsigned int cat_id);
+static int _sql_qc_delete_category(unsigned int cat_id);
+static int _sql_qc_fetch_quad_qc(unsigned int quad, qc_record * qc);
 static int _sql_qc_fetch_all_quads_qc(qc_record ***);
-static int _sql_qc_update_f_quotient(const unsigned int, const unsigned int, const unsigned int);
-static int _sql_qc_update_u_quotient(const unsigned int, const unsigned int, const unsigned int);
+static int _sql_qc_update_f_quotient(unsigned int, unsigned int, unsigned int);
+static int _sql_qc_update_u_quotient(unsigned int, unsigned int, unsigned int);
 static int _sql_qc_count_categories(int *);
-static int _sql_qc_fiddle_with_flags(const unsigned int, const unsigned int);
-static int _sql_qc_set_newbie_unread(const unsigned int, const unsigned int);
+static int _sql_qc_fiddle_with_flags(unsigned int, unsigned int);
+static int _sql_qc_set_newbie_unread(unsigned int, unsigned int);
 static int _sql_qc_get_user_id_list(int ***);
-static int _sql_qc_fetch_user_qc(const unsigned int u_id, qc_record * qc);
-static int _sql_qc_user_on_file(const unsigned int u_id, int *rows);
+static int _sql_qc_fetch_user_qc(unsigned int u_id, qc_record * qc);
+static int _sql_qc_user_on_file(unsigned int u_id, int *rows);
 static int _sql_qc_add_user(const int id);
 static int _sql_qc_delete_user(const int id);
-static int _sql_qc_get_f_max_and_slot(unsigned int *, const unsigned int, unsigned int *);
+static int _sql_qc_get_f_max_and_slot(unsigned int *, unsigned int, unsigned int *);
 
 #ifdef QC_TIME_FUNCTIONS
 /* these are unused as of yet..  */
-static int _sql_qc_get_u_last_mod(const unsigned int, unsigned long *);
+static int _sql_qc_get_u_last_mod(unsigned int, unsigned long *);
 static int _sql_qc_get_f_last_mod(unsigned long *);
 static int _sql_qc_get_t_last_mod(unsigned long *);
 #endif
 
-static int qc_set_values(const int);
+static int qc_set_values(int);
 static void qc_set_flags(void);
 
-static int qc_evaluate(const unsigned int, int ***);
+static int qc_evaluate(unsigned int, int ***);
 static int qc_mail_results(int **);
 static void qc_show_results(int **);
 
@@ -120,7 +118,7 @@ _sql_qc_count_categories(int *num)
 }
 
 int
-_sql_qc_add_user(const int id)
+_sql_qc_add_user(int id)
 {
     MYSQL_RES *res;
     int ret, count;
@@ -144,7 +142,7 @@ _sql_qc_add_user(const int id)
 
 
 int
-_sql_qc_delete_user(const int id)
+_sql_qc_delete_user(int id)
 {
     MYSQL_RES *res;
 
@@ -225,7 +223,7 @@ _sql_qc_name2id(const char *name, unsigned int *id)
 }
 
 int
-_sql_qc_id2name(char *name, const unsigned int id)
+_sql_qc_id2name(char *name, unsigned int id)
 {
     MYSQL_RES *res;
     MYSQL_ROW row;
@@ -250,7 +248,7 @@ _sql_qc_id2name(char *name, const unsigned int id)
 }
 
 int
-_sql_qc_rename_category(const char *name, const unsigned int id)
+_sql_qc_rename_category(const char *name, unsigned int id)
 {
     MYSQL_RES *res;
     int ret;
@@ -263,7 +261,7 @@ _sql_qc_rename_category(const char *name, const unsigned int id)
 }
 
 int
-_sql_qc_update_u_quotient(const unsigned int id, const unsigned int new_val, const unsigned int user_id)
+_sql_qc_update_u_quotient(unsigned int id, unsigned int new_val, unsigned int user_id)
 {
     MYSQL_RES *res;
     int ret;
@@ -276,7 +274,7 @@ _sql_qc_update_u_quotient(const unsigned int id, const unsigned int new_val, con
 }
 
 int
-_sql_qc_update_f_quotient(const unsigned int id, const unsigned int new_val, const unsigned int forum)
+_sql_qc_update_f_quotient(unsigned int id, unsigned int new_val, unsigned int forum)
 {
     MYSQL_RES *res;
     int ret;
@@ -289,7 +287,7 @@ _sql_qc_update_f_quotient(const unsigned int id, const unsigned int new_val, con
 }
 
 int
-_sql_qc_fiddle_with_flags(const unsigned int newflags, const unsigned int forum)
+_sql_qc_fiddle_with_flags(unsigned int newflags, unsigned int forum)
 {
     MYSQL_RES *res;
     int ret;
@@ -302,7 +300,7 @@ _sql_qc_fiddle_with_flags(const unsigned int newflags, const unsigned int forum)
 }
 
 int
-_sql_qc_set_newbie_unread(const unsigned int new_unread, const unsigned int forum)
+_sql_qc_set_newbie_unread(unsigned int new_unread, unsigned int forum)
 {
     MYSQL_RES *res;
     int ret;
@@ -315,7 +313,7 @@ _sql_qc_set_newbie_unread(const unsigned int new_unread, const unsigned int foru
 }
 
 int
-_sql_qc_delete_category(const unsigned int id)
+_sql_qc_delete_category(unsigned int id)
 {
     MYSQL_RES *res;
     MYSQL_ROW row;
@@ -472,7 +470,7 @@ _sql_qc_fetch_all_quads_qc(qc_record *** qc_list)
 }
 
 int
-_sql_qc_fetch_quad_qc(const unsigned int quad, qc_record * qc)
+_sql_qc_fetch_quad_qc(unsigned int quad, qc_record * qc)
 {
     MYSQL_RES *res;
     MYSQL_ROW row;
@@ -513,7 +511,7 @@ _sql_qc_fetch_quad_qc(const unsigned int quad, qc_record * qc)
 }
 
 int
-_sql_qc_get_f_max_and_slot(unsigned int *c_id, const unsigned int forum, unsigned int *max)
+_sql_qc_get_f_max_and_slot(unsigned int *c_id, unsigned int forum, unsigned int *max)
 {
     MYSQL_RES *res;
     MYSQL_ROW row;
@@ -557,7 +555,7 @@ _sql_qc_get_f_max_and_slot(unsigned int *c_id, const unsigned int forum, unsigne
 }
 
 int
-_sql_qc_user_on_file(const unsigned int u_id, int *rows)
+_sql_qc_user_on_file(unsigned int u_id, int *rows)
 {
     MYSQL_RES *res;
     int ret;
@@ -571,7 +569,7 @@ _sql_qc_user_on_file(const unsigned int u_id, int *rows)
 }
 
 int
-_sql_qc_zero_forum_categories(const unsigned int forum)
+_sql_qc_zero_forum_categories(unsigned int forum)
 {
     MYSQL_RES *res;
     int ret;
@@ -585,7 +583,7 @@ _sql_qc_zero_forum_categories(const unsigned int forum)
 
 
 int
-_sql_qc_fetch_user_qc(const unsigned int u_id, qc_record * qc)
+_sql_qc_fetch_user_qc(unsigned int u_id, qc_record * qc)
 {
     MYSQL_RES *res;
     MYSQL_ROW row;
@@ -623,7 +621,7 @@ _sql_qc_fetch_user_qc(const unsigned int u_id, qc_record * qc)
 #ifdef QC_TIME_FUNCTIONS
 
 int
-_sql_qc_get_u_last_mod(const unsigned int id, unsigned long *timeval)
+_sql_qc_get_u_last_mod(unsigned int id, unsigned long *timeval)
 {
     MYSQL_RES *res;
     MYSQL_ROW row;
@@ -821,7 +819,7 @@ qc_edit_room(void)
 
 
 int
-qc_set_values(const int mode)
+qc_set_values(int mode)
 {
     MENU_DECLARE;
     char *tempstr, tempstr1[5], tempstr2[10];
@@ -829,8 +827,8 @@ qc_set_values(const int mode)
     int ret = -1, i, count;
     unsigned int id;
 
-    void _set_qc_f_value(const unsigned int, const long, void *);
-    void _set_qc_u_value(const unsigned int, const long, void *);
+    void _set_qc_f_value(unsigned int, long, void *);
+    void _set_qc_u_value(unsigned int, long, void *);
 
     for (;;) {
 	MENU_INIT;
@@ -911,7 +909,7 @@ qc_set_values(const int mode)
 
 
 void
-_set_qc_f_value(const unsigned int category_id, const long val, void *category_name)
+_set_qc_f_value(unsigned int category_id, long val, void *category_name)
 {
     int ret, new_val;
     unsigned int max, max_at_id, forum;
@@ -949,7 +947,7 @@ _set_qc_f_value(const unsigned int category_id, const long val, void *category_n
 
 
 void
-_set_qc_u_value(const unsigned int category_id, const long val, void *category_name)
+_set_qc_u_value(unsigned int category_id, long val, void *category_name)
 {
     int ret;
     unsigned int new_val;
@@ -978,8 +976,8 @@ qc_set_flags(void)
     int ret = -1;
     unsigned int id;
 
-    void _toggle_qc_flag(const unsigned int, const long, void *);
-    void _set_qc_newbie_unread(const unsigned int, const long, void *);
+    void _toggle_qc_flag(unsigned int, long, void *);
+    void _set_qc_newbie_unread(unsigned int, long, void *);
 
     for (;;) {
 	MENU_INIT;
@@ -1018,7 +1016,7 @@ qc_set_flags(void)
 }
 
 void
-_toggle_qc_flag(const unsigned int curr_flags, const long mask, void *bar)
+_toggle_qc_flag(unsigned int curr_flags, long mask, void *bar)
 {
     int ret;
     unsigned int newflags;
@@ -1033,7 +1031,7 @@ _toggle_qc_flag(const unsigned int curr_flags, const long mask, void *bar)
 }
 
 void
-_set_qc_newbie_unread(const unsigned int curr_unread, const long foo, void *bar)
+_set_qc_newbie_unread(unsigned int curr_unread, long foo, void *bar)
 {
     int ret, new_unread;
 
@@ -1447,7 +1445,7 @@ qc_clear_lockout(void)
  */
 
 int
-qc_evaluate(const unsigned int eval_flags, int ***eval_list)
+qc_evaluate(unsigned int eval_flags, int ***eval_list)
 {
     int user_q[NO_OF_CATEGORIES], read_q[NO_OF_CATEGORIES], **kabong = NULL,
        *kazam;

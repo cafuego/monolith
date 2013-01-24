@@ -22,11 +22,7 @@
 #include "monolith.h"
 #include "libmono.h"
 #include "ext.h" 
-
-#define extern
 #include "help.h"
-#undef extern
-
 #include "input.h"
 #include "routines2.h"
 #include "menu.h"
@@ -671,15 +667,16 @@ online_help(char context)
 	    M_FILENAME, HELPDIR, "commands/readlast_N");
 	    MENU_ADDITEM(more_wrapper, 1, 0, (char *) filename, "ti", "Read from last post", "_");
 	}
+#ifdef CTRLN
 	// ctrl-n                          case 016:
 	/*
 	 * M_FILENAME, HELPDIR, "commands/upload");
 	 * MENU_ADDITEM(more_wrapper, 1, 0, (char *) filename, "ti", "", "");
 	 * } */
+#endif
 	if (strchr("lsBH", context)) {
 	    M_FILENAME, HELPDIR, "commands/short_helplist");
 	    MENU_ADDITEM(more_wrapper, 1, 0, (char *) filename, "ti", "Online Help", "\?");
-//	MENU_ADDITEM(online_help_wrapper, 1, 0, "s", "ti", "Online Help", "\?");
 	}
 	if (strchr("sBH", context)) {
 	    M_FILENAME, HELPDIR, "commands/commands_longlist");

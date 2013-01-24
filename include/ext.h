@@ -25,4 +25,9 @@ extern user_t	*usersupp;		/* Logged-in user's user-struct	*/
 
 extern config_t config;			/* Peter's config */
 
+extern char profile_default[L_USERNAME+1];
+
+extern volatile int xmsgp;
+extern express_t *xmsgb[XLIMIT];
+
 /* eof */

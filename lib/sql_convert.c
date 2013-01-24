@@ -17,15 +17,12 @@
 #include <sys/types.h>
 
 #ifdef USE_MYSQL
-  #include MYSQL_HEADER
+#include MYSQL_HEADER
 #endif
 
 #include "monolith.h"
 #include "routines.h"
-
-#define extern
 #include "sql_convert.h"
-#undef extern
 
 /*
  * Convert MYQSL_ROW to message_t.
@@ -131,8 +128,8 @@ mono_sql_convert_row_to_x(MYSQL_ROW row)
     memset(x, 0, sizeof(express_t));
 
     sscanf(row[0], "%lu", &x->time);
-    snprintf(x->sender, L_USERNAME+L_BBSNAME+2, "%s", row[1]);
-    snprintf(x->recipient, L_USERNAME+L_BBSNAME+2, "%s", row[2]);
+    snprintf(x->sender, L_USERNAME+1, "%s", row[1]);
+    snprintf(x->recipient, L_USERNAME+1, "%s", row[2]);
     snprintf(x->message, X_BUFFER, "%s", row[3]);
     sscanf(row[4], "%u", &x->sender_priv);
     sscanf(row[5], "%d", &x->override);

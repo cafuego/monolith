@@ -30,12 +30,9 @@
 #include "libmono.h"
 #include "setup.h"
 #include "version.h"
-
-#define extern
 #include "server.h"
-#undef extern
 
-char hostname[255];
+char hostname[L_HOSTNAME + 1];
 char username[L_USERNAME + 1];
 FILE *netofp, *netifp;
 struct sockaddr_in acc_addr;
@@ -119,7 +116,7 @@ void
 ok_let_in()
 {
 
-    execl(BBSEXECUTABLE, BBSEXECUTABLE, hostname, username, 0);
+    execl(BBSEXECUTABLE, BBSEXECUTABLE, hostname, username, (char *)NULL );
     logoff(0);
 }
 
@@ -133,7 +130,7 @@ get_hostname()
 
     struct hostent *host;
     char site_num[80];
-    int size;
+    size_t size;
 
 /* according to the manpage, this should be a unsgnd long int, not just
  * an unsigned int.              kirth */

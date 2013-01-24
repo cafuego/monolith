@@ -6,10 +6,11 @@
 #endif
 #include <build-defs.h>
 
+#include <unistd.h>
+#include <signal.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
-#include <signal.h>
 #include <time.h>
 
 #ifdef USE_MYSQL
@@ -19,12 +20,8 @@
 #include "monolith.h"
 #include "routines.h"
 #include "log.h"
-
 #include "btmp.h"
-
-#define extern
 #include "sql_utils.h"
-#undef extern
 
 #define SQL_QUERY_BUFF_INC	128
 #undef SQL_DEBUG
@@ -36,15 +33,18 @@ static int logqueries = FALSE;
 int
 mono_sql_connect ()
 {
+  MYSQL *ms;
+
   mysql_init (&mp);
 
-  if (!
-      (mysql_real_connect 
-          (&mp, shm->mysql.host, shm->mysql.user, shm->mysql.pass, shm->mysql.base, 0, shm->mysql.sock, 0)))
-    {
+  ms = mysql_real_connect(&mp, shm->mysql.host, shm->mysql.user, shm->mysql.pass, shm->mysql.base, 0, shm->mysql.sock, 0);
+
+  if ( ms == NULL )
+  {
       log_it ("sql", "could not connect to server (%s) !", mysql_error (&mp));
       return -1;
-    }
+  }
+
   connected = TRUE;
   return 0;
 }
@@ -182,13 +182,13 @@ mono_sql_logqueries_toggle ()
   return logqueries;
 }
 
-char *
+const char *
 mono_mysql_server_info ()
 {
   return mysql_get_server_info (&mp);
 }
 
-char *
+const char *
 mono_mysql_host_info ()
 {
   return mysql_get_host_info (&mp);

@@ -205,7 +205,7 @@ notebook(int for_who)
     cprintf("\n");
     for (;;) {
 
-	if (!usersupp->flags & US_EXPERT)
+	if (! ( usersupp->flags & US_EXPERT ) )
 	    more(MENUDIR "/menu_note", 1);
 
 	cprintf("\1a\1f\1pNoteBook-> ");

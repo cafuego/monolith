@@ -23,10 +23,10 @@ typedef struct regexp {
 } regexp;
 
 /* prototypes */
-extern void regerror(char *);
-extern int shix( const char *message );
-extern regexp * regcomp( char *exp);
-extern int regexec( regexp *prog, char *string);
+void regerror(char *);
+int shix( const char *message );
+regexp * regcomp( char *exp);
+int regexec( regexp *prog, char *string);
 
-extern int shix_strmatch(char *, char *);
-extern int shix_valid( char * );
+int shix_strmatch(char *, char *);
+int shix_valid( char * );

@@ -27,10 +27,7 @@
 #include "monolith.h"
 #include "libmono.h"
 #include "ext.h"
-
-#define extern
 #include "input.h"
-#undef extern
 
 #include "express.h"
 #include "main.h"
@@ -70,7 +67,7 @@ get_name(int quit_priv)
 #define VALIDCHARS "1234567890;:.,_-+=*!&()/'?@$"
     /* these are  useable when quit_priv == 3 */
 
-    static char pbuf[L_USERNAME + L_BBSNAME + 2];	/* basically the string buffer */
+    static char pbuf[L_USERNAME + 1];	/* basically the string buffer */
     register char *p;		/* pointer current position in buffer  */
     register char c;		/* character that is entered */
 
@@ -81,7 +78,7 @@ get_name(int quit_priv)
     int i = 0;
     btmp_t *bp = NULL;
 
-    memset(pbuf, 0, 41);
+    memset(pbuf, 0, L_USERNAME + 1 );
 
     for (;;) {
 	upflag = fflag = TRUE;
@@ -831,13 +828,13 @@ editor_edit(const char *fname)
 	restore_term();
 	sprintf(aaa, "-r%s", quickroom.name);	/* to see the
 						 * roomname */
-	// cprintf("\1a\1f\1gTrying to start the new \1ynano-tiny \1geditor now: \1p%s\1g.\1a\n", fname);
-
+#ifdef EDITOR_ENABLED
 	cprintf("\1rThe editor is disabled.\n");
-
-	// execl(EDITOR, EDITOR, aaa, fname, NULL);	/* PR: added NULL * parameter ! */
-	// execl(EDITOR, EDITOR, "-l", "-t", "-p", fname, NULL);
-	// cprintf("\1f\1rexecl() failed\1w: \1r%s\n", strerror(errno) );
+#else
+	execl(EDITOR, EDITOR, aaa, fname, NULL);	/* PR: added NULL * parameter ! */
+	execl(EDITOR, EDITOR, "-l", "-t", "-p", fname, NULL);
+	cprintf("\1f\1rexecl() failed\1w: \1r%s\n", strerror(errno) );
+#endif
 	exit(0);		/* PR bugfix? Tell parent editing is
 				 * aborted */
     } else if (a > 0)		/* motherprocess that waits     */

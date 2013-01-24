@@ -34,13 +34,14 @@
 
 /* list all list entries for a certain person */
 int
-mono_sql_uu_read_list(unsigned int user_id, friend_t ** first, int flag)
+mono_sql_uu_read_list( user_id_t user_id, friend_t ** first, int flag)
 {
-    int i, rows;
+    int i;
     MYSQL_RES *res;
     MYSQL_ROW row;
     friend_t q;
     char status[10];
+    my_ulonglong rows;
 
     if (flag & L_FRIEND) {
 	strncpy(status, "friend", 9);
@@ -77,7 +78,7 @@ mono_sql_uu_read_list(unsigned int user_id, friend_t ** first, int flag)
 
 /* this is very nasty and needs to be rewritten! */
 int
-mono_sql_uu_write_list(unsigned int user_id, friend_t * const first)
+mono_sql_uu_write_list( user_id_t user_id, friend_t * const first)
 {
     friend_t *p;
 
@@ -96,11 +97,11 @@ mono_sql_uu_write_list(unsigned int user_id, friend_t * const first)
 
 /* check if a certain user has a certain status with another user */
 int
-mono_sql_uu_is_on_list(unsigned int user_id, unsigned int friend_id, int flags)
+mono_sql_uu_is_on_list( user_id_t user_id,  user_id_t friend_id, int flags)
 {
     int ret;
     MYSQL_RES *res;
-    int count;
+    my_ulonglong rows;
     char status[10];
 
     if (flags & L_FRIEND) {
@@ -116,9 +117,9 @@ mono_sql_uu_is_on_list(unsigned int user_id, unsigned int friend_id, int flags)
     if (ret == -1) {
 	return FALSE;
     } else {
-	count = mysql_num_rows(res);
+	rows = mysql_num_rows(res);
 	mono_sql_u_free_result(res);
-	if (count == 1)
+	if (rows == 1)
 	    return TRUE;
 	else
 	    return FALSE;
@@ -127,7 +128,7 @@ mono_sql_uu_is_on_list(unsigned int user_id, unsigned int friend_id, int flags)
 
 /* add entry */
 int
-mono_sql_uu_add_entry(unsigned int user_id, unsigned int friend_id, unsigned int flag)
+mono_sql_uu_add_entry( user_id_t user_id, user_id_t friend_id, unsigned int flag)
 {
     MYSQL_RES *res;
     int ret;
@@ -145,7 +146,7 @@ mono_sql_uu_add_entry(unsigned int user_id, unsigned int friend_id, unsigned int
 
 /* remove entry */
 int
-mono_sql_uu_remove_entry(unsigned int user_id, unsigned int friend_id)
+mono_sql_uu_remove_entry(user_id_t user_id, user_id_t friend_id)
 {
     MYSQL_RES *res;
     int ret;
@@ -156,7 +157,7 @@ mono_sql_uu_remove_entry(unsigned int user_id, unsigned int friend_id)
 
 /* kill an entire part of the lits for a certain user */
 int
-mono_sql_uu_clear_list(unsigned int user_id)
+mono_sql_uu_clear_list(user_id_t user_id)
 {
     MYSQL_RES *res;
     int ret;
@@ -166,7 +167,7 @@ mono_sql_uu_clear_list(unsigned int user_id)
 }
 
 int
-mono_sql_uu_clear_list_by_type(unsigned int user_id, int flag)
+mono_sql_uu_clear_list_by_type(user_id_t user_id, int flag)
 {
     MYSQL_RES *res;
     int ret;
@@ -184,7 +185,7 @@ mono_sql_uu_clear_list_by_type(unsigned int user_id, int flag)
 
 /* kill an entire user */
 int
-mono_sql_uu_kill_user(unsigned int user_id)
+mono_sql_uu_kill_user(user_id_t user_id)
 {
     MYSQL_RES *res;
     int ret;
@@ -194,7 +195,7 @@ mono_sql_uu_kill_user(unsigned int user_id)
 }
 
 int
-mono_sql_uu_add_quickx(unsigned int user_id, unsigned int friend_id, int quickx)
+mono_sql_uu_add_quickx(user_id_t user_id, user_id_t friend_id, int quickx)
 {
     MYSQL_RES *res;
     int ret;
@@ -204,7 +205,7 @@ mono_sql_uu_add_quickx(unsigned int user_id, unsigned int friend_id, int quickx)
 }
 
 int
-mono_sql_uu_remove_quickx(unsigned int user_id, unsigned int friend_id)
+mono_sql_uu_remove_quickx(user_id_t user_id, user_id_t friend_id)
 {
     MYSQL_RES *res;
     int ret;
@@ -215,7 +216,7 @@ mono_sql_uu_remove_quickx(unsigned int user_id, unsigned int friend_id)
 
 /* translates quickx number -> usernumber */
 int
-mono_sql_uu_quickx2user(unsigned int user_id, int quickx, unsigned int *friend_id)
+mono_sql_uu_quickx2user(user_id_t user_id, int quickx, user_id_t *friend_id)
 {
 
     int ret;
@@ -239,7 +240,7 @@ mono_sql_uu_quickx2user(unsigned int user_id, int quickx, unsigned int *friend_i
 
 /* translates       usernumber -> quickx number */
 int
-mono_sql_uu_user2quickx(unsigned int user_id, unsigned int friend_id, int *quickx)
+mono_sql_uu_user2quickx(user_id_t user_id, user_id_t friend_id, int *quickx)
 {
 
     int ret;

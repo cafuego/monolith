@@ -29,7 +29,6 @@
 #include "chat.h"
 #include "enter_message.h"
 #include "express.h"
-#include "inter.h"
 #include "input.h"
 #include "friends.h"
 #include "messages.h"
@@ -40,12 +39,10 @@
 #include "statusbar.h"
 #include "usertools.h"
 
-char x_default[L_USERNAME + L_BBSNAME + 2];
-char web_default[L_USERNAME + 1];
-char chat_default[L_USERNAME + 1];
-express_t *xmsgb[XLIMIT];	/* the XLog */
-char *mySysGuide = NULL;
-volatile int xmsgp;
+static char x_default[L_USERNAME + 1];
+static char web_default[L_USERNAME + 1];
+static char chat_default[L_USERNAME + 1];
+static char *mySysGuide = NULL;
 
 static void catchx(int key);
 static void format_ack(express_t * Catchxs);
@@ -289,7 +286,6 @@ static void
 catchx(int key)
 {
     express_t *Catchxs, *xmsg;
-    char ruser[L_USERNAME + 1], rbbs[L_BBSNAME + 1];
     int friendb, is_my_vnemy = 0;
     char override;
     char tempstr[100];
@@ -315,17 +311,6 @@ catchx(int key)
 	return;
     }
 
-/* inter bbs stuff */
-    if (strchr(Catchxs->sender, '@')) {
-	if (parse_inter_address(Catchxs->sender, ruser, rbbs) != 0)
-	    if (EQ(rbbs, "monolith"))
-		strcpy(Catchxs->sender, ruser);
-	if (usersupp->flags & US_NOINTERXS) {
-	    Catchxs->ack = ACK_TURNEDOFF;
-	    Catchxs->override = OR_FREE;
-	    return;
-	}
-    }
 /* error checking */
     if (!IS_BROADCAST && !EQ(Catchxs->recipient, usersupp->username)) {
 	/* EEP!! */
@@ -474,7 +459,7 @@ catchx(int key)
 void
 express(int X_PARAM)
 {
-    char to[L_USERNAME + L_BBSNAME + 2] = "";
+    char to[L_USERNAME + 1] = "";
     char buffer[120], filename[60];
     FILE *f;
     char override = ' ', tmpoverride;
@@ -595,7 +580,6 @@ express(int X_PARAM)
 char *
 get_xmessage_destination(char *xmg_dest, const int X_PARAM, char *override)
 {
-    char ruser[L_USERNAME + 1], rbbs[L_BBSNAME + 1];
     char namePtr[L_USERNAME+1]; 
 
     strcpy(xmg_dest, "");
@@ -658,11 +642,6 @@ get_xmessage_destination(char *xmg_dest, const int X_PARAM, char *override)
 		cprintf(_("\1f\1gRecipient\1w: \1c"));
 	    strcpy( namePtr, get_name(5)); /* was assignment */
 	    if (*namePtr) {
-	        if (strchr(namePtr, '@')) 
-	            if (parse_inter_address(namePtr, ruser, rbbs) != 0)
-            	       if (EQ(rbbs, BBSNAME))
-	                   strcpy(namePtr, ruser);
-
 		strcpy(xmg_dest, namePtr);
 	    }
 	    if (strlen(xmg_dest))
@@ -731,16 +710,6 @@ check_x_permissions(const char *x_recip_name, const int X_PARAM, char override)
 	    if (EQ("guest", x_recip_name)) {
 		cprintf(_("\1rYou cannot send %s to Guests.\n\1a"), config.x_message_pl);
 		override = OR_NO_PERMS;
-		break;
-	    }
-
-	    /* InterBBS x ?  */
-	    if (strchr(x_recip_name, '@') != NULL) {
-		if (usersupp->flags & US_NOINTERXS)
-		    cprintf(_("\1f\1rYou have disabled InterBBS options.\1a\n"));
-		else
-		    remote_express(x_recip_name);
-		override = OR_NO_PERMS;		/* this will cause the calling funx to return */
 		break;
 	    }
 
@@ -901,13 +870,13 @@ setup_express()
     xmsgp = XLIMIT;
     mono_find_xslot(who_am_i(NULL))->override = OR_FREE;
     start_user_cache(usersupp->usernum);
-//    update_friends_cache();
+/*    update_friends_cache(); */
     return;
 }
 /*----------------------------------*/
 /* void remove_express()
-				 * * * * * * * * * * * * removes xmsg buffer from memory
-				 */
+ * removes xmsg buffer from memory
+ */
 void
 remove_express()
 {
@@ -917,7 +886,9 @@ remove_express()
 	if (xmsgb[i] != NULL)
 	    xfree(xmsgb[i]);
     return;
-}				/**************************************************************//* displays old x messages.  <ctrl-x>
+}				
+
+/**************************************************************//* displays old x messages.  <ctrl-x>
 				 */
 void
 old_express()
@@ -1102,9 +1073,8 @@ send_silc()
 void
 quoted_Xmsgs()
 {
-    char quoteduser[L_BBSNAME + L_USERNAME + 2];
-    char rbbs[L_BBSNAME + 1], ruser[L_USERNAME + 1];
-    int channel, i, matches = 0, flag = 0;
+    char quoteduser[L_USERNAME + 1];
+    int channel, i, matches = 0;
     FILE *fp;
 
     cprintf("\1f\1c\n%s%s%s%s",
@@ -1117,23 +1087,14 @@ quoted_Xmsgs()
     if (strlen(quoteduser) == 0)
 	return;
 
-    if (strchr(quoteduser, '@') != NULL) {
-	if (parse_inter_address(quoteduser, ruser, rbbs) == 0) {
-	    cprintf("\1r\1fNot a valid InterBBS name.\n");
-	    return;
+    for (channel = -1, i = 0; i < MAXCHATROOMS; i++)
+        if (EQ(quoteduser, shm->holodeck[i].name)) {
+            channel = i;
+	    break;
 	}
-	sprintf(quoteduser, "%s@%s", ruser, rbbs);
-	flag = 1;
-    } else {
-	for (channel = -1, i = 0; i < MAXCHATROOMS; i++)
-	    if (EQ(quoteduser, shm->holodeck[i].name)) {
-		channel = i;
-		break;
-	    }
-	if (channel == -1 && mono_sql_u_check_user(quoteduser) == FALSE) {
-	    cprintf("\1f\1rNo such user/channel.\n\1a");
-	    return;
-	}
+    if (channel == -1 && mono_sql_u_check_user(quoteduser) == FALSE) {
+        cprintf("\1f\1rNo such user/channel.\n\1a");
+        return;
     }
 
     cprintf("%s%s\1g' to the Admin? \1w(\1gy\1w/\1gn\1w)\1c ", 

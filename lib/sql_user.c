@@ -12,11 +12,7 @@
 #include <stdlib.h>
 #include <string.h>		/* for strncpy */
 #include <assert.h>
-#include <unistd.h>
-
-#ifdef HAVE_CRYPT_H
 #include <crypt.h>
-#endif
 
 #ifdef USE_MYSQL
 #include MYSQL_HEADER
@@ -27,15 +23,12 @@
 #include "sql_utils.h"
 
 #include "routines.h"
-
-#define extern
 #include "sql_user.h"
-#undef extern
 
 #ifdef USED
 /* ADD USER */
 int
-mono_sql_u_add_user_new(const char *username, unsigned int num)
+mono_sql_u_add_user_new(const char *username, user_id_t num)
 {
     MYSQL_RES *res;
     int ret;
@@ -47,7 +40,7 @@ mono_sql_u_add_user_new(const char *username, unsigned int num)
 #endif
 
 int
-mono_sql_rename_user(unsigned int num, const char *newname)
+mono_sql_rename_user(user_id_t num, const char *newname)
 {
     MYSQL_RES *res;
     int ret;
@@ -76,7 +69,7 @@ mono_sql_u_add_user(const char *username)
 
 /* SET PASSWORD */
 int
-mono_sql_u_set_passwd(unsigned int user_id, const char *passwd)
+mono_sql_u_set_passwd( user_id_t user_id, const char *passwd)
 {
     MYSQL_RES *res;
     int ret;
@@ -97,23 +90,23 @@ mono_sql_u_set_passwd(unsigned int user_id, const char *passwd)
 
 
 int
-mono_sql_u_check_passwd(unsigned int user_id, const char *passwd)
+mono_sql_u_check_passwd( user_id_t user_id, const char *passwd)
 {
     MYSQL_RES *res;
     MYSQL_ROW row;
     int ret;
-    char salt[2];
+    char salt[3];
     char typed[14];
 
     assert(passwd != NULL);
 
     ret = mono_sql_query(&res, "SELECT password FROM " U_TABLE " WHERE id=%u", user_id);
-
     if (ret == -1) {
 	fprintf(stderr, "Query Error.\n");
 	return FALSE;
     }
-    if ((ret = mysql_num_rows(res)) != 1) {
+    
+    if ( mysql_num_rows(res) != -1 ) {
 	fprintf(stderr, "The infamous \"Not enough results Error\"\n\r");
 	fflush(stderr);
 	mono_sql_u_free_result(res);
@@ -144,7 +137,7 @@ mono_sql_u_check_passwd(unsigned int user_id, const char *passwd)
 
 /* REMOVE BY USERID */
 int
-mono_sql_u_kill_user(unsigned int user_id)
+mono_sql_u_kill_user( user_id_t user_id)
 {
     MYSQL_RES *res;
     int ret;
@@ -176,7 +169,7 @@ mono_sql_u_check_user(const char *username)
 }
 
 int
-mono_sql_u_id2name(unsigned int userid, char *username)
+mono_sql_u_id2name( user_id_t userid, char *username)
 {
     int i;
     MYSQL_RES *res;
@@ -198,7 +191,7 @@ mono_sql_u_id2name(unsigned int userid, char *username)
 }
 
 int
-mono_sql_u_name2id(const char *username, unsigned int *userid)
+mono_sql_u_name2id(const char *username, user_id_t *userid)
 {
     int ret;
     MYSQL_RES *res;
@@ -218,12 +211,13 @@ mono_sql_u_name2id(const char *username, unsigned int *userid)
     row = mysql_fetch_row(res);
     ret = sscanf(row[0], "%u", userid);
     mono_sql_u_free_result(res);
+    if ( ret == EOF ) return -1;
     return 0;
 
 }
 
 int
-mono_sql_read_profile(unsigned int user_id, char **profile)
+mono_sql_read_profile( user_id_t user_id, char **profile)
 {
     int i;
     MYSQL_RES *res;
@@ -250,7 +244,7 @@ mono_sql_read_profile(unsigned int user_id, char **profile)
 }
 
 int
-mono_sql_write_profile(unsigned int user_id, const char *profile)
+mono_sql_write_profile( user_id_t user_id, const char *profile)
 {
     int i;
     MYSQL_RES *res;
@@ -266,6 +260,7 @@ mono_sql_write_profile(unsigned int user_id, const char *profile)
 
     xfree(p2);
 
+/*
 //    if (i == -1) {
     //        fprintf(stderr, "No results from query.\n");
     //        return -1;
@@ -274,13 +269,14 @@ mono_sql_write_profile(unsigned int user_id, const char *profile)
 //    if (mysql_num_rows(res) != 1) {
     //      return -1;
     //    }
+*/
 
     mono_sql_u_free_result(res);
     return 0;
 }
 
 int
-mono_sql_u_update_registration(unsigned int user_id,
+mono_sql_u_update_registration( user_id_t user_id,
 			       const char *name,
 			       const char *address,
 			       const char *zip,
@@ -330,7 +326,7 @@ mono_sql_u_update_registration(unsigned int user_id,
 }
 
 int
-mono_sql_u_get_registration(unsigned int user_id,
+mono_sql_u_get_registration( user_id_t user_id,
 			    char *name, char *address, char *zip, char *city,
 			    char *state, char *country, char *phone
 )
@@ -369,7 +365,7 @@ mono_sql_u_get_registration(unsigned int user_id,
 
 
 int
-mono_sql_u_update_email(unsigned int user_id, const char *email)
+mono_sql_u_update_email( user_id_t user_id, const char *email)
 {
 
     int i;
@@ -379,6 +375,7 @@ mono_sql_u_update_email(unsigned int user_id, const char *email)
     assert(email != NULL);
 
     i = escape_string(email, &p2);
+    if ( i == -1 ) return -1;
 
     i = mono_sql_query(&res, "UPDATE " U_TABLE
 		       " set email='%s' "
@@ -395,7 +392,7 @@ mono_sql_u_update_email(unsigned int user_id, const char *email)
 }
 
 int
-mono_sql_u_get_email(unsigned int user_id, char *email)
+mono_sql_u_get_email( user_id_t user_id, char *email)
 {
     int i;
     int ret;
@@ -416,11 +413,12 @@ mono_sql_u_get_email(unsigned int user_id, char *email)
     ret = snprintf(email, 80, "%s", row[0]);
     mono_sql_u_free_result(res);
 
+    if ( ret < 0 ) return -1;
     return 0;
 }
 
 int
-mono_sql_u_update_url(unsigned int user_id, const char *url)
+mono_sql_u_update_url( user_id_t user_id, const char *url)
 {
 
     int i;
@@ -441,7 +439,7 @@ mono_sql_u_update_url(unsigned int user_id, const char *url)
 }
 
 int
-mono_sql_u_get_url(unsigned int user_id, char *url)
+mono_sql_u_get_url( user_id_t user_id, char *url)
 {
     int i;
     int ret;
@@ -462,11 +460,12 @@ mono_sql_u_get_url(unsigned int user_id, char *url)
     ret = snprintf(url, 100, "%s", row[0]);
     mono_sql_u_free_result(res);
 
+    if ( ret < 0 ) return -1;
     return 0;
 }
 
 int
-mono_sql_u_update_hidden(unsigned int user_id, int hiddeninfo)
+mono_sql_u_update_hidden( user_id_t user_id, int hiddeninfo)
 {
 
     int i;
@@ -486,7 +485,7 @@ mono_sql_u_update_hidden(unsigned int user_id, int hiddeninfo)
 }
 
 int
-mono_sql_u_get_hidden(unsigned int user_id, int *hiddeninfo)
+mono_sql_u_get_hidden( user_id_t user_id, int *hiddeninfo)
 {
 
     int i;
@@ -508,7 +507,7 @@ mono_sql_u_get_hidden(unsigned int user_id, int *hiddeninfo)
 }
 
 int
-mono_sql_u_update_validation(unsigned int user_id, int validation)
+mono_sql_u_update_validation( user_id_t user_id, int validation)
 {
 
     int i;
@@ -527,7 +526,7 @@ mono_sql_u_update_validation(unsigned int user_id, int validation)
 }
 
 int
-mono_sql_u_get_validation(unsigned int user_id, unsigned int *validation)
+mono_sql_u_get_validation( user_id_t user_id, unsigned int *validation)
 {
     int i;
     int ret;
@@ -546,14 +545,15 @@ mono_sql_u_get_validation(unsigned int user_id, unsigned int *validation)
     }
     row = mysql_fetch_row(res);
 
-    ret = sscanf(row[0], "%d", validation);
+    ret = sscanf(row[0], "%u", validation);
     mono_sql_u_free_result(res);
 
+    if ( ret == EOF ) return -1;
     return 0;
 }
 
 int
-mono_sql_u_update_x_count(unsigned int user_id, unsigned int x_count)
+mono_sql_u_update_x_count( user_id_t user_id, unsigned int x_count)
 {
 
     int i;
@@ -572,7 +572,7 @@ mono_sql_u_update_x_count(unsigned int user_id, unsigned int x_count)
 }
 
 int
-mono_sql_u_get_x_count(unsigned int user_id, unsigned int *x_count)
+mono_sql_u_get_x_count( user_id_t user_id, unsigned int *x_count)
 {
     int i;
     int ret;
@@ -594,11 +594,12 @@ mono_sql_u_get_x_count(unsigned int user_id, unsigned int *x_count)
     ret = sscanf(row[0], "%u", x_count);
     mono_sql_u_free_result(res);
 
+    if ( ret == EOF ) return -1;
     return 0;
 }
 
 int
-mono_sql_u_increase_x_count(unsigned int user_id)
+mono_sql_u_increase_x_count( user_id_t user_id)
 {
     int i;
     /* int ret; */
@@ -617,7 +618,7 @@ mono_sql_u_increase_x_count(unsigned int user_id)
 
 
 int
-mono_sql_u_update_post_count(unsigned int user_id, unsigned int post_count)
+mono_sql_u_update_post_count( user_id_t user_id, unsigned int post_count)
 {
 
     int i;
@@ -636,7 +637,7 @@ mono_sql_u_update_post_count(unsigned int user_id, unsigned int post_count)
 }
 
 int
-mono_sql_u_get_post_count(unsigned int user_id, unsigned int *post_count)
+mono_sql_u_get_post_count( user_id_t user_id, unsigned int *post_count)
 {
     int i;
     int ret;
@@ -658,11 +659,12 @@ mono_sql_u_get_post_count(unsigned int user_id, unsigned int *post_count)
     ret = sscanf(row[0], "%u", post_count);
     mono_sql_u_free_result(res);
 
+    if ( ret == EOF ) return -1;
     return 0;
 }
 
 int
-mono_sql_u_increase_post_count(unsigned int user_id)
+mono_sql_u_increase_post_count( user_id_t user_id)
 {
     int i;
     /* int ret; */
@@ -681,7 +683,7 @@ mono_sql_u_increase_post_count(unsigned int user_id)
 
 
 int
-mono_sql_u_update_login_count(unsigned int user_id, unsigned int login_count)
+mono_sql_u_update_login_count( user_id_t user_id, unsigned int login_count)
 {
 
     int i;
@@ -700,7 +702,7 @@ mono_sql_u_update_login_count(unsigned int user_id, unsigned int login_count)
 }
 
 int
-mono_sql_u_get_login_count(unsigned int user_id, unsigned int *login_count)
+mono_sql_u_get_login_count( user_id_t user_id, unsigned int *login_count)
 {
     int i;
     int ret;
@@ -722,11 +724,12 @@ mono_sql_u_get_login_count(unsigned int user_id, unsigned int *login_count)
     ret = sscanf(row[0], "%u", login_count);
     mono_sql_u_free_result(res);
 
+    if ( ret == EOF ) return -1;
     return 0;
 }
 
 int
-mono_sql_u_increase_login_count(unsigned int user_id)
+mono_sql_u_increase_login_count( user_id_t user_id)
 {
     int i;
     /* int ret; */
@@ -745,7 +748,7 @@ mono_sql_u_increase_login_count(unsigned int user_id)
 
 /* eof */
 int
-mono_sql_u_update_awaymsg(unsigned int user_id, const char *awaymsg)
+mono_sql_u_update_awaymsg( user_id_t user_id, const char *awaymsg)
 {
 
     int i, ret;
@@ -755,6 +758,7 @@ mono_sql_u_update_awaymsg(unsigned int user_id, const char *awaymsg)
     assert(awaymsg != NULL);
 
     ret = escape_string(awaymsg, &p);
+    if ( ret == -1 ) return -1;
 
     i = mono_sql_query(&res, "UPDATE " U_TABLE
 		       " set awaymsg='%s' "
@@ -771,7 +775,7 @@ mono_sql_u_update_awaymsg(unsigned int user_id, const char *awaymsg)
 }
 
 int
-mono_sql_u_get_awaymsg(unsigned int user_id, char *awaymsg)
+mono_sql_u_get_awaymsg( user_id_t user_id, char *awaymsg)
 {
     int i;
     int ret;
@@ -792,11 +796,12 @@ mono_sql_u_get_awaymsg(unsigned int user_id, char *awaymsg)
     ret = snprintf(awaymsg, L_AWAYMSG, "%s", row[0]);
     mono_sql_u_free_result(res);
 
+    if ( ret < 0 ) return -1;
     return 0;
 }
 /* eof */
 int
-mono_sql_u_update_doing(unsigned int user_id, const char *doing)
+mono_sql_u_update_doing( user_id_t user_id, const char *doing)
 {
 
     int i;
@@ -822,7 +827,7 @@ mono_sql_u_update_doing(unsigned int user_id, const char *doing)
 }
 
 int
-mono_sql_u_get_doing(unsigned int user_id, char *doing)
+mono_sql_u_get_doing( user_id_t user_id, char *doing)
 {
     int i;
     int ret;
@@ -843,10 +848,11 @@ mono_sql_u_get_doing(unsigned int user_id, char *doing)
     ret = snprintf(doing, L_AWAYMSG, "%s", row[0]);
     mono_sql_u_free_result(res);
 
+    if ( ret == -1 ) return -1;
     return 0;
 }
 int
-mono_sql_u_update_xtrapflag(unsigned int user_id, const char *xtrapflag)
+mono_sql_u_update_xtrapflag( user_id_t user_id, const char *xtrapflag)
 {
 
     int i;
@@ -877,7 +883,7 @@ mono_sql_u_update_xtrapflag(unsigned int user_id, const char *xtrapflag)
 }
 
 int
-mono_sql_u_get_xtrapflag(unsigned int user_id, char *xtrapflag)
+mono_sql_u_get_xtrapflag( user_id_t user_id, char *xtrapflag)
 {
     int i;
     int ret;
@@ -897,71 +903,8 @@ mono_sql_u_get_xtrapflag(unsigned int user_id, char *xtrapflag)
     row = mysql_fetch_row(res);
     ret = snprintf(xtrapflag, L_AWAYMSG, "%s", row[0]);
     mono_sql_u_free_result(res);
-
+    
+    if ( ret < 0 ) return -1;
     return 0;
 }
 
-#ifdef USE_ICQ
-
-/* SET ICQ NUMBER */
-int
-mono_sql_u_set_icq_number(unsigned int user_id, unsigned long number)
-{
-    MYSQL_RES *res;
-    int ret;
-
-    ret = mono_sql_query(&res, "UPDATE " U_TABLE " SET icq_number=%lu WHERE id=%u", number, user_id);
-
-    return ret;
-}
-
-/* SET ICQ PASSWORD */
-int
-mono_sql_u_set_icq_pass(unsigned int user_id, char *pass)
-{
-    MYSQL_RES *res;
-    int ret;
-    char *tmp_pass = NULL;
-
-#ifdef HAVE_MEMFROB
-    /*
-     * Do at least a weak attempt at making the password unreadable if we can.
-     */
-    (void) memfrob(pass, strlen(pass));
-#endif
-    ret = escape_string(pass, &tmp_pass);
-
-    ret = mono_sql_query(&res, "UPDATE " U_TABLE " SET icq_pass='%s' WHERE id=%u", tmp_pass, user_id);
-
-    xfree(tmp_pass);
-
-    return ret;
-}
-
-unsigned long
-mono_sql_u_icq_get_number(unsigned int user_id)
-{
-
-    int i;
-    MYSQL_RES *res;
-    MYSQL_ROW row;
-    unsigned long icq_num = 0;
-
-    i = mono_sql_query(&res, "SELECT icq_number FROM " U_TABLE
-		       " WHERE id=%u", user_id);
-
-    if (i == -1) {
-	fprintf(stderr, "No results from query.\n");
-	return -1;
-    }
-    if (mysql_num_rows(res) != 1) {
-	return -1;
-    }
-    row = mysql_fetch_row(res);
-    icq_num = atol(row[0]);
-    mono_sql_u_free_result(res);
-
-    return icq_num;
-}
-
-#endif

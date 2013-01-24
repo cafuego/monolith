@@ -174,7 +174,7 @@ dump_quickroom()
 
 /* note:  save_new_message -must- abort if this funx returns 0.  */
 unsigned int
-get_new_message_id(const unsigned int quadno)
+get_new_message_id(unsigned int quadno)
 {
     room_t *p;
 
