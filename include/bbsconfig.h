@@ -1,4 +1,4 @@
-extern void create_config(void);
-extern void edit_config(void);
-extern void delete_config(void);
-extern int select_config(const char *prompt);
+void create_config(void);
+void edit_config(void);
+void delete_config(void);
+int select_config(const char *prompt);

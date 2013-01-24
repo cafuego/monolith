@@ -38,7 +38,7 @@ int rewrite_queue( int in_what_way );
 int get_btmp(void);
 void mono_login(void);
 char *get_name(void);
-RETSIGTYPE retry(int);
+void retry(int);
 /* void getline(char *string, int lim, int frog); */
 int getblock(void);
 int netget(void);

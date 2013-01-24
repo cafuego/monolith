@@ -46,8 +46,8 @@ typedef struct {
 
 /* prototypes */
 
-extern void new_qc(void);
-extern int _sql_qc_zero_forum_categories(const unsigned int);
-extern void qc_edit_room(void);
-extern int qc_user_menu(int);
+void new_qc(void);
+int _sql_qc_zero_forum_categories(const unsigned int);
+void qc_edit_room(void);
+int qc_user_menu(int);
 

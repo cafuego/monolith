@@ -131,7 +131,7 @@ read_all_users()
 
     if (userdir == NULL) {
 	fprintf(stderr, "opendir(%s) problems!\n", USERDIR);
-	perror(program_invocation_short_name);
+	perror( get_invocation_short_name() );
 	exit(2);
     }
     usercount = 0;

@@ -28,11 +28,7 @@
 #include "monolith.h"
 #include "libmono.h"
 #include "ext.h"
-
-#define extern
 #include "fun.h"
-#undef extern
-
 #include "input.h"
 #include "routines2.h"
 
@@ -44,7 +40,7 @@ random_goto()
 {
     char *thegoto;
     int ret;
-    int timescalled;
+    size_t timescalled;
 
     if((rand() % 10) == 1) {
 	thegoto = mono_sql_random_goto();
@@ -56,9 +52,11 @@ random_goto()
 
     } else if ((rand() % 1000) == 666 ) {
         ret = mono_sql_u_get_login_count( usersupp->usernum, &timescalled );
+/*
         // if ( ret == 0 && timescalled > 99 ) 
         //     cthulhu();
 	// else
+*/
         cprintf(_("\1f\1gNo unread messages.\1a"));
     } else
         cprintf(_("\1f\1gNo unread messages.\1a"));
@@ -225,6 +223,7 @@ crap(int flag, const char *type, int arg)
 {
 
     char command[100];
+    int ret;
 
     cprintf("\n\n\1f\1g");
     fflush(stdout);
@@ -244,7 +243,7 @@ crap(int flag, const char *type, int arg)
     }
 
     cprintf("\n");
-    system(command);
+    ret = system(command);
     fflush(stdout);
     return;
 }
@@ -348,7 +347,7 @@ banana (name)
   /* point to the ending NULL of name. */
   no_vowel_check = first_vowel = &name[strlen(name) + 1];
   /* loop until we go through all the vowels. */
-  while (*vowel_pointer != (char)NULL)
+  while (*vowel_pointer != NULL)
     {
       /* find the first vowel. */
       strchr_tmp = strchr (name, *vowel_pointer);
@@ -398,7 +397,7 @@ word_check (unknown_word, bad_word_list, replacement)
 			   /* before we use it. */
 
   /* copy bad_word_list into bad_word_list_copy. */
-  strcpy (bad_word_list_copy = (char *)malloc (sizeof (bad_word_list)),
+  strcpy (bad_word_list_copy = (char *)xmalloc (sizeof (bad_word_list)),
 	  bad_word_list);
   /* point to the first token in bad_word_list_copy. */
   a_bad_word = strtok (bad_word_list_copy, ":");

@@ -33,7 +33,6 @@
 #include "friends.h"
 #include "display_message.h"
 #include "express.h"
-#include "inter.h"
 #include "main.h"
 #include "qc.h"
 #include "rooms.h"
@@ -45,10 +44,7 @@
 #include "messages.h"
 #include "usertools.h"
 #include "uadmin.h"
-
-#define extern
 #include "read_menu.h"
-#undef extern
 
 /* ---------------------------------------------------- */
 
@@ -79,9 +75,9 @@ short_prompt(void)
 	display_short_prompt();
 
 #ifdef SUPERHERO
-	cmd = get_single_quiet("~aAbBcCdefEFGHiIjJkKlLMNOPQqrRsSTUvVwWxXYZ0123456789!<>-_+:#.,*\"@`$^&a([]% /?\005\006\011\014\016\022\030\'");
+	cmd = get_single_quiet("~aAbBcCdefEFGHijJkKlLMNOPQqrsSTUvVwWxXYZ0123456789!<>-_+:#.,*\"@`$^&a([]% /?\005\006\011\014\016\022\030\'");
 #else
-	cmd = get_single_quiet("~aAbBcCdefEFGHiIjJkKlLMNOPQqrRsSTUvVwWxXYZ0123456789!<>-_+:#.,*\"@$^&a([]% /?\005\006\011\014\016\022\030\'");
+	cmd = get_single_quiet("~aAbBcCdefEFGHijJkKlLMNOPQqrsSTUvVwWxXYZ0123456789!<>-_+:#.,*\"@$^&a([]% /?\005\006\011\014\016\022\030\'");
 #endif
 
 	cmd = validate_read_command(cmd);	/* priv check */
@@ -210,10 +206,6 @@ short_prompt(void)
 		display_message(curr_rm, 0, DISPLAY_INFO);
 		break;
 
-	    case 'I':
-		toggle_interbbs();
-		break;
-
 	    case 'J':
 		cprintf("\1f\1rJump:\nNon Destructive Jump to %s name/number: \1a", config.forum);
 		fflush(stdout);
@@ -307,12 +299,6 @@ short_prompt(void)
 	    case 'r':
 		cprintf(_("\1f\1gRead messages reverse.\1a\n"));
 		long_prompt(0, -1);
-		break;
-
-	    case 'R':
-		cprintf(_("\1f\1gInterBBS Wholist.\1a\n"));
-		nox = 1;
-		menu_inter();
 		break;
 
 	    case 'S':

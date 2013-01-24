@@ -2,7 +2,6 @@
 
 #include "btmp.h"
 #include "libcache.h"
-#include "dexi.h"
 #include "libquad.h"
 #include "log.h"
 #include "routines.h"

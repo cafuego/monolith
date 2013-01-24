@@ -1,2 +1,2 @@
-extern void short_prompt(void);
-extern void display_short_prompt(void);
+void short_prompt(void);
+void display_short_prompt(void);

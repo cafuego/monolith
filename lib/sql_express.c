@@ -12,14 +12,10 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
-#ifdef HAVE_MYSQL_H
-  #undef HAVE_MYSQL_MYSQL_H
-  #include <mysql.h>
-#else
-  #ifdef HAVE_MYSQL_MYSQL_H
-    #undef HAVE_MYSQL_H
-    #include <mysql/mysql.h>
-  #endif
+#include <build-defs.h>
+
+#ifdef USE_MYSQL
+#include MYSQL_HEADER
 #endif
 
 #include "monolith.h"

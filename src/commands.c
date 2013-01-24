@@ -48,9 +48,7 @@
 #include "usertools.h"
 #include "uadmin.h"
 
-#define extern
 #include "commands.h"
-#undef extern
 
 void
 sysop_menu()
@@ -169,11 +167,6 @@ sysop_menu()
 		cprintf("\1f\1rUser cmd: \1a");
 		sysopuser_menu();
 		continue;
-
-	    case 'W':
-		cprintf("\1f\1rWho's on Localhost?\1a\n");
-		system("w");
-		return;
 
 	    case '?':
 		cprintf("\1f\1wHelp\1a\n");
@@ -371,6 +364,7 @@ sysopuser_menu()
     user_t *tmpuser;
     char work[90];
     char *p;
+    int ret;
 
     while ((cmd != SP) && (cmd != 13) && (cmd != 'Q')) {
 	IFNEXPERT
@@ -449,7 +443,8 @@ sysopuser_menu()
 		    cprintf("\1f\1rChecking...\1a\1c\n");
 		    fflush(stdout);
 		    sprintf(work, "/usr/local/bin/vrfy %s", tmpuser->RGemail);
-		    system(work);
+		    ret = system(work);
+                    if ( ret == 0 ) cprintf( "" );
 		    xfree(tmpuser);
 		} else {
 		    cprintf("\1f\1rNo such user.\1a\n");

@@ -11,7 +11,7 @@
 #include <string.h>
 
 #ifdef USE_MYSQL
-  #include MYSQL_HEADER
+#include MYSQL_HEADER
 #endif
 
 #include "monolith.h"
@@ -21,10 +21,7 @@
 
 #include "btmp.h"
 #include "log.h"
-
-#define extern
 #include "sql_forum.h"
-#undef extern
 
 /* nasty compatible stuff */
 int
@@ -38,9 +35,10 @@ mono_sql_f_write_quad(unsigned int num, room_t * const q)
 int
 mono_sql_f_read_quad(unsigned int num, room_t * room)
 {
-    int i, rows;
+    int i;
     MYSQL_RES *res;
     MYSQL_ROW row;
+    my_ulonglong rows;
     room_t r;
 
     i = mono_sql_query(&res, "SELECT "
@@ -76,11 +74,12 @@ mono_sql_f_read_quad(unsigned int num, room_t * room)
 }
 
 int
-mono_sql_f_get_highest(unsigned int num)
+mono_sql_f_get_highest( forum_id_t num)
 {
-    int i, rows;
+    int i;
     MYSQL_RES *res;
     MYSQL_ROW row;
+    my_ulonglong rows;
 
     i = mono_sql_query(&res, "SELECT MAX(message_id) FROM message WHERE forum_id=%u", num);
 
@@ -252,8 +251,10 @@ mono_sql_f_fix_quickroom()
 {
     MYSQL_RES *res;
     MYSQL_ROW row;
-    int i = 0, rows = 0, ret = 0;
-    unsigned int forum = 0, highest = 0;
+    int i = 0, ret = 0;
+    unsigned int highest = 0;
+    forum_id_t forum; 
+    my_ulonglong rows;
 
     ret = mono_sql_query(&res, "SELECT forum_id,max(message_id) FROM message group by forum_id");
 

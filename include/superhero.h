@@ -4,7 +4,7 @@
  * Contains data & defines for the superhero generator.
  */
 
-extern void generate_hero( void );
+void generate_hero( void );
 
 #define NAMNUM  153
 #define TITNUM  162

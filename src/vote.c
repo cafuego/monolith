@@ -24,11 +24,7 @@
 #include "monolith.h"
 #include "libmono.h"
 #include "ext.h"
-
-#define extern
 #include "vote.h"
-#undef extern
-
 #include "routines2.h"
 #include "input.h"
 #include "uadmin.h"

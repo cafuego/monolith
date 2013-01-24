@@ -26,9 +26,7 @@
 #include "libmono.h"
 #include "ext.h"
 
-#define extern
 #include "newuser.h"
-#undef extern
 
 #include "input.h"
 #include "key.h"
@@ -38,7 +36,7 @@
 #include "routines2.h"
 
 static void newuser_getname(char * name);
-static void newuser_getpasswd(unsigned int user_id);
+static void newuser_getpasswd( user_id_t user_id);
 static void newuser_registration(user_t * user);
 static user_t *newuser_makesupp(void);
 static int check_lockout(const char *hostname);
@@ -130,7 +128,6 @@ new_user(const char *hostname)
     mono_sql_u_update_hidden( usersupp->usernum, usersupp->hidden_info );
     mono_sql_u_update_email( usersupp->usernum, usersupp->RGemail );
     mono_sql_u_update_url( usersupp->usernum, usersupp->RGurl );
-    // xfree(usersupp);
 
     cprintf("Press a key to continue.. \1a");
     inkey();
@@ -212,7 +209,7 @@ newuser_getname(char *name)
 }
 
 static void
-newuser_getpasswd(unsigned int user_id)
+newuser_getpasswd( user_id_t user_id)
 {
     char pwread[20], pwtest[20];	/* for password validation */
     int done = FALSE;

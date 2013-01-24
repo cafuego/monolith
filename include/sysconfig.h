@@ -5,7 +5,7 @@
 #define BBSGID          333     /* bbs's gid from /etc/group file	*/
 
 /* the <shift-e>ditor */
-// #define EDITOR		BBSDIR "/bin/BBSpico"	
+/* #define EDITOR		BBSDIR "/bin/BBSpico"	 */
 #define EDITOR		BBSDIR "/bin/nano"
 #define TMPDIR		BBSDIR "/tmp/"
 

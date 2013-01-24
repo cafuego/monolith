@@ -29,14 +29,10 @@
 #include "registration.h"
 #include "routines2.h"
 #include "usertools.h"
-
-#define extern
 #include "uadmin.h"
-#undef extern
 
 static void edit_field(user_t * userdata, int fieldnum);
 static int mode_string(char *, user_t *);
-
 
 static int uadmin_need_rewrite;
 
@@ -50,7 +46,6 @@ useradmin( const char *username )
     char oldname[L_USERNAME + 1], f_bef[16], f_aft[16];
     char name[L_USERNAME + 1];
     int command = 0, isonline = 0;
-    unsigned int oldpriv;
     user_t *user;
 
     /* if these were initalized up there, it doesn't work.. */
@@ -84,7 +79,6 @@ useradmin( const char *username )
     mode_string(f_bef, user);
 
     strcpy(oldname, user->username);
-    oldpriv = user->priv;
 
     if (mono_return_pid(oldname) != -1)
 	isonline = TRUE;
@@ -188,7 +182,7 @@ useradmin( const char *username )
 static void
 edit_field(user_t * user, int fieldnum)
 {
-    char ny[22];
+    char ny[L_PASSWORD+1];
     int n;
 
     switch (fieldnum) {
@@ -275,7 +269,7 @@ edit_field(user_t * user, int fieldnum)
 
 	case 'P':
 	    cprintf("New Password: ");
-	    xgetline(ny, 18, 1);
+	    xgetline(ny, L_PASSWORD, 1);
             mono_sql_u_set_passwd( user->usernum, ny );
 	    uadmin_need_rewrite = TRUE;
 	    log_sysop_action("changed %s's password."
@@ -461,7 +455,7 @@ namechange(void)
     char newname[L_USERNAME + 1], oldname[L_USERNAME + 1];
     char command[200];
     unsigned int num;
-    int i;
+    int i, ret;
     user_t *new_userfile = NULL, *old_userfile = NULL;
     btmp_t *btmp_ptr;
     pid_t kick_pid;
@@ -511,7 +505,11 @@ namechange(void)
     sprintf(command, "cp -a %s ",
 	    getuserdir(oldname));
     strcat(command,  getuserdir(newname));
-    system(command);
+    ret = system(command);
+    if ( ret != 0 ) {
+	cprintf( "Copy failed, aborting\n" );
+        return;
+    }
 
     if ((new_userfile = readuser(newname)) == NULL) {
 	xfree(old_userfile);
@@ -547,15 +545,19 @@ namechange(void)
 	}
 
     strcpy(command, "");
-    sprintf(command, "rm -r %s",
+    sprintf(command, "rm -rf %s",
 	    getuserdir(oldname));
     cprintf("\n\n\1f\1rRemove old user dir with command:\n\n\1y%s\1r",
 	command); 
     cprintf("\n\n(y/n) :");
-    if (yesno() == YES)
-        system(command);
-    else
+    if (yesno() == YES) {
+        ret = system(command);
+	if ( ret != 0 ) {
+            cprintf("\nRemoval failed.  Delete by hand.");
+	}
+    } else {
 	cprintf("\nOk..  leaving it.  Delete by hand.");
+    }
     cprintf("\1f\1g\n\nNamechange completed.\n");
 }
 /* eof */

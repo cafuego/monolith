@@ -5,60 +5,48 @@
 #endif
 #include <build-defs.h>
 
+#include <unistd.h>
+#include <stdlib.h>
 #include <ctype.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <string.h>
 #include <errno.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <sys/ioctl.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/mman.h>
-
-#ifdef HAVE_TERMBITS_H
-#undef HAVE_TERMIO_H
-#include <termbits.h>
-#endif
+#include <time.h>
+#include <sys/time.h>
 
 #ifdef HAVE_TERMIO_H
 #include <termio.h>
 #endif
 
-#include <time.h>
-#include <unistd.h>
-#include <sys/time.h>
 
 #include "monolith.h"
 #include "telnet.h"
-
-#define extern
 #include "routines.h"
-#undef extern
-
 #include "btmp.h"
 #include "log.h"
-#include "inter.h"
 #include "routines2.h"
 #include "userfile.h"
 
 static struct termio stty0;	/* SUN terminal settings */
 
-
 float
-time_function(const int action)
+time_function(int action)
 {
     static struct timeval start_time;
     struct timeval stop_time;
     float seconds = 0;
 
-    struct timezone porcupine;  /* placeholder in gettimeofday call */
-
     if (action == TIME_START)
-	gettimeofday(&start_time, &porcupine);
+	gettimeofday(&start_time, NULL );
     else {
-	gettimeofday(&stop_time, &porcupine);
+	gettimeofday(&stop_time, NULL );
 	if ((seconds = stop_time.tv_sec - start_time.tv_sec) > 180)
 	    return seconds;
         seconds = (stop_time.tv_usec - start_time.tv_usec);
@@ -70,15 +58,9 @@ int
 set_timezone( const char *tmz )
 {
     int ret;
-    // char str[64];
 
     if ( !tmz || !strlen(tmz) )
         return -1;
-
-    // ret = sprintf( str, "TZ=%s", tz );
-    // if ( ret == -1 ) return -1;
-    // ret = putenv( str );
-    // if ( ret == -1 ) return -1;
 
     ret =  setenv("TZ", tmz, 1);
     tzset();
@@ -524,7 +506,8 @@ copy(const char *source, const char *dest)
 {
 
     int fd1, fd2;
-    unsigned int a;
+    ssize_t a, b;
+    size_t c;
     char buf[BUFSIZE + 1];
 
     if (fexists(dest)) {
@@ -537,22 +520,34 @@ copy(const char *source, const char *dest)
 	mono_errno = E_NOFILE;
 	return -1;
     }
+
     fd2 = open(dest, O_WRONLY | O_CREAT, 0600);
     if (fd2 == -1) {
 	(void) close(fd1);
 	mono_errno = E_NOPERM;
 	return -1;
     }
+
     while ((a = read(fd1, buf, BUFSIZE))) {
 	if (a == -1) {
-	    (void) close(fd1);
-	    (void) close(fd2);
+            if ( EINTR == errno ) continue;
+	    close(fd1);
+	    close(fd2);
 	    return -1;
 	}
-	write(fd2, buf, a);
+
+        c = a;
+
+	b = write(fd2, buf, c);
+	if (b == -1) {
+            if ( EINTR == errno ) continue;
+	    close(fd1);
+	    close(fd2);
+	    return -1;
+	}
     }
-    (void) close(fd1);
-    (void) close(fd2);
+    close(fd1);
+    close(fd2);
     return 0;
 }
 

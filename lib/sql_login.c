@@ -12,7 +12,7 @@
 #include <unistd.h>
 
 #ifdef USE_MYSQL
-  #include MYSQL_HEADER
+#include MYSQL_HEADER
 #endif
 
 #include "monolith.h"
@@ -21,10 +21,7 @@
 
 #include "sql_utils.h"
 #include "sysconfig.h"
-
-#define extern
 #include "sql_login.h"
-#undef extern 
 
 #define LOGIN_TABLE	"login"
 
@@ -32,7 +29,7 @@
  * Writes a log entry into the `login' table.
  */
 int
-mono_sql_log_logout(unsigned int user_id, time_t login, time_t logout, const char *host, int reason)
+mono_sql_log_logout( user_id_t user_id, time_t login, time_t logout, const char *host, int reason)
 {
 
     int ret;

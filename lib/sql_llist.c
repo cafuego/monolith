@@ -8,6 +8,7 @@
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
+#include <build-defs.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,10 +17,7 @@
 
 #include "monolith.h"
 #include "routines.h"
-
-#define extern
 #include "sql_llist.h"
-#undef extern
  
 /*
  * Add mlist_t to linked list.
@@ -245,7 +243,5 @@ mono_sql_ll_free_wxlist(wx_list_t *list)
     }
     return;
 }
-
-/* eof */
 
 /* eof */

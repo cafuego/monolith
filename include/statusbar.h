@@ -9,9 +9,9 @@
 
 /* prototypes */
 
-extern void statusbar(char *outstr);
-extern void status_bar_on( void );
-extern void status_bar_off( void );
-extern void holodeck_statusbar_on( void );
-extern void holodeck_statusbar_off( void );
-extern void switch_window( int how );
+void statusbar(char *outstr);
+void status_bar_on( void );
+void status_bar_off( void );
+void holodeck_statusbar_on( void );
+void holodeck_statusbar_off( void );
+void switch_window( int how );

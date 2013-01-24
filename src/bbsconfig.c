@@ -19,10 +19,7 @@
 #include "routines2.h"
 #include "input.h"
 #include "menu.h"
-
-#define extern
 #include "bbsconfig.h"
-#undef extern
 
 #ifdef ENABLE_NLS
 #include <libintl.h>

@@ -30,10 +30,10 @@
 #include "libmono.h"
 #include "version.h"
 #include "telnet.h"
+#include "main.h"
 
 #define extern
 #include "ext.h"
-#include "main.h"
 #undef extern
 
 #include "commands.h"
@@ -70,7 +70,7 @@ char previous_host[L_HOSTNAME + 1];
  * if someone is idle. It also takes care of the alarm clock. 
  * It works with help of the SIGALRM signal that is sent every 60 secs */
 
-RETSIGTYPE
+void
 sleeping(int sig)
 {
     char i;
@@ -125,7 +125,7 @@ sleeping(int sig)
 * Called by the SIGUSR2-signal
 *************************************************/
 
-RETSIGTYPE
+void
 updateself(int sig)
 {
     user_t *user = NULL;
@@ -155,7 +155,7 @@ updateself(int sig)
     return;
 }
 
-RETSIGTYPE
+void
 segfault(int sig)
 {
     sig++;
@@ -170,7 +170,7 @@ segfault(int sig)
     return;
 }
 
-RETSIGTYPE
+void
 dropcarr(int sig)
 {
     sig++;
@@ -178,7 +178,7 @@ dropcarr(int sig)
     return;
 }
 
-RETSIGTYPE
+void
 kickoutmyself(int sig)
 {				/* <auk>ick out user sends a signal to this funct. */
     sig++;
@@ -345,7 +345,8 @@ main(int argc, char *argv[])
     int a;			/* misc                         */
     int newbie;			/* newbieflag, TRUE if newuser  */
     int done = FALSE;		/* True when finished login     */
-    char hellomsg[40], *my_name = NULL;
+    int ret;
+    char hellomsg[L_FILE], *my_name = NULL;
     time_t laston;
     pid_t pid;
     char *username = NULL;
@@ -361,7 +362,12 @@ main(int argc, char *argv[])
 
     set_invocation_name(argv[0]);
     mono_setuid("guest");
-    chdir(BBSDIR);
+
+    ret = chdir(BBSDIR);
+    if ( ret != 0 ) {
+        cprintf( "Can't find BBS directory\n" );
+	exit( 0 );
+    }
 
 #ifdef ENABLE_NLS
     setlocale(LC_ALL, "");
@@ -378,10 +384,10 @@ main(int argc, char *argv[])
 	strncpy(hname, "localhost", L_HOSTNAME);
 	exit(0);
     }
-    strncpy(hname, argv[1], 79);
-    hname[79] = '\0';
+    strncpy(hname, argv[1], L_HOSTNAME );
+    hname[L_HOSTNAME-1] = '\0';
     if (hname[0] == '\0')	/* we're from localhost */
-	if (gethostname(hname, 79) == -1)
+	if (gethostname(hname, L_HOSTNAME) == -1)
 	    strncpy(hname, "localhost", L_HOSTNAME);
 
     connecting_flag = 1;
@@ -448,7 +454,7 @@ main(int argc, char *argv[])
 	    if (EQ(username, "new")) {	/* a new user?                  */
 		new_user(hname);
 		first_login = TRUE;
-		// usersupp = readuser(username);
+		/* usersupp = readuser(username); */
 		done = TRUE;
 	    } else {
 		if (strcasecmp(username, "Guest") != 0) {
@@ -480,12 +486,12 @@ main(int argc, char *argv[])
 
 #ifdef ENABLE_NLS
     {
-	char *ret;
+	char *retu;
 	extern int _nl_msg_cat_cntr;
 
-        ret = setlocale(LC_MESSAGES, usersupp->lang );
+        retu = setlocale(LC_MESSAGES, usersupp->lang );
 
-	if (ret == NULL ) {
+	if (retu == NULL ) {
 	    log_it( "errors", "Could not set locale: %s.\n", usersupp->lang );
 	}
 	++_nl_msg_cat_cntr;
@@ -541,7 +547,6 @@ main(int argc, char *argv[])
     strncpy(previous_host, usersupp->lasthost, L_HOSTNAME);
     strncpy(usersupp->lasthost, hname, L_HOSTNAME);
     usersupp->lasthost[L_HOSTNAME] = '\0';
-
 
     IFTWIT
     {
@@ -720,7 +725,7 @@ void
 logoff(int code)
 {
 
-    char quote[40];
+    char quote[L_FILE];
 
 #ifdef MAIL_QUOTA
     if (!code)
@@ -769,9 +774,9 @@ logoff(int code)
     (void) unlink(temp);	/* remove temporary files       */
     (void) unlink(tmpname);
 
-    (void) cprintf("\1a\n");	/* K: this should remove all colors */
+    cprintf("\1a\n");	/* K: this should remove all colors */
     remove_express();
-    (void) fflush(stdout);
+    fflush(stdout);
     exit(0);
 }
 
@@ -783,11 +788,13 @@ void
 print_login_banner(time_t laston)
 {
 
-    char filename[50];
+    char filename[L_FILE];
     unsigned int timescalled = 0;
     int ret;
 
     ret = mono_sql_u_get_login_count(usersupp->usernum, &timescalled);
+
+    if ( ret == -1 ) timescalled = 0;
 
     (void) cprintf(_("\n\1a\1f\1gWelcome to %s, \1g%s! \1gThis is your \1w#%d \1glogin.\n")
 		   ,BBSNAME, usersupp->username, timescalled);
@@ -905,7 +912,7 @@ getwindowsize(int sig)
 void
 check_profile_updated()
 {
-    char work[L_USERNAME + strlen(USERDIR) + 10];
+    char work[L_FILE];
     time_t timenow;
     struct stat buf;
 

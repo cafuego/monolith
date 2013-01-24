@@ -1,7 +1,7 @@
 /* $Id */
 
-extern int log_it ( const char *type, const char *event,...);
-extern int log_user( const user_t *user, const char *hostname, char offstat);
+int log_it ( const char *type, const char *event,...);
+int log_user( const user_t *user, const char *hostname, char offstat);
 
 extern /* volatile */ int mono_errno;
 
